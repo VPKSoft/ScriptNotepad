@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="msgActiveServerPagesScriptFile" xml:space="preserve">
+    <value>Active Server Pages script file|*.asp|A text in a file dialog indicating Active Server Pages script files</value>
+  </data>
+  <data name="msgAdaFile" xml:space="preserve">
+    <value>Ada file|*.ada;*.ads;*.adb|A text in a file dialog indicating Ada files</value>
+  </data>
+  <data name="msgAllFileTypes" xml:space="preserve">
+    <value>All types|*.*|A text in a file dialog indicating all files</value>
+  </data>
+  <data name="msgAssemblySourceFile" xml:space="preserve">
+    <value>Assembly language source file|*.asm|A text in a file dialog indicating Assembly language source files</value>
+  </data>
+  <data name="msgAutoItFile" xml:space="preserve">
+    <value>AutoIt|*.au3|A text in a file dialog indicating AutoIt files</value>
+  </data>
+  <data name="msgBatchFile" xml:space="preserve">
+    <value>Batch file|*.bat;*.cmd;*.nt|A text in a file dialog indicating Batch files</value>
+  </data>
+  <data name="msgCategoricalAbstractMachineLanguageFile" xml:space="preserve">
+    <value>Categorical Abstract Machine Language|*.ml;*.mli;*.sml;*.thy|A text in a file dialog indicating Categorical Abstract Machine Language files</value>
+  </data>
+  <data name="msgCMakeFile" xml:space="preserve">
+    <value>CMake file|*.cmake|A text in a file dialog indicating CMake files</value>
+  </data>
+  <data name="msgCoffeeScriptLanguage" xml:space="preserve">
+    <value>Coffee Script file|*.litcoffee|A text in a file dialog indicating Coffee Script files</value>
+  </data>
+  <data name="msgCommonBusinessOrientedLanguage" xml:space="preserve">
+    <value>Common Business Oriented Language|*.cbl;*.cbd;*.cdb;*.cdc;*.cob|A text in a file dialog indicating Common Business Oriented Language files</value>
+  </data>
+  <data name="msgCSSourceFile" xml:space="preserve">
+    <value>C source file|*.c|A text in a file dialog indicating C source files</value>
+  </data>
+  <data name="msgFlashActionScriptFile" xml:space="preserve">
+    <value>Flash ActionScript file|*.as;*.mx|A text in a file dialog indicating Flash ActionScript files</value>
+  </data>
+  <data name="msgNormalTextFile" xml:space="preserve">
+    <value>Normal text file|*.txt|A text in a file dialog indicating .txt files</value>
+  </data>
+  <data name="msgUnixScriptFile" xml:space="preserve">
+    <value>Unix script file|*.sh;*.bsh|A text in a file dialog indicating Unix script files</value>
+  </data>
+  <data name="msgCPPSourceFile" xml:space="preserve">
+    <value>C++ source file|*.h;*.hpp;*.hxx;*.cpp;*.cxx;*.cc|A text in a file dialog indicating C++ source files</value>
+  </data>
+  <data name="msgCSSSourceFile" xml:space="preserve">
+    <value>Cascading Style Sheets File|*.css|A text in a file dialog indicating Cascading Style Sheets files</value>
+  </data>
+  <data name="msgDiffFile" xml:space="preserve">
+    <value>Diff file|*.diff;*.patch|A text in a file dialog indicating Diff files</value>
+  </data>
+  <data name="msgDSourceFile" xml:space="preserve">
+    <value>D programming language|*.d|A text in a file dialog indicating D programming language files</value>
+  </data>
+  <data name="msgFortranFreeFormSourceFile" xml:space="preserve">
+    <value>Fortran free form source file|*.f;*.for;*.f90;*.f95;*.f2k|A text in a file dialog indicating Fortran free form source files</value>
+  </data>
+  <data name="msgeXtensibleMarkupLanguageFile" xml:space="preserve">
+    <value>eXtensible Markup Language file|*.xml;*.xsml;*.xls;*.xsd;*.kml;*.wsdl;*.xlf;*.xliff|A text in a file dialog indicating eXtensible Markup Language files</value>
+  </data>
+  <data name="msgHaskellSourceFile" xml:space="preserve">
+    <value>Haskell source file|*.hs;*.lhs;*.as;*.las|A text in a file dialog indicating Haskell source files</value>
+  </data>
+  <data name="msgHyperTextMarkupLanguageFile" xml:space="preserve">
+    <value>Hyper Text Markup Language file|*.html;*.htm;*.shtml;*.shtm;*.xhtml;*.hta|A text in a file dialog indicating Hyper Text Markup Language files</value>
+  </data>
+  <data name="msgInnoSetupScriptFile" xml:space="preserve">
+    <value>Inno Setup Script File|*.iss|A text in a file dialog indicating Inno Setup Script files</value>
+  </data>
+  <data name="msgJavaScriptFile" xml:space="preserve">
+    <value>Java script file|*.js|A text in a file dialog indicating Java script files</value>
+  </data>
+  <data name="msgJavaServerPagesFile" xml:space="preserve">
+    <value>JavaServer pages file|*.jsp|A text in a file dialog indicating JavaServer pages files</value>
+  </data>
+  <data name="msgJavaSourceFile" xml:space="preserve">
+    <value>Java source file|*.java|A text in a file dialog indicating Java source files</value>
+  </data>
+  <data name="msgKiXtartFile" xml:space="preserve">
+    <value>KiXtart file|*.kix|A text in a file dialog indicating KiXtart files</value>
+  </data>
+  <data name="msgListProcessingLanguageFile" xml:space="preserve">
+    <value>List Processing language file|*.lsp;*.lisp|A text in a file dialog indicating List Processing language files</value>
+  </data>
+  <data name="msgLuaSourceFile" xml:space="preserve">
+    <value>Lua source file|*.lua|A text in a file dialog indicating Lua source files</value>
+  </data>
+  <data name="msgMakeFile" xml:space="preserve">
+    <value>Makefile|*.mak|A text in a file dialog indicating Makefile files</value>
+  </data>
+  <data name="msgMATrixLABoratoryFile" xml:space="preserve">
+    <value>MATrix LABoratory file|*.m|A text in a file dialog indicating MATrix LABoratory files</value>
+  </data>
+  <data name="msgMSDOSStyleAsciiArtFile" xml:space="preserve">
+    <value>MSDOS Style/ASCII Art file|*.nfo|A text in a file dialog indicating MSDOS Style/ASCII Art file files</value>
+  </data>
+  <data name="msgMSIniFile" xml:space="preserve">
+    <value>MS INI file|*.ini;*.inf;*.reg;*.url|A text in a file dialog indicating MS INI files</value>
+  </data>
+  <data name="msgNullsoftScriptableInstallSystemScriptFile" xml:space="preserve">
+    <value>Nullsoft Scriptable Install System script file|*.nsi;*.nsh|A text in a file dialog indicating Nullsoft Scriptable Install System script files</value>
+  </data>
+  <data name="msgPascalSourceFile" xml:space="preserve">
+    <value>Pascal source file|*.pas|A text in a file dialog indicating Pascal source files</value>
+  </data>
+  <data name="msgPerlSourceFile" xml:space="preserve">
+    <value>Perl source file|*.pl;*.pm;*.plx|A text in a file dialog indicating Perl source files</value>
+  </data>
+  <data name="msgPHPHypertextPreprocessorFile" xml:space="preserve">
+    <value>PHP Hypertext Preprocessor file|*.php;*.php3;*.phtml|A text in a file dialog indicating PHP Hypertext Preprocessor files</value>
+  </data>
+  <data name="msgPostScriptFile" xml:space="preserve">
+    <value>PostScript file|*.ps|A text in a file dialog indicating PostScript files</value>
+  </data>
+  <data name="msgPropertiesFile" xml:space="preserve">
+    <value>Properties file|*.properties|A text in a file dialog indicating Properties files</value>
+  </data>
+  <data name="msgPythonFile" xml:space="preserve">
+    <value>Python file|*.py;*.pyw|A text in a file dialog indicating Python files</value>
+  </data>
+  <data name="msgRProgrammingLanguageFile" xml:space="preserve">
+    <value>R programming language file|*.r|A text in a file dialog indicating R programming language files</value>
+  </data>
+  <data name="msgRubyFile" xml:space="preserve">
+    <value>Ruby file|*.rb;*.rbw|A text in a file dialog indicating Ruby files</value>
+  </data>
+  <data name="msgSchemeFile" xml:space="preserve">
+    <value>Scheme file|*.scm;*.smd;*.ss|A text in a file dialog indicating Scheme files</value>
+  </data>
+  <data name="msgSmalltalkFile" xml:space="preserve">
+    <value>Smalltalk file|*.st|A text in a file dialog indicating Smalltalk files</value>
+  </data>
+  <data name="msgStructuredQueryLanguageFile" xml:space="preserve">
+    <value>Structured Query Language file|*.sql;*.sql_script|A text in a file dialog indicating Structured Query Language files</value>
+  </data>
+  <data name="msgTeXFile" xml:space="preserve">
+    <value>TeX file|*.tex|A text in a file dialog indicating TeX files</value>
+  </data>
+  <data name="msgToolCommandLanguageFile" xml:space="preserve">
+    <value>Tool Command Language file|*.tlc|A text in a file dialog indicating Tool Command Language files</value>
+  </data>
+  <data name="msgVerilogFile" xml:space="preserve">
+    <value>Verilog file|*.vs;*.sv;*.vh;*.svh|A text in a file dialog indicating Verilog files</value>
+  </data>
+  <data name="msgVHSICHardwareDescriptionLanguageFile" xml:space="preserve">
+    <value>VHSIC Hardware Description Language file|*.vhd;*.vhdl|A text in a file dialog indicating VHSIC Hardware Description Language files</value>
+  </data>
+  <data name="msgVisualBasicFile" xml:space="preserve">
+    <value>Visual Basic file|*.vb;*.vbs|A text in a file dialog indicating Visual Basic files</value>
+  </data>
+  <data name="msgWindowsPowerShellFile" xml:space="preserve">
+    <value>Windows PowerShell file|*.ps1;*.psm1|A text in a file dialog indicating Windows PowerShell files</value>
+  </data>
+  <data name="msgWindowsResourceFile" xml:space="preserve">
+    <value>Windows resource file|*.rc|A text in a file dialog indicating Windows resource files</value>
+  </data>
+  <data name="msgYAMLFile" xml:space="preserve">
+    <value>YAML Ain't a Markup Language file|*.yml|A text in a file dialog indicating YAML Ain't a Markup Language files</value>
+  </data>
+</root>
