@@ -83,8 +83,8 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.2\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.0\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
@@ -172,11 +172,11 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\folder-database.png" />
+    <None Include="Resources\folder-page.png" />
     <Content Include="Resources\Clock.ico" />
     <Content Include="Resources\Clock.png" />
     <Content Include="Resources\DownButton.png" />
-    <None Include="Resources\folder-database.png" />
-    <None Include="Resources\folder-page.png" />
     <Content Include="Resources\Highlighter.png" />
     <Content Include="Resources\UpButton.png" />
     <Content Include="Resources\XToCloseButton.png" />
