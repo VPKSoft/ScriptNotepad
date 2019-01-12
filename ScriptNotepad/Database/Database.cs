@@ -134,6 +134,46 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Adds a given DBFILE_SAVE class instance into the database cache.
+        /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
+        /// </summary>
+        /// <param name="fileSave">A DBFILE_SAVE class instance to be added into the database.</param>
+        /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
+        public static DBFILE_SAVE AddFile(DBFILE_SAVE fileSave)
+        {
+            try
+            {
+                long lastId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
+
+                string sql = DatabaseCommands.GenInsertFileSentence(fileSave);
+
+                // as the SQLiteCommand is disposable a using clause is required..
+                using (SQLiteCommand command = new SQLiteCommand(conn))
+                {
+                    command.CommandText = sql;
+                    // add parameters to the command..
+
+                    // add the contents of the Scintilla.NET document as a parameter..
+                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = fileSave.FILE_CONTENTS.ToArray();
+
+                    // do the insert..
+                    command.ExecuteNonQuery();
+                }
+
+                long newId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
+
+                fileSave.ID = lastId != newId ? newId : fileSave.ID;
+
+                return fileSave;
+            }
+            catch (Exception ex)
+            {
+                LastException = ex; // log the exception..
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Adds a given file into the database cache.
         /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
         /// </summary>
@@ -164,28 +204,7 @@ namespace ScriptNotepad.Database
                     ISACTIVE = document.FileTabButton.IsActive
                 };
 
-                long lastId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
-
-                string sql = DatabaseCommands.GenInsertFileSentence(fileSave);
-
-                // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
-                {
-                    command.CommandText = sql;
-                    // add parameters to the command..
-
-                    // add the contents of the Scintilla.NET document as a parameter..
-                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = fileSave.FILE_CONTENTS.ToArray();
-
-                    // do the insert..
-                    command.ExecuteNonQuery();
-                }
-
-                long newId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
-
-                fileSave.ID = lastId != newId ? newId : -1;
-
-                return fileSave;
+                return AddFile(fileSave);
             }
             catch (Exception ex)
             {
@@ -205,6 +224,16 @@ namespace ScriptNotepad.Database
         public static bool AddOrUpdateFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, int ID = -1)
         {
             return UpdateFile(AddFile(document, isHistory, sessionName, ID)) != null;
+        }
+
+        /// <summary>
+        /// Adds or updates a a given file into the database cache.
+        /// </summary>
+        /// <param name="fileSave">A DBFILE_SAVE class instance to be added or updated into the database.</param>
+        /// <returns>True if the operations was successful; otherwise false;</returns>
+        public static bool AddOrUpdateFile(DBFILE_SAVE fileSave)
+        {
+            return UpdateFile(AddFile(fileSave)) != null;
         }
 
         /// <summary>
@@ -309,7 +338,7 @@ namespace ScriptNotepad.Database
                     // add parameters to the command..
 
                     // add the contents of the Scintilla.NET document as a parameter..
-                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = fileSave.FILE_CONTENTS.ToArray();
+                    command.Parameters.Add("@FILE", DbType.Binary).Value = fileSave.FILE_CONTENTS.ToArray();
 
                     // do the insert..
                     command.ExecuteNonQuery();
@@ -411,14 +440,25 @@ namespace ScriptNotepad.Database
             return result;
         }
 
+        /// <summary>
+        /// Creates a memory stream from the given SQLiteBlob.
+        /// </summary>
+        /// <param name="blob">A SQLiteBlob to create a memory stream from.</param>
+        /// <returns>A memory stream created from the given <paramref name="blob"/>.</returns>
         public static MemoryStream MemoryStreamFromBlob(SQLiteBlob blob)
         {
             int size = blob.GetCount();
             byte[] blobBytes = new byte[size];
             blob.Read(blobBytes, size, 0);
-            return new MemoryStream(blobBytes);
+            return new MemoryStream(blobBytes); // remember to dispose of this..
         }
 
+        /// <summary>
+        /// Gets the file snapshots from the database.
+        /// </summary>
+        /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
+        /// <param name="isHistory">An indicator whether to select documents marked as history.</param>
+        /// <returns>A collection of DBFILE_SAVE class instances matching the given parameters.</returns>
         public static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, bool isHistory)
         {
             List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
@@ -445,7 +485,7 @@ namespace ScriptNotepad.Database
                                     FILEPATH = reader.GetString(4),
                                     FILESYS_MODIFIED = DateFromDBString(reader.GetString(5)),
                                     DB_MODIFIED = DateFromDBString(reader.GetString(6)),
-                                    LEXER_CODE = (LexerType)reader.GetInt32(7),
+                                    LEXER_CODE = (LexerType)reader.GetInt32(7), // cast to a lexer type..
                                     FILE_CONTENTS = MemoryStreamFromBlob(reader.GetBlob(8, true)),
                                     VISIBILITY_ORDER = reader.GetInt32(9),
                                     SESSIONID = reader.GetInt32(10),

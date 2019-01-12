@@ -213,7 +213,7 @@ namespace ScriptNotepad
         {
             foreach (ScintillaTabbedDocument document in sttcMain.Documents)
             {
-                Database.Database.AddOrUpdateFile(document, false, sessionName);
+                Database.Database.AddOrUpdateFile(document, false, sessionName, document.ID);
                 Database.Database.AddOrUpdateRecentFile(document.FileName, sessionName);
             }
         }

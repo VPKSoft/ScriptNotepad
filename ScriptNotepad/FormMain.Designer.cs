@@ -1,5 +1,9 @@
 ﻿namespace ScriptNotepad
 {
+    /// <summary>
+    /// The main form of the application.
+    /// </summary>
+    /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
     partial class FormMain
     {
         /// <summary>
