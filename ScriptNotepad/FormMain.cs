@@ -213,7 +213,7 @@ namespace ScriptNotepad
         {
             foreach (ScintillaTabbedDocument document in sttcMain.Documents)
             {
-                Database.Database.AddOrUpdateFile(document, false, sessionName, document.ID);
+                Database.Database.AddOrUpdateFile((DBFILE_SAVE)document.Tag, document);
                 Database.Database.AddOrUpdateRecentFile(document.FileName, sessionName);
             }
         }
@@ -226,6 +226,10 @@ namespace ScriptNotepad
             foreach (DBFILE_SAVE file in files)
             {
                 sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.FILE_CONTENTS);
+                if (sttcMain.LastAddedDocument != null)
+                {
+                    sttcMain.LastAddedDocument.Tag = file;
+                }
             }
         }
 

@@ -230,9 +230,11 @@ namespace ScriptNotepad.Database
         /// Adds or updates a a given file into the database cache.
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be added or updated into the database.</param>
+        /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <returns>True if the operations was successful; otherwise false;</returns>
-        public static bool AddOrUpdateFile(DBFILE_SAVE fileSave)
+        public static bool AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
         {
+            fileSave.FILE_CONTENTS = TextToMemoryStream(document.Scintilla.Text);
             return UpdateFile(AddFile(fileSave)) != null;
         }
 
