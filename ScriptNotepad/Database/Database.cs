@@ -27,6 +27,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
@@ -138,11 +139,10 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
-        /// <param name="isActive">A value indicating whether if the file is activated in the tab control.</param>
         /// <param name="isHistory"> a value indicating whether this entry is a history entry.</param>
         /// <param name="ID">An unique identifier for the file.</param>
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
-        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, bool isActive, bool isHistory, string sessionName = "Default", int ID = -1)
+        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, int ID = -1)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace ScriptNotepad.Database
                     FILE_CONTENTS = TextToMemoryStream(document.Scintilla.Text),
                     VISIBILITY_ORDER = (int)document.FileTabButton.Tag,
                     SESSIONNAME = sessionName,
-                    ISACTIVE = isActive
+                    ISACTIVE = document.FileTabButton.IsActive
                 };
 
                 long lastId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
@@ -195,25 +195,42 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Adds or updates a a given file into the database cache.
+        /// </summary>
+        /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
+        /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
+        /// <param name="isHistory"> a value indicating whether this entry is a history entry.</param>
+        /// <param name="ID">An unique identifier for the file.</param>
+        /// <returns>True if the operations was successful; otherwise false;</returns>
+        public static bool AddOrUpdateFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, int ID = -1)
+        {
+            return UpdateFile(AddFile(document, isHistory, sessionName, ID)) != null;
+        }
+
+        /// <summary>
         /// Adds a <paramref name="fileName"/> file to the database table RECENT_FILES if it doesn't exists.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">A file name to generate a RECENT_FILES class instance.</param>
+        /// <param name="sessionName">A name of the session to which the document belongs to.</param>
         /// <returns>A RECENT_FILES class instance if the recent file was successfully added to the database; otherwise null.</returns>
-        public static RECENT_FILES AddRecentFile(string fileName)
+        public static RECENT_FILES AddRecentFile(string fileName, string sessionName)
         {
-            return AddRecentFile(RECENT_FILES.FromFilename(fileName));
+            return AddRecentFile(RECENT_FILES.FromFilename(fileName), sessionName);
         }
 
         /// <summary>
         /// Adds a given RECENT_FILES class instance to the RECENT_FILES database table.
         /// </summary>
         /// <param name="recentFile">A RECENT_FILES class instance to add to the database's RECENT_FILES table.</param>
+        /// <param name="sessionName">A name of the session to which the document belongs to.</param>
         /// <returns>A RECENT_FILES class instance if the recent file was successfully added to the database; otherwise null.</returns>
-        public static RECENT_FILES AddRecentFile(RECENT_FILES recentFile)
+        public static RECENT_FILES AddRecentFile(RECENT_FILES recentFile, string sessionName)
         {
             try
             {
                 long lastId = GetScalar<long>(DatabaseCommands.GenLatestDBRecentFileIDSentence());
+
+                recentFile.SESSIONNAME = sessionName;
 
                 string sql = DatabaseCommands.GenHistoryInsert(recentFile);
 
@@ -243,11 +260,30 @@ namespace ScriptNotepad.Database
         /// Updates a recent RECENT_FILES class instance into the database table RECENT_FILES.
         /// </summary>
         /// <param name="recentFile">A RECENT_FILES class instance to update to the database's RECENT_FILES table.</param>
-        /// <returns>The updated instance of the given <paramref name="recentFile"/> class instance.</returns>
-        public static RECENT_FILES UpdateRecentFile(RECENT_FILES recentFile)
+        /// <param name="sessionName">A name of the session to which the document belongs to.</param>
+        /// <returns>The updated instance of the given <paramref name="recentFile"/> class instance if the operation was successful; otherwise null.</returns>
+        public static RECENT_FILES UpdateRecentFile(RECENT_FILES recentFile, string sessionName)
         {
-            ExecuteArbitrarySQL(DatabaseCommands.GenHistoryUpdate(ref recentFile));
-            return recentFile;
+            recentFile.SESSIONNAME = sessionName;
+            if (ExecuteArbitrarySQL(DatabaseCommands.GenHistoryUpdate(ref recentFile)))
+            {
+                return recentFile;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Adds or updates a <paramref name="fileName"/> file to the database table RECENT_FILES.
+        /// </summary>
+        /// <param name="fileName">A file name to generate a RECENT_FILES class instance.</param>
+        /// <param name="sessionName">A name of the session to which the document belongs to.</param>
+        /// <returns>True if the operations was successful; otherwise false;</returns>
+        public static bool AddOrUpdateRecentFile(string fileName, string sessionName)
+        {
+            return UpdateRecentFile(AddRecentFile(fileName, sessionName), sessionName) != null;
         }
 
         /// <summary>
@@ -342,17 +378,18 @@ namespace ScriptNotepad.Database
         /// <summary>
         /// Gets the recent file list saved to the database.
         /// </summary>
+        /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
         /// <param name="maxCount">Maximum count of recent file entries to return.</param>
         /// <returns>A collection RECENT_FILES classes.</returns>
-        public static IEnumerable<RECENT_FILES> GetRecentFiles(int maxCount = 15)
+        public static IEnumerable<RECENT_FILES> GetRecentFiles(string sessionName, int maxCount = 15)
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenHistorySelect(maxCount), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenHistorySelect(sessionName, maxCount), conn))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, REFERENCEID: 5
+                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, SESSIONID: 5, REFERENCEID: 6, SESSION_NAME: 7
                     while (reader.Read())
                     {
                         result.Add(
@@ -363,8 +400,64 @@ namespace ScriptNotepad.Database
                                 FILENAME = reader.GetString(2),
                                 FILEPATH = reader.GetString(3),
                                 CLOSED_DATETIME = DateFromDBString(reader.GetString(4)),
-                                REFERENCEID = reader.IsDBNull(5) ? null : (long?)reader.GetInt64(5)
+                                SESSIONID = reader.GetInt32(5),
+                                REFERENCEID = reader.IsDBNull(6) ? null : (long?)reader.GetInt64(6),
+                                SESSIONNAME = reader.GetString(7),
                             });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static MemoryStream MemoryStreamFromBlob(SQLiteBlob blob)
+        {
+            int size = blob.GetCount();
+            byte[] blobBytes = new byte[size];
+            blob.Read(blobBytes, size, 0);
+            return new MemoryStream(blobBytes);
+        }
+
+        public static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, bool isHistory)
+        {
+            List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
+
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenDocumentSelect(sessionName, isHistory), conn))
+            {
+                                                                       // can't get the BLOB without this (?!)..
+                using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
+                {
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
+                            // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
+                            // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
+                            result.Add(
+                                new DBFILE_SAVE()
+                                {
+                                    ID = reader.GetInt64(0),
+                                    EXISTS_INFILESYS = reader.GetInt32(1) == 1,
+                                    FILENAME_FULL = reader.GetString(2),
+                                    FILENAME = reader.GetString(3),
+                                    FILEPATH = reader.GetString(4),
+                                    FILESYS_MODIFIED = DateFromDBString(reader.GetString(5)),
+                                    DB_MODIFIED = DateFromDBString(reader.GetString(6)),
+                                    LEXER_CODE = (LexerType)reader.GetInt32(7),
+                                    FILE_CONTENTS = MemoryStreamFromBlob(reader.GetBlob(8, true)),
+                                    VISIBILITY_ORDER = reader.GetInt32(9),
+                                    SESSIONID = reader.GetInt32(10),
+                                    ISACTIVE = reader.GetInt32(11) == 1,
+                                    ISHISTORY = reader.GetInt32(12) == 1,
+                                    SESSIONNAME = reader.GetString(13)
+                                });
+                        }
+                        catch (Exception ex)
+                        {
+                            LastException = ex;
+                        }
                     }
                 }
             }

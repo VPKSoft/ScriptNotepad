@@ -84,6 +84,16 @@ namespace ScriptNotepad.Database
         public DateTime CLOSED_DATETIME { get; set; } = DateTime.MinValue;
 
         /// <summary>
+        /// Gets or sets the session ID.
+        /// </summary>
+        public int SESSIONID { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or sets the name of the session.
+        /// </summary>
+        public string SESSIONNAME { get; set; } = "Default";
+
+        /// <summary>
         /// Gets or sets a reference to a file ID in the DBFILE_SAVE table.
         /// <note type="note">A null value indicates a DB null.</note>
         /// </summary>

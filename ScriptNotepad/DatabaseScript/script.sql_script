@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS RECENT_FILES -- a table for the document history..
   FILENAME TEXT NOT NULL, -- the file name without path..
   FILEPATH TEXT NOT NULL, -- the full path for the file..
   CLOSED_DATETIME TEXT NOT NULL, -- when the file was closed in the software, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  SESSIONID INTEGER NOT NULL, -- an id for a session of the file..
   REFERENCEID INTEGER(8) NULL -- a reference to a file id in the DBFILE_SAVE table, can be null..
 );
 

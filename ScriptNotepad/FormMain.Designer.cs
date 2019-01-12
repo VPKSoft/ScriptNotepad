@@ -32,16 +32,16 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
+            this.tsbNew = new System.Windows.Forms.ToolStripButton();
+            this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
-            this.tsbNew = new System.Windows.Forms.ToolStripButton();
-            this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
-            this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.menuMain.SuspendLayout();
@@ -91,49 +91,6 @@
             this.tsMain.TabIndex = 0;
             this.tsMain.Text = "toolStrip1";
             // 
-            // menuMain
-            // 
-            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFile,
-            this.mnuSearch});
-            this.menuMain.Location = new System.Drawing.Point(0, 0);
-            this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(800, 24);
-            this.menuMain.TabIndex = 4;
-            this.menuMain.Text = "menuStrip1";
-            // 
-            // mnuFile
-            // 
-            this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuNew,
-            this.mnuOpen,
-            this.testToolStripMenuItem});
-            this.mnuFile.Name = "mnuFile";
-            this.mnuFile.Size = new System.Drawing.Size(37, 20);
-            this.mnuFile.Text = "File";
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
-            // 
-            // mnuSearch
-            // 
-            this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFind});
-            this.mnuSearch.Name = "mnuSearch";
-            this.mnuSearch.Size = new System.Drawing.Size(54, 20);
-            this.mnuSearch.Text = "Search";
-            // 
-            // mnuFind
-            // 
-            this.mnuFind.Name = "mnuFind";
-            this.mnuFind.Size = new System.Drawing.Size(103, 22);
-            this.mnuFind.Text = "Find..";
-            this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
-            // 
             // tsbNew
             // 
             this.tsbNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -158,6 +115,27 @@
             this.sttcMain.Size = new System.Drawing.Size(770, 360);
             this.sttcMain.TabIndex = 2;
             // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFile,
+            this.mnuSearch});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(800, 24);
+            this.menuMain.TabIndex = 4;
+            this.menuMain.Text = "menuStrip1";
+            // 
+            // mnuFile
+            // 
+            this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuNew,
+            this.mnuOpen,
+            this.testToolStripMenuItem});
+            this.mnuFile.Name = "mnuFile";
+            this.mnuFile.Size = new System.Drawing.Size(37, 20);
+            this.mnuFile.Text = "File";
+            // 
             // mnuNew
             // 
             this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
@@ -173,6 +151,29 @@
             this.mnuOpen.Size = new System.Drawing.Size(180, 22);
             this.mnuOpen.Text = "Open...";
             this.mnuOpen.Click += new System.EventHandler(this.mnuOpen_Click);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testToolStripMenuItem.Text = "test";
+            this.testToolStripMenuItem.Visible = false;
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // mnuSearch
+            // 
+            this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFind});
+            this.mnuSearch.Name = "mnuSearch";
+            this.mnuSearch.Size = new System.Drawing.Size(54, 20);
+            this.mnuSearch.Text = "Search";
+            // 
+            // mnuFind
+            // 
+            this.mnuFind.Name = "mnuFind";
+            this.mnuFind.Size = new System.Drawing.Size(180, 22);
+            this.mnuFind.Text = "Find..";
+            this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
             // FormMain
             // 

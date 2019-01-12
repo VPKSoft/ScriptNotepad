@@ -44,6 +44,7 @@ using Microsoft.Win32;
 using VPKSoft.PosLib;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.Database;
+using VPKSoft.ScintillaTabbedTextControl;
 
 namespace ScriptNotepad
 {
@@ -52,6 +53,8 @@ namespace ScriptNotepad
         private FindReplace findReplace = new FindReplace();
 
         IpcClientServer ipcServer = new IpcClientServer();
+
+        private string CurrentSession { get; set; } = "Default";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormMain"/> class.
@@ -102,6 +105,7 @@ namespace ScriptNotepad
             Database.Database.InitConnection("Data Source=" + DBLangEngine.DataDir + "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;"); // PRAGMA synchronous=OFF;PRAGMA journal_mode=OFF
             Localization.StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
 
+            LoadDocumentsFromDatabase(CurrentSession, false);
         }
 
 
@@ -113,12 +117,21 @@ namespace ScriptNotepad
         private void button1_Click(object sender, EventArgs e)
         {
 
-            RECENT_FILES r = Database.Database.GetRecentFiles().First();
-            Database.Database.UpdateRecentFile(r);
+            IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(CurrentSession, false);
+
+            foreach (DBFILE_SAVE file in files)
+            {
+                MessageBox.Show(file.FILENAME_FULL);
+            }
+
+            return;
+
+            RECENT_FILES r = Database.Database.GetRecentFiles(CurrentSession).First();
+            Database.Database.UpdateRecentFile(r, CurrentSession);
             return;
 
 
-            DBFILE_SAVE fileSave = Database.Database.AddFile(sttcMain.Documents[0], sttcMain.Documents[0].FileTabButton.IsActive, false);
+            DBFILE_SAVE fileSave = Database.Database.AddFile(sttcMain.Documents[0], false, CurrentSession);
             Database.Database.UpdateFile(fileSave);
             return;
 
@@ -192,6 +205,28 @@ namespace ScriptNotepad
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
+
+            SaveDocumentsToDatabase(CurrentSession);
+        }
+
+        private void SaveDocumentsToDatabase(string sessionName)
+        {
+            foreach (ScintillaTabbedDocument document in sttcMain.Documents)
+            {
+                Database.Database.AddOrUpdateFile(document, false, sessionName);
+                Database.Database.AddOrUpdateRecentFile(document.FileName, sessionName);
+            }
+        }
+
+
+        private void LoadDocumentsFromDatabase(string sessionName, bool history)
+        {
+            IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(sessionName, history);
+
+            foreach (DBFILE_SAVE file in files)
+            {
+                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.FILE_CONTENTS);
+            }
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
@@ -229,7 +264,14 @@ namespace ScriptNotepad
         {
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
-                sttcMain.AddDocument(odAnyFile.FileName, -1);
+                if (sttcMain.AddDocument(odAnyFile.FileName, -1))
+                {
+                    if (sttcMain.CurrentDocument != null)
+                    {
+                        Database.Database.AddOrUpdateRecentFile(odAnyFile.FileName, CurrentSession);
+                        Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                    }
+                }
             }
         }
     }

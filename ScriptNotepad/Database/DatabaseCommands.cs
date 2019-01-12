@@ -61,7 +61,7 @@ namespace ScriptNotepad.Database
                 $"{BS(fileSave.ISACTIVE)},",
                 $"{BS(fileSave.ISHISTORY)},",
                 $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
-                $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ID = {fileSave.ID});");
+                $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = {QS(fileSave.FILENAME_FULL)});");
 
             return sql;
         }
@@ -126,20 +126,47 @@ namespace ScriptNotepad.Database
         /// <summary>
         /// Generates a SQL sentence to select file names saved in the RECENT_FILES table in the database.
         /// </summary>
+        /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
         /// <param name="maxCount">A maximum amount of file history to get.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenHistorySelect(int maxCount)
+        public static string GenHistorySelect(string sessionName, int maxCount)
         {
             string sql =
                 string.Join(Environment.NewLine,
                 $"SELECT ID, FILENAME_FULL, FILENAME,",
-                $"FILEPATH, CLOSED_DATETIME, REFERENCEID",
+                $"FILEPATH, CLOSED_DATETIME, SESSIONID, REFERENCEID,",
+                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = RECENT_FILES.SESSIONID), {QS(sessionName)}) AS SESSIONNAME",
                 $"FROM RECENT_FILES",
+                $"WHERE SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
                 $"ORDER BY CLOSED_DATETIME DESC",
                 $"LIMIT {maxCount};");
 
             return sql;
         }
+
+        /// <summary>
+        /// Generates a SQL sentence to select document snapshots from the DBFILE_SAVE table in the database.
+        /// </summary>
+        /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
+        /// <param name="isHistory">An indicator whether to select documents marked as history.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenDocumentSelect(string sessionName, bool isHistory)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH,",
+                $"FILESYS_MODIFIED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS,",
+                $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
+                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = DBFILE_SAVE.SESSIONID), {QS(sessionName)}) AS SESSIONNAME, ROWID",
+                $"FROM DBFILE_SAVE",
+                $"WHERE",
+                $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')) AND",
+                $"ISHISTORY = {BS(isHistory)}",
+                $"ORDER BY VISIBILITY_ORDER");
+
+            return sql;
+        }
+
 
         /// <summary>
         /// Generates a SQL sentence to insert a recent file into the database.
@@ -150,14 +177,15 @@ namespace ScriptNotepad.Database
         {
             string sql =
                 string.Join(Environment.NewLine,
-                $"INSERT INTO RECENT_FILES(FILENAME_FULL, FILENAME, FILEPATH, CLOSED_DATETIME, REFERENCEID)",
+                $"INSERT INTO RECENT_FILES(FILENAME_FULL, FILENAME, FILEPATH, CLOSED_DATETIME, SESSIONID, REFERENCEID)",
                 $"SELECT",
                 $"{QS(recentFile.FILENAME_FULL)},",
                 $"{QS(recentFile.FILENAME)},",
                 $"{QS(recentFile.FILEPATH)},",
                 $"{DateToDBString(recentFile.CLOSED_DATETIME)},",
+                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(recentFile.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')),",
                 $"{(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
-                $"WHERE NOT EXISTS(SELECT * FROM RECENT_FILES WHERE ID = {recentFile.ID});");
+                $"WHERE NOT EXISTS(SELECT * FROM RECENT_FILES WHERE FILENAME_FULL = {QS(recentFile.FILENAME_FULL)});");
 
             return sql;
         }
@@ -178,6 +206,7 @@ namespace ScriptNotepad.Database
                 $"FILENAME = {QS(recentFile.FILENAME)},",
                 $"FILEPATH = {QS(recentFile.FILEPATH)},",
                 $"CLOSED_DATETIME = {DateToDBString(recentFile.CLOSED_DATETIME)},",
+                $"SESSIONID = {recentFile.SESSIONID},",
                 $"REFERENCEID = {(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
                 $"WHERE ID = {recentFile.ID};");
 
