@@ -83,11 +83,11 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.2\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.3\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.0.3\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.0.5\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -149,6 +149,7 @@
     <None Include="DatabaseScript\script.sql_script">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="WindowsRegistry\OpenWith.reg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

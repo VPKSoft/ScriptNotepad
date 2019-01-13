@@ -45,9 +45,6 @@ namespace ScriptNotepad
         [STAThread]
         static void Main()
         {
-            ExceptionLogger.Bind(); // bind before any visual objects are created
-            ExceptionLogger.ApplicationCrash += ExceptionLogger_ApplicationCrash; ;
-
             // if the application is running send the arguments to the existing instance..
             if (AppRunning.CheckIfRunning("VPKSoft.ScriptNotepad.C#"))
             {
@@ -59,14 +56,18 @@ namespace ScriptNotepad
                 // file name thus the start from 1..
                 for (int i = 1; i < args.Length; i++)
                 {
-                    if (File.Exists(args[i]))
+                    string file = args[i];
+                    if (File.Exists(file))
                     {
-                        ipcClient.SendMessage(args[i]);
+                        ipcClient.SendMessage(file);
                     }
                 }
-                ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 return;
             }
+
+            ExceptionLogger.Bind(); // bind before any visual objects are created
+            ExceptionLogger.ApplicationCrash += ExceptionLogger_ApplicationCrash;
+
 
             Paths.MakeAppSettingsFolder(); // ensure there is an application settings folder..
 
@@ -75,6 +76,7 @@ namespace ScriptNotepad
             {
                 new FormMain();
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+                ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
                 return;
             }
 
@@ -85,6 +87,7 @@ namespace ScriptNotepad
             Application.Run(new FormMain());
             PositionCore.UnBind(); // release the event handlers used by the PosLib and save the default data
             ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+            ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
         }
 
         // as the application is about to crash do some cleanup..

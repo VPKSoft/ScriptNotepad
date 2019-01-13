@@ -220,10 +220,10 @@ namespace ScriptNotepad.Database
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
         /// <param name="isHistory"> a value indicating whether this entry is a history entry.</param>
         /// <param name="ID">An unique identifier for the file.</param>
-        /// <returns>True if the operations was successful; otherwise false;</returns>
-        public static bool AddOrUpdateFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, int ID = -1)
+        /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
+        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, int ID = -1)
         {
-            return UpdateFile(AddFile(document, isHistory, sessionName, ID)) != null;
+            return UpdateFile(AddFile(document, isHistory, sessionName, ID));
         }
 
         /// <summary>
@@ -231,11 +231,11 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be added or updated into the database.</param>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
-        /// <returns>True if the operations was successful; otherwise false;</returns>
-        public static bool AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
+        /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
+        public static DBFILE_SAVE AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
         {
             fileSave.FILE_CONTENTS = TextToMemoryStream(document.Scintilla.Text);
-            return UpdateFile(AddFile(fileSave)) != null;
+            return UpdateFile(AddFile(fileSave));
         }
 
         /// <summary>

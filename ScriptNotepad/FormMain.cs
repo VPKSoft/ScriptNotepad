@@ -111,7 +111,7 @@ namespace ScriptNotepad
 
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Invoke(new MethodInvoker(delegate { sttcMain.AddDocument(e.Message, -1); }));
+            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message); }));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -213,6 +213,7 @@ namespace ScriptNotepad
         {
             foreach (ScintillaTabbedDocument document in sttcMain.Documents)
             {
+                ((DBFILE_SAVE)document.Tag).ISACTIVE = document.FileTabButton.IsActive;
                 Database.Database.AddOrUpdateFile((DBFILE_SAVE)document.Tag, document);
                 Database.Database.AddOrUpdateRecentFile(document.FileName, sessionName);
             }
@@ -223,14 +224,26 @@ namespace ScriptNotepad
         {
             IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(sessionName, history);
 
+            string activeDocument = string.Empty;
+
             foreach (DBFILE_SAVE file in files)
             {
+                if (file.ISACTIVE)
+                {
+                    activeDocument = file.FILENAME_FULL;
+                }
                 sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.FILE_CONTENTS);
                 if (sttcMain.LastAddedDocument != null)
                 {
                     sttcMain.LastAddedDocument.Tag = file;
                 }
             }
+
+            if (activeDocument != string.Empty)
+            {
+                //sttcMain.ActivateDocument(activeDocument);
+            }
+
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
@@ -254,7 +267,7 @@ namespace ScriptNotepad
                 if (File.Exists(args[i]))
                 {
                     // add the file to the document control..
-                    sttcMain.AddDocument(args[i], -1);
+                    OpenDocument(args[i]);
                 }
             }
         }
@@ -264,18 +277,40 @@ namespace ScriptNotepad
             throw new NotImplementedException();
         }
 
+        private bool OpenDocument(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                int val = sttcMain.LeftFileIndex;
+                if (sttcMain.AddDocument(fileName, -1))
+                {
+                    if (sttcMain.CurrentDocument != null)
+                    {
+                        Database.Database.AddOrUpdateRecentFile(fileName, CurrentSession);
+                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void mnuOpen_Click(object sender, EventArgs e)
         {
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
-                if (sttcMain.AddDocument(odAnyFile.FileName, -1))
-                {
-                    if (sttcMain.CurrentDocument != null)
-                    {
-                        Database.Database.AddOrUpdateRecentFile(odAnyFile.FileName, CurrentSession);
-                        Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
-                    }
-                }
+                OpenDocument(odAnyFile.FileName);
             }
         }
     }
