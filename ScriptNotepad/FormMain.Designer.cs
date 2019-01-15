@@ -33,10 +33,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            this.button1 = new System.Windows.Forms.Button();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
+            this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,21 +45,12 @@
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
-            this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
+            this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(3, 394);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 14);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tlpMain
             // 
@@ -73,7 +64,6 @@
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.Controls.Add(this.tsMain, 0, 0);
-            this.tlpMain.Controls.Add(this.button1, 0, 2);
             this.tlpMain.Controls.Add(this.sttcMain, 0, 1);
             this.tlpMain.Location = new System.Drawing.Point(12, 27);
             this.tlpMain.Name = "tlpMain";
@@ -105,11 +95,29 @@
             this.tsbNew.Text = "toolStripButton1";
             this.tsbNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
+            // sttcMain
+            // 
+            this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
+            this.sttcMain.CloseButtonImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.CloseButtonImage")));
+            this.tlpMain.SetColumnSpan(this.sttcMain, 6);
+            this.sttcMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sttcMain.LeftFileIndex = 0;
+            this.sttcMain.Location = new System.Drawing.Point(3, 28);
+            this.sttcMain.Name = "sttcMain";
+            this.sttcMain.NewFilenameStart = "new ";
+            this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
+            this.sttcMain.Size = new System.Drawing.Size(770, 360);
+            this.sttcMain.SuspendTextChangedEvents = false;
+            this.sttcMain.TabIndex = 2;
+            this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);
+            this.sttcMain.TabClosing += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosing(this.sttcMain_TabClosing);
+            // 
             // menuMain
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFile,
-            this.mnuSearch});
+            this.mnuSearch,
+            this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
             this.menuMain.Size = new System.Drawing.Size(800, 24);
@@ -130,7 +138,7 @@
             // 
             this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
             this.mnuNew.Name = "mnuNew";
-            this.mnuNew.Size = new System.Drawing.Size(112, 22);
+            this.mnuNew.Size = new System.Drawing.Size(180, 22);
             this.mnuNew.Text = "New";
             this.mnuNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
@@ -138,14 +146,14 @@
             // 
             this.mnuOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
             this.mnuOpen.Name = "mnuOpen";
-            this.mnuOpen.Size = new System.Drawing.Size(112, 22);
+            this.mnuOpen.Size = new System.Drawing.Size(180, 22);
             this.mnuOpen.Text = "Open...";
             this.mnuOpen.Click += new System.EventHandler(this.mnuOpen_Click);
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testToolStripMenuItem.Text = "test";
             this.testToolStripMenuItem.Visible = false;
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
@@ -165,18 +173,20 @@
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
-            // sttcMain
+            // mnuHelp
             // 
-            this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
-            this.tlpMain.SetColumnSpan(this.sttcMain, 6);
-            this.sttcMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sttcMain.LeftFileIndex = 0;
-            this.sttcMain.Location = new System.Drawing.Point(3, 28);
-            this.sttcMain.Name = "sttcMain";
-            this.sttcMain.NewFilenameStart = "new ";
-            this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
-            this.sttcMain.Size = new System.Drawing.Size(770, 360);
-            this.sttcMain.TabIndex = 2;
+            this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAbout});
+            this.mnuHelp.Name = "mnuHelp";
+            this.mnuHelp.Size = new System.Drawing.Size(44, 20);
+            this.mnuHelp.Text = "Help";
+            // 
+            // mnuAbout
+            // 
+            this.mnuAbout.Name = "mnuAbout";
+            this.mnuAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuAbout.Text = "About";
+            this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
             // FormMain
             // 
@@ -189,6 +199,7 @@
             this.MainMenuStrip = this.menuMain;
             this.Name = "FormMain";
             this.Text = "ScriptNotepad";
+            this.Activated += new System.EventHandler(this.FormMain_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.tlpMain.ResumeLayout(false);
@@ -203,7 +214,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.ToolStrip tsMain;
         private System.Windows.Forms.ToolStripButton tsbNew;
@@ -216,6 +226,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuOpen;
         private System.Windows.Forms.OpenFileDialog odAnyFile;
         private VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl sttcMain;
+        private System.Windows.Forms.ToolStripMenuItem mnuHelp;
+        private System.Windows.Forms.ToolStripMenuItem mnuAbout;
     }
 }
 

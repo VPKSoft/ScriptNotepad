@@ -73,7 +73,7 @@ namespace ScriptNotepad.Database
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         public static string GenUpdateFileSentence(ref DBFILE_SAVE fileSave)
         {
-            fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ? new FileInfo(fileSave.FILENAME_FULL).LastWriteTimeUtc : DateTime.MinValue;
+            fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ? new FileInfo(fileSave.FILENAME_FULL).LastWriteTime : DateTime.MinValue;
             fileSave.DB_MODIFIED = DateTime.Now;
             fileSave.EXISTS_INFILESYS = File.Exists(fileSave.FILENAME_FULL);
 

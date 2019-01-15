@@ -45,6 +45,7 @@ using VPKSoft.PosLib;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.Database;
 using VPKSoft.ScintillaTabbedTextControl;
+using ScriptNotepad.UtilityClasses;
 
 namespace ScriptNotepad
 {
@@ -65,6 +66,7 @@ namespace ScriptNotepad
             // Add this form to be positioned..
             PositionForms.Add(this, PositionCore.SizeChangeMode.MoveTopLeft);
 
+            // add positioning..
             PositionCore.Bind();
 
             InitializeComponent();
@@ -80,11 +82,13 @@ namespace ScriptNotepad
             // initialize the language/localization database..
             DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
 
-
+            // subscribe to the session ended event to save the documents without asking stupid questions..
             SystemEvents.SessionEnded += SystemEvents_SessionEnded;
 
+            // subscribe to the IPC event if the application receives a message from another instance of this application..
             IpcClientServer.RemoteMessage.MessageReceived += RemoteMessage_MessageReceived;
 
+            // create an IPC server at localhost, the port was randomized in the development phase..
             ipcServer.CreateServer("localhost", 50670);
 
             // run the script to keep the database up to date..
@@ -102,79 +106,68 @@ namespace ScriptNotepad
                     "A script error occurred on the database update|Something failed during running the database update script"));
             }
 
+            // initialize a connection to the SQLite database..
             Database.Database.InitConnection("Data Source=" + DBLangEngine.DataDir + "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;"); // PRAGMA synchronous=OFF;PRAGMA journal_mode=OFF
+
+            // localize the open file dialog..
             Localization.StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
 
+            // load the recent documents which were saved during the program close..
             LoadDocumentsFromDatabase(CurrentSession, false);
         }
 
+        /// <summary>
+        /// Checks if an open document has been changed in the file system and queries if the user wishes to reload it's contents from the file system.
+        /// </summary>
+        private void CheckFileSysChanges()
+        {
+            foreach (ScintillaTabbedDocument document in sttcMain.Documents)
+            {
+                if (File.Exists(document.FileName))
+                {
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+                    DateTime dtUpdated = new FileInfo(fileSave.FILENAME_FULL).LastWriteTime;
 
+
+                    if (fileSave.ShouldQueryDiskReload)
+                    {
+                        if (MessageBox.Show(
+                            DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happed", fileSave.FILENAME_FULL),
+                            DBLangEngine.GetMessage("msgFileArbitraryFileChange", "A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded"),
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question,
+                            MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                        {
+                            sttcMain.SuspendTextChangedEvents = true;
+                            fileSave.ReloadFromDisk(document);
+                            sttcMain.SuspendTextChangedEvents = false;
+                            document.Tag = fileSave;
+//                            OpenDocument(fileSave.FILENAME_FULL);
+                        }
+                        else
+                        {
+                            fileSave.ShouldQueryDiskReload = false;
+                        }
+                    }
+                    fileSave.DB_MODIFIED = dtUpdated;
+                }
+            }
+        }
+
+        // this event is raised when another instance of this application receives a file name
+        // via the IPC (no multiple instance allowed)..
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             Invoke(new MethodInvoker(delegate { OpenDocument(e.Message); }));
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-            IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(CurrentSession, false);
-
-            foreach (DBFILE_SAVE file in files)
-            {
-                MessageBox.Show(file.FILENAME_FULL);
-            }
-
-            return;
-
-            RECENT_FILES r = Database.Database.GetRecentFiles(CurrentSession).First();
-            Database.Database.UpdateRecentFile(r, CurrentSession);
-            return;
-
-
-            DBFILE_SAVE fileSave = Database.Database.AddFile(sttcMain.Documents[0], false, CurrentSession);
-            Database.Database.UpdateFile(fileSave);
-            return;
-
-            string text = sttcMain.Documents[0].Scintilla.Text;
-
-            List<string> lines = sttcMain.Documents[0].Scintilla.Lines.Select(f => f.Text).ToList();
-
-            //CSCodeDomeScriptRunnerText runner = new CSCodeDomeScriptRunnerText();
-            CSCodeDomeScriptRunnerLines runner = new CSCodeDomeScriptRunnerLines();
-            //            runner.ExecuteText(ref text);
-//            MessageBox.Show(runner.ExecuteText(text));
-            MessageBox.Show(runner.ExecuteLines(lines));
-
-
-
-            return;
-            
-
-            sttcMain.AddDocument(@"C:\Users\Petteri Kautonen\Documents\Visual Studio 2013\Projects\SunMoonCalendar\releasing.bat", -1);
-            sttcMain.AddDocument(@"C:\Users\Petteri Kautonen\Documents\Visual Studio 2013\Projects\ScriptNotepad\ScriptNotepad\DatabaseScript\script.sql_script", -1);
-                        sttcMain.AddDocument(@"C:\Users\Petteri Kautonen\Documents\Visual Studio 2013\Projects\ScriptNotepad\ScriptNotepad\UtilityClasses\CodeDomScriptRunner.cs", -1);
-                        sttcMain.AddDocument(@"C:\Users\Petteri Kautonen\Documents\Visual Studio 2013\Projects\ScriptNotepad\ScriptNotepad\FormMain.cs", -1);
-                        sttcMain.AddDocument(@"C:\Users\Petteri Kautonen\Documents\Visual Studio 2013\Projects\ScriptNotepad\ScriptNotepad\FormMain.Designer.cs", -1);
-                        sttcMain.AddDocument(@"C:\Users\Petteri Kautonen\Documents\Visual Studio 2013\Projects\ScriptNotepad\ScriptNotepad\Program.cs", -1);
-                        sttcMain.AddDocument(@"C:\Users\Petteri Kautonen\Documents\Visual Studio 2013\Projects\GIT\VPKSoft.VisualComponents\VideoBrowser.cs", -1);
-                        sttcMain.AddDocument(@"C:\Program Files (x86)\Notepad++\langs.model.xml", -1);
-                        sttcMain.AddDocument(@"F:\Source\SciTE\scintilla\lexers\LexCPP.cxx", -1);
-            sttcMain.AddDocument(@"C:\Files\GitHub\amp\Installer\setup_ampsharp.nsi", -1);
-//            ScintillaLexers.LexerColors.DescribeLexerColors(LexerType.Cs).Save(@"F:\colorTest.xml");
-            ScintillaLexers.LexerColors.LoadDescribedLexerColorsFromXml(@"F:\colorTest.xml", LexerType.Cs);
-
-            /*
-            Scintilla scintilla = new Scintilla();
-            */
-
-            
-        }
-
+        // a user wanted to create a new file..
         private void tsbNew_Click(object sender, EventArgs e)
         {
-            sttcMain.AddNewDocument();
+            NewDocument();
         }
 
+        // a user wanted to find or find and replace something of the active document..
         private void mnuFind_Click(object sender, EventArgs e)
         {
             if (sttcMain.CurrentDocument != null)
@@ -184,6 +177,7 @@ namespace ScriptNotepad
             }
         }
 
+        // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Printing printer = new Printing(sttcMain.Documents[0].Scintilla);
@@ -199,27 +193,43 @@ namespace ScriptNotepad
 
             //printer.Print();
             printer.PrintPreview();
-
         }
 
+        // if the form is closing, save the snapshots of the open documents to the SQLite database..
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
 
-            SaveDocumentsToDatabase(CurrentSession);
+            SaveDocumentsToDatabase(CurrentSession, true);
         }
 
-        private void SaveDocumentsToDatabase(string sessionName)
+        /// <summary>
+        /// Saves the active document snapshots in to the SQLite database.
+        /// </summary>
+        /// <param name="dispose">An indicator if the underlying MemoryStream should be disposed of.</param>
+        /// <param name="sessionName">A name of the session to which the documents should be tagged with.</param>
+        private void SaveDocumentsToDatabase(string sessionName, bool dispose)
         {
-            foreach (ScintillaTabbedDocument document in sttcMain.Documents)
+            for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
-                ((DBFILE_SAVE)document.Tag).ISACTIVE = document.FileTabButton.IsActive;
-                Database.Database.AddOrUpdateFile((DBFILE_SAVE)document.Tag, document);
-                Database.Database.AddOrUpdateRecentFile(document.FileName, sessionName);
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.Documents[i].Tag;
+                fileSave.ISACTIVE = sttcMain.Documents[i].FileTabButton.IsActive;
+                fileSave.VISIBILITY_ORDER = i;
+                Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
+                Database.Database.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName);
+
+                if (dispose)
+                {
+                    fileSave.DisposeMemoryStream();
+                }
             }
         }
 
-
+        /// <summary>
+        /// Loads the document snapshots from the SQLite database.
+        /// </summary>
+        /// <param name="sessionName">A name of the session to which the documents are tagged with.</param>
+        /// <param name="history">An indicator if the documents should be closed ones. I.e. not existing with the current session.</param>
         private void LoadDocumentsFromDatabase(string sessionName, bool history)
         {
             IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(sessionName, history);
@@ -241,14 +251,15 @@ namespace ScriptNotepad
 
             if (activeDocument != string.Empty)
             {
-                //sttcMain.ActivateDocument(activeDocument);
+                sttcMain.ActivateDocument(activeDocument);
             }
 
         }
 
+        // the form is shown..
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            // open the files given as arguments for the program..
+            // ..so open the files given as arguments for the program..
             OpenArgumentFiles();
         }
 
@@ -272,46 +283,182 @@ namespace ScriptNotepad
             }
         }
 
-        private static void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
+        // a user is logging of or the system is shutting down..
+        private void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
         {
-            throw new NotImplementedException();
+            // ..just no questions asked save the document snapshots into the SQLite database..
+            SaveDocumentsToDatabase(CurrentSession, true);
         }
 
-        private bool OpenDocument(string fileName)
+        /// <summary>
+        /// Adds a new document in to the view.
+        /// </summary>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        private bool NewDocument()
         {
-            if (File.Exists(fileName))
+            // a false would happen if the document (file) can not be accessed or required permissions to access a file
+            // would be missing (also a bug might occur)..
+            if (sttcMain.AddNewDocument())
             {
-                int val = sttcMain.LeftFileIndex;
-                if (sttcMain.AddDocument(fileName, -1))
+                if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                 {
-                    if (sttcMain.CurrentDocument != null)
-                    {
-                        Database.Database.AddOrUpdateRecentFile(fileName, CurrentSession);
-                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    sttcMain.CurrentDocument.Tag =
+                        new DBFILE_SAVE()
+                        {
+                            FILENAME = sttcMain.CurrentDocument.FileName,
+                            FILENAME_FULL = sttcMain.CurrentDocument.FileName,
+                            FILEPATH = string.Empty,
+                            FILE_CONTENTS = new MemoryStream()
+                        };
+
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                    // save the DBFILE_SAVE class instance to the Tag property..
+                    sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+                    return true;
                 }
                 else
                 {
+                    // fail with the current document being null..
                     return false;
                 }
             }
             else
             {
+                // fail with the ScintillaTabbedTextControl returning an error..
                 return false;
             }
         }
 
+        /// <summary>
+        /// Opens the document with a given file name into the view.
+        /// </summary>
+        /// <param name="fileName">Name of the file to load into the view.</param>
+        /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        private bool OpenDocument(string fileName, bool reloadContents = false) // TODO::!!
+        {
+            if (File.Exists(fileName))
+            {
+                // a false would happen if the document (file) can not be accessed or required permissions to access a file
+                // would be missing (also a bug might occur)..
+                if (sttcMain.AddDocument(fileName, -1)) 
+                {
+                    if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
+                    {
+                        if (sttcMain.CurrentDocument.Tag == null)
+                        {
+                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                        }
+                        DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                        // ..update the database with the document..
+                        Database.Database.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+
+                        if (reloadContents)
+                        {
+                            fileSave.ReloadFromDisk(sttcMain.CurrentDocument);
+                        }
+
+                        // save the DBFILE_SAVE class instance to the Tag property..
+                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                        return true;
+                    }
+                    else
+                    {
+                        // fail with the current document being null..
+                        return false;
+                    }
+                }
+                else
+                {
+                    // fail with the ScintillaTabbedTextControl returning an error..
+                    return false;
+                }
+            }
+            else
+            {
+                // fail as the file does not exist..
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Opens the document with a given DBFILE_SAVE document snapshot into the view.
+        /// </summary>
+        /// <param name="fileSave">An instance to a DBFILE_SAVE class containing a snapshot of the document's contents to be loaded into the view.</param>
+        /// <param name="document">An instance to a ScintillaTabbedDocument class for the tabbed document view control.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        private bool OpenDocument(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
+        {
+            if (File.Exists(fileSave.FILENAME_FULL))
+            {
+                // a false would happen if the document (file) can not be accessed or required permissions to access a file
+                // would be missing (also a bug might occur)..
+                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, -1))
+                {
+                    if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
+                    {
+                        // ..update the database with the document..
+                        Database.Database.AddOrUpdateFile(fileSave, document);
+
+                        // save the DBFILE_SAVE class instance to the Tag property..
+                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                        return true;
+                    }
+                    else
+                    {
+                        // fail with the current document being null..
+                        return false;
+                    }
+                }
+                else
+                {
+                    // fail with the ScintillaTabbedTextControl returning an error..
+                    return false;
+                }
+            }
+            else
+            {
+                // fail as the file does not exist..
+                return false;
+            }
+        }
+
+        // a user wanted to open a file via the main menu..
         private void mnuOpen_Click(object sender, EventArgs e)
         {
+            // if the file dialog was accepted (i.e. OK) then open the file to the view..
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
                 OpenDocument(odAnyFile.FileName);
             }
+        }
+
+        private void FormMain_Activated(object sender, EventArgs e)
+        {
+            CheckFileSysChanges();
+        }
+
+        private void sttcMain_TabClosing(object sender, TabClosingEventArgsExt e)
+        {
+            DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
+            fileSave.ISHISTORY = true;
+            Database.Database.AddOrUpdateFile(fileSave, e.ScintillaTabbedDocument);
+        }
+
+        // a user activated a tab (document) so display it's file name..
+        private void sttcMain_TabActivated(object sender, TabActivatedEventArgs e)
+        {
+            Text = 
+                DBLangEngine.GetMessage("msgAppTitleWithFileName", 
+                "ScriptNotepad [{0}]|As in the application name combined with an active file name",
+                e.ScintillaTabbedDocument.FileName);
+        }
+
+        private void mnuAbout_Click(object sender, EventArgs e)
+        {
+            new VPKSoft.About.FormAbout(this, "MIT", "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE");
         }
     }
 }

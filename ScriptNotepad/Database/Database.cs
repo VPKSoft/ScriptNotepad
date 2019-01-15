@@ -87,7 +87,9 @@ namespace ScriptNotepad.Database
             try
             {
                 // try to parse the given date time string to a DateTime value and return it..
-                return DateTime.ParseExact(value, "yyyy-MM-dd HH':'mm':'ss.fff", CultureInfo.InvariantCulture);
+                DateTime result = DateTime.ParseExact(value, "yyyy-MM-dd HH':'mm':'ss.fff", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
+
+                return result;
             }
             catch
             {
@@ -112,7 +114,9 @@ namespace ScriptNotepad.Database
             else
             {
                 // return a quoted string from the given the date and time value..
-                return QS(dateTime.ToString("yyyy-MM-dd HH':'mm':'ss.fff", CultureInfo.InvariantCulture));
+
+                string result = QS(dateTime.ToString("yyyy-MM-dd HH':'mm':'ss.fff", CultureInfo.InvariantCulture));
+                return result;
             }
         }
 
@@ -146,6 +150,10 @@ namespace ScriptNotepad.Database
                 long lastId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
 
                 string sql = DatabaseCommands.GenInsertFileSentence(fileSave);
+
+                fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ?
+                    new FileInfo(fileSave.FILENAME_FULL).LastWriteTime :
+                    DateTime.MinValue;
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(conn))
@@ -194,7 +202,7 @@ namespace ScriptNotepad.Database
                     FILENAME = Path.GetFileName(document.FileName),
                     FILEPATH = Path.GetDirectoryName(document.FileName),
                     FILESYS_MODIFIED = File.Exists(document.FileName) ?
-                        new FileInfo(document.FileName).LastWriteTimeUtc :
+                        new FileInfo(document.FileName).LastWriteTime :
                         DateTime.MinValue,
                     DB_MODIFIED = DateTime.Now,
                     LEXER_CODE = document.LexerType,
@@ -333,6 +341,10 @@ namespace ScriptNotepad.Database
             string sql = DatabaseCommands.GenUpdateFileSentence(ref fileSave);
             try
             {
+                fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ?
+                    new FileInfo(fileSave.FILENAME_FULL).LastWriteTime :
+                    DateTime.MinValue;
+
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(conn))
                 {

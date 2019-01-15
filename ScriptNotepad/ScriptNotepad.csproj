@@ -86,8 +86,8 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.3\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.0.5\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.0.6\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
