@@ -88,6 +88,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ScriptNotepad [{0}]|As in the application name combined with an active file name.
+        /// </summary>
+        internal static string msgAppTitleWithFileName {
+            get {
+                return ResourceManager.GetString("msgAppTitleWithFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assembly language source file|*.asm|A text in a file dialog indicating Assembly language source files.
         /// </summary>
         internal static string msgAssemblySourceFile {
@@ -138,6 +147,24 @@ namespace ScriptNotepad.Localization {
         internal static string msgCoffeeScriptLanguage {
             get {
                 return ResourceManager.GetString("msgCoffeeScriptLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ln: {0}  Col: {1}|As in the current column and the current line in a ScintillaNET control.
+        /// </summary>
+        internal static string msgColLine {
+            get {
+                return ResourceManager.GetString("msgColLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sel1: {0}|{1}  Sel2: {2}|{3}  Len: {4}|The selection start, end and length in a ScintillaNET control in columns, lines and character count.
+        /// </summary>
+        internal static string msgColLineSelection {
+            get {
+                return ResourceManager.GetString("msgColLineSelection", resourceCulture);
             }
         }
         
@@ -196,11 +223,47 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error|A message describing that some kind of error occurred..
+        /// </summary>
+        internal static string msgError {
+            get {
+                return ResourceManager.GetString("msgError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A script error occurred on the database update|Something failed during running the database update script.
+        /// </summary>
+        internal static string msgErrorInScript {
+            get {
+                return ResourceManager.GetString("msgErrorInScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to eXtensible Markup Language file|*.xml;*.xsml;*.xls;*.xsd;*.kml;*.wsdl;*.xlf;*.xliff|A text in a file dialog indicating eXtensible Markup Language files.
         /// </summary>
         internal static string msgeXtensibleMarkupLanguageFile {
             get {
                 return ResourceManager.GetString("msgeXtensibleMarkupLanguageFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded.
+        /// </summary>
+        internal static string msgFileArbitraryFileChange {
+            get {
+                return ResourceManager.GetString("msgFileArbitraryFileChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happed.
+        /// </summary>
+        internal static string msgFileHasChanged {
+            get {
+                return ResourceManager.GetString("msgFileHasChanged", resourceCulture);
             }
         }
         

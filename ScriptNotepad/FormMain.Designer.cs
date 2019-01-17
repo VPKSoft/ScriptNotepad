@@ -36,6 +36,10 @@
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbLinesColumnSelection = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,11 +48,12 @@
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
-            this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,6 +69,7 @@
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.Controls.Add(this.tsMain, 0, 0);
+            this.tlpMain.Controls.Add(this.statusStrip1, 0, 2);
             this.tlpMain.Controls.Add(this.sttcMain, 0, 1);
             this.tlpMain.Location = new System.Drawing.Point(12, 27);
             this.tlpMain.Name = "tlpMain";
@@ -95,11 +101,41 @@
             this.tsbNew.Text = "toolStripButton1";
             this.tsbNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
+            // statusStrip1
+            // 
+            this.tlpMain.SetColumnSpan(this.statusStrip1, 5);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ssLbLineColumn,
+            this.tsslLineCol,
+            this.ssLbLinesColumnSelection});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 391);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(776, 20);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // ssLbLineColumn
+            // 
+            this.ssLbLineColumn.Name = "ssLbLineColumn";
+            this.ssLbLineColumn.Size = new System.Drawing.Size(77, 15);
+            this.ssLbLineColumn.Text = "Line: 1  Col: 1";
+            // 
+            // tsslLineCol
+            // 
+            this.tsslLineCol.Name = "tsslLineCol";
+            this.tsslLineCol.Size = new System.Drawing.Size(0, 15);
+            // 
+            // ssLbLinesColumnSelection
+            // 
+            this.ssLbLinesColumnSelection.Name = "ssLbLinesColumnSelection";
+            this.ssLbLinesColumnSelection.Size = new System.Drawing.Size(134, 15);
+            this.ssLbLinesColumnSelection.Text = "Sel1: 1|1  Sel2: 1|1  Len: 0";
+            // 
             // sttcMain
             // 
             this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
             this.sttcMain.CloseButtonImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.CloseButtonImage")));
-            this.tlpMain.SetColumnSpan(this.sttcMain, 6);
+            this.tlpMain.SetColumnSpan(this.sttcMain, 5);
             this.sttcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sttcMain.LeftFileIndex = 0;
             this.sttcMain.Location = new System.Drawing.Point(3, 28);
@@ -108,9 +144,11 @@
             this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
             this.sttcMain.Size = new System.Drawing.Size(770, 360);
             this.sttcMain.SuspendTextChangedEvents = false;
-            this.sttcMain.TabIndex = 2;
+            this.sttcMain.TabIndex = 4;
             this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);
             this.sttcMain.TabClosing += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosing(this.sttcMain_TabClosing);
+            this.sttcMain.CaretPositionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnCaretPositionChanged(this.sttcMain_SelectionCaretChanged);
+            this.sttcMain.SelectionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnSelectionChanged(this.sttcMain_SelectionCaretChanged);
             // 
             // menuMain
             // 
@@ -138,7 +176,7 @@
             // 
             this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
             this.mnuNew.Name = "mnuNew";
-            this.mnuNew.Size = new System.Drawing.Size(180, 22);
+            this.mnuNew.Size = new System.Drawing.Size(112, 22);
             this.mnuNew.Text = "New";
             this.mnuNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
@@ -146,14 +184,14 @@
             // 
             this.mnuOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
             this.mnuOpen.Name = "mnuOpen";
-            this.mnuOpen.Size = new System.Drawing.Size(180, 22);
+            this.mnuOpen.Size = new System.Drawing.Size(112, 22);
             this.mnuOpen.Text = "Open...";
             this.mnuOpen.Click += new System.EventHandler(this.mnuOpen_Click);
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.testToolStripMenuItem.Text = "test";
             this.testToolStripMenuItem.Visible = false;
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
@@ -184,7 +222,7 @@
             // mnuAbout
             // 
             this.mnuAbout.Name = "mnuAbout";
-            this.mnuAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
@@ -206,6 +244,8 @@
             this.tlpMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
             this.ResumeLayout(false);
@@ -225,9 +265,13 @@
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuOpen;
         private System.Windows.Forms.OpenFileDialog odAnyFile;
-        private VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl sttcMain;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         private System.Windows.Forms.ToolStripMenuItem mnuAbout;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbLineColumn;
+        private VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl sttcMain;
+        private System.Windows.Forms.ToolStripStatusLabel tsslLineCol;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbLinesColumnSelection;
     }
 }
 

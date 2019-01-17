@@ -142,7 +142,7 @@ namespace ScriptNotepad
                             fileSave.ReloadFromDisk(document);
                             sttcMain.SuspendTextChangedEvents = false;
                             document.Tag = fileSave;
-//                            OpenDocument(fileSave.FILENAME_FULL);
+                            //                            OpenDocument(fileSave.FILENAME_FULL);
                         }
                         else
                         {
@@ -342,7 +342,7 @@ namespace ScriptNotepad
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileName, -1)) 
+                if (sttcMain.AddDocument(fileName, -1))
                 {
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
@@ -450,15 +450,37 @@ namespace ScriptNotepad
         // a user activated a tab (document) so display it's file name..
         private void sttcMain_TabActivated(object sender, TabActivatedEventArgs e)
         {
-            Text = 
-                DBLangEngine.GetMessage("msgAppTitleWithFileName", 
+            Text =
+                DBLangEngine.GetMessage("msgAppTitleWithFileName",
                 "ScriptNotepad [{0}]|As in the application name combined with an active file name",
                 e.ScintillaTabbedDocument.FileName);
+
+            SetStatusStringText(e.ScintillaTabbedDocument);
         }
 
         private void mnuAbout_Click(object sender, EventArgs e)
         {
             new VPKSoft.About.FormAbout(this, "MIT", "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE");
+        }
+
+        private void sttcMain_SelectionCaretChanged(object sender, ScintillaTabbedDocumentEventArgsExt e)
+        {
+            SetStatusStringText(e.ScintillaTabbedDocument);
+        }
+
+        private void SetStatusStringText(ScintillaTabbedDocument document)
+        {
+            ssLbLineColumn.Text =
+                DBLangEngine.GetMessage("msgColLine", "Line: {0}  Col: {1}|As in the current column and the current line in a ScintillaNET control",
+                document.LineNumber + 1, document.Column + 1);
+
+            ssLbLinesColumnSelection.Text =
+                DBLangEngine.GetMessage("msgColLineSelection", "Sel1: {0}|{1}  Sel2: {2}|{3}  Len: {4}|The selection start, end and length in a ScintillaNET control in columns, lines and character count",
+                document.SelectionStartLine + 1,
+                document.SelectionStartColumn + 1,
+                document.SelectionEndLine + 1,
+                document.SelectionEndColumn + 1,
+                document.SelectionLength);
         }
     }
 }

@@ -276,4 +276,25 @@
   <data name="msgYAMLFile" xml:space="preserve">
     <value>YAML Ain't a Markup Language file|*.yml|A text in a file dialog indicating YAML Ain't a Markup Language files</value>
   </data>
+  <data name="msgColLine" xml:space="preserve">
+    <value>Ln: {0}  Col: {1}|As in the current column and the current line in a ScintillaNET control</value>
+  </data>
+  <data name="msgColLineSelection" xml:space="preserve">
+    <value>Sel1: {0}|{1}  Sel2: {2}|{3}  Len: {4}|The selection start, end and length in a ScintillaNET control in columns, lines and character count</value>
+  </data>
+  <data name="msgAppTitleWithFileName" xml:space="preserve">
+    <value>ScriptNotepad [{0}]|As in the application name combined with an active file name</value>
+  </data>
+  <data name="msgError" xml:space="preserve">
+    <value>Error|A message describing that some kind of error occurred.</value>
+  </data>
+  <data name="msgErrorInScript" xml:space="preserve">
+    <value>A script error occurred on the database update|Something failed during running the database update script</value>
+  </data>
+  <data name="msgFileArbitraryFileChange" xml:space="preserve">
+    <value>A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded</value>
+  </data>
+  <data name="msgFileHasChanged" xml:space="preserve">
+    <value>The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happed</value>
+  </data>
 </root>
