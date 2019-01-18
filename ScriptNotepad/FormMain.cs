@@ -42,21 +42,27 @@ using VPKSoft.ScintillaLexers;
 using VPKSoft.IPC;
 using Microsoft.Win32;
 using VPKSoft.PosLib;
+using VPKSoft.ErrorLogger;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.Database;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses;
+using ScriptNotepad.UtilityClasses.StreamHelpers;
 
 namespace ScriptNotepad
 {
     public partial class FormMain : DBLangEngineWinforms
     {
+        #region PrivateFields
         private FindReplace findReplace = new FindReplace();
-
         IpcClientServer ipcServer = new IpcClientServer();
+        #endregion
 
+        #region PrivateProperties
         private string CurrentSession { get; set; } = "Default";
+        #endregion
 
+        #region MassiveConstructor
         /// <summary>
         /// Initializes a new instance of the <see cref="FormMain"/> class.
         /// </summary>
@@ -115,6 +121,8 @@ namespace ScriptNotepad
             // load the recent documents which were saved during the program close..
             LoadDocumentsFromDatabase(CurrentSession, false);
         }
+        #endregion
+
 
         /// <summary>
         /// Checks if an open document has been changed in the file system and queries if the user wishes to reload it's contents from the file system.
@@ -123,12 +131,15 @@ namespace ScriptNotepad
         {
             foreach (ScintillaTabbedDocument document in sttcMain.Documents)
             {
+                // check if the file exists because it cannot be reloaded otherwise 
+                // from the file system..
                 if (File.Exists(document.FileName))
                 {
+                    // get the DBFILE_SAVE class instance from the document's tag..
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
-                    DateTime dtUpdated = new FileInfo(fileSave.FILENAME_FULL).LastWriteTime;
 
-
+                    // query the user if one wishes to reload
+                    // the changed file from the disk..
                     if (fileSave.ShouldQueryDiskReload)
                     {
                         if (MessageBox.Show(
@@ -138,49 +149,38 @@ namespace ScriptNotepad
                             MessageBoxIcon.Question,
                             MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                         {
-                            sttcMain.SuspendTextChangedEvents = true;
-                            fileSave.ReloadFromDisk(document);
-                            sttcMain.SuspendTextChangedEvents = false;
+                            // the user answered yes..
+                            sttcMain.SuspendTextChangedEvents = true; // suspend the changed events on the ScintillaTabbedTextControl..
+                            fileSave.ReloadFromDisk(document); // reload the file..
+                            sttcMain.SuspendTextChangedEvents = false; // resume the changed events on the ScintillaTabbedTextControl..
+
+                            // just in case set the tag back..
                             document.Tag = fileSave;
-                            //                            OpenDocument(fileSave.FILENAME_FULL);
+
+                            // bring the form to the front..
+                            BringToFront(); 
                         }
-                        else
+                        else // the user doesn't want to load the changes made to the document from the file system..
                         {
+                            // indicate that the query shouldn't happen again..
                             fileSave.ShouldQueryDiskReload = false;
+
+                            // set the flag that the file's modified date in the database
+                            // has been changed as the user didn't wish to reload the file from the file system: FS != DB..
+                            fileSave.DB_MODIFIED = DateTime.Now;
                         }
                     }
-                    fileSave.DB_MODIFIED = dtUpdated;
                 }
             }
         }
 
-        // this event is raised when another instance of this application receives a file name
-        // via the IPC (no multiple instance allowed)..
-        private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
-        {
-            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message); }));
-        }
 
-        // a user wanted to create a new file..
-        private void tsbNew_Click(object sender, EventArgs e)
-        {
-            NewDocument();
-        }
-
-        // a user wanted to find or find and replace something of the active document..
-        private void mnuFind_Click(object sender, EventArgs e)
-        {
-            if (sttcMain.CurrentDocument != null)
-            {
-                findReplace.Scintilla = sttcMain.CurrentDocument.Scintilla;
-                findReplace.ShowFind();
-            }
-        }
 
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Printing printer = new Printing(sttcMain.Documents[0].Scintilla);
+
 
 
 
@@ -193,14 +193,6 @@ namespace ScriptNotepad
 
             //printer.Print();
             printer.PrintPreview();
-        }
-
-        // if the form is closing, save the snapshots of the open documents to the SQLite database..
-        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
-
-            SaveDocumentsToDatabase(CurrentSession, true);
         }
 
         /// <summary>
@@ -256,13 +248,6 @@ namespace ScriptNotepad
 
         }
 
-        // the form is shown..
-        private void FormMain_Shown(object sender, EventArgs e)
-        {
-            // ..so open the files given as arguments for the program..
-            OpenArgumentFiles();
-        }
-
         /// <summary>
         /// Opens files given as arguments for the software.
         /// </summary>
@@ -281,13 +266,6 @@ namespace ScriptNotepad
                     OpenDocument(args[i]);
                 }
             }
-        }
-
-        // a user is logging of or the system is shutting down..
-        private void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
-        {
-            // ..just no questions asked save the document snapshots into the SQLite database..
-            SaveDocumentsToDatabase(CurrentSession, true);
         }
 
         /// <summary>
@@ -425,6 +403,116 @@ namespace ScriptNotepad
             }
         }
 
+        /// <summary>
+        /// Saves the document in to the file system.
+        /// </summary>
+        /// <param name="document">The document to be saved.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        private bool SaveDocument(ScintillaTabbedDocument document)
+        {
+            try
+            {
+                // check that the given parameter is valid..
+                if (document != null && document.Tag != null)
+                {
+                    // get the DBFILE_SAVE class instance from the document's tag..
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+
+                    // set the contents to match the document's text..
+                    fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text);
+
+                    // only an existing file can be saved directly..
+                    if (fileSave.EXISTS_INFILESYS)
+                    {
+                        // write the new contents of a file to the existing file overriding it's contents..
+                        using (FileStream fileStream = new FileStream(fileSave.FILENAME_FULL, FileMode.Create, FileAccess.Write))
+                        {
+                            fileSave.FILE_CONTENTS.Position = 0; // position the stream..
+                            fileSave.FILE_CONTENTS.WriteTo(fileStream); // write the contents of the stream to the file..
+                        }
+
+                        // update the file system modified time stamp so the software doesn't ask if the file should
+                        // be reloaded from the file system..
+                        fileSave.FILESYS_MODIFIED = new FileInfo(fileSave.FILENAME_FULL).LastWriteTime;
+                    }
+                    else
+                    {
+                        // TODO::new files..
+                        return false;
+                    }
+
+                    // indicate success..
+                    return true;
+                }
+                else
+                {
+                    // the given parameter was invalid so fail..
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex);
+
+                // an exception occurred so fail..
+                return false;
+            }
+        }
+
+        #region InternalEvents
+        // this event is raised when another instance of this application receives a file name
+        // via the IPC (no multiple instance allowed)..
+        private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message); }));
+        }
+
+        // a user wanted to create a new file..
+        private void tsbNew_Click(object sender, EventArgs e)
+        {
+            NewDocument();
+        }
+
+        // a user wanted to find or find and replace something of the active document..
+        private void mnuFind_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                findReplace.Scintilla = sttcMain.CurrentDocument.Scintilla;
+                findReplace.ShowFind();
+            }
+        }
+
+        // if the form is closing, save the snapshots of the open documents to the SQLite database..
+        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
+
+            SaveDocumentsToDatabase(CurrentSession, true);
+        }
+
+        // a user is logging of or the system is shutting down..
+        private void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
+        {
+            // ..just no questions asked save the document snapshots into the SQLite database..
+            SaveDocumentsToDatabase(CurrentSession, true);
+        }
+
+        // the form is shown..
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            // ..so open the files given as arguments for the program..
+            OpenArgumentFiles();
+        }
+
+        // a user decided to save the file..
+        private void munSave_Click(object sender, EventArgs e)
+        {
+            // ..so lets obey for once..
+            SaveDocument(sttcMain.CurrentDocument);
+        }
+
         // a user wanted to open a file via the main menu..
         private void mnuOpen_Click(object sender, EventArgs e)
         {
@@ -455,6 +543,11 @@ namespace ScriptNotepad
                 "ScriptNotepad [{0}]|As in the application name combined with an active file name",
                 e.ScintillaTabbedDocument.FileName);
 
+            ssLbLDocLinesSize.Text =
+                DBLangEngine.GetMessage("msgDocSizeLines", "length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters",
+                e.ScintillaTabbedDocument.Scintilla.Text.Length,
+                e.ScintillaTabbedDocument.Scintilla.Lines.Count);
+
             SetStatusStringText(e.ScintillaTabbedDocument);
         }
 
@@ -482,5 +575,13 @@ namespace ScriptNotepad
                 document.SelectionEndColumn + 1,
                 document.SelectionLength);
         }
+
+        private void sttcMain_DocumentTextChanged(object sender, ScintillaTextChangedEventArgs e)
+        {
+            DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
+            fileSave.DisposeMemoryStream();
+            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(e.ScintillaTabbedDocument.Scintilla.Text);
+        }
+        #endregion
     }
 }

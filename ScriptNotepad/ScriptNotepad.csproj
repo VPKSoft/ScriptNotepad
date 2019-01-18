@@ -119,6 +119,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseScript\ScriptRunner.cs" />
     <Compile Include="UtilityClasses\IpcClientServer.cs" />
+    <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -175,10 +176,12 @@
     </Content>
     <None Include="Resources\folder-database.png" />
     <None Include="Resources\folder-page.png" />
+    <Content Include="Localization\Notepad++LanguageNames.txt" />
     <Content Include="Resources\Clock.ico" />
     <Content Include="Resources\Clock.png" />
     <Content Include="Resources\DownButton.png" />
     <Content Include="Resources\Highlighter.png" />
+    <None Include="Resources\Save.png" />
     <Content Include="Resources\UpButton.png" />
     <Content Include="Resources\XToCloseButton.png" />
     <Content Include="VPKSoft.ico" />

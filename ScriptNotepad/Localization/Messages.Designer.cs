@@ -214,6 +214,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters.
+        /// </summary>
+        internal static string msgDocSizeLines {
+            get {
+                return ResourceManager.GetString("msgDocSizeLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to D programming language|*.d|A text in a file dialog indicating D programming language files.
         /// </summary>
         internal static string msgDSourceFile {

@@ -40,12 +40,14 @@
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbLinesColumnSelection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbLDocLinesSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.munSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,7 +109,8 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ssLbLineColumn,
             this.tsslLineCol,
-            this.ssLbLinesColumnSelection});
+            this.ssLbLinesColumnSelection,
+            this.ssLbLDocLinesSize});
             this.statusStrip1.Location = new System.Drawing.Point(0, 391);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(776, 20);
@@ -131,6 +134,12 @@
             this.ssLbLinesColumnSelection.Size = new System.Drawing.Size(134, 15);
             this.ssLbLinesColumnSelection.Text = "Sel1: 1|1  Sel2: 1|1  Len: 0";
             // 
+            // ssLbLDocLinesSize
+            // 
+            this.ssLbLDocLinesSize.Name = "ssLbLDocLinesSize";
+            this.ssLbLDocLinesSize.Size = new System.Drawing.Size(92, 15);
+            this.ssLbLDocLinesSize.Text = "length: 0 lines: 0";
+            // 
             // sttcMain
             // 
             this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
@@ -149,6 +158,7 @@
             this.sttcMain.TabClosing += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosing(this.sttcMain_TabClosing);
             this.sttcMain.CaretPositionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnCaretPositionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.SelectionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnSelectionChanged(this.sttcMain_SelectionCaretChanged);
+            this.sttcMain.DocumentTextChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnDocumentTextChanged(this.sttcMain_DocumentTextChanged);
             // 
             // menuMain
             // 
@@ -167,7 +177,8 @@
             this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuNew,
             this.mnuOpen,
-            this.testToolStripMenuItem});
+            this.testToolStripMenuItem,
+            this.munSave});
             this.mnuFile.Name = "mnuFile";
             this.mnuFile.Size = new System.Drawing.Size(37, 20);
             this.mnuFile.Text = "File";
@@ -195,6 +206,14 @@
             this.testToolStripMenuItem.Text = "test";
             this.testToolStripMenuItem.Visible = false;
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // munSave
+            // 
+            this.munSave.Image = global::ScriptNotepad.Properties.Resources.Save;
+            this.munSave.Name = "munSave";
+            this.munSave.Size = new System.Drawing.Size(112, 22);
+            this.munSave.Text = "Save";
+            this.munSave.Click += new System.EventHandler(this.munSave_Click);
             // 
             // mnuSearch
             // 
@@ -272,6 +291,8 @@
         private VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl sttcMain;
         private System.Windows.Forms.ToolStripStatusLabel tsslLineCol;
         private System.Windows.Forms.ToolStripStatusLabel ssLbLinesColumnSelection;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbLDocLinesSize;
+        private System.Windows.Forms.ToolStripMenuItem munSave;
     }
 }
 

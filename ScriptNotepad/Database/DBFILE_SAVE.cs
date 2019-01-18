@@ -24,10 +24,13 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses;
 using System;
 using System.IO;
+using System.Text;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
+using ScriptNotepad.UtilityClasses.StreamHelpers;
 
 namespace ScriptNotepad.Database
 {
@@ -129,12 +132,12 @@ namespace ScriptNotepad.Database
         {
             try
             {
-                // dispose of the previous file contents..
-                DisposeMemoryStream();
-
                 // can't reload what doesn't exist..
                 if (File.Exists(FILENAME_FULL))
                 {
+                    // dispose of the previous file contents..
+                    DisposeMemoryStream();
+
                     // read the file contents from the file..
                     using (FileStream fileStream = new FileStream(FILENAME_FULL, FileMode.Open, FileAccess.Read))
                     {
@@ -145,19 +148,15 @@ namespace ScriptNotepad.Database
                         // read the file contents to the buffer..
                         fileStream.Read(fileContents, 0, (int)fileStream.Length);
 
-                        // create a new memory stream to hold the file contents..
-                        FILE_CONTENTS = new MemoryStream(fileContents);
-
                         // set the file system's modified flag..
                         FILESYS_MODIFIED = new FileInfo(FILENAME_FULL).LastWriteTime;
 
-                        // read the file's contents to the ScintillaNET control..
-                        using (StreamReader streamReader = new StreamReader(FILE_CONTENTS))
-                        {
-                            FILE_CONTENTS.Position = 0; // position the stream..
-                            document.Scintilla.Text = streamReader.ReadToEnd(); // read all to the Scintilla..
-                            FILE_CONTENTS.Position = 0; // reposition the stream..
-                        }
+                        // create a new memory stream to hold the file contents..
+                        MemoryStream memoryStream = new MemoryStream(fileContents); 
+
+                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(ref memoryStream);
+
+                        FILE_CONTENTS = memoryStream;
                     }
                     return true; // success..
                 }

@@ -36,6 +36,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
+using ScriptNotepad.UtilityClasses.StreamHelpers;
 
 namespace ScriptNotepad.Database
 {
@@ -121,23 +122,6 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
-        /// Saves a given text to a MemoryStream.
-        /// </summary>
-        /// <param name="text">The text to be saved to a MemoryStream.</param>
-        /// <returns>An instance to a MemoryStream class containing the given text.</returns>
-        public static MemoryStream TextToMemoryStream(string text)
-        {
-            MemoryStream ms = new MemoryStream();
-            using (StreamWriter sw = new StreamWriter(ms))
-            {
-                sw.Write(text.ToArray());
-                sw.Flush();
-                ms.Position = 0;
-            }
-            return ms;
-        }
-
-        /// <summary>
         /// Adds a given DBFILE_SAVE class instance into the database cache.
         /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
         /// </summary>
@@ -206,7 +190,7 @@ namespace ScriptNotepad.Database
                         DateTime.MinValue,
                     DB_MODIFIED = DateTime.Now,
                     LEXER_CODE = document.LexerType,
-                    FILE_CONTENTS = TextToMemoryStream(document.Scintilla.Text),
+                    FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text),
                     VISIBILITY_ORDER = (int)document.FileTabButton.Tag,
                     SESSIONNAME = sessionName,
                     ISACTIVE = document.FileTabButton.IsActive
@@ -242,7 +226,7 @@ namespace ScriptNotepad.Database
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
         public static DBFILE_SAVE AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
         {
-            fileSave.FILE_CONTENTS = TextToMemoryStream(document.Scintilla.Text);
+            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text);
             return UpdateFile(AddFile(fileSave));
         }
 

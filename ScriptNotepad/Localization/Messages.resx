@@ -297,4 +297,7 @@
   <data name="msgFileHasChanged" xml:space="preserve">
     <value>The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happed</value>
   </data>
+  <data name="msgDocSizeLines" xml:space="preserve">
+    <value>length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters</value>
+  </data>
 </root>
