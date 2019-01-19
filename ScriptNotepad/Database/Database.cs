@@ -473,6 +473,7 @@ namespace ScriptNotepad.Database
                             // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
                             // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
                             // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
+                            // FILESYS_SAVED: 14
                             result.Add(
                                 new DBFILE_SAVE()
                                 {
@@ -489,7 +490,8 @@ namespace ScriptNotepad.Database
                                     SESSIONID = reader.GetInt32(10),
                                     ISACTIVE = reader.GetInt32(11) == 1,
                                     ISHISTORY = reader.GetInt32(12) == 1,
-                                    SESSIONNAME = reader.GetString(13)
+                                    SESSIONNAME = reader.GetString(13),
+                                    FILESYS_SAVED = DateFromDBString(reader.GetString(14))
                                 });
                         }
                         catch (Exception ex)

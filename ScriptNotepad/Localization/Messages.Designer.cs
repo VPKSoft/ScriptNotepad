@@ -430,6 +430,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open|A title for a open file dialog.
+        /// </summary>
+        internal static string msgOpenFile {
+            get {
+                return ResourceManager.GetString("msgOpenFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pascal source file|*.pas|A text in a file dialog indicating Pascal source files.
         /// </summary>
         internal static string msgPascalSourceFile {
@@ -498,6 +507,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgRubyFile {
             get {
                 return ResourceManager.GetString("msgRubyFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save As|A title for a save file as dialog.
+        /// </summary>
+        internal static string msgSaveFileAs {
+            get {
+                return ResourceManager.GetString("msgSaveFileAs", resourceCulture);
             }
         }
         

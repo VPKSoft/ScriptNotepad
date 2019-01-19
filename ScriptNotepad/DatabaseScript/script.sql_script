@@ -106,3 +106,40 @@ CREATE TABLE IF NOT EXISTS SESSION_NAME -- a table to save session names to the 
 
 INSERT INTO SESSION_NAME(SESSIONNAME) VALUES('Default'); -- insert the default session in to the database..
 --ENDVER 4
+
+--VER 5
+ALTER TABLE DBFILE_SAVE RENAME TO DBFILE_SAVE_OLD;
+CREATE TABLE IF NOT EXISTS DBFILE_SAVE
+(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  EXISTS_INFILESYS INTEGER NOT NULL, -- an indicator if the file exists in the file system..
+  FILENAME_FULL TEXT NOT NULL, -- the full file name with path..
+  FILENAME TEXT NOT NULL, -- the file name without path..
+  FILEPATH TEXT NOT NULL, -- the full path for the file..
+  FILESYS_MODIFIED TEXT NOT NULL, -- when the file was modified in the file system, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  FILESYS_SAVED TEXT NOT NULL, -- when the file was saved to file system by the software, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  DB_MODIFIED TEXT NOT NULL, -- when the file was modified in the database, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  LEXER_CODE INTEGER NOT NULL, -- a lexer number with the ScintillaNET.. 
+  FILE_CONTENTS BLOB NOT NULL, -- the file contents..
+  VISIBILITY_ORDER INTEGER NOT NULL, -- the index of the file in a tabbed control..
+  ISACTIVE INTEGER NOT NULL, -- an indicator if the file is activated in the tab control..
+  SESSIONID INTEGER NOT NULL, -- an id for a session of the file..
+  ISHISTORY INTEGER NOT NULL -- an indicator if the file is a history entry..
+);
+
+INSERT INTO DBFILE_SAVE 
+(ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, FILESYS_SAVED, 
+DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, SESSIONID, ISHISTORY)
+SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, '0000-00-00 00:00:00.000', 
+DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, SESSIONID, ISHISTORY FROM DBFILE_SAVE_OLD;
+
+DROP TABLE DBFILE_SAVE_OLD;
+--ENDVER 5
+
+--VER 6
+UPDATE DBFILE_SAVE SET FILESYS_SAVED = FILESYS_MODIFIED WHERE EXISTS_INFILESYS = 1;
+--ENDVER 6
+
+--VER 7
+UPDATE DBFILE_SAVE SET DB_MODIFIED = FILESYS_MODIFIED WHERE EXISTS_INFILESYS = 1;
+--ENDVER 7 

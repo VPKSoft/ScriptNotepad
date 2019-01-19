@@ -88,7 +88,7 @@ namespace ScriptNotepad
                                 };
 
                                 // and lines to the block, until a line like '--ENDVER n' is found..
-                                while (!(line = sr.ReadLine()).EndsWith("--ENDVER " + DBVer))
+                                while (!(line = sr.ReadLine()).StartsWith("--ENDVER " + DBVer))
                                 {
                                     // add the lines to the DBScriptBlock class instance..
                                     scriptBlock.SQLBlock.Add(line);

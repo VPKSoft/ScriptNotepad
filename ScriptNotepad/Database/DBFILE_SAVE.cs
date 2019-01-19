@@ -70,6 +70,11 @@ namespace ScriptNotepad.Database
         public DateTime FILESYS_MODIFIED { get; set; } = DateTime.MinValue;
 
         /// <summary>
+        /// Gets or sets the value indicating when the file was saved to the file system by the software.
+        /// </summary>
+        public DateTime FILESYS_SAVED { get; set; } = DateTime.MinValue;
+
+        /// <summary>
         /// Gets or sets the value indicating when the file was modified in the database.
         /// </summary>
         public DateTime DB_MODIFIED { get; set; } = DateTime.MinValue;
@@ -150,6 +155,8 @@ namespace ScriptNotepad.Database
 
                         // set the file system's modified flag..
                         FILESYS_MODIFIED = new FileInfo(FILENAME_FULL).LastWriteTime;
+                        DB_MODIFIED = FILESYS_MODIFIED; // set the other DateTime flags to indicate the same..
+                        FILESYS_SAVED = FILESYS_MODIFIED; // set the other DateTime flags to indicate the same..
 
                         // create a new memory stream to hold the file contents..
                         MemoryStream memoryStream = new MemoryStream(fileContents); 
@@ -174,7 +181,13 @@ namespace ScriptNotepad.Database
         // a value indicating if the user want's to reload the changes from the file system if the file has been changed..
         private bool _ShouldQueryDiskReload = true;
 
-        private static bool DateTimeLarger(DateTime dt1, DateTime dt2)
+        /// <summary>
+        /// Compares two DateTime values <paramref name="dt1"/> > <paramref name="dt2"/>.
+        /// </summary>
+        /// <param name="dt1">The first DateTime to compare.</param>
+        /// <param name="dt2">The second DateTime to compare.</param>
+        /// <returns>True if the <paramref name="dt1"/> is larger than <paramref name="dt2"/> value; otherwise false.</returns>
+        public static bool DateTimeLarger(DateTime dt1, DateTime dt2)
         {
             string s1 = Database.DateToDBString(dt1);
             string s2 = Database.DateToDBString(dt2);

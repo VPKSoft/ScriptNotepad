@@ -300,4 +300,10 @@
   <data name="msgDocSizeLines" xml:space="preserve">
     <value>length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters</value>
   </data>
+  <data name="msgOpenFile" xml:space="preserve">
+    <value>Open|A title for a open file dialog</value>
+  </data>
+  <data name="msgSaveFileAs" xml:space="preserve">
+    <value>Save As|A title for a save file as dialog</value>
+  </data>
 </root>

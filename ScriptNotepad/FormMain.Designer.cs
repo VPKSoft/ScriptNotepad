@@ -48,11 +48,16 @@
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.munSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
+            this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
+            this.tsbSave = new System.Windows.Forms.ToolStripButton();
+            this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
+            this.tsbOpen = new System.Windows.Forms.ToolStripButton();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -86,7 +91,10 @@
             // 
             this.tlpMain.SetColumnSpan(this.tsMain, 6);
             this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbNew});
+            this.tsbNew,
+            this.tsbOpen,
+            this.tsbSave,
+            this.tsbSaveAs});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(776, 25);
@@ -100,7 +108,7 @@
             this.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbNew.Name = "tsbNew";
             this.tsbNew.Size = new System.Drawing.Size(23, 22);
-            this.tsbNew.Text = "toolStripButton1";
+            this.tsbNew.Text = "New";
             this.tsbNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
             // statusStrip1
@@ -178,7 +186,8 @@
             this.mnuNew,
             this.mnuOpen,
             this.testToolStripMenuItem,
-            this.munSave});
+            this.munSave,
+            this.mnuSaveAs});
             this.mnuFile.Name = "mnuFile";
             this.mnuFile.Size = new System.Drawing.Size(37, 20);
             this.mnuFile.Text = "File";
@@ -187,7 +196,7 @@
             // 
             this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
             this.mnuNew.Name = "mnuNew";
-            this.mnuNew.Size = new System.Drawing.Size(112, 22);
+            this.mnuNew.Size = new System.Drawing.Size(180, 22);
             this.mnuNew.Text = "New";
             this.mnuNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
@@ -195,14 +204,14 @@
             // 
             this.mnuOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
             this.mnuOpen.Name = "mnuOpen";
-            this.mnuOpen.Size = new System.Drawing.Size(112, 22);
+            this.mnuOpen.Size = new System.Drawing.Size(180, 22);
             this.mnuOpen.Text = "Open...";
             this.mnuOpen.Click += new System.EventHandler(this.mnuOpen_Click);
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testToolStripMenuItem.Text = "test";
             this.testToolStripMenuItem.Visible = false;
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
@@ -211,9 +220,17 @@
             // 
             this.munSave.Image = global::ScriptNotepad.Properties.Resources.Save;
             this.munSave.Name = "munSave";
-            this.munSave.Size = new System.Drawing.Size(112, 22);
+            this.munSave.Size = new System.Drawing.Size(180, 22);
             this.munSave.Text = "Save";
             this.munSave.Click += new System.EventHandler(this.munSave_Click);
+            // 
+            // mnuSaveAs
+            // 
+            this.mnuSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
+            this.mnuSaveAs.Name = "mnuSaveAs";
+            this.mnuSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.mnuSaveAs.Text = "Save As";
+            this.mnuSaveAs.Click += new System.EventHandler(this.munSave_Click);
             // 
             // mnuSearch
             // 
@@ -244,6 +261,36 @@
             this.mnuAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
+            // 
+            // tsbSave
+            // 
+            this.tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSave.Image = global::ScriptNotepad.Properties.Resources.Save;
+            this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSave.Name = "tsbSave";
+            this.tsbSave.Size = new System.Drawing.Size(23, 22);
+            this.tsbSave.Text = "Save";
+            this.tsbSave.Click += new System.EventHandler(this.munSave_Click);
+            // 
+            // tsbSaveAs
+            // 
+            this.tsbSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
+            this.tsbSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSaveAs.Name = "tsbSaveAs";
+            this.tsbSaveAs.Size = new System.Drawing.Size(23, 22);
+            this.tsbSaveAs.Text = "Save As";
+            this.tsbSaveAs.Click += new System.EventHandler(this.munSave_Click);
+            // 
+            // tsbOpen
+            // 
+            this.tsbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
+            this.tsbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOpen.Name = "tsbOpen";
+            this.tsbOpen.Size = new System.Drawing.Size(23, 22);
+            this.tsbOpen.Text = "Open...";
+            this.tsbOpen.Click += new System.EventHandler(this.mnuOpen_Click);
             // 
             // FormMain
             // 
@@ -293,6 +340,11 @@
         private System.Windows.Forms.ToolStripStatusLabel ssLbLinesColumnSelection;
         private System.Windows.Forms.ToolStripStatusLabel ssLbLDocLinesSize;
         private System.Windows.Forms.ToolStripMenuItem munSave;
+        private System.Windows.Forms.SaveFileDialog sdAnyFile;
+        private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
+        private System.Windows.Forms.ToolStripButton tsbOpen;
+        private System.Windows.Forms.ToolStripButton tsbSave;
+        private System.Windows.Forms.ToolStripButton tsbSaveAs;
     }
 }
 

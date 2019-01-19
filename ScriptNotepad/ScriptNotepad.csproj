@@ -177,11 +177,14 @@
     <None Include="Resources\folder-database.png" />
     <None Include="Resources\folder-page.png" />
     <Content Include="Localization\Notepad++LanguageNames.txt" />
+    <None Include="Localization\SQLiteDatabase\CopyLang.bat" />
+    <Content Include="Localization\SQLiteDatabase\lang.sqlite" />
     <Content Include="Resources\Clock.ico" />
     <Content Include="Resources\Clock.png" />
     <Content Include="Resources\DownButton.png" />
     <Content Include="Resources\Highlighter.png" />
     <None Include="Resources\Save.png" />
+    <None Include="Resources\SaveAs.png" />
     <Content Include="Resources\UpButton.png" />
     <Content Include="Resources\XToCloseButton.png" />
     <Content Include="VPKSoft.ico" />

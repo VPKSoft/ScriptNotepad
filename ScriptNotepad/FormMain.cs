@@ -118,12 +118,19 @@ namespace ScriptNotepad
             // localize the open file dialog..
             Localization.StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
 
+            // localize the save file dialog..
+            Localization.StaticLocalizeFileDialog.InitFileDialog(sdAnyFile);
+
+            // localize the open and save file dialog titles..
+            sdAnyFile.Title = DBLangEngine.GetMessage("msgSaveFileAs", "Save As|A title for a save file as dialog");
+            odAnyFile.Title = DBLangEngine.GetMessage("msgOpenFile", "Open|A title for a open file dialog");
+
             // load the recent documents which were saved during the program close..
             LoadDocumentsFromDatabase(CurrentSession, false);
         }
         #endregion
 
-
+        #region HelperMethods
         /// <summary>
         /// Checks if an open document has been changed in the file system and queries if the user wishes to reload it's contents from the file system.
         /// </summary>
@@ -168,14 +175,45 @@ namespace ScriptNotepad
                             // set the flag that the file's modified date in the database
                             // has been changed as the user didn't wish to reload the file from the file system: FS != DB..
                             fileSave.DB_MODIFIED = DateTime.Now;
+
+                            // just in case set the tag back..
+                            document.Tag = fileSave;
+
+                            // bring the form to the front..
+                            BringToFront();
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Updates the indicators if the file changes have been saved to the file system.
+        /// <note type="note">The logic is weird.</note>
+        /// </summary>
+        private void UpdateDocumentSaveIndicators()
+        {
+            // loop through the documents..
+            foreach (ScintillaTabbedDocument document in sttcMain.Documents)
+            {
+                // get the file DBFILE_SAVE instance from the tag..
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+                if (!fileSave.EXISTS_INFILESYS) // non-existing file is always changed by the software..
+                {
+                    document.FileTabButton.IsSaved = false; // ..so set the indicator accordingly..
+                }
+                // if the document exists in the file system, use different methods of detection..
+                else
+                {
+                    document.FileTabButton.IsSaved = 
+                        !DBFILE_SAVE.DateTimeLarger(fileSave.FILESYS_MODIFIED, fileSave.FILESYS_SAVED) ||
+                        !DBFILE_SAVE.DateTimeLarger(fileSave.DB_MODIFIED, fileSave.FILESYS_SAVED);
+                }
+            }
+        }
+        #endregion
 
-
+        #region UselessCode
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -194,7 +232,9 @@ namespace ScriptNotepad
             //printer.Print();
             printer.PrintPreview();
         }
+        #endregion
 
+        #region DocumentHelperMethods
         /// <summary>
         /// Saves the active document snapshots in to the SQLite database.
         /// </summary>
@@ -246,6 +286,7 @@ namespace ScriptNotepad
                 sttcMain.ActivateDocument(activeDocument);
             }
 
+            UpdateDocumentSaveIndicators();
         }
 
         /// <summary>
@@ -316,6 +357,7 @@ namespace ScriptNotepad
         /// <returns>True if the operation was successful; otherwise false.</returns>
         private bool OpenDocument(string fileName, bool reloadContents = false) // TODO::!!
         {
+            // check the file's existence first..
             if (File.Exists(fileName))
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
@@ -407,8 +449,9 @@ namespace ScriptNotepad
         /// Saves the document in to the file system.
         /// </summary>
         /// <param name="document">The document to be saved.</param>
+        /// <param name="saveAs">An indicator if the document should be saved as a new file.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private bool SaveDocument(ScintillaTabbedDocument document)
+        private bool SaveDocument(ScintillaTabbedDocument document, bool saveAs)
         {
             try
             {
@@ -422,7 +465,7 @@ namespace ScriptNotepad
                     fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text);
 
                     // only an existing file can be saved directly..
-                    if (fileSave.EXISTS_INFILESYS)
+                    if (fileSave.EXISTS_INFILESYS && !saveAs)
                     {
                         // write the new contents of a file to the existing file overriding it's contents..
                         using (FileStream fileStream = new FileStream(fileSave.FILENAME_FULL, FileMode.Create, FileAccess.Write))
@@ -434,13 +477,58 @@ namespace ScriptNotepad
                         // update the file system modified time stamp so the software doesn't ask if the file should
                         // be reloaded from the file system..
                         fileSave.FILESYS_MODIFIED = new FileInfo(fileSave.FILENAME_FULL).LastWriteTime;
+                        fileSave.FILESYS_SAVED = fileSave.FILESYS_MODIFIED;
+                        fileSave.DB_MODIFIED = fileSave.FILESYS_MODIFIED;
+                        document.Tag = fileSave;
                     }
-                    else
+                    // the file doesn't exist in the file system or the user wishes to use save as dialog so
+                    // display a save file dialog..
+                    else 
                     {
-                        // TODO::new files..
-                        return false;
+                        sdAnyFile.FileName = fileSave.FILENAME_FULL;
+                        if (sdAnyFile.ShowDialog() == DialogResult.OK)
+                        {
+                            fileSave.FILESYS_MODIFIED = DateTime.Now;
+
+                            // write the new contents of a file to the existing file overriding it's contents..
+                            using (FileStream fileStream = new FileStream(sdAnyFile.FileName, FileMode.Create, FileAccess.Write))
+                            {
+                                fileSave.FILE_CONTENTS.Position = 0; // position the stream..
+                                fileSave.FILE_CONTENTS.WriteTo(fileStream); // write the contents of the stream to the file..
+                            }
+
+                            // the file now exists in the file system..
+                            fileSave.EXISTS_INFILESYS = true;
+
+                            // the file now has a location so update it..
+                            fileSave.FILENAME = Path.GetFileName(sdAnyFile.FileName);
+                            fileSave.FILENAME_FULL = sdAnyFile.FileName;
+                            fileSave.FILEPATH = Path.GetDirectoryName(document.FileName);
+
+                            // update the document..
+                            document.FileName = fileSave.FILENAME_FULL;
+                            document.FileNameNotPath = fileSave.FILENAME;
+                            document.FileTabButton.Text = fileSave.FILENAME;
+
+                            // a new lexer might have to be assigned..
+                            document.LexerType = ScintillaLexers.LexerTypeFromFileName(fileSave.FILENAME_FULL);
+
+                            // update the file system modified time stamp so the software doesn't ask if the file should
+                            // be reloaded from the file system..
+                            fileSave.FILESYS_MODIFIED = new FileInfo(fileSave.FILENAME_FULL).LastWriteTime;
+                            fileSave.FILESYS_SAVED = fileSave.FILESYS_MODIFIED;
+                            fileSave.DB_MODIFIED = fileSave.FILESYS_MODIFIED;
+                            document.Tag = fileSave;
+                        }
+                        else
+                        {
+                            // the user canceled the file save dialog..
+                            return false;
+                        }
                     }
 
+                    // update the saved indicators..
+                    UpdateDocumentSaveIndicators();
                     // indicate success..
                     return true;
                 }
@@ -459,6 +547,7 @@ namespace ScriptNotepad
                 return false;
             }
         }
+        #endregion
 
         #region InternalEvents
         // this event is raised when another instance of this application receives a file name
@@ -510,7 +599,7 @@ namespace ScriptNotepad
         private void munSave_Click(object sender, EventArgs e)
         {
             // ..so lets obey for once..
-            SaveDocument(sttcMain.CurrentDocument);
+            SaveDocument(sttcMain.CurrentDocument, sender.Equals(mnuSaveAs) || sender.Equals(tsbSaveAs));
         }
 
         // a user wanted to open a file via the main menu..
@@ -523,11 +612,13 @@ namespace ScriptNotepad
             }
         }
 
+        // the software's main form was activated so check if any open file has been changes..
         private void FormMain_Activated(object sender, EventArgs e)
         {
             CheckFileSysChanges();
         }
 
+        // a tab is closing so save it into the history---
         private void sttcMain_TabClosing(object sender, TabClosingEventArgsExt e)
         {
             DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
@@ -551,16 +642,22 @@ namespace ScriptNotepad
             SetStatusStringText(e.ScintillaTabbedDocument);
         }
 
+        // a user wanted to see an about dialog of the software..
         private void mnuAbout_Click(object sender, EventArgs e)
         {
             new VPKSoft.About.FormAbout(this, "MIT", "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE");
         }
 
+        // this is the event listener for the ScintillaTabbedDocument's selection and caret position change events..
         private void sttcMain_SelectionCaretChanged(object sender, ScintillaTabbedDocumentEventArgsExt e)
         {
             SetStatusStringText(e.ScintillaTabbedDocument);
         }
 
+        /// <summary>
+        /// Sets the main status strip values for the currently active document..
+        /// </summary>
+        /// <param name="document"></param>
         private void SetStatusStringText(ScintillaTabbedDocument document)
         {
             ssLbLineColumn.Text =
@@ -576,10 +673,13 @@ namespace ScriptNotepad
                 document.SelectionLength);
         }
 
+        // saves the changed ScintillaNET document's contents to a MemoryStream if the contents have been changed..
+        // hopefully not stressful for the memory or CPU..
         private void sttcMain_DocumentTextChanged(object sender, ScintillaTextChangedEventArgs e)
         {
             DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
             fileSave.DisposeMemoryStream();
+            fileSave.DB_MODIFIED = DateTime.Now;
             fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(e.ScintillaTabbedDocument.Scintilla.Text);
         }
         #endregion

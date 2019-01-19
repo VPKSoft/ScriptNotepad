@@ -46,22 +46,29 @@ namespace ScriptNotepad.Database
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         public static string GenInsertFileSentence(DBFILE_SAVE fileSave)
         {
+            string existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = {QS(fileSave.FILENAME_FULL)});";
+            if (fileSave.ID != -1)
+            {
+                existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ID = {fileSave.ID});";
+            }
+        
             string sql =
-                string.Join(Environment.NewLine,
-                $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
-                $"DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID) ",
-                $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
-                $"{QS(fileSave.FILENAME_FULL)},",
-                $"{QS(fileSave.FILENAME)},",
-                $"{QS(fileSave.FILEPATH)},",
-                $"{DateToDBString(fileSave.FILESYS_MODIFIED)},",
-                $"{DateToDBString(fileSave.DB_MODIFIED)},",
-                $"{(int)fileSave.LEXER_CODE}, @FILE,",
-                $"{fileSave.VISIBILITY_ORDER},",
-                $"{BS(fileSave.ISACTIVE)},",
-                $"{BS(fileSave.ISHISTORY)},",
-                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
-                $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = {QS(fileSave.FILENAME_FULL)});");
+            string.Join(Environment.NewLine,
+            $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
+            $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID) ",
+            $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
+            $"{QS(fileSave.FILENAME_FULL)},",
+            $"{QS(fileSave.FILENAME)},",
+            $"{QS(fileSave.FILEPATH)},",
+            $"{DateToDBString(fileSave.FILESYS_MODIFIED)},",
+            $"{DateToDBString(fileSave.FILESYS_SAVED)},",
+            $"{DateToDBString(fileSave.DB_MODIFIED)},",
+            $"{(int)fileSave.LEXER_CODE}, @FILE,",
+            $"{fileSave.VISIBILITY_ORDER},",
+            $"{BS(fileSave.ISACTIVE)},",
+            $"{BS(fileSave.ISHISTORY)},",
+            $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
+            existsCondition);
 
             return sql;
         }
@@ -74,7 +81,7 @@ namespace ScriptNotepad.Database
         public static string GenUpdateFileSentence(ref DBFILE_SAVE fileSave)
         {
             fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ? new FileInfo(fileSave.FILENAME_FULL).LastWriteTime : DateTime.MinValue;
-            fileSave.DB_MODIFIED = DateTime.Now;
+            // NOT HERE: fileSave.DB_MODIFIED = DateTime.Now;
             fileSave.EXISTS_INFILESYS = File.Exists(fileSave.FILENAME_FULL);
 
             string sql =
@@ -85,6 +92,7 @@ namespace ScriptNotepad.Database
                 $"FILENAME = {QS(fileSave.FILENAME)},",
                 $"FILEPATH = {QS(fileSave.FILEPATH)},",
                 $"FILESYS_MODIFIED = {DateToDBString(fileSave.FILESYS_MODIFIED)},",
+                $"FILESYS_SAVED = {DateToDBString(fileSave.FILESYS_SAVED)},",
                 $"DB_MODIFIED = {DateToDBString(fileSave.DB_MODIFIED)},",
                 $"LEXER_CODE = {(int)fileSave.LEXER_CODE},",
                 $"FILE_CONTENTS = @FILE,",
@@ -157,7 +165,7 @@ namespace ScriptNotepad.Database
                 $"SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH,",
                 $"FILESYS_MODIFIED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS,",
                 $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
-                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = DBFILE_SAVE.SESSIONID), {QS(sessionName)}) AS SESSIONNAME, ROWID",
+                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = DBFILE_SAVE.SESSIONID), {QS(sessionName)}) AS SESSIONNAME, FILESYS_SAVED",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
                 $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')) AND",
