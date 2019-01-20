@@ -306,4 +306,10 @@
   <data name="msgSaveFileAs" xml:space="preserve">
     <value>Save As|A title for a save file as dialog</value>
   </data>
+  <data name="msgScriptTypeLines" xml:space="preserve">
+    <value>Script lines|As in the C# script type should be handling the Scintilla's contents as lines</value>
+  </data>
+  <data name="msgScriptTypeText" xml:space="preserve">
+    <value>Script text|As in the C# script type should be handling the Scintilla's contents as text</value>
+  </data>
 </root>

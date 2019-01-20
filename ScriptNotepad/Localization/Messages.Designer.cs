@@ -529,6 +529,24 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Script lines|As in the C# script type should be handling the Scintilla&apos;s contents as lines.
+        /// </summary>
+        internal static string msgScriptTypeLines {
+            get {
+                return ResourceManager.GetString("msgScriptTypeLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script text|As in the C# script type should be handling the Scintilla&apos;s contents as text.
+        /// </summary>
+        internal static string msgScriptTypeText {
+            get {
+                return ResourceManager.GetString("msgScriptTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Smalltalk file|*.st|A text in a file dialog indicating Smalltalk files.
         /// </summary>
         internal static string msgSmalltalkFile {

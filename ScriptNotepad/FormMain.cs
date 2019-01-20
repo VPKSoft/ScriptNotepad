@@ -132,6 +132,25 @@ namespace ScriptNotepad
 
         #region HelperMethods
         /// <summary>
+        /// Sets the main status strip values for the currently active document..
+        /// </summary>
+        /// <param name="document"></param>
+        private void SetStatusStringText(ScintillaTabbedDocument document)
+        {
+            ssLbLineColumn.Text =
+                DBLangEngine.GetMessage("msgColLine", "Line: {0}  Col: {1}|As in the current column and the current line in a ScintillaNET control",
+                document.LineNumber + 1, document.Column + 1);
+
+            ssLbLinesColumnSelection.Text =
+                DBLangEngine.GetMessage("msgColLineSelection", "Sel1: {0}|{1}  Sel2: {2}|{3}  Len: {4}|The selection start, end and length in a ScintillaNET control in columns, lines and character count",
+                document.SelectionStartLine + 1,
+                document.SelectionStartColumn + 1,
+                document.SelectionEndLine + 1,
+                document.SelectionEndColumn + 1,
+                document.SelectionLength);
+        }
+
+        /// <summary>
         /// Checks if an open document has been changed in the file system and queries if the user wishes to reload it's contents from the file system.
         /// </summary>
         private void CheckFileSysChanges()
@@ -547,6 +566,25 @@ namespace ScriptNotepad
                 return false;
             }
         }
+
+        /// <summary>
+        /// Saves all open documents from the <see cref="ScintillaTabbedTextControl"/> to the file system.
+        /// </summary>
+        /// <param name="nonExisting">An indicator if the documents only existing in a "virtual" space should also be saved in to the file system.</param>
+        private void SaveAllDocuments(bool nonExisting)
+        {
+            // loop through the documents..
+            foreach (ScintillaTabbedDocument document in sttcMain.Documents)
+            {
+                // get the DBFILE_SAVE class instance from the tag..
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+                if (fileSave.EXISTS_INFILESYS)
+                {
+                    // save the document..
+                    SaveDocument(document, nonExisting);
+                }
+            }
+        }
         #endregion
 
         #region InternalEvents
@@ -654,23 +692,10 @@ namespace ScriptNotepad
             SetStatusStringText(e.ScintillaTabbedDocument);
         }
 
-        /// <summary>
-        /// Sets the main status strip values for the currently active document..
-        /// </summary>
-        /// <param name="document"></param>
-        private void SetStatusStringText(ScintillaTabbedDocument document)
+        // a user wanted to save all documents..
+        private void mnuSaveAll_Click(object sender, EventArgs e)
         {
-            ssLbLineColumn.Text =
-                DBLangEngine.GetMessage("msgColLine", "Line: {0}  Col: {1}|As in the current column and the current line in a ScintillaNET control",
-                document.LineNumber + 1, document.Column + 1);
-
-            ssLbLinesColumnSelection.Text =
-                DBLangEngine.GetMessage("msgColLineSelection", "Sel1: {0}|{1}  Sel2: {2}|{3}  Len: {4}|The selection start, end and length in a ScintillaNET control in columns, lines and character count",
-                document.SelectionStartLine + 1,
-                document.SelectionStartColumn + 1,
-                document.SelectionEndLine + 1,
-                document.SelectionEndColumn + 1,
-                document.SelectionLength);
+            SaveAllDocuments(sender.Equals(tsbSaveAllWithUnsaved) || sender.Equals(mnuSaveAllWithUnsaved));
         }
 
         // saves the changed ScintillaNET document's contents to a MemoryStream if the contents have been changed..
@@ -681,6 +706,45 @@ namespace ScriptNotepad
             fileSave.DisposeMemoryStream();
             fileSave.DB_MODIFIED = DateTime.Now;
             fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(e.ScintillaTabbedDocument.Scintilla.Text);
+        }
+
+        // a user wishes to do some scripting (!)..
+        private void mnuRunScript_Click(object sender, EventArgs e)
+        {
+            // ..so display the script from and allow multiple instances of it..
+            FormScript formScript = new FormScript();
+
+            // subscribe an event for the C# script form when it requires a Scintilla document..
+            formScript.ScintillaRequired += FormScript_ScintillaRequired;
+
+            // subscribe the FormClosed event so the events can be unsubscribed (ridiculous -right ?)..
+            formScript.FormClosed += FormScript_FormClosed;
+
+            // show the form..
+            formScript.Show();
+        }
+
+        // a C# script form was closed, so do unsubscribe the events..
+        private void FormScript_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // get the FormScript instance..
+            FormScript formScript = (FormScript)sender;
+
+            // unsubscribe the events..
+            formScript.ScintillaRequired -= FormScript_ScintillaRequired;
+            formScript.FormClosed -= FormScript_FormClosed;
+
+            // bring the form to the front..
+            BringToFront();
+        }
+
+        // a script form requested an active document for a script manipulation..
+        private void FormScript_ScintillaRequired(object sender, FormScript.ScintillaRequiredEventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                e.Scintilla = sttcMain.CurrentDocument.Scintilla;
+            }
         }
         #endregion
     }

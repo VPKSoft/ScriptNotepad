@@ -27,13 +27,14 @@ SOFTWARE.
 using Microsoft.CSharp;
 using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 
-namespace ScriptNotepad
+namespace ScriptNotepad.UtilityClasses.CodeDom
 {
     /// <summary>
-    /// A class to run C# script snippets against the contents of a Scintilla document as text.
+    /// A class to run C# script snippets a file contents as line strings with line endings.
     /// </summary>
-    public class CSCodeDomeScriptRunnerText
+    public class CSCodeDOMScriptRunnerParent
     {
         /// <summary>
         /// A CSharpCodeProvider class instance to translate the C# script code.
@@ -48,30 +49,12 @@ namespace ScriptNotepad
         /// <summary>
         /// The results of a CSharpCodeProvider class instance to detect a warning or error.
         /// </summary>
-        private CompilerResults CompilerResults = null;
+        public CompilerResults CompilerResults { get; set; } = null;
 
         /// <summary>
-        /// Gets the base "skeleton" C# code snippet for a document's text which may include line ending characters in various formats.
+        /// Gets the base "skeleton" C# code snippet for manipulating text as lines.
         /// </summary>
-        public static string CSharpScriptBaseText { get; private set; } =
-            string.Join(Environment.NewLine,
-                "using System;",
-                "using System.Linq;",
-                "using System.Collections;",
-                "using System.Collections.Generic;",
-                "using System.Text;",
-                "using System.Text.RegularExpressions;",
-                "using System.Xml.Linq;",
-                Environment.NewLine,
-                "public class ManipulateText",
-                "{",
-                "    public static string Evaluate(string fileContents)",
-                "    {",
-                "        // insert code here..",
-                "        return fileContents;",
-                "    }",
-                "}");
-
+        public static string CSharpScriptBase { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets a value indicating whether the script compile failed.
@@ -79,9 +62,9 @@ namespace ScriptNotepad
         public bool CompileFailed { get; private set; } = false;
 
         /// <summary>
-        /// The base C# script code for manipulating a text.
+        /// The base C# script code for manipulating a collection of lines.
         /// </summary>
-        private string _ScriptCode = CSharpScriptBaseText;
+        internal string _ScriptCode;
 
         /// <summary>
         /// Gets or sets the C# script code.
@@ -107,12 +90,14 @@ namespace ScriptNotepad
         /// <summary>
         /// Pre-compiles the <see cref="ScriptCode"/> and sets the <see cref="CompileFailed"/> property value to indicate whether the compilation was a success.
         /// </summary>
-        private void PreCompile()
+        /// <returns>The results of the script compilation.</returns>
+        internal CompilerResults PreCompile()
         {
             try
             {
                 // compile the C# script..
                 CompilerResults = cSharpCodeProvider.CompileAssemblyFromSource(compilerParameters, new string[] { ScriptCode });
+
 
                 // loop through the errors..
                 foreach (CompilerError err in CompilerResults.Errors)
@@ -120,28 +105,30 @@ namespace ScriptNotepad
                     if (!err.IsWarning) // only errors will indicate a failure..
                     {
                         CompileFailed = true; // ..so set the fail flag..
-                        return; // ..at this point when an error has been detected it's useless to continue the loop..
+                        return CompilerResults; // ..at this point when an error has been detected it's useless to continue the loop..
                     }
                 }
 
                 // set the flag to indicate successful compilation..
                 CompileFailed = false;
+                return CompilerResults; // return the results of the compilation..
             }
             catch
             {
                 // set the flag to indicate failed compilation..
                 CompileFailed = true;
+                return CompilerResults; // return the results of the compilation..
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CSCodeDomeScriptRunnerText"/> class.
+        /// Initializes a new instance of the <see cref="CSCodeDOMeScriptRunnerLines"/> class.
         /// </summary>
-        public CSCodeDomeScriptRunnerText()
+        public CSCodeDOMScriptRunnerParent()
         {
             // set some flags for the CodeDom compiler..
             compilerParameters.GenerateExecutable = false;
-            compilerParameters.GenerateInMemory = false;
+            compilerParameters.GenerateInMemory = true;
             compilerParameters.IncludeDebugInformation = false;
             compilerParameters.TreatWarningsAsErrors = false;
 
@@ -149,29 +136,6 @@ namespace ScriptNotepad
             compilerParameters.ReferencedAssemblies.Add("System.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Linq.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Xml.Linq.dll");
-
-            // pre-compile the script's contents..
-            PreCompile();
-        }
-
-        /// <summary>
-        /// Runs the C# script against the given string containing lines and returns the result as a string.
-        /// <note type="note">The string may contain various different line endings.</note>
-        /// </summary>
-        /// <param name="fileContents">The file contents to run the C# script against.</param>
-        /// <returns>A string containing the result as a string of the given manipulated string if the operation was successful; otherwise null.</returns>
-        public string ExecuteText(string fileContents)
-        {
-            try
-            {
-                // try to run the C# script against the given file contents..
-                object result = CompilerResults.CompiledAssembly.GetType("ManipulateText").GetMethod("Evaluate").Invoke(null, new object[] { fileContents });
-                return result as string; // indicate a success..
-            }
-            catch
-            {
-                return null; // fail..
-            }
         }
     }
 }
