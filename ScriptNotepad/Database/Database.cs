@@ -231,6 +231,72 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Adds a given code snippet into the database.
+        /// </summary>
+        /// <param name="codeSnippet">A CODE_SNIPPETS class instance to be added into the database.</param>
+        /// <returns>A CODE_SNIPPETS class instance file was successfully added to the database; otherwise null.</returns>
+        public static CODE_SNIPPETS AddCodeSnippet(CODE_SNIPPETS codeSnippet)
+        {
+            try
+            {
+                // generate a SQL sentence for the insert..
+                string sql = DatabaseCommands.GenScriptInsertSentence(ref codeSnippet);
+
+                // as the SQLiteCommand is disposable a using clause is required..
+                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                {
+                    // do the insert..
+                    command.ExecuteNonQuery();
+                }
+
+                return codeSnippet;
+            }
+            catch (Exception ex)
+            {
+                LastException = ex; // log the exception..
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Updates a recent CODE_SNIPPETS class instance into the database table CODE_SNIPPETS.
+        /// </summary>
+        /// <param name="codeSnippet">A CODE_SNIPPETS class instance to update to the database's CODE_SNIPPETS table.</param>
+        /// <returns>The updated instance of the given <paramref name="codeSnippet"/> class instance if the operation was successful; otherwise null.</returns>
+        public static CODE_SNIPPETS UpdateCodeSnippet(CODE_SNIPPETS codeSnippet)
+        {
+            try
+            {
+                // generate a SQL sentence for the insert..
+                string sql = DatabaseCommands.GenScriptUpdateSentence(ref codeSnippet);
+
+                // as the SQLiteCommand is disposable a using clause is required..
+                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                {
+                    // do the insert..
+                    command.ExecuteNonQuery();
+                }
+
+                return codeSnippet;
+            }
+            catch (Exception ex)
+            {
+                LastException = ex; // log the exception..
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Adds or updates a a given code snippet into the database.
+        /// </summary>
+        /// <param name="codeSnippet">A CODE_SNIPPETS class instance to be added or updated into the database.</param>
+        /// <returns>An instance to a CODE_SNIPPETS class if the operations was successful; otherwise null;</returns>
+        public static CODE_SNIPPETS AddOrUpdateCodeSnippet(CODE_SNIPPETS codeSnippet)
+        {
+            return UpdateCodeSnippet(AddCodeSnippet(codeSnippet));
+        }
+
+        /// <summary>
         /// Adds a <paramref name="fileName"/> file to the database table RECENT_FILES if it doesn't exists.
         /// </summary>
         /// <param name="fileName">A file name to generate a RECENT_FILES class instance.</param>
@@ -430,6 +496,38 @@ namespace ScriptNotepad.Database
                                 SESSIONID = reader.GetInt32(5),
                                 REFERENCEID = reader.IsDBNull(6) ? null : (long?)reader.GetInt64(6),
                                 SESSIONNAME = reader.GetString(7),
+                            });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all the code snippets from the database.
+        /// </summary>
+        /// <returns>A collection CODE_SNIPPETS classes.</returns>
+        public static IEnumerable<CODE_SNIPPETS> GetCodeSnippets()
+        {
+            List<CODE_SNIPPETS> result = new List<CODE_SNIPPETS>();
+
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenScriptSelect(), conn))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    // ID: 0, SCRIPT_CONTENTS: 1, SCRIPT_NAME: 2, MODIFIED: 3, SCRIPT_TYPE: 4, SCRIPT_LANGUAGE: 5
+                    while (reader.Read())
+                    {
+                        result.Add(
+                            new CODE_SNIPPETS()
+                            {
+                                ID = reader.GetInt64(0),
+                                SCRIPT_CONTENTS = reader.GetString(1),
+                                SCRIPT_NAME = reader.GetString(2),
+                                MODIFIED = DateFromDBString(reader.GetString(3)),
+                                SCRIPT_TYPE = reader.GetInt32(4),
+                                SCRIPT_LANGUAGE = reader.GetInt32(5),
                             });
                     }
                 }

@@ -53,22 +53,22 @@ namespace ScriptNotepad.Database
             }
         
             string sql =
-            string.Join(Environment.NewLine,
-            $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
-            $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID) ",
-            $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
-            $"{QS(fileSave.FILENAME_FULL)},",
-            $"{QS(fileSave.FILENAME)},",
-            $"{QS(fileSave.FILEPATH)},",
-            $"{DateToDBString(fileSave.FILESYS_MODIFIED)},",
-            $"{DateToDBString(fileSave.FILESYS_SAVED)},",
-            $"{DateToDBString(fileSave.DB_MODIFIED)},",
-            $"{(int)fileSave.LEXER_CODE}, @FILE,",
-            $"{fileSave.VISIBILITY_ORDER},",
-            $"{BS(fileSave.ISACTIVE)},",
-            $"{BS(fileSave.ISHISTORY)},",
-            $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
-            existsCondition);
+                string.Join(Environment.NewLine,
+                $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
+                $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID) ",
+                $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
+                $"{QS(fileSave.FILENAME_FULL)},",
+                $"{QS(fileSave.FILENAME)},",
+                $"{QS(fileSave.FILEPATH)},",
+                $"{DateToDBString(fileSave.FILESYS_MODIFIED)},",
+                $"{DateToDBString(fileSave.FILESYS_SAVED)},",
+                $"{DateToDBString(fileSave.DB_MODIFIED)},",
+                $"{(int)fileSave.LEXER_CODE}, @FILE,",
+                $"{fileSave.VISIBILITY_ORDER},",
+                $"{BS(fileSave.ISACTIVE)},",
+                $"{BS(fileSave.ISHISTORY)},",
+                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
+                existsCondition);
 
             return sql;
         }
@@ -101,6 +101,66 @@ namespace ScriptNotepad.Database
                 $"ISHISTORY = {BS(fileSave.ISHISTORY)},",
                 $"SESSIONID = {fileSave.SESSIONID}",
                 $"WHERE ID = {fileSave.ID};");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to insert a code snippet into the database.
+        /// </summary>
+        /// <param name="codeSnippet">A CODE_SNIPPETS class instance to be used for the SQL sentence generation.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenScriptInsertSentence(ref CODE_SNIPPETS codeSnippet)
+        {
+            codeSnippet.MODIFIED = DateTime.Now;
+
+            string sql =
+                string.Join(Environment.NewLine,
+                $"INSERT INTO CODE_SNIPPETS (SCRIPT_CONTENTS, SCRIPT_NAME, MODIFIED, SCRIPT_TYPE, SCRIPT_LANGUAGE) ",
+                $"SELECT {QS(codeSnippet.SCRIPT_CONTENTS)},",
+                $"{QS(codeSnippet.SCRIPT_NAME)},",
+                $"{DateToDBString(codeSnippet.MODIFIED)},",
+                $"{codeSnippet.SCRIPT_TYPE},",
+                $"{codeSnippet.SCRIPT_LANGUAGE}",
+                $"WHERE NOT EXISTS(SELECT * FROM CODE_SNIPPETS WHERE ID = {codeSnippet.ID});");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to update an existing code snippet into the database.
+        /// </summary>
+        /// <param name="codeSnippet">A CODE_SNIPPETS class instance to be used for the SQL sentence generation.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenScriptUpdateSentence(ref CODE_SNIPPETS codeSnippet)
+        {
+            codeSnippet.MODIFIED = DateTime.Now;
+
+            string sql =
+                string.Join(Environment.NewLine,
+                $"UPDATE CODE_SNIPPETS SET",
+                $"SCRIPT_CONTENTS = {QS(codeSnippet.SCRIPT_CONTENTS)},",
+                $"SCRIPT_NAME = {QS(codeSnippet.SCRIPT_NAME)}, ",
+                $"MODIFIED = {DateToDBString(codeSnippet.MODIFIED)},",
+                $"SCRIPT_TYPE = {codeSnippet.SCRIPT_TYPE},",
+                $"SCRIPT_LANGUAGE = {codeSnippet.SCRIPT_LANGUAGE}",
+                $"WHERE ID = {codeSnippet.ID};");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to select code snippets from the CODE_SNIPPETS table in the database.
+        /// </summary>
+        /// <returns>A generated SQL sentence.</returns>
+        public static string GenScriptSelect()
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT ID, SCRIPT_CONTENTS, SCRIPT_NAME,",
+                $"MODIFIED, SCRIPT_TYPE, SCRIPT_LANGUAGE",
+                $"FROM CODE_SNIPPETS",
+                $"ORDER BY SCRIPT_TYPE, SCRIPT_NAME COLLATE NOCASE, MODIFIED");
 
             return sql;
         }

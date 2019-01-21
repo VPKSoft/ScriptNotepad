@@ -107,10 +107,12 @@
             // 
             // tsbComboSavedScripts
             // 
-            this.tsbComboSavedScripts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tsbComboSavedScripts.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.tsbComboSavedScripts.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tsbComboSavedScripts.Name = "tsbComboSavedScripts";
-            this.tsbComboSavedScripts.Size = new System.Drawing.Size(121, 25);
+            this.tsbComboSavedScripts.Size = new System.Drawing.Size(200, 25);
             this.tsbComboSavedScripts.ToolTipText = "Saved scripts";
+            this.tsbComboSavedScripts.SelectedIndexChanged += new System.EventHandler(this.tsbComboSavedScripts_SelectedIndexChanged);
             // 
             // toolStripSeparator2
             // 
@@ -120,7 +122,8 @@
             // tsbTextScriptName
             // 
             this.tsbTextScriptName.Name = "tsbTextScriptName";
-            this.tsbTextScriptName.Size = new System.Drawing.Size(100, 25);
+            this.tsbTextScriptName.Size = new System.Drawing.Size(200, 25);
+            this.tsbTextScriptName.ToolTipText = "The name of the script";
             // 
             // tsbRunScript
             // 

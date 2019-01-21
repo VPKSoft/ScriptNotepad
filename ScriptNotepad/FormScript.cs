@@ -39,6 +39,7 @@ using VPKSoft.ScintillaLexers;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ScintillaHelpers;
+using ScriptNotepad.Database;
 
 namespace ScriptNotepad
 {
@@ -112,6 +113,9 @@ namespace ScriptNotepad
 
             // track the instances of this form so the changes can be delegated to each other..
             formScriptInstances.Add(this);
+
+            // load the saved code snippets to the combo box on the tool strip..
+            ReloadCodeSnippets(true);
         }
 
         private void FormScript_FormClosing(object sender, FormClosingEventArgs e)
@@ -221,8 +225,40 @@ namespace ScriptNotepad
         }
 
         /// <summary>
+        /// Reloads the code snippets for the current instance of the <see cref="FormScript"/> class or to all instances based on the <paramref name="thisInstance"/> value.
+        /// </summary>
+        /// <param name="thisInstance">if set to <c>true</c> only this instances code snippet combo's contents are reloaded; otherwise all.</param>
+        private void ReloadCodeSnippets(bool thisInstance)
+        {
+            IEnumerable<CODE_SNIPPETS> codeSnippets = Database.Database.GetCodeSnippets();
+            foreach (FormScript formScript in formScriptInstances)
+            {
+                if (thisInstance && !formScript.Equals(this))
+                {
+                    continue;
+                }
+                formScript.tsbComboSavedScripts.Items.Clear();
+                foreach (CODE_SNIPPETS codeSnippet in codeSnippets)
+                {
+                    formScript.tsbComboSavedScripts.Items.Add(codeSnippet);
+                }
+            }
+        }
+
+        /// <summary>
         /// Occurs when a user wants to run a script for a Scintilla document contents.
         /// </summary>
         public event OnScintillaRequired ScintillaRequired = null;
+
+        private void tsbComboSavedScripts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ToolStripComboBox comboBox = (ToolStripComboBox)sender;
+            if (comboBox.SelectedIndex != -1)
+            {
+                CODE_SNIPPETS codeSnippet = (CODE_SNIPPETS)comboBox.SelectedItem;
+                scintilla.Text = codeSnippet.SCRIPT_CONTENTS;
+                tsbTextScriptName.Text = codeSnippet.SCRIPT_NAME;
+            }
+        }
     }
 }

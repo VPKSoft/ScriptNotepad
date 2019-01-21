@@ -143,3 +143,72 @@ UPDATE DBFILE_SAVE SET FILESYS_SAVED = FILESYS_MODIFIED WHERE EXISTS_INFILESYS =
 --VER 7
 UPDATE DBFILE_SAVE SET DB_MODIFIED = FILESYS_MODIFIED WHERE EXISTS_INFILESYS = 1;
 --ENDVER 7 
+
+--VER 8
+
+DROP TABLE CODE_SNIPPETS;
+
+CREATE TABLE IF NOT EXISTS CODE_SNIPPETS -- a table to save C# script snippets..
+(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  SCRIPT_CONTENTS TEXT NOT NULL,
+  SCRIPT_NAME TEXT NOT NULL,
+  MODIFIED TEXT NOT NULL, -- when script snippet was modified, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  SCRIPT_TYPE INTEGER NOT NULL, --0 means text manipulation, 1 means lines manipulatiom
+  SCRIPT_LANGUAGE INTEGER NOT NULL DEFAULT 0 -- the language of the script - if other than C# will ever be supported..
+);
+
+INSERT INTO CODE_SNIPPETS (SCRIPT_CONTENTS, SCRIPT_NAME, MODIFIED, SCRIPT_TYPE)
+SELECT
+'#region Usings
+using System;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+#endregion
+
+
+public class ManipulateLineLines
+{
+    public static string Evaluate(List<string> fileLines)
+    {
+        string result = string.Empty;
+        // replace text from the file''s lines..
+        for (int i = 0; i < fileLines.Count; i++)
+        {
+           fileLines[i] = fileLines[i].Replace("value1", "value2");
+        }
+
+        result = string.Concat(fileLines); // concatenate the result lines.. 
+        return result;
+    }
+}', 'Simple replace script', '2019-01-21 08:00:00.000', 1;
+
+
+INSERT INTO CODE_SNIPPETS (SCRIPT_CONTENTS, SCRIPT_NAME, MODIFIED, SCRIPT_TYPE)
+SELECT
+'#region Usings
+using System;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+#endregion
+
+
+public class ManipulateText
+{
+    public static string Evaluate(string fileContents)
+    {
+        // convert Windows line endings to Linux / Unix line endings..
+        fileContents = fileContents.Replace("\r\n", "\n"); 
+        return fileContents;
+    }
+}', 'Simple line ending change script', '2019-01-21 08:00:00.000', 0;
+
+--ENDVER 8

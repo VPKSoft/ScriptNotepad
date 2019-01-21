@@ -126,7 +126,7 @@ namespace ScriptNotepad
             odAnyFile.Title = DBLangEngine.GetMessage("msgOpenFile", "Open|A title for a open file dialog");
 
             // load the recent documents which were saved during the program close..
-            LoadDocumentsFromDatabase(CurrentSession, false);
+            LoadDocumentsFromDatabase(CurrentSession, false);            
         }
         #endregion
 

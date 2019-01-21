@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\CODE_SNIPPETS.cs" />
     <Compile Include="Database\DatabaseCommands.cs" />
     <Compile Include="Database\DBFILE_SAVE.cs" />
     <Compile Include="Database\RECENT_FILES.cs" />
