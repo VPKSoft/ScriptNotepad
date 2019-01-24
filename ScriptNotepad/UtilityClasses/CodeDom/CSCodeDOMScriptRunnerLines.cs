@@ -35,12 +35,12 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
     /// A class to run C# script snippets a file contents as line strings with line endings.
     /// </summary>
     /// <seealso cref="CSCodeDOMScriptRunnerParent" />
-    public class CSCodeDOMeScriptRunnerLines: CSCodeDOMScriptRunnerParent
+    public class CSCodeDOMScriptRunnerLines: CSCodeDOMScriptRunnerParent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CSCodeDOMeScriptRunnerLines"/> class.
+        /// Initializes a new instance of the <see cref="CSCodeDOMScriptRunnerLines"/> class.
         /// </summary>
-        public CSCodeDOMeScriptRunnerLines(): base()
+        public CSCodeDOMScriptRunnerLines(): base()
         {
             CSharpScriptBase =
                 string.Join(Environment.NewLine,

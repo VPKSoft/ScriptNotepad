@@ -40,6 +40,7 @@ using ScriptNotepad.UtilityClasses.CodeDom;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using ScriptNotepad.Database;
+using System.Threading;
 
 namespace ScriptNotepad
 {
@@ -49,10 +50,19 @@ namespace ScriptNotepad
         private static List<FormScript> formScriptInstances = new List<FormScript>();
 
         // a CodeDOM provider for executing C# scripts for a list of lines..
-        private CSCodeDOMeScriptRunnerLines scriptRunnerLines = new CSCodeDOMeScriptRunnerLines();
+        private CSCodeDOMScriptRunnerLines scriptRunnerLines = new CSCodeDOMScriptRunnerLines();
 
         // a CodeDOM provider for executing C# scripts for a string..
         private CSCodeDOMScriptRunnerText scriptRunnerText = new CSCodeDOMScriptRunnerText();
+
+        // an indicator if the Scintilla's text changed event should be disregarded..
+        private bool suspendChangedEvent = false;
+
+        // a field to hold localized name for a script template for manipulating Scintilla contents as text..
+        string defaultNameScriptTemplateText = string.Empty;
+
+        // a field to hold localized name for a script template for manipulating Scintilla contents as lines..
+        string defaultNameScriptTemplateLines = string.Empty;
 
         /// <summary>
         /// A delegate for the ScintillaRequired event.
@@ -94,8 +104,14 @@ namespace ScriptNotepad
                 return; // After localization don't do anything more..
             }
 
-            // set the main form's reference so that the active document can be reached..
+            // localize the script type default names..
+            defaultNameScriptTemplateText = 
+                DBLangEngine.GetMessage("msgDefaultScriptSnippetText", "A text script snippet|As in a script for manipulating Scintilla contents as text");
 
+            defaultNameScriptTemplateLines =
+                DBLangEngine.GetMessage("msgDefaultScriptSnippetLines", "A line script snippet|As in a script for manipulating Scintilla contents as lines");
+
+            // localize the currently supported script types..
             tsbComboScriptType.Items.Clear();
             tsbComboScriptType.Items.Add(
                 DBLangEngine.GetMessage("msgScriptTypeText", "Script text|As in the C# script type should be handling the Scintilla's contents as text")
@@ -105,17 +121,23 @@ namespace ScriptNotepad
                 DBLangEngine.GetMessage("msgScriptTypeLines", "Script lines|As in the C# script type should be handling the Scintilla's contents as lines")
                 );
 
+            suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
             tsbComboScriptType.SelectedItem =
                 DBLangEngine.GetMessage("msgScriptTypeText", "Script text|As in the C# script type should be handling the Scintilla's contents as text");
+
+            // set the default script for manipulating text..
+            scintilla.Text = scriptRunnerText.CSharpScriptBase;
+
+            // set the text for the default script snippet..
+            tstScriptName.Text = defaultNameScriptTemplateText;
+
+            suspendChangedEvent = false; // "resume" the event handler..
 
             // set the lexer as C#..
             ScintillaLexers.CreateLexer(scintilla, LexerType.Cs);
 
             // track the instances of this form so the changes can be delegated to each other..
             formScriptInstances.Add(this);
-
-            // load the saved code snippets to the combo box on the tool strip..
-            ReloadCodeSnippets(true);
         }
 
         private void FormScript_FormClosing(object sender, FormClosingEventArgs e)
@@ -124,36 +146,24 @@ namespace ScriptNotepad
             formScriptInstances.Remove(this);
         }
 
-        private int previousCmbIndex = -1;
-
-        // a user selected the C# script type so set the C# script base accordingly..
-        private void tsbComboScriptType_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Gets the type of the selected script in the tool strip's combo box.
+        /// </summary>
+        private int SelectedScriptType
         {
-            // get the tool strip's combo box..
-            ToolStripComboBox comboBox = (ToolStripComboBox)sender;
-
-            // a text contents manipulation script was requested..
-            if (comboBox.SelectedIndex == 0)
+            get
             {
-                // set the C# script skeleton to the Scintilla..
-                scintilla.Text = scriptRunnerText.ScriptCode;                
+                // the tool strip combo box doesn't seem to remember it's index,
+                // so get the index by using another way..
+                return tsbComboScriptType.Items.IndexOf(tsbComboScriptType.Text);
             }
-            // a line contents manipulation script was requested..
-            else if (comboBox.SelectedIndex == 1)
-            {
-                // set the C# script skeleton to the Scintilla..
-                scintilla.Text = scriptRunnerLines.ScriptCode;
-            }
-
-            // this needs to be saved as it doesn't seem to last..
-            previousCmbIndex = comboBox.SelectedIndex;
         }
 
         // a user wants to run the script against the active Scintilla document on the main form..
         private void tsbRunScript_Click(object sender, EventArgs e)
         {
             // a text contents manipulation script was requested..
-            if (previousCmbIndex == 0)
+            if (SelectedScriptType == 0)
             {
                 // set the script code from the Scintilla document contents..
                 scriptRunnerText.ScriptCode = scintilla.Text;
@@ -187,7 +197,7 @@ namespace ScriptNotepad
                 }
             }
             // a line contents manipulation script was requested..
-            else if (previousCmbIndex == 1)
+            else if (SelectedScriptType == 1)
             {
                 // set the script code from the Scintilla document contents,
                 // this also pre-compiles the code so do list the compilation results
@@ -225,40 +235,87 @@ namespace ScriptNotepad
         }
 
         /// <summary>
-        /// Reloads the code snippets for the current instance of the <see cref="FormScript"/> class or to all instances based on the <paramref name="thisInstance"/> value.
-        /// </summary>
-        /// <param name="thisInstance">if set to <c>true</c> only this instances code snippet combo's contents are reloaded; otherwise all.</param>
-        private void ReloadCodeSnippets(bool thisInstance)
-        {
-            IEnumerable<CODE_SNIPPETS> codeSnippets = Database.Database.GetCodeSnippets();
-            foreach (FormScript formScript in formScriptInstances)
-            {
-                if (thisInstance && !formScript.Equals(this))
-                {
-                    continue;
-                }
-                formScript.tsbComboSavedScripts.Items.Clear();
-                foreach (CODE_SNIPPETS codeSnippet in codeSnippets)
-                {
-                    formScript.tsbComboSavedScripts.Items.Add(codeSnippet);
-                }
-            }
-        }
-
-        /// <summary>
         /// Occurs when a user wants to run a script for a Scintilla document contents.
         /// </summary>
         public event OnScintillaRequired ScintillaRequired = null;
 
-        private void tsbComboSavedScripts_SelectedIndexChanged(object sender, EventArgs e)
+
+        // a user wishes to load a script from the database..
+        private void tsbOpen_Click(object sender, EventArgs e)
         {
-            ToolStripComboBox comboBox = (ToolStripComboBox)sender;
-            if (comboBox.SelectedIndex != -1)
+            // display the script dialog..
+            CODE_SNIPPETS snippet = FormDialogScriptLoad.Execute();
+
+            // if a selection was made..
+            if (snippet != null)
             {
-                CODE_SNIPPETS codeSnippet = (CODE_SNIPPETS)comboBox.SelectedItem;
-                scintilla.Text = codeSnippet.SCRIPT_CONTENTS;
-                tsbTextScriptName.Text = codeSnippet.SCRIPT_NAME;
+                suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
+                tstScriptName.Text = snippet.SCRIPT_NAME;
+                scintilla.Text = snippet.SCRIPT_CONTENTS;
+                tsbComboScriptType.SelectedIndex = snippet.SCRIPT_TYPE;
+                suspendChangedEvent = false; // "resume" the event handler..
             }
+        }
+
+        /// <summary>
+        /// Enables or disabled the controls that might end up for the user to lose his work.
+        /// </summary>
+        /// <param name="enable">A flag indicating if the controls should be enabled or disabled.</param>
+        private void EnableDisableControlsOnChange(bool enable)
+        {
+            tsbComboScriptType.Enabled = enable; // set the value..
+            tsbOpen.Enabled = enable;
+        }
+
+
+        // the text was changed either in the scintilla or in the script's
+        // name text box or the script type combo box selected item was changed..
+        private void common_Changed(object sender, EventArgs e)
+        {
+            if (!suspendChangedEvent) // only do something if "listening" flag is set to enabled..
+            {
+                if (sender.Equals(tsbComboScriptType))
+                {
+                    suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
+                    if (tsbComboScriptType.SelectedIndex == 0)
+                    {
+                        scintilla.Text = scriptRunnerText.CSharpScriptBase;
+                        tstScriptName.Text = defaultNameScriptTemplateText;
+                    }
+                    else
+                    {
+                        scintilla.Text = scriptRunnerLines.CSharpScriptBase;
+                        tstScriptName.Text = defaultNameScriptTemplateLines;
+                    }
+                    suspendChangedEvent = false; // "resume" the event handler..
+                    return;
+                }
+
+                // don't allow the user to lose one's work on the current script..
+                EnableDisableControlsOnChange(false);
+            }
+        }
+
+        private void tsbDiscardChanges_Click(object sender, EventArgs e)
+        {
+            // enable the controls as the user chose to discard the changes of the script..
+            EnableDisableControlsOnChange(true);
+        }
+
+        private void ErrorBlink()
+        {
+            Color backColorSave = tstScriptName.BackColor;
+            for (int i = 0; i < 6; i++)
+            {
+                tstScriptName.BackColor = (i % 2) == 0 ? Color.Red : backColorSave;
+                Thread.Sleep(100);
+                Application.DoEvents();
+            }
+        }
+
+        private void tsbSave_Click(object sender, EventArgs e)
+        {
+            ErrorBlink();
         }
     }
 }

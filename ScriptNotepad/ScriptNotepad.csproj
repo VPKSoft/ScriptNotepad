@@ -107,8 +107,14 @@
     <Compile Include="FormScript.Designer.cs">
       <DependentUpon>FormScript.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDialogScriptLoad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDialogScriptLoad.Designer.cs">
+      <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Localization\StaticLocalizeFileDialog.cs" />
-    <Compile Include="UtilityClasses\CodeDom\CSCodeDOMeScriptRunnerLines.cs" />
+    <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerLines.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerParent.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerText.cs" />
     <Compile Include="Database\Database.cs" />
@@ -134,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormScript.resx">
       <DependentUpon>FormScript.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDialogScriptLoad.resx">
+      <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -194,6 +203,7 @@
     <Content Include="Localization\SQLiteDatabase\lang.sqlite" />
     <Content Include="Resources\Clock.ico" />
     <Content Include="Resources\Clock.png" />
+    <None Include="Resources\discard_changes.png" />
     <Content Include="Resources\DownButton.png" />
     <Content Include="Resources\Highlighter.png" />
     <None Include="Resources\Save.png" />

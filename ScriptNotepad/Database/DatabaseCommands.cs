@@ -122,7 +122,8 @@ namespace ScriptNotepad.Database
                 $"{DateToDBString(codeSnippet.MODIFIED)},",
                 $"{codeSnippet.SCRIPT_TYPE},",
                 $"{codeSnippet.SCRIPT_LANGUAGE}",
-                $"WHERE NOT EXISTS(SELECT * FROM CODE_SNIPPETS WHERE ID = {codeSnippet.ID});");
+                $"WHERE NOT EXISTS(SELECT * FROM CODE_SNIPPETS WHERE ID = {codeSnippet.ID} AND",
+                $"NAME = {QS(codeSnippet.SCRIPT_NAME)} COLLATE NOCASE);");
 
             return sql;
         }

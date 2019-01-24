@@ -30,19 +30,19 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormScript));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsbNew = new System.Windows.Forms.ToolStripButton();
             this.tsbOpen = new System.Windows.Forms.ToolStripButton();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
+            this.tsbDiscardChanges = new System.Windows.Forms.ToolStripButton();
             this.tsbComboScriptType = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbComboSavedScripts = new System.Windows.Forms.ToolStripComboBox();
+            this.tstScriptName = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbTextScriptName = new System.Windows.Forms.ToolStripTextBox();
             this.tsbRunScript = new System.Windows.Forms.ToolStripButton();
             this.scintilla = new ScintillaNET.Scintilla();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tbCompilerResults = new System.Windows.Forms.TextBox();
+            this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.tlpMain.SuspendLayout();
             this.SuspendLayout();
@@ -50,14 +50,14 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbNew,
             this.tsbOpen,
             this.tsbSave,
+            this.tsbSaveAs,
+            this.tsbDiscardChanges,
             this.tsbComboScriptType,
             this.toolStripSeparator1,
-            this.tsbComboSavedScripts,
+            this.tstScriptName,
             this.toolStripSeparator2,
-            this.tsbTextScriptName,
             this.tsbRunScript});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -65,32 +65,35 @@
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // tsbNew
-            // 
-            this.tsbNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
-            this.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbNew.Name = "tsbNew";
-            this.tsbNew.Size = new System.Drawing.Size(23, 22);
-            this.tsbNew.Text = "New";
-            // 
             // tsbOpen
             // 
             this.tsbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
+            this.tsbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpen.Image")));
             this.tsbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOpen.Name = "tsbOpen";
             this.tsbOpen.Size = new System.Drawing.Size(23, 22);
             this.tsbOpen.Text = "Open";
+            this.tsbOpen.Click += new System.EventHandler(this.tsbOpen_Click);
             // 
             // tsbSave
             // 
             this.tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSave.Image = global::ScriptNotepad.Properties.Resources.Save;
+            this.tsbSave.Image = ((System.Drawing.Image)(resources.GetObject("tsbSave.Image")));
             this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSave.Name = "tsbSave";
             this.tsbSave.Size = new System.Drawing.Size(23, 22);
             this.tsbSave.Text = "Save";
+            this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
+            // 
+            // tsbDiscardChanges
+            // 
+            this.tsbDiscardChanges.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDiscardChanges.Image = global::ScriptNotepad.Properties.Resources.discard_changes;
+            this.tsbDiscardChanges.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDiscardChanges.Name = "tsbDiscardChanges";
+            this.tsbDiscardChanges.Size = new System.Drawing.Size(23, 22);
+            this.tsbDiscardChanges.Text = "Discard changes";
+            this.tsbDiscardChanges.Click += new System.EventHandler(this.tsbDiscardChanges_Click);
             // 
             // tsbComboScriptType
             // 
@@ -98,37 +101,31 @@
             this.tsbComboScriptType.Name = "tsbComboScriptType";
             this.tsbComboScriptType.Size = new System.Drawing.Size(121, 25);
             this.tsbComboScriptType.ToolTipText = "The script type";
-            this.tsbComboScriptType.SelectedIndexChanged += new System.EventHandler(this.tsbComboScriptType_SelectedIndexChanged);
+            this.tsbComboScriptType.SelectedIndexChanged += new System.EventHandler(this.common_Changed);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbComboSavedScripts
+            // tstScriptName
             // 
-            this.tsbComboSavedScripts.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.tsbComboSavedScripts.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.tsbComboSavedScripts.Name = "tsbComboSavedScripts";
-            this.tsbComboSavedScripts.Size = new System.Drawing.Size(200, 25);
-            this.tsbComboSavedScripts.ToolTipText = "Saved scripts";
-            this.tsbComboSavedScripts.SelectedIndexChanged += new System.EventHandler(this.tsbComboSavedScripts_SelectedIndexChanged);
+            this.tstScriptName.AutoSize = false;
+            this.tstScriptName.Name = "tstScriptName";
+            this.tstScriptName.Size = new System.Drawing.Size(200, 22);
+            this.tstScriptName.Text = "A name for the script";
+            this.tstScriptName.ToolTipText = "A name for the script";
+            this.tstScriptName.TextChanged += new System.EventHandler(this.common_Changed);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbTextScriptName
-            // 
-            this.tsbTextScriptName.Name = "tsbTextScriptName";
-            this.tsbTextScriptName.Size = new System.Drawing.Size(200, 25);
-            this.tsbTextScriptName.ToolTipText = "The name of the script";
-            // 
             // tsbRunScript
             // 
             this.tsbRunScript.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRunScript.Image = global::ScriptNotepad.Properties.Resources.Play;
+            this.tsbRunScript.Image = ((System.Drawing.Image)(resources.GetObject("tsbRunScript.Image")));
             this.tsbRunScript.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRunScript.Name = "tsbRunScript";
             this.tsbRunScript.Size = new System.Drawing.Size(23, 22);
@@ -142,6 +139,7 @@
             this.scintilla.Name = "scintilla";
             this.scintilla.Size = new System.Drawing.Size(938, 461);
             this.scintilla.TabIndex = 0;
+            this.scintilla.TextChanged += new System.EventHandler(this.common_Changed);
             // 
             // statusStrip1
             // 
@@ -180,6 +178,15 @@
             this.tbCompilerResults.TabIndex = 1;
             this.tbCompilerResults.WordWrap = false;
             // 
+            // tsbSaveAs
+            // 
+            this.tsbSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
+            this.tsbSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSaveAs.Name = "tsbSaveAs";
+            this.tsbSaveAs.Size = new System.Drawing.Size(23, 22);
+            this.tsbSaveAs.Text = "toolStripButton1";
+            // 
             // FormScript
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -204,18 +211,18 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripButton tsbOpen;
         private System.Windows.Forms.ToolStripButton tsbSave;
         private System.Windows.Forms.ToolStripComboBox tsbComboScriptType;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripComboBox tsbComboSavedScripts;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripTextBox tsbTextScriptName;
         private ScintillaNET.Scintilla scintilla;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripButton tsbRunScript;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.TextBox tbCompilerResults;
+        private System.Windows.Forms.ToolStripButton tsbDiscardChanges;
+        private System.Windows.Forms.ToolStripTextBox tstScriptName;
+        private System.Windows.Forms.ToolStripButton tsbSaveAs;
     }
 }

@@ -48,19 +48,26 @@ namespace ScriptNotepad
             // if the application is running send the arguments to the existing instance..
             if (AppRunning.CheckIfRunning("VPKSoft.ScriptNotepad.C#"))
             {
-                IpcClientServer ipcClient = new IpcClientServer();
-                ipcClient.CreateClient("localhost", 50670);
-                string[] args = Environment.GetCommandLineArgs();
-
-                // only send the existing files to the running instance, don't send the executable's
-                // file name thus the start from 1..
-                for (int i = 1; i < args.Length; i++)
+                try
                 {
-                    string file = args[i];
-                    if (File.Exists(file))
+                    IpcClientServer ipcClient = new IpcClientServer();
+                    ipcClient.CreateClient("localhost", 50670);
+                    string[] args = Environment.GetCommandLineArgs();
+
+                    // only send the existing files to the running instance, don't send the executable's
+                    // file name thus the start from 1..
+                    for (int i = 1; i < args.Length; i++)
                     {
-                        ipcClient.SendMessage(file);
+                        string file = args[i];
+                        if (File.Exists(file))
+                        {
+                            ipcClient.SendMessage(file);
+                        }
                     }
+                }
+                catch
+                {
+                    // just in case something fails with the IPC communication..
                 }
                 return;
             }
@@ -75,6 +82,8 @@ namespace ScriptNotepad
             if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)
             {
                 new FormMain();
+                new FormScript();
+                new FormDialogScriptLoad();
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
                 return;

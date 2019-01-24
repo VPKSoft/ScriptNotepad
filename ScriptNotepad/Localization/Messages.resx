@@ -312,4 +312,10 @@
   <data name="msgScriptTypeText" xml:space="preserve">
     <value>Script text|As in the C# script type should be handling the Scintilla's contents as text</value>
   </data>
+  <data name="msgDefaultScriptSnippetLines" xml:space="preserve">
+    <value>A line script snippet|As in a script for manipulating Scintilla contents as lines</value>
+  </data>
+  <data name="msgDefaultScriptSnippetText" xml:space="preserve">
+    <value>A text script snippet|As in a script for manipulating Scintilla contents as text</value>
+  </data>
 </root>

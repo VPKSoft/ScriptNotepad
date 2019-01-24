@@ -61,6 +61,16 @@ namespace ScriptNotepad.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap discard_changes {
+            get {
+                object obj = ResourceManager.GetObject("discard_changes", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .inp .dat .msg.
         /// </summary>
         internal static string file_patterns_abaqus {

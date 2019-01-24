@@ -205,6 +205,24 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A line script snippet|As in a script for manipulating Scintilla contents as lines.
+        /// </summary>
+        internal static string msgDefaultScriptSnippetLines {
+            get {
+                return ResourceManager.GetString("msgDefaultScriptSnippetLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A text script snippet|As in a script for manipulating Scintilla contents as text.
+        /// </summary>
+        internal static string msgDefaultScriptSnippetText {
+            get {
+                return ResourceManager.GetString("msgDefaultScriptSnippetText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diff file|*.diff;*.patch|A text in a file dialog indicating Diff files.
         /// </summary>
         internal static string msgDiffFile {

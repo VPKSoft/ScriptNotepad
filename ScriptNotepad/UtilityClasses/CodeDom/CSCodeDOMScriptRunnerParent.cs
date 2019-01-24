@@ -54,7 +54,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <summary>
         /// Gets the base "skeleton" C# code snippet for manipulating text as lines.
         /// </summary>
-        public static string CSharpScriptBase { get; set; } = string.Empty;
+        public string CSharpScriptBase { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets a value indicating whether the script compile failed.
@@ -122,7 +122,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CSCodeDOMeScriptRunnerLines"/> class.
+        /// Initializes a new instance of the <see cref="CSCodeDOMScriptRunnerLines"/> class.
         /// </summary>
         public CSCodeDOMScriptRunnerParent()
         {
