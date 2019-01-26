@@ -205,6 +205,7 @@
     <Content Include="Resources\Clock.png" />
     <None Include="Resources\discard_changes.png" />
     <Content Include="Resources\DownButton.png" />
+    <None Include="Resources\Erase.png" />
     <Content Include="Resources\Highlighter.png" />
     <None Include="Resources\Save.png" />
     <None Include="Resources\SaveAs.png" />

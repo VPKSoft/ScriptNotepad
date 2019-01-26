@@ -47,6 +47,12 @@ namespace ScriptNotepad
     {
         private IEnumerable<CODE_SNIPPETS> codeSnippets;
 
+        // a field to hold localized name for a script template for manipulating Scintilla contents as text..
+        string defaultNameScriptTemplateText = string.Empty;
+
+        // a field to hold localized name for a script template for manipulating Scintilla contents as lines..
+        string defaultNameScriptTemplateLines = string.Empty;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FormDialogScriptLoad"/> class.
         /// </summary>
@@ -71,6 +77,13 @@ namespace ScriptNotepad
             // get the code snippets in the database..
             codeSnippets = Database.Database.GetCodeSnippets();
 
+            // localize the script type default names..
+            defaultNameScriptTemplateText =
+                DBLangEngine.GetMessage("msgDefaultScriptSnippetText", "A text script snippet|As in a script for manipulating Scintilla contents as text");
+
+            defaultNameScriptTemplateLines =
+                DBLangEngine.GetMessage("msgDefaultScriptSnippetLines", "A line script snippet|As in a script for manipulating Scintilla contents as lines");
+
             // localize the currently supported script types..
             cmbScriptType.Items.Clear();
             cmbScriptType.Items.Add(
@@ -93,11 +106,25 @@ namespace ScriptNotepad
         /// <summary>
         /// Shows this dialog for a user to select a script.
         /// </summary>
+        /// <param name="manage">A flag indicating if the dialog will be shown in manage mode.</param>
         /// <returns>An instance for the <see cref="CODE_SNIPPETS"/> class if user accepted the dialog; otherwise null.</returns>
-        public static CODE_SNIPPETS Execute()
+        public static CODE_SNIPPETS Execute(bool manage)
         {
             // create a new instance of the FormDialogScriptLoad..
             FormDialogScriptLoad formDialogScriptLoad = new FormDialogScriptLoad();
+
+            // set the button visibility based on the manage flag..
+            formDialogScriptLoad.btCancel.Visible = !manage;
+            formDialogScriptLoad.btOK.Visible = !manage;
+            formDialogScriptLoad.btClose.Visible = manage;
+
+            // if the manage flag is set only one button returning DialogResult.Cancel value is used..
+            if (manage)
+            {
+                // ..so do set reset the dialog's default buttons..
+                formDialogScriptLoad.AcceptButton = formDialogScriptLoad.btClose;
+                formDialogScriptLoad.CancelButton = formDialogScriptLoad.btClose;
+            }
 
             // show the dialog..
             if (formDialogScriptLoad.ShowDialog() == DialogResult.OK)
@@ -111,7 +138,6 @@ namespace ScriptNotepad
                 return null;
             }
         }
-
 
         /// <summary>
         /// Filters the list box contents based on the script type and a possible search string.
@@ -157,6 +183,58 @@ namespace ScriptNotepad
         {
             // set the OK button's state based on the value if any script is selected from the script list box..
             btOK.Enabled = lbScriptList.SelectedIndex != -1;
+        }
+
+        /// <summary>
+        /// Determines whether script is possible to be deleted from the database i.e. not a "reserved" name.
+        /// </summary>
+        /// <param name="scriptName">Name of the script to check.</param>
+        /// <returns>
+        /// True if the script with a given name is possible to be deleted from the database; otherwise false.
+        /// </returns>
+        private bool IsScriptPossibleToDelete(string scriptName)
+        {
+            return !((scriptName == defaultNameScriptTemplateText || // a localized template name for text will not do..
+                scriptName == defaultNameScriptTemplateLines || // a localized template name for lines will not do..
+                scriptName == "Simple line ending change script" || // a non-localized database template for lines will not do..
+                scriptName == "Simple replace script" ||
+                scriptName == "Simple XML manipulation script")); // a non-localized database template for text will not do..
+        }
+
+        // a user wishes to delete scripts from the database..
+        private void btDeleteScript_Click(object sender, EventArgs e)
+        {
+            // display a confirmation dialog..
+            if (MessageBox.Show(
+                DBLangEngine.GetMessage("msgDeleteScriptConfirm", "Delete selected script snippet(s)?|A confirmation question whether to delete selected script snippets from the database"),
+                DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog"), 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                bool deleted = false; // a flag indicating if any scripts were actually deleted..
+
+                // loop though the selected items in the list box..
+                foreach (var item in lbScriptList.SelectedItems)
+                {
+                    // assume that an item in the list box is a CODE_SNIPPETS class instance..
+                    CODE_SNIPPETS snippet = (CODE_SNIPPETS)item;
+
+                    // check if the script's name is valid for deletion..
+                    if (IsScriptPossibleToDelete(snippet.SCRIPT_NAME))
+                    {
+                        // some boolean algebra to determine if anything was actually delete from the database..
+                        deleted |= Database.Database.DeleteCodeSnippet(snippet);
+                    }
+                }
+
+                if (deleted) // only refresh the list if some deletions were made..
+                {
+                    // get the remaining code snippets in the database..
+                    codeSnippets = Database.Database.GetCodeSnippets();
+
+                    // filter the list box contents based on the given filters..
+                    FilterSnippets(cmbScriptType.SelectedIndex, tbFilter.Text);
+                }
+            }
         }
     }
 }

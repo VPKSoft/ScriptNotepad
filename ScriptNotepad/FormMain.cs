@@ -601,6 +601,13 @@ namespace ScriptNotepad
             NewDocument();
         }
 
+        // the user wishes to manage the script snippets in the database..
+        private void mnuManageScriptSnippets_Click(object sender, EventArgs e)
+        {
+            // ..so display the dialog..
+            FormDialogScriptLoad.Execute(true);
+        }
+
         // a user wanted to find or find and replace something of the active document..
         private void mnuFind_Click(object sender, EventArgs e)
         {
@@ -747,5 +754,6 @@ namespace ScriptNotepad
             }
         }
         #endregion
+
     }
 }

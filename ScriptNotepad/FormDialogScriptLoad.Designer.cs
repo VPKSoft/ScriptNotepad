@@ -37,6 +37,8 @@
             this.lbScriptList = new System.Windows.Forms.ListBox();
             this.btOK = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
+            this.btDeleteScript = new System.Windows.Forms.Button();
+            this.btClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbScriptType
@@ -96,7 +98,8 @@
             this.lbScriptList.FormattingEnabled = true;
             this.lbScriptList.Location = new System.Drawing.Point(12, 75);
             this.lbScriptList.Name = "lbScriptList";
-            this.lbScriptList.Size = new System.Drawing.Size(350, 251);
+            this.lbScriptList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lbScriptList.Size = new System.Drawing.Size(319, 251);
             this.lbScriptList.TabIndex = 5;
             this.lbScriptList.SelectedIndexChanged += new System.EventHandler(this.lbScriptList_SelectedIndexChanged);
             // 
@@ -122,6 +125,28 @@
             this.btCancel.Text = "Cancel";
             this.btCancel.UseVisualStyleBackColor = true;
             // 
+            // btDeleteScript
+            // 
+            this.btDeleteScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDeleteScript.Image = global::ScriptNotepad.Properties.Resources.Erase;
+            this.btDeleteScript.Location = new System.Drawing.Point(337, 75);
+            this.btDeleteScript.Name = "btDeleteScript";
+            this.btDeleteScript.Size = new System.Drawing.Size(25, 23);
+            this.btDeleteScript.TabIndex = 8;
+            this.btDeleteScript.UseVisualStyleBackColor = true;
+            this.btDeleteScript.Click += new System.EventHandler(this.btDeleteScript_Click);
+            // 
+            // btClose
+            // 
+            this.btClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btClose.Location = new System.Drawing.Point(12, 337);
+            this.btClose.Name = "btClose";
+            this.btClose.Size = new System.Drawing.Size(75, 23);
+            this.btClose.TabIndex = 9;
+            this.btClose.Text = "Close";
+            this.btClose.UseVisualStyleBackColor = true;
+            // 
             // FormDialogScriptLoad
             // 
             this.AcceptButton = this.btOK;
@@ -129,6 +154,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(374, 372);
+            this.Controls.Add(this.btClose);
+            this.Controls.Add(this.btDeleteScript);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.lbScriptList);
@@ -159,5 +186,7 @@
         private System.Windows.Forms.ListBox lbScriptList;
         private System.Windows.Forms.Button btOK;
         private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.Button btDeleteScript;
+        private System.Windows.Forms.Button btClose;
     }
 }

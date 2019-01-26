@@ -297,6 +297,35 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Deletes the given code snippet from the database.
+        /// </summary>
+        /// <param name="codeSnippet">The code snippet to delete from the database.</param>
+        /// <returns>True if the snippet was successfully delete from the database; otherwise false.</returns>
+        public static bool DeleteCodeSnippet(CODE_SNIPPETS codeSnippet)
+        {
+            try
+            {
+                // generate a SQL sentence for the deletion..
+                string sql = DatabaseCommands.GenScriptDelete(codeSnippet);
+
+                // as the SQLiteCommand is disposable a using clause is required..
+                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                {
+                    // do the deletion..
+                    command.ExecuteNonQuery();
+                }
+
+                // success..
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LastException = ex; // log the exception..
+                return false; // fail..
+            }
+        }
+
+        /// <summary>
         /// Adds a <paramref name="fileName"/> file to the database table RECENT_FILES if it doesn't exists.
         /// </summary>
         /// <param name="fileName">A file name to generate a RECENT_FILES class instance.</param>

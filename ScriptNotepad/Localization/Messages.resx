@@ -318,4 +318,10 @@
   <data name="msgDefaultScriptSnippetText" xml:space="preserve">
     <value>A text script snippet|As in a script for manipulating Scintilla contents as text</value>
   </data>
+  <data name="msgConfirm" xml:space="preserve">
+    <value>Confirm|A caption text for a confirm dialog</value>
+  </data>
+  <data name="msgDeleteScriptConfirm" xml:space="preserve">
+    <value>Delete selected script snippet(s)?|A confirmation question whether to delete selected script snippets from the database</value>
+  </data>
 </root>

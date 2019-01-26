@@ -178,6 +178,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm|A caption text for a confirm dialog.
+        /// </summary>
+        internal static string msgConfirm {
+            get {
+                return ResourceManager.GetString("msgConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to C++ source file|*.h;*.hpp;*.hxx;*.cpp;*.cxx;*.cc|A text in a file dialog indicating C++ source files.
         /// </summary>
         internal static string msgCPPSourceFile {
@@ -219,6 +228,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgDefaultScriptSnippetText {
             get {
                 return ResourceManager.GetString("msgDefaultScriptSnippetText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete selected script snippet(s)?|A confirmation question whether to delete selected script snippets from the database.
+        /// </summary>
+        internal static string msgDeleteScriptConfirm {
+            get {
+                return ResourceManager.GetString("msgDeleteScriptConfirm", resourceCulture);
             }
         }
         

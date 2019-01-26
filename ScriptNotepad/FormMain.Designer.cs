@@ -56,14 +56,16 @@
             this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAll = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAllWithUnsaved = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRunScript = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuRunScript = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
+            this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -232,6 +234,7 @@
             this.mnuFile,
             this.mnuEdit,
             this.mnuSearch,
+            this.mnuTools,
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -309,6 +312,21 @@
             this.mnuSaveAllWithUnsaved.Text = "Save All (+new)";
             this.mnuSaveAllWithUnsaved.Click += new System.EventHandler(this.mnuSaveAll_Click);
             // 
+            // mnuEdit
+            // 
+            this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuRunScript});
+            this.mnuEdit.Name = "mnuEdit";
+            this.mnuEdit.Size = new System.Drawing.Size(39, 20);
+            this.mnuEdit.Text = "Edit";
+            // 
+            // mnuRunScript
+            // 
+            this.mnuRunScript.Name = "mnuRunScript";
+            this.mnuRunScript.Size = new System.Drawing.Size(128, 22);
+            this.mnuRunScript.Text = "Run Script";
+            this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
+            // 
             // mnuSearch
             // 
             this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -339,20 +357,20 @@
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
-            // mnuEdit
+            // mnuTools
             // 
-            this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuRunScript});
-            this.mnuEdit.Name = "mnuEdit";
-            this.mnuEdit.Size = new System.Drawing.Size(39, 20);
-            this.mnuEdit.Text = "Edit";
+            this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuManageScriptSnippets});
+            this.mnuTools.Name = "mnuTools";
+            this.mnuTools.Size = new System.Drawing.Size(47, 20);
+            this.mnuTools.Text = "Tools";
             // 
-            // mnuRunScript
+            // mnuManageScriptSnippets
             // 
-            this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
-            this.mnuRunScript.Text = "Run Script";
-            this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
+            this.mnuManageScriptSnippets.Name = "mnuManageScriptSnippets";
+            this.mnuManageScriptSnippets.Size = new System.Drawing.Size(196, 22);
+            this.mnuManageScriptSnippets.Text = "Manage script snippets";
+            this.mnuManageScriptSnippets.Click += new System.EventHandler(this.mnuManageScriptSnippets_Click);
             // 
             // FormMain
             // 
@@ -413,6 +431,8 @@
         private System.Windows.Forms.ToolStripButton tsbSaveAllWithUnsaved;
         private System.Windows.Forms.ToolStripMenuItem mnuEdit;
         private System.Windows.Forms.ToolStripMenuItem mnuRunScript;
+        private System.Windows.Forms.ToolStripMenuItem mnuTools;
+        private System.Windows.Forms.ToolStripMenuItem mnuManageScriptSnippets;
     }
 }
 

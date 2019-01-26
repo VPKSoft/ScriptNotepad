@@ -123,7 +123,7 @@ namespace ScriptNotepad.Database
                 $"{codeSnippet.SCRIPT_TYPE},",
                 $"{codeSnippet.SCRIPT_LANGUAGE}",
                 $"WHERE NOT EXISTS(SELECT * FROM CODE_SNIPPETS WHERE ID = {codeSnippet.ID} AND",
-                $"NAME = {QS(codeSnippet.SCRIPT_NAME)} COLLATE NOCASE);");
+                $"SCRIPT_NAME = {QS(codeSnippet.SCRIPT_NAME)} COLLATE NOCASE);");
 
             return sql;
         }
@@ -162,6 +162,22 @@ namespace ScriptNotepad.Database
                 $"MODIFIED, SCRIPT_TYPE, SCRIPT_LANGUAGE",
                 $"FROM CODE_SNIPPETS",
                 $"ORDER BY SCRIPT_TYPE, SCRIPT_NAME COLLATE NOCASE, MODIFIED");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to delete code snippet from the CODE_SNIPPETS table in the database.
+        /// </summary>
+        /// <param name="codeSnippet">The code snippet to delete from the database.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenScriptDelete(CODE_SNIPPETS codeSnippet)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"DELETE",
+                $"FROM CODE_SNIPPETS",
+                $"WHERE ID = {codeSnippet.ID}");
 
             return sql;
         }

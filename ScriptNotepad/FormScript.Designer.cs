@@ -32,6 +32,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbOpen = new System.Windows.Forms.ToolStripButton();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
+            this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tsbDiscardChanges = new System.Windows.Forms.ToolStripButton();
             this.tsbComboScriptType = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -42,7 +43,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tbCompilerResults = new System.Windows.Forms.TextBox();
-            this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.tlpMain.SuspendLayout();
             this.SuspendLayout();
@@ -83,7 +83,17 @@
             this.tsbSave.Name = "tsbSave";
             this.tsbSave.Size = new System.Drawing.Size(23, 22);
             this.tsbSave.Text = "Save";
-            this.tsbSave.Click += new System.EventHandler(this.tsbSave_Click);
+            this.tsbSave.Click += new System.EventHandler(this.tsbSaveButtons_Click);
+            // 
+            // tsbSaveAs
+            // 
+            this.tsbSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
+            this.tsbSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSaveAs.Name = "tsbSaveAs";
+            this.tsbSaveAs.Size = new System.Drawing.Size(23, 22);
+            this.tsbSaveAs.Text = "Save as";
+            this.tsbSaveAs.Click += new System.EventHandler(this.tsbSaveButtons_Click);
             // 
             // tsbDiscardChanges
             // 
@@ -177,15 +187,6 @@
             this.tbCompilerResults.Size = new System.Drawing.Size(938, 46);
             this.tbCompilerResults.TabIndex = 1;
             this.tbCompilerResults.WordWrap = false;
-            // 
-            // tsbSaveAs
-            // 
-            this.tsbSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
-            this.tsbSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSaveAs.Name = "tsbSaveAs";
-            this.tsbSaveAs.Size = new System.Drawing.Size(23, 22);
-            this.tsbSaveAs.Text = "toolStripButton1";
             // 
             // FormScript
             // 

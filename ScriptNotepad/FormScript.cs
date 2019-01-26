@@ -64,6 +64,9 @@ namespace ScriptNotepad
         // a field to hold localized name for a script template for manipulating Scintilla contents as lines..
         string defaultNameScriptTemplateLines = string.Empty;
 
+        // a field to hold the code snippet's contents for saving possibility..
+        private CODE_SNIPPETS currentCodeSnippet = null;
+
         /// <summary>
         /// A delegate for the ScintillaRequired event.
         /// </summary>
@@ -130,6 +133,8 @@ namespace ScriptNotepad
 
             // set the text for the default script snippet..
             tstScriptName.Text = defaultNameScriptTemplateText;
+            
+            CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
 
             suspendChangedEvent = false; // "resume" the event handler..
 
@@ -239,12 +244,11 @@ namespace ScriptNotepad
         /// </summary>
         public event OnScintillaRequired ScintillaRequired = null;
 
-
         // a user wishes to load a script from the database..
         private void tsbOpen_Click(object sender, EventArgs e)
         {
             // display the script dialog..
-            CODE_SNIPPETS snippet = FormDialogScriptLoad.Execute();
+            CODE_SNIPPETS snippet = FormDialogScriptLoad.Execute(false);
 
             // if a selection was made..
             if (snippet != null)
@@ -254,6 +258,7 @@ namespace ScriptNotepad
                 scintilla.Text = snippet.SCRIPT_CONTENTS;
                 tsbComboScriptType.SelectedIndex = snippet.SCRIPT_TYPE;
                 suspendChangedEvent = false; // "resume" the event handler..
+                currentCodeSnippet = snippet;
             }
         }
 
@@ -266,7 +271,6 @@ namespace ScriptNotepad
             tsbComboScriptType.Enabled = enable; // set the value..
             tsbOpen.Enabled = enable;
         }
-
 
         // the text was changed either in the scintilla or in the script's
         // name text box or the script type combo box selected item was changed..
@@ -281,15 +285,25 @@ namespace ScriptNotepad
                     {
                         scintilla.Text = scriptRunnerText.CSharpScriptBase;
                         tstScriptName.Text = defaultNameScriptTemplateText;
+                        CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
                     }
                     else
                     {
                         scintilla.Text = scriptRunnerLines.CSharpScriptBase;
                         tstScriptName.Text = defaultNameScriptTemplateLines;
+                        CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
                     }
                     suspendChangedEvent = false; // "resume" the event handler..
                     return;
                 }
+
+                if (currentCodeSnippet == null)
+                {
+                    CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
+                }
+
+                currentCodeSnippet.SCRIPT_NAME = tstScriptName.Text;
+                currentCodeSnippet.SCRIPT_CONTENTS = scintilla.Text;
 
                 // don't allow the user to lose one's work on the current script..
                 EnableDisableControlsOnChange(false);
@@ -302,20 +316,119 @@ namespace ScriptNotepad
             EnableDisableControlsOnChange(true);
         }
 
+        /// <summary>
+        /// Blinks the name of the script in the tool strip if a user has set a "reserved" name for the script
+        /// or a user tries to save a script as with an existing name.
+        /// </summary>
         private void ErrorBlink()
         {
+            // save the background color to a variable..
             Color backColorSave = tstScriptName.BackColor;
+
+            // loop few times changing the color from red to the original color..
             for (int i = 0; i < 6; i++)
             {
+                // a normal remainder operator for two options..
                 tstScriptName.BackColor = (i % 2) == 0 ? Color.Red : backColorSave;
-                Thread.Sleep(100);
-                Application.DoEvents();
+                Thread.Sleep(100); // sleep form a hundred milliseconds..
+                Application.DoEvents(); // keep the GUI alive..
             }
         }
 
-        private void tsbSave_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Validates the name of the script (i.e. reserved words or existing scripts).
+        /// </summary>
+        /// <param name="scriptName">A name of the script of which validity to check.</param>
+        /// <param name="saveAs">A flag indicating whether the script is saved "as" or just to override an existing script.</param>
+        /// <returns>True if the given script name was valid; otherwise false.</returns>
+        private bool ValidateScriptName(string scriptName, bool saveAs)
         {
-            ErrorBlink();
+            // no white space allowed..
+            scriptName = scriptName.Trim();
+
+            // an unnamed script is not allowed..
+            if (scriptName == string.Empty)
+            {
+                return false;
+            }
+
+            bool result = true;
+
+            result = !((scriptName == defaultNameScriptTemplateText || // a localized template name for text will not do..
+                scriptName == defaultNameScriptTemplateLines || // a localized template name for lines will not do..
+                scriptName == "Simple line ending change script" || // a non-localized database template for lines will not do..
+                scriptName == "Simple replace script" ||
+                scriptName == "Simple XML manipulation script")); // a non-localized database template for text will not do..
+
+            // the result at this point is that the script name is valid,
+            // however the saveAs flag is true so there must not be any scripts
+            // in the database with the same name..
+            if (result && saveAs) 
+            {
+                // get all scripts from the database..
+                IEnumerable<CODE_SNIPPETS> snippets = Database.Database.GetCodeSnippets();
+
+                // if there is already one snippet with a same name, don't allow a save as..
+                result &= !(snippets.Count(f => f.SCRIPT_NAME.ToLowerInvariant() == scriptName.ToLowerInvariant()) > 0);
+            }
+
+            // return the result..
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a CODE_SNIPPETS class instance from the GUI items.
+        /// </summary>
+        /// <returns>A CODE_SNIPPETS class instance.</returns>
+        private CODE_SNIPPETS CreateNewCodeSnippet()
+        {
+            // just call the overload..
+            return CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
+        }
+
+        /// <summary>
+        /// Creates a CODE_SNIPPETS class instance from the given parameters.
+        /// </summary>
+        /// <param name="contents">The contents of the script.</param>
+        /// <param name="name">The name of the script.</param>
+        /// <param name="scriptType">The type of the script.</param>
+        /// <returns>A CODE_SNIPPETS class instance.</returns>
+        private CODE_SNIPPETS CreateNewCodeSnippet(string contents, string name, int scriptType)
+        {
+            // return a new CODE_SNIPPETS class instance using the given parameters..
+            return currentCodeSnippet = new CODE_SNIPPETS
+            {
+                SCRIPT_CONTENTS = contents,
+                SCRIPT_NAME = name,
+                SCRIPT_TYPE = scriptType
+            };
+        }
+
+        // an event which occurs when the save or a save as button is clicked..
+        private void tsbSaveButtons_Click(object sender, EventArgs e)
+        {
+            // if the script's name is invalid..
+            if (!ValidateScriptName(tstScriptName.Text, sender.Equals(tsbSaveAs)))
+            {
+                ErrorBlink(); // ..indicate an error..
+                return; // ..and return..
+            }
+            else // the name was validated..
+            {
+                // if the currentCodeSnippet is null then create a new one..
+                if (currentCodeSnippet == null)
+                {
+                    currentCodeSnippet = CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
+                }
+
+                // TODO::Logic for differentiate save and save as buttons..
+
+                // save the script snippet into the database..
+                Database.Database.AddOrUpdateCodeSnippet(currentCodeSnippet);
+
+                // enable the controls as the user chose to save the changes of the script..
+                EnableDisableControlsOnChange(true);
+            }
         }
     }
 }

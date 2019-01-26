@@ -167,6 +167,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Linq;
 #endregion
 
@@ -197,6 +198,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.Linq;
 #endregion
 
@@ -212,3 +214,34 @@ public class ManipulateText
 }', 'Simple line ending change script', '2019-01-21 08:00:00.000', 0;
 
 --ENDVER 8
+
+--VER 9
+INSERT INTO CODE_SNIPPETS (SCRIPT_CONTENTS, SCRIPT_NAME, MODIFIED, SCRIPT_TYPE)
+SELECT
+'#region Usings
+using System;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
+#endregion
+
+
+public class ManipulateText
+{
+    public static string Evaluate(string fileContents)
+    {
+	    XDocument xDoc = XDocument.Parse(fileContents);
+
+		// An example loop: foreach (XElement element in xDoc.Descendants("give_a_valid_name"))
+        // An example loop: {
+			// Do something with the: element.Attribute("some_name").Value;
+        // An example loop: }
+
+        return xDoc.ToString();
+    }
+}', 'Simple XML manipulation script', '2019-01-26 08:00:00.000', 0;
+--ENDVER 9

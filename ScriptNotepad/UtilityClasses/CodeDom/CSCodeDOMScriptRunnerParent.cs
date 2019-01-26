@@ -134,6 +134,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
 
             // add useful assemblies for text manipulation..
             compilerParameters.ReferencedAssemblies.Add("System.dll");
+            compilerParameters.ReferencedAssemblies.Add("System.Xml.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Linq.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Xml.Linq.dll");
         }
