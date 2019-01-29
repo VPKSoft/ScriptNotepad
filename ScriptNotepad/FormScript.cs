@@ -26,12 +26,7 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
@@ -46,6 +41,7 @@ namespace ScriptNotepad
 {
     public partial class FormScript : DBLangEngineWinforms
     {
+        #region PrivateFields
         // a list to track the instances of this form so the changes can be delegated to each other..
         private static List<FormScript> formScriptInstances = new List<FormScript>();
 
@@ -59,33 +55,16 @@ namespace ScriptNotepad
         private bool suspendChangedEvent = false;
 
         // a field to hold localized name for a script template for manipulating Scintilla contents as text..
-        string defaultNameScriptTemplateText = string.Empty;
+        private string defaultNameScriptTemplateText = string.Empty;
 
         // a field to hold localized name for a script template for manipulating Scintilla contents as lines..
-        string defaultNameScriptTemplateLines = string.Empty;
+        private string defaultNameScriptTemplateLines = string.Empty;
 
         // a field to hold the code snippet's contents for saving possibility..
         private CODE_SNIPPETS currentCodeSnippet = null;
+        #endregion
 
-        /// <summary>
-        /// A delegate for the ScintillaRequired event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The <see cref="ScintillaRequiredEventArgs"/> instance containing the event data.</param>
-        public delegate void OnScintillaRequired(object sender, ScintillaRequiredEventArgs e);
-
-        /// <summary>
-        /// Event arguments for the ScintillaRequired event.
-        /// </summary>
-        /// <seealso cref="System.EventArgs" />
-        public class ScintillaRequiredEventArgs: EventArgs
-        {
-            /// <summary>
-            /// Gets or sets the Scintilla document which contents to manipulate via a C# script.
-            /// </summary>
-            public Scintilla Scintilla { get; set; } = null;
-        }
-
+        #region MassiveConstructor
         /// <summary>
         /// Initializes a new instance of the <see cref="FormScript"/> class.
         /// </summary>
@@ -144,13 +123,9 @@ namespace ScriptNotepad
             // track the instances of this form so the changes can be delegated to each other..
             formScriptInstances.Add(this);
         }
+        #endregion
 
-        private void FormScript_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // this form is no longer going to be an instance for much longer..
-            formScriptInstances.Remove(this);
-        }
-
+        #region InternalHelpers
         /// <summary>
         /// Gets the type of the selected script in the tool strip's combo box.
         /// </summary>
@@ -164,85 +139,164 @@ namespace ScriptNotepad
             }
         }
 
+        /// <summary>
+        /// Compiles the script in the view and outputs the compilation results.
+        /// </summary>
+        /// <returns>True if the compilation was successful; otherwise false.</returns>
+        private bool Compile()
+        {
+            // set the script code from the Scintilla document contents..
+            scriptRunnerText.ScriptCode = scintilla.Text;
+
+            tbCompilerResults.Text = string.Empty; // clear the previous results..
+
+            // loop through the compilation results..
+            for (int i = 0; i < scriptRunnerText.CompilerResults.Output.Count; i++)
+            {
+                tbCompilerResults.Text += scriptRunnerText.CompilerResults.Output[i] + Environment.NewLine;
+            }
+
+            // no need to continue if the script compilation failed..
+            if (scriptRunnerText.CompileFailed)
+            {
+                tbCompilerResults.Text +=
+                    DBLangEngine.GetMessage("msgScriptCompileFailed", "Compile failed.|A text to be shown if a script snippet compilation wasn't successful.") +
+                    Environment.NewLine;
+                return false;
+            }
+
+            tbCompilerResults.Text +=
+                DBLangEngine.GetMessage("msgScriptCompileSuccess", "Compile successful.|A text to be shown if a script snippet compilation was successful.") +
+                Environment.NewLine;
+            return true;
+        }
+
+        /// <summary>
+        /// Blinks the name of the script in the tool strip if a user has set a "reserved" name for the script
+        /// or a user tries to save a script as with an existing name.
+        /// </summary>
+        private void ErrorBlink()
+        {
+            // save the background color to a variable..
+            Color backColorSave = tstScriptName.BackColor;
+
+            // loop few times changing the color from red to the original color..
+            for (int i = 0; i < 6; i++)
+            {
+                // a normal remainder operator for two options..
+                tstScriptName.BackColor = (i % 2) == 0 ? Color.Red : backColorSave;
+                Thread.Sleep(100); // sleep form a hundred milliseconds..
+                Application.DoEvents(); // keep the GUI alive..
+            }
+        }
+
+        /// <summary>
+        /// Creates a CODE_SNIPPETS class instance from the GUI items.
+        /// </summary>
+        /// <returns>A CODE_SNIPPETS class instance.</returns>
+        private CODE_SNIPPETS CreateNewCodeSnippet()
+        {
+            // just call the overload..
+            return CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
+        }
+
+        /// <summary>
+        /// Creates a CODE_SNIPPETS class instance from the given parameters.
+        /// </summary>
+        /// <param name="contents">The contents of the script.</param>
+        /// <param name="name">The name of the script.</param>
+        /// <param name="scriptType">The type of the script.</param>
+        /// <returns>A CODE_SNIPPETS class instance.</returns>
+        private CODE_SNIPPETS CreateNewCodeSnippet(string contents, string name, int scriptType)
+        {
+            // return a new CODE_SNIPPETS class instance using the given parameters..
+            return currentCodeSnippet = new CODE_SNIPPETS
+            {
+                SCRIPT_CONTENTS = contents,
+                SCRIPT_NAME = name,
+                SCRIPT_TYPE = scriptType
+            };
+        }
+
+        /// <summary>
+        /// Enables or disabled the controls that might end up for the user to lose his work.
+        /// </summary>
+        /// <param name="enable">A flag indicating if the controls should be enabled or disabled.</param>
+        private void EnableDisableControlsOnChange(bool enable)
+        {
+            tsbComboScriptType.Enabled = enable; // set the value..
+            tsbOpen.Enabled = enable;
+        }
+
+        /// <summary>
+        /// Validates the name of the script (i.e. reserved words or existing scripts).
+        /// </summary>
+        /// <param name="scriptName">A name of the script of which validity to check.</param>
+        /// <returns>True if the given script name was valid; otherwise false.</returns>
+        private bool ValidateScriptName(string scriptName)
+        {
+            // no white space allowed..
+            scriptName = scriptName.Trim();
+
+            // an unnamed script is not allowed..
+            if (scriptName == string.Empty)
+            {
+                return false;
+            }
+
+            bool result = true;
+
+            result = !((scriptName == defaultNameScriptTemplateText || // a localized template name for text will not do..
+                scriptName == defaultNameScriptTemplateLines || // a localized template name for lines will not do..
+                scriptName == "Simple line ending change script" || // a non-localized database template for lines will not do..
+                scriptName == "Simple replace script" ||
+                scriptName == "Simple XML manipulation script")); // a non-localized database template for text will not do..
+
+            // return the result..
+            return result;
+        }
+        #endregion
+
+        #region InternalEvents
+        private void FormScript_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // this form is no longer going to be an instance for much longer..
+            formScriptInstances.Remove(this);
+        }
+
         // a user wants to run the script against the active Scintilla document on the main form..
         private void tsbRunScript_Click(object sender, EventArgs e)
         {
-            // a text contents manipulation script was requested..
-            if (SelectedScriptType == 0)
+            // no need to continue if the script compilation failed..
+            if (!Compile())
             {
-                // set the script code from the Scintilla document contents..
-                scriptRunnerText.ScriptCode = scintilla.Text;
+                return;
+            }
 
-                tbCompilerResults.Text = string.Empty; // clear the previous results..
+            // create a new instance of a ScintillaRequiredEventArgs class..
+            ScintillaRequiredEventArgs args = new ScintillaRequiredEventArgs();
 
-                // loop through the compilation results..
-                for (int i = 0; i < scriptRunnerText.CompilerResults.Output.Count; i++)
-                {
-                    tbCompilerResults.Text += scriptRunnerText.CompilerResults.Output[i] + Environment.NewLine;
-                }
+            // if the ScintillaRequired event is subscribed do raise the event..
+            ScintillaRequired?.Invoke(this, args);
 
-                // no need to continue if the script compilation failed..
-                if (scriptRunnerText.CompileFailed)
-                {
-                    return;
-                }
-
-                // create a new instance of a ScintillaRequiredEventArgs class..
-                ScintillaRequiredEventArgs args = new ScintillaRequiredEventArgs();
-
-                // if the ScintillaRequired event is subscribed do raise the event..
-                ScintillaRequired?.Invoke(this, args);
-
-                // we really don't care if the event was subscribed or not,
-                // only the value of the ScintillaRequiredEventArgs needs checking..
-                if (args.Scintilla != null)
+            // we really don't care if the event was subscribed or not,
+            // only the value of the ScintillaRequiredEventArgs needs checking..
+            if (args.Scintilla != null)
+            {
+                // a text contents manipulation script was requested..
+                if (SelectedScriptType == 0)
                 {
                     // a reference to a Scintilla document was gotten so do run the code..
                     args.Scintilla.Text = scriptRunnerText.ExecuteText(args.Scintilla.Text);
                 }
-            }
-            // a line contents manipulation script was requested..
-            else if (SelectedScriptType == 1)
-            {
-                // set the script code from the Scintilla document contents,
-                // this also pre-compiles the code so do list the compilation results
-                // to the text box..
-                scriptRunnerLines.ScriptCode = scintilla.Text;
-
-                tbCompilerResults.Text = string.Empty; // clear the previous results..
-
-                // loop through the compilation results..
-                for (int i = 0; i < scriptRunnerLines.CompilerResults.Errors.Count; i++)
-                {
-                    tbCompilerResults.Text += scriptRunnerLines.CompilerResults.Errors[i].ErrorText + Environment.NewLine;
-                }
-
-                // no need to continue if the script compilation failed..
-                if (scriptRunnerLines.CompileFailed)
-                {
-                    return;
-                }
-
-                // create a new instance of a ScintillaRequiredEventArgs class..
-                ScintillaRequiredEventArgs args = new ScintillaRequiredEventArgs();
-
-                // if the ScintillaRequired event is subscribed do raise the event..
-                ScintillaRequired?.Invoke(this, args);
-
-                // we really don't care if the event was subscribed or not,
-                // only the value of the ScintillaRequiredEventArgs needs checking..
-                if (args.Scintilla != null)
+                // a line contents manipulation script was requested..
+                else if (SelectedScriptType == 1)
                 {
                     // a reference to a Scintilla document was gotten so do run the code..
                     args.Scintilla.Text = scriptRunnerLines.ExecuteLines(ScintillaLines.GetLinesAsList(args.Scintilla));
                 }
             }
         }
-
-        /// <summary>
-        /// Occurs when a user wants to run a script for a Scintilla document contents.
-        /// </summary>
-        public event OnScintillaRequired ScintillaRequired = null;
 
         // a user wishes to load a script from the database..
         private void tsbOpen_Click(object sender, EventArgs e)
@@ -260,16 +314,6 @@ namespace ScriptNotepad
                 suspendChangedEvent = false; // "resume" the event handler..
                 currentCodeSnippet = snippet;
             }
-        }
-
-        /// <summary>
-        /// Enables or disabled the controls that might end up for the user to lose his work.
-        /// </summary>
-        /// <param name="enable">A flag indicating if the controls should be enabled or disabled.</param>
-        private void EnableDisableControlsOnChange(bool enable)
-        {
-            tsbComboScriptType.Enabled = enable; // set the value..
-            tsbOpen.Enabled = enable;
         }
 
         // the text was changed either in the scintilla or in the script's
@@ -316,99 +360,11 @@ namespace ScriptNotepad
             EnableDisableControlsOnChange(true);
         }
 
-        /// <summary>
-        /// Blinks the name of the script in the tool strip if a user has set a "reserved" name for the script
-        /// or a user tries to save a script as with an existing name.
-        /// </summary>
-        private void ErrorBlink()
-        {
-            // save the background color to a variable..
-            Color backColorSave = tstScriptName.BackColor;
-
-            // loop few times changing the color from red to the original color..
-            for (int i = 0; i < 6; i++)
-            {
-                // a normal remainder operator for two options..
-                tstScriptName.BackColor = (i % 2) == 0 ? Color.Red : backColorSave;
-                Thread.Sleep(100); // sleep form a hundred milliseconds..
-                Application.DoEvents(); // keep the GUI alive..
-            }
-        }
-
-        /// <summary>
-        /// Validates the name of the script (i.e. reserved words or existing scripts).
-        /// </summary>
-        /// <param name="scriptName">A name of the script of which validity to check.</param>
-        /// <param name="saveAs">A flag indicating whether the script is saved "as" or just to override an existing script.</param>
-        /// <returns>True if the given script name was valid; otherwise false.</returns>
-        private bool ValidateScriptName(string scriptName, bool saveAs)
-        {
-            // no white space allowed..
-            scriptName = scriptName.Trim();
-
-            // an unnamed script is not allowed..
-            if (scriptName == string.Empty)
-            {
-                return false;
-            }
-
-            bool result = true;
-
-            result = !((scriptName == defaultNameScriptTemplateText || // a localized template name for text will not do..
-                scriptName == defaultNameScriptTemplateLines || // a localized template name for lines will not do..
-                scriptName == "Simple line ending change script" || // a non-localized database template for lines will not do..
-                scriptName == "Simple replace script" ||
-                scriptName == "Simple XML manipulation script")); // a non-localized database template for text will not do..
-
-            // the result at this point is that the script name is valid,
-            // however the saveAs flag is true so there must not be any scripts
-            // in the database with the same name..
-            if (result && saveAs) 
-            {
-                // get all scripts from the database..
-                IEnumerable<CODE_SNIPPETS> snippets = Database.Database.GetCodeSnippets();
-
-                // if there is already one snippet with a same name, don't allow a save as..
-                result &= !(snippets.Count(f => f.SCRIPT_NAME.ToLowerInvariant() == scriptName.ToLowerInvariant()) > 0);
-            }
-
-            // return the result..
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a CODE_SNIPPETS class instance from the GUI items.
-        /// </summary>
-        /// <returns>A CODE_SNIPPETS class instance.</returns>
-        private CODE_SNIPPETS CreateNewCodeSnippet()
-        {
-            // just call the overload..
-            return CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
-        }
-
-        /// <summary>
-        /// Creates a CODE_SNIPPETS class instance from the given parameters.
-        /// </summary>
-        /// <param name="contents">The contents of the script.</param>
-        /// <param name="name">The name of the script.</param>
-        /// <param name="scriptType">The type of the script.</param>
-        /// <returns>A CODE_SNIPPETS class instance.</returns>
-        private CODE_SNIPPETS CreateNewCodeSnippet(string contents, string name, int scriptType)
-        {
-            // return a new CODE_SNIPPETS class instance using the given parameters..
-            return currentCodeSnippet = new CODE_SNIPPETS
-            {
-                SCRIPT_CONTENTS = contents,
-                SCRIPT_NAME = name,
-                SCRIPT_TYPE = scriptType
-            };
-        }
-
         // an event which occurs when the save or a save as button is clicked..
         private void tsbSaveButtons_Click(object sender, EventArgs e)
         {
             // if the script's name is invalid..
-            if (!ValidateScriptName(tstScriptName.Text, sender.Equals(tsbSaveAs)))
+            if (!ValidateScriptName(tstScriptName.Text))
             {
                 ErrorBlink(); // ..indicate an error..
                 return; // ..and return..
@@ -421,7 +377,15 @@ namespace ScriptNotepad
                     currentCodeSnippet = CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
                 }
 
-                // TODO::Logic for differentiate save and save as buttons..
+                // manipulate the currentCodeSnippet instance so it doest override reserved scripts in the database..
+                Database.Database.MakeCodeSnippetValidForInsertOrUpdate(
+                    ref currentCodeSnippet,
+                    // the reserved word list..
+                    defaultNameScriptTemplateText,
+                    defaultNameScriptTemplateLines,
+                     "Simple line ending change script",
+                     "Simple replace script",
+                     "Simple XML manipulation script");
 
                 // save the script snippet into the database..
                 Database.Database.AddOrUpdateCodeSnippet(currentCodeSnippet);
@@ -430,5 +394,39 @@ namespace ScriptNotepad
                 EnableDisableControlsOnChange(true);
             }
         }
+
+        // a user want's to compile the script to see if it's valid..
+        private void tsbTestScript_Click(object sender, EventArgs e)
+        {
+            // ..so do compile and output the results..
+            Compile();
+        }
+        #endregion
+
+        #region PublicEvents
+        /// <summary>
+        /// A delegate for the ScintillaRequired event.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The <see cref="ScintillaRequiredEventArgs"/> instance containing the event data.</param>
+        public delegate void OnScintillaRequired(object sender, ScintillaRequiredEventArgs e);
+
+        /// <summary>
+        /// Event arguments for the ScintillaRequired event.
+        /// </summary>
+        /// <seealso cref="System.EventArgs" />
+        public class ScintillaRequiredEventArgs : EventArgs
+        {
+            /// <summary>
+            /// Gets or sets the Scintilla document which contents to manipulate via a C# script.
+            /// </summary>
+            public Scintilla Scintilla { get; set; } = null;
+        }
+
+        /// <summary>
+        /// Occurs when a user wants to run a script for a Scintilla document contents.
+        /// </summary>
+        public event OnScintillaRequired ScintillaRequired = null;
+        #endregion
     }
 }

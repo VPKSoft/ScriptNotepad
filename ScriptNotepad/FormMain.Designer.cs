@@ -41,6 +41,9 @@
             this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveAll = new System.Windows.Forms.ToolStripButton();
             this.tsbSaveAllWithUnsaved = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
+            this.tsbRedo = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
@@ -60,12 +63,14 @@
             this.mnuRunScript = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
-            this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
+            this.ssLbSpace1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbLineEnding = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -104,7 +109,10 @@
             this.tsbSave,
             this.tsbSaveAs,
             this.tsbSaveAll,
-            this.tsbSaveAllWithUnsaved});
+            this.tsbSaveAllWithUnsaved,
+            this.toolStripSeparator1,
+            this.tsbUndo,
+            this.tsbRedo});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(776, 25);
@@ -171,6 +179,31 @@
             this.tsbSaveAllWithUnsaved.Text = "Save All (+new)";
             this.tsbSaveAllWithUnsaved.Click += new System.EventHandler(this.mnuSaveAll_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbUndo
+            // 
+            this.tsbUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbUndo.Image = global::ScriptNotepad.Properties.Resources.Undo;
+            this.tsbUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbUndo.Name = "tsbUndo";
+            this.tsbUndo.Size = new System.Drawing.Size(23, 22);
+            this.tsbUndo.Text = "Undo";
+            this.tsbUndo.Click += new System.EventHandler(this.tsbUndo_Click);
+            // 
+            // tsbRedo
+            // 
+            this.tsbRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRedo.Image = global::ScriptNotepad.Properties.Resources.Redo;
+            this.tsbRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRedo.Name = "tsbRedo";
+            this.tsbRedo.Size = new System.Drawing.Size(23, 22);
+            this.tsbRedo.Text = "Redo";
+            this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
+            // 
             // statusStrip1
             // 
             this.tlpMain.SetColumnSpan(this.statusStrip1, 5);
@@ -178,7 +211,9 @@
             this.ssLbLineColumn,
             this.tsslLineCol,
             this.ssLbLinesColumnSelection,
-            this.ssLbLDocLinesSize});
+            this.ssLbLDocLinesSize,
+            this.ssLbSpace1,
+            this.ssLbLineEnding});
             this.statusStrip1.Location = new System.Drawing.Point(0, 391);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(776, 20);
@@ -277,7 +312,6 @@
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Visible = false;
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // munSave
@@ -322,6 +356,7 @@
             // 
             // mnuRunScript
             // 
+            this.mnuRunScript.Image = global::ScriptNotepad.Properties.Resources.CSharp;
             this.mnuRunScript.Name = "mnuRunScript";
             this.mnuRunScript.Size = new System.Drawing.Size(128, 22);
             this.mnuRunScript.Text = "Run Script";
@@ -337,10 +372,27 @@
             // 
             // mnuFind
             // 
+            this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
             this.mnuFind.Size = new System.Drawing.Size(103, 22);
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
+            // 
+            // mnuTools
+            // 
+            this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuManageScriptSnippets});
+            this.mnuTools.Name = "mnuTools";
+            this.mnuTools.Size = new System.Drawing.Size(47, 20);
+            this.mnuTools.Text = "Tools";
+            // 
+            // mnuManageScriptSnippets
+            // 
+            this.mnuManageScriptSnippets.Image = global::ScriptNotepad.Properties.Resources.Script;
+            this.mnuManageScriptSnippets.Name = "mnuManageScriptSnippets";
+            this.mnuManageScriptSnippets.Size = new System.Drawing.Size(196, 22);
+            this.mnuManageScriptSnippets.Text = "Manage script snippets";
+            this.mnuManageScriptSnippets.Click += new System.EventHandler(this.mnuManageScriptSnippets_Click);
             // 
             // mnuHelp
             // 
@@ -357,20 +409,16 @@
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
-            // mnuTools
+            // ssLbSpace1
             // 
-            this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuManageScriptSnippets});
-            this.mnuTools.Name = "mnuTools";
-            this.mnuTools.Size = new System.Drawing.Size(47, 20);
-            this.mnuTools.Text = "Tools";
+            this.ssLbSpace1.AutoSize = false;
+            this.ssLbSpace1.Name = "ssLbSpace1";
+            this.ssLbSpace1.Size = new System.Drawing.Size(130, 15);
             // 
-            // mnuManageScriptSnippets
+            // ssLbLineEnding
             // 
-            this.mnuManageScriptSnippets.Name = "mnuManageScriptSnippets";
-            this.mnuManageScriptSnippets.Size = new System.Drawing.Size(196, 22);
-            this.mnuManageScriptSnippets.Text = "Manage script snippets";
-            this.mnuManageScriptSnippets.Click += new System.EventHandler(this.mnuManageScriptSnippets_Click);
+            this.ssLbLineEnding.Name = "ssLbLineEnding";
+            this.ssLbLineEnding.Size = new System.Drawing.Size(0, 15);
             // 
             // FormMain
             // 
@@ -433,6 +481,11 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRunScript;
         private System.Windows.Forms.ToolStripMenuItem mnuTools;
         private System.Windows.Forms.ToolStripMenuItem mnuManageScriptSnippets;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton tsbUndo;
+        private System.Windows.Forms.ToolStripButton tsbRedo;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace1;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbLineEnding;
     }
 }
 

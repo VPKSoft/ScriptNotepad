@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScriptNotepad</RootNamespace>
     <AssemblyName>ScriptNotepad</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,12 +39,14 @@
     <DocumentationFile>bin\Release\ScriptNotepad.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icons\notepad3.ico</ApplicationIcon>
+    <ApplicationIcon>notepad5.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutocompleteMenu-ScintillaNET, Version=1.3.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoCompleteMenu-ScintillaNET.1.6.1\lib\net40\AutocompleteMenu-ScintillaNET.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
     </Reference>
@@ -95,6 +98,11 @@
     <Reference Include="VPKSoft.VersionCheck, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.VersionCheck.1.0.0.1\lib\net45\VPKSoft.VersionCheck.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFHexaEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPFHexaEditor.1.4.0\lib\net47\WPFHexaEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\CODE_SNIPPETS.cs" />
@@ -114,6 +122,12 @@
       <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
     </Compile>
     <Compile Include="Localization\StaticLocalizeFileDialog.cs" />
+    <Compile Include="FormHexEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHexEdit.Designer.cs">
+      <DependentUpon>FormHexEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerLines.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerParent.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerText.cs" />
@@ -133,6 +147,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseScript\ScriptRunner.cs" />
     <Compile Include="UtilityClasses\IpcClientServer.cs" />
+    <Compile Include="UtilityClasses\LinesAndBinary\FileLineType.cs" />
     <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
     <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
     <EmbeddedResource Include="FormMain.resx">
@@ -177,6 +192,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CodeDump\UselessCode.txt" />
     <Content Include="DBLocalization.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -201,11 +217,14 @@
     <Content Include="Localization\Notepad++LanguageNames.txt" />
     <None Include="Localization\SQLiteDatabase\CopyLang.bat" />
     <Content Include="Localization\SQLiteDatabase\lang.sqlite" />
+    <Content Include="notepad5.ico" />
     <Content Include="Resources\Clock.ico" />
     <Content Include="Resources\Clock.png" />
     <None Include="Resources\discard_changes.png" />
+    <None Include="Resources\CSharp.png" />
     <Content Include="Resources\DownButton.png" />
     <None Include="Resources\Erase.png" />
+    <None Include="Resources\Find.png" />
     <Content Include="Resources\Highlighter.png" />
     <None Include="Resources\Save.png" />
     <None Include="Resources\SaveAs.png" />
@@ -213,6 +232,9 @@
     <None Include="Resources\SaveWithDialog.png" />
     <None Include="Resources\save_all_plus.png" />
     <None Include="Resources\Play.png" />
+    <None Include="Resources\Script.png" />
+    <None Include="Resources\Undo.png" />
+    <None Include="Resources\Redo.png" />
     <Content Include="Resources\UpButton.png" />
     <Content Include="Resources\XToCloseButton.png" />
     <Content Include="VPKSoft.ico" />

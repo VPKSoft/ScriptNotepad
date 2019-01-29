@@ -183,6 +183,33 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Generates a SQL sentence to the get the count of reserved names in the <paramref name="reservedNames"/>.
+        /// </summary>
+        /// <param name="codeSnippet">A CODE_SNIPPETS class instance of which ID field is to be used for the SQL sentence generation.</param>
+        /// <param name="reservedNames">A list of reserved names in for the script snippets in the database.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenCountReservedScripts(CODE_SNIPPETS codeSnippet, params string[] reservedNames)
+        {
+            // if not null..
+            if (reservedNames != null)
+            {
+                // ..quote the reserved name list so it can be used in an SQL in list..
+                for (int i = 0; i < reservedNames.Length; i++)
+                {
+                    reservedNames[i] = QS(reservedNames[i]);
+                }
+            }
+
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT COUNT(*) AS RESERVED_SCRIPTS",
+                $"FROM CODE_SNIPPETS",
+                $"WHERE SCRIPT_NAME IN ({string.Join(", ", reservedNames)}) AND ID = {codeSnippet.ID}");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Gets the ID of the latest file insert from the database.
         /// </summary>
         /// <returns>A generated SQL sentence.</returns>

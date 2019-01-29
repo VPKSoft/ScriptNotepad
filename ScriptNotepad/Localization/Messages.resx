@@ -324,4 +324,52 @@
   <data name="msgDeleteScriptConfirm" xml:space="preserve">
     <value>Delete selected script snippet(s)?|A confirmation question whether to delete selected script snippets from the database</value>
   </data>
+  <data name="msgScriptCompileFailed" xml:space="preserve">
+    <value>Compile failed.|A text to be shown if a script snippet compilation wasn't successful.</value>
+  </data>
+  <data name="msgScriptCompileSuccess" xml:space="preserve">
+    <value>Compile successful.|A text to be shown if a script snippet compilation was successful.</value>
+  </data>
+  <data name="msgLineEndingATASCII" xml:space="preserve">
+    <value>ATASCII|A description for a line ending sequence for ATASCII.</value>
+  </data>
+  <data name="msgLineEndingCR" xml:space="preserve">
+    <value>CR|A description for a line ending sequence for CR.</value>
+  </data>
+  <data name="msgLineEndingCRLF" xml:space="preserve">
+    <value>CR+LF|A description for a line ending sequence for CR+LF.</value>
+  </data>
+  <data name="msgLineEndingLF" xml:space="preserve">
+    <value>LF|A description for a line ending sequence for LF.</value>
+  </data>
+  <data name="msgLineEndingLFCR" xml:space="preserve">
+    <value>LF+CR|A description for a line ending sequence for LF+CR.</value>
+  </data>
+  <data name="msgLineEndingMixed" xml:space="preserve">
+    <value>Mixed|A description for a line ending sequence for Mixed (multiple types of line endings).</value>
+  </data>
+  <data name="msgLineEndingNEWLINE" xml:space="preserve">
+    <value>NEWLINE|A description for a line ending sequence for NEWLINE.</value>
+  </data>
+  <data name="msgLineEndingNL" xml:space="preserve">
+    <value>NL|A description for a line ending sequence for NL.</value>
+  </data>
+  <data name="msgLineEndingRS" xml:space="preserve">
+    <value>RS|A description for a line ending sequence for RS.</value>
+  </data>
+  <data name="msgLineEndingUCR" xml:space="preserve">
+    <value>Unicode CR|A description for a line ending sequence for Unicode CR.</value>
+  </data>
+  <data name="msgLineEndingUCRLF" xml:space="preserve">
+    <value>Unicode CR+LF|A description for a line ending sequence for Unicode CR+LF.</value>
+  </data>
+  <data name="msgLineEndingULF" xml:space="preserve">
+    <value>Unicode LF|A description for a line ending sequence for Unicode CR.</value>
+  </data>
+  <data name="msgLineEndingULFCR" xml:space="preserve">
+    <value>Unicode LF+CR|A description for a line ending sequence for Unicode LF+CR.</value>
+  </data>
+  <data name="msgLineEndingUnknown" xml:space="preserve">
+    <value>Unknown|A description for a line ending sequence for Unknown / non-existent line ending.</value>
+  </data>
 </root>

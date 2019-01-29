@@ -32,19 +32,22 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbOpen = new System.Windows.Forms.ToolStripButton();
             this.tsbSave = new System.Windows.Forms.ToolStripButton();
-            this.tsbSaveAs = new System.Windows.Forms.ToolStripButton();
             this.tsbDiscardChanges = new System.Windows.Forms.ToolStripButton();
             this.tsbComboScriptType = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tstScriptName = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbRunScript = new System.Windows.Forms.ToolStripButton();
+            this.tsbTestScript = new System.Windows.Forms.ToolStripButton();
             this.scintilla = new ScintillaNET.Scintilla();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tbCompilerResults = new System.Windows.Forms.TextBox();
+            this.scMain = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
-            this.tlpMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
+            this.scMain.Panel1.SuspendLayout();
+            this.scMain.Panel2.SuspendLayout();
+            this.scMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -52,13 +55,13 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbOpen,
             this.tsbSave,
-            this.tsbSaveAs,
             this.tsbDiscardChanges,
             this.tsbComboScriptType,
             this.toolStripSeparator1,
             this.tstScriptName,
             this.toolStripSeparator2,
-            this.tsbRunScript});
+            this.tsbRunScript,
+            this.tsbTestScript});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(944, 25);
@@ -84,16 +87,6 @@
             this.tsbSave.Size = new System.Drawing.Size(23, 22);
             this.tsbSave.Text = "Save";
             this.tsbSave.Click += new System.EventHandler(this.tsbSaveButtons_Click);
-            // 
-            // tsbSaveAs
-            // 
-            this.tsbSaveAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
-            this.tsbSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSaveAs.Name = "tsbSaveAs";
-            this.tsbSaveAs.Size = new System.Drawing.Size(23, 22);
-            this.tsbSaveAs.Text = "Save as";
-            this.tsbSaveAs.Click += new System.EventHandler(this.tsbSaveButtons_Click);
             // 
             // tsbDiscardChanges
             // 
@@ -142,12 +135,22 @@
             this.tsbRunScript.Text = "Run script to the active document";
             this.tsbRunScript.Click += new System.EventHandler(this.tsbRunScript_Click);
             // 
+            // tsbTestScript
+            // 
+            this.tsbTestScript.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbTestScript.Image = global::ScriptNotepad.Properties.Resources.Script;
+            this.tsbTestScript.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbTestScript.Name = "tsbTestScript";
+            this.tsbTestScript.Size = new System.Drawing.Size(23, 22);
+            this.tsbTestScript.Text = "Test the script\'s validity";
+            this.tsbTestScript.Click += new System.EventHandler(this.tsbTestScript_Click);
+            // 
             // scintilla
             // 
             this.scintilla.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scintilla.Location = new System.Drawing.Point(3, 3);
+            this.scintilla.Location = new System.Drawing.Point(0, 0);
             this.scintilla.Name = "scintilla";
-            this.scintilla.Size = new System.Drawing.Size(938, 461);
+            this.scintilla.Size = new System.Drawing.Size(944, 420);
             this.scintilla.TabIndex = 0;
             this.scintilla.TextChanged += new System.EventHandler(this.common_Changed);
             // 
@@ -159,41 +162,44 @@
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // tlpMain
-            // 
-            this.tlpMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpMain.ColumnCount = 1;
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.Controls.Add(this.scintilla, 0, 0);
-            this.tlpMain.Controls.Add(this.tbCompilerResults, 0, 1);
-            this.tlpMain.Location = new System.Drawing.Point(0, 28);
-            this.tlpMain.Name = "tlpMain";
-            this.tlpMain.RowCount = 2;
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tlpMain.Size = new System.Drawing.Size(944, 519);
-            this.tlpMain.TabIndex = 2;
-            // 
             // tbCompilerResults
             // 
             this.tbCompilerResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbCompilerResults.Location = new System.Drawing.Point(3, 470);
+            this.tbCompilerResults.Location = new System.Drawing.Point(0, 0);
             this.tbCompilerResults.Multiline = true;
             this.tbCompilerResults.Name = "tbCompilerResults";
             this.tbCompilerResults.ReadOnly = true;
             this.tbCompilerResults.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbCompilerResults.Size = new System.Drawing.Size(938, 46);
+            this.tbCompilerResults.Size = new System.Drawing.Size(944, 95);
             this.tbCompilerResults.TabIndex = 1;
             this.tbCompilerResults.WordWrap = false;
+            // 
+            // scMain
+            // 
+            this.scMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scMain.Location = new System.Drawing.Point(0, 28);
+            this.scMain.Name = "scMain";
+            this.scMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // scMain.Panel1
+            // 
+            this.scMain.Panel1.Controls.Add(this.scintilla);
+            // 
+            // scMain.Panel2
+            // 
+            this.scMain.Panel2.Controls.Add(this.tbCompilerResults);
+            this.scMain.Size = new System.Drawing.Size(944, 519);
+            this.scMain.SplitterDistance = 420;
+            this.scMain.TabIndex = 3;
             // 
             // FormScript
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(944, 572);
-            this.Controls.Add(this.tlpMain);
+            this.Controls.Add(this.scMain);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -202,8 +208,11 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormScript_FormClosing);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.tlpMain.ResumeLayout(false);
-            this.tlpMain.PerformLayout();
+            this.scMain.Panel1.ResumeLayout(false);
+            this.scMain.Panel2.ResumeLayout(false);
+            this.scMain.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scMain)).EndInit();
+            this.scMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -220,10 +229,10 @@
         private ScintillaNET.Scintilla scintilla;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripButton tsbRunScript;
-        private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.TextBox tbCompilerResults;
         private System.Windows.Forms.ToolStripButton tsbDiscardChanges;
         private System.Windows.Forms.ToolStripTextBox tstScriptName;
-        private System.Windows.Forms.ToolStripButton tsbSaveAs;
+        private System.Windows.Forms.SplitContainer scMain;
+        private System.Windows.Forms.ToolStripButton tsbTestScript;
     }
 }

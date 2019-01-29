@@ -132,6 +132,54 @@ namespace ScriptNotepad
 
         #region HelperMethods
         /// <summary>
+        /// Localizes the line ending type names.
+        /// </summary>
+        private void LocalizeLineEndingTypeNames()
+        {
+            UtilityClasses.LinesAndBinary.FileLineType.CRLF_Description =
+                DBLangEngine.GetMessage("msgLineEndingCRLF", "CR+LF|A description for a line ending sequence for CR+LF.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.LF_Description =
+                DBLangEngine.GetMessage("msgLineEndingLF", "LF|A description for a line ending sequence for LF.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.CR_Description =
+                DBLangEngine.GetMessage("msgLineEndingCR", "CR|A description for a line ending sequence for CR.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.RS_Description =
+                DBLangEngine.GetMessage("msgLineEndingRS", "RS|A description for a line ending sequence for RS.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.LFCR_Description =
+                DBLangEngine.GetMessage("msgLineEndingLFCR", "LF+CR|A description for a line ending sequence for LF+CR.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.NL_Description =
+                DBLangEngine.GetMessage("msgLineEndingNL", "NL|A description for a line ending sequence for NL.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.ATASCII_Description =
+                DBLangEngine.GetMessage("msgLineEndingATASCII", "ATASCII|A description for a line ending sequence for ATASCII.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.NEWLINE_Description =
+                DBLangEngine.GetMessage("msgLineEndingNEWLINE", "NEWLINE|A description for a line ending sequence for NEWLINE.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.Unknown_Description =
+                DBLangEngine.GetMessage("msgLineEndingUnknown", "Unknown|A description for a line ending sequence for Unknown / non-existent line ending.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.Mixed_Description =
+                DBLangEngine.GetMessage("msgLineEndingMixed", "Mixed|A description for a line ending sequence for Mixed (multiple types of line endings).");
+
+            UtilityClasses.LinesAndBinary.FileLineType.UCRLF_Description =
+                DBLangEngine.GetMessage("msgLineEndingUCRLF", "Unicode CR+LF|A description for a line ending sequence for Unicode CR+LF.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.ULF_Description =
+                DBLangEngine.GetMessage("msgLineEndingULF", "Unicode LF|A description for a line ending sequence for Unicode LF.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.UCR_Description =
+                DBLangEngine.GetMessage("msgLineEndingUCR", "Unicode CR|A description for a line ending sequence for Unicode CR.");
+
+            UtilityClasses.LinesAndBinary.FileLineType.ULFCR_Description =
+                DBLangEngine.GetMessage("msgLineEndingULFCR", "Unicode LF+CR|A description for a line ending sequence for Unicode LF+CR.");
+        }
+
+        /// <summary>
         /// Sets the main status strip values for the currently active document..
         /// </summary>
         /// <param name="document"></param>
@@ -148,6 +196,18 @@ namespace ScriptNotepad
                 document.SelectionEndLine + 1,
                 document.SelectionEndColumn + 1,
                 document.SelectionLength);
+
+            ssLbLineEnding.Text = string.Empty;
+
+            if (document.Tag != null) // TODO::Only detect if the contents have been changed..
+            {
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+                var fileLineTypes = UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(fileSave.FILE_CONTENTS);
+                foreach (var fileLineType in fileLineTypes)
+                {
+                    ssLbLineEnding.Text += fileLineType.Value;
+                }
+            }            
         }
 
         /// <summary>
@@ -229,6 +289,22 @@ namespace ScriptNotepad
                         !DBFILE_SAVE.DateTimeLarger(fileSave.DB_MODIFIED, fileSave.FILESYS_SAVED);
                 }
             }
+            UpdateUndoRedoIndicators();
+        }
+
+        /// <summary>
+        /// Updates the undo and redo indicator buttons and menu items.
+        /// </summary>
+        private void UpdateUndoRedoIndicators()
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                // get the active tab's Scintilla document
+                Scintilla scintilla = sttcMain.CurrentDocument.Scintilla;
+
+                tsbUndo.Enabled = scintilla.CanUndo;
+                tsbRedo.Enabled = scintilla.CanRedo;
+            }
         }
         #endregion
 
@@ -236,6 +312,16 @@ namespace ScriptNotepad
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+            var lineEndings = UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(fileSave.FILE_CONTENTS);
+            foreach (var lineEnding in lineEndings)
+            {
+                MessageBox.Show(lineEnding.Value);
+            }
+
+            return;
+            new FormHexEdit().Show();
+            return;
             Printing printer = new Printing(sttcMain.Documents[0].Scintilla);
 
 
@@ -297,7 +383,9 @@ namespace ScriptNotepad
                 if (sttcMain.LastAddedDocument != null)
                 {
                     sttcMain.LastAddedDocument.Tag = file;
-                }
+                    // the file load can't add an undo option the Scintilla..
+                    sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
+                }                
             }
 
             if (activeDocument != string.Empty)
@@ -305,7 +393,7 @@ namespace ScriptNotepad
                 sttcMain.ActivateDocument(activeDocument);
             }
 
-            UpdateDocumentSaveIndicators();
+            UpdateUndoRedoIndicators();
         }
 
         /// <summary>
@@ -374,7 +462,7 @@ namespace ScriptNotepad
         /// <param name="fileName">Name of the file to load into the view.</param>
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private bool OpenDocument(string fileName, bool reloadContents = false) // TODO::!!
+        private bool OpenDocument(string fileName, bool reloadContents = false)
         {
             // check the file's existence first..
             if (File.Exists(fileName))
@@ -401,6 +489,9 @@ namespace ScriptNotepad
 
                         // save the DBFILE_SAVE class instance to the Tag property..
                         sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+
+                        // the file load can't add an undo option the Scintilla..
+                        sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
                         return true;
                     }
                     else
@@ -443,6 +534,9 @@ namespace ScriptNotepad
 
                         // save the DBFILE_SAVE class instance to the Tag property..
                         sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+
+                        // the file load can't add an undo option the Scintilla..
+                        sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
                         return true;
                     }
                     else
@@ -685,6 +779,8 @@ namespace ScriptNotepad
                 e.ScintillaTabbedDocument.Scintilla.Lines.Count);
 
             SetStatusStringText(e.ScintillaTabbedDocument);
+
+            UpdateUndoRedoIndicators();
         }
 
         // a user wanted to see an about dialog of the software..
@@ -713,6 +809,7 @@ namespace ScriptNotepad
             fileSave.DisposeMemoryStream();
             fileSave.DB_MODIFIED = DateTime.Now;
             fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(e.ScintillaTabbedDocument.Scintilla.Text);
+            UpdateUndoRedoIndicators();
         }
 
         // a user wishes to do some scripting (!)..
@@ -753,7 +850,35 @@ namespace ScriptNotepad
                 e.Scintilla = sttcMain.CurrentDocument.Scintilla;
             }
         }
-        #endregion
 
+        // a user wishes to undo changes..
+        private void tsbUndo_Click(object sender, EventArgs e)
+        {
+            // if there is an active document..
+            if (sttcMain.CurrentDocument != null)
+            {
+                // ..then undo if it's possible..
+                if (sttcMain.CurrentDocument.Scintilla.CanUndo)
+                {
+                    sttcMain.CurrentDocument.Scintilla.Undo();
+                }
+            }
+            UpdateUndoRedoIndicators();
+        }
+
+        // a user wishes to redo changes..
+        private void tsbRedo_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                // ..then redo if it's possible..
+                if (sttcMain.CurrentDocument.Scintilla.CanRedo)
+                {
+                    sttcMain.CurrentDocument.Scintilla.Redo();
+                }
+            }
+            UpdateUndoRedoIndicators();
+        }
+        #endregion
     }
 }

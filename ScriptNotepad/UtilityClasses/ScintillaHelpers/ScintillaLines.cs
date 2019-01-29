@@ -58,6 +58,7 @@ namespace ScriptNotepad.UtilityClasses.ScintillaHelpers
         /// </summary>
         /// <param name="scintilla">A Scintilla document of which lines to set.</param>
         /// <param name="lines">A list of strings to be used to set the Scintilla document's contents from.</param>
+        /// <param name="lineEnding">A line ending string to append to a string with no line ending.</param>
         public static void SetLinesFromList(Scintilla scintilla, List<string> lines, string lineEnding)
         {
             // ensure that the lines have a line ending..

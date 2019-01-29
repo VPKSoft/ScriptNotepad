@@ -326,6 +326,18 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Makes the code snippet valid for insert or update.
+        /// </summary>
+        /// <param name="codeSnippet">A CODE_SNIPPETS class instance of which ID field is to be updated if the script is not valid for update otherwise.</param>
+        /// <param name="reservedNames">A list of reserved names in for the script snippets in the database.</param>
+        public static void MakeCodeSnippetValidForInsertOrUpdate(ref CODE_SNIPPETS codeSnippet, params string[] reservedNames)
+        {
+            long count = GetScalar<long>(DatabaseCommands.GenCountReservedScripts(codeSnippet, reservedNames));
+            codeSnippet.ID = count > 0 ? -1 : codeSnippet.ID;
+        }
+
+
+        /// <summary>
         /// Adds a <paramref name="fileName"/> file to the database table RECENT_FILES if it doesn't exists.
         /// </summary>
         /// <param name="fileName">A file name to generate a RECENT_FILES class instance.</param>

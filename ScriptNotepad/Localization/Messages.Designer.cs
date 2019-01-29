@@ -394,6 +394,132 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ATASCII|A description for a line ending sequence for ATASCII..
+        /// </summary>
+        internal static string msgLineEndingATASCII {
+            get {
+                return ResourceManager.GetString("msgLineEndingATASCII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CR|A description for a line ending sequence for CR..
+        /// </summary>
+        internal static string msgLineEndingCR {
+            get {
+                return ResourceManager.GetString("msgLineEndingCR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CR+LF|A description for a line ending sequence for CR+LF..
+        /// </summary>
+        internal static string msgLineEndingCRLF {
+            get {
+                return ResourceManager.GetString("msgLineEndingCRLF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LF|A description for a line ending sequence for LF..
+        /// </summary>
+        internal static string msgLineEndingLF {
+            get {
+                return ResourceManager.GetString("msgLineEndingLF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LF+CR|A description for a line ending sequence for LF+CR..
+        /// </summary>
+        internal static string msgLineEndingLFCR {
+            get {
+                return ResourceManager.GetString("msgLineEndingLFCR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mixed|A description for a line ending sequence for Mixed (multiple types of line endings)..
+        /// </summary>
+        internal static string msgLineEndingMixed {
+            get {
+                return ResourceManager.GetString("msgLineEndingMixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NEWLINE|A description for a line ending sequence for NEWLINE..
+        /// </summary>
+        internal static string msgLineEndingNEWLINE {
+            get {
+                return ResourceManager.GetString("msgLineEndingNEWLINE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NL|A description for a line ending sequence for NL..
+        /// </summary>
+        internal static string msgLineEndingNL {
+            get {
+                return ResourceManager.GetString("msgLineEndingNL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RS|A description for a line ending sequence for RS..
+        /// </summary>
+        internal static string msgLineEndingRS {
+            get {
+                return ResourceManager.GetString("msgLineEndingRS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unicode CR|A description for a line ending sequence for Unicode CR..
+        /// </summary>
+        internal static string msgLineEndingUCR {
+            get {
+                return ResourceManager.GetString("msgLineEndingUCR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unicode CR+LF|A description for a line ending sequence for Unicode CR+LF..
+        /// </summary>
+        internal static string msgLineEndingUCRLF {
+            get {
+                return ResourceManager.GetString("msgLineEndingUCRLF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unicode LF|A description for a line ending sequence for Unicode CR..
+        /// </summary>
+        internal static string msgLineEndingULF {
+            get {
+                return ResourceManager.GetString("msgLineEndingULF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unicode LF+CR|A description for a line ending sequence for Unicode LF+CR..
+        /// </summary>
+        internal static string msgLineEndingULFCR {
+            get {
+                return ResourceManager.GetString("msgLineEndingULFCR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown|A description for a line ending sequence for Unknown / non-existent line ending..
+        /// </summary>
+        internal static string msgLineEndingUnknown {
+            get {
+                return ResourceManager.GetString("msgLineEndingUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Processing language file|*.lsp;*.lisp|A text in a file dialog indicating List Processing language files.
         /// </summary>
         internal static string msgListProcessingLanguageFile {
@@ -561,6 +687,24 @@ namespace ScriptNotepad.Localization {
         internal static string msgSchemeFile {
             get {
                 return ResourceManager.GetString("msgSchemeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compile failed.|A text to be shown if a script snippet compilation wasn&apos;t successful..
+        /// </summary>
+        internal static string msgScriptCompileFailed {
+            get {
+                return ResourceManager.GetString("msgScriptCompileFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compile successful.|A text to be shown if a script snippet compilation was successful..
+        /// </summary>
+        internal static string msgScriptCompileSuccess {
+            get {
+                return ResourceManager.GetString("msgScriptCompileSuccess", resourceCulture);
             }
         }
         
