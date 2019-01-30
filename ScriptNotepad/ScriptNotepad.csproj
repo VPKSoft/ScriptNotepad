@@ -148,6 +148,7 @@
     <Compile Include="DatabaseScript\ScriptRunner.cs" />
     <Compile Include="UtilityClasses\IpcClientServer.cs" />
     <Compile Include="UtilityClasses\LinesAndBinary\FileLineType.cs" />
+    <Compile Include="UtilityClasses\LinesAndBinary\StreamEncoding.cs" />
     <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
     <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
     <EmbeddedResource Include="FormMain.resx">

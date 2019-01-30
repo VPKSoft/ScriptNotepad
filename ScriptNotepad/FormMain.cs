@@ -126,7 +126,10 @@ namespace ScriptNotepad
             odAnyFile.Title = DBLangEngine.GetMessage("msgOpenFile", "Open|A title for a open file dialog");
 
             // load the recent documents which were saved during the program close..
-            LoadDocumentsFromDatabase(CurrentSession, false);            
+            LoadDocumentsFromDatabase(CurrentSession, false);
+
+            // localize the names which are used to display line ending types of the document..
+            LocalizeLineEndingTypeNames();
         }
         #endregion
 
@@ -199,15 +202,39 @@ namespace ScriptNotepad
 
             ssLbLineEnding.Text = string.Empty;
 
-            if (document.Tag != null) // TODO::Only detect if the contents have been changed..
+            if (document.Tag != null) // TODO::Only detect the file line ending type if the contents have been changed..
             {
                 DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
                 var fileLineTypes = UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(fileSave.FILE_CONTENTS);
+
+                ssLbLineEnding.Text =
+                    DBLangEngine.GetMessage("msgLineEndingShort", "LE: |A short message indicating a file line ending type value(s) as a concatenated text");
+
+                string endAppend = string.Empty;
+
                 foreach (var fileLineType in fileLineTypes)
                 {
-                    ssLbLineEnding.Text += fileLineType.Value;
+                    if (!fileLineType.Key.HasFlag(UtilityClasses.LinesAndBinary.FileLineTypes.Mixed))
+                    {
+                        ssLbLineEnding.Text += fileLineType.Value + ", ";
+                    }
+                    else
+                    {
+                        endAppend = $" ({fileLineType.Value})";
+                    }
+
+                    ssLbLineEnding.Text = ssLbLineEnding.Text.TrimEnd(',', ' ') + endAppend;
                 }
-            }            
+                
+                ssLbEncoding.Text =
+                    DBLangEngine.GetMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
+                    UtilityClasses.LinesAndBinary.StreamEncoding.GetEncoding(fileSave.FILE_CONTENTS.ToArray(), true).EncodingName;
+            }
+
+            ssLbInsertOverride.Text =
+                document.Scintilla.Overtype ?
+                    DBLangEngine.GetMessage("msgOverrideShort", "Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text") :
+                    DBLangEngine.GetMessage("msgInsertShort", "Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text");
         }
 
         /// <summary>

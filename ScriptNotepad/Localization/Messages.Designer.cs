@@ -358,6 +358,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text.
+        /// </summary>
+        internal static string msgInsertShort {
+            get {
+                return ResourceManager.GetString("msgInsertShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Java script file|*.js|A text in a file dialog indicating Java script files.
         /// </summary>
         internal static string msgJavaScriptFile {
@@ -471,6 +480,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgLineEndingRS {
             get {
                 return ResourceManager.GetString("msgLineEndingRS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LE: |A short message indicating a file line ending type value(s) as a concatenated text.
+        /// </summary>
+        internal static string msgLineEndingShort {
+            get {
+                return ResourceManager.GetString("msgLineEndingShort", resourceCulture);
             }
         }
         
@@ -601,6 +619,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text.
+        /// </summary>
+        internal static string msgOverrideShort {
+            get {
+                return ResourceManager.GetString("msgOverrideShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pascal source file|*.pas|A text in a file dialog indicating Pascal source files.
         /// </summary>
         internal static string msgPascalSourceFile {
@@ -723,6 +750,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgScriptTypeText {
             get {
                 return ResourceManager.GetString("msgScriptTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8)..
+        /// </summary>
+        internal static string msgShortEncodingPreText {
+            get {
+                return ResourceManager.GetString("msgShortEncodingPreText", resourceCulture);
             }
         }
         

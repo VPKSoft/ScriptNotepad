@@ -372,4 +372,16 @@
   <data name="msgLineEndingUnknown" xml:space="preserve">
     <value>Unknown|A description for a line ending sequence for Unknown / non-existent line ending.</value>
   </data>
+  <data name="msgInsertShort" xml:space="preserve">
+    <value>Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text</value>
+  </data>
+  <data name="msgOverrideShort" xml:space="preserve">
+    <value>Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text</value>
+  </data>
+  <data name="msgShortEncodingPreText" xml:space="preserve">
+    <value>Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).</value>
+  </data>
+  <data name="msgLineEndingShort" xml:space="preserve">
+    <value>LE: |A short message indicating a file line ending type value(s) as a concatenated text</value>
+  </data>
 </root>

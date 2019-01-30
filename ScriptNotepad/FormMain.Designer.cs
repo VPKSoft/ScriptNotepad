@@ -44,11 +44,13 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbUndo = new System.Windows.Forms.ToolStripButton();
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbLinesColumnSelection = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbLDocLinesSize = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbLineEnding = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,11 +71,15 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
+            this.ssLbSpace4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbEncoding = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbSpace1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssLbLineEnding = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace5 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbInsertOverride = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.ssMain.SuspendLayout();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,7 +95,7 @@
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.Controls.Add(this.tsMain, 0, 0);
-            this.tlpMain.Controls.Add(this.statusStrip1, 0, 2);
+            this.tlpMain.Controls.Add(this.ssMain, 0, 2);
             this.tlpMain.Controls.Add(this.sttcMain, 0, 1);
             this.tlpMain.Location = new System.Drawing.Point(12, 27);
             this.tlpMain.Name = "tlpMain";
@@ -204,21 +210,27 @@
             this.tsbRedo.Text = "Redo";
             this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
-            // statusStrip1
+            // ssMain
             // 
-            this.tlpMain.SetColumnSpan(this.statusStrip1, 5);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tlpMain.SetColumnSpan(this.ssMain, 5);
+            this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ssLbLineColumn,
             this.tsslLineCol,
-            this.ssLbLinesColumnSelection,
-            this.ssLbLDocLinesSize,
             this.ssLbSpace1,
-            this.ssLbLineEnding});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 391);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(776, 20);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
+            this.ssLbLinesColumnSelection,
+            this.ssLbSpace2,
+            this.ssLbLDocLinesSize,
+            this.ssLbSpace3,
+            this.ssLbLineEnding,
+            this.ssLbSpace4,
+            this.ssLbEncoding,
+            this.ssLbSpace5,
+            this.ssLbInsertOverride});
+            this.ssMain.Location = new System.Drawing.Point(0, 391);
+            this.ssMain.Name = "ssMain";
+            this.ssMain.Size = new System.Drawing.Size(776, 20);
+            this.ssMain.TabIndex = 3;
+            this.ssMain.Text = "statusStrip1";
             // 
             // ssLbLineColumn
             // 
@@ -242,6 +254,18 @@
             this.ssLbLDocLinesSize.Name = "ssLbLDocLinesSize";
             this.ssLbLDocLinesSize.Size = new System.Drawing.Size(92, 15);
             this.ssLbLDocLinesSize.Text = "length: 0 lines: 0";
+            // 
+            // ssLbSpace3
+            // 
+            this.ssLbSpace3.AutoSize = false;
+            this.ssLbSpace3.Name = "ssLbSpace3";
+            this.ssLbSpace3.Size = new System.Drawing.Size(30, 15);
+            // 
+            // ssLbLineEnding
+            // 
+            this.ssLbLineEnding.Name = "ssLbLineEnding";
+            this.ssLbLineEnding.Size = new System.Drawing.Size(42, 15);
+            this.ssLbLineEnding.Text = "CR+LF";
             // 
             // sttcMain
             // 
@@ -409,16 +433,41 @@
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
+            // ssLbSpace4
+            // 
+            this.ssLbSpace4.AutoSize = false;
+            this.ssLbSpace4.Name = "ssLbSpace4";
+            this.ssLbSpace4.Size = new System.Drawing.Size(30, 15);
+            // 
+            // ssLbEncoding
+            // 
+            this.ssLbEncoding.Name = "ssLbEncoding";
+            this.ssLbEncoding.Size = new System.Drawing.Size(34, 15);
+            this.ssLbEncoding.Text = "UTF8";
+            // 
             // ssLbSpace1
             // 
             this.ssLbSpace1.AutoSize = false;
             this.ssLbSpace1.Name = "ssLbSpace1";
-            this.ssLbSpace1.Size = new System.Drawing.Size(130, 15);
+            this.ssLbSpace1.Size = new System.Drawing.Size(30, 15);
             // 
-            // ssLbLineEnding
+            // ssLbSpace2
             // 
-            this.ssLbLineEnding.Name = "ssLbLineEnding";
-            this.ssLbLineEnding.Size = new System.Drawing.Size(0, 15);
+            this.ssLbSpace2.AutoSize = false;
+            this.ssLbSpace2.Name = "ssLbSpace2";
+            this.ssLbSpace2.Size = new System.Drawing.Size(30, 15);
+            // 
+            // ssLbSpace5
+            // 
+            this.ssLbSpace5.AutoSize = false;
+            this.ssLbSpace5.Name = "ssLbSpace5";
+            this.ssLbSpace5.Size = new System.Drawing.Size(30, 15);
+            // 
+            // ssLbInsertOverride
+            // 
+            this.ssLbInsertOverride.Name = "ssLbInsertOverride";
+            this.ssLbInsertOverride.Size = new System.Drawing.Size(25, 15);
+            this.ssLbInsertOverride.Text = "INS";
             // 
             // FormMain
             // 
@@ -438,8 +487,8 @@
             this.tlpMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.ssMain.ResumeLayout(false);
+            this.ssMain.PerformLayout();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
             this.ResumeLayout(false);
@@ -461,7 +510,7 @@
         private System.Windows.Forms.OpenFileDialog odAnyFile;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         private System.Windows.Forms.ToolStripMenuItem mnuAbout;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip ssMain;
         private System.Windows.Forms.ToolStripStatusLabel ssLbLineColumn;
         private VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl sttcMain;
         private System.Windows.Forms.ToolStripStatusLabel tsslLineCol;
@@ -484,8 +533,14 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsbUndo;
         private System.Windows.Forms.ToolStripButton tsbRedo;
-        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace1;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace3;
         private System.Windows.Forms.ToolStripStatusLabel ssLbLineEnding;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace4;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbEncoding;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace1;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace2;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace5;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbInsertOverride;
     }
 }
 
