@@ -34,8 +34,15 @@ using WpfHexaEditor.Core;
 
 namespace ScriptNotepad
 {
+    /// <summary>
+    /// A hex editor for binary files.
+    /// </summary>
+    /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
     public partial class FormHexEdit : DBLangEngineWinforms
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormHexEdit"/> class.
+        /// </summary>
         public FormHexEdit()
         {
             // Add this form to be positioned..

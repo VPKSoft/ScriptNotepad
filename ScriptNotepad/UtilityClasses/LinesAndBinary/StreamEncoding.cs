@@ -46,7 +46,7 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
         /// <param name="buffer">The byte buffer to get the encoding from.</param>
         /// <param name="useBOM">A flag indicating whether to use byte order marks at the beginning of the stream to detect the encoding.</param>
         /// <returns>The current encoding detected using a <see cref="StreamReader"/> class.</returns>
-        public static Encoding GetEncoding(byte[] buffer, bool useBOM)
+        public static System.Text.Encoding GetEncoding(byte[] buffer, bool useBOM)
         {
             // this memory stream will be disposed..
             using (MemoryStream memoryStream = new MemoryStream(buffer))
@@ -63,7 +63,7 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
         /// <param name="stream">A stream to get the encoding from.</param>
         /// <param name="useBOM">A flag indicating whether to use byte order marks at the beginning of the stream to detect the encoding.</param>
         /// <returns>The current encoding detected using a <see cref="StreamReader"/> class.</returns>
-        public static Encoding GetEncoding(Stream stream, bool useBOM)
+        public static System.Text.Encoding GetEncoding(Stream stream, bool useBOM)
         {
             // save the current stream position..
             long saveStreamPos = stream.Position; 
@@ -74,7 +74,7 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
             // use a stream reader with default parameters to detect the stream's encoding,
             // the only variable is the value whether to use byte order marks
             // at the beginning of the stream to detect the encoding..
-            using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8, useBOM, 1024, true))
+            using (StreamReader streamReader = new StreamReader(stream, System.Text.Encoding.UTF8, useBOM, 1024, true))
             {
                 // lets peed for about 24 bytes..
                 int iCountPeeks = 0;

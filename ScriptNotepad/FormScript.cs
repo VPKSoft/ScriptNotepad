@@ -39,6 +39,10 @@ using System.Threading;
 
 namespace ScriptNotepad
 {
+    /// <summary>
+    /// A windows form tho run a C# script against a Scintilla document's contents.
+    /// </summary>
+    /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
     public partial class FormScript : DBLangEngineWinforms
     {
         #region PrivateFields
