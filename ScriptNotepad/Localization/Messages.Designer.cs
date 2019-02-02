@@ -133,6 +133,348 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arabic|A message describing Arabic character set(s)..
+        /// </summary>
+        internal static string msgCharSetArabic {
+            get {
+                return ResourceManager.GetString("msgCharSetArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assamese|A message describing Assamese character set(s)..
+        /// </summary>
+        internal static string msgCharSetAssamese {
+            get {
+                return ResourceManager.GetString("msgCharSetAssamese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baltic|A message describing Arabic character set(s)..
+        /// </summary>
+        internal static string msgCharSetBaltic {
+            get {
+                return ResourceManager.GetString("msgCharSetBaltic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bengali|A message describing Bengali character set(s)..
+        /// </summary>
+        internal static string msgCharSetBengali {
+            get {
+                return ResourceManager.GetString("msgCharSetBengali", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Canada|A message describing Canada character set(s)..
+        /// </summary>
+        internal static string msgCharSetCanada {
+            get {
+                return ResourceManager.GetString("msgCharSetCanada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Central European|A message describing Central European character set(s)..
+        /// </summary>
+        internal static string msgCharSetCentralEuropean {
+            get {
+                return ResourceManager.GetString("msgCharSetCentralEuropean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chinese|A message describing Chinese character set(s)..
+        /// </summary>
+        internal static string msgCharSetChinese {
+            get {
+                return ResourceManager.GetString("msgCharSetChinese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cyrillic|A message describing Cyrillic character set(s)..
+        /// </summary>
+        internal static string msgCharSetCyrillic {
+            get {
+                return ResourceManager.GetString("msgCharSetCyrillic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denmark-Norway|A message describing Denmark-Norway character set(s)..
+        /// </summary>
+        internal static string msgCharSetDenmarkNorway {
+            get {
+                return ResourceManager.GetString("msgCharSetDenmarkNorway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devanagari|A message describing Devanagari character set(s)..
+        /// </summary>
+        internal static string msgCharSetDevanagari {
+            get {
+                return ResourceManager.GetString("msgCharSetDevanagari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estonian|A message describing Estonian character set(s)..
+        /// </summary>
+        internal static string msgCharSetEstonian {
+            get {
+                return ResourceManager.GetString("msgCharSetEstonian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finland-Sweden|A message describing Finland-Sweden character set(s)..
+        /// </summary>
+        internal static string msgCharSetFinlandSweden {
+            get {
+                return ResourceManager.GetString("msgCharSetFinlandSweden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to France|A message describing France character set(s)..
+        /// </summary>
+        internal static string msgCharSetFrance {
+            get {
+                return ResourceManager.GetString("msgCharSetFrance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to German|A message describing German character set(s)..
+        /// </summary>
+        internal static string msgCharSetGerman {
+            get {
+                return ResourceManager.GetString("msgCharSetGerman", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greek|A message describing Greek character set(s)..
+        /// </summary>
+        internal static string msgCharSetGreek {
+            get {
+                return ResourceManager.GetString("msgCharSetGreek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hebrew|A message describing Hebrew character set(s)..
+        /// </summary>
+        internal static string msgCharSetHebrew {
+            get {
+                return ResourceManager.GetString("msgCharSetHebrew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icelandic|A message describing Icelandic character set(s)..
+        /// </summary>
+        internal static string msgCharSetIcelandic {
+            get {
+                return ResourceManager.GetString("msgCharSetIcelandic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Italy|A message describing Italy character set(s)..
+        /// </summary>
+        internal static string msgCharSetItaly {
+            get {
+                return ResourceManager.GetString("msgCharSetItaly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Japanese|A message describing Japanese character set(s)..
+        /// </summary>
+        internal static string msgCharSetJapanese {
+            get {
+                return ResourceManager.GetString("msgCharSetJapanese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kannada|A message describing Kannada character set(s)..
+        /// </summary>
+        internal static string msgCharSetKannada {
+            get {
+                return ResourceManager.GetString("msgCharSetKannada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Korean|A message describing Korean character set(s)..
+        /// </summary>
+        internal static string msgCharSetKorean {
+            get {
+                return ResourceManager.GetString("msgCharSetKorean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latin|A message describing Latin character set(s)..
+        /// </summary>
+        internal static string msgCharSetLatin {
+            get {
+                return ResourceManager.GetString("msgCharSetLatin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Malayalam|A message describing Arabic character set(s)..
+        /// </summary>
+        internal static string msgCharSetMalayalam {
+            get {
+                return ResourceManager.GetString("msgCharSetMalayalam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miscellaneous|A message describing Miscellaneous character set(s)..
+        /// </summary>
+        internal static string msgCharSetMiscellaneous {
+            get {
+                return ResourceManager.GetString("msgCharSetMiscellaneous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Norwegian|A message describing Norwegian character set(s)..
+        /// </summary>
+        internal static string msgCharSetNorwegian {
+            get {
+                return ResourceManager.GetString("msgCharSetNorwegian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oriya|A message describing Oriya character set(s)..
+        /// </summary>
+        internal static string msgCharSetOriya {
+            get {
+                return ResourceManager.GetString("msgCharSetOriya", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Punjabi|A message describing Punjabi character set(s)..
+        /// </summary>
+        internal static string msgCharSetPunjabi {
+            get {
+                return ResourceManager.GetString("msgCharSetPunjabi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Single Character Sets|A message describing Single Character Sets character set(s)..
+        /// </summary>
+        internal static string msgCharSetSingleCharacterSets {
+            get {
+                return ResourceManager.GetString("msgCharSetSingleCharacterSets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spain|A message describing Spain character set(s)..
+        /// </summary>
+        internal static string msgCharSetSpain {
+            get {
+                return ResourceManager.GetString("msgCharSetSpain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swedish|A message describing Swedish character set(s)..
+        /// </summary>
+        internal static string msgCharSetSwedish {
+            get {
+                return ResourceManager.GetString("msgCharSetSwedish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taiwan|A message describing Taiwan character set(s)..
+        /// </summary>
+        internal static string msgCharSetTaiwan {
+            get {
+                return ResourceManager.GetString("msgCharSetTaiwan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tamil|A message describing Tamil character set(s)..
+        /// </summary>
+        internal static string msgCharSetTamil {
+            get {
+                return ResourceManager.GetString("msgCharSetTamil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telugu|A message describing Telugu character set(s)..
+        /// </summary>
+        internal static string msgCharSetTelugu {
+            get {
+                return ResourceManager.GetString("msgCharSetTelugu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thai|A message describing Thai character set(s)..
+        /// </summary>
+        internal static string msgCharSetThai {
+            get {
+                return ResourceManager.GetString("msgCharSetThai", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turkish|A message describing Turkish character set(s)..
+        /// </summary>
+        internal static string msgCharSetTurkish {
+            get {
+                return ResourceManager.GetString("msgCharSetTurkish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unicode|A message describing Unicode character set(s)..
+        /// </summary>
+        internal static string msgCharSetUnicode {
+            get {
+                return ResourceManager.GetString("msgCharSetUnicode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vietnamese|A message describing Vietnamese character set(s)..
+        /// </summary>
+        internal static string msgCharSetVietnamese {
+            get {
+                return ResourceManager.GetString("msgCharSetVietnamese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Western European|A message describing Western European character set(s)..
+        /// </summary>
+        internal static string msgCharSetWesternEuropean {
+            get {
+                return ResourceManager.GetString("msgCharSetWesternEuropean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CMake file|*.cmake|A text in a file dialog indicating CMake files.
         /// </summary>
         internal static string msgCMakeFile {

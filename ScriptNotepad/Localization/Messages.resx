@@ -384,4 +384,118 @@
   <data name="msgLineEndingShort" xml:space="preserve">
     <value>LE: |A short message indicating a file line ending type value(s) as a concatenated text</value>
   </data>
+  <data name="msgCharSetArabic" xml:space="preserve">
+    <value>Arabic|A message describing Arabic character set(s).</value>
+  </data>
+  <data name="msgCharSetAssamese" xml:space="preserve">
+    <value>Assamese|A message describing Assamese character set(s).</value>
+  </data>
+  <data name="msgCharSetBaltic" xml:space="preserve">
+    <value>Baltic|A message describing Arabic character set(s).</value>
+  </data>
+  <data name="msgCharSetBengali" xml:space="preserve">
+    <value>Bengali|A message describing Bengali character set(s).</value>
+  </data>
+  <data name="msgCharSetCanada" xml:space="preserve">
+    <value>Canada|A message describing Canada character set(s).</value>
+  </data>
+  <data name="msgCharSetCentralEuropean" xml:space="preserve">
+    <value>Central European|A message describing Central European character set(s).</value>
+  </data>
+  <data name="msgCharSetChinese" xml:space="preserve">
+    <value>Chinese|A message describing Chinese character set(s).</value>
+  </data>
+  <data name="msgCharSetCyrillic" xml:space="preserve">
+    <value>Cyrillic|A message describing Cyrillic character set(s).</value>
+  </data>
+  <data name="msgCharSetDenmarkNorway" xml:space="preserve">
+    <value>Denmark-Norway|A message describing Denmark-Norway character set(s).</value>
+  </data>
+  <data name="msgCharSetDevanagari" xml:space="preserve">
+    <value>Devanagari|A message describing Devanagari character set(s).</value>
+  </data>
+  <data name="msgCharSetEstonian" xml:space="preserve">
+    <value>Estonian|A message describing Estonian character set(s).</value>
+  </data>
+  <data name="msgCharSetFinlandSweden" xml:space="preserve">
+    <value>Finland-Sweden|A message describing Finland-Sweden character set(s).</value>
+  </data>
+  <data name="msgCharSetFrance" xml:space="preserve">
+    <value>France|A message describing France character set(s).</value>
+  </data>
+  <data name="msgCharSetGerman" xml:space="preserve">
+    <value>German|A message describing German character set(s).</value>
+  </data>
+  <data name="msgCharSetGreek" xml:space="preserve">
+    <value>Greek|A message describing Greek character set(s).</value>
+  </data>
+  <data name="msgCharSetHebrew" xml:space="preserve">
+    <value>Hebrew|A message describing Hebrew character set(s).</value>
+  </data>
+  <data name="msgCharSetIcelandic" xml:space="preserve">
+    <value>Icelandic|A message describing Icelandic character set(s).</value>
+  </data>
+  <data name="msgCharSetItaly" xml:space="preserve">
+    <value>Italy|A message describing Italy character set(s).</value>
+  </data>
+  <data name="msgCharSetJapanese" xml:space="preserve">
+    <value>Japanese|A message describing Japanese character set(s).</value>
+  </data>
+  <data name="msgCharSetKannada" xml:space="preserve">
+    <value>Kannada|A message describing Kannada character set(s).</value>
+  </data>
+  <data name="msgCharSetKorean" xml:space="preserve">
+    <value>Korean|A message describing Korean character set(s).</value>
+  </data>
+  <data name="msgCharSetLatin" xml:space="preserve">
+    <value>Latin|A message describing Latin character set(s).</value>
+  </data>
+  <data name="msgCharSetMalayalam" xml:space="preserve">
+    <value>Malayalam|A message describing Arabic character set(s).</value>
+  </data>
+  <data name="msgCharSetMiscellaneous" xml:space="preserve">
+    <value>Miscellaneous|A message describing Miscellaneous character set(s).</value>
+  </data>
+  <data name="msgCharSetNorwegian" xml:space="preserve">
+    <value>Norwegian|A message describing Norwegian character set(s).</value>
+  </data>
+  <data name="msgCharSetOriya" xml:space="preserve">
+    <value>Oriya|A message describing Oriya character set(s).</value>
+  </data>
+  <data name="msgCharSetPunjabi" xml:space="preserve">
+    <value>Punjabi|A message describing Punjabi character set(s).</value>
+  </data>
+  <data name="msgCharSetSingleCharacterSets" xml:space="preserve">
+    <value>Single Character Sets|A message describing Single Character Sets character set(s).</value>
+  </data>
+  <data name="msgCharSetSpain" xml:space="preserve">
+    <value>Spain|A message describing Spain character set(s).</value>
+  </data>
+  <data name="msgCharSetSwedish" xml:space="preserve">
+    <value>Swedish|A message describing Swedish character set(s).</value>
+  </data>
+  <data name="msgCharSetTaiwan" xml:space="preserve">
+    <value>Taiwan|A message describing Taiwan character set(s).</value>
+  </data>
+  <data name="msgCharSetTamil" xml:space="preserve">
+    <value>Tamil|A message describing Tamil character set(s).</value>
+  </data>
+  <data name="msgCharSetTelugu" xml:space="preserve">
+    <value>Telugu|A message describing Telugu character set(s).</value>
+  </data>
+  <data name="msgCharSetThai" xml:space="preserve">
+    <value>Thai|A message describing Thai character set(s).</value>
+  </data>
+  <data name="msgCharSetTurkish" xml:space="preserve">
+    <value>Turkish|A message describing Turkish character set(s).</value>
+  </data>
+  <data name="msgCharSetUnicode" xml:space="preserve">
+    <value>Unicode|A message describing Unicode character set(s).</value>
+  </data>
+  <data name="msgCharSetVietnamese" xml:space="preserve">
+    <value>Vietnamese|A message describing Vietnamese character set(s).</value>
+  </data>
+  <data name="msgCharSetWesternEuropean" xml:space="preserve">
+    <value>Western European|A message describing Western European character set(s).</value>
+  </data>
 </root>

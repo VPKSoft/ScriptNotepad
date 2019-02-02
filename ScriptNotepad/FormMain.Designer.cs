@@ -47,15 +47,22 @@
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbLinesColumnSelection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbLDocLinesSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbSpace3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbLineEnding = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbEncoding = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace5 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbInsertOverride = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenWithEncoding = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.munSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +70,7 @@
             this.mnuSaveAllWithUnsaved = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunScript = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCharSets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,12 +79,6 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
-            this.ssLbSpace4 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssLbEncoding = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssLbSpace1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssLbSpace2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssLbSpace5 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssLbInsertOverride = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -243,11 +245,23 @@
             this.tsslLineCol.Name = "tsslLineCol";
             this.tsslLineCol.Size = new System.Drawing.Size(0, 15);
             // 
+            // ssLbSpace1
+            // 
+            this.ssLbSpace1.AutoSize = false;
+            this.ssLbSpace1.Name = "ssLbSpace1";
+            this.ssLbSpace1.Size = new System.Drawing.Size(30, 15);
+            // 
             // ssLbLinesColumnSelection
             // 
             this.ssLbLinesColumnSelection.Name = "ssLbLinesColumnSelection";
             this.ssLbLinesColumnSelection.Size = new System.Drawing.Size(134, 15);
             this.ssLbLinesColumnSelection.Text = "Sel1: 1|1  Sel2: 1|1  Len: 0";
+            // 
+            // ssLbSpace2
+            // 
+            this.ssLbSpace2.AutoSize = false;
+            this.ssLbSpace2.Name = "ssLbSpace2";
+            this.ssLbSpace2.Size = new System.Drawing.Size(30, 15);
             // 
             // ssLbLDocLinesSize
             // 
@@ -266,6 +280,30 @@
             this.ssLbLineEnding.Name = "ssLbLineEnding";
             this.ssLbLineEnding.Size = new System.Drawing.Size(42, 15);
             this.ssLbLineEnding.Text = "CR+LF";
+            // 
+            // ssLbSpace4
+            // 
+            this.ssLbSpace4.AutoSize = false;
+            this.ssLbSpace4.Name = "ssLbSpace4";
+            this.ssLbSpace4.Size = new System.Drawing.Size(30, 15);
+            // 
+            // ssLbEncoding
+            // 
+            this.ssLbEncoding.Name = "ssLbEncoding";
+            this.ssLbEncoding.Size = new System.Drawing.Size(34, 15);
+            this.ssLbEncoding.Text = "UTF8";
+            // 
+            // ssLbSpace5
+            // 
+            this.ssLbSpace5.AutoSize = false;
+            this.ssLbSpace5.Name = "ssLbSpace5";
+            this.ssLbSpace5.Size = new System.Drawing.Size(30, 15);
+            // 
+            // ssLbInsertOverride
+            // 
+            this.ssLbInsertOverride.Name = "ssLbInsertOverride";
+            this.ssLbInsertOverride.Size = new System.Drawing.Size(25, 15);
+            this.ssLbInsertOverride.Text = "INS";
             // 
             // sttcMain
             // 
@@ -306,6 +344,7 @@
             this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuNew,
             this.mnuOpen,
+            this.mnuOpenWithEncoding,
             this.testToolStripMenuItem,
             this.munSave,
             this.mnuSaveAs,
@@ -319,7 +358,7 @@
             // 
             this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
             this.mnuNew.Name = "mnuNew";
-            this.mnuNew.Size = new System.Drawing.Size(156, 22);
+            this.mnuNew.Size = new System.Drawing.Size(193, 22);
             this.mnuNew.Text = "New";
             this.mnuNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
@@ -327,22 +366,30 @@
             // 
             this.mnuOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
             this.mnuOpen.Name = "mnuOpen";
-            this.mnuOpen.Size = new System.Drawing.Size(156, 22);
+            this.mnuOpen.Size = new System.Drawing.Size(193, 22);
             this.mnuOpen.Text = "Open...";
             this.mnuOpen.Click += new System.EventHandler(this.mnuOpen_Click);
+            // 
+            // mnuOpenWithEncoding
+            // 
+            this.mnuOpenWithEncoding.Image = global::ScriptNotepad.Properties.Resources.open_unknown_encoding;
+            this.mnuOpenWithEncoding.Name = "mnuOpenWithEncoding";
+            this.mnuOpenWithEncoding.Size = new System.Drawing.Size(193, 22);
+            this.mnuOpenWithEncoding.Text = "Open With Encoding...";
             // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.testToolStripMenuItem.Text = "test";
+            this.testToolStripMenuItem.Visible = false;
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // munSave
             // 
             this.munSave.Image = global::ScriptNotepad.Properties.Resources.Save;
             this.munSave.Name = "munSave";
-            this.munSave.Size = new System.Drawing.Size(156, 22);
+            this.munSave.Size = new System.Drawing.Size(193, 22);
             this.munSave.Text = "Save";
             this.munSave.Click += new System.EventHandler(this.munSave_Click);
             // 
@@ -350,7 +397,7 @@
             // 
             this.mnuSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
             this.mnuSaveAs.Name = "mnuSaveAs";
-            this.mnuSaveAs.Size = new System.Drawing.Size(156, 22);
+            this.mnuSaveAs.Size = new System.Drawing.Size(193, 22);
             this.mnuSaveAs.Text = "Save As";
             this.mnuSaveAs.Click += new System.EventHandler(this.munSave_Click);
             // 
@@ -358,7 +405,7 @@
             // 
             this.mnuSaveAll.Image = global::ScriptNotepad.Properties.Resources.save_all;
             this.mnuSaveAll.Name = "mnuSaveAll";
-            this.mnuSaveAll.Size = new System.Drawing.Size(156, 22);
+            this.mnuSaveAll.Size = new System.Drawing.Size(193, 22);
             this.mnuSaveAll.Text = "Save All";
             this.mnuSaveAll.Click += new System.EventHandler(this.mnuSaveAll_Click);
             // 
@@ -366,14 +413,15 @@
             // 
             this.mnuSaveAllWithUnsaved.Image = global::ScriptNotepad.Properties.Resources.save_all_plus;
             this.mnuSaveAllWithUnsaved.Name = "mnuSaveAllWithUnsaved";
-            this.mnuSaveAllWithUnsaved.Size = new System.Drawing.Size(156, 22);
+            this.mnuSaveAllWithUnsaved.Size = new System.Drawing.Size(193, 22);
             this.mnuSaveAllWithUnsaved.Text = "Save All (+new)";
             this.mnuSaveAllWithUnsaved.Click += new System.EventHandler(this.mnuSaveAll_Click);
             // 
             // mnuEdit
             // 
             this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuRunScript});
+            this.mnuRunScript,
+            this.mnuCharSets});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -382,9 +430,15 @@
             // 
             this.mnuRunScript.Image = global::ScriptNotepad.Properties.Resources.CSharp;
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(128, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(149, 22);
             this.mnuRunScript.Text = "Run Script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
+            // 
+            // mnuCharSets
+            // 
+            this.mnuCharSets.Name = "mnuCharSets";
+            this.mnuCharSets.Size = new System.Drawing.Size(149, 22);
+            this.mnuCharSets.Text = "Character Sets";
             // 
             // mnuSearch
             // 
@@ -432,42 +486,6 @@
             this.mnuAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
-            // 
-            // ssLbSpace4
-            // 
-            this.ssLbSpace4.AutoSize = false;
-            this.ssLbSpace4.Name = "ssLbSpace4";
-            this.ssLbSpace4.Size = new System.Drawing.Size(30, 15);
-            // 
-            // ssLbEncoding
-            // 
-            this.ssLbEncoding.Name = "ssLbEncoding";
-            this.ssLbEncoding.Size = new System.Drawing.Size(34, 15);
-            this.ssLbEncoding.Text = "UTF8";
-            // 
-            // ssLbSpace1
-            // 
-            this.ssLbSpace1.AutoSize = false;
-            this.ssLbSpace1.Name = "ssLbSpace1";
-            this.ssLbSpace1.Size = new System.Drawing.Size(30, 15);
-            // 
-            // ssLbSpace2
-            // 
-            this.ssLbSpace2.AutoSize = false;
-            this.ssLbSpace2.Name = "ssLbSpace2";
-            this.ssLbSpace2.Size = new System.Drawing.Size(30, 15);
-            // 
-            // ssLbSpace5
-            // 
-            this.ssLbSpace5.AutoSize = false;
-            this.ssLbSpace5.Name = "ssLbSpace5";
-            this.ssLbSpace5.Size = new System.Drawing.Size(30, 15);
-            // 
-            // ssLbInsertOverride
-            // 
-            this.ssLbInsertOverride.Name = "ssLbInsertOverride";
-            this.ssLbInsertOverride.Size = new System.Drawing.Size(25, 15);
-            this.ssLbInsertOverride.Text = "INS";
             // 
             // FormMain
             // 
@@ -541,6 +559,8 @@
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace2;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace5;
         private System.Windows.Forms.ToolStripStatusLabel ssLbInsertOverride;
+        private System.Windows.Forms.ToolStripMenuItem mnuCharSets;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpenWithEncoding;
     }
 }
 

@@ -48,6 +48,7 @@ using ScriptNotepad.Database;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
+using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 
 namespace ScriptNotepad
 {
@@ -128,59 +129,16 @@ namespace ScriptNotepad
             // load the recent documents which were saved during the program close..
             LoadDocumentsFromDatabase(CurrentSession, false);
 
-            // localize the names which are used to display line ending types of the document..
-            LocalizeLineEndingTypeNames();
+            // localize some other class properties, etc..
+            FormLocalizationHelper.LocalizeMisc();
+
+            CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, null);
+            CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuOpenWithEncoding, false, null);
         }
         #endregion
 
         #region HelperMethods
-        /// <summary>
-        /// Localizes the line ending type names.
-        /// </summary>
-        private void LocalizeLineEndingTypeNames()
-        {
-            UtilityClasses.LinesAndBinary.FileLineType.CRLF_Description =
-                DBLangEngine.GetMessage("msgLineEndingCRLF", "CR+LF|A description for a line ending sequence for CR+LF.");
 
-            UtilityClasses.LinesAndBinary.FileLineType.LF_Description =
-                DBLangEngine.GetMessage("msgLineEndingLF", "LF|A description for a line ending sequence for LF.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.CR_Description =
-                DBLangEngine.GetMessage("msgLineEndingCR", "CR|A description for a line ending sequence for CR.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.RS_Description =
-                DBLangEngine.GetMessage("msgLineEndingRS", "RS|A description for a line ending sequence for RS.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.LFCR_Description =
-                DBLangEngine.GetMessage("msgLineEndingLFCR", "LF+CR|A description for a line ending sequence for LF+CR.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.NL_Description =
-                DBLangEngine.GetMessage("msgLineEndingNL", "NL|A description for a line ending sequence for NL.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.ATASCII_Description =
-                DBLangEngine.GetMessage("msgLineEndingATASCII", "ATASCII|A description for a line ending sequence for ATASCII.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.NEWLINE_Description =
-                DBLangEngine.GetMessage("msgLineEndingNEWLINE", "NEWLINE|A description for a line ending sequence for NEWLINE.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.Unknown_Description =
-                DBLangEngine.GetMessage("msgLineEndingUnknown", "Unknown|A description for a line ending sequence for Unknown / non-existent line ending.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.Mixed_Description =
-                DBLangEngine.GetMessage("msgLineEndingMixed", "Mixed|A description for a line ending sequence for Mixed (multiple types of line endings).");
-
-            UtilityClasses.LinesAndBinary.FileLineType.UCRLF_Description =
-                DBLangEngine.GetMessage("msgLineEndingUCRLF", "Unicode CR+LF|A description for a line ending sequence for Unicode CR+LF.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.ULF_Description =
-                DBLangEngine.GetMessage("msgLineEndingULF", "Unicode LF|A description for a line ending sequence for Unicode LF.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.UCR_Description =
-                DBLangEngine.GetMessage("msgLineEndingUCR", "Unicode CR|A description for a line ending sequence for Unicode CR.");
-
-            UtilityClasses.LinesAndBinary.FileLineType.ULFCR_Description =
-                DBLangEngine.GetMessage("msgLineEndingULFCR", "Unicode LF+CR|A description for a line ending sequence for Unicode LF+CR.");
-        }
 
         /// <summary>
         /// Sets the main status strip values for the currently active document..
@@ -339,6 +297,9 @@ namespace ScriptNotepad
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
+            return;
+
             DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
             var lineEndings = UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(fileSave.FILE_CONTENTS);
             foreach (var lineEnding in lineEndings)
@@ -743,6 +704,9 @@ namespace ScriptNotepad
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
+
+            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
+            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuOpenWithEncoding);
 
             SaveDocumentsToDatabase(CurrentSession, true);
         }

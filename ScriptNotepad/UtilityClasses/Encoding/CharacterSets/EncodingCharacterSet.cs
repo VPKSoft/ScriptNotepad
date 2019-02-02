@@ -304,10 +304,10 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Baltic, "Baltic"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Canada, "Canada"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Cyrillic, "Cyrillic"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.CentralEuropean, "CentralEuropean"));
+            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.CentralEuropean, "Central European"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Chinese, "Chinese"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.DenmarkNorway, "DenmarkNorway"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.FinlandSweden, "FinlandSweden"));
+            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.DenmarkNorway, "Denmark-Norway"));
+            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.FinlandSweden, "Finland-Sweden"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.France, "France"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.German, "German"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Greek, "Greek"));
@@ -319,7 +319,7 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Latin, "Latin"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Miscellaneous, "Miscellaneous"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Norwegian, "Norwegian"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.WesternEuropean, "WesternEuropean"));
+            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.WesternEuropean, "Western European"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Spain, "Spain"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Swedish, "Swedish"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Taiwan, "Taiwan"));
@@ -337,7 +337,7 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Tamil, "Tamil"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Telugu, "Telugu"));
             internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Vietnamese, "Vietnamese"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.SingleCharacterSets, "SingleCharacterSets"));
+            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.SingleCharacterSets, "Single Character Sets"));
             #endregion
         }
 
@@ -387,6 +387,17 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
                     yield return System.Text.Encoding.GetEncoding(encodingInfo.CodePage);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the name of the character set.
+        /// </summary>
+        /// <param name="characterSets">The CharacterSets enumeration value.</param>
+        /// <returns>A name for a given CharacterSets enumeration.</returns>
+        public string GetCharacterSetName(CharacterSets characterSets)
+        {
+            int idx = internalEnumDescriptionPairs.FindIndex(f => f.Key == characterSets);
+            return idx != -1 ? internalEnumDescriptionPairs[idx].Value : string.Empty;
         }
 
         /// <summary>
