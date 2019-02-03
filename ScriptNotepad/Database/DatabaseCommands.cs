@@ -51,11 +51,11 @@ namespace ScriptNotepad.Database
             {
                 existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ID = {fileSave.ID});";
             }
-        
+
             string sql =
                 string.Join(Environment.NewLine,
                 $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
-                $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID) ",
+                $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID, ENCODING) ",
                 $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
                 $"{QS(fileSave.FILENAME_FULL)},",
                 $"{QS(fileSave.FILENAME)},",
@@ -67,7 +67,8 @@ namespace ScriptNotepad.Database
                 $"{fileSave.VISIBILITY_ORDER},",
                 $"{BS(fileSave.ISACTIVE)},",
                 $"{BS(fileSave.ISHISTORY)},",
-                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
+                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')),",
+                $"{QS(fileSave.ENCODING.WebName)}",
                 existsCondition);
 
             return sql;
@@ -99,7 +100,8 @@ namespace ScriptNotepad.Database
                 $"VISIBILITY_ORDER = {fileSave.VISIBILITY_ORDER},",
                 $"ISACTIVE = {BS(fileSave.ISACTIVE)},",
                 $"ISHISTORY = {BS(fileSave.ISHISTORY)},",
-                $"SESSIONID = {fileSave.SESSIONID}",
+                $"SESSIONID = {fileSave.SESSIONID},",
+                $"ENCODING = {QS(fileSave.ENCODING.WebName)}",
                 $"WHERE ID = {fileSave.ID};");
 
             return sql;
@@ -269,7 +271,8 @@ namespace ScriptNotepad.Database
                 $"SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH,",
                 $"FILESYS_MODIFIED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS,",
                 $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
-                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = DBFILE_SAVE.SESSIONID), {QS(sessionName)}) AS SESSIONNAME, FILESYS_SAVED",
+                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = DBFILE_SAVE.SESSIONID), {QS(sessionName)}) AS SESSIONNAME,",
+                $"FILESYS_SAVED, ENCODING",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
                 $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')) AND",

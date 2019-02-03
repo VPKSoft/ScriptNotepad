@@ -172,9 +172,10 @@ namespace ScriptNotepad.Database
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
         /// <param name="isHistory"> a value indicating whether this entry is a history entry.</param>
+        /// <param name="encoding">An encoding for the document.</param>
         /// <param name="ID">An unique identifier for the file.</param>
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
-        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, int ID = -1)
+        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, Encoding encoding, int ID = -1)
         {
             try
             {
@@ -190,10 +191,11 @@ namespace ScriptNotepad.Database
                         DateTime.MinValue,
                     DB_MODIFIED = DateTime.Now,
                     LEXER_CODE = document.LexerType,
-                    FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text),
+                    FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text, encoding),
                     VISIBILITY_ORDER = (int)document.FileTabButton.Tag,
                     SESSIONNAME = sessionName,
-                    ISACTIVE = document.FileTabButton.IsActive
+                    ISACTIVE = document.FileTabButton.IsActive,
+                    ENCODING = encoding
                 };
 
                 return AddFile(fileSave);
@@ -211,11 +213,12 @@ namespace ScriptNotepad.Database
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
         /// <param name="isHistory"> a value indicating whether this entry is a history entry.</param>
+        /// <param name="encoding">An encoding for the document.</param>
         /// <param name="ID">An unique identifier for the file.</param>
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
-        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, int ID = -1)
+        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, Encoding encoding, int ID = -1)
         {
-            return UpdateFile(AddFile(document, isHistory, sessionName, ID));
+            return UpdateFile(AddFile(document, isHistory, sessionName, encoding, ID));
         }
 
         /// <summary>
@@ -226,7 +229,7 @@ namespace ScriptNotepad.Database
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
         public static DBFILE_SAVE AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
         {
-            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text);
+            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text, fileSave.ENCODING);
             return UpdateFile(AddFile(fileSave));
         }
 
@@ -612,7 +615,7 @@ namespace ScriptNotepad.Database
                             // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
                             // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
                             // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
-                            // FILESYS_SAVED: 14
+                            // FILESYS_SAVED: 14, ENCODING: 15
                             result.Add(
                                 new DBFILE_SAVE()
                                 {
@@ -630,7 +633,8 @@ namespace ScriptNotepad.Database
                                     ISACTIVE = reader.GetInt32(11) == 1,
                                     ISHISTORY = reader.GetInt32(12) == 1,
                                     SESSIONNAME = reader.GetString(13),
-                                    FILESYS_SAVED = DateFromDBString(reader.GetString(14))
+                                    FILESYS_SAVED = DateFromDBString(reader.GetString(14)),
+                                    ENCODING = Encoding.GetEncoding(reader.GetString(15))
                                 });
                         }
                         catch (Exception ex)

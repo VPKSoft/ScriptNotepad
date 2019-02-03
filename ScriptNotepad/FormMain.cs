@@ -132,14 +132,12 @@ namespace ScriptNotepad
             // localize some other class properties, etc..
             FormLocalizationHelper.LocalizeMisc();
 
-            CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, null);
-            CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuOpenWithEncoding, false, null);
+            CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, "convert_encoding");
+            CharacterSetMenuBuilder.EncodingMenuClicked += CharacterSetMenuBuilder_EncodingMenuClicked;
         }
         #endregion
 
         #region HelperMethods
-
-
         /// <summary>
         /// Sets the main status strip values for the currently active document..
         /// </summary>
@@ -183,10 +181,10 @@ namespace ScriptNotepad
 
                     ssLbLineEnding.Text = ssLbLineEnding.Text.TrimEnd(',', ' ') + endAppend;
                 }
-                
+
                 ssLbEncoding.Text =
                     DBLangEngine.GetMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
-                    UtilityClasses.LinesAndBinary.StreamEncoding.GetEncoding(fileSave.FILE_CONTENTS.ToArray(), true).EncodingName;
+                    fileSave.ENCODING.EncodingName;
             }
 
             ssLbInsertOverride.Text =
@@ -297,6 +295,9 @@ namespace ScriptNotepad
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            sttcMain.CurrentDocument.Scintilla.Text =
+                StreamStringHelpers.ConvertEncoding(Encoding.UTF8, Encoding.GetEncoding("koi8-u"), sttcMain.CurrentDocument.Scintilla.Text);
+            return;
             CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
             return;
 
@@ -367,7 +368,7 @@ namespace ScriptNotepad
                 {
                     activeDocument = file.FILENAME_FULL;
                 }
-                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.FILE_CONTENTS);
+                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, file.FILE_CONTENTS);
                 if (sttcMain.LastAddedDocument != null)
                 {
                     sttcMain.LastAddedDocument.Tag = file;
@@ -425,6 +426,7 @@ namespace ScriptNotepad
                             FILE_CONTENTS = new MemoryStream()
                         };
 
+                    // get a DBFILE_SAVE class instance from the document's tag..
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
 
                     // save the DBFILE_SAVE class instance to the Tag property..
@@ -463,8 +465,9 @@ namespace ScriptNotepad
                     {
                         if (sttcMain.CurrentDocument.Tag == null)
                         {
-                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, Encoding.UTF8);
                         }
+                        // get a DBFILE_SAVE class instance from the document's tag..
                         DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
 
                         // ..update the database with the document..
@@ -476,7 +479,7 @@ namespace ScriptNotepad
                         }
 
                         // save the DBFILE_SAVE class instance to the Tag property..
-                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, fileSave.ENCODING);
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
@@ -513,7 +516,7 @@ namespace ScriptNotepad
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, -1))
+                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, -1, fileSave.ENCODING))
                 {
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
@@ -521,7 +524,7 @@ namespace ScriptNotepad
                         Database.Database.AddOrUpdateFile(fileSave, document);
 
                         // save the DBFILE_SAVE class instance to the Tag property..
-                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession);
+                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, fileSave.ENCODING);
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
@@ -563,7 +566,7 @@ namespace ScriptNotepad
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
 
                     // set the contents to match the document's text..
-                    fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text);
+                    fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text, fileSave.ENCODING);
 
                     // only an existing file can be saved directly..
                     if (fileSave.EXISTS_INFILESYS && !saveAs)
@@ -670,6 +673,29 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            // a user pressed a keyboard combination of CTRL+Z, which indicates undo for
+            // the Scintilla control..
+            if (e.KeyCode == Keys.Z && e.Control && !e.Shift && !e.Alt)
+            {
+                // if there is an active document..
+                if (sttcMain.CurrentDocument != null)
+                {
+                    // ..then if the is possible..
+                    if (sttcMain.CurrentDocument.Scintilla.CanUndo)
+                    {
+                        // get a DBFILE_SAVE class instance from the document's tag..
+                        DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                        // undo the encoding change..
+                        fileSave.UndoEncodingChange();
+                    }
+                }
+                UpdateUndoRedoIndicators();
+            }
+        }
+
         // this event is raised when another instance of this application receives a file name
         // via the IPC (no multiple instance allowed)..
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -703,12 +729,50 @@ namespace ScriptNotepad
         // if the form is closing, save the snapshots of the open documents to the SQLite database..
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            // unsubscribe the IpcClientServer MessageReceived event handler..
             IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
 
-            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
-            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuOpenWithEncoding);
+            // unsubscribe the encoding menu clicked handler..
+            CharacterSetMenuBuilder.EncodingMenuClicked -= CharacterSetMenuBuilder_EncodingMenuClicked;
 
+            // dispose of the encoding menu items..
+            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
+
+            // save the current session's documents to the database..
             SaveDocumentsToDatabase(CurrentSession, true);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the text of the Scintilla changed via changing the encoding.
+        /// </summary>
+        private bool TextChangedViaEncodingChange { get; set; } = false;
+
+        // an event which is fired if an encoding menu item is clicked..
+        private void CharacterSetMenuBuilder_EncodingMenuClicked(object sender, EncodingMenuClickEventArgs e)
+        {
+            // a user requested to change the encoding of the file..
+            if (e.Data != null && e.Data.ToString() == "convert_encoding")
+            {
+                // if there is an active document..
+                if (sttcMain.CurrentDocument != null)
+                {
+                    // get the DBFILE_SAVE class instance from the tag..
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                    // convert the contents to a new encoding..
+                    sttcMain.CurrentDocument.Scintilla.Text =
+                        StreamStringHelpers.ConvertEncoding(fileSave.ENCODING, e.Encoding, sttcMain.CurrentDocument.Scintilla.Text);
+
+                    fileSave.PreviousEncodings.Add(fileSave.ENCODING);
+
+                    // set the new encoding..
+                    fileSave.ENCODING = e.Encoding;
+
+                    TextChangedViaEncodingChange = true;
+
+                    UpdateUndoRedoIndicators();
+                }
+            }
         }
 
         // a user is logging of or the system is shutting down..
@@ -748,7 +812,7 @@ namespace ScriptNotepad
             CheckFileSysChanges();
         }
 
-        // a tab is closing so save it into the history---
+        // a tab is closing so save it into the history..
         private void sttcMain_TabClosing(object sender, TabClosingEventArgsExt e)
         {
             DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
@@ -799,7 +863,16 @@ namespace ScriptNotepad
             DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
             fileSave.DisposeMemoryStream();
             fileSave.DB_MODIFIED = DateTime.Now;
-            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(e.ScintillaTabbedDocument.Scintilla.Text);
+            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(e.ScintillaTabbedDocument.Scintilla.Text, fileSave.ENCODING);
+
+            // if the text has been changed and id did not occur by encoding change
+            // just clear the undo "buffer"..
+            if (!TextChangedViaEncodingChange)
+            {
+                fileSave.PreviousEncodings.Clear();
+                TextChangedViaEncodingChange = false;
+            }
+
             UpdateUndoRedoIndicators();
         }
 
@@ -851,7 +924,14 @@ namespace ScriptNotepad
                 // ..then undo if it's possible..
                 if (sttcMain.CurrentDocument.Scintilla.CanUndo)
                 {
+                    // undo..
                     sttcMain.CurrentDocument.Scintilla.Undo();
+
+                    // get a DBFILE_SAVE class instance from the document's tag..
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                    // undo the encoding change..
+                    fileSave.UndoEncodingChange();
                 }
             }
             UpdateUndoRedoIndicators();

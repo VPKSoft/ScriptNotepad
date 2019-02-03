@@ -34,7 +34,7 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
     /// <note type="note">Based on the MSDN article: https://docs.microsoft.com/en-us/dotnet/api/system.io.streamreader.currentencoding. </note>
     /// </summary>
     public static class StreamEncoding
-    {
+    {    
         /// <summary>
         /// Gets or sets a value of how many characters to peek from the stream.
         /// </summary>

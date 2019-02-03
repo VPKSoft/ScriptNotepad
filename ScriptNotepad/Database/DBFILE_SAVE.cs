@@ -31,6 +31,7 @@ using System.Text;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
+using System.Collections.Generic;
 
 namespace ScriptNotepad.Database
 {
@@ -39,6 +40,14 @@ namespace ScriptNotepad.Database
     /// </summary>
     public class DBFILE_SAVE
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DBFILE_SAVE"/> class.
+        /// </summary>
+        public DBFILE_SAVE()
+        {
+            ENCODING = Encoding.UTF8;                
+        }
+
         /// <summary>
         /// Gets or sets the ID number (database).
         /// </summary>
@@ -115,6 +124,36 @@ namespace ScriptNotepad.Database
         public bool ISHISTORY { get; set; }
 
         /// <summary>
+        /// Gets or sets the encoding of the file save.
+        /// </summary>
+        public Encoding ENCODING { get; set; }
+
+        /// <summary>
+        /// Gets or sets the previous encodings of the file save for undo possibility.
+        /// <note type="note">Redo possibility does not exist.</note>
+        /// </summary>
+        public List<Encoding> PreviousEncodings { get; set; } = new List<Encoding>();
+
+        /// <summary>
+        /// Undoes the encoding change.
+        /// </summary>
+        public void UndoEncodingChange()
+        {
+            // only if there exists a previous encoding..
+            if (PreviousEncodings.Count > 0)
+            {
+                // get the last index of the list..
+                int idx = PreviousEncodings.Count - 1;
+
+                // set the previous encoding value..
+                ENCODING = PreviousEncodings[idx];
+
+                // remove the last encoding from the list..
+                PreviousEncodings.RemoveAt(idx);
+            }
+        }
+
+        /// <summary>
         /// Disposes the memory stream containing the document's contents.
         /// </summary>
         public void DisposeMemoryStream()
@@ -161,7 +200,7 @@ namespace ScriptNotepad.Database
                         // create a new memory stream to hold the file contents..
                         MemoryStream memoryStream = new MemoryStream(fileContents); 
 
-                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(ref memoryStream);
+                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(ref memoryStream, ENCODING);
 
                         FILE_CONTENTS = memoryStream;
                     }

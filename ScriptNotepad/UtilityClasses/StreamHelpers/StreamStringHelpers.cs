@@ -42,15 +42,16 @@ namespace ScriptNotepad.UtilityClasses.StreamHelpers
         /// Saves a given text to a MemoryStream.
         /// </summary>
         /// <param name="text">The text to be saved to a MemoryStream.</param>
+        /// <param name="encoding">An encoding to be used with the used with the memory stream conversion.</param>
         /// <returns>An instance to a MemoryStream class containing the given text.</returns>
-        public static MemoryStream TextToMemoryStream(string text)
+        public static MemoryStream TextToMemoryStream(string text, System.Text.Encoding encoding)
         {
             MemoryStream result;
             byte[] streamContents;
 
             using (MemoryStream ms = new MemoryStream())
             {
-                StreamWriter streamWriter = new StreamWriter(ms);
+                StreamWriter streamWriter = new StreamWriter(ms, encoding);
                 {
                     streamWriter.Write(text.ToArray());
                     streamWriter.Flush();
@@ -69,14 +70,15 @@ namespace ScriptNotepad.UtilityClasses.StreamHelpers
         /// Returns the contents of a give <paramref name="memoryStream"/> as a string.
         /// </summary>
         /// <param name="memoryStream">The memory stream which contents to be returned as a string.</param>
+        /// <param name="encoding">The encoding to be used to convert a memory stream to text.</param>
         /// <returns></returns>
-        public static string MemoryStreamToText(ref MemoryStream memoryStream)
+        public static string MemoryStreamToText(ref MemoryStream memoryStream, System.Text.Encoding encoding)
         {
             byte[] streamContents = memoryStream.ToArray();
             string result = string.Empty;
             using (memoryStream)
             {
-                using (StreamReader streamReader = new StreamReader(memoryStream))
+                using (StreamReader streamReader = new StreamReader(memoryStream, encoding))
                 {
                     memoryStream.Position = 0;
                     result = streamReader.ReadToEnd();
@@ -88,6 +90,20 @@ namespace ScriptNotepad.UtilityClasses.StreamHelpers
                 Position = 0
             };
             return result;
+        }
+
+        /// <summary>
+        /// Converts the encoding of a given string.
+        /// </summary>
+        /// <param name="encodingFrom">The encoding to convert from.</param>
+        /// <param name="encodingTo">The encoding to convert to.</param>
+        /// <param name="contents">The contents which encoding should be changed.</param>
+        /// <returns>A string converted to the encoding <paramref name="encodingTo"/>.</returns>
+        public static string ConvertEncoding(System.Text.Encoding encodingFrom, System.Text.Encoding encodingTo, string contents)
+        {
+            byte[] bytes = encodingFrom.GetBytes(contents);
+            bytes = System.Text.Encoding.Convert(encodingFrom, encodingTo, bytes);
+            return encodingTo.GetString(bytes);
         }
     }
 }
