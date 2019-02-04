@@ -109,6 +109,12 @@
     <Compile Include="Database\DatabaseCommands.cs" />
     <Compile Include="Database\DBFILE_SAVE.cs" />
     <Compile Include="Database\RECENT_FILES.cs" />
+    <Compile Include="DialogForms\FormDialogQueryEncoding.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogForms\FormDialogQueryEncoding.Designer.cs">
+      <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
+    </Compile>
     <Compile Include="Localization\Forms\FormLocalizationHelper.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,10 +127,10 @@
     <Compile Include="FormScript.Designer.cs">
       <DependentUpon>FormScript.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDialogScriptLoad.cs">
+    <Compile Include="DialogForms\FormDialogScriptLoad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDialogScriptLoad.Designer.cs">
+    <Compile Include="DialogForms\FormDialogScriptLoad.Designer.cs">
       <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
     </Compile>
     <Compile Include="Localization\StaticLocalizeFileDialog.cs" />
@@ -152,6 +158,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseScript\ScriptRunner.cs" />
+    <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetComboBuilder.cs" />
     <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetMenuBuilder.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -161,6 +168,9 @@
     <Compile Include="UtilityClasses\LinesAndBinary\StreamEncoding.cs" />
     <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
     <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
+    <EmbeddedResource Include="DialogForms\FormDialogQueryEncoding.resx">
+      <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Forms\FormLocalizationHelper.resx">
       <DependentUpon>FormLocalizationHelper.cs</DependentUpon>
     </EmbeddedResource>
@@ -170,7 +180,7 @@
     <EmbeddedResource Include="FormScript.resx">
       <DependentUpon>FormScript.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDialogScriptLoad.resx">
+    <EmbeddedResource Include="DialogForms\FormDialogScriptLoad.resx">
       <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\Messages.resx">

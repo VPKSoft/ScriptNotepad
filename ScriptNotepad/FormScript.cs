@@ -36,6 +36,7 @@ using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using ScriptNotepad.Database;
 using System.Threading;
+using ScriptNotepad.DialogForms;
 
 namespace ScriptNotepad
 {

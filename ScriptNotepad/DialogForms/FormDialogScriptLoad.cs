@@ -37,7 +37,7 @@ using System.Windows.Forms;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 
-namespace ScriptNotepad
+namespace ScriptNotepad.DialogForms
 {
     /// <summary>
     /// A form for user to select saved script snippets from the database.

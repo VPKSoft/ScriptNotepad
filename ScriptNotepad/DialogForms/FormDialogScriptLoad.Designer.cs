@@ -1,4 +1,4 @@
-﻿namespace ScriptNotepad
+﻿namespace ScriptNotepad.DialogForms
 {
     partial class FormDialogScriptLoad
     {

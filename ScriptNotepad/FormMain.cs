@@ -49,6 +49,7 @@ using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
+using ScriptNotepad.DialogForms;
 
 namespace ScriptNotepad
 {
@@ -198,14 +199,14 @@ namespace ScriptNotepad
         /// </summary>
         private void CheckFileSysChanges()
         {
-            foreach (ScintillaTabbedDocument document in sttcMain.Documents)
+            for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
                 // check if the file exists because it cannot be reloaded otherwise 
                 // from the file system..
-                if (File.Exists(document.FileName))
+                if (File.Exists(sttcMain.Documents[i].FileName))
                 {
                     // get the DBFILE_SAVE class instance from the document's tag..
-                    DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.Documents[i].Tag;
 
                     // query the user if one wishes to reload
                     // the changed file from the disk..
@@ -220,11 +221,11 @@ namespace ScriptNotepad
                         {
                             // the user answered yes..
                             sttcMain.SuspendTextChangedEvents = true; // suspend the changed events on the ScintillaTabbedTextControl..
-                            fileSave.ReloadFromDisk(document); // reload the file..
+                            fileSave.ReloadFromDisk(sttcMain.Documents[i]); // reload the file..
                             sttcMain.SuspendTextChangedEvents = false; // resume the changed events on the ScintillaTabbedTextControl..
 
                             // just in case set the tag back..
-                            document.Tag = fileSave;
+                            sttcMain.Documents[i].Tag = fileSave;
 
                             // bring the form to the front..
                             BringToFront(); 
@@ -239,7 +240,7 @@ namespace ScriptNotepad
                             fileSave.DB_MODIFIED = DateTime.Now;
 
                             // just in case set the tag back..
-                            document.Tag = fileSave;
+                            sttcMain.Documents[i].Tag = fileSave;
 
                             // bring the form to the front..
                             BringToFront();
@@ -292,9 +293,14 @@ namespace ScriptNotepad
         #endregion
 
         #region UselessCode
+        UTF8Encoding UTF8Encoding = new UTF8Encoding(false);
+
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
+            return;
+
             sttcMain.CurrentDocument.Scintilla.Text =
                 StreamStringHelpers.ConvertEncoding(Encoding.UTF8, Encoding.GetEncoding("koi8-u"), sttcMain.CurrentDocument.Scintilla.Text);
             return;
@@ -400,7 +406,7 @@ namespace ScriptNotepad
                 if (File.Exists(args[i]))
                 {
                     // add the file to the document control..
-                    OpenDocument(args[i]);
+                    OpenDocument(args[i], Encoding.UTF8);
                 }
             }
         }
@@ -450,22 +456,23 @@ namespace ScriptNotepad
         /// Opens the document with a given file name into the view.
         /// </summary>
         /// <param name="fileName">Name of the file to load into the view.</param>
+        /// <param name="encoding">The encoding to be used to open the file.</param>
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private bool OpenDocument(string fileName, bool reloadContents = false)
+        private bool OpenDocument(string fileName, Encoding encoding, bool reloadContents = false)
         {
             // check the file's existence first..
             if (File.Exists(fileName))
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileName, -1))
+                if (sttcMain.AddDocument(fileName, -1, encoding))
                 {
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
                         if (sttcMain.CurrentDocument.Tag == null)
                         {
-                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, Encoding.UTF8);
+                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, encoding);
                         }
                         // get a DBFILE_SAVE class instance from the document's tag..
                         DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
@@ -700,7 +707,7 @@ namespace ScriptNotepad
         // via the IPC (no multiple instance allowed)..
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message); }));
+            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, Encoding.UTF8); }));
         }
 
         // a user wanted to create a new file..
@@ -802,9 +809,25 @@ namespace ScriptNotepad
             // if the file dialog was accepted (i.e. OK) then open the file to the view..
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
-                OpenDocument(odAnyFile.FileName);
+                OpenDocument(odAnyFile.FileName, Encoding.UTF8);
             }
         }
+
+        // a user wanted to open a file with encoding via the main menu..
+        private void mnuOpenWithEncoding_Click(object sender, EventArgs e)
+        {
+            // ask the encoding first from the user..
+            Encoding encoding = FormDialogQueryEncoding.Execute();
+            if (encoding != null)
+            {
+                // if the file dialog was accepted (i.e. OK) then open the file to the view..
+                if (odAnyFile.ShowDialog() == DialogResult.OK)
+                {
+                    OpenDocument(odAnyFile.FileName, encoding);
+                }
+            }
+        }
+
 
         // the software's main form was activated so check if any open file has been changes..
         private void FormMain_Activated(object sender, EventArgs e)

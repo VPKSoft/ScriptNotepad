@@ -33,6 +33,7 @@ using System.IO;
 using VPKSoft.PosLib; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using VPKSoft.ErrorLogger; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using System.Diagnostics;
+using ScriptNotepad.DialogForms;
 
 namespace ScriptNotepad
 {
@@ -84,6 +85,7 @@ namespace ScriptNotepad
                 new FormMain();
                 new FormScript();
                 new FormDialogScriptLoad();
+                new FormDialogQueryEncoding();
                 new FormHexEdit();
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;

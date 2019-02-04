@@ -228,7 +228,7 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
     }
 
     /// <summary>
-    /// A class which categorizes the .NET character encodings under different localizable name-gategory pairs.
+    /// A class which categorizes the .NET character encodings under different localizable name-category pairs.
     /// </summary>
     public class EncodingCharacterSet
     {
