@@ -41,7 +41,7 @@ namespace ScriptNotepad.Settings
     /// An attribute class for describing a setting name and it's type (VPKSoft.ConfLib).
     /// </summary>
     /// <seealso cref="System.Attribute" />
-    [AttributeUsage(AttributeTargets.Property)] // target a property only..
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)] // target a property only..
     public class SettingAttribute: Attribute
     {
         /// <summary>
@@ -138,6 +138,8 @@ namespace ScriptNotepad.Settings
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // NOTE:: Do use this attribute, if no notification is required from a property: [DoNotNotify]
+
             try // just try from the beginning..
             {
                 PropertyInfo propertyInfo = // first get the property info for the property..

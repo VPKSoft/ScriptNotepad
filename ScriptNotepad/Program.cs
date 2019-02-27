@@ -35,11 +35,12 @@ using VPKSoft.ErrorLogger; // (C): http://www.vpksoft.net/, GNU Lesser General P
 using System.Diagnostics;
 using ScriptNotepad.DialogForms;
 
+// limit the PropertyChanged to the Settings class (https://github.com/Fody/PropertyChanged)
+[assembly: PropertyChanged.FilterType("ScriptNotepad.Settings.")] 
 namespace ScriptNotepad
 {
     static class Program
     {
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -87,6 +88,7 @@ namespace ScriptNotepad
                 new FormDialogScriptLoad();
                 new FormDialogQueryEncoding();
                 new FormHexEdit();
+                new Settings.FormSettings();
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
                 return;
@@ -94,6 +96,10 @@ namespace ScriptNotepad
 
             PositionCore.Bind(); // attach the PosLib to the application
             LocalizationSetting.Locale = "fi";
+
+            // create a Settings class instance for the settings form..
+            Settings.FormSettings.Settings = new Settings.Settings();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());

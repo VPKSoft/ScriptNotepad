@@ -300,6 +300,7 @@ namespace ScriptNotepad
         {
             Settings.Settings settings = new Settings.Settings();
             settings.DefaultEncoding = Encoding.UTF8;
+            settings.HistoryListAmount = 20;
             return;
             MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
             return;
@@ -683,6 +684,13 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a user wishes to change the settings of the software..
+        private void mnuSettings_Click(object sender, EventArgs e)
+        {
+            // ..so display the settings dialog..
+            Settings.FormSettings.Execute();
+        }
+
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
             // a user pressed a keyboard combination of CTRL+Z, which indicates undo for

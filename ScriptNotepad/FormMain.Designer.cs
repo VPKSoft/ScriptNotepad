@@ -75,6 +75,7 @@
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
@@ -383,7 +384,6 @@
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Visible = false;
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // munSave
@@ -431,14 +431,14 @@
             // 
             this.mnuRunScript.Image = global::ScriptNotepad.Properties.Resources.CSharp;
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
             // mnuCharSets
             // 
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
             this.mnuCharSets.Text = "Change encoding";
             // 
             // mnuSearch
@@ -453,14 +453,15 @@
             // 
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
-            this.mnuFind.Size = new System.Drawing.Size(103, 22);
+            this.mnuFind.Size = new System.Drawing.Size(180, 22);
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
             // mnuTools
             // 
             this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuManageScriptSnippets});
+            this.mnuManageScriptSnippets,
+            this.mnuSettings});
             this.mnuTools.Name = "mnuTools";
             this.mnuTools.Size = new System.Drawing.Size(47, 20);
             this.mnuTools.Text = "Tools";
@@ -472,6 +473,14 @@
             this.mnuManageScriptSnippets.Size = new System.Drawing.Size(196, 22);
             this.mnuManageScriptSnippets.Text = "Manage script snippets";
             this.mnuManageScriptSnippets.Click += new System.EventHandler(this.mnuManageScriptSnippets_Click);
+            // 
+            // mnuSettings
+            // 
+            this.mnuSettings.Image = global::ScriptNotepad.Properties.Resources.preferences;
+            this.mnuSettings.Name = "mnuSettings";
+            this.mnuSettings.Size = new System.Drawing.Size(196, 22);
+            this.mnuSettings.Text = "Settings";
+            this.mnuSettings.Click += new System.EventHandler(this.mnuSettings_Click);
             // 
             // mnuHelp
             // 
@@ -564,6 +573,7 @@
         private System.Windows.Forms.ToolStripStatusLabel ssLbInsertOverride;
         private System.Windows.Forms.ToolStripMenuItem mnuCharSets;
         private System.Windows.Forms.ToolStripMenuItem mnuOpenWithEncoding;
+        private System.Windows.Forms.ToolStripMenuItem mnuSettings;
     }
 }
 

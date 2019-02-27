@@ -368,6 +368,34 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
         }
 
         /// <summary>
+        /// Gets the character sets list for the given encoding.
+        /// </summary>
+        /// <param name="encoding">The encoding to be used to get the character sets the encoding belongs to.</param>
+        /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be returned.</param>
+        /// <returns>A collection of CharacterSets enumeration based on the given parameters.</returns>
+        public IEnumerable<CharacterSets> GetCharacterSetsForEncoding(System.Text.Encoding encoding, bool singleCodePageResults)
+        {
+            foreach (var item in internalList)
+            {
+                if (item.Key.Count == 1 && !singleCodePageResults)
+                {
+                    continue;
+                }
+
+                // loop through the code pages of the character set..
+                foreach (var codePages in item.Key)
+                {
+                    // if a match is found..
+                    if (codePages == encoding.CodePage)
+                    {
+                        // ..add it to the resulting collection..
+                        yield return item.Value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets a collection of encodings not yet covered by this class.
         /// </summary>
         /// <returns>A collection of <see cref="Encoding"/> class instance.</returns>

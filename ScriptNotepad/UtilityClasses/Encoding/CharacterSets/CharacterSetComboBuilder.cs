@@ -53,7 +53,7 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
         /// </summary>
         /// <param name="characterSetComboBox">An instance to a combo box containing the character sets.</param>
         /// <param name="encodingComboBox">An instance to a combo box containing the encodings belonging to a character set.</param>
-        /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be returned.</param>
+        /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be used.</param>
         /// <param name="data">Additional data to be assigned to an instance of the CharacterSetComboItem class.</param>
         public CharacterSetComboBuilder(ComboBox characterSetComboBox, ComboBox encodingComboBox, bool singleCodePageResults, object data)
         {
@@ -92,6 +92,47 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
                 characterSetComboBox.SelectedIndex = 0;
             }
         }
+
+        /// <summary>
+        /// Selects the character set combo box and the encoding combo box selected items by given encoding.
+        /// </summary>
+        /// <param name="encoding">The encoding to set the selected index of the both combo boxes.</param>
+        /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be used.</param>
+        public void SelectItemByEncoding(System.Text.Encoding encoding, bool singleCodePageResults)
+        {
+            var charSet = EncodingCharacterSet.GetCharacterSetsForEncoding(encoding, singleCodePageResults).FirstOrDefault();
+            try
+            {
+                for (int i = 0; i < CharacterSetComboBox.Items.Count; i++)
+                {
+                    var item = (CharacterSetComboItem)CharacterSetComboBox.Items[i];
+                    if (item.CharacterSet == charSet)
+                    {
+                        CharacterSetComboBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < EncodingComboBox.Items.Count; i++)
+                {
+                    var item = (CharacterSetComboItem)EncodingComboBox.Items[i];
+                    if (item.Encoding.CodePage == encoding.CodePage)
+                    {
+                        EncodingComboBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LastException = ex;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the last exception thrown by an instance of this class.
+        /// </summary>
+        public static Exception LastException { get; set; }
 
         /// <summary>
         /// Gets or sets the data associated with the combo box.
