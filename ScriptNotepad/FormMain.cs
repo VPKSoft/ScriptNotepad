@@ -298,6 +298,9 @@ namespace ScriptNotepad
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Settings.Settings settings = new Settings.Settings();
+            settings.DefaultEncoding = Encoding.UTF8;
+            return;
             MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
             return;
 
@@ -406,7 +409,7 @@ namespace ScriptNotepad
                 if (File.Exists(args[i]))
                 {
                     // add the file to the document control..
-                    OpenDocument(args[i], Encoding.UTF8);
+                    OpenDocument(args[i], Encoding.Default);
                 }
             }
         }
@@ -707,7 +710,7 @@ namespace ScriptNotepad
         // via the IPC (no multiple instance allowed)..
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, Encoding.UTF8); }));
+            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, Encoding.Default); }));
         }
 
         // a user wanted to create a new file..
@@ -809,7 +812,7 @@ namespace ScriptNotepad
             // if the file dialog was accepted (i.e. OK) then open the file to the view..
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
-                OpenDocument(odAnyFile.FileName, Encoding.UTF8);
+                OpenDocument(odAnyFile.FileName, Encoding.Default);
             }
         }
 
