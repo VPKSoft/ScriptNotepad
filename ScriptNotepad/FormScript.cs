@@ -150,19 +150,37 @@ namespace ScriptNotepad
         /// <returns>True if the compilation was successful; otherwise false.</returns>
         private bool Compile()
         {
-            // set the script code from the Scintilla document contents..
-            scriptRunnerText.ScriptCode = scintilla.Text;
-
             tbCompilerResults.Text = string.Empty; // clear the previous results..
 
-            // loop through the compilation results..
-            for (int i = 0; i < scriptRunnerText.CompilerResults.Output.Count; i++)
+            CSCodeDOMScriptRunnerParent scriptRunnerParent;
+            if (SelectedScriptType == 0)
             {
-                tbCompilerResults.Text += scriptRunnerText.CompilerResults.Output[i] + Environment.NewLine;
+                scriptRunnerParent = scriptRunnerText;
+            }
+            else if (SelectedScriptType == 1)
+            {
+                scriptRunnerParent = scriptRunnerLines;
+            }
+            else
+            {
+                tbCompilerResults.Text +=
+                    DBLangEngine.GetMessage("msgScriptCompileFailed", "Compile failed.|A text to be shown if a script snippet compilation wasn't successful.") +
+                    Environment.NewLine;
+                return false;
+            }
+
+            // set the script code from the Scintilla document contents..
+            scriptRunnerParent.ScriptCode = scintilla.Text;
+
+
+            // loop through the compilation results..
+            for (int i = 0; i < scriptRunnerParent.CompilerResults.Output.Count; i++)
+            {
+                tbCompilerResults.Text += scriptRunnerParent.CompilerResults.Output[i] + Environment.NewLine;
             }
 
             // no need to continue if the script compilation failed..
-            if (scriptRunnerText.CompileFailed)
+            if (scriptRunnerParent.CompileFailed)
             {
                 tbCompilerResults.Text +=
                     DBLangEngine.GetMessage("msgScriptCompileFailed", "Compile failed.|A text to be shown if a script snippet compilation wasn't successful.") +
@@ -173,6 +191,7 @@ namespace ScriptNotepad
             tbCompilerResults.Text +=
                 DBLangEngine.GetMessage("msgScriptCompileSuccess", "Compile successful.|A text to be shown if a script snippet compilation was successful.") +
                 Environment.NewLine;
+
             return true;
         }
 
