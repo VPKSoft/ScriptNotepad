@@ -58,6 +58,7 @@ namespace ScriptNotepad.Settings
             return false;
         }
 
+        #region SaveLoad
         /// <summary>
         /// Loads the settings visualized to form.
         /// </summary>
@@ -68,6 +69,12 @@ namespace ScriptNotepad.Settings
 
             // set the amount of document file names to keep in history..
             nudHistoryDocuments.Value = Settings.HistoryListAmount;
+
+            // get the amount of documents contents to be kept after a document has been closed..
+            nudDocumentContentHistory.Value = Settings.SaveFileHistoryContentsCount;
+
+            // set the flag whether to save closed document contents..
+            cbDocumentContentHistory.Checked = Settings.SaveFileHistoryContents;
         }
 
         /// <summary>
@@ -80,7 +87,14 @@ namespace ScriptNotepad.Settings
 
             // save the amount of history documents to keep..
             Settings.HistoryListAmount = (int)nudHistoryDocuments.Value;
+
+            // save the amount of documents contents to be kept after a document has been closed..
+            Settings.SaveFileHistoryContentsCount = (int)nudDocumentContentHistory.Value;
+
+            // save the flag whether to save closed document contents..
+            Settings.SaveFileHistoryContents = cbDocumentContentHistory.Checked;
         }
+        #endregion
 
         /// <summary>
         /// Gets or sets the character set combo box builder.

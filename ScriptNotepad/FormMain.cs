@@ -135,6 +135,9 @@ namespace ScriptNotepad
 
             CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, "convert_encoding");
             CharacterSetMenuBuilder.EncodingMenuClicked += CharacterSetMenuBuilder_EncodingMenuClicked;
+
+            // enable the test menu only when debugging..
+            mnuTest.Visible = System.Diagnostics.Debugger.IsAttached;
         }
         #endregion
 
@@ -298,43 +301,7 @@ namespace ScriptNotepad
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.Settings settings = new Settings.Settings();
-            settings.DefaultEncoding = Encoding.UTF8;
-            settings.HistoryListAmount = 20;
-            return;
-            MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
-            return;
-
-            sttcMain.CurrentDocument.Scintilla.Text =
-                StreamStringHelpers.ConvertEncoding(Encoding.UTF8, Encoding.GetEncoding("koi8-u"), sttcMain.CurrentDocument.Scintilla.Text);
-            return;
-            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
-            return;
-
-            DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
-            var lineEndings = UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(fileSave.FILE_CONTENTS);
-            foreach (var lineEnding in lineEndings)
-            {
-                MessageBox.Show(lineEnding.Value);
-            }
-
-            return;
-            new FormHexEdit().Show();
-            return;
-            Printing printer = new Printing(sttcMain.Documents[0].Scintilla);
-
-
-
-
-            //            printer.PageSettings = new ScintillaNetPrinting.PageSettings() { ColorMode = ScintillaNePrinting.PageSettings.PrintColorMode.BlackOnWhite };
-
-            //            printer.Print();
-
-            //            or
-
-
-            //printer.Print();
-            printer.PrintPreview();
+            new Test.FormTestThings().Show();
         }
         #endregion
 

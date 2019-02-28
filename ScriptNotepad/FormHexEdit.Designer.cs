@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormHexEdit));
             this.elementHost = new System.Windows.Forms.Integration.ElementHost();
             this.hexEditor = new WpfHexaEditor.HexEditor();
             this.button1 = new System.Windows.Forms.Button();
@@ -64,7 +65,7 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // MainForm
+            // FormHexEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -72,7 +73,8 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.elementHost);
-            this.Name = "MainForm";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FormHexEdit";
             this.Text = "WpfHexEditor Winform sample";
             this.ResumeLayout(false);
 

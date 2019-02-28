@@ -204,7 +204,14 @@ namespace ScriptNotepad.Settings
         /// Gets or sets a value indicating whether save closed file contents to database as history.
         /// </summary>
         [Setting("database/historyContents", typeof(bool))]
-        public bool SaveFileHistoryContents { get; set; } = false;
+        public bool SaveFileHistoryContents { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the save file history contents count.
+        /// </summary>
+        [Setting("database/historyContentsCount", typeof(int))]
+        public int SaveFileHistoryContentsCount { get; set; } = 20;
+
         #endregion
 
         /// <summary>

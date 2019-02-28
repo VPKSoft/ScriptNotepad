@@ -40,7 +40,7 @@
     <DocumentationFile>bin\Release\ScriptNotepad.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>notepad5.ico</ApplicationIcon>
+    <ApplicationIcon>notepad7.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutocompleteMenu-ScintillaNET, Version=1.3.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -151,6 +151,12 @@
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Test\FormTestThings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test\FormTestThings.Designer.cs">
+      <DependentUpon>FormTestThings.cs</DependentUpon>
+    </Compile>
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerLines.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerParent.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerText.cs" />
@@ -182,6 +188,9 @@
     <EmbeddedResource Include="DialogForms\FormDialogQueryEncoding.resx">
       <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormHexEdit.resx">
+      <DependentUpon>FormHexEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Forms\FormLocalizationHelper.resx">
       <DependentUpon>FormLocalizationHelper.cs</DependentUpon>
     </EmbeddedResource>
@@ -211,6 +220,9 @@
     <EmbeddedResource Include="Settings\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Test\FormTestThings.resx">
+      <DependentUpon>FormTestThings.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -234,6 +246,7 @@
     <Content Include="DBLocalization.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Icons\astonished.ico" />
     <Content Include="Icons\notepad0.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -255,7 +268,8 @@
     <Content Include="Localization\Notepad++LanguageNames.txt" />
     <None Include="Localization\SQLiteDatabase\CopyLang.bat" />
     <Content Include="Localization\SQLiteDatabase\lang.sqlite" />
-    <Content Include="notepad5.ico" />
+    <Content Include="notepad7.ico" />
+    <None Include="Resources\astonished.png" />
     <Content Include="Resources\Clock.ico" />
     <Content Include="Resources\Clock.png" />
     <None Include="Resources\discard_changes.png" />

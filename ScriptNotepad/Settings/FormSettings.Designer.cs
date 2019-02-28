@@ -32,7 +32,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.cbDocumentContentHistory = new System.Windows.Forms.CheckBox();
+            this.nudDocumentContentHistory = new System.Windows.Forms.NumericUpDown();
+            this.lbDocumentContentHistory = new System.Windows.Forms.Label();
+            this.nudHistoryDocuments = new System.Windows.Forms.NumericUpDown();
+            this.lbHistoryDocuments = new System.Windows.Forms.Label();
             this.gpDefaultEncoding = new System.Windows.Forms.GroupBox();
+            this.btUTF8 = new System.Windows.Forms.PictureBox();
+            this.btSystemDefaultEncoding = new System.Windows.Forms.PictureBox();
             this.cmbCharacterSet = new System.Windows.Forms.ComboBox();
             this.cmbEncoding = new System.Windows.Forms.ComboBox();
             this.lbCharacterSet = new System.Windows.Forms.Label();
@@ -41,16 +48,13 @@
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
-            this.btSystemDefaultEncoding = new System.Windows.Forms.PictureBox();
-            this.btUTF8 = new System.Windows.Forms.PictureBox();
-            this.lbHistoryDocuments = new System.Windows.Forms.Label();
-            this.nudHistoryDocuments = new System.Windows.Forms.NumericUpDown();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
-            this.gpDefaultEncoding.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).BeginInit();
+            this.gpDefaultEncoding.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -68,6 +72,9 @@
             // 
             // tpgGeneralSettings
             // 
+            this.tpgGeneralSettings.Controls.Add(this.cbDocumentContentHistory);
+            this.tpgGeneralSettings.Controls.Add(this.nudDocumentContentHistory);
+            this.tpgGeneralSettings.Controls.Add(this.lbDocumentContentHistory);
             this.tpgGeneralSettings.Controls.Add(this.nudHistoryDocuments);
             this.tpgGeneralSettings.Controls.Add(this.lbHistoryDocuments);
             this.tpgGeneralSettings.Controls.Add(this.gpDefaultEncoding);
@@ -78,6 +85,74 @@
             this.tpgGeneralSettings.TabIndex = 0;
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbDocumentContentHistory
+            // 
+            this.cbDocumentContentHistory.AutoSize = true;
+            this.cbDocumentContentHistory.Checked = true;
+            this.cbDocumentContentHistory.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDocumentContentHistory.Location = new System.Drawing.Point(431, 126);
+            this.cbDocumentContentHistory.Name = "cbDocumentContentHistory";
+            this.cbDocumentContentHistory.Size = new System.Drawing.Size(15, 14);
+            this.cbDocumentContentHistory.TabIndex = 13;
+            this.cbDocumentContentHistory.UseVisualStyleBackColor = true;
+            // 
+            // nudDocumentContentHistory
+            // 
+            this.nudDocumentContentHistory.Location = new System.Drawing.Point(452, 124);
+            this.nudDocumentContentHistory.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudDocumentContentHistory.Name = "nudDocumentContentHistory";
+            this.nudDocumentContentHistory.Size = new System.Drawing.Size(90, 20);
+            this.nudDocumentContentHistory.TabIndex = 12;
+            this.nudDocumentContentHistory.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // lbDocumentContentHistory
+            // 
+            this.lbDocumentContentHistory.AutoSize = true;
+            this.lbDocumentContentHistory.Location = new System.Drawing.Point(3, 126);
+            this.lbDocumentContentHistory.Name = "lbDocumentContentHistory";
+            this.lbDocumentContentHistory.Size = new System.Drawing.Size(289, 13);
+            this.lbDocumentContentHistory.TabIndex = 11;
+            this.lbDocumentContentHistory.Text = "How many closed document contents to keep in the history:";
+            // 
+            // nudHistoryDocuments
+            // 
+            this.nudHistoryDocuments.Location = new System.Drawing.Point(452, 98);
+            this.nudHistoryDocuments.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.nudHistoryDocuments.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudHistoryDocuments.Name = "nudHistoryDocuments";
+            this.nudHistoryDocuments.Size = new System.Drawing.Size(90, 20);
+            this.nudHistoryDocuments.TabIndex = 10;
+            this.nudHistoryDocuments.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // lbHistoryDocuments
+            // 
+            this.lbHistoryDocuments.AutoSize = true;
+            this.lbHistoryDocuments.Location = new System.Drawing.Point(3, 100);
+            this.lbHistoryDocuments.Name = "lbHistoryDocuments";
+            this.lbHistoryDocuments.Size = new System.Drawing.Size(232, 13);
+            this.lbHistoryDocuments.TabIndex = 9;
+            this.lbHistoryDocuments.Text = "How many documents to keep in the file history:";
             // 
             // gpDefaultEncoding
             // 
@@ -93,6 +168,32 @@
             this.gpDefaultEncoding.TabIndex = 8;
             this.gpDefaultEncoding.TabStop = false;
             this.gpDefaultEncoding.Text = "Default encoding";
+            // 
+            // btUTF8
+            // 
+            this.btUTF8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUTF8.Image = global::ScriptNotepad.Properties.Resources.unicode;
+            this.btUTF8.Location = new System.Drawing.Point(504, 49);
+            this.btUTF8.Name = "btUTF8";
+            this.btUTF8.Size = new System.Drawing.Size(21, 21);
+            this.btUTF8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btUTF8.TabIndex = 10;
+            this.btUTF8.TabStop = false;
+            this.ttMain.SetToolTip(this.btUTF8, "Set to unicode (UTF8)");
+            this.btUTF8.Click += new System.EventHandler(this.btDefaultEncodings_Click);
+            // 
+            // btSystemDefaultEncoding
+            // 
+            this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources._default;
+            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(504, 22);
+            this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
+            this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);
+            this.btSystemDefaultEncoding.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btSystemDefaultEncoding.TabIndex = 9;
+            this.btSystemDefaultEncoding.TabStop = false;
+            this.ttMain.SetToolTip(this.btSystemDefaultEncoding, "Set to system default");
+            this.btSystemDefaultEncoding.Click += new System.EventHandler(this.btDefaultEncodings_Click);
             // 
             // cmbCharacterSet
             // 
@@ -139,7 +240,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(768, 371);
+            this.tabPage2.Size = new System.Drawing.Size(557, 371);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -166,63 +267,6 @@
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
             // 
-            // btSystemDefaultEncoding
-            // 
-            this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources._default;
-            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(504, 22);
-            this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
-            this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);
-            this.btSystemDefaultEncoding.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.btSystemDefaultEncoding.TabIndex = 9;
-            this.btSystemDefaultEncoding.TabStop = false;
-            this.ttMain.SetToolTip(this.btSystemDefaultEncoding, "Set to system default");
-            this.btSystemDefaultEncoding.Click += new System.EventHandler(this.btDefaultEncodings_Click);
-            // 
-            // btUTF8
-            // 
-            this.btUTF8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btUTF8.Image = global::ScriptNotepad.Properties.Resources.unicode;
-            this.btUTF8.Location = new System.Drawing.Point(504, 49);
-            this.btUTF8.Name = "btUTF8";
-            this.btUTF8.Size = new System.Drawing.Size(21, 21);
-            this.btUTF8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.btUTF8.TabIndex = 10;
-            this.btUTF8.TabStop = false;
-            this.ttMain.SetToolTip(this.btUTF8, "Set to unicode (UTF8)");
-            this.btUTF8.Click += new System.EventHandler(this.btDefaultEncodings_Click);
-            // 
-            // lbHistoryDocuments
-            // 
-            this.lbHistoryDocuments.AutoSize = true;
-            this.lbHistoryDocuments.Location = new System.Drawing.Point(3, 100);
-            this.lbHistoryDocuments.Name = "lbHistoryDocuments";
-            this.lbHistoryDocuments.Size = new System.Drawing.Size(232, 13);
-            this.lbHistoryDocuments.TabIndex = 9;
-            this.lbHistoryDocuments.Text = "How many documents to keep in the file history:";
-            // 
-            // nudHistoryDocuments
-            // 
-            this.nudHistoryDocuments.Location = new System.Drawing.Point(452, 98);
-            this.nudHistoryDocuments.Maximum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this.nudHistoryDocuments.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.nudHistoryDocuments.Name = "nudHistoryDocuments";
-            this.nudHistoryDocuments.Size = new System.Drawing.Size(90, 20);
-            this.nudHistoryDocuments.TabIndex = 10;
-            this.nudHistoryDocuments.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -245,11 +289,12 @@
             this.tcMain.ResumeLayout(false);
             this.tpgGeneralSettings.ResumeLayout(false);
             this.tpgGeneralSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).EndInit();
             this.gpDefaultEncoding.ResumeLayout(false);
             this.gpDefaultEncoding.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -271,5 +316,8 @@
         private System.Windows.Forms.PictureBox btSystemDefaultEncoding;
         private System.Windows.Forms.NumericUpDown nudHistoryDocuments;
         private System.Windows.Forms.Label lbHistoryDocuments;
+        private System.Windows.Forms.CheckBox cbDocumentContentHistory;
+        private System.Windows.Forms.NumericUpDown nudDocumentContentHistory;
+        private System.Windows.Forms.Label lbDocumentContentHistory;
     }
 }
