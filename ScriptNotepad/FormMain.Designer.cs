@@ -379,10 +379,10 @@
             this.mnuOpenWithEncoding.Text = "Open with encoding...";
             this.mnuOpenWithEncoding.Click += new System.EventHandler(this.mnuOpenWithEncoding_Click);
             // 
-            // testToolStripMenuItem
+            // mnuTest
             // 
             this.mnuTest.Image = global::ScriptNotepad.Properties.Resources.astonished;
-            this.mnuTest.Name = "testToolStripMenuItem";
+            this.mnuTest.Name = "mnuTest";
             this.mnuTest.Size = new System.Drawing.Size(191, 22);
             this.mnuTest.Text = "Test Form...";
             this.mnuTest.Visible = false;
@@ -433,14 +433,15 @@
             // 
             this.mnuRunScript.Image = global::ScriptNotepad.Properties.Resources.CSharp;
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
             // mnuCharSets
             // 
+            this.mnuCharSets.Image = global::ScriptNotepad.Properties.Resources.unicode;
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
             this.mnuCharSets.Text = "Change encoding";
             // 
             // mnuSearch
@@ -455,7 +456,7 @@
             // 
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
-            this.mnuFind.Size = new System.Drawing.Size(103, 22);
+            this.mnuFind.Size = new System.Drawing.Size(180, 22);
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
@@ -495,7 +496,7 @@
             // mnuAbout
             // 
             this.mnuAbout.Name = "mnuAbout";
-            this.mnuAbout.Size = new System.Drawing.Size(107, 22);
+            this.mnuAbout.Size = new System.Drawing.Size(180, 22);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 

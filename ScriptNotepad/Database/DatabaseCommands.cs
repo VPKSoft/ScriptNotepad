@@ -327,5 +327,33 @@ namespace ScriptNotepad.Database
 
             return sql;
         }
+
+        /// <summary>
+        /// Generates a SQL sentence to localize the "Default" session name.
+        /// </summary>
+        /// <param name="name">The name for the "Default" session.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenLocalizeDefaultSessionName(string name)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"UPDATE SESSION_NAME SET SESSIONNAME = {QS(name)} WHERE SESSIONID = 1;");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to get an ID for a given session name.
+        /// </summary>
+        /// <param name="sessionName">The name of the session which ID to get.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenGetCurrentSessionID(string sessionName)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)};");
+        
+            return sql;
+        }
     }
 }

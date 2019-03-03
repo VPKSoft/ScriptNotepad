@@ -34,6 +34,7 @@ using VPKSoft.PosLib; // (C): http://www.vpksoft.net/, GNU Lesser General Public
 using VPKSoft.ErrorLogger; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using System.Diagnostics;
 using ScriptNotepad.DialogForms;
+using VPKSoft.LangLib;
 
 // limit the PropertyChanged to the Settings class (https://github.com/Fody/PropertyChanged)
 [assembly: PropertyChanged.FilterType("ScriptNotepad.Settings.")] 
@@ -99,6 +100,8 @@ namespace ScriptNotepad
 
             // create a Settings class instance for the settings form..
             Settings.FormSettings.Settings = new Settings.Settings();
+
+            DBLangEngine.UseCulture = Settings.FormSettings.Settings.Culture; // set the localization value..
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

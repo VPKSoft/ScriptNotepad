@@ -26,16 +26,10 @@ SOFTWARE.
 
 using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
 using ScintillaNET_FindReplaceDialog;
-using ScintillaPrinting;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaLexers;
@@ -43,10 +37,8 @@ using VPKSoft.IPC;
 using Microsoft.Win32;
 using VPKSoft.PosLib;
 using VPKSoft.ErrorLogger;
-using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.Database;
 using VPKSoft.ScintillaTabbedTextControl;
-using ScriptNotepad.UtilityClasses;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 using ScriptNotepad.DialogForms;
@@ -61,7 +53,28 @@ namespace ScriptNotepad
         #endregion
 
         #region PrivateProperties
-        private string CurrentSession { get; set; } = "Default";
+        /// <summary>
+        /// Gets or sets the current session for the documents.
+        /// </summary>
+        private string CurrentSession
+        {
+            get => Settings.FormSettings.Settings.CurrentSession;
+            set => Settings.FormSettings.Settings.CurrentSession = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the default session name has been localized.
+        /// </summary>
+        private bool CurrentSessionLocalized
+        {
+            get => Settings.FormSettings.Settings.DefaultSessionLocalized;
+            set => Settings.FormSettings.Settings.DefaultSessionLocalized = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the ID number for the current session for the documents.
+        /// </summary>
+        private long CurrentSessionID { get; set; } = -1;
         #endregion
 
         #region MassiveConstructor
@@ -127,11 +140,31 @@ namespace ScriptNotepad
             sdAnyFile.Title = DBLangEngine.GetMessage("msgSaveFileAs", "Save As|A title for a save file as dialog");
             odAnyFile.Title = DBLangEngine.GetMessage("msgOpenFile", "Open|A title for a open file dialog");
 
-            // load the recent documents which were saved during the program close..
-            LoadDocumentsFromDatabase(CurrentSession, false);
-
             // localize some other class properties, etc..
             FormLocalizationHelper.LocalizeMisc();
+
+            // localize the "Default" session name for the current culture..
+            if (!CurrentSessionLocalized)
+            {
+                Database.Database.LocalizeDefaultSessionName(
+                    DBLangEngine.GetStatMessage("msgDefaultSessionName", "Default|A name of the default session for the documents"));
+
+                // set the flag to indicate that the "Default" session name was localized..
+                CurrentSessionLocalized = true;
+
+                // also set the current session to the localized value..
+                if (CurrentSession == "Default")
+                {
+                    CurrentSession =
+                        DBLangEngine.GetStatMessage("msgDefaultSessionName", "Default|A name of the default session for the documents");
+                }
+            }
+
+            // get the session ID number from the database..
+            CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
+
+            // load the recent documents which were saved during the program close..
+            LoadDocumentsFromDatabase(CurrentSession, false);
 
             CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, "convert_encoding");
             CharacterSetMenuBuilder.EncodingMenuClicked += CharacterSetMenuBuilder_EncodingMenuClicked;
@@ -316,6 +349,7 @@ namespace ScriptNotepad
             for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
                 DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.Documents[i].Tag;
+
                 fileSave.ISACTIVE = sttcMain.Documents[i].FileTabButton.IsActive;
                 fileSave.VISIBILITY_ORDER = i;
                 Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
@@ -437,7 +471,7 @@ namespace ScriptNotepad
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileName, -1, encoding))
+                if (sttcMain.AddDocument(fileName, (int)CurrentSessionID, encoding))
                 {
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
@@ -457,7 +491,8 @@ namespace ScriptNotepad
                         }
 
                         // save the DBFILE_SAVE class instance to the Tag property..
-                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, fileSave.ENCODING);
+                        fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, fileSave.ENCODING);
+                        sttcMain.CurrentDocument.Tag = fileSave;
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
@@ -494,7 +529,7 @@ namespace ScriptNotepad
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, -1, fileSave.ENCODING))
+                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, (int)CurrentSessionID, fileSave.ENCODING))
                 {
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {

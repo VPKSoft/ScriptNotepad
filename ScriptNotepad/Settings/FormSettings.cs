@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,20 @@ namespace ScriptNotepad.Settings
 
             // subscribe the encoding selected event..
             CharacterSetComboBuilder.EncodingSelected += CaracterSetComboBuilder_EncodingSelected;
+
+            // translate the tool tips..
+            ttMain.SetToolTip(btUTF8,
+                DBLangEngine.GetMessage("msgUTF8Encoding", "Set to Unicode (UTF8)|Set the selected encoding to UTF8 via a button click"));
+
+            // translate the tool tips..
+            ttMain.SetToolTip(btSystemDefaultEncoding,
+                DBLangEngine.GetMessage("msgSysDefaultEncoding", "Set to system default|Set the selected encoding to system's default encoding via a button click"));
+
+            // list the translated cultures..
+            List<CultureInfo> cultures = DBLangEngine.GetLocalizedCultures();
+
+            // a the translated cultures to the selection combo box..
+            cmbSelectLanguageValue.Items.AddRange(cultures.ToArray());
         }
 
         /// <summary>
@@ -75,6 +90,9 @@ namespace ScriptNotepad.Settings
 
             // set the flag whether to save closed document contents..
             cbDocumentContentHistory.Checked = Settings.SaveFileHistoryContents;
+
+            // set the current culture from the settings..
+            cmbSelectLanguageValue.SelectedItem = Settings.Culture;
         }
 
         /// <summary>
@@ -93,6 +111,9 @@ namespace ScriptNotepad.Settings
 
             // save the flag whether to save closed document contents..
             Settings.SaveFileHistoryContents = cbDocumentContentHistory.Checked;
+
+            // save the selected culture for localization..
+            Settings.Culture = (CultureInfo)cmbSelectLanguageValue.SelectedItem;
         }
         #endregion
 
@@ -137,6 +158,11 @@ namespace ScriptNotepad.Settings
         {            
             // select the encoding based on which button the user clicked..
             CharacterSetComboBuilder.SelectItemByEncoding(sender.Equals(btUTF8) ? Encoding.UTF8 : Encoding.Default, false);
+        }
+
+        private void cmbSelectLanguageValue_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -60,6 +60,14 @@ namespace ScriptNotepad.DialogForms
 
             // subscribe the encoding selected event..
             CharacterSetComboBuilder.EncodingSelected += CaracterSetComboBuilder_EncodingSelected;
+
+            // translate the tool tips..
+            ttMain.SetToolTip(btUTF8,
+                DBLangEngine.GetMessage("msgUTF8Encoding", "Set to Unicode (UTF8)|Set the selected encoding to UTF8 via a button click"));
+
+            // translate the tool tips..
+            ttMain.SetToolTip(btSystemDefaultEncoding,
+                DBLangEngine.GetMessage("msgSysDefaultEncoding", "Set to system default|Set the selected encoding to system's default encoding via a button click"));
         }
 
         /// <summary>
@@ -109,6 +117,12 @@ namespace ScriptNotepad.DialogForms
                 // unsubscribe the encoding selected event..
                 CharacterSetComboBuilder.EncodingSelected -= CaracterSetComboBuilder_EncodingSelected;
             }
+        }
+
+        private void btDefaultEncodings_Click(object sender, System.EventArgs e)
+        {
+            // select the encoding based on which button the user clicked..
+            CharacterSetComboBuilder.SelectItemByEncoding(sender.Equals(btUTF8) ? Encoding.UTF8 : Encoding.Default, false);
         }
     }
 }

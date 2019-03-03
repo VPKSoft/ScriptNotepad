@@ -48,6 +48,8 @@
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
+            this.lbSelectLanguageDescription = new System.Windows.Forms.Label();
+            this.cmbSelectLanguageValue = new System.Windows.Forms.ComboBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
@@ -72,6 +74,8 @@
             // 
             // tpgGeneralSettings
             // 
+            this.tpgGeneralSettings.Controls.Add(this.lbSelectLanguageDescription);
+            this.tpgGeneralSettings.Controls.Add(this.cmbSelectLanguageValue);
             this.tpgGeneralSettings.Controls.Add(this.cbDocumentContentHistory);
             this.tpgGeneralSettings.Controls.Add(this.nudDocumentContentHistory);
             this.tpgGeneralSettings.Controls.Add(this.lbDocumentContentHistory);
@@ -267,6 +271,32 @@
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
             // 
+            // lbSelectLanguageDescription
+            // 
+            this.lbSelectLanguageDescription.AutoSize = true;
+            this.lbSelectLanguageDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.lbSelectLanguageDescription.Location = new System.Drawing.Point(3, 162);
+            this.lbSelectLanguageDescription.Margin = new System.Windows.Forms.Padding(17, 15, 17, 15);
+            this.lbSelectLanguageDescription.Name = "lbSelectLanguageDescription";
+            this.lbSelectLanguageDescription.Size = new System.Drawing.Size(156, 13);
+            this.lbSelectLanguageDescription.TabIndex = 26;
+            this.lbSelectLanguageDescription.Text = "Language (a restart is required):";
+            this.lbSelectLanguageDescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cmbSelectLanguageValue
+            // 
+            this.cmbSelectLanguageValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbSelectLanguageValue.DisplayMember = "DisplayName";
+            this.cmbSelectLanguageValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSelectLanguageValue.FormattingEnabled = true;
+            this.cmbSelectLanguageValue.Location = new System.Drawing.Point(225, 159);
+            this.cmbSelectLanguageValue.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.cmbSelectLanguageValue.Name = "cmbSelectLanguageValue";
+            this.cmbSelectLanguageValue.Size = new System.Drawing.Size(326, 21);
+            this.cmbSelectLanguageValue.TabIndex = 27;
+            this.cmbSelectLanguageValue.SelectedIndexChanged += new System.EventHandler(this.cmbSelectLanguageValue_SelectedIndexChanged);
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -319,5 +349,7 @@
         private System.Windows.Forms.CheckBox cbDocumentContentHistory;
         private System.Windows.Forms.NumericUpDown nudDocumentContentHistory;
         private System.Windows.Forms.Label lbDocumentContentHistory;
+        private System.Windows.Forms.Label lbSelectLanguageDescription;
+        private System.Windows.Forms.ComboBox cmbSelectLanguageValue;
     }
 }

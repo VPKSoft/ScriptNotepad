@@ -195,7 +195,8 @@ namespace ScriptNotepad.Database
                     VISIBILITY_ORDER = (int)document.FileTabButton.Tag,
                     SESSIONNAME = sessionName,
                     ISACTIVE = document.FileTabButton.IsActive,
-                    ENCODING = encoding
+                    ENCODING = encoding,
+                    ISHISTORY = isHistory
                 };
 
                 return AddFile(fileSave);
@@ -477,7 +478,7 @@ namespace ScriptNotepad.Database
                     command.CommandText = sql;
 
                     // ..and return the value casted into a typeof(T)..
-                    return (T)command.ExecuteScalar(); 
+                    return (T)command.ExecuteScalar();
                 }
             }
             catch (Exception ex)
@@ -594,6 +595,26 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Localizes the default name session name.
+        /// </summary>
+        /// <param name="name">The localized name for "Default".</param>
+        public static void LocalizeDefaultSessionName(string name)
+        {
+            // update the name..
+            ExecuteArbitrarySQL(DatabaseCommands.GenLocalizeDefaultSessionName(name));
+        }
+
+        /// <summary>
+        /// Gets the session ID for a given session name.
+        /// </summary>
+        /// <param name="sessionName">The name of the session which ID to get.</param>
+        /// <returns>An ID number for the given session name.</returns>
+        public static long GetSessionID(string sessionName)
+        {
+            return GetScalar<long>(DatabaseCommands.GenGetCurrentSessionID(sessionName));
+        }
+
+        /// <summary>
         /// Gets the file snapshots from the database.
         /// </summary>
         /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
@@ -605,7 +626,7 @@ namespace ScriptNotepad.Database
 
             using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenDocumentSelect(sessionName, isHistory), conn))
             {
-                                                                       // can't get the BLOB without this (?!)..
+                // can't get the BLOB without this (?!)..
                 using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
                 {
                     while (reader.Read())

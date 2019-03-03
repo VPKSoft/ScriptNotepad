@@ -34,6 +34,7 @@ using PropertyChanged; // (C): https://github.com/Fody/PropertyChanged, MIT lice
 using System.Reflection;
 using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
+using System.Globalization;
 
 namespace ScriptNotepad.Settings
 {
@@ -107,6 +108,13 @@ namespace ScriptNotepad.Settings
                 {
                     continue; // ..so do continue..
                 }
+
+                // a CultureInfo instance, which is not an auto-property..
+                if (propertyInfos[i].Name == "Culture")
+                {
+                    continue; // ..so do continue..
+                }
+
 
                 try // avoid crashes..
                 {
@@ -211,6 +219,42 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("database/historyContentsCount", typeof(int))]
         public int SaveFileHistoryContentsCount { get; set; } = 20;
+
+        /// <summary>
+        /// Gets or sets the current session (for the documents).
+        /// </summary>
+        [Setting("database/currentSession", typeof(string))]
+        public string CurrentSession { get; set; } = "Default";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the default session name has been localized.
+        /// </summary>
+        [Setting("misc/currentSessionLocalized", typeof(bool))]
+        public bool DefaultSessionLocalized { get; set; } = false;
+
+        // the current language (Culture) to be used with the software..
+        private static CultureInfo _Culture = null;
+
+        /// <summary>
+        /// Gets or sets the current language (Culture) to be used with the software's localization.
+        /// </summary>
+        [DoNotNotify]
+        public CultureInfo Culture
+        {
+            get
+            {
+                return _Culture == null ?
+                    new CultureInfo(Conflib["language/culture", "en-US"].ToString()) :
+                    _Culture;
+            }
+
+            set
+            {
+                _Culture = value;
+                Conflib["language/culture"] = _Culture.Name;
+            }
+        }
+
 
         #endregion
 

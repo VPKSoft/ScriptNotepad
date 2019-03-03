@@ -498,4 +498,13 @@
   <data name="msgCharSetWesternEuropean" xml:space="preserve">
     <value>Western European|A message describing Western European character set(s).</value>
   </data>
+  <data name="msgSysDefaultEncoding" xml:space="preserve">
+    <value>Set to system default|Set the selected encoding to system's default encoding via a button click</value>
+  </data>
+  <data name="msgUTF8Encoding" xml:space="preserve">
+    <value>Set to Unicode (UTF8)|Set the selected encoding to UTF8 via a button click</value>
+  </data>
+  <data name="msgDefaultSessionName" xml:space="preserve">
+    <value>Default|A name of the default session for the documents</value>
+  </data>
 </root>

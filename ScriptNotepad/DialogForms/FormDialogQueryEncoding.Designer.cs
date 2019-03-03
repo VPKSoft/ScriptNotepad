@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDialogQueryEncoding));
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.cmbCharacterSet = new System.Windows.Forms.ComboBox();
@@ -35,6 +36,11 @@
             this.cmbEncoding = new System.Windows.Forms.ComboBox();
             this.btOK = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
+            this.btUTF8 = new System.Windows.Forms.PictureBox();
+            this.btSystemDefaultEncoding = new System.Windows.Forms.PictureBox();
+            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.SuspendLayout();
             // 
             // lbCharacterSet
@@ -54,7 +60,7 @@
             this.cmbCharacterSet.FormattingEnabled = true;
             this.cmbCharacterSet.Location = new System.Drawing.Point(153, 6);
             this.cmbCharacterSet.Name = "cmbCharacterSet";
-            this.cmbCharacterSet.Size = new System.Drawing.Size(296, 21);
+            this.cmbCharacterSet.Size = new System.Drawing.Size(269, 21);
             this.cmbCharacterSet.TabIndex = 1;
             // 
             // lbEncoding
@@ -74,7 +80,7 @@
             this.cmbEncoding.FormattingEnabled = true;
             this.cmbEncoding.Location = new System.Drawing.Point(153, 33);
             this.cmbEncoding.Name = "cmbEncoding";
-            this.cmbEncoding.Size = new System.Drawing.Size(296, 21);
+            this.cmbEncoding.Size = new System.Drawing.Size(269, 21);
             this.cmbEncoding.TabIndex = 3;
             // 
             // btOK
@@ -99,6 +105,32 @@
             this.btCancel.Text = "Cancel";
             this.btCancel.UseVisualStyleBackColor = true;
             // 
+            // btUTF8
+            // 
+            this.btUTF8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUTF8.Image = global::ScriptNotepad.Properties.Resources.unicode;
+            this.btUTF8.Location = new System.Drawing.Point(428, 33);
+            this.btUTF8.Name = "btUTF8";
+            this.btUTF8.Size = new System.Drawing.Size(21, 21);
+            this.btUTF8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btUTF8.TabIndex = 12;
+            this.btUTF8.TabStop = false;
+            this.ttMain.SetToolTip(this.btUTF8, "Set to unicode (UTF8)");
+            this.btUTF8.Click += new System.EventHandler(this.btDefaultEncodings_Click);
+            // 
+            // btSystemDefaultEncoding
+            // 
+            this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources._default;
+            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(428, 6);
+            this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
+            this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);
+            this.btSystemDefaultEncoding.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btSystemDefaultEncoding.TabIndex = 11;
+            this.btSystemDefaultEncoding.TabStop = false;
+            this.ttMain.SetToolTip(this.btSystemDefaultEncoding, "Set to system default");
+            this.btSystemDefaultEncoding.Click += new System.EventHandler(this.btDefaultEncodings_Click);
+            // 
             // FormDialogQueryEncoding
             // 
             this.AcceptButton = this.btOK;
@@ -106,6 +138,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
             this.ClientSize = new System.Drawing.Size(461, 95);
+            this.Controls.Add(this.btUTF8);
+            this.Controls.Add(this.btSystemDefaultEncoding);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.cmbEncoding);
@@ -121,6 +155,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select encoding";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDialogQueryEncoding_FormClosing);
+            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -134,5 +170,8 @@
         private System.Windows.Forms.ComboBox cmbEncoding;
         private System.Windows.Forms.Button btOK;
         private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.PictureBox btUTF8;
+        private System.Windows.Forms.PictureBox btSystemDefaultEncoding;
+        private System.Windows.Forms.ToolTip ttMain;
     }
 }

@@ -574,6 +574,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default|A name of the default session for the documents.
+        /// </summary>
+        internal static string msgDefaultSessionName {
+            get {
+                return ResourceManager.GetString("msgDefaultSessionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete selected script snippet(s)?|A confirmation question whether to delete selected script snippets from the database.
         /// </summary>
         internal static string msgDeleteScriptConfirm {
@@ -1123,6 +1132,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set to system default|Set the selected encoding to system&apos;s default encoding via a button click.
+        /// </summary>
+        internal static string msgSysDefaultEncoding {
+            get {
+                return ResourceManager.GetString("msgSysDefaultEncoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TeX file|*.tex|A text in a file dialog indicating TeX files.
         /// </summary>
         internal static string msgTeXFile {
@@ -1146,6 +1164,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgUnixScriptFile {
             get {
                 return ResourceManager.GetString("msgUnixScriptFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set to Unicode (UTF8)|Set the selected encoding to UTF8 via a button click.
+        /// </summary>
+        internal static string msgUTF8Encoding {
+            get {
+                return ResourceManager.GetString("msgUTF8Encoding", resourceCulture);
             }
         }
         
