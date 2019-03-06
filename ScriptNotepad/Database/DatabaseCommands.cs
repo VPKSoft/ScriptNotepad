@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static ScriptNotepad.Database.Database;
+using static ScriptNotepad.Database.DatabaseEnumerations;
 
 namespace ScriptNotepad.Database
 {
@@ -46,7 +47,12 @@ namespace ScriptNotepad.Database
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         public static string GenInsertFileSentence(DBFILE_SAVE fileSave)
         {
-            string existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = {QS(fileSave.FILENAME_FULL)});";
+            string existsCondition =
+                string.Join(Environment.NewLine,
+                $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = {QS(fileSave.FILENAME_FULL)} AND",
+                $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), " +
+                  "(SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')))");
+
             if (fileSave.ID != -1)
             {
                 existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ID = {fileSave.ID});";
@@ -69,7 +75,8 @@ namespace ScriptNotepad.Database
                 $"{BS(fileSave.ISHISTORY)},",
                 $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')),",
                 $"{QS(fileSave.ENCODING.WebName)}",
-                existsCondition);
+                existsCondition,
+                $";");
 
             return sql;
         }
@@ -225,6 +232,23 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Gets the existing database file save identifier sentence.
+        /// </summary>
+        /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GetExistingDBFileSaveIDSentence(DBFILE_SAVE fileSave)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT ID FROM DBFILE_SAVE",
+                $"WHERE",
+                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')) AND",
+                $"FILENAME_FULL = {QS(fileSave.FILENAME_FULL)};");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Gets the ID of the latest recent file insert from the database.
         /// </summary>
         /// <returns>A generated SQL sentence.</returns>
@@ -252,6 +276,7 @@ namespace ScriptNotepad.Database
                 $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = RECENT_FILES.SESSIONID), {QS(sessionName)}) AS SESSIONNAME",
                 $"FROM RECENT_FILES",
                 $"WHERE SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
+                $"AND NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 0) ",
                 $"ORDER BY CLOSED_DATETIME DESC",
                 $"LIMIT {maxCount};");
 
@@ -259,13 +284,38 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Gets a database select condition based on the <paramref name="databaseHistoryFlag"/>.
+        /// </summary>
+        /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
+        /// <param name="prefix">A prefix string to add to the result if the condition is a combined one (i.e. AND).</param>
+        /// <returns>A string containing a database select condition based on the <paramref name="databaseHistoryFlag"/>.</returns>
+        private static string GetHistorySelectCondition(DatabaseHistoryFlag databaseHistoryFlag, string prefix)
+        {
+            switch (databaseHistoryFlag)
+            {
+                case DatabaseHistoryFlag.IsHistory:
+                    return prefix + " ISHISTORY = 1";
+                case DatabaseHistoryFlag.NotHistory:
+                    return prefix + " ISHISTORY = 0";
+                case DatabaseHistoryFlag.DontCare:
+                    return string.Empty;
+                default:
+                    return string.Empty;
+            }
+        }
+
+        /// <summary>
         /// Generates a SQL sentence to select document snapshots from the DBFILE_SAVE table in the database.
         /// </summary>
         /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
-        /// <param name="isHistory">An indicator whether to select documents marked as history.</param>
+        /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
+        /// <param name="fileNameFull">A file name in case of a single file is being queried from the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenDocumentSelect(string sessionName, bool isHistory)
+        public static string GenDocumentSelect(string sessionName, DatabaseHistoryFlag databaseHistoryFlag, string fileNameFull = "")
         {
+            string fileNameCondition = fileNameFull == string.Empty ? string.Empty :
+                $"AND FILENAME_FULL = {QS(fileNameFull)}";
+
             string sql =
                 string.Join(Environment.NewLine,
                 $"SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH,",
@@ -275,9 +325,10 @@ namespace ScriptNotepad.Database
                 $"FILESYS_SAVED, ENCODING",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
-                $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')) AND",
-                $"ISHISTORY = {BS(isHistory)}",
-                $"ORDER BY VISIBILITY_ORDER");
+                $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
+                fileNameCondition,
+                GetHistorySelectCondition(databaseHistoryFlag, "AND"),
+                $"ORDER BY VISIBILITY_ORDER;");
 
             return sql;
         }
@@ -338,6 +389,25 @@ namespace ScriptNotepad.Database
             string sql =
                 string.Join(Environment.NewLine,
                 $"UPDATE SESSION_NAME SET SESSIONNAME = {QS(name)} WHERE SESSIONID = 1;");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to get the next ID for an auto-increment table.
+        /// </summary>
+        /// <param name="tableName">Name of the table of which next ID number to get.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenGetNextIDForTable(string tableName)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT",
+                $"CASE",
+                $"  WHEN(EXISTS(SELECT SEQ FROM SQLITE_SEQUENCE WHERE NAME = {QS(tableName)})) THEN",
+                $"    (SELECT SEQ + 1 FROM SQLITE_SEQUENCE WHERE NAME = {QS(tableName)})",
+                $"  ELSE 1",
+                $"END");
 
             return sql;
         }

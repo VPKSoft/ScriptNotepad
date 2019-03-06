@@ -42,6 +42,8 @@ using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 using ScriptNotepad.DialogForms;
+using static ScriptNotepad.Database.DatabaseEnumerations;
+using ScriptNotepad.Database.UtilityClasses;
 
 namespace ScriptNotepad
 {
@@ -69,6 +71,15 @@ namespace ScriptNotepad
         {
             get => Settings.FormSettings.Settings.DefaultSessionLocalized;
             set => Settings.FormSettings.Settings.DefaultSessionLocalized = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the default encoding to be used with the files within this software.
+        /// </summary>
+        public Encoding DefaultEncoding
+        {
+            get => Settings.FormSettings.Settings.DefaultEncoding;
+            set => Settings.FormSettings.Settings.DefaultEncoding = value;
         }
 
         /// <summary>
@@ -171,6 +182,12 @@ namespace ScriptNotepad
 
             // enable the test menu only when debugging..
             mnuTest.Visible = System.Diagnostics.Debugger.IsAttached;
+
+            // create a menu for recent files..
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, 20);
+
+            // subscribe the click event for the recent file menu items..
+            RecentFilesMenuBuilder.RecentFileMenuClicked += RecentFilesMenuBuilder_RecentFileMenuClicked;
         }
         #endregion
 
@@ -246,7 +263,7 @@ namespace ScriptNotepad
 
                     // query the user if one wishes to reload
                     // the changed file from the disk..
-                    if (fileSave.ShouldQueryDiskReload)
+                    if (fileSave != null && fileSave.ShouldQueryDiskReload)
                     {
                         if (MessageBox.Show(
                             DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happed", fileSave.FILENAME_FULL),
@@ -369,7 +386,7 @@ namespace ScriptNotepad
         /// <param name="history">An indicator if the documents should be closed ones. I.e. not existing with the current session.</param>
         private void LoadDocumentsFromDatabase(string sessionName, bool history)
         {
-            IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(sessionName, history);
+            IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(sessionName, DatabaseHistoryFlag.NotHistory);
 
             string activeDocument = string.Empty;
 
@@ -411,7 +428,7 @@ namespace ScriptNotepad
                 if (File.Exists(args[i]))
                 {
                     // add the file to the document control..
-                    OpenDocument(args[i], Encoding.Default);
+                    OpenDocument(args[i], DefaultEncoding);
                 }
             }
         }
@@ -471,19 +488,28 @@ namespace ScriptNotepad
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileName, (int)CurrentSessionID, encoding))
+                if (sttcMain.AddDocument(fileName, -1, encoding))
                 {
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
-                        if (sttcMain.CurrentDocument.Tag == null)
+                        // check the database first for a DBFILE_SAVE class instance..
+                        DBFILE_SAVE fileSave = Database.Database.GetFileFromDatabase(CurrentSession, fileName);
+
+                        if (sttcMain.CurrentDocument.Tag == null && fileSave == null)
                         {
-                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, encoding);
+                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, encoding);
                         }
+                        else if (fileSave != null)
+                        {
+                            sttcMain.CurrentDocument.Tag = fileSave;
+                            sttcMain.CurrentDocument.ID = (int)fileSave.ID;
+                        }
+
                         // get a DBFILE_SAVE class instance from the document's tag..
-                        DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+                        fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
 
                         // ..update the database with the document..
-                        Database.Database.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+                        fileSave = Database.Database.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
 
                         if (reloadContents)
                         {
@@ -491,7 +517,7 @@ namespace ScriptNotepad
                         }
 
                         // save the DBFILE_SAVE class instance to the Tag property..
-                        fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, fileSave.ENCODING);
+                        // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
                         sttcMain.CurrentDocument.Tag = fileSave;
 
                         // the file load can't add an undo option the Scintilla..
@@ -529,15 +555,15 @@ namespace ScriptNotepad
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, (int)CurrentSessionID, fileSave.ENCODING))
+                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, -1, fileSave.ENCODING))
                 {
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
                         // ..update the database with the document..
-                        Database.Database.AddOrUpdateFile(fileSave, document);
+                        fileSave = Database.Database.AddOrUpdateFile(fileSave, document);
 
                         // save the DBFILE_SAVE class instance to the Tag property..
-                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, false, CurrentSession, fileSave.ENCODING);
+                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
@@ -686,6 +712,12 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a user wishes to open a recent file..
+        private void RecentFilesMenuBuilder_RecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e)
+        {
+            OpenDocument(e.RecentFile.FILENAME_FULL, DefaultEncoding);
+        }
+
         // a user wishes to change the settings of the software..
         private void mnuSettings_Click(object sender, EventArgs e)
         {
@@ -720,7 +752,7 @@ namespace ScriptNotepad
         // via the IPC (no multiple instance allowed)..
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, Encoding.Default); }));
+            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, DefaultEncoding); }));
         }
 
         // a user wanted to create a new file..
@@ -760,6 +792,9 @@ namespace ScriptNotepad
 
             // save the current session's documents to the database..
             SaveDocumentsToDatabase(CurrentSession, true);
+
+            // unsubscribe the recent file menu item click handler..
+            RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
         }
 
         /// <summary>
@@ -822,7 +857,7 @@ namespace ScriptNotepad
             // if the file dialog was accepted (i.e. OK) then open the file to the view..
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
-                OpenDocument(odAnyFile.FileName, Encoding.Default);
+                OpenDocument(odAnyFile.FileName, DefaultEncoding);
             }
         }
 

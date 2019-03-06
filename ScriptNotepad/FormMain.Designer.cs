@@ -80,6 +80,9 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -347,6 +350,9 @@
             this.mnuOpen,
             this.mnuOpenWithEncoding,
             this.mnuTest,
+            this.toolStripMenuItem1,
+            this.mnuRecentFiles,
+            this.toolStripMenuItem2,
             this.munSave,
             this.mnuSaveAs,
             this.mnuSaveAll,
@@ -433,7 +439,7 @@
             // 
             this.mnuRunScript.Image = global::ScriptNotepad.Properties.Resources.CSharp;
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -441,7 +447,7 @@
             // 
             this.mnuCharSets.Image = global::ScriptNotepad.Properties.Resources.unicode;
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
             this.mnuCharSets.Text = "Change encoding";
             // 
             // mnuSearch
@@ -456,7 +462,7 @@
             // 
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
-            this.mnuFind.Size = new System.Drawing.Size(180, 22);
+            this.mnuFind.Size = new System.Drawing.Size(103, 22);
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
@@ -496,9 +502,25 @@
             // mnuAbout
             // 
             this.mnuAbout.Name = "mnuAbout";
-            this.mnuAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(188, 6);
+            // 
+            // mnuRecentFiles
+            // 
+            this.mnuRecentFiles.Name = "mnuRecentFiles";
+            this.mnuRecentFiles.Size = new System.Drawing.Size(191, 22);
+            this.mnuRecentFiles.Text = "Recent...";
             // 
             // FormMain
             // 
@@ -577,6 +599,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuCharSets;
         private System.Windows.Forms.ToolStripMenuItem mnuOpenWithEncoding;
         private System.Windows.Forms.ToolStripMenuItem mnuSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem mnuRecentFiles;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }
 

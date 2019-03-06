@@ -37,6 +37,7 @@ using System.Threading.Tasks;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
+using static ScriptNotepad.Database.DatabaseEnumerations;
 
 namespace ScriptNotepad.Database
 {
@@ -122,6 +123,16 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Gets the next ID number for an auto-increment table.
+        /// </summary>
+        /// <param name="tableName">Name of the table of which next ID number to get.</param>
+        /// <returns>The next ID number in the sequence.</returns>
+        public static long GetNextIDForTable(string tableName)
+        {
+            return GetScalar<long>(DatabaseCommands.GenGetNextIDForTable(tableName));
+        }
+
+        /// <summary>
         /// Adds a given DBFILE_SAVE class instance into the database cache.
         /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
         /// </summary>
@@ -156,6 +167,13 @@ namespace ScriptNotepad.Database
 
                 fileSave.ID = lastId != newId ? newId : fileSave.ID;
 
+                // no negative ID number is accepted (ISHISTORY=1 bug!)..
+                if (fileSave.ID == -1)
+                {
+                    // the file must have an ID number..
+                    fileSave.ID = GetScalar<long>(DatabaseCommands.GetExistingDBFileSaveIDSentence(fileSave));
+                }
+
                 return fileSave;
             }
             catch (Exception ex)
@@ -171,11 +189,11 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
-        /// <param name="isHistory"> a value indicating whether this entry is a history entry.</param>
+        /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <param name="encoding">An encoding for the document.</param>
         /// <param name="ID">An unique identifier for the file.</param>
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
-        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, Encoding encoding, int ID = -1)
+        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, Encoding encoding, int ID = -1)
         {
             try
             {
@@ -196,7 +214,7 @@ namespace ScriptNotepad.Database
                     SESSIONNAME = sessionName,
                     ISACTIVE = document.FileTabButton.IsActive,
                     ENCODING = encoding,
-                    ISHISTORY = isHistory
+                    ISHISTORY = databaseHistoryFlag == DatabaseHistoryFlag.IsHistory // in a database sense only the value if IsHistory is true..
                 };
 
                 return AddFile(fileSave);
@@ -213,13 +231,13 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
-        /// <param name="isHistory"> a value indicating whether this entry is a history entry.</param>
+        /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <param name="encoding">An encoding for the document.</param>
         /// <param name="ID">An unique identifier for the file.</param>
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
-        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, bool isHistory, string sessionName, Encoding encoding, int ID = -1)
+        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, Encoding encoding, int ID = -1)
         {
-            return UpdateFile(AddFile(document, isHistory, sessionName, encoding, ID));
+            return UpdateFile(AddFile(document, databaseHistoryFlag, sessionName, encoding, ID));
         }
 
         /// <summary>
@@ -519,7 +537,7 @@ namespace ScriptNotepad.Database
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
         /// <param name="maxCount">Maximum count of recent file entries to return.</param>
         /// <returns>A collection RECENT_FILES classes.</returns>
-        public static IEnumerable<RECENT_FILES> GetRecentFiles(string sessionName, int maxCount = 15)
+        public static IEnumerable<RECENT_FILES> GetRecentFiles(string sessionName, int maxCount)
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
 
@@ -615,53 +633,85 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Gets a single file from the database with given parameters.
+        /// </summary>
+        /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
+        /// <param name="fileNameFull">The full file name of the file to get from the database.</param>
+        /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
+        public static DBFILE_SAVE GetFileFromDatabase(string sessionName, string fileNameFull)
+        {
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenDocumentSelect(sessionName, DatabaseHistoryFlag.DontCare, fileNameFull), conn))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
+                {
+                    if (reader.Read())
+                    {
+                        return FromDataReader(reader);
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="DBFILE_SAVE"/> class instance from a <see cref="SQLiteDataReader"/> class instance.
+        /// </summary>
+        /// <param name="reader">The <see cref="SQLiteDataReader"/> class instance to read the data from.</param>
+        /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
+        public static DBFILE_SAVE FromDataReader(SQLiteDataReader reader)
+        {
+            try
+            {
+                // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
+                // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
+                // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
+                // FILESYS_SAVED: 14, ENCODING: 15
+                return
+                    new DBFILE_SAVE()
+                    {
+                        ID = reader.GetInt64(0),
+                        EXISTS_INFILESYS = reader.GetInt32(1) == 1,
+                        FILENAME_FULL = reader.GetString(2),
+                        FILENAME = reader.GetString(3),
+                        FILEPATH = reader.GetString(4),
+                        FILESYS_MODIFIED = DateFromDBString(reader.GetString(5)),
+                        DB_MODIFIED = DateFromDBString(reader.GetString(6)),
+                        LEXER_CODE = (LexerType)reader.GetInt32(7), // cast to a lexer type..
+                        FILE_CONTENTS = MemoryStreamFromBlob(reader.GetBlob(8, true)),
+                        VISIBILITY_ORDER = reader.GetInt32(9),
+                        SESSIONID = reader.GetInt32(10),
+                        ISACTIVE = reader.GetInt32(11) == 1,
+                        ISHISTORY = reader.GetInt32(12) == 1,
+                        SESSIONNAME = reader.GetString(13),
+                        FILESYS_SAVED = DateFromDBString(reader.GetString(14)),
+                        ENCODING = Encoding.GetEncoding(reader.GetString(15))
+                    };
+            }
+            catch (Exception ex)
+            {
+                LastException = ex;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Gets the file snapshots from the database.
         /// </summary>
         /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
-        /// <param name="isHistory">An indicator whether to select documents marked as history.</param>
+        /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <returns>A collection of DBFILE_SAVE class instances matching the given parameters.</returns>
-        public static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, bool isHistory)
+        public static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, DatabaseHistoryFlag databaseHistoryFlag)
         {
             List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenDocumentSelect(sessionName, isHistory), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenDocumentSelect(sessionName, databaseHistoryFlag), conn))
             {
                 // can't get the BLOB without this (?!)..
                 using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
                 {
                     while (reader.Read())
                     {
-                        try
-                        {
-                            // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
-                            // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
-                            // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
-                            // FILESYS_SAVED: 14, ENCODING: 15
-                            result.Add(
-                                new DBFILE_SAVE()
-                                {
-                                    ID = reader.GetInt64(0),
-                                    EXISTS_INFILESYS = reader.GetInt32(1) == 1,
-                                    FILENAME_FULL = reader.GetString(2),
-                                    FILENAME = reader.GetString(3),
-                                    FILEPATH = reader.GetString(4),
-                                    FILESYS_MODIFIED = DateFromDBString(reader.GetString(5)),
-                                    DB_MODIFIED = DateFromDBString(reader.GetString(6)),
-                                    LEXER_CODE = (LexerType)reader.GetInt32(7), // cast to a lexer type..
-                                    FILE_CONTENTS = MemoryStreamFromBlob(reader.GetBlob(8, true)),
-                                    VISIBILITY_ORDER = reader.GetInt32(9),
-                                    SESSIONID = reader.GetInt32(10),
-                                    ISACTIVE = reader.GetInt32(11) == 1,
-                                    ISHISTORY = reader.GetInt32(12) == 1,
-                                    SESSIONNAME = reader.GetString(13),
-                                    FILESYS_SAVED = DateFromDBString(reader.GetString(14)),
-                                    ENCODING = Encoding.GetEncoding(reader.GetString(15))
-                                });
-                        }
-                        catch (Exception ex)
-                        {
-                            LastException = ex;
-                        }
+                        result.Add(FromDataReader(reader));
                     }
                 }
             }

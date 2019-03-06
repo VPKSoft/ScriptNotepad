@@ -98,5 +98,13 @@ namespace ScriptNotepad.Database
         /// <note type="note">A null value indicates a DB null.</note>
         /// </summary>
         public long? REFERENCEID { get; set; } = null;
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        public override string ToString()
+        {
+            return FILENAME_FULL;
+        }
     }
 }

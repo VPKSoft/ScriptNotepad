@@ -33,198 +33,197 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
     /// <summary>
     /// An enumeration containing different categories for different encodings.
     /// </summary>
-    [Flags]
-    public enum CharacterSets : long
+    public enum CharacterSets
     {
         /// <summary>
         /// An enumeration value for the Arabic character sets.
         /// </summary>
-        Arabic = 1,
+        Arabic,
 
         /// <summary>
         /// An enumeration value for the Baltic character sets.
         /// </summary>
-        Baltic = 2,
+        Baltic,
 
         /// <summary>
         /// An enumeration value for the Canada character sets.
         /// </summary>
-        Canada = 4,
+        Canada,
 
         /// <summary>
         /// An enumeration value for the Cyrillic character sets.
         /// </summary>
-        Cyrillic = 8,
+        Cyrillic,
 
         /// <summary>
         /// An enumeration value for the Central European character sets.
         /// </summary>
-        CentralEuropean = 16,
+        CentralEuropean,
 
         /// <summary>
         /// An enumeration value for the Chinese character sets.
         /// </summary>
-        Chinese = 32,
+        Chinese,
 
         /// <summary>
         /// An enumeration value for the Denmark and Norway character sets.
         /// </summary>
-        DenmarkNorway = 64,
+        DenmarkNorway,
 
         /// <summary>
         /// An enumeration value for the Finland and Sweden character sets.
         /// </summary>
-        FinlandSweden = 128,
+        FinlandSweden,
 
         /// <summary>
         /// An enumeration value for the France character sets.
         /// </summary>
-        France = 256,
+        France,
 
         /// <summary>
         /// An enumeration value for the German character sets.
         /// </summary>
-        German = 512,
+        German,
 
         /// <summary>
         /// An enumeration value for the Greek character sets.
         /// </summary>
-        Greek = 1024,
+        Greek,
 
         /// <summary>
         /// An enumeration value for the Hebrew character sets.
         /// </summary>
-        Hebrew = 2048,
+        Hebrew,
 
         /// <summary>
         /// An enumeration value for the Icelandic character sets.
         /// </summary>
-        Icelandic = 4096,
+        Icelandic,
 
         /// <summary>
         /// An enumeration value for the Italy character sets.
         /// </summary>
-        Italy = 8192,
+        Italy,
 
         /// <summary>
         /// An enumeration value for the Arabic character sets.
         /// </summary>
-        Japanese = 16384,
+        Japanese,
 
         /// <summary>
         /// An enumeration value for the Korean character sets.
         /// </summary>
-        Korean = 32768,
+        Korean,
 
         /// <summary>
         /// An enumeration value for the Latin character sets.
         /// </summary>
-        Latin = 65536,
+        Latin,
 
         /// <summary>
         /// An enumeration value for the Miscellaneous character sets.
         /// </summary>
-        Miscellaneous = 131072,
+        Miscellaneous,
 
         /// <summary>
         /// An enumeration value for the Norwegian character sets.
         /// </summary>
-        Norwegian = 262144,
+        Norwegian,
 
         /// <summary>
         /// An enumeration value for the Western European character sets.
         /// </summary>
-        WesternEuropean = 524288,
+        WesternEuropean,
 
         /// <summary>
         /// An enumeration value for the Spain character sets.
         /// </summary>
-        Spain = 1048576,
+        Spain,
 
         /// <summary>
         /// An enumeration value for the Swedish character sets.
         /// </summary>
-        Swedish = 2097152,
+        Swedish,
 
         /// <summary>
         /// An enumeration value for the Taiwan character sets.
         /// </summary>
-        Taiwan = 4194304,
+        Taiwan,
 
         /// <summary>
         /// An enumeration value for the Thai character sets.
         /// </summary>
-        Thai = 8388608,
+        Thai,
 
         /// <summary>
         /// An enumeration value for the Turkish character sets.
         /// </summary>
-        Turkish = 16777216,
+        Turkish,
 
         /// <summary>
         /// An enumeration value for the Unicode character sets.
         /// </summary>
-        Unicode = 33554432,
+        Unicode,
 
         /// <summary>
         /// An enumeration value for the Assamese character sets.
         /// </summary>
-        Assamese = 67108864,
+        Assamese,
 
         /// <summary>
         /// An enumeration value for the Bengali character sets.
         /// </summary>
-        Bengali = 134217728,
+        Bengali,
 
         /// <summary>
         /// An enumeration value for the Devanagari character sets.
         /// </summary>
-        Devanagari = 268435456,
+        Devanagari,
 
         /// <summary>
         /// An enumeration value for the Estonian character sets.
         /// </summary>
-        Estonian = 536870912,
+        Estonian,
 
         /// <summary>
         /// An enumeration value for the Kannada character sets.
         /// </summary>
-        Kannada = 1073741824,
+        Kannada,
 
         /// <summary>
         /// An enumeration value for the Malayalam character sets.
         /// </summary>
-        Malayalam = 2147483648,
+        Malayalam,
 
         /// <summary>
         /// An enumeration value for the Oriya character sets.
         /// </summary>
-        Oriya = 4294967296,
+        Oriya,
 
         /// <summary>
         /// An enumeration value for the Punjabi character sets.
         /// </summary>
-        Punjabi = 8589934592,
+        Punjabi,
 
         /// <summary>
         /// An enumeration value for the Tamil character sets.
         /// </summary>
-        Tamil = 17179869184,
+        Tamil,
 
         /// <summary>
         /// An enumeration value for the Telugu character sets.
         /// </summary>
-        Telugu = 34359738368,
+        Telugu,
 
         /// <summary>
         /// An enumeration value for the Vietnamese character sets.
         /// </summary>
-        Vietnamese = 68719476736,
+        Vietnamese,
 
         /// <summary>
         /// An enumeration value for the single character sets.
         /// </summary>
-        SingleCharacterSets = 137438953472
+        SingleCharacterSets
     }
 
     /// <summary>

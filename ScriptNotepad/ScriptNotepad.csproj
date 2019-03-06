@@ -111,8 +111,10 @@
   <ItemGroup>
     <Compile Include="Database\CODE_SNIPPETS.cs" />
     <Compile Include="Database\DatabaseCommands.cs" />
+    <Compile Include="Database\DatabaseEnumerations.cs" />
     <Compile Include="Database\DBFILE_SAVE.cs" />
     <Compile Include="Database\RECENT_FILES.cs" />
+    <Compile Include="Database\UtilityClasses\RecentFilesMenuBuilder.cs" />
     <Compile Include="DialogForms\FormDialogQueryEncoding.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,10 +177,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DatabaseScript\ScriptRunner.cs" />
-    <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetComboBuilder.cs" />
-    <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetMenuBuilder.cs">
+    <Compile Include="UtilityClasses\Common\DataToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetComboBuilder.cs" />
+    <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetMenuBuilder.cs" />
     <Compile Include="UtilityClasses\Encoding\CharacterSets\EncodingCharacterSet.cs" />
     <Compile Include="UtilityClasses\IpcClientServer.cs" />
     <Compile Include="UtilityClasses\LinesAndBinary\FileLineType.cs" />
