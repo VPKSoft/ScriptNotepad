@@ -38,6 +38,8 @@ using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using static ScriptNotepad.Database.DatabaseEnumerations;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
+using static ScriptNotepad.UtilityClasses.ErrorHandling.ExceptionDelegate;
 
 namespace ScriptNotepad.Database
 {
@@ -223,6 +225,150 @@ namespace ScriptNotepad.Database
             {
                 LastException = ex; // log the exception..
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Updates the file's ISHISTORY flag in the database.
+        /// </summary>
+        /// <param name="fileSave">A DBFILE_SAVE class instance which ISHISTORY flag to update to the database.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        public static bool UpdateFileHistoryFlag(DBFILE_SAVE fileSave)
+        {
+            return ExecuteArbitrarySQL(DatabaseCommands.GenUpdateFileHistoryFlag(fileSave));
+        }
+
+        /// <summary>
+        /// Cleans up the history file list for the given session.
+        /// </summary>
+        /// <param name="sessionName">Name of the session of which history file list should be cleaned from the database.</param>
+        /// <param name="maxAmount">The maximum amount of entries to keep in the history file list.</param>
+        /// <returns>A named tuple containing an indicator of the success of the deletion and the amount of deleted records from the database.</returns>
+        public static (bool success, int deletedAmount) CleanUpHistoryList(string sessionName, int maxAmount)
+        {
+            try
+            {
+                // a list of RECENT_FILES ID numbers to be deleted from the database..
+                List<long> ids = new List<long>();
+
+                // generate a SQL sentence for the selection..
+                string sql = DatabaseCommands.GenHistoryListSelect(sessionName);
+
+                // as the SQLiteCommand is disposable a using clause is required..
+                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                {
+                    // loop through the result set..
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        // ID: 0, LIST_AMOUNT: 1
+                        while (reader.Read())
+                        {
+                            // stop if the amount of the history list is lower than the given maximum amount..
+                            if (reader.GetInt64(1) < maxAmount)
+                            {
+                                return (false, 0);
+                            }
+
+                            // get the total count value..
+                            long count = reader.GetInt64(1);
+
+                            // collect the maximum amount of ID numbers to be deleted from the database..
+                            if (count - maxAmount > ids.Count)
+                            {
+                                ids.Add(reader.GetInt64(0));
+                            }
+                            else // the amount if full..
+                            {
+                                // ..so break the loop..
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // return the success value and the amount of deleted RECENT_FILES entries..
+                if (ids.Count > 0)
+                {
+                    // ..if any..
+                    return (ExecuteArbitrarySQL(DatabaseCommands.GenDeleteDBFileHistoryIDList(ids)), ids.Count);
+                }
+                else
+                {
+                    // ..none where to be deleted..
+                    return (false, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                LastException = ex; // log the exception..
+                return (false, 0); // failure..
+            }
+        }
+
+        /// <summary>
+        /// Cleanups the history document contents with the given maximum <paramref name="maxDocuments"/> amount to be left in to the database.
+        /// </summary>
+        /// <param name="sessionName">Name of the session of which documents to be cleaned from the database.</param>
+        /// <param name="maxDocuments">The maximum amount of documents to keep in the database.</param>
+        /// <returns>A named tuple containing an indicator of the success of the deletion and the amount of deleted records from the database.</returns>
+        public static (bool success, int deletedAmount) CleanupHistoryDocumentContents(string sessionName, long maxDocuments)
+        {
+            try
+            {
+                // a list of DBFILE_SAVE ID numbers to be deleted from the database..
+                List<long> ids = new List<long>();
+
+                // generate a SQL sentence for the selection..
+                string sql = DatabaseCommands.GenHistoryCleanupListSelect(sessionName);
+
+                // as the SQLiteCommand is disposable a using clause is required..
+                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                {
+                    // loop through the result set..
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        // ID: 0, HISTORY_AMOUNT: 1
+                        while (reader.Read())
+                        {
+                            // stop if the amount of documents is lower than the given maximum amount..
+                            if (reader.GetInt64(1) < maxDocuments)
+                            {
+                                return (false, 0);
+                            }
+
+                            // get the total count value..
+                            long count = reader.GetInt64(1);
+
+                            // collect the maximum amount of ID numbers to be deleted from the database..
+                            if (count - maxDocuments > ids.Count)
+                            {
+                                ids.Add(reader.GetInt64(0));
+                            }
+                            else // the amount if full..
+                            {
+                                // ..so break the loop..
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // return the success value and the amount of deleted DBFILE_SAVE entries..
+                if (ids.Count > 0)
+                {
+                    // ..if any..
+                    return (ExecuteArbitrarySQL(DatabaseCommands.GenDeleteDBFileSaveIDList(ids)), ids.Count);
+                }
+                else
+                {
+                    // ..none where to be deleted..
+                    return (false, 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                LastException = ex; // log the exception..
+                return (false, 0); // failure..
             }
         }
 
@@ -439,9 +585,35 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// The last exception which occurred within a method of "this" static class.
+        /// </summary>
+        private static Exception _LastException = null;
+
+        /// <summary>
         /// Gets the last exception of a SQL sentence gone wrong.
         /// </summary>
-        public static Exception LastException { get; private set; } = null;
+        public static Exception LastException
+        {
+            get => _LastException;
+
+            // private as only static methods of this class can actually set the value of a last exception..
+            private set
+            {
+                // raise an event if there is an actual exception..
+                if (value != null)
+                {
+                    // ..and the event is subscribed..
+                    ExceptionOccurred?.Invoke(typeof(Database), new ExceptionEventArgs { Exception = value });
+                }
+                // save the last exception..
+                _LastException = value; 
+            }
+        }
+
+        /// <summary>
+        /// Occurs when an exception occurred with the database operations within this class.
+        /// </summary>
+        public static event OnExceptionOccurred ExceptionOccurred = null;
 
         /// <summary>
         /// Updates a given file to the database cache.
@@ -543,12 +715,13 @@ namespace ScriptNotepad.Database
 
             using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenHistorySelect(sessionName, maxCount), conn))
             {
+                // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, SESSIONID: 5, REFERENCEID: 6, SESSION_NAME: 7
+                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, SESSIONID: 5, REFERENCEID: 6, SESSION_NAME: 7, EXISTSINDB: 8
                     while (reader.Read())
                     {
-                        result.Add(
+                        RECENT_FILES recentFile =
                             new RECENT_FILES()
                             {
                                 ID = reader.GetInt64(0),
@@ -559,7 +732,14 @@ namespace ScriptNotepad.Database
                                 SESSIONID = reader.GetInt32(5),
                                 REFERENCEID = reader.IsDBNull(6) ? null : (long?)reader.GetInt64(6),
                                 SESSIONNAME = reader.GetString(7),
-                            });
+                                EXISTSINDB = reader.GetInt32(8) == 1
+                            };
+
+                        // the file must exist somewhere..
+                        if (recentFile.EXISTSINDB || recentFile.EXISTSINFILESYS)
+                        {
+                            result.Add(recentFile);
+                        }
                     }
                 }
             }
@@ -577,6 +757,7 @@ namespace ScriptNotepad.Database
 
             using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenScriptSelect(), conn))
             {
+                // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     // ID: 0, SCRIPT_CONTENTS: 1, SCRIPT_NAME: 2, MODIFIED: 3, SCRIPT_TYPE: 4, SCRIPT_LANGUAGE: 5

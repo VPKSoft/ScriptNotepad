@@ -1105,6 +1105,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Session: {0}|A message describing a session name with the name as a parameter&quot;, CurrentSession.
+        /// </summary>
+        internal static string msgSessionName {
+            get {
+                return ResourceManager.GetString("msgSessionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8)..
         /// </summary>
         internal static string msgShortEncodingPreText {

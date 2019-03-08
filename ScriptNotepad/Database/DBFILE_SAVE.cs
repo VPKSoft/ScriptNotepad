@@ -183,7 +183,7 @@ namespace ScriptNotepad.Database
                     DisposeMemoryStream();
 
                     // read the file contents from the file..
-                    using (FileStream fileStream = new FileStream(FILENAME_FULL, FileMode.Open, FileAccess.Read))
+                    using (FileStream fileStream = new FileStream(FILENAME_FULL, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         // create a byte buffer the contain all the bytes if the file with an assumption
                         // no one wishes to open massive binary files..

@@ -160,9 +160,10 @@ namespace ScriptNotepad.Settings
             CharacterSetComboBuilder.SelectItemByEncoding(sender.Equals(btUTF8) ? Encoding.UTF8 : Encoding.Default, false);
         }
 
-        private void cmbSelectLanguageValue_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbDocumentContentHistory_CheckedChanged(object sender, EventArgs e)
         {
-
+            CheckBox checkBox = (CheckBox)sender;
+            nudDocumentContentHistory.Enabled = checkBox.Checked;
         }
     }
 }

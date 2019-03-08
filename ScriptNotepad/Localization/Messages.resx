@@ -507,4 +507,7 @@
   <data name="msgDefaultSessionName" xml:space="preserve">
     <value>Default|A name of the default session for the documents</value>
   </data>
+  <data name="msgSessionName" xml:space="preserve">
+    <value>Session: {0}|A message describing a session name with the name as a parameter", CurrentSession</value>
+  </data>
 </root>

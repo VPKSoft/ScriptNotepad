@@ -200,7 +200,7 @@ namespace ScriptNotepad.Settings
         /// Gets or sets the default encoding to be used with the files within this software.
         /// </summary>
         [Setting("main/encoding", typeof(Encoding))]
-        public Encoding DefaultEncoding { get; set; } = Encoding.Default;
+        public Encoding DefaultEncoding { get; set; } = Encoding.UTF8;
 
         /// <summary>
         /// The amount of files to be saved to a document history.

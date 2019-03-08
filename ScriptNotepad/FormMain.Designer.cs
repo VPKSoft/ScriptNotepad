@@ -32,6 +32,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
@@ -64,6 +65,9 @@
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpenWithEncoding = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.munSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,9 +84,9 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmGUI = new System.Windows.Forms.Timer(this.components);
+            this.ssLbSpace6 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSessionName = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -231,7 +235,9 @@
             this.ssLbSpace4,
             this.ssLbEncoding,
             this.ssLbSpace5,
-            this.ssLbInsertOverride});
+            this.ssLbInsertOverride,
+            this.ssLbSpace6,
+            this.ssLbSessionName});
             this.ssMain.Location = new System.Drawing.Point(0, 391);
             this.ssMain.Name = "ssMain";
             this.ssMain.Size = new System.Drawing.Size(776, 20);
@@ -326,6 +332,8 @@
             this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);
             this.sttcMain.TabClosing += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosing(this.sttcMain_TabClosing);
             this.sttcMain.CaretPositionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnCaretPositionChanged(this.sttcMain_SelectionCaretChanged);
+            this.sttcMain.DocumentMouseDown += new System.Windows.Forms.MouseEventHandler(this.sttcMain_DocumentMouseDown);
+            this.sttcMain.DocumentMouseUp += new System.Windows.Forms.MouseEventHandler(this.sttcMain_DocumentMouseUp);
             this.sttcMain.SelectionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnSelectionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.DocumentTextChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnDocumentTextChanged(this.sttcMain_DocumentTextChanged);
             // 
@@ -393,6 +401,22 @@
             this.mnuTest.Text = "Test Form...";
             this.mnuTest.Visible = false;
             this.mnuTest.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            // 
+            // mnuRecentFiles
+            // 
+            this.mnuRecentFiles.Name = "mnuRecentFiles";
+            this.mnuRecentFiles.Size = new System.Drawing.Size(191, 22);
+            this.mnuRecentFiles.Text = "Recent...";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(188, 6);
             // 
             // munSave
             // 
@@ -506,21 +530,21 @@
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
-            // toolStripMenuItem1
+            // tmGUI
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            this.tmGUI.Tick += new System.EventHandler(this.tmGUI_Tick);
             // 
-            // toolStripMenuItem2
+            // ssLbSpace6
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(188, 6);
+            this.ssLbSpace6.AutoSize = false;
+            this.ssLbSpace6.Name = "ssLbSpace6";
+            this.ssLbSpace6.Size = new System.Drawing.Size(30, 15);
             // 
-            // mnuRecentFiles
+            // ssLbSessionName
             // 
-            this.mnuRecentFiles.Name = "mnuRecentFiles";
-            this.mnuRecentFiles.Size = new System.Drawing.Size(191, 22);
-            this.mnuRecentFiles.Text = "Recent...";
+            this.ssLbSessionName.Name = "ssLbSessionName";
+            this.ssLbSessionName.Size = new System.Drawing.Size(90, 15);
+            this.ssLbSessionName.Text = "Session: Default";
             // 
             // FormMain
             // 
@@ -538,6 +562,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyUp);
             this.tlpMain.ResumeLayout(false);
             this.tlpMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
@@ -602,6 +627,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem mnuRecentFiles;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.Timer tmGUI;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace6;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSessionName;
     }
 }
 

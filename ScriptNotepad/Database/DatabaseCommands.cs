@@ -82,6 +82,20 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Generates a SQL sentence to update a file's ISHISTORY flag in the database.
+        /// </summary>
+        /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenUpdateFileHistoryFlag(DBFILE_SAVE fileSave)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"UPDATE DBFILE_SAVE SET ISHISTORY = {fileSave.ISHISTORY} WHERE ID = {fileSave.ID};");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Generates a SQL sentence to update a file in the database.
         /// </summary>
         /// <param name="fileSave">A reference to a DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
@@ -262,9 +276,49 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Generates a SQL snippet to get the session ID by it's name.
+        /// </summary>
+        /// <param name="sessionName">Name of the session.</param>
+        /// <returns>A generated SQL snippet based on the given parameters.</returns>
+        public static string GenSessionNameIDCondition(string sessionName)
+        {
+            string sql =
+                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL snippet to get the session name by it's ID.
+        /// </summary>
+        /// <param name="sessionID">The ID of the session.</param>
+        /// <returns>A generated SQL snippet based on the given parameters.</returns>
+        public static string GenSessionIDNameCondition(int sessionID)
+        {
+            string sql =
+                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = {sessionID}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL snippet to get the session name by it's name.
+        /// </summary>
+        /// <param name="sessionName">Name of the session.</param>
+        /// <returns>A generated SQL snippet based on the given parameters.</returns>
+        public static string GenSessionNameNameCondition(string sessionName)
+        {
+            string sql =
+                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";
+
+            return sql;
+        }
+
+
+        /// <summary>
         /// Generates a SQL sentence to select file names saved in the RECENT_FILES table in the database.
         /// </summary>
-        /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
+        /// <param name="sessionName">A name of the session to which the history documents belongs to.</param>
         /// <param name="maxCount">A maximum amount of file history to get.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         public static string GenHistorySelect(string sessionName, int maxCount)
@@ -273,15 +327,51 @@ namespace ScriptNotepad.Database
                 string.Join(Environment.NewLine,
                 $"SELECT ID, FILENAME_FULL, FILENAME,",
                 $"FILEPATH, CLOSED_DATETIME, SESSIONID, REFERENCEID,",
-                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = RECENT_FILES.SESSIONID), {QS(sessionName)}) AS SESSIONNAME",
+                $"{GenSessionNameNameCondition(sessionName)} AS SESSIONNAME,",
+                $"CAST(CASE WHEN EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 1 AND SESSIONID = {GenSessionNameIDCondition(sessionName)}) THEN 1 ELSE 0 END AS INTEGER) AS EXISTSINDB",
                 $"FROM RECENT_FILES",
-                $"WHERE SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
-                $"AND NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 0) ",
+                $"WHERE SESSIONID = {GenSessionNameIDCondition(sessionName)}",
+                $"AND NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 0 AND SESSIONID = {GenSessionNameIDCondition(sessionName)}) ",
                 $"ORDER BY CLOSED_DATETIME DESC",
                 $"LIMIT {maxCount};");
 
             return sql;
         }
+
+        /// <summary>
+        /// Generates a SQL sentence to ID numbers saved in the RECENT_FILES table in the database.
+        /// </summary>
+        /// <param name="sessionName">A name of the session to which the history list belongs to.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenHistoryListSelect(string sessionName)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT ID, (SELECT COUNT(*) FROM RECENT_FILES WHERE SESSIONID = {GenSessionNameIDCondition(sessionName)}) AS LIST_AMOUNT ",
+                $"FROM",
+                $"RECENT_FILES",
+                $"WHERE",
+                $"SESSIONID = {GenSessionNameIDCondition(sessionName)}",
+                $"ORDER BY CLOSED_DATETIME;");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to delete entries from the <see cref="RECENT_FILES"/> table with a given ID list.
+        /// </summary>
+        /// <param name="ids">A list of ID numbers to generate a SQL sentence to delete <see cref="RECENT_FILES"/> entries from the database.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenDeleteDBFileHistoryIDList(List<long> ids)
+        {
+            string deleteIDList = string.Join(", ", ids);
+            string sql =
+                string.Join(Environment.NewLine,
+                $"DELETE FROM RECENT_FILES WHERE ID IN({deleteIDList});");
+
+            return sql;
+        }
+
 
         /// <summary>
         /// Gets a database select condition based on the <paramref name="databaseHistoryFlag"/>.
@@ -302,6 +392,41 @@ namespace ScriptNotepad.Database
                 default:
                     return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to select the oldest history files in the database belonging to the given <paramref name="sessionName"/> session.
+        /// </summary>
+        /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenHistoryCleanupListSelect(string sessionName)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT ID, (SELECT COUNT(*) FROM DBFILE_SAVE WHERE",
+                $"SESSIONID = {GenSessionNameIDCondition(sessionName)} AND ISHISTORY = 1) AS HISTORY_AMOUNT",
+                $"FROM DBFILE_SAVE",
+                $"WHERE",
+                $"SESSIONID = {GenSessionNameIDCondition(sessionName)} AND",
+                $"ISHISTORY = 1",
+                $"ORDER BY DB_MODIFIED;");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to delete entries from the <see cref="DBFILE_SAVE"/> table with a given ID list.
+        /// </summary>
+        /// <param name="ids">A list of ID numbers to generate a SQL sentence to delete <see cref="DBFILE_SAVE"/> entries from the database.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenDeleteDBFileSaveIDList(List<long> ids)
+        {
+            string deleteIDList = string.Join(", ", ids);
+            string sql =
+                string.Join(Environment.NewLine,
+                $"DELETE FROM DBFILE_SAVE WHERE ID IN({deleteIDList});");
+
+            return sql;
         }
 
         /// <summary>
@@ -349,9 +474,9 @@ namespace ScriptNotepad.Database
                 $"{QS(recentFile.FILENAME)},",
                 $"{QS(recentFile.FILEPATH)},",
                 $"{DateToDBString(recentFile.CLOSED_DATETIME)},",
-                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(recentFile.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')),",
+                $"{GenSessionNameIDCondition(recentFile.SESSIONNAME)},",
                 $"{(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
-                $"WHERE NOT EXISTS(SELECT * FROM RECENT_FILES WHERE FILENAME_FULL = {QS(recentFile.FILENAME_FULL)});");
+                $"WHERE NOT EXISTS(SELECT * FROM RECENT_FILES WHERE FILENAME_FULL = {QS(recentFile.FILENAME_FULL)} AND SESSIONID = {GenSessionNameIDCondition(recentFile.SESSIONNAME)});");
 
             return sql;
         }

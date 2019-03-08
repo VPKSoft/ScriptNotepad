@@ -100,6 +100,16 @@ namespace ScriptNotepad.Database
         public long? REFERENCEID { get; set; } = null;
 
         /// <summary>
+        /// Gets or sets a value indicating whether a snapshot of the file in question exists in the <see cref="DBFILE_SAVE"/> table in the database.
+        /// </summary>
+        public bool EXISTSINDB { get; set; } = false;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="RECENT_FILES"/> property <see cref="FILENAME_FULL"/> exists in the file system.
+        /// </summary>
+        public bool EXISTSINFILESYS { get => File.Exists(FILENAME_FULL); }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         public override string ToString()

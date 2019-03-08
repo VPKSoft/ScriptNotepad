@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.lbSelectLanguageDescription = new System.Windows.Forms.Label();
+            this.cmbSelectLanguageValue = new System.Windows.Forms.ComboBox();
             this.cbDocumentContentHistory = new System.Windows.Forms.CheckBox();
             this.nudDocumentContentHistory = new System.Windows.Forms.NumericUpDown();
             this.lbDocumentContentHistory = new System.Windows.Forms.Label();
@@ -44,12 +46,9 @@
             this.cmbEncoding = new System.Windows.Forms.ComboBox();
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
-            this.lbSelectLanguageDescription = new System.Windows.Forms.Label();
-            this.cmbSelectLanguageValue = new System.Windows.Forms.ComboBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
@@ -65,7 +64,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpgGeneralSettings);
-            this.tcMain.Controls.Add(this.tabPage2);
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -90,6 +88,31 @@
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
             // 
+            // lbSelectLanguageDescription
+            // 
+            this.lbSelectLanguageDescription.AutoSize = true;
+            this.lbSelectLanguageDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.lbSelectLanguageDescription.Location = new System.Drawing.Point(3, 162);
+            this.lbSelectLanguageDescription.Margin = new System.Windows.Forms.Padding(17, 15, 17, 15);
+            this.lbSelectLanguageDescription.Name = "lbSelectLanguageDescription";
+            this.lbSelectLanguageDescription.Size = new System.Drawing.Size(156, 13);
+            this.lbSelectLanguageDescription.TabIndex = 26;
+            this.lbSelectLanguageDescription.Text = "Language (a restart is required):";
+            this.lbSelectLanguageDescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cmbSelectLanguageValue
+            // 
+            this.cmbSelectLanguageValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbSelectLanguageValue.DisplayMember = "DisplayName";
+            this.cmbSelectLanguageValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSelectLanguageValue.FormattingEnabled = true;
+            this.cmbSelectLanguageValue.Location = new System.Drawing.Point(225, 159);
+            this.cmbSelectLanguageValue.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.cmbSelectLanguageValue.Name = "cmbSelectLanguageValue";
+            this.cmbSelectLanguageValue.Size = new System.Drawing.Size(326, 21);
+            this.cmbSelectLanguageValue.TabIndex = 27;
+            // 
             // cbDocumentContentHistory
             // 
             this.cbDocumentContentHistory.AutoSize = true;
@@ -100,6 +123,7 @@
             this.cbDocumentContentHistory.Size = new System.Drawing.Size(15, 14);
             this.cbDocumentContentHistory.TabIndex = 13;
             this.cbDocumentContentHistory.UseVisualStyleBackColor = true;
+            this.cbDocumentContentHistory.CheckedChanged += new System.EventHandler(this.cbDocumentContentHistory_CheckedChanged);
             // 
             // nudDocumentContentHistory
             // 
@@ -239,16 +263,6 @@
             this.lbEncoding.TabIndex = 6;
             this.lbEncoding.Text = "Encoding:";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(557, 371);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // btCancel
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -270,32 +284,6 @@
             this.btOK.TabIndex = 6;
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
-            // 
-            // lbSelectLanguageDescription
-            // 
-            this.lbSelectLanguageDescription.AutoSize = true;
-            this.lbSelectLanguageDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lbSelectLanguageDescription.Location = new System.Drawing.Point(3, 162);
-            this.lbSelectLanguageDescription.Margin = new System.Windows.Forms.Padding(17, 15, 17, 15);
-            this.lbSelectLanguageDescription.Name = "lbSelectLanguageDescription";
-            this.lbSelectLanguageDescription.Size = new System.Drawing.Size(156, 13);
-            this.lbSelectLanguageDescription.TabIndex = 26;
-            this.lbSelectLanguageDescription.Text = "Language (a restart is required):";
-            this.lbSelectLanguageDescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cmbSelectLanguageValue
-            // 
-            this.cmbSelectLanguageValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbSelectLanguageValue.DisplayMember = "DisplayName";
-            this.cmbSelectLanguageValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSelectLanguageValue.FormattingEnabled = true;
-            this.cmbSelectLanguageValue.Location = new System.Drawing.Point(225, 159);
-            this.cmbSelectLanguageValue.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
-            this.cmbSelectLanguageValue.Name = "cmbSelectLanguageValue";
-            this.cmbSelectLanguageValue.Size = new System.Drawing.Size(326, 21);
-            this.cmbSelectLanguageValue.TabIndex = 27;
-            this.cmbSelectLanguageValue.SelectedIndexChanged += new System.EventHandler(this.cmbSelectLanguageValue_SelectedIndexChanged);
             // 
             // FormSettings
             // 
@@ -333,7 +321,6 @@
 
         private System.Windows.Forms.TabControl tcMain;
         private System.Windows.Forms.TabPage tpgGeneralSettings;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox gpDefaultEncoding;
         private System.Windows.Forms.ComboBox cmbCharacterSet;
         private System.Windows.Forms.ComboBox cmbEncoding;

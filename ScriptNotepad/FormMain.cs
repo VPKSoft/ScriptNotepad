@@ -44,50 +44,12 @@ using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 using ScriptNotepad.DialogForms;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using ScriptNotepad.Database.UtilityClasses;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad
 {
     public partial class FormMain : DBLangEngineWinforms
     {
-        #region PrivateFields
-        private FindReplace findReplace = new FindReplace();
-        IpcClientServer ipcServer = new IpcClientServer();
-        #endregion
-
-        #region PrivateProperties
-        /// <summary>
-        /// Gets or sets the current session for the documents.
-        /// </summary>
-        private string CurrentSession
-        {
-            get => Settings.FormSettings.Settings.CurrentSession;
-            set => Settings.FormSettings.Settings.CurrentSession = value;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the default session name has been localized.
-        /// </summary>
-        private bool CurrentSessionLocalized
-        {
-            get => Settings.FormSettings.Settings.DefaultSessionLocalized;
-            set => Settings.FormSettings.Settings.DefaultSessionLocalized = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the default encoding to be used with the files within this software.
-        /// </summary>
-        public Encoding DefaultEncoding
-        {
-            get => Settings.FormSettings.Settings.DefaultEncoding;
-            set => Settings.FormSettings.Settings.DefaultEncoding = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the ID number for the current session for the documents.
-        /// </summary>
-        private long CurrentSessionID { get; set; } = -1;
-        #endregion
-
         #region MassiveConstructor
         /// <summary>
         /// Initializes a new instance of the <see cref="FormMain"/> class.
@@ -184,10 +146,17 @@ namespace ScriptNotepad
             mnuTest.Visible = System.Diagnostics.Debugger.IsAttached;
 
             // create a menu for recent files..
-            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, 20);
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount);
 
             // subscribe the click event for the recent file menu items..
             RecentFilesMenuBuilder.RecentFileMenuClicked += RecentFilesMenuBuilder_RecentFileMenuClicked;
+
+            // subscribe for the database exception event..
+            Database.Database.ExceptionOccurred += Database_ExceptionOccurred;
+
+            // set the current session name to the status strip..
+            ssLbSessionName.Text =
+                DBLangEngine.GetMessage("msgSessionName", "Session: {0}|A message describing a session name with the name as a parameter", CurrentSession);
         }
         #endregion
 
@@ -195,9 +164,15 @@ namespace ScriptNotepad
         /// <summary>
         /// Sets the main status strip values for the currently active document..
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">The <see cref="ScintillaTabbedDocument"/> document of which properties to use to set the status strip values to indicate.</param>
         private void SetStatusStringText(ScintillaTabbedDocument document)
         {
+            // first check the parameter validity..
+            if (document == null)
+            {
+                return;
+            }
+
             ssLbLineColumn.Text =
                 DBLangEngine.GetMessage("msgColLine", "Line: {0}  Col: {1}|As in the current column and the current line in a ScintillaNET control",
                 document.LineNumber + 1, document.Column + 1);
@@ -239,12 +214,36 @@ namespace ScriptNotepad
                 ssLbEncoding.Text =
                     DBLangEngine.GetMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
                     fileSave.ENCODING.EncodingName;
+
+                ssLbSessionName.Text =
+                    DBLangEngine.GetMessage("msgSessionName", "Session: {0}|A message describing a session name with the name as a parameter", CurrentSession);
             }
 
-            ssLbInsertOverride.Text =
-                document.Scintilla.Overtype ?
-                    DBLangEngine.GetMessage("msgOverrideShort", "Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text") :
-                    DBLangEngine.GetMessage("msgInsertShort", "Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text");
+            // set the insert / override text for the status strip..
+            SetInsertOverrideStatusStripText(document, false);
+        }
+
+        /// <summary>
+        /// Sets the main status strip value for insert / override mode for the currently active document..
+        /// </summary>
+        /// <param name="document">The <see cref="ScintillaTabbedDocument"/> document of which properties to use to set the status strip values to indicate.</param>
+        /// <param name="isKeyPreview">A flag indicating whether the software captured the change before the control; thus indicating an inverted value.</param>
+        private void SetInsertOverrideStatusStripText(ScintillaTabbedDocument document, bool isKeyPreview)
+        {
+            if (isKeyPreview)
+            {
+                ssLbInsertOverride.Text =
+                    !document.Scintilla.Overtype ?
+                        DBLangEngine.GetMessage("msgOverrideShort", "Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text") :
+                        DBLangEngine.GetMessage("msgInsertShort", "Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text");
+            }
+            else
+            {
+                ssLbInsertOverride.Text =
+                    document.Scintilla.Overtype ?
+                        DBLangEngine.GetMessage("msgOverrideShort", "Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text") :
+                        DBLangEngine.GetMessage("msgInsertShort", "Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text");
+            }
         }
 
         /// <summary>
@@ -280,8 +279,9 @@ namespace ScriptNotepad
                             // just in case set the tag back..
                             sttcMain.Documents[i].Tag = fileSave;
 
-                            // bring the form to the front..
-                            BringToFront(); 
+
+                            // set the flag that the form should be activated after the dialog..
+                            bringToFrontQueued = true;
                         }
                         else // the user doesn't want to load the changes made to the document from the file system..
                         {
@@ -295,8 +295,8 @@ namespace ScriptNotepad
                             // just in case set the tag back..
                             sttcMain.Documents[i].Tag = fileSave;
 
-                            // bring the form to the front..
-                            BringToFront();
+                            // set the flag that the form should be activated after the dialog..
+                            bringToFrontQueued = true;
                         }
                     }
                 }
@@ -411,6 +411,40 @@ namespace ScriptNotepad
             }
 
             UpdateUndoRedoIndicators();
+        }
+
+        /// <summary>
+        /// Loads the document from the database based on a given <paramref name="recentFile"/> class instance.
+        /// </summary>
+        /// <param name="recentFile">A <see cref="RECENT_FILES"/> class instance containing the file data.</param>
+        private void LoadDocumentFromDatabase(RECENT_FILES recentFile)
+        {
+            // get the file from the database..
+            DBFILE_SAVE file = Database.Database.GetFileFromDatabase(recentFile.SESSIONNAME, recentFile.FILENAME_FULL);
+
+            // only if something was gotten from the database..
+            if (file != null)
+            {
+                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, file.FILE_CONTENTS);
+                if (sttcMain.LastAddedDocument != null)
+                {
+                    // not history any more..
+                    file.ISHISTORY = false;
+
+                    // update the history flag to the database..
+                    Database.Database.UpdateFileHistoryFlag(file);
+
+                    sttcMain.LastAddedDocument.Tag = file;
+                    // the file load can't add an undo option the Scintilla..
+                    sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
+                }
+                sttcMain.ActivateDocument(file.FILENAME_FULL);
+
+                UpdateUndoRedoIndicators();
+
+                // re-create a menu for recent files..
+                RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount);
+            }
         }
 
         /// <summary>
@@ -715,7 +749,16 @@ namespace ScriptNotepad
         // a user wishes to open a recent file..
         private void RecentFilesMenuBuilder_RecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e)
         {
-            OpenDocument(e.RecentFile.FILENAME_FULL, DefaultEncoding);
+            // if a file snapshot exists in the database then load it..
+            if (e.RecentFile.EXISTSINDB)
+            {
+                LoadDocumentFromDatabase(e.RecentFile);
+            }
+            // else open the file from the file system..
+            else
+            {
+                OpenDocument(e.RecentFile.FILENAME_FULL, DefaultEncoding);
+            }
         }
 
         // a user wishes to change the settings of the software..
@@ -727,9 +770,16 @@ namespace ScriptNotepad
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
-            // a user pressed a keyboard combination of CTRL+Z, which indicates undo for
-            // the Scintilla control..
-            if (e.KeyCode == Keys.Z && e.Control && !e.Shift && !e.Alt)
+            if (
+                // a user pressed a keyboard combination of CTRL+Z, which indicates undo for
+                // the Scintilla control..
+                (e.KeyCode == Keys.Z && e.Control && !e.Shift && !e.Alt) ||
+                // a user pressed a keyboard combination of CTRL+Y, which indicates redo for
+                // the Scintilla control..
+                (e.KeyCode == Keys.Y && e.Control && !e.Shift && !e.Alt) ||
+                // a user pressed the insert key a of a keyboard, which indicates toggling for
+                // insert / override mode for the Scintilla control..
+                (e.KeyCode == Keys.Insert && !e.Control && !e.Shift && !e.Alt))
             {
                 // if there is an active document..
                 if (sttcMain.CurrentDocument != null)
@@ -745,7 +795,58 @@ namespace ScriptNotepad
                     }
                 }
                 UpdateUndoRedoIndicators();
+
+                // special case called the "Insert" key..
+                if (e.KeyCode == Keys.Insert)
+                {
+                    // only if a document exists..
+                    if (sttcMain.CurrentDocument != null)
+                    {
+                        // ..set the insert / override text for the status strip..
+                        SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
+                    }
+                }
             }
+            else if (
+                e.KeyCode == Keys.Up || 
+                e.KeyCode == Keys.Down || 
+                e.KeyCode == Keys.Left || 
+                e.KeyCode == Keys.Right ||
+                e.KeyCode == Keys.PageDown ||
+                e.KeyCode == Keys.PageUp)
+            {
+                // set the flag to suspend the selection update to avoid excess CPU load..
+                suspendSelectionUpdate = true;
+            }
+        }
+
+        private void FormMain_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (
+                e.KeyCode == Keys.Up ||
+                e.KeyCode == Keys.Down ||
+                e.KeyCode == Keys.Left ||
+                e.KeyCode == Keys.Right ||
+                e.KeyCode == Keys.PageDown ||
+                e.KeyCode == Keys.PageUp)
+            {
+                // release the flag which suspends the selection update to avoid excess CPU load..
+                suspendSelectionUpdate = false;
+                SetStatusStringText(sttcMain.CurrentDocument);
+            }
+        }
+
+        private void sttcMain_DocumentMouseDown(object sender, MouseEventArgs e)
+        {
+            // set the flag to suspend the selection update to avoid excess CPU load..
+            suspendSelectionUpdate = true;
+        }
+
+        private void sttcMain_DocumentMouseUp(object sender, MouseEventArgs e)
+        {
+            // release the flag which suspends the selection update to avoid excess CPU load..
+            suspendSelectionUpdate = false;
+            SetStatusStringText(sttcMain.CurrentDocument);
         }
 
         // this event is raised when another instance of this application receives a file name
@@ -793,8 +894,21 @@ namespace ScriptNotepad
             // save the current session's documents to the database..
             SaveDocumentsToDatabase(CurrentSession, true);
 
+            // delete excess document contents saved in the database..
+            var cleanupContents = Database.Database.CleanupHistoryDocumentContents(CurrentSession, SaveFileHistoryContentsCount);
+
+            ExceptionLogger.LogMessage($"Database history contents cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
+
+            // delete excess entries from the file history list from the database..
+            cleanupContents = Database.Database.CleanUpHistoryList(CurrentSession, HistoryListAmount);
+
+            ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
+
             // unsubscribe the recent file menu item click handler..
             RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
+
+            // unsubscribe for the database exception event..
+            Database.Database.ExceptionOccurred += Database_ExceptionOccurred;
         }
 
         /// <summary>
@@ -880,7 +994,14 @@ namespace ScriptNotepad
         // the software's main form was activated so check if any open file has been changes..
         private void FormMain_Activated(object sender, EventArgs e)
         {
+            // release the flag which suspends the selection update to avoid excess CPU load..
+            suspendSelectionUpdate = false;
+
             CheckFileSysChanges();
+
+            // start the timer to bring the main form to the front..
+            leftActivatedEvent = true;
+            tmGUI.Enabled = true;
         }
 
         // a tab is closing so save it into the history..
@@ -889,6 +1010,7 @@ namespace ScriptNotepad
             DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
             fileSave.ISHISTORY = true;
             Database.Database.AddOrUpdateFile(fileSave, e.ScintillaTabbedDocument);
+            Database.Database.AddOrUpdateRecentFile(fileSave.FILENAME, fileSave.SESSIONNAME);
         }
 
         // a user activated a tab (document) so display it's file name..
@@ -918,7 +1040,10 @@ namespace ScriptNotepad
         // this is the event listener for the ScintillaTabbedDocument's selection and caret position change events..
         private void sttcMain_SelectionCaretChanged(object sender, ScintillaTabbedDocumentEventArgsExt e)
         {
-            SetStatusStringText(e.ScintillaTabbedDocument);
+            if (!suspendSelectionUpdate)
+            {
+                SetStatusStringText(e.ScintillaTabbedDocument);
+            }
         }
 
         // a user wanted to save all documents..
@@ -1021,6 +1146,115 @@ namespace ScriptNotepad
             }
             UpdateUndoRedoIndicators();
         }
+
+        private void Database_ExceptionOccurred(object sender, ExceptionEventArgs exceptionEventArgs)
+        {
+            // log the database exception..
+            ExceptionLogger.LogError(exceptionEventArgs.Exception);
+        }
+
+        // a timer to prevent an endless loop with the form activated event (probably a poor solution)..
+        private void tmGUI_Tick(object sender, EventArgs e)
+        {
+            tmGUI.Enabled = false;
+            if (bringToFrontQueued && leftActivatedEvent)
+            {
+                // this event in this case leads to an endless loop..
+                Activated -= FormMain_Activated;
+
+                // bring the form to the front..
+                BringToFront();
+                Activate();
+
+                // this event in this case leads to an endless loop..
+                Activated += FormMain_Activated;
+            }
+            bringToFrontQueued = false;
+            leftActivatedEvent = false;
+        }
+        #endregion
+
+        #region PrivateFields        
+        /// <summary>
+        /// A find and replace dialog for the ScintillaNET.
+        /// </summary>
+        private FindReplace findReplace = new FindReplace();
+
+        /// <summary>
+        /// An IPC client / server to transmit Windows shell file open requests to the current process.
+        /// (C): VPKSoft: https://gist.github.com/VPKSoft/5d78f1c06ec51ebad34817b491fe6ac6
+        /// </summary>
+        private IpcClientServer ipcServer = new IpcClientServer();
+
+        /// <summary>
+        /// A flag indicating if the main form should be activated.
+        /// </summary>
+        private bool bringToFrontQueued = false;
+
+        /// <summary>
+        /// A flag indicating if the main form's execution has left the Activated event.
+        /// </summary>
+        private bool leftActivatedEvent = false;
+
+        /// <summary>
+        /// A flag indicating whether the selection should be update to the status strip.
+        /// Continuous updates with keyboard will cause excess CPU usage.
+        /// </summary>
+        private bool suspendSelectionUpdate = false;
+        #endregion
+
+        #region PrivateProperties
+        /// <summary>
+        /// Gets or sets the current session for the documents.
+        /// </summary>
+        private string CurrentSession
+        {
+            get => Settings.FormSettings.Settings.CurrentSession;
+            set => Settings.FormSettings.Settings.CurrentSession = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the default session name has been localized.
+        /// </summary>
+        private bool CurrentSessionLocalized
+        {
+            get => Settings.FormSettings.Settings.DefaultSessionLocalized;
+            set => Settings.FormSettings.Settings.DefaultSessionLocalized = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the default encoding to be used with the files within this software.
+        /// </summary>
+        private Encoding DefaultEncoding
+        {
+            get => Settings.FormSettings.Settings.DefaultEncoding;
+            set => Settings.FormSettings.Settings.DefaultEncoding = value;
+        }
+
+        /// <summary>
+        /// The amount of files to be saved to a document history.
+        /// </summary>
+        private int HistoryListAmount
+        {
+            get => Settings.FormSettings.Settings.HistoryListAmount;
+            set => Settings.FormSettings.Settings.HistoryListAmount = value;
+        }
+
+        /// <summary>
+        /// Gets the save file history contents count.
+        /// </summary>
+        private int SaveFileHistoryContentsCount
+        {
+            get => Settings.FormSettings.Settings.SaveFileHistoryContents ?
+                // the setting value if the setting is enabled..
+                Settings.FormSettings.Settings.SaveFileHistoryContentsCount : 
+                int.MinValue; // the minimum value if the setting is disabled..
+        }
+
+        /// <summary>
+        /// Gets or sets the ID number for the current session for the documents.
+        /// </summary>
+        private long CurrentSessionID { get; set; } = -1;
         #endregion
     }
 }
