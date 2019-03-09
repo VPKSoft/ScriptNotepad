@@ -102,11 +102,11 @@ Section -Main SEC0000
     SetOutPath $INSTDIR
 
     File /r ..\bin\Release\*.*
+	File .\languages.ico
 		
     SetOutPath "$LOCALAPPDATA\ScriptNotepad"
     File ..\Localization\SQLiteDatabase\lang.sqlite   
 	
-	File .\languages.ico
    
    
 	SetOutPath $SMPROGRAMS\$StartMenuGroup

@@ -93,8 +93,8 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.5\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.1.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.1.3\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.1.4\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -183,8 +183,11 @@
     <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetComboBuilder.cs" />
     <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetMenuBuilder.cs" />
     <Compile Include="UtilityClasses\Encoding\CharacterSets\EncodingCharacterSet.cs" />
+    <Compile Include="UtilityClasses\ErrorHandling\ErrorHandlingBase.cs" />
     <Compile Include="UtilityClasses\ErrorHandling\ExceptionDelegate.cs" />
     <Compile Include="UtilityClasses\ErrorHandling\ExceptionEventArgs.cs" />
+    <Compile Include="UtilityClasses\ExternalProcessInteraction\CommandPromptInteraction.cs" />
+    <Compile Include="UtilityClasses\ExternalProcessInteraction\WindowsExplorerInteraction.cs" />
     <Compile Include="UtilityClasses\IpcClientServer.cs" />
     <Compile Include="UtilityClasses\LinesAndBinary\FileLineType.cs" />
     <Compile Include="UtilityClasses\LinesAndBinary\StreamEncoding.cs" />

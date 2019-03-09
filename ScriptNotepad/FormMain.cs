@@ -45,6 +45,7 @@ using ScriptNotepad.DialogForms;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using ScriptNotepad.Database.UtilityClasses;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
+using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 
 namespace ScriptNotepad
 {
@@ -400,6 +401,8 @@ namespace ScriptNotepad
                 if (sttcMain.LastAddedDocument != null)
                 {
                     sttcMain.LastAddedDocument.Tag = file;
+
+                    sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
                     // the file load can't add an undo option the Scintilla..
                     sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
                 }                
@@ -1256,5 +1259,43 @@ namespace ScriptNotepad
         /// </summary>
         private long CurrentSessionID { get; set; } = -1;
         #endregion
+
+        private void mnuOpenContainingFolderInExplorer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CommonContextMenu_ClipboardClick(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {                
+                var document = sttcMain.CurrentDocument;
+                var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                if (sender.Equals(mnuFullFilePathToClipboard))
+                {
+                    Clipboard.SetText(Path.GetDirectoryName(fileSave.FILENAME_FULL));
+                }
+                else if (sender.Equals(mnuFullFilePathAndNameToClipboard))
+                {
+                    Clipboard.SetText(fileSave.FILENAME_FULL);
+                }
+                else if (sender.Equals(mnuFileNameToClipboard))
+                {
+                    Clipboard.SetText(Path.GetFileName(fileSave.FILENAME_FULL));
+                }
+            }
+        }
+
+        private void mnuOpenContainingFolderInCmd_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                var document = sttcMain.CurrentDocument;
+                var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                CommandPromptInteraction.OpenCmdWithPath(Path.GetDirectoryName(fileSave.FILENAME_FULL));
+            }
+        }
     }
 }

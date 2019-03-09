@@ -58,6 +58,8 @@
             this.ssLbEncoding = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbSpace5 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbInsertOverride = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace6 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSessionName = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,12 +87,19 @@
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
             this.tmGUI = new System.Windows.Forms.Timer(this.components);
-            this.ssLbSpace6 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ssLbSessionName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.cmsFileTab = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuFullFilePathToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFileNameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFullFilePathAndNameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuOpenContainingFolderInExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenContainingFolderInCmd = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenContainingFolderInWindowsPowerShell = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
             this.menuMain.SuspendLayout();
+            this.cmsFileTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMain
@@ -315,6 +324,18 @@
             this.ssLbInsertOverride.Size = new System.Drawing.Size(25, 15);
             this.ssLbInsertOverride.Text = "INS";
             // 
+            // ssLbSpace6
+            // 
+            this.ssLbSpace6.AutoSize = false;
+            this.ssLbSpace6.Name = "ssLbSpace6";
+            this.ssLbSpace6.Size = new System.Drawing.Size(30, 15);
+            // 
+            // ssLbSessionName
+            // 
+            this.ssLbSessionName.Name = "ssLbSessionName";
+            this.ssLbSessionName.Size = new System.Drawing.Size(90, 15);
+            this.ssLbSessionName.Text = "Session: Default";
+            // 
             // sttcMain
             // 
             this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
@@ -534,17 +555,64 @@
             // 
             this.tmGUI.Tick += new System.EventHandler(this.tmGUI_Tick);
             // 
-            // ssLbSpace6
+            // cmsFileTab
             // 
-            this.ssLbSpace6.AutoSize = false;
-            this.ssLbSpace6.Name = "ssLbSpace6";
-            this.ssLbSpace6.Size = new System.Drawing.Size(30, 15);
+            this.cmsFileTab.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFullFilePathToClipboard,
+            this.mnuFileNameToClipboard,
+            this.mnuFullFilePathAndNameToClipboard,
+            this.toolStripMenuItem3,
+            this.mnuOpenContainingFolderInExplorer,
+            this.mnuOpenContainingFolderInCmd,
+            this.mnuOpenContainingFolderInWindowsPowerShell});
+            this.cmsFileTab.Name = "contextMenuStrip1";
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 164);
             // 
-            // ssLbSessionName
+            // mnuFullFilePathToClipboard
             // 
-            this.ssLbSessionName.Name = "ssLbSessionName";
-            this.ssLbSessionName.Size = new System.Drawing.Size(90, 15);
-            this.ssLbSessionName.Text = "Session: Default";
+            this.mnuFullFilePathToClipboard.Name = "mnuFullFilePathToClipboard";
+            this.mnuFullFilePathToClipboard.Size = new System.Drawing.Size(323, 22);
+            this.mnuFullFilePathToClipboard.Text = "Full file path to clipboard";
+            this.mnuFullFilePathToClipboard.Click += new System.EventHandler(this.CommonContextMenu_ClipboardClick);
+            // 
+            // mnuFileNameToClipboard
+            // 
+            this.mnuFileNameToClipboard.Name = "mnuFileNameToClipboard";
+            this.mnuFileNameToClipboard.Size = new System.Drawing.Size(323, 22);
+            this.mnuFileNameToClipboard.Text = "File name to clipboard";
+            this.mnuFileNameToClipboard.Click += new System.EventHandler(this.CommonContextMenu_ClipboardClick);
+            // 
+            // mnuFullFilePathAndNameToClipboard
+            // 
+            this.mnuFullFilePathAndNameToClipboard.Name = "mnuFullFilePathAndNameToClipboard";
+            this.mnuFullFilePathAndNameToClipboard.Size = new System.Drawing.Size(323, 22);
+            this.mnuFullFilePathAndNameToClipboard.Text = "Full file path and name to clipboard";
+            this.mnuFullFilePathAndNameToClipboard.Click += new System.EventHandler(this.CommonContextMenu_ClipboardClick);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(320, 6);
+            // 
+            // mnuOpenContainingFolderInExplorer
+            // 
+            this.mnuOpenContainingFolderInExplorer.Name = "mnuOpenContainingFolderInExplorer";
+            this.mnuOpenContainingFolderInExplorer.Size = new System.Drawing.Size(323, 22);
+            this.mnuOpenContainingFolderInExplorer.Text = "Open containing folder in explorer";
+            this.mnuOpenContainingFolderInExplorer.Click += new System.EventHandler(this.mnuOpenContainingFolderInExplorer_Click);
+            // 
+            // mnuOpenContainingFolderInCmd
+            // 
+            this.mnuOpenContainingFolderInCmd.Name = "mnuOpenContainingFolderInCmd";
+            this.mnuOpenContainingFolderInCmd.Size = new System.Drawing.Size(323, 22);
+            this.mnuOpenContainingFolderInCmd.Text = "Open containing folder in cmd";
+            this.mnuOpenContainingFolderInCmd.Click += new System.EventHandler(this.mnuOpenContainingFolderInCmd_Click);
+            // 
+            // mnuOpenContainingFolderInWindowsPowerShell
+            // 
+            this.mnuOpenContainingFolderInWindowsPowerShell.Name = "mnuOpenContainingFolderInWindowsPowerShell";
+            this.mnuOpenContainingFolderInWindowsPowerShell.Size = new System.Drawing.Size(323, 22);
+            this.mnuOpenContainingFolderInWindowsPowerShell.Text = "Open containing folder in Windows PowerShell";
             // 
             // FormMain
             // 
@@ -571,6 +639,7 @@
             this.ssMain.PerformLayout();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            this.cmsFileTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -630,6 +699,14 @@
         private System.Windows.Forms.Timer tmGUI;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace6;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSessionName;
+        private System.Windows.Forms.ContextMenuStrip cmsFileTab;
+        private System.Windows.Forms.ToolStripMenuItem mnuFullFilePathToClipboard;
+        private System.Windows.Forms.ToolStripMenuItem mnuFileNameToClipboard;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpenContainingFolderInExplorer;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpenContainingFolderInCmd;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpenContainingFolderInWindowsPowerShell;
+        private System.Windows.Forms.ToolStripMenuItem mnuFullFilePathAndNameToClipboard;
     }
 }
 

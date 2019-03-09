@@ -24,47 +24,49 @@ SOFTWARE.
 */
 #endregion
 
-using ScintillaPrinting;
-using ScriptNotepad.DialogForms;
-using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using static ScriptNotepad.UtilityClasses.ErrorHandling.ExceptionDelegate;
 
-namespace ScriptNotepad.Test
+namespace ScriptNotepad.UtilityClasses.ErrorHandling
 {
     /// <summary>
-    /// A test form for various things (...).
+    /// A class from which a class logging errors should be derived from.
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.Form" />
-    public partial class FormTestThings : Form
+    public class ErrorHandlingBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FormTestThings"/> class.
+        /// The last exception which occurred within a method of "this" static class.
         /// </summary>
-        public FormTestThings()
+        private static Exception _LastException = null;
+
+        /// <summary>
+        /// Gets the last exception of a something gone wrong.
+        /// </summary>
+        public static Exception LastException
         {
-            InitializeComponent();
+            get => _LastException;
+
+            // private as only static methods of this class can actually set the value of a last exception..
+            private set
+            {
+                // raise an event if there is an actual exception..
+                if (value != null)
+                {
+                    // ..and the event is subscribed..
+                    ExceptionOccurred?.Invoke(typeof(ErrorHandlingBase).DeclaringType, new ExceptionEventArgs { Exception = value });
+                }
+                // save the last exception..
+                _LastException = value;
+            }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
-
-//            Printing printer = new Printing(sttcMain.Documents[0].Scintilla);
-//            printer.PrintPreview();
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            WindowsExplorerInteraction.ShowFileOrPathInExplorer(@"C:\Files\GitHub\ScintillaLexers\obj\Release\TempPE");
-        }
+        /// <summary>
+        /// Occurs when a handled exception occurred within this class.
+        /// </summary>
+        public static event OnExceptionOccurred ExceptionOccurred = null;
     }
 }
