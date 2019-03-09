@@ -48,6 +48,17 @@ namespace ScriptNotepad
         [STAThread]
         static void Main()
         {
+            // localizeProcess (user wishes to localize the software)..
+            Process localizeProcess = VPKSoft.LangLib.Utils.CreateDBLocalizeProcess(Paths.AppInstallDir);
+
+            // if the localize process was requested via the command line..
+            if (localizeProcess != null)
+            {
+                // start the DBLocalization.exe and return..
+                localizeProcess.Start();
+                return;
+            }
+
             // if the application is running send the arguments to the existing instance..
             if (AppRunning.CheckIfRunning("VPKSoft.ScriptNotepad.C#"))
             {

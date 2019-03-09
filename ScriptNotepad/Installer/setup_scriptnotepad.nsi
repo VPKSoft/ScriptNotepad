@@ -105,10 +105,13 @@ Section -Main SEC0000
 		
     SetOutPath "$LOCALAPPDATA\ScriptNotepad"
     File ..\Localization\SQLiteDatabase\lang.sqlite   
+	
+	File .\languages.ico
    
    
 	SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\ScriptNotepad.lnk" $INSTDIR\ScriptNotepad.exe	
+	CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(LocalizeDesc).lnk" "$INSTDIR\ScriptNotepad.exe" '"--localize=$LOCALAPPDATA\ScriptNotepad\lang.sqlite" ' "$INSTDIR\languages.ico" 0
 	
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
 	
@@ -159,6 +162,7 @@ done${UNSECTION_ID}:
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\ScriptNotepad.lnk"
+	Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(LocalizeDesc).lnk"
 
 	RMDir /r /REBOOTOK $INSTDIR
 	
@@ -229,6 +233,6 @@ LangString DeleteUserData ${LANG_ENGLISH} "Delete local user data?"
 LangString OpenWithScriptNotepad ${LANG_FINNISH} "Avaa sovelluksella ScriptNotepad"
 LangString OpenWithScriptNotepad ${LANG_ENGLISH} "Open with ScriptNotepad"
 
-#LangString LocalizeDesc ${LANG_FINNISH} "Lokalisointi"
-#LangString LocalizeDesc ${LANG_ENGLISH} "Localization"
+LangString LocalizeDesc ${LANG_FINNISH} "Lokalisointi"
+LangString LocalizeDesc ${LANG_ENGLISH} "Localization"
 #END: localization..
