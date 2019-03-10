@@ -46,6 +46,8 @@ using static ScriptNotepad.Database.DatabaseEnumerations;
 using ScriptNotepad.Database.UtilityClasses;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
+using VPKSoft.MessageHelper;
+using System.Drawing;
 
 namespace ScriptNotepad
 {
@@ -158,10 +160,54 @@ namespace ScriptNotepad
             // set the current session name to the status strip..
             ssLbSessionName.Text =
                 DBLangEngine.GetMessage("msgSessionName", "Session: {0}|A message describing a session name with the name as a parameter", CurrentSession);
+
+            // the user is either logging of from the system or is shutting down the system..
+            SystemEvents.SessionEnding += SystemEvents_SessionEnding;
         }
         #endregion
 
-        #region HelperMethods
+        #region HelperMethods        
+        /// <summary>
+        /// This method should be called when the application is about to close.
+        /// </summary>
+        /// <param name="noUserInteraction">A flag indicating whether any user interaction/dialog should occur in the application closing event.</param>
+        private void EndSession(bool noUserInteraction)
+        {
+            // if the user interaction is denied, prevent the application activation event from checking file system changes..
+            if (noUserInteraction)
+            {
+                Activated -= FormMain_Activated;
+            }
+
+            // unsubscribe the IpcClientServer MessageReceived event handler..
+            IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
+
+            // unsubscribe the encoding menu clicked handler..
+            CharacterSetMenuBuilder.EncodingMenuClicked -= CharacterSetMenuBuilder_EncodingMenuClicked;
+
+            // dispose of the encoding menu items..
+            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
+
+            // save the current session's documents to the database..
+            SaveDocumentsToDatabase(CurrentSession, true);
+
+            // delete excess document contents saved in the database..
+            var cleanupContents = Database.Database.CleanupHistoryDocumentContents(CurrentSession, SaveFileHistoryContentsCount);
+
+            ExceptionLogger.LogMessage($"Database history contents cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
+
+            // delete excess entries from the file history list from the database..
+            cleanupContents = Database.Database.CleanUpHistoryList(CurrentSession, HistoryListAmount);
+
+            ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
+
+            // unsubscribe the recent file menu item click handler..
+            RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
+
+            // unsubscribe for the database exception event..
+            Database.Database.ExceptionOccurred += Database_ExceptionOccurred;
+        }
+
         /// <summary>
         /// Sets the main status strip values for the currently active document..
         /// </summary>
@@ -749,6 +795,14 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // the user is either logging of from the system or is shutting down the system..
+        private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+        {
+            // end the without any user interaction/dialog..
+            EndSession(true);
+        }
+
+
         // a user wishes to open a recent file..
         private void RecentFilesMenuBuilder_RecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e)
         {
@@ -885,33 +939,7 @@ namespace ScriptNotepad
         // if the form is closing, save the snapshots of the open documents to the SQLite database..
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // unsubscribe the IpcClientServer MessageReceived event handler..
-            IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
-
-            // unsubscribe the encoding menu clicked handler..
-            CharacterSetMenuBuilder.EncodingMenuClicked -= CharacterSetMenuBuilder_EncodingMenuClicked;
-
-            // dispose of the encoding menu items..
-            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
-
-            // save the current session's documents to the database..
-            SaveDocumentsToDatabase(CurrentSession, true);
-
-            // delete excess document contents saved in the database..
-            var cleanupContents = Database.Database.CleanupHistoryDocumentContents(CurrentSession, SaveFileHistoryContentsCount);
-
-            ExceptionLogger.LogMessage($"Database history contents cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
-
-            // delete excess entries from the file history list from the database..
-            cleanupContents = Database.Database.CleanUpHistoryList(CurrentSession, HistoryListAmount);
-
-            ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
-
-            // unsubscribe the recent file menu item click handler..
-            RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
-
-            // unsubscribe for the database exception event..
-            Database.Database.ExceptionOccurred += Database_ExceptionOccurred;
+            EndSession(false);
         }
 
         /// <summary>
@@ -1260,42 +1288,80 @@ namespace ScriptNotepad
         private long CurrentSessionID { get; set; } = -1;
         #endregion
 
-        private void mnuOpenContainingFolderInExplorer_Click(object sender, EventArgs e)
+        #region FileContextMenu
+        // a user wishes to do "do something" with the file (existing one)..
+        private void CommonContextMenu_FileInteractionClick(object sender, EventArgs e)
         {
-
-        }
-
-        private void CommonContextMenu_ClipboardClick(object sender, EventArgs e)
-        {
-            if (sttcMain.CurrentDocument != null)
-            {                
-                var document = sttcMain.CurrentDocument;
-                var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
-
-                if (sender.Equals(mnuFullFilePathToClipboard))
-                {
-                    Clipboard.SetText(Path.GetDirectoryName(fileSave.FILENAME_FULL));
-                }
-                else if (sender.Equals(mnuFullFilePathAndNameToClipboard))
-                {
-                    Clipboard.SetText(fileSave.FILENAME_FULL);
-                }
-                else if (sender.Equals(mnuFileNameToClipboard))
-                {
-                    Clipboard.SetText(Path.GetFileName(fileSave.FILENAME_FULL));
-                }
-            }
-        }
-
-        private void mnuOpenContainingFolderInCmd_Click(object sender, EventArgs e)
-        {
-            if (sttcMain.CurrentDocument != null)
+            if (sttcMain.CurrentDocument != null) // the first null check..
             {
-                var document = sttcMain.CurrentDocument;
-                var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+                var document = sttcMain.CurrentDocument; // get the active document..
 
-                CommandPromptInteraction.OpenCmdWithPath(Path.GetDirectoryName(fileSave.FILENAME_FULL));
+                // get the DBFILE_SAVE from the active document..
+                var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag; 
+
+                if (fileSave != null) // the second null check..
+                {
+                    // based on the sending menu item, select the appropriate action..
+                    if (sender.Equals(mnuOpenContainingFolderInCmd))
+                    {
+                        // open the command prompt with the file's path..
+                        CommandPromptInteraction.OpenCmdWithPath(Path.GetDirectoryName(fileSave.FILENAME_FULL));
+                    }
+                    else if (sender.Equals(mnuOpenContainingFolderInWindowsPowerShell))
+                    {
+                        // open the Windows PowerShell with the file's path..
+                        CommandPromptInteraction.OpenPowerShellWithPath(Path.GetDirectoryName(fileSave.FILENAME_FULL));
+                    }
+                    else if (sender.Equals(mnuOpenContainingFolderInExplorer))
+                    {
+                        // open the Windows explorer and select the file from it..
+                        WindowsExplorerInteraction.ShowFileOrPathInExplorer(fileSave.FILENAME_FULL);
+                    }
+                    else if (sender.Equals(mnuOpenWithAssociatedApplication))
+                    {
+                        // open the file with an associated software..
+                        WindowsExplorerInteraction.OpenWithAssociatedProgram(fileSave.FILENAME_FULL);
+                    }
+                    else if (sender.Equals(mnuFullFilePathToClipboard))
+                    {
+                        // copy the full file path to the clipboard..
+                        Clipboard.SetText(Path.GetDirectoryName(fileSave.FILENAME_FULL));
+                    }
+                    else if (sender.Equals(mnuFullFilePathAndNameToClipboard))
+                    {
+                        // copy the full file name to the clipboard..
+                        Clipboard.SetText(fileSave.FILENAME_FULL);
+                    }
+                    else if (sender.Equals(mnuFileNameToClipboard))
+                    {
+                        // copy the file name to the clipboard..
+                        Clipboard.SetText(Path.GetFileName(fileSave.FILENAME_FULL));
+                    }
+                }
             }
         }
+
+        // the context menu is opening for user to "do something" with the file..
+        private void cmsFileTab_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null) // the first null check..
+            {
+                var document = sttcMain.CurrentDocument; // get the active document..
+
+                // get the DBFILE_SAVE from the active document..
+                var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                if (fileSave != null) // the second null check..
+                {
+                    // enable / disable items which requires the file to exist in the file system..
+                    mnuOpenContainingFolderInExplorer.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                    mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                    mnuOpenContainingFolderInCmd.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                    mnuOpenContainingFolderInWindowsPowerShell.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                    mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                }
+            }
+        }
+        #endregion
     }
 }

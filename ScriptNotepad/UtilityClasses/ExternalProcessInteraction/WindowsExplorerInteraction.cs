@@ -90,5 +90,24 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
                 return false;
             }
         }
+
+        /// <summary>
+        /// Opens the file with associated program.
+        /// </summary>
+        /// <param name="fileName">The name of the file to open.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        public static bool OpenWithAssociatedProgram(string fileName)
+        {
+            try
+            {
+                Process.Start(fileName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LastException = ex; // log the exception..
+                return false;
+            }
+        }
     }
 }

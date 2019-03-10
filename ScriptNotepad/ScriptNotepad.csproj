@@ -57,8 +57,8 @@
     <Reference Include="ScintillaNetPrinting, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ScintillaNetPrinting.1.0.0.1\lib\net40\ScintillaNetPrinting.dll</HintPath>
     </Reference>
-    <Reference Include="ScintillaNET_FindReplaceDialog, Version=1.0.3.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScintillaNET_FindReplaceDialog.1.0.3.2\lib\net40-client\ScintillaNET_FindReplaceDialog.dll</HintPath>
+    <Reference Include="ScintillaNET_FindReplaceDialog, Version=1.0.3.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScintillaNET_FindReplaceDialog.1.0.3.3\lib\net40-client\ScintillaNET_FindReplaceDialog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -90,11 +90,11 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.5\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.6\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.1.4\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.1.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.1.8\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -121,6 +121,7 @@
     <Compile Include="DialogForms\FormDialogQueryEncoding.Designer.cs">
       <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gists\MessageHelper.cs" />
     <Compile Include="Localization\Forms\FormLocalizationHelper.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,15 +286,11 @@
     <Content Include="Localization\SQLiteDatabase\lang.sqlite" />
     <Content Include="notepad7.ico" />
     <None Include="Resources\astonished.png" />
-    <Content Include="Resources\Clock.ico" />
-    <Content Include="Resources\Clock.png" />
     <None Include="Resources\discard_changes.png" />
     <None Include="Resources\CSharp.png" />
     <None Include="Resources\default.png" />
-    <Content Include="Resources\DownButton.png" />
     <None Include="Resources\Erase.png" />
     <None Include="Resources\Find.png" />
-    <Content Include="Resources\Highlighter.png" />
     <None Include="Resources\Save.png" />
     <None Include="Resources\SaveAs.png" />
     <None Include="Resources\save_all.png" />
@@ -306,6 +303,10 @@
     <None Include="Resources\open_unknown_encoding.png" />
     <None Include="Resources\preferences.png" />
     <None Include="Resources\unicode.png" />
+    <Content Include="Resources\Clock.ico" />
+    <Content Include="Resources\Clock.png" />
+    <Content Include="Resources\DownButton.png" />
+    <Content Include="Resources\Highlighter.png" />
     <Content Include="Resources\UpButton.png" />
     <Content Include="Resources\XToCloseButton.png" />
     <Content Include="VPKSoft.ico" />
