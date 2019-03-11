@@ -48,6 +48,8 @@ using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using VPKSoft.MessageHelper;
 using System.Drawing;
+using ScriptNotepad.IOPermission;
+using ScriptNotepad.UtilityClasses.SessionHelpers;
 
 namespace ScriptNotepad
 {
@@ -163,6 +165,8 @@ namespace ScriptNotepad
 
             // the user is either logging of from the system or is shutting down the system..
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+
+            FileIOPermission.ExceptionLogAction = delegate(Exception ex) { ExceptionLogger.LogError(ex); };
         }
         #endregion
 
@@ -173,10 +177,15 @@ namespace ScriptNotepad
         /// <param name="noUserInteraction">A flag indicating whether any user interaction/dialog should occur in the application closing event.</param>
         private void EndSession(bool noUserInteraction)
         {
-            // if the user interaction is denied, prevent the application activation event from checking file system changes..
+            // if the user interaction is denied, prevent the application activation event from checking file system changes, etc..
             if (noUserInteraction)
             {
                 Activated -= FormMain_Activated;
+                FormClosed -= FormMain_FormClosed;
+
+                // close all other open forms except this MainForm as they might dialogs, etc. to prevent the
+                // session log of procedure..
+                CloseFormUtils.CloseOpenForms(this);
             }
 
             // unsubscribe the IpcClientServer MessageReceived event handler..
@@ -206,6 +215,12 @@ namespace ScriptNotepad
 
             // unsubscribe for the database exception event..
             Database.Database.ExceptionOccurred += Database_ExceptionOccurred;
+
+            // close the main form as the call came from elsewhere than the FormMain_FormClosed event..
+            if (noUserInteraction)
+            {
+                Close();
+            }
         }
 
         /// <summary>
@@ -1363,5 +1378,32 @@ namespace ScriptNotepad
             }
         }
         #endregion
+
+        // checks if file selected in the open file dialog requires elevation and the file exists..
+        private void odAnyFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (FileIOPermission.FileRequiresElevation(odAnyFile.FileName).ElevationRequied)
+            {
+                if (MessageBox.Show(
+                DBLangEngine.GetMessage("msgElevationRequiredForFile",
+                "Opening the file '{0}' requires elevation (Run as Administrator). Restart the software as Administrator?|A message describing that a access to a file requires elevated permissions (Administrator)", odAnyFile.FileName),
+                DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    Program.ElevateFile = odAnyFile.FileName;
+                    Program.RestartElevated = true;
+                    EndSession(true);
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                e.Cancel = !File.Exists(odAnyFile.FileName);
+            }
+        }
     }
 }

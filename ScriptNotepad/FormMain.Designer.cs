@@ -348,6 +348,7 @@
             this.sttcMain.Name = "sttcMain";
             this.sttcMain.NewFilenameStart = "new ";
             this.sttcMain.RightButtonTabActivation = true;
+            this.sttcMain.RightButtonTabDragging = false;
             this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
             this.sttcMain.Size = new System.Drawing.Size(770, 360);
             this.sttcMain.SuspendTextChangedEvents = false;
@@ -552,6 +553,10 @@
             this.mnuAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
+            // 
+            // odAnyFile
+            // 
+            this.odAnyFile.FileOk += new System.ComponentModel.CancelEventHandler(this.odAnyFile_FileOk);
             // 
             // tmGUI
             // 

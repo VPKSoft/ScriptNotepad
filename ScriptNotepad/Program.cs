@@ -35,12 +35,13 @@ using VPKSoft.ErrorLogger; // (C): http://www.vpksoft.net/, GNU Lesser General P
 using System.Diagnostics;
 using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
+using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 
 // limit the PropertyChanged to the Settings class (https://github.com/Fody/PropertyChanged)
 [assembly: PropertyChanged.FilterType("ScriptNotepad.Settings.")] 
 namespace ScriptNotepad
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
@@ -120,6 +121,11 @@ namespace ScriptNotepad
             PositionCore.UnBind(); // release the event handlers used by the PosLib and save the default data
             ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
             ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
+
+            if (RestartElevated && File.Exists(ElevateFile))
+            {
+                ApplicationProcess.RunApplicationProcess(true, ElevateFile);
+            }
         }
 
         // as the application is about to crash do some cleanup..
@@ -134,5 +140,20 @@ namespace ScriptNotepad
 
             // This is the end..
         }
+
+        #region InternalProperties        
+        /// <summary>
+        /// Gets or sets a value indicating whether the software should be run as elevated (Administrator) after closing self.
+        /// </summary>
+        internal static bool RestartElevated { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the file name which should be opened in an elevated mode (Administrator).
+        /// </summary>
+        /// <value>
+        /// The elevate file.
+        /// </value>
+        internal static string ElevateFile { get; set; } = "";
+        #endregion
     }
 }
