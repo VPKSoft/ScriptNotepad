@@ -26,20 +26,15 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using static ScriptNotepad.Database.DatabaseEnumerations;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
-using static ScriptNotepad.UtilityClasses.ErrorHandling.ExceptionDelegate;
 
 namespace ScriptNotepad.Database
 {
@@ -136,7 +131,6 @@ namespace ScriptNotepad.Database
 
         /// <summary>
         /// Adds a given DBFILE_SAVE class instance into the database cache.
-        /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be added into the database.</param>
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
@@ -180,14 +174,14 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return null;
             }
         }
 
         /// <summary>
         /// Adds a given file into the database cache.
-        /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
         /// </summary>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
@@ -223,7 +217,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return null;
             }
         }
@@ -300,7 +295,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return (false, 0); // failure..
             }
         }
@@ -367,7 +363,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return (false, 0); // failure..
             }
         }
@@ -421,7 +418,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return null;
             }
         }
@@ -449,7 +447,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return null;
             }
         }
@@ -488,7 +487,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return false; // fail..
             }
         }
@@ -549,7 +549,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return null;
             }
         }
@@ -585,39 +586,12 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
-        /// The last exception which occurred within a method of "this" static class.
+        /// Gets or sets the action to be used to log an exception.
         /// </summary>
-        private static Exception _LastException = null;
-
-        /// <summary>
-        /// Gets the last exception of a SQL sentence gone wrong.
-        /// </summary>
-        public static Exception LastException
-        {
-            get => _LastException;
-
-            // private as only static methods of this class can actually set the value of a last exception..
-            private set
-            {
-                // raise an event if there is an actual exception..
-                if (value != null)
-                {
-                    // ..and the event is subscribed..
-                    ExceptionOccurred?.Invoke(typeof(Database), new ExceptionEventArgs { Exception = value });
-                }
-                // save the last exception..
-                _LastException = value; 
-            }
-        }
-
-        /// <summary>
-        /// Occurs when an exception occurred with the database operations within this class.
-        /// </summary>
-        public static event OnExceptionOccurred ExceptionOccurred = null;
+        public static Action<Exception> ExceptionLogAction { get; set; } = null;
 
         /// <summary>
         /// Updates a given file to the database cache.
-        /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be updated into the database.</param>
         /// <returns>A modified instance of the DBFILE_SAVE if the operation was successful; otherwise null;</returns>
@@ -646,14 +620,14 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 return null;
             }
         }
 
         /// <summary>
         /// Executes a scalar SQL sentence against the database.
-        /// <note type="note">In case of an exception the <see cref="LastException"/> value is set to indicate the exception.</note>
         /// </summary>
         /// <typeparam name="T">The return type of the scalar SQL sentence.</typeparam>
         /// <param name="sql">A scalar SQL sentence to be executed against the database.</param>
@@ -673,7 +647,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex; // log the exception..
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
                 // failed, return default(T).. 
                 return default(T);
             }
@@ -697,7 +672,8 @@ namespace ScriptNotepad.Database
                 }
                 catch (Exception ex) // something went wrong so do log the reason.. (ex avoids the EventArgs e in all cases!)..
                 {
-                    LastException = ex; // log the exception..
+                    // log the exception if the action has a value..
+                    ExceptionLogAction?.Invoke(ex);
                     return false; // failure..
                 }
             }
@@ -870,7 +846,8 @@ namespace ScriptNotepad.Database
             }
             catch (Exception ex)
             {
-                LastException = ex;
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
             }
             return null;
         }

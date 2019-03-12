@@ -25,48 +25,17 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ScriptNotepad.UtilityClasses.ErrorHandling.ExceptionDelegate;
 
 namespace ScriptNotepad.UtilityClasses.ErrorHandling
 {
     /// <summary>
-    /// A class from which a class logging errors should be derived from.
+    /// A class from which a classes logging errors should be derived from.
     /// </summary>
     public class ErrorHandlingBase
     {
         /// <summary>
-        /// The last exception which occurred within a method of "this" static class.
+        /// Gets or sets the action to be used to log an exception.
         /// </summary>
-        private static Exception _LastException = null;
-
-        /// <summary>
-        /// Gets the last exception of a something gone wrong.
-        /// </summary>
-        public static Exception LastException
-        {
-            get => _LastException;
-
-            // private as only static methods of this class can actually set the value of a last exception..
-            private set
-            {
-                // raise an event if there is an actual exception..
-                if (value != null)
-                {
-                    // ..and the event is subscribed..
-                    ExceptionOccurred?.Invoke(typeof(ErrorHandlingBase).DeclaringType, new ExceptionEventArgs { Exception = value });
-                }
-                // save the last exception..
-                _LastException = value;
-            }
-        }
-
-        /// <summary>
-        /// Occurs when a handled exception occurred within this class.
-        /// </summary>
-        public static event OnExceptionOccurred ExceptionOccurred = null;
+        public static Action<Exception> ExceptionLogAction { get; set; } = null;
     }
 }

@@ -156,8 +156,8 @@ namespace ScriptNotepad
             // subscribe the click event for the recent file menu items..
             RecentFilesMenuBuilder.RecentFileMenuClicked += RecentFilesMenuBuilder_RecentFileMenuClicked;
 
-            // subscribe for the database exception event..
-            Database.Database.ExceptionOccurred += Database_ExceptionOccurred;
+            // create a dynamic action for the database exception logging..
+            Database.Database.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
 
             // set the current session name to the status strip..
             ssLbSessionName.Text =
@@ -166,7 +166,12 @@ namespace ScriptNotepad
             // the user is either logging of from the system or is shutting down the system..
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
 
+            // create a dynamic action for the class exception logging..
             FileIOPermission.ExceptionLogAction = delegate(Exception ex) { ExceptionLogger.LogError(ex); };
+            ApplicationProcess.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            CommandPromptInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            WindowsExplorerInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            // END: create a dynamic action for the class exception logging..
         }
         #endregion
 
@@ -212,9 +217,6 @@ namespace ScriptNotepad
 
             // unsubscribe the recent file menu item click handler..
             RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
-
-            // unsubscribe for the database exception event..
-            Database.Database.ExceptionOccurred += Database_ExceptionOccurred;
 
             // close the main form as the call came from elsewhere than the FormMain_FormClosed event..
             if (noUserInteraction)
