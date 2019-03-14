@@ -24,14 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ScriptNotepad.UtilityClasses.ErrorHandling.ExceptionDelegate;
 
 namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
 {
@@ -55,7 +48,7 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
             try
             {
                 // (C): https://social.msdn.microsoft.com/Forums/vstudio/en-US/a6e1458a-20d0-48b4-8e3a-0a00c8618d75/opening-folder-in-explorer-by-c-code?forum=netfxbcl
-                Process.Start(@"explorer.exe", $"/e,/select,{fileOrPath}");
+                System.Diagnostics.Process.Start(@"explorer.exe", $"/e,/select,{fileOrPath}");
                 return true;
             }
             catch (Exception ex)
@@ -75,7 +68,7 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
         {
             try
             {
-                Process.Start(fileName);
+                System.Diagnostics.Process.Start(fileName);
                 return true;
             }
             catch (Exception ex)

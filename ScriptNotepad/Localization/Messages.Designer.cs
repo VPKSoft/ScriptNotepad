@@ -1033,6 +1033,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrator|A message indicating that a process is elevated..
+        /// </summary>
+        internal static string msgProcessIsElevated {
+            get {
+                return ResourceManager.GetString("msgProcessIsElevated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Properties file|*.properties|A text in a file dialog indicating Properties files.
         /// </summary>
         internal static string msgPropertiesFile {

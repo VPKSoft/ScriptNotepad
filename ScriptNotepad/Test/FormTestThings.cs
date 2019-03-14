@@ -27,6 +27,7 @@ SOFTWARE.
 using ScintillaPrinting;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
+using ScriptNotepad.UtilityClasses.Process;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -65,6 +66,11 @@ namespace ScriptNotepad.Test
         private void button2_Click(object sender, EventArgs e)
         {
             WindowsExplorerInteraction.ShowFileOrPathInExplorer(@"C:\Files\GitHub\ScintillaLexers\obj\Release\TempPE");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(ProcessElevation.IsElevated.ToString());
         }
     }
 }

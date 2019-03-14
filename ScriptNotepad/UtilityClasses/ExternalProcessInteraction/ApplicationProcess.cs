@@ -53,7 +53,7 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
                     Arguments = arguments
                 };
 
-                Process.Start(processStartInfo);
+                System.Diagnostics.Process.Start(processStartInfo);
 
                 return true;
             }

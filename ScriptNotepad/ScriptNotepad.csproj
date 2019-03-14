@@ -201,6 +201,7 @@
     <Compile Include="Gists\IpcClientServer.cs" />
     <Compile Include="UtilityClasses\LinesAndBinary\FileLineType.cs" />
     <Compile Include="UtilityClasses\LinesAndBinary\StreamEncoding.cs" />
+    <Compile Include="UtilityClasses\Process\ProcessElevation.cs" />
     <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\CloseFormUtils.cs" />
     <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />

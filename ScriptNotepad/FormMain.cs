@@ -49,6 +49,7 @@ using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.IOPermission;
 using ScriptNotepad.UtilityClasses.SessionHelpers;
 using ScriptNotepad.UtilityClasses.Clipboard;
+using ScriptNotepad.UtilityClasses.Process;
 
 namespace ScriptNotepad
 {
@@ -103,6 +104,10 @@ namespace ScriptNotepad
                 throw new Exception(DBLangEngine.GetMessage("msgErrorInScript",
                     "A script error occurred on the database update|Something failed during running the database update script"));
             }
+
+            this.Text +=
+                (ProcessElevation.IsElevated ? " (" +
+                DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
 
             // initialize a connection to the SQLite database..
             Database.Database.InitConnection("Data Source=" + DBLangEngine.DataDir + "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;"); // PRAGMA synchronous=OFF;PRAGMA journal_mode=OFF
@@ -164,6 +169,7 @@ namespace ScriptNotepad
 
             // the user is either logging of from the system or is shutting down the system..
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+
 
             // create a dynamic action for the class exception logging..
             FileIOPermission.ExceptionLogAction = delegate(Exception ex) { ExceptionLogger.LogError(ex); };
@@ -1209,10 +1215,12 @@ namespace ScriptNotepad
         // a user activated a tab (document) so display it's file name..
         private void sttcMain_TabActivated(object sender, TabActivatedEventArgs e)
         {
-            Text =
+            this.Text =
                 DBLangEngine.GetMessage("msgAppTitleWithFileName",
                 "ScriptNotepad [{0}]|As in the application name combined with an active file name",
-                e.ScintillaTabbedDocument.FileName);
+                e.ScintillaTabbedDocument.FileName) +
+                (ProcessElevation.IsElevated ? " (" +
+                DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
 
             ssLbLDocLinesSize.Text =
                 DBLangEngine.GetMessage("msgDocSizeLines", "length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters",

@@ -516,4 +516,7 @@
   <data name="msgFileHasReappearedTitle" xml:space="preserve">
     <value>A file has reappeared|A caption message for a message dialog which will ask if a reappeared file should be reloaded from the file system</value>
   </data>
+  <data name="msgProcessIsElevated" xml:space="preserve">
+    <value>Administrator|A message indicating that a process is elevated.</value>
+  </data>
 </root>

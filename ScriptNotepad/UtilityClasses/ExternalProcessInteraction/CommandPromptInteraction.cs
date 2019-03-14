@@ -24,14 +24,8 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ScriptNotepad.UtilityClasses.ErrorHandling.ExceptionDelegate;
 
 namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
 {
@@ -62,7 +56,7 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
                     LoadUserProfile = true,
                 };
 
-                Process.Start(processStartInfo);
+                System.Diagnostics.Process.Start(processStartInfo);
                 
                 return true;
             }
@@ -91,7 +85,7 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
                     LoadUserProfile = true,
                 };
 
-                Process.Start(processStartInfo);
+                System.Diagnostics.Process.Start(processStartInfo);
 
                 return true;
             }
