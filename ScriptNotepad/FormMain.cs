@@ -46,10 +46,9 @@ using static ScriptNotepad.Database.DatabaseEnumerations;
 using ScriptNotepad.Database.UtilityClasses;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
-using VPKSoft.MessageHelper;
-using System.Drawing;
 using ScriptNotepad.IOPermission;
 using ScriptNotepad.UtilityClasses.SessionHelpers;
+using ScriptNotepad.UtilityClasses.Clipboard;
 
 namespace ScriptNotepad
 {
@@ -171,6 +170,7 @@ namespace ScriptNotepad
             ApplicationProcess.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
             CommandPromptInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
             WindowsExplorerInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            ClipboardTextHelper.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
             // END: create a dynamic action for the class exception logging..
         }
         #endregion
@@ -311,22 +311,29 @@ namespace ScriptNotepad
         }
 
         /// <summary>
-        /// Checks if an open document has been changed in the file system and queries if the user wishes to reload it's contents from the file system.
+        /// Checks if an open document has been changed in the file system or removed from the file system and 
+        /// queries the user form appropriate action for the file.
         /// </summary>
         private void CheckFileSysChanges()
         {
-            for (int i = 0; i < sttcMain.DocumentsCount; i++)
+            for (int i = sttcMain.DocumentsCount - 1; i >= 0; i--)
             {
+                // get the DBFILE_SAVE class instance from the document's tag..
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.Documents[i].Tag;
+
+                // avoid excess checks further in the code..
+                if (fileSave == null)
+                {
+                    continue;
+                }
+
                 // check if the file exists because it cannot be reloaded otherwise 
                 // from the file system..
-                if (File.Exists(sttcMain.Documents[i].FileName))
+                if (File.Exists(sttcMain.Documents[i].FileName) && !fileSave.ShouldQueryFileReappeared)
                 {
-                    // get the DBFILE_SAVE class instance from the document's tag..
-                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.Documents[i].Tag;
-
                     // query the user if one wishes to reload
                     // the changed file from the disk..
-                    if (fileSave != null && fileSave.ShouldQueryDiskReload)
+                    if (fileSave.ShouldQueryDiskReload)
                     {
                         if (MessageBox.Show(
                             DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happed", fileSave.FILENAME_FULL),
@@ -364,7 +371,112 @@ namespace ScriptNotepad
                         }
                     }
                 }
+                else
+                {
+                    // query the user if one wishes to keep a deleted
+                    // file from the file system in the editor..
+                    if (fileSave.ShouldQueryKeepFile)
+                    {
+                        if (MessageBox.Show(
+                            DBLangEngine.GetMessage("msgFileHasBeenDeleted", "The file '{0}' has been deleted. Keep the file in the editor?|As in the opened file has been deleted from the file system and user is asked if to keep the deleted file in the editor", fileSave.FILENAME_FULL),
+                            DBLangEngine.GetMessage("msgFileHasBeenDeletedTitle", "A file has been deleted|A caption message for a message dialog which will ask if a deleted file should be kept in the editor"),
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question,
+                            MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                        {
+                            // the user answered yes..
+                            fileSave.EXISTS_INFILESYS = false; // set the flag to false..
+                            fileSave.ISHISTORY = false;
+
+                            Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
+
+                            // just in case set the tag back..
+                            sttcMain.Documents[i].Tag = fileSave;
+
+                            // set the flag that the form should be activated after the dialog..
+                            bringToFrontQueued = true;
+                        }
+                        else
+                        {
+                            // call the handle method..
+                            HandleCloseTab(fileSave, true, false, false);
+                        }
+                    }
+                    else if (fileSave.ShouldQueryFileReappeared)
+                    {
+                        if (MessageBox.Show(
+                            DBLangEngine.GetMessage("msgFileHasReappeared", "The file '{0}' has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it's contents from the file system", fileSave.FILENAME_FULL),
+                            DBLangEngine.GetMessage("msgFileHasReappearedTitle", "A file has reappeared|A caption message for a message dialog which will ask if a reappeared file should be reloaded from the file system"),
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question,
+                            MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                        {
+                            // the user answered yes..
+                            fileSave.EXISTS_INFILESYS = true; // set the flag to true..
+                            fileSave.ISHISTORY = false;
+
+                            Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
+
+                            // just in case set the tag back..
+                            sttcMain.Documents[i].Tag = fileSave;
+
+                            // reload the contents as the user answered yes..
+                            sttcMain.SuspendTextChangedEvents = true; // suspend the changed events on the ScintillaTabbedTextControl..
+                            fileSave.ReloadFromDisk(sttcMain.Documents[i]); // reload the file..
+                            sttcMain.SuspendTextChangedEvents = false; // resume the changed events on the ScintillaTabbedTextControl..
+
+                            // set the flag that the form should be activated after the dialog..
+                            bringToFrontQueued = true;
+                        }
+                    }
+                }
             }
+        }
+
+        /// <summary>
+        /// A common method to handle different file closing "events".
+        /// </summary>
+        /// <param name="fileSave">An instance to <see cref="DBFILE_SAVE"/> class instance.</param>
+        /// <param name="fileDeleted">A flag indicating if the file was deleted from the file system and a user decided to not the keep the file in the editor.</param>
+        /// <param name="fileReappeared">A flag indicating that a file reappeared to the file system after being gone.</param>
+        /// <param name="tabClosing">A flag indicating whether this call was made from the tab closing event of a <see cref="ScintillaTabbedDocument"/> class instance.</param>
+        /// <returns>A modified <see cref="DBFILE_SAVE"/> class instance based on the given parameters.</returns>
+        private DBFILE_SAVE HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, bool fileReappeared, bool tabClosing)
+        {
+            // set the flags according to the parameters..
+            fileSave.ISHISTORY = tabClosing || fileDeleted; 
+
+            // set the exists in file system flag..
+            fileSave.EXISTS_INFILESYS = File.Exists(fileSave.FILENAME_FULL);
+
+            // get the tabbed document index via the ID number..
+            int docIndex = sttcMain.Documents.FindIndex(f => f.ID == fileSave.ID);
+
+            // this should never be -1 but do check still in case of a bug..
+            if (docIndex != -1)
+            {
+                // update the file save to the database..
+                Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[docIndex]);
+
+                // update the file history list in the database..
+                Database.Database.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME);
+
+                // the file was not requested to be kept in the editor after a deletion from the file system..
+                if (fileDeleted)
+                {
+                    // ..so close the tab..
+                    sttcMain.CloseDocument(docIndex);
+                }
+
+            }
+            // set the bring to front flag based on the given parameters..
+            bringToFrontQueued = fileDeleted;
+
+            // re-create a menu for recent files..
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount);
+
+            // return the modified DBFILE_SAVE class instance.. 
+            return fileSave; 
         }
 
         /// <summary>
@@ -500,6 +612,9 @@ namespace ScriptNotepad
                     // update the history flag to the database..
                     Database.Database.UpdateFileHistoryFlag(file);
 
+                    // assign the context menu strip for the tabbed document..
+                    sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
+
                     sttcMain.LastAddedDocument.Tag = file;
                     // the file load can't add an undo option the Scintilla..
                     sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
@@ -553,6 +668,9 @@ namespace ScriptNotepad
                             FILEPATH = string.Empty,
                             FILE_CONTENTS = new MemoryStream()
                         };
+
+                    // assign the context menu strip for the tabbed document..
+                    sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
 
                     // get a DBFILE_SAVE class instance from the document's tag..
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
@@ -619,6 +737,9 @@ namespace ScriptNotepad
                         // save the DBFILE_SAVE class instance to the Tag property..
                         // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
                         sttcMain.CurrentDocument.Tag = fileSave;
+
+                        // assign the context menu strip for the tabbed document..
+                        sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
@@ -812,14 +933,40 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // checks if file selected in the open file dialog requires elevation and the file exists..
+        private void odAnyFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (FileIOPermission.FileRequiresElevation(odAnyFile.FileName).ElevationRequied)
+            {
+                if (MessageBox.Show(
+                DBLangEngine.GetMessage("msgElevationRequiredForFile",
+                "Opening the file '{0}' requires elevation (Run as Administrator). Restart the software as Administrator?|A message describing that a access to a file requires elevated permissions (Administrator)", odAnyFile.FileName),
+                DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    Program.ElevateFile = odAnyFile.FileName;
+                    Program.RestartElevated = true;
+                    EndSession(true);
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                e.Cancel = !File.Exists(odAnyFile.FileName);
+            }
+        }
+
         // the user is either logging of from the system or is shutting down the system..
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
             // end the without any user interaction/dialog..
             EndSession(true);
         }
-
-
+        
         // a user wishes to open a recent file..
         private void RecentFilesMenuBuilder_RecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e)
         {
@@ -1055,10 +1202,8 @@ namespace ScriptNotepad
         // a tab is closing so save it into the history..
         private void sttcMain_TabClosing(object sender, TabClosingEventArgsExt e)
         {
-            DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
-            fileSave.ISHISTORY = true;
-            Database.Database.AddOrUpdateFile(fileSave, e.ScintillaTabbedDocument);
-            Database.Database.AddOrUpdateRecentFile(fileSave.FILENAME, fileSave.SESSIONNAME);
+            // call the handle method..
+            HandleCloseTab((DBFILE_SAVE)e.ScintillaTabbedDocument.Tag, false, false, true);
         }
 
         // a user activated a tab (document) so display it's file name..
@@ -1342,17 +1487,21 @@ namespace ScriptNotepad
                     else if (sender.Equals(mnuFullFilePathToClipboard))
                     {
                         // copy the full file path to the clipboard..
-                        Clipboard.SetText(Path.GetDirectoryName(fileSave.FILENAME_FULL));
+                        ClipboardTextHelper.ClipboardSetText(Path.GetDirectoryName(fileSave.FILENAME_FULL));
                     }
                     else if (sender.Equals(mnuFullFilePathAndNameToClipboard))
                     {
                         // copy the full file name to the clipboard..
-                        Clipboard.SetText(fileSave.FILENAME_FULL);
+                        ClipboardTextHelper.ClipboardSetText(fileSave.FILENAME_FULL);
                     }
                     else if (sender.Equals(mnuFileNameToClipboard))
                     {
                         // copy the file name to the clipboard..
-                        Clipboard.SetText(Path.GetFileName(fileSave.FILENAME_FULL));
+                        ClipboardTextHelper.ClipboardSetText(Path.GetFileName(fileSave.FILENAME_FULL));
+                    }
+                    else if (sender.Equals(mnuCloseTab))
+                    {
+                        sttcMain.CloseDocument(document, true);
                     }
                 }
             }
@@ -1380,32 +1529,5 @@ namespace ScriptNotepad
             }
         }
         #endregion
-
-        // checks if file selected in the open file dialog requires elevation and the file exists..
-        private void odAnyFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (FileIOPermission.FileRequiresElevation(odAnyFile.FileName).ElevationRequied)
-            {
-                if (MessageBox.Show(
-                DBLangEngine.GetMessage("msgElevationRequiredForFile",
-                "Opening the file '{0}' requires elevation (Run as Administrator). Restart the software as Administrator?|A message describing that a access to a file requires elevated permissions (Administrator)", odAnyFile.FileName),
-                DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-                {
-                    e.Cancel = true;
-                    Program.ElevateFile = odAnyFile.FileName;
-                    Program.RestartElevated = true;
-                    EndSession(true);
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                e.Cancel = !File.Exists(odAnyFile.FileName);
-            }
-        }
     }
 }

@@ -545,6 +545,13 @@ namespace ScriptNotepad.Database
 
                 recentFile.ID = lastId != newId ? newId : -1;
 
+                // no negative ID number is accepted..
+                if (recentFile.ID == -1)
+                {
+                    // the file must have an ID number..
+                    recentFile.ID = GetScalar<long>(DatabaseCommands.GetExistingDBRecentFileIDSentence(recentFile));
+                }
+
                 return recentFile;
             }
             catch (Exception ex)

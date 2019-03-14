@@ -664,6 +664,24 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it&apos;s contents from the file system.
+        /// </summary>
+        internal static string msgFileHasReappeared {
+            get {
+                return ResourceManager.GetString("msgFileHasReappeared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file has reappeared|A caption message for a message dialog which will ask if a reappeared file should be reloaded from the file system.
+        /// </summary>
+        internal static string msgFileHasReappearedTitle {
+            get {
+                return ResourceManager.GetString("msgFileHasReappearedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flash ActionScript file|*.as;*.mx|A text in a file dialog indicating Flash ActionScript files.
         /// </summary>
         internal static string msgFlashActionScriptFile {

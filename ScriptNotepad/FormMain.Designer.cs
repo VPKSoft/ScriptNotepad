@@ -96,6 +96,8 @@
             this.mnuOpenContainingFolderInCmd = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpenContainingFolderInWindowsPowerShell = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpenWithAssociatedApplication = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuCloseTab = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -572,9 +574,11 @@
             this.mnuOpenContainingFolderInExplorer,
             this.mnuOpenContainingFolderInCmd,
             this.mnuOpenContainingFolderInWindowsPowerShell,
-            this.mnuOpenWithAssociatedApplication});
+            this.mnuOpenWithAssociatedApplication,
+            this.toolStripMenuItem4,
+            this.mnuCloseTab});
             this.cmsFileTab.Name = "contextMenuStrip1";
-            this.cmsFileTab.Size = new System.Drawing.Size(324, 164);
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 214);
             this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
             // 
             // mnuFullFilePathToClipboard
@@ -630,6 +634,18 @@
             this.mnuOpenWithAssociatedApplication.Size = new System.Drawing.Size(323, 22);
             this.mnuOpenWithAssociatedApplication.Text = "Open with associated application";
             this.mnuOpenWithAssociatedApplication.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(320, 6);
+            // 
+            // mnuCloseTab
+            // 
+            this.mnuCloseTab.Name = "mnuCloseTab";
+            this.mnuCloseTab.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseTab.Text = "Close";
+            this.mnuCloseTab.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
             // 
             // FormMain
             // 
@@ -725,6 +741,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuOpenContainingFolderInWindowsPowerShell;
         private System.Windows.Forms.ToolStripMenuItem mnuFullFilePathAndNameToClipboard;
         private System.Windows.Forms.ToolStripMenuItem mnuOpenWithAssociatedApplication;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem mnuCloseTab;
     }
 }
 

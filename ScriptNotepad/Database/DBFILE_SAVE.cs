@@ -217,9 +217,6 @@ namespace ScriptNotepad.Database
             }
         }
 
-        // a value indicating if the user want's to reload the changes from the file system if the file has been changed..
-        private bool _ShouldQueryDiskReload = true;
-
         /// <summary>
         /// Compares two DateTime values <paramref name="dt1"/> > <paramref name="dt2"/>.
         /// </summary>
@@ -232,6 +229,25 @@ namespace ScriptNotepad.Database
             string s2 = Database.DateToDBString(dt2);
             return s1.CompareTo(s2) > 0;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether a software should query the user if the deleted file should be kept in the editor.
+        /// </summary>
+        public bool ShouldQueryKeepFile
+        {
+            get => EXISTS_INFILESYS && !File.Exists(FILENAME_FULL);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a software should query the user if a file reappeared in the file system should be reloaded.
+        /// </summary>
+        public bool ShouldQueryFileReappeared
+        {
+            get => !EXISTS_INFILESYS && File.Exists(FILENAME_FULL);
+        }
+
+        // a value indicating if the user want's to reload the changes from the file system if the file has been changed..
+        private bool _ShouldQueryDiskReload = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the user should be queried of to reload the changed document from the file system.

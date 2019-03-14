@@ -50,8 +50,7 @@ namespace ScriptNotepad.Database
             string existsCondition =
                 string.Join(Environment.NewLine,
                 $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = {QS(fileSave.FILENAME_FULL)} AND",
-                $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), " +
-                  "(SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')))");
+                $"SESSIONID = {GenSessionNameIDCondition(fileSave.SESSIONNAME)})");
 
             if (fileSave.ID != -1)
             {
@@ -73,7 +72,7 @@ namespace ScriptNotepad.Database
                 $"{fileSave.VISIBILITY_ORDER},",
                 $"{BS(fileSave.ISACTIVE)},",
                 $"{BS(fileSave.ISHISTORY)},",
-                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')),",
+                $"{GenSessionNameIDCondition(fileSave.SESSIONNAME)},",
                 $"{QS(fileSave.ENCODING.WebName)}",
                 existsCondition,
                 $";");
@@ -256,7 +255,7 @@ namespace ScriptNotepad.Database
                 string.Join(Environment.NewLine,
                 $"SELECT ID FROM DBFILE_SAVE",
                 $"WHERE",
-                $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(fileSave.SESSIONNAME)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default')) AND",
+                $"{GenSessionNameIDCondition(fileSave.SESSIONNAME)} AND",
                 $"FILENAME_FULL = {QS(fileSave.FILENAME_FULL)};");
 
             return sql;
@@ -446,11 +445,11 @@ namespace ScriptNotepad.Database
                 $"SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH,",
                 $"FILESYS_MODIFIED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS,",
                 $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
-                $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = DBFILE_SAVE.SESSIONID), {QS(sessionName)}) AS SESSIONNAME,",
+                $"{GenSessionNameNameCondition(sessionName)} AS SESSIONNAME,",
                 $"FILESYS_SAVED, ENCODING",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
-                $"SESSIONID = IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))",
+                $"SESSIONID = {GenSessionNameIDCondition(sessionName)}",
                 fileNameCondition,
                 GetHistorySelectCondition(databaseHistoryFlag, "AND"),
                 $"ORDER BY VISIBILITY_ORDER;");
@@ -477,6 +476,23 @@ namespace ScriptNotepad.Database
                 $"{GenSessionNameIDCondition(recentFile.SESSIONNAME)},",
                 $"{(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
                 $"WHERE NOT EXISTS(SELECT * FROM RECENT_FILES WHERE FILENAME_FULL = {QS(recentFile.FILENAME_FULL)} AND SESSIONID = {GenSessionNameIDCondition(recentFile.SESSIONNAME)});");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Gets the existing database recent file identifier sentence.
+        /// </summary>
+        /// <param name="recentFile">A RECENT_FILES class instance to be used for the SQL sentence generation.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GetExistingDBRecentFileIDSentence(RECENT_FILES recentFile)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT ID FROM RECENT_FILES",
+                $"WHERE",
+                $"{GenSessionNameIDCondition(recentFile.SESSIONNAME)} AND",
+                $"FILENAME_FULL = {QS(recentFile.FILENAME_FULL)};");
 
             return sql;
         }

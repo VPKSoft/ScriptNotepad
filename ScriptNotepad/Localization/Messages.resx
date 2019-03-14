@@ -510,4 +510,10 @@
   <data name="msgSessionName" xml:space="preserve">
     <value>Session: {0}|A message describing a session name with the name as a parameter", CurrentSession</value>
   </data>
+  <data name="msgFileHasReappeared" xml:space="preserve">
+    <value>The file '{0}' has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it's contents from the file system</value>
+  </data>
+  <data name="msgFileHasReappearedTitle" xml:space="preserve">
+    <value>A file has reappeared|A caption message for a message dialog which will ask if a reappeared file should be reloaded from the file system</value>
+  </data>
 </root>
