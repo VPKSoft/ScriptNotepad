@@ -327,7 +327,8 @@ namespace ScriptNotepad.Database
                 $"SELECT ID, FILENAME_FULL, FILENAME,",
                 $"FILEPATH, CLOSED_DATETIME, SESSIONID, REFERENCEID,",
                 $"{GenSessionNameNameCondition(sessionName)} AS SESSIONNAME,",
-                $"CAST(CASE WHEN EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 1 AND SESSIONID = {GenSessionNameIDCondition(sessionName)}) THEN 1 ELSE 0 END AS INTEGER) AS EXISTSINDB",
+                $"CAST(CASE WHEN EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 1 AND SESSIONID = {GenSessionNameIDCondition(sessionName)}) THEN 1 ELSE 0 END AS INTEGER) AS EXISTSINDB, ",
+                $"ENCODING",
                 $"FROM RECENT_FILES",
                 $"WHERE SESSIONID = {GenSessionNameIDCondition(sessionName)}",
                 $"AND NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 0 AND SESSIONID = {GenSessionNameIDCondition(sessionName)}) ",
@@ -467,13 +468,14 @@ namespace ScriptNotepad.Database
         {
             string sql =
                 string.Join(Environment.NewLine,
-                $"INSERT INTO RECENT_FILES(FILENAME_FULL, FILENAME, FILEPATH, CLOSED_DATETIME, SESSIONID, REFERENCEID)",
+                $"INSERT INTO RECENT_FILES(FILENAME_FULL, FILENAME, FILEPATH, CLOSED_DATETIME, SESSIONID, ENCODING, REFERENCEID)",
                 $"SELECT",
                 $"{QS(recentFile.FILENAME_FULL)},",
                 $"{QS(recentFile.FILENAME)},",
                 $"{QS(recentFile.FILEPATH)},",
                 $"{DateToDBString(recentFile.CLOSED_DATETIME)},",
                 $"{GenSessionNameIDCondition(recentFile.SESSIONNAME)},",
+                $"{QS(recentFile.ENCODING.WebName)},",
                 $"{(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
                 $"WHERE NOT EXISTS(SELECT * FROM RECENT_FILES WHERE FILENAME_FULL = {QS(recentFile.FILENAME_FULL)} AND SESSIONID = {GenSessionNameIDCondition(recentFile.SESSIONNAME)});");
 
@@ -514,6 +516,7 @@ namespace ScriptNotepad.Database
                 $"FILEPATH = {QS(recentFile.FILEPATH)},",
                 $"CLOSED_DATETIME = {DateToDBString(recentFile.CLOSED_DATETIME)},",
                 $"SESSIONID = {recentFile.SESSIONID},",
+                $"ENCODING = {QS(recentFile.ENCODING.WebName)},",
                 $"REFERENCEID = {(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
                 $"WHERE ID = {recentFile.ID};");
 

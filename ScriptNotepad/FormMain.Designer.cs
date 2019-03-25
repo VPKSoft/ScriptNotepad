@@ -98,6 +98,9 @@
             this.mnuOpenWithAssociatedApplication = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuCloseTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -576,9 +579,12 @@
             this.mnuOpenContainingFolderInWindowsPowerShell,
             this.mnuOpenWithAssociatedApplication,
             this.toolStripMenuItem4,
-            this.mnuCloseTab});
+            this.mnuCloseTab,
+            this.mnuCloseAllButThis,
+            this.mnuCloseAllToTheLeft,
+            this.mnuCloseAllToTheRight});
             this.cmsFileTab.Name = "contextMenuStrip1";
-            this.cmsFileTab.Size = new System.Drawing.Size(324, 214);
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 280);
             this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
             // 
             // mnuFullFilePathToClipboard
@@ -646,6 +652,27 @@
             this.mnuCloseTab.Size = new System.Drawing.Size(323, 22);
             this.mnuCloseTab.Text = "Close";
             this.mnuCloseTab.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // mnuCloseAllButThis
+            // 
+            this.mnuCloseAllButThis.Name = "mnuCloseAllButThis";
+            this.mnuCloseAllButThis.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseAllButThis.Text = "Close all but this";
+            this.mnuCloseAllButThis.Click += new System.EventHandler(this.commonCloseManyDocuments);
+            // 
+            // mnuCloseAllToTheLeft
+            // 
+            this.mnuCloseAllToTheLeft.Name = "mnuCloseAllToTheLeft";
+            this.mnuCloseAllToTheLeft.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseAllToTheLeft.Text = "Close all to the left";
+            this.mnuCloseAllToTheLeft.Click += new System.EventHandler(this.commonCloseManyDocuments);
+            // 
+            // mnuCloseAllToTheRight
+            // 
+            this.mnuCloseAllToTheRight.Name = "mnuCloseAllToTheRight";
+            this.mnuCloseAllToTheRight.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseAllToTheRight.Text = "Close all to the right";
+            this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.commonCloseManyDocuments);
             // 
             // FormMain
             // 
@@ -743,6 +770,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuOpenWithAssociatedApplication;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseTab;
+        private System.Windows.Forms.ToolStripMenuItem mnuCloseAllButThis;
+        private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheLeft;
+        private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheRight;
     }
 }
 

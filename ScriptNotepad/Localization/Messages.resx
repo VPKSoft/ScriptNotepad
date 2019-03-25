@@ -519,4 +519,7 @@
   <data name="msgProcessIsElevated" xml:space="preserve">
     <value>Administrator|A message indicating that a process is elevated.</value>
   </data>
+  <data name="msgNewFileStart" xml:space="preserve">
+    <value>new |A starting text of how a new document should be named</value>
+  </data>
 </root>

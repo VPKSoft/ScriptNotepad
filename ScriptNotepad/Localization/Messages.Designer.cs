@@ -961,6 +961,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to new |A starting text of how a new document should be named.
+        /// </summary>
+        internal static string msgNewFileStart {
+            get {
+                return ResourceManager.GetString("msgNewFileStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal text file|*.txt|A text in a file dialog indicating .txt files.
         /// </summary>
         internal static string msgNormalTextFile {

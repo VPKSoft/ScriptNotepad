@@ -27,6 +27,7 @@ SOFTWARE.
 using ScriptNotepad.UtilityClasses.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ScriptNotepad.Database.UtilityClasses
@@ -37,18 +38,51 @@ namespace ScriptNotepad.Database.UtilityClasses
     public static class RecentFilesMenuBuilder
     {
         /// <summary>
+        /// A localizable text for a menu item which would open all recent files.
+        /// </summary>
+        public static string MenuOpenAllRecentText { get; set; } = "Open all recent files...";
+
+        /// <summary>
         /// Creates a recent files menu to a given parent menu.
         /// </summary>
         /// <param name="menuItem">The menu item to add the recent files list.</param>
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
         /// <param name="maxCount">Maximum count of recent file entries to add to the given <paramref name="menuItem"/>.</param>
-        public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, string sessionName, int maxCount)
+        /// <param name="addMenuOpenAll">A flag indicating whether the menu should contain an item to open all recent files.</param>
+        public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, string sessionName, 
+            int maxCount, bool addMenuOpenAll)
         {
             // dispose of the previous menu items..
             DisposeRecentFilesMenu(menuItem);
 
             // get the recent files from the database..
             IEnumerable<RECENT_FILES> recentFiles = Database.GetRecentFiles(sessionName, maxCount);
+
+            if (addMenuOpenAll)
+            {
+                List<RECENT_FILES> recentFilesAll = recentFiles.ToList();
+
+                if (recentFilesAll.Count > 1)
+                {
+                    // create a menu item for all the recent files..
+                    DataToolStripMenuItem menuItemRecentFile =
+                        new DataToolStripMenuItem(
+                            string.IsNullOrWhiteSpace(MenuOpenAllRecentText) ?
+                            "Open all recent files..." : MenuOpenAllRecentText);
+
+                    // set the user given additional data for the menu item..
+                    menuItemRecentFile.Data = recentFilesAll;
+
+                    // subscribe the click event..
+                    menuItemRecentFile.Click += MenuItemRecentFile_Click;
+
+                    // add the menu item to the recent files menu..
+                    menuItem.DropDownItems.Add(menuItemRecentFile);
+
+                    // add a separator menu item to the recent files menu..
+                    menuItem.DropDownItems.Add(new ToolStripSeparator());
+                }
+            }
 
             // loop through the results..
             foreach (var recentFile in recentFiles)
@@ -80,9 +114,27 @@ namespace ScriptNotepad.Database.UtilityClasses
             // get the clicked item..
             var item = (DataToolStripMenuItem)sender;
 
-            // raise the event if subscribed..
-            RecentFileMenuClicked?.Invoke(sender,                  // the recent file for the event..
-                new RecentFilesMenuClickEventArgs() { RecentFile = (RECENT_FILES)item.Data });
+            // this shouldn't happen, but just in case..
+            if (item.Data == null)
+            {
+                // ..so just return..
+                return;
+            }
+
+            // the menu item contains a single recent file..
+            if (item.Data.GetType() == typeof(RECENT_FILES))
+            {
+                // raise the event if subscribed..
+                RecentFileMenuClicked?.Invoke(sender,                  // the recent file for the event..
+                    new RecentFilesMenuClickEventArgs() { RecentFile = (RECENT_FILES)item.Data, RecentFiles = null });
+            }
+            // the menu item contains a list of recent files..
+            else if (item.Data.GetType() == typeof(List<RECENT_FILES>))
+            {
+                // raise the event if subscribed..
+                RecentFileMenuClicked?.Invoke(sender,                        // the recent file list for the event..
+                    new RecentFilesMenuClickEventArgs() { RecentFile = null, RecentFiles = (List<RECENT_FILES>)item.Data });
+            }
         }
 
         /// <summary>
@@ -155,5 +207,10 @@ namespace ScriptNotepad.Database.UtilityClasses
         /// Gets the <see cref="RECENT_FILES"/> of the clicked recent file menu item.
         /// </summary>
         public RECENT_FILES RecentFile { get; internal set; }
+
+        /// <summary>
+        /// Gets a list of the all <see cref="RECENT_FILES"/> of the clicked recent file menu item to open all the recent files.
+        /// </summary>
+        public List<RECENT_FILES> RecentFiles { get; internal set; } = null;
     }
 }

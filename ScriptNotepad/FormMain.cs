@@ -155,7 +155,7 @@ namespace ScriptNotepad
             mnuTest.Visible = System.Diagnostics.Debugger.IsAttached;
 
             // create a menu for recent files..
-            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount);
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true);
 
             // subscribe the click event for the recent file menu items..
             RecentFilesMenuBuilder.RecentFileMenuClicked += RecentFilesMenuBuilder_RecentFileMenuClicked;
@@ -169,6 +169,10 @@ namespace ScriptNotepad
 
             // the user is either logging of from the system or is shutting down the system..
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+
+            // localize the new file name..
+            sttcMain.NewFilenameStart =
+                DBLangEngine.GetMessage("msgNewFileStart", "new |A starting text of how a new document should be named");
 
 
             // create a dynamic action for the class exception logging..
@@ -405,7 +409,7 @@ namespace ScriptNotepad
                         else
                         {
                             // call the handle method..
-                            HandleCloseTab(fileSave, true, false, false);
+                            HandleCloseTab(fileSave, true, false, false, false);
                         }
                     }
                     else if (fileSave.ShouldQueryFileReappeared)
@@ -446,11 +450,13 @@ namespace ScriptNotepad
         /// <param name="fileDeleted">A flag indicating if the file was deleted from the file system and a user decided to not the keep the file in the editor.</param>
         /// <param name="fileReappeared">A flag indicating that a file reappeared to the file system after being gone.</param>
         /// <param name="tabClosing">A flag indicating whether this call was made from the tab closing event of a <see cref="ScintillaTabbedDocument"/> class instance.</param>
+        /// <param name="closeTab">A flag indicating whether the tab containing the given <paramref name="fileSave"/> should be closed.</param>
         /// <returns>A modified <see cref="DBFILE_SAVE"/> class instance based on the given parameters.</returns>
-        private DBFILE_SAVE HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, bool fileReappeared, bool tabClosing)
+        private DBFILE_SAVE HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, 
+            bool fileReappeared, bool tabClosing, bool closeTab)
         {
             // set the flags according to the parameters..
-            fileSave.ISHISTORY = tabClosing || fileDeleted; 
+            fileSave.ISHISTORY = tabClosing || fileDeleted || closeTab; 
 
             // set the exists in file system flag..
             fileSave.EXISTS_INFILESYS = File.Exists(fileSave.FILENAME_FULL);
@@ -465,10 +471,10 @@ namespace ScriptNotepad
                 Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[docIndex]);
 
                 // update the file history list in the database..
-                Database.Database.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME);
+                Database.Database.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME, fileSave.ENCODING);
 
-                // the file was not requested to be kept in the editor after a deletion from the file system..
-                if (fileDeleted)
+                // the file was not requested to be kept in the editor after a deletion from the file system or the tab was requested to be closed..
+                if (fileDeleted || closeTab)
                 {
                     // ..so close the tab..
                     sttcMain.CloseDocument(docIndex);
@@ -479,7 +485,7 @@ namespace ScriptNotepad
             bringToFrontQueued = fileDeleted;
 
             // re-create a menu for recent files..
-            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount);
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true);
 
             // return the modified DBFILE_SAVE class instance.. 
             return fileSave; 
@@ -552,7 +558,7 @@ namespace ScriptNotepad
                 fileSave.ISACTIVE = sttcMain.Documents[i].FileTabButton.IsActive;
                 fileSave.VISIBILITY_ORDER = i;
                 Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
-                Database.Database.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName);
+                Database.Database.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName, fileSave.ENCODING);
 
                 if (dispose)
                 {
@@ -630,7 +636,7 @@ namespace ScriptNotepad
                 UpdateUndoRedoIndicators();
 
                 // re-create a menu for recent files..
-                RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount);
+                RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true);
             }
         }
 
@@ -977,15 +983,30 @@ namespace ScriptNotepad
         private void RecentFilesMenuBuilder_RecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e)
         {
             // if a file snapshot exists in the database then load it..
-            if (e.RecentFile.EXISTSINDB)
+            if (e.RecentFile != null && e.RecentFile.EXISTSINDB)
             {
                 LoadDocumentFromDatabase(e.RecentFile);
             }
             // else open the file from the file system..
-            else
+            else if (e.RecentFile != null)
             {
                 OpenDocument(e.RecentFile.FILENAME_FULL, DefaultEncoding);
             }
+            else if (e.RecentFiles != null)
+            {
+                foreach (RECENT_FILES recentFile in e.RecentFiles)
+                {
+                    if (recentFile.EXISTSINDB)
+                    {
+                        LoadDocumentFromDatabase(recentFile);
+                    }
+                    else
+                    {
+                        OpenDocument(recentFile.FILENAME_FULL, DefaultEncoding);
+                    }
+                }
+            }
+
         }
 
         // a user wishes to change the settings of the software..
@@ -1209,7 +1230,7 @@ namespace ScriptNotepad
         private void sttcMain_TabClosing(object sender, TabClosingEventArgsExt e)
         {
             // call the handle method..
-            HandleCloseTab((DBFILE_SAVE)e.ScintillaTabbedDocument.Tag, false, false, true);
+            HandleCloseTab((DBFILE_SAVE)e.ScintillaTabbedDocument.Tag, false, false, true, false);
         }
 
         // a user activated a tab (document) so display it's file name..
@@ -1535,6 +1556,53 @@ namespace ScriptNotepad
                     mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
                 }
             }
+        }
+
+        /// <summary>
+        /// A method for closing multiple documents depending of the given parameters.
+        /// </summary>
+        /// <param name="right">A flag indicating that from the active document to the right all documents should be closed.</param>
+        /// <param name="left">A flag indicating that from the active document to the left all documents should be closed.</param>
+        private void CloseAllFunction(bool right, bool left)
+        {
+            // get the document in question..
+            var document = sttcMain.CurrentDocument;
+
+            // get the index for the active document..
+            int idx = document != null ? sttcMain.Documents.FindIndex(f => f.Equals(document)) : -1;
+
+            // validate the index..
+            if (idx != -1)
+            {
+                // do a backward loop and close all the documents except the active one..
+                for (int i = sttcMain.DocumentsCount - 1; i >= 0; i--)
+                {
+                    // validate the right and left flags..
+                    if ((left && i > idx) || (right && i < idx))
+                    {
+                        // ..if this is a match then do continue..
+                        continue;
+                    }
+
+                    // the index is the active document..
+                    if (idx == i)
+                    {
+                        // ..so skip the document..
+                        continue;
+                    }
+
+                    // call the handle method..
+                    HandleCloseTab((DBFILE_SAVE)sttcMain.Documents[i].Tag, false, false, false, true);
+                }
+            }
+        }
+
+        // a user wishes to close all expect the active document or many documents 
+        // to the right or to the left from the active document..
+        private void commonCloseManyDocuments(object sender, EventArgs e)
+        {
+            // call the CloseAllFunction method with this "wondrous" logic..
+            CloseAllFunction(sender.Equals(mnuCloseAllToTheRight), sender.Equals(mnuCloseAllToTheLeft));
         }
         #endregion
     }

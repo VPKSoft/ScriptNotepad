@@ -42,10 +42,11 @@ namespace ScriptNotepad.Database
         /// Creates a <see cref="RECENT_FILES"/> class instance from a given file name.
         /// </summary>
         /// <param name="fileName">The name of the file.</param>
+        /// <param name="encoding">The encoding of the recent file.</param>
         /// <param name="ID">An optional database identifier for file.</param>
         /// <param name="referenceID">An optional database reference identifier for the file.</param>
         /// <returns>An instance to <see cref="RECENT_FILES"/> class created based on the given arguments.</returns>
-        public static RECENT_FILES FromFilename(string fileName, long ID = -1, long? referenceID = null)
+        public static RECENT_FILES FromFilename(string fileName, Encoding encoding, long ID = -1, long? referenceID = null)
         {
             return new RECENT_FILES()
             {
@@ -54,7 +55,8 @@ namespace ScriptNotepad.Database
                 FILENAME = Path.GetFileName(fileName),
                 FILEPATH = Path.GetDirectoryName(fileName),
                 CLOSED_DATETIME = DateTime.Now,
-                REFERENCEID = referenceID
+                REFERENCEID = referenceID,
+                ENCODING = encoding
             };
         }
 
@@ -92,6 +94,11 @@ namespace ScriptNotepad.Database
         /// Gets or sets the name of the session.
         /// </summary>
         public string SESSIONNAME { get; set; } = "Default";
+
+        /// <summary>
+        /// Gets or sets the encoding of the recent file.
+        /// </summary>
+        public Encoding ENCODING { get; set; }
 
         /// <summary>
         /// Gets or sets a reference to a file ID in the DBFILE_SAVE table.

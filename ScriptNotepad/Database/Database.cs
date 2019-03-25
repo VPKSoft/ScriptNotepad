@@ -510,10 +510,11 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="fileName">A file name to generate a RECENT_FILES class instance.</param>
         /// <param name="sessionName">A name of the session to which the document belongs to.</param>
+        /// <param name="encoding">The encoding of the recent file.</param>
         /// <returns>A RECENT_FILES class instance if the recent file was successfully added to the database; otherwise null.</returns>
-        public static RECENT_FILES AddRecentFile(string fileName, string sessionName)
+        public static RECENT_FILES AddRecentFile(string fileName, string sessionName, Encoding encoding)
         {
-            return AddRecentFile(RECENT_FILES.FromFilename(fileName), sessionName);
+            return AddRecentFile(RECENT_FILES.FromFilename(fileName, encoding), sessionName);
         }
 
         /// <summary>
@@ -586,10 +587,11 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="fileName">A file name to generate a RECENT_FILES class instance.</param>
         /// <param name="sessionName">A name of the session to which the document belongs to.</param>
+        /// <param name="encoding">The encoding of the recent file.</param>
         /// <returns>True if the operations was successful; otherwise false;</returns>
-        public static bool AddOrUpdateRecentFile(string fileName, string sessionName)
+        public static bool AddOrUpdateRecentFile(string fileName, string sessionName, Encoding encoding)
         {
-            return UpdateRecentFile(AddRecentFile(fileName, sessionName), sessionName) != null;
+            return UpdateRecentFile(AddRecentFile(fileName, sessionName, encoding), sessionName) != null;
         }
 
         /// <summary>
@@ -701,7 +703,8 @@ namespace ScriptNotepad.Database
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, SESSIONID: 5, REFERENCEID: 6, SESSION_NAME: 7, EXISTSINDB: 8
+                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, 
+                    // SESSIONID: 5, REFERENCEID: 6, SESSION_NAME: 7, EXISTSINDB: 8, ENCODING = 9
                     while (reader.Read())
                     {
                         RECENT_FILES recentFile =
@@ -715,7 +718,8 @@ namespace ScriptNotepad.Database
                                 SESSIONID = reader.GetInt32(5),
                                 REFERENCEID = reader.IsDBNull(6) ? null : (long?)reader.GetInt64(6),
                                 SESSIONNAME = reader.GetString(7),
-                                EXISTSINDB = reader.GetInt32(8) == 1
+                                EXISTSINDB = reader.GetInt32(8) == 1,
+                                ENCODING = Encoding.GetEncoding(reader.GetString(9)),
                             };
 
                         // the file must exist somewhere..
