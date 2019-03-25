@@ -988,6 +988,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open all recent files...|A message in the recent files menu to open all the recent files.
+        /// </summary>
+        internal static string msgOpenAllRecentFiles {
+            get {
+                return ResourceManager.GetString("msgOpenAllRecentFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open|A title for a open file dialog.
         /// </summary>
         internal static string msgOpenFile {

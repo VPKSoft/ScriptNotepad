@@ -67,9 +67,9 @@
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpenWithEncoding = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTest = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuSplit1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuSplit2 = new System.Windows.Forms.ToolStripSeparator();
             this.munSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -387,9 +387,9 @@
             this.mnuOpen,
             this.mnuOpenWithEncoding,
             this.mnuTest,
-            this.toolStripMenuItem1,
+            this.mnuSplit1,
             this.mnuRecentFiles,
-            this.toolStripMenuItem2,
+            this.mnuSplit2,
             this.munSave,
             this.mnuSaveAs,
             this.mnuSaveAll,
@@ -431,10 +431,10 @@
             this.mnuTest.Visible = false;
             this.mnuTest.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // mnuSplit1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            this.mnuSplit1.Name = "mnuSplit1";
+            this.mnuSplit1.Size = new System.Drawing.Size(188, 6);
             // 
             // mnuRecentFiles
             // 
@@ -442,10 +442,10 @@
             this.mnuRecentFiles.Size = new System.Drawing.Size(191, 22);
             this.mnuRecentFiles.Text = "Recent...";
             // 
-            // toolStripMenuItem2
+            // mnuSplit2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(188, 6);
+            this.mnuSplit2.Name = "mnuSplit2";
+            this.mnuSplit2.Size = new System.Drawing.Size(188, 6);
             // 
             // munSave
             // 
@@ -584,7 +584,7 @@
             this.mnuCloseAllToTheLeft,
             this.mnuCloseAllToTheRight});
             this.cmsFileTab.Name = "contextMenuStrip1";
-            this.cmsFileTab.Size = new System.Drawing.Size(324, 280);
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 258);
             this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
             // 
             // mnuFullFilePathToClipboard
@@ -753,9 +753,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuCharSets;
         private System.Windows.Forms.ToolStripMenuItem mnuOpenWithEncoding;
         private System.Windows.Forms.ToolStripMenuItem mnuSettings;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator mnuSplit1;
         private System.Windows.Forms.ToolStripMenuItem mnuRecentFiles;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator mnuSplit2;
         private System.Windows.Forms.Timer tmGUI;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace6;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSessionName;

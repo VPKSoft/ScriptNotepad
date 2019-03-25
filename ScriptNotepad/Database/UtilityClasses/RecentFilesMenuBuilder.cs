@@ -49,8 +49,9 @@ namespace ScriptNotepad.Database.UtilityClasses
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
         /// <param name="maxCount">Maximum count of recent file entries to add to the given <paramref name="menuItem"/>.</param>
         /// <param name="addMenuOpenAll">A flag indicating whether the menu should contain an item to open all recent files.</param>
+        /// <param name="hideItems">A list of tool strip items to hide if there are no recent files.</param>
         public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, string sessionName, 
-            int maxCount, bool addMenuOpenAll)
+            int maxCount, bool addMenuOpenAll, params ToolStripItem[] hideItems)
         {
             // dispose of the previous menu items..
             DisposeRecentFilesMenu(menuItem);
@@ -102,6 +103,13 @@ namespace ScriptNotepad.Database.UtilityClasses
 
             // the recent file menu should only be visible if there are any drop down items..
             menuItem.Visible = menuItem.DropDownItems.Count > 0;
+
+            // hide or show the items which are "depended" of the visibility of the
+            // recent files menu..
+            foreach (ToolStripItem item in hideItems)
+            {
+                item.Visible = menuItem.DropDownItems.Count > 0;
+            }
         }
 
         /// <summary>

@@ -154,8 +154,12 @@ namespace ScriptNotepad
             // enable the test menu only when debugging..
             mnuTest.Visible = System.Diagnostics.Debugger.IsAttached;
 
+            // localize the recent files open all files text..
+            RecentFilesMenuBuilder.MenuOpenAllRecentText =
+                DBLangEngine.GetMessage("msgOpenAllRecentFiles", "Open all recent files...|A message in the recent files menu to open all the recent files");
+
             // create a menu for recent files..
-            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true);
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
 
             // subscribe the click event for the recent file menu items..
             RecentFilesMenuBuilder.RecentFileMenuClicked += RecentFilesMenuBuilder_RecentFileMenuClicked;
@@ -485,7 +489,7 @@ namespace ScriptNotepad
             bringToFrontQueued = fileDeleted;
 
             // re-create a menu for recent files..
-            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true);
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
 
             // return the modified DBFILE_SAVE class instance.. 
             return fileSave; 
@@ -636,7 +640,7 @@ namespace ScriptNotepad
                 UpdateUndoRedoIndicators();
 
                 // re-create a menu for recent files..
-                RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true);
+                RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
             }
         }
 
@@ -990,19 +994,23 @@ namespace ScriptNotepad
             // else open the file from the file system..
             else if (e.RecentFile != null)
             {
-                OpenDocument(e.RecentFile.FILENAME_FULL, DefaultEncoding);
+                OpenDocument(e.RecentFile.FILENAME_FULL, e.RecentFile.ENCODING);
             }
+            // in this case the menu item should contain all the recent files belonging to a session..
             else if (e.RecentFiles != null)
             {
+                // loop through the recent files and open them all..
                 foreach (RECENT_FILES recentFile in e.RecentFiles)
                 {
+                    // if a file snapshot exists in the database then load it..
                     if (recentFile.EXISTSINDB)
                     {
                         LoadDocumentFromDatabase(recentFile);
                     }
+                    // else open the file from the file system..
                     else
                     {
-                        OpenDocument(recentFile.FILENAME_FULL, DefaultEncoding);
+                        OpenDocument(recentFile.FILENAME_FULL, recentFile.ENCODING);
                     }
                 }
             }
