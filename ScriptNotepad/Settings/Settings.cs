@@ -232,6 +232,12 @@ namespace ScriptNotepad.Settings
         [Setting("misc/currentSessionLocalized", typeof(bool))]
         public bool DefaultSessionLocalized { get; set; } = false;
 
+        /// <summary>
+        /// Gets or sets the plug-in folder for the software.
+        /// </summary>
+        [Setting("misc/pluginFolder", typeof(string))]
+        public string PluginFolder { get; set; } = string.Empty;
+
         // the current language (Culture) to be used with the software..
         private static CultureInfo _Culture = null;
 

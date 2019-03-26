@@ -525,4 +525,7 @@
   <data name="msgOpenAllRecentFiles" xml:space="preserve">
     <value>Open all recent files...|A message in the recent files menu to open all the recent files</value>
   </data>
+  <data name="msgSetToDefault" xml:space="preserve">
+    <value>Set to default|A some value is set to default value</value>
+  </data>
 </root>

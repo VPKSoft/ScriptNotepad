@@ -1159,6 +1159,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set to default|A some value is set to default value.
+        /// </summary>
+        internal static string msgSetToDefault {
+            get {
+                return ResourceManager.GetString("msgSetToDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8)..
         /// </summary>
         internal static string msgShortEncodingPreText {

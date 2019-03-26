@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using Ookii.Dialogs.WinForms;
 using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 using System;
 using System.Collections.Generic;
@@ -31,10 +32,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.Settings
@@ -76,6 +79,10 @@ namespace ScriptNotepad.Settings
             // translate the tool tips..
             ttMain.SetToolTip(btSystemDefaultEncoding,
                 DBLangEngine.GetMessage("msgSysDefaultEncoding", "Set to system default|Set the selected encoding to system's default encoding via a button click"));
+
+            // translate the tool tips..
+            ttMain.SetToolTip(pbDefaultFolder,
+                DBLangEngine.GetMessage("msgSetToDefault", "Set to default|A some value is set to default value"));
 
             // list the translated cultures..
             List<CultureInfo> cultures = DBLangEngine.GetLocalizedCultures();
@@ -119,6 +126,9 @@ namespace ScriptNotepad.Settings
 
             // set the current culture from the settings..
             cmbSelectLanguageValue.SelectedItem = Settings.Culture;
+
+            // set the current plug-in folder from the settings..
+            tbPluginFolder.Text = Settings.PluginFolder;
         }
 
         /// <summary>
@@ -140,6 +150,9 @@ namespace ScriptNotepad.Settings
 
             // save the selected culture for localization..
             Settings.Culture = (CultureInfo)cmbSelectLanguageValue.SelectedItem;
+
+            // save the selected plug-in folder to the settings..
+            Settings.PluginFolder = tbPluginFolder.Text;
         }
         #endregion
 
@@ -190,6 +203,56 @@ namespace ScriptNotepad.Settings
         {
             CheckBox checkBox = (CheckBox)sender;
             nudDocumentContentHistory.Enabled = checkBox.Checked;
+        }
+
+        /// <summary>
+        /// Creates the default plug-in directory for the software.
+        /// </summary>
+        public static string CreateDefaultPluginDirectory()
+        {
+            // create a folder for plug-ins if it doesn't exist already.. 
+            if (!Directory.Exists(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins")))
+            {
+                try
+                {
+                    // create the folder..
+                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins"));
+
+                    // save the folder in the settings..
+                    Settings.PluginFolder = Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins");
+                }
+                catch (Exception ex) // a failure so do log it..
+                {
+                    ExceptionLogger.LogError(ex);
+                    return string.Empty;
+                }
+            }
+            return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins");
+        }
+
+        private void btSelectPluginFolder_Click(object sender, EventArgs e)
+        {
+            var dialog = new VistaFolderBrowserDialog();
+
+            if (Directory.Exists(tbPluginFolder.Text))
+            {
+                dialog.SelectedPath = tbPluginFolder.Text;
+            }
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                tbPluginFolder.Text = dialog.SelectedPath;
+            }
+        }
+
+        private void pbDefaultFolder_Click(object sender, EventArgs e)
+        {
+            tbPluginFolder.Text = CreateDefaultPluginDirectory();
+        }
+
+        private void tbPluginFolder_TextChanged(object sender, EventArgs e)
+        {
+            btOK.Enabled = Directory.Exists(tbPluginFolder.Text);
         }
     }
 }

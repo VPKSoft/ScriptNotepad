@@ -50,6 +50,10 @@ using ScriptNotepad.IOPermission;
 using ScriptNotepad.UtilityClasses.SessionHelpers;
 using ScriptNotepad.UtilityClasses.Clipboard;
 using ScriptNotepad.UtilityClasses.Process;
+using System.Reflection;
+using ScriptNotepadPluginBase.PluginTemplateInterface;
+using ScriptNotepadPluginBase.EventArgClasses;
+using ScriptNotepad.PluginHandling;
 
 namespace ScriptNotepad
 {
@@ -186,7 +190,32 @@ namespace ScriptNotepad
             WindowsExplorerInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
             ClipboardTextHelper.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
             // END: create a dynamic action for the class exception logging..
+
+            // create the default directory for the plug-ins if it doesn't exist yet..
+            Settings.FormSettings.CreateDefaultPluginDirectory();
+
+            // load the existing plug-ins..
+            var plugins = PluginDirectoryRoaming.GetPluginAssemblies(Settings.FormSettings.Settings.PluginFolder);
+
+            foreach(var plugin in plugins)
+            {
+                if (plugin.IsValid)
+                {
+                    var pluginAssembly = PluginInitializer.LoadPlugin(plugin.Path);
+                    if (PluginInitializer.InitializePlugin(pluginAssembly.Plugin,
+                        RequestActiveDocument,
+                        RequestAllDocuments,
+                        PluginException, mnuPlugins, CurrentSession, this))
+                    {
+                        Plugins.Add(plugin.Assembly);
+                    }
+                }
+            }
+
+            mnuPlugins.Visible = mnuPlugins.DropDownItems.Count > 0;
         }
+
+        List<Assembly> Plugins = new List<Assembly>();
         #endregion
 
         #region HelperMethods        
@@ -1401,6 +1430,60 @@ namespace ScriptNotepad
             }
             bringToFrontQueued = false;
             leftActivatedEvent = false;
+        }
+
+        // TODO::!!
+
+        // occurs when a plug-in requests for the currently active document..
+        private void RequestActiveDocument(object sender, RequestScintillaDocumentEventArgs e)
+        {
+            // verify that there is an active document, etc..
+            if (sttcMain.CurrentDocument != null && sttcMain.CurrentDocument.Tag != null)
+            {
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+                e.AllDocuments = false; // set to flag indicating all the documents to false..
+
+                // add the document details to the event arguments..
+                e.Documents.Add(
+                    (fileSave.ENCODING,
+                    sttcMain.CurrentDocument.Scintilla,
+                    fileSave.FILENAME_FULL,
+                    fileSave.FILESYS_MODIFIED,
+                    fileSave.DB_MODIFIED, 
+                    true));
+            }
+        }
+
+        // occurs when a plug-in requests for all the open documents..
+        private void RequestAllDocuments(object sender, RequestScintillaDocumentEventArgs e)
+        {
+            // loop through all the documents..
+            for (int i = 0; i < sttcMain.DocumentsCount; i++)
+            {
+                // verify the document's validity..
+                if (sttcMain.Documents[i].Tag == null)
+                {
+                    continue;
+                }
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.Documents[i].Tag;
+
+                // add the document details to the event arguments..
+                e.Documents.Add(
+                    (fileSave.ENCODING,
+                    sttcMain.Documents[i].Scintilla,
+                    fileSave.FILENAME_FULL,
+                    fileSave.FILESYS_MODIFIED,
+                    fileSave.DB_MODIFIED,
+                    true));
+            }
+            e.AllDocuments = true; // set to flag indicating all the documents to true..
+        }
+
+        // occurs when an exception has occurred in a plug-in (NOTE: The plug-in must have exception handling!)..
+        private void PluginException(object sender, PluginExceptionEventArgs e)
+        {
+            ExceptionLogger.LogMessage($"PLUG-IN EXCEPTION: '{e.PluginModuleName}'.");
+            ExceptionLogger.LogError(e.Exception);
         }
         #endregion
 

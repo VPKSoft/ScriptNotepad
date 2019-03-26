@@ -1,0 +1,4 @@
+[en-US]
+plgDescription	Sample plug-in by VPKSoft
+[fi-FI]
+plgDescription	Esimerkkiliitännäinen VPKSoftilta

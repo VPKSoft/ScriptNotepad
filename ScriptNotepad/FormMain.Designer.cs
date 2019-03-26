@@ -101,6 +101,7 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -373,6 +374,7 @@
             this.mnuEdit,
             this.mnuSearch,
             this.mnuTools,
+            this.mnuPlugins,
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -674,6 +676,12 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.commonCloseManyDocuments);
             // 
+            // mnuPlugins
+            // 
+            this.mnuPlugins.Name = "mnuPlugins";
+            this.mnuPlugins.Size = new System.Drawing.Size(63, 20);
+            this.mnuPlugins.Text = "Plug-ins";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -773,6 +781,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllButThis;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheLeft;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheRight;
+        private System.Windows.Forms.ToolStripMenuItem mnuPlugins;
     }
 }
 
