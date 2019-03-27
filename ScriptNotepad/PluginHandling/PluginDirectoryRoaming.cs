@@ -29,7 +29,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using VPKSoft.ErrorLogger;
 
 namespace ScriptNotepad.PluginHandling
 {
@@ -38,6 +37,11 @@ namespace ScriptNotepad.PluginHandling
     /// </summary>
     public static class PluginDirectoryRoaming
     {
+        /// <summary>
+        /// Gets or sets the action to be used to log an exception.
+        /// </summary>
+        public static Action<Exception, Assembly, string> ExceptionLogAction { get; set; } = null;
+
         /// <summary>
         /// Gets the plug-in assemblies for the software.
         /// </summary>
@@ -91,7 +95,7 @@ namespace ScriptNotepad.PluginHandling
                             catch (Exception ex)
                             {
                                 // log the exception..
-                                ExceptionLogger.LogError(ex);
+                                ExceptionLogAction?.Invoke(ex, assembly, assemblyFile);
 
                                 // indicate a failure in the result as well..
                                 result.Add((assembly, assemblyFile, false));
@@ -102,7 +106,7 @@ namespace ScriptNotepad.PluginHandling
                     catch (Exception ex)
                     {
                         // log the exception..
-                        ExceptionLogger.LogError(ex);
+                        ExceptionLogAction?.Invoke(ex, null, assemblyFile);
 
                         // indicate a failure in the result as well..
                         result.Add((null, assemblyFile, false));
@@ -113,7 +117,7 @@ namespace ScriptNotepad.PluginHandling
             catch (Exception ex)
             {
                 // ..so do log it..
-                ExceptionLogger.LogError(ex);
+                ExceptionLogAction?.Invoke(ex, null, null);
             }
 
             // return the result..

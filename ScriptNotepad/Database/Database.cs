@@ -28,43 +28,26 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using static ScriptNotepad.Database.DatabaseEnumerations;
+using ScriptNotepad.Database.Tables;
+using ScriptNotepad.TableCommands;
+using ScriptNotepad.Database.UtilityClasses;
+using ScriptNotepad.Database.TableCommands;
 
 namespace ScriptNotepad.Database
 {
     /// <summary>
     /// A static class the handle the SQLite database.
     /// </summary>
-    public static class Database
+    public class Database: DataFormulationHelpers
     {
         // the database connection to use..
         private static SQLiteConnection conn = null;
-
-        /// <summary>
-        /// This method stands for Quoted String. Simply double-quote the "insides" of a string and add quotes to the both sides (').
-        /// </summary>
-        /// <param name="str">A string to 'quote'.</param>
-        /// <returns>A 'quoted' string.</returns>
-        public static string QS(string str)
-        {
-            return "'" + str.Replace("'", "''") + "'"; // as simple as it can be..
-        }
-
-        /// <summary>
-        /// Converts a boolean value to database-understandable format.
-        /// </summary>
-        /// <param name="boolean">A boolean value to a database-understandable format.</param>
-        /// <returns>If <paramref name="boolean"/> is true then 1; otherwise 0.</returns>
-        public static string BS(bool boolean)
-        {
-            return boolean ? "1" : "0";
-        }
 
         /// <summary>
         /// Creates a new SQLiteConnection class for the Database class with the given connection string.
@@ -77,56 +60,13 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
-        /// Gets a DateTime value from a give string from the database.
-        /// </summary>
-        /// <param name="value">The date and time value as it's stored in to the database.</param>
-        /// <returns>A DateTime value converted from a given string.</returns>
-        public static DateTime DateFromDBString(string value)
-        {
-            try
-            {
-                // try to parse the given date time string to a DateTime value and return it..
-                DateTime result = DateTime.ParseExact(value, "yyyy-MM-dd HH':'mm':'ss.fff", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
-
-                return result;
-            }
-            catch
-            {
-                // the format was invalid, so return DateTime.MinValue..
-                return DateTime.MinValue;
-            }
-        }
-
-        /// <summary>
-        /// Converts a given DateTime value to a quoted string.
-        /// </summary>
-        /// <param name="dateTime">The DateTime value to convert.</param>
-        /// <returns>A quoted string converted from a given DateTime value.</returns>
-        public static string DateToDBString(DateTime dateTime)
-        {
-            if (dateTime == DateTime.MinValue || dateTime == DateTime.MaxValue)
-            {
-                // return "nothing" if the date and time value is either
-                // the minimum value or the maximum value..
-                return QS("0000-00-00 00:00:00.000");
-            }
-            else
-            {
-                // return a quoted string from the given the date and time value..
-
-                string result = QS(dateTime.ToString("yyyy-MM-dd HH':'mm':'ss.fff", CultureInfo.InvariantCulture));
-                return result;
-            }
-        }
-
-        /// <summary>
         /// Gets the next ID number for an auto-increment table.
         /// </summary>
         /// <param name="tableName">Name of the table of which next ID number to get.</param>
         /// <returns>The next ID number in the sequence.</returns>
         public static long GetNextIDForTable(string tableName)
         {
-            return GetScalar<long>(DatabaseCommands.GenGetNextIDForTable(tableName));
+            return GetScalar<long>(DatabaseCommandsMisc.GenGetNextIDForTable(tableName));
         }
 
         /// <summary>
@@ -138,9 +78,9 @@ namespace ScriptNotepad.Database
         {
             try
             {
-                long lastId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
+                long lastId = GetScalar<long>(DatabaseCommandsFileSave.GenLatestDBFileSaveIDSentence());
 
-                string sql = DatabaseCommands.GenInsertFileSentence(fileSave);
+                string sql = DatabaseCommandsFileSave.GenInsertFileSentence(fileSave);
 
                 fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ?
                     new FileInfo(fileSave.FILENAME_FULL).LastWriteTime :
@@ -159,7 +99,7 @@ namespace ScriptNotepad.Database
                     command.ExecuteNonQuery();
                 }
 
-                long newId = GetScalar<long>(DatabaseCommands.GenLatestDBFileSaveIDSentence());
+                long newId = GetScalar<long>(DatabaseCommandsFileSave.GenLatestDBFileSaveIDSentence());
 
                 fileSave.ID = lastId != newId ? newId : fileSave.ID;
 
@@ -167,7 +107,7 @@ namespace ScriptNotepad.Database
                 if (fileSave.ID == -1)
                 {
                     // the file must have an ID number..
-                    fileSave.ID = GetScalar<long>(DatabaseCommands.GetExistingDBFileSaveIDSentence(fileSave));
+                    fileSave.ID = GetScalar<long>(DatabaseCommandsFileSave.GetExistingDBFileSaveIDSentence(fileSave));
                 }
 
                 return fileSave;
@@ -230,7 +170,7 @@ namespace ScriptNotepad.Database
         /// <returns>True if the operation was successful; otherwise false.</returns>
         public static bool UpdateFileHistoryFlag(DBFILE_SAVE fileSave)
         {
-            return ExecuteArbitrarySQL(DatabaseCommands.GenUpdateFileHistoryFlag(fileSave));
+            return ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenUpdateFileHistoryFlag(fileSave));
         }
 
         /// <summary>
@@ -247,7 +187,7 @@ namespace ScriptNotepad.Database
                 List<long> ids = new List<long>();
 
                 // generate a SQL sentence for the selection..
-                string sql = DatabaseCommands.GenHistoryListSelect(sessionName);
+                string sql = DatabaseCommandsRecentFiles.GenHistoryListSelect(sessionName);
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
@@ -285,7 +225,7 @@ namespace ScriptNotepad.Database
                 if (ids.Count > 0)
                 {
                     // ..if any..
-                    return (ExecuteArbitrarySQL(DatabaseCommands.GenDeleteDBFileHistoryIDList(ids)), ids.Count);
+                    return (ExecuteArbitrarySQL(DatabaseCommandsRecentFiles.GenDeleteDBFileHistoryIDList(ids)), ids.Count);
                 }
                 else
                 {
@@ -315,7 +255,7 @@ namespace ScriptNotepad.Database
                 List<long> ids = new List<long>();
 
                 // generate a SQL sentence for the selection..
-                string sql = DatabaseCommands.GenHistoryCleanupListSelect(sessionName);
+                string sql = DatabaseCommandsFileSave.GenHistoryCleanupListSelect(sessionName);
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
@@ -353,7 +293,7 @@ namespace ScriptNotepad.Database
                 if (ids.Count > 0)
                 {
                     // ..if any..
-                    return (ExecuteArbitrarySQL(DatabaseCommands.GenDeleteDBFileSaveIDList(ids)), ids.Count);
+                    return (ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenDeleteDBFileSaveIDList(ids)), ids.Count);
                 }
                 else
                 {
@@ -405,7 +345,7 @@ namespace ScriptNotepad.Database
             try
             {
                 // generate a SQL sentence for the insert..
-                string sql = DatabaseCommands.GenScriptInsertSentence(ref codeSnippet);
+                string sql = DatabaseCommandsCodeSnippets.GenScriptInsertSentence(ref codeSnippet);
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
@@ -434,7 +374,7 @@ namespace ScriptNotepad.Database
             try
             {
                 // generate a SQL sentence for the insert..
-                string sql = DatabaseCommands.GenScriptUpdateSentence(ref codeSnippet);
+                string sql = DatabaseCommandsCodeSnippets.GenScriptUpdateSentence(ref codeSnippet);
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
@@ -473,7 +413,7 @@ namespace ScriptNotepad.Database
             try
             {
                 // generate a SQL sentence for the deletion..
-                string sql = DatabaseCommands.GenScriptDelete(codeSnippet);
+                string sql = DatabaseCommandsCodeSnippets.GenScriptDelete(codeSnippet);
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(sql, conn))
@@ -500,7 +440,7 @@ namespace ScriptNotepad.Database
         /// <param name="reservedNames">A list of reserved names in for the script snippets in the database.</param>
         public static void MakeCodeSnippetValidForInsertOrUpdate(ref CODE_SNIPPETS codeSnippet, params string[] reservedNames)
         {
-            long count = GetScalar<long>(DatabaseCommands.GenCountReservedScripts(codeSnippet, reservedNames));
+            long count = GetScalar<long>(DatabaseCommandsCodeSnippets.GenCountReservedScripts(codeSnippet, reservedNames));
             codeSnippet.ID = count > 0 ? -1 : codeSnippet.ID;
         }
 
@@ -527,11 +467,11 @@ namespace ScriptNotepad.Database
         {
             try
             {
-                long lastId = GetScalar<long>(DatabaseCommands.GenLatestDBRecentFileIDSentence());
+                long lastId = GetScalar<long>(DatabaseCommandsRecentFiles.GenLatestDBRecentFileIDSentence());
 
                 recentFile.SESSIONNAME = sessionName;
 
-                string sql = DatabaseCommands.GenHistoryInsert(recentFile);
+                string sql = DatabaseCommandsRecentFiles.GenHistoryInsert(recentFile);
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(conn))
@@ -542,7 +482,7 @@ namespace ScriptNotepad.Database
                     command.ExecuteNonQuery();
                 }
 
-                long newId = GetScalar<long>(DatabaseCommands.GenLatestDBRecentFileIDSentence());
+                long newId = GetScalar<long>(DatabaseCommandsRecentFiles.GenLatestDBRecentFileIDSentence());
 
                 recentFile.ID = lastId != newId ? newId : -1;
 
@@ -550,7 +490,7 @@ namespace ScriptNotepad.Database
                 if (recentFile.ID == -1)
                 {
                     // the file must have an ID number..
-                    recentFile.ID = GetScalar<long>(DatabaseCommands.GetExistingDBRecentFileIDSentence(recentFile));
+                    recentFile.ID = GetScalar<long>(DatabaseCommandsRecentFiles.GetExistingDBRecentFileIDSentence(recentFile));
                 }
 
                 return recentFile;
@@ -572,7 +512,7 @@ namespace ScriptNotepad.Database
         public static RECENT_FILES UpdateRecentFile(RECENT_FILES recentFile, string sessionName)
         {
             recentFile.SESSIONNAME = sessionName;
-            if (ExecuteArbitrarySQL(DatabaseCommands.GenHistoryUpdate(ref recentFile)))
+            if (ExecuteArbitrarySQL(DatabaseCommandsRecentFiles.GenHistoryUpdate(ref recentFile)))
             {
                 return recentFile;
             }
@@ -606,7 +546,7 @@ namespace ScriptNotepad.Database
         /// <returns>A modified instance of the DBFILE_SAVE if the operation was successful; otherwise null;</returns>
         public static DBFILE_SAVE UpdateFile(DBFILE_SAVE fileSave)
         {
-            string sql = DatabaseCommands.GenUpdateFileSentence(ref fileSave);
+            string sql = DatabaseCommandsFileSave.GenUpdateFileSentence(ref fileSave);
             try
             {
                 fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ?
@@ -689,6 +629,89 @@ namespace ScriptNotepad.Database
         }
 
         /// <summary>
+        /// Adds a given PLUGINS class instance to the PLUGINS database table.
+        /// </summary>
+        /// <param name="plugin">A PLUGINS class instance to add to the database's PLUGINS table.</param>
+        /// <returns>A PLUGINS class instance if the recent plug-in was successfully added to the database; otherwise null.</returns>
+        public static PLUGINS AddPlugin(PLUGINS plugin)
+        {
+            try
+            {
+                long lastId = GetScalar<long>(DatabaseCommandsPlugins.GetExistingPluginIDSentence(plugin));
+
+                string sql = DatabaseCommandsPlugins.GenPluginInsert(plugin);
+
+                // as the SQLiteCommand is disposable a using clause is required..
+                using (SQLiteCommand command = new SQLiteCommand(conn))
+                {
+                    command.CommandText = sql;
+
+                    // do the insert..
+                    command.ExecuteNonQuery();
+                }
+
+                long newId = GetScalar<long>(DatabaseCommandsPlugins.GetExistingPluginIDSentence(plugin));
+
+                plugin.ID = lastId != newId ? newId : -1;
+
+                return plugin;
+            }
+            catch (Exception ex)
+            {
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the plug-in data stored into the database.
+        /// </summary>
+        /// <returns>A collection PLUGINS classes.</returns>
+        public static IEnumerable<PLUGINS> GetPlugins()
+        {
+            List<PLUGINS> result = new List<PLUGINS>();
+
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsPlugins.GenPluginSelect(), conn))
+            {
+                // loop through the result set..
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, PLUGIN_NAME: 4, PLUGIN_VERSION: 5,
+                    // PLUGIN_DESCTIPTION: 6, ISACTIVE: 7, EXCEPTION_COUNT: 8,
+                    // LOAD_FAILURES : 9, APPLICATION_CRASHES: 10, SORTORDER: 11,
+                    // RATING: 12, PLUGIN_INSTALLED: 13, PLUGIN_UPDATED: 14
+                    while (reader.Read())
+                    {
+                        PLUGINS plugin =
+                            new PLUGINS()
+                            {
+                                ID = reader.GetInt64(0),
+                                FILENAME_FULL = reader.GetString(1),
+                                FILENAME = reader.GetString(2),
+                                FILEPATH = reader.GetString(3),
+                                PLUGIN_NAME = reader.GetString(4),
+                                PLUGIN_VERSION = reader.GetString(5),
+                                PLUGIN_DESCTIPTION = reader.GetString(6),
+                                ISACTIVE = reader.GetInt32(7) == 1,
+                                EXCEPTION_COUNT = reader.GetInt32(8),
+                                LOAD_FAILURES = reader.GetInt32(9),
+                                APPLICATION_CRASHES = reader.GetInt32(10),
+                                SORTORDER = reader.GetInt32(11),
+                                RATING = reader.GetInt32(12),
+                                PLUGIN_INSTALLED = DateFromDBString(reader.GetString(13)),
+                                PLUGIN_UPDATED = DateFromDBString(reader.GetString(14)),
+                            };
+
+                        result.Add(plugin);
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Gets the recent file list saved to the database.
         /// </summary>
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
@@ -698,7 +721,7 @@ namespace ScriptNotepad.Database
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenHistorySelect(sessionName, maxCount), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsRecentFiles.GenHistorySelect(sessionName, maxCount), conn))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -742,7 +765,7 @@ namespace ScriptNotepad.Database
         {
             List<CODE_SNIPPETS> result = new List<CODE_SNIPPETS>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenScriptSelect(), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsCodeSnippets.GenScriptSelect(), conn))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -787,7 +810,7 @@ namespace ScriptNotepad.Database
         public static void LocalizeDefaultSessionName(string name)
         {
             // update the name..
-            ExecuteArbitrarySQL(DatabaseCommands.GenLocalizeDefaultSessionName(name));
+            ExecuteArbitrarySQL(DatabaseCommandsMisc.GenLocalizeDefaultSessionName(name));
         }
 
         /// <summary>
@@ -797,7 +820,7 @@ namespace ScriptNotepad.Database
         /// <returns>An ID number for the given session name.</returns>
         public static long GetSessionID(string sessionName)
         {
-            return GetScalar<long>(DatabaseCommands.GenGetCurrentSessionID(sessionName));
+            return GetScalar<long>(DatabaseCommandsMisc.GenGetCurrentSessionID(sessionName));
         }
 
         /// <summary>
@@ -808,7 +831,7 @@ namespace ScriptNotepad.Database
         /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
         public static DBFILE_SAVE GetFileFromDatabase(string sessionName, string fileNameFull)
         {
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenDocumentSelect(sessionName, DatabaseHistoryFlag.DontCare, fileNameFull), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, DatabaseHistoryFlag.DontCare, fileNameFull), conn))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
                 {
@@ -873,7 +896,7 @@ namespace ScriptNotepad.Database
         {
             List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommands.GenDocumentSelect(sessionName, databaseHistoryFlag), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, databaseHistoryFlag), conn))
             {
                 // can't get the BLOB without this (?!)..
                 using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))

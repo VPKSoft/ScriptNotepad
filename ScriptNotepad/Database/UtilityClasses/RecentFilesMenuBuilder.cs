@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.Database.Tables;
 using ScriptNotepad.UtilityClasses.Common;
 using System;
 using System.Collections.Generic;

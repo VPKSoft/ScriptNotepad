@@ -36,6 +36,7 @@ using System.Diagnostics;
 using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
+using ScriptNotepad.PluginHandling;
 
 // limit the PropertyChanged to the Settings class (https://github.com/Fody/PropertyChanged)
 [assembly: PropertyChanged.FilterType("ScriptNotepad.Settings.")] 
@@ -102,16 +103,19 @@ namespace ScriptNotepad
                 new FormDialogQueryEncoding();
                 new FormHexEdit();
                 new Settings.FormSettings();
+                new FormPluginManage();
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
                 return;
             }
 
-            PositionCore.Bind(); // attach the PosLib to the application
-            LocalizationSetting.Locale = "fi";
+            PositionCore.Bind(); // attach the PosLib to the application            
 
             // create a Settings class instance for the settings form..
             Settings.FormSettings.Settings = new Settings.Settings();
+
+            // localize the ScintillaNET_FindReplaceDialog..
+            LocalizationSetting.Locale = Settings.FormSettings.Settings.Culture.Name.Split('-')[0];
 
             DBLangEngine.UseCulture = Settings.FormSettings.Settings.Culture; // set the localization value..
 

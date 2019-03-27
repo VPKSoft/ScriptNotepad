@@ -28,7 +28,6 @@ using ScriptNotepadPluginBase.PluginTemplateInterface;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
-using VPKSoft.ErrorLogger;
 using static ScriptNotepadPluginBase.Types.DelegateTypes;
 
 namespace ScriptNotepad.PluginHandling
@@ -38,6 +37,11 @@ namespace ScriptNotepad.PluginHandling
     /// </summary>
     public static class PluginInitializer
     {
+        /// <summary>
+        /// Gets or sets the action to be used to log an exception.
+        /// </summary>
+        public static Action<Exception, Assembly, string, string> ExceptionLogAction { get; set; } = null;
+
         /// <summary>
         /// Tries to loads a plug-in with a given file name.
         /// </summary>
@@ -70,7 +74,7 @@ namespace ScriptNotepad.PluginHandling
                     catch (Exception ex)
                     {
                         // log the exception..
-                        ExceptionLogger.LogError(ex);
+                        ExceptionLogAction?.Invoke(ex, assembly, fileName, "PluginInitializer.LoadPlugin_#1");
 
                         // indicate a failure in the result as well..
                         return (assembly, null, fileName);
@@ -83,7 +87,7 @@ namespace ScriptNotepad.PluginHandling
             catch (Exception ex)
             {
                 // log the exception..
-                ExceptionLogger.LogError(ex);
+                ExceptionLogAction?.Invoke(ex, null, fileName, "PluginInitializer.LoadPlugin_#2");
                 return (null, null, fileName);
             }
         }
@@ -117,7 +121,7 @@ namespace ScriptNotepad.PluginHandling
             catch (Exception ex)
             {
                 // log the exception..
-                ExceptionLogger.LogError(ex);
+                ExceptionLogAction?.Invoke(ex, null, null, "PluginInitializer.InitializePlugin_#1");
 
                 return false; // fail..
             }

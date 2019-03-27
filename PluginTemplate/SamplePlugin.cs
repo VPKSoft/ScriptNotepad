@@ -88,11 +88,17 @@ namespace PluginTemplate
         /// </summary>
         public void Dispose()
         {
+            // unsubscribe the event handlers..
             RequestActiveDocument -= onRequestActiveDocument;
             RequestAllDocuments -= onRequestAllDocuments;
             PluginException -= onPluginException;
-            pluginAboutMenu.Click += PluginAboutMenu_Click;
-            using (pluginMainMenu) { };
+            // END: unsubscribe the event handlers..
+
+            // leave no references to the host program (ScriptNotepad)..
+            ScriptNotepadMainForm = null;
+
+            // dispose of the menu constructed by this plug-in..
+            DisposeMenu();
         }
 
         /// <summary>
@@ -129,12 +135,30 @@ namespace PluginTemplate
                 _Locale = value;
                 // and some localization here..
                 PluginDescription = GetMessage("plgDescription", "Sample plug-in by VPKSoft", value);
+
+                // the about menu for this plug-in has been constructed..
+                if (pluginAboutMenu != null)
+                {
+                    // ..localize the about menu constructed by this plug-in..
+                    pluginAboutMenu.Text = GetMessage("txtAbout", "About", value);
+                }
             }
         }
 
-        ToolStripMenuItem pluginAboutMenu;
+        /// <summary>
+        /// Gets or sets the tool strip menu item the plug-in constructed.
+        /// </summary>
+        public ToolStripMenuItem PluginMenu { get; set; }
+
+        /// <summary>
+        /// A drop down menu item for the <see cref="PluginMenu"/>.
+        /// </summary>
         ToolStripMenuItem pluginMainMenu;
 
+        /// <summary>
+        /// A drop down menu item for the <see cref="pluginMainMenu"/>.
+        /// </summary>
+        ToolStripMenuItem pluginAboutMenu;
 
         /// <summary>
         /// Additional initialization method for the plug-in.
@@ -152,31 +176,47 @@ namespace PluginTemplate
             string sessionName,
             Form scriptNotepadMainForm)
         {
+            // save the given delegates so they can be unsubscribed on disposal..
             this.onRequestActiveDocument = onRequestActiveDocument;
             this.onRequestAllDocuments = onRequestAllDocuments;
             this.onPluginException = onPluginException;
 
+            // save the main form of the ScriptNotepad software..
             ScriptNotepadMainForm = scriptNotepadMainForm;
 
+            // save the plug-in menu string of the ScriptNotepad software..
             this.pluginMenuStrip = pluginMenuStrip;
 
+            // save the name of the current session of the ScriptNotepad software..
             SessionName = sessionName;
 
+            // subscribe the event handlers..
             RequestActiveDocument += onRequestActiveDocument;
             RequestAllDocuments += onRequestAllDocuments;
             PluginException += onPluginException;
+            // END: subscribe the event handlers..
 
+            // create a menu for the plug-in..
             pluginMainMenu = new ToolStripMenuItem() { Text = PluginName, Tag = this };
             pluginMenuStrip.DropDownItems.Add(pluginMainMenu);
 
-            pluginAboutMenu = new ToolStripMenuItem() { Text = "About", Tag = this };
+            pluginAboutMenu = new ToolStripMenuItem() { Text = GetMessage("txtAbout", "About", Locale), Tag = this };
             pluginMainMenu.DropDownItems.Add(pluginAboutMenu);
 
+            // subscribe events for the menu created by the plug-in..
             pluginAboutMenu.Click += PluginAboutMenu_Click;
+
+            // write extra initialization code here if required..
         }
 
+        /// <summary>
+        /// Handles the Click event of the pluginAboutMenu <see cref="ToolStripMenuItem"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void PluginAboutMenu_Click(object sender, System.EventArgs e)
         {
+            // display the about dialog for this plug-in from a self-created menu item click..
             AbountDialog();
         }
 
@@ -196,7 +236,7 @@ namespace PluginTemplate
         {
             GetLocalizedTexts(Properties.Resources.tab_deli_localization);
             PluginDescription = GetMessage("plgDescription", "Sample plug-in by VPKSoft", Locale);
-            // write initialization code here.
+            // write extra initialization code here if required..
         }
 
         /// <summary>
@@ -204,13 +244,42 @@ namespace PluginTemplate
         /// </summary>
         public void AbountDialog()
         {
+            // display the about dialog for the plug-in..
             new FormPluginAbout(
-                ScriptNotepadMainForm, 
-                Assembly.GetAssembly(GetType()), 
-                "MIT", "https://github.com/VPKSoft/ScriptNotepad/blob/master/LICENSE", 
-                Locale, Properties.Resources.VPKSoft, 
-                PluginName,
-                Properties.Resources.VPKSoftLogo_App);
+                ScriptNotepadMainForm, // the hosting software main form (ScriptNotepad)..
+                Assembly.GetAssembly(GetType()), // get the assembly (this) the about dialog should use..
+                "MIT", // give a name for the license..
+                "https://raw.githubusercontent.com/VPKSoft/ScriptNotepadPluginBase/master/LICENSE", // give a link to the license..
+                Locale, // give the current locale for the dialog..
+                Properties.Resources.VPKSoft, // give an icon for the dialog..
+                PluginName, // give this plug-in name for the dialog..
+                Properties.Resources.VPKSoftLogo_App); // give a logo banner for the dialog..
+        }
+
+        /// <summary>
+        /// Disposes the menu created by the plug-in.
+        /// </summary>
+        public void DisposeMenu()
+        {
+            // the Dispose method or this method may be called before the Initialize method (!),
+            // so the null check if the menu even has been constructed..
+            if (pluginMainMenu != null)
+            {
+                // remove the menu constructed by the plug-in from the hosting
+                // program's (ScriptNotepad) menu for plug-ins..
+                pluginMenuStrip.DropDownItems.Remove(pluginMainMenu);
+
+                // unsubscribe the events..
+                pluginAboutMenu.Click -= PluginAboutMenu_Click; 
+
+                using (pluginMainMenu)
+                {
+                    // dispose of the menu created for the plug-in..
+                };
+
+                // leave no references to the host program's (ScriptNotepad) menu..
+                pluginMenuStrip = null;
+            }
         }
     }
 }

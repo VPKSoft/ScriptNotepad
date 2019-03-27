@@ -1,4 +1,9 @@
+This is the simple tab-delimited localization file for the plug-in localization.
+As you can see only the "[]" tags and tab delimited key-value pairs matter for the localization.
+The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
 [en-US]
 plgDescription	Sample plug-in by VPKSoft
+txtAbout	About	This text is discarded by the localization as this is the third tab-delimited field.
 [fi-FI]
 plgDescription	Esimerkkiliitännäinen VPKSoftilta
+txtAbout	Tietoja

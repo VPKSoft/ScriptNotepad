@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScriptNotepad.Database
+namespace ScriptNotepad.Database.Tables
 {
     /// <summary>
     /// A class for indicating for code snippets in the database.

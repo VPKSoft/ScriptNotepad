@@ -63,8 +63,8 @@
     <Reference Include="ScintillaNET_FindReplaceDialog, Version=1.0.3.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ScintillaNET_FindReplaceDialog.1.0.3.3\lib\net40-client\ScintillaNET_FindReplaceDialog.dll</HintPath>
     </Reference>
-    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
+    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.2\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -117,11 +117,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\CODE_SNIPPETS.cs" />
-    <Compile Include="Database\DatabaseCommands.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsCodeSnippets.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsFileSave.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsGeneral.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsRecentFiles.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsPlugins.cs" />
+    <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
     <Compile Include="Database\DatabaseEnumerations.cs" />
-    <Compile Include="Database\DBFILE_SAVE.cs" />
-    <Compile Include="Database\RECENT_FILES.cs" />
+    <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
+    <Compile Include="Database\Tables\RECENT_FILES.cs" />
+    <Compile Include="Database\Tables\PLUGINS.cs" />
+    <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
     <Compile Include="Database\UtilityClasses\RecentFilesMenuBuilder.cs" />
     <Compile Include="DialogForms\FormDialogQueryEncoding.cs">
       <SubType>Form</SubType>
@@ -155,6 +162,12 @@
     </Compile>
     <Compile Include="FormHexEdit.Designer.cs">
       <DependentUpon>FormHexEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PluginHandling\FormPluginManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginHandling\FormPluginManage.Designer.cs">
+      <DependentUpon>FormPluginManage.cs</DependentUpon>
     </Compile>
     <Compile Include="PluginHandling\PluginDirectoryRoaming.cs" />
     <Compile Include="PluginHandling\PluginInitializer.cs" />
@@ -336,6 +349,7 @@
     <Content Include="Resources\XToCloseButton.png" />
     <None Include="Resources\New document.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

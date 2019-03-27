@@ -33,7 +33,7 @@ using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
 
-namespace ScriptNotepad.Database
+namespace ScriptNotepad.Database.Tables
 {
     /// <summary>
     /// Represents a file saved to the database.

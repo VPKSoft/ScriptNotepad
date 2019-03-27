@@ -54,6 +54,7 @@ using System.Reflection;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
 using ScriptNotepadPluginBase.EventArgClasses;
 using ScriptNotepad.PluginHandling;
+using ScriptNotepad.Database.Tables;
 
 namespace ScriptNotepad
 {
@@ -182,43 +183,108 @@ namespace ScriptNotepad
             sttcMain.NewFilenameStart =
                 DBLangEngine.GetMessage("msgNewFileStart", "new |A starting text of how a new document should be named");
 
-
             // create a dynamic action for the class exception logging..
-            FileIOPermission.ExceptionLogAction = delegate(Exception ex) { ExceptionLogger.LogError(ex); };
-            ApplicationProcess.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            CommandPromptInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            WindowsExplorerInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            ClipboardTextHelper.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            // END: create a dynamic action for the class exception logging..
+            AssignExceptionReportingActions();
 
             // create the default directory for the plug-ins if it doesn't exist yet..
             Settings.FormSettings.CreateDefaultPluginDirectory();
 
+            // initialize the plug-in assemblies..
+            InitializePlugins();
+        }
+        #endregion
+
+        #region HelperMethods
+        /// <summary>
+        /// Initializes the plug-ins for the software.
+        /// </summary>
+        private void InitializePlugins()
+        {
             // load the existing plug-ins..
             var plugins = PluginDirectoryRoaming.GetPluginAssemblies(Settings.FormSettings.Settings.PluginFolder);
 
-            foreach(var plugin in plugins)
+            // loop through the found plug-ins..
+            foreach (var plugin in plugins)
             {
+                // only valid plug-ins are accepted..
                 if (plugin.IsValid)
                 {
                     var pluginAssembly = PluginInitializer.LoadPlugin(plugin.Path);
+
+                    pluginAssembly.Plugin.Locale = Settings.FormSettings.Settings.Culture.Name;
+
+                    // try to initialize the plug-in..
                     if (PluginInitializer.InitializePlugin(pluginAssembly.Plugin,
                         RequestActiveDocument,
                         RequestAllDocuments,
                         PluginException, mnuPlugins, CurrentSession, this))
                     {
-                        Plugins.Add(plugin.Assembly);
+                        // on success, add the plug-in assembly and its instance to the internal list..
+                        Plugins.Add((plugin.Assembly, pluginAssembly.Plugin));
                     }
                 }
             }
 
+            // set the plug-in menu visible only if any of the plug-ins added to the plug-in menu..
             mnuPlugins.Visible = mnuPlugins.DropDownItems.Count > 0;
         }
 
-        List<Assembly> Plugins = new List<Assembly>();
-        #endregion
+        /// <summary>
+        /// Disposes the plug-ins loaded into the software.
+        /// </summary>
+        private void DisposePlugins()
+        {
+            // loop through the list of loaded plug-ins..
+            for (int i = Plugins.Count -1; i >= 0; i--)
+            {
+                try
+                {
+                    using (Plugins[i].PluginInstance)
+                    {
+                        // just the disposal..
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // log the dispose failures as well..
+                    ExceptionLogger.LogMessage($"Plug-in dispose failed. Plug-in: {Plugins[i].PluginInstance.PluginName}, Assembly: {Plugins[i].Assembly.FullName}.");
+                    ExceptionLogger.LogError(ex);
+                }
+            }
 
-        #region HelperMethods        
+            // clear the list..
+            Plugins.Clear();
+        }
+             
+
+        /// <summary>
+        /// Creates dynamic actions to static classes for error reporting.
+        /// </summary>
+        private void AssignExceptionReportingActions()
+        {
+            // create a dynamic action for the class exception logging..
+            FileIOPermission.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            ApplicationProcess.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            CommandPromptInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            WindowsExplorerInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            ClipboardTextHelper.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            PluginDirectoryRoaming.ExceptionLogAction =
+                delegate (Exception ex, Assembly assembly, string assemblyFile)
+                {
+                    ExceptionLogger.LogMessage($"Assembly load failed. Assembly: {(assembly == null ? "unknown" : assembly.FullName)}, FileName: {(assemblyFile == null ? "unknown" : assemblyFile)}.");
+                    ExceptionLogger.LogError(ex);
+                };
+
+            PluginInitializer.ExceptionLogAction =
+                delegate (Exception ex, Assembly assembly, string assemblyFile, string methodName)
+                {
+                    ExceptionLogger.LogMessage($"Plug-in assembly initialization failed. Assembly: {(assembly == null ? "unknown" : assembly.FullName)}, FileName: {(assemblyFile == null ? "unknown" : assemblyFile)}, Method: {methodName}.");
+                    ExceptionLogger.LogError(ex);
+                };
+
+            // END: create a dynamic action for the class exception logging..
+        }
+
         /// <summary>
         /// This method should be called when the application is about to close.
         /// </summary>
@@ -1164,6 +1230,12 @@ namespace ScriptNotepad
             }
         }
 
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // dispose of the loaded plug-in instances..
+            DisposePlugins();
+        }
+
         // if the form is closing, save the snapshots of the open documents to the SQLite database..
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -1525,6 +1597,11 @@ namespace ScriptNotepad
             get => Settings.FormSettings.Settings.CurrentSession;
             set => Settings.FormSettings.Settings.CurrentSession = value;
         }
+
+        /// <summary>
+        /// Gets or sets the loaded active plug-ins.
+        /// </summary>
+        List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance)> Plugins { get; set; } = new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance)>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the default session name has been localized.

@@ -28,7 +28,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace ScriptNotepad.Database
+namespace ScriptNotepad.Database.Tables
 {
     /// <summary>
     /// A class indicating a recent file in the database.
