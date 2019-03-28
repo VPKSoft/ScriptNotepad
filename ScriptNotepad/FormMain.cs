@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+#region Usings
 using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
 using ScintillaNET_FindReplaceDialog;
 using System;
@@ -37,7 +38,6 @@ using VPKSoft.IPC;
 using Microsoft.Win32;
 using VPKSoft.PosLib;
 using VPKSoft.ErrorLogger;
-using ScriptNotepad.Database;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
@@ -55,6 +55,9 @@ using ScriptNotepadPluginBase.PluginTemplateInterface;
 using ScriptNotepadPluginBase.EventArgClasses;
 using ScriptNotepad.PluginHandling;
 using ScriptNotepad.Database.Tables;
+using ScriptNotepad.Database.TableMethods;
+using System.Linq;
+#endregion
 
 namespace ScriptNotepad
 {
@@ -200,18 +203,39 @@ namespace ScriptNotepad
         /// </summary>
         private void InitializePlugins()
         {
+            IEnumerable<PLUGINS> databaseEntries = DatabasePlugins.GetPlugins();
+
             // load the existing plug-ins..
             var plugins = PluginDirectoryRoaming.GetPluginAssemblies(Settings.FormSettings.Settings.PluginFolder);
 
             // loop through the found plug-ins..
             foreach (var plugin in plugins)
             {
-                // only valid plug-ins are accepted..
-                if (plugin.IsValid)
+                // check if the plug-in is already in the database..
+                var pluginEntry =
+                    databaseEntries.
+                    FirstOrDefault(
+                        f => f.FILENAME == Path.GetFileName(plugin.Path));
+
+                // if the plug-in has been logged into the database and is disabled
+                // save the flag..
+                bool loadPlugin = true;
+                if (pluginEntry != null)
                 {
+                    loadPlugin = pluginEntry.ISACTIVE;
+                }
+
+                // only valid plug-ins are accepted..
+                if (plugin.IsValid && loadPlugin)
+                {
+                    // try to load the assembly and the plug-in..
                     var pluginAssembly = PluginInitializer.LoadPlugin(plugin.Path);
 
-                    pluginAssembly.Plugin.Locale = Settings.FormSettings.Settings.Culture.Name;
+                    // set the locale for the plug-in..
+                    if (pluginAssembly.Plugin != null)
+                    {
+                        pluginAssembly.Plugin.Locale = Settings.FormSettings.Settings.Culture.Name;
+                    }
 
                     // try to initialize the plug-in..
                     if (PluginInitializer.InitializePlugin(pluginAssembly.Plugin,
@@ -219,9 +243,36 @@ namespace ScriptNotepad
                         RequestAllDocuments,
                         PluginException, mnuPlugins, CurrentSession, this))
                     {
+                        if (pluginEntry == null)
+                        {
+                            pluginEntry = PluginDatabaseEntry.FromPlugin(plugin.Assembly, pluginAssembly.Plugin, plugin.Path);
+                        }
+
                         // on success, add the plug-in assembly and its instance to the internal list..
-                        Plugins.Add((plugin.Assembly, pluginAssembly.Plugin));
+                        Plugins.Add((plugin.Assembly, pluginAssembly.Plugin, pluginEntry));
                     }
+
+                    // update the possible version and the update time stamp..
+                    pluginEntry.SetPluginUpdated(plugin.Assembly);
+
+                    // update the plug-in information to the database..
+                    DatabasePlugins.AddOrUpdatePlugin(pluginEntry);
+                }
+                else
+                {
+                    if (pluginEntry != null)
+                    {
+                        pluginEntry.LOAD_FAILURES++;
+                    }
+                    else
+                    {
+                        pluginEntry = PluginDatabaseEntry.InvalidPlugin(plugin.Assembly, plugin.Path);
+                    }
+                    // update the possible version and the update time stamp..
+                    pluginEntry.SetPluginUpdated(plugin.Assembly);
+
+                    // update the plug-in information to the database..
+                    DatabasePlugins.AddOrUpdatePlugin(pluginEntry);
                 }
             }
 
@@ -246,6 +297,11 @@ namespace ScriptNotepad
                 }
                 catch (Exception ex)
                 {
+                    Plugins[i].Plugin.EXCEPTION_COUNT++;
+
+                    // the disposal failed so do add to the exception count..
+                    DatabasePlugins.UpdatePlugin(Plugins[i].Plugin);
+
                     // log the dispose failures as well..
                     ExceptionLogger.LogMessage($"Plug-in dispose failed. Plug-in: {Plugins[i].PluginInstance.PluginName}, Assembly: {Plugins[i].Assembly.FullName}.");
                     ExceptionLogger.LogError(ex);
@@ -263,11 +319,10 @@ namespace ScriptNotepad
         private void AssignExceptionReportingActions()
         {
             // create a dynamic action for the class exception logging..
-            FileIOPermission.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            ApplicationProcess.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            CommandPromptInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            WindowsExplorerInteraction.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
-            ClipboardTextHelper.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+
+            // many classes are inherited from this one (less copy/paste code!).. 
+            ErrorHandlingBase.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+
             PluginDirectoryRoaming.ExceptionLogAction =
                 delegate (Exception ex, Assembly assembly, string assemblyFile)
                 {
@@ -497,7 +552,7 @@ namespace ScriptNotepad
                             fileSave.EXISTS_INFILESYS = false; // set the flag to false..
                             fileSave.ISHISTORY = false;
 
-                            Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
+                            DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
 
                             // just in case set the tag back..
                             sttcMain.Documents[i].Tag = fileSave;
@@ -524,7 +579,7 @@ namespace ScriptNotepad
                             fileSave.EXISTS_INFILESYS = true; // set the flag to true..
                             fileSave.ISHISTORY = false;
 
-                            Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
+                            DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
 
                             // just in case set the tag back..
                             sttcMain.Documents[i].Tag = fileSave;
@@ -567,10 +622,10 @@ namespace ScriptNotepad
             if (docIndex != -1)
             {
                 // update the file save to the database..
-                Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[docIndex]);
+                DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[docIndex]);
 
                 // update the file history list in the database..
-                Database.Database.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME, fileSave.ENCODING);
+                DatabaseRecentFiles.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME, fileSave.ENCODING);
 
                 // the file was not requested to be kept in the editor after a deletion from the file system or the tab was requested to be closed..
                 if (fileDeleted || closeTab)
@@ -656,8 +711,8 @@ namespace ScriptNotepad
 
                 fileSave.ISACTIVE = sttcMain.Documents[i].FileTabButton.IsActive;
                 fileSave.VISIBILITY_ORDER = i;
-                Database.Database.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
-                Database.Database.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName, fileSave.ENCODING);
+                DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
+                DatabaseRecentFiles.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName, fileSave.ENCODING);
 
                 if (dispose)
                 {
@@ -673,7 +728,7 @@ namespace ScriptNotepad
         /// <param name="history">An indicator if the documents should be closed ones. I.e. not existing with the current session.</param>
         private void LoadDocumentsFromDatabase(string sessionName, bool history)
         {
-            IEnumerable<DBFILE_SAVE> files = Database.Database.GetFilesFromDatabase(sessionName, DatabaseHistoryFlag.NotHistory);
+            IEnumerable<DBFILE_SAVE> files = DatabaseFileSave.GetFilesFromDatabase(sessionName, DatabaseHistoryFlag.NotHistory);
 
             string activeDocument = string.Empty;
 
@@ -709,7 +764,7 @@ namespace ScriptNotepad
         private void LoadDocumentFromDatabase(RECENT_FILES recentFile)
         {
             // get the file from the database..
-            DBFILE_SAVE file = Database.Database.GetFileFromDatabase(recentFile.SESSIONNAME, recentFile.FILENAME_FULL);
+            DBFILE_SAVE file = DatabaseFileSave.GetFileFromDatabase(recentFile.SESSIONNAME, recentFile.FILENAME_FULL);
 
             // only if something was gotten from the database..
             if (file != null)
@@ -721,7 +776,7 @@ namespace ScriptNotepad
                     file.ISHISTORY = false;
 
                     // update the history flag to the database..
-                    Database.Database.UpdateFileHistoryFlag(file);
+                    DatabaseFileSave.UpdateFileHistoryFlag(file);
 
                     // assign the context menu strip for the tabbed document..
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
@@ -787,7 +842,7 @@ namespace ScriptNotepad
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
 
                     // save the DBFILE_SAVE class instance to the Tag property..
-                    sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+                    sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
                     return true;
                 }
                 else
@@ -822,11 +877,11 @@ namespace ScriptNotepad
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
                         // check the database first for a DBFILE_SAVE class instance..
-                        DBFILE_SAVE fileSave = Database.Database.GetFileFromDatabase(CurrentSession, fileName);
+                        DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName);
 
                         if (sttcMain.CurrentDocument.Tag == null && fileSave == null)
                         {
-                            sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, encoding);
+                            sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, encoding);
                         }
                         else if (fileSave != null)
                         {
@@ -838,7 +893,8 @@ namespace ScriptNotepad
                         fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
 
                         // ..update the database with the document..
-                        fileSave = Database.Database.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+                        fileSave = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+                        sttcMain.CurrentDocument.ID = (int)fileSave.ID;
 
                         if (reloadContents)
                         {
@@ -892,10 +948,10 @@ namespace ScriptNotepad
                     if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                     {
                         // ..update the database with the document..
-                        fileSave = Database.Database.AddOrUpdateFile(fileSave, document);
+                        fileSave = DatabaseFileSave.AddOrUpdateFile(fileSave, document);
 
                         // save the DBFILE_SAVE class instance to the Tag property..
-                        sttcMain.CurrentDocument.Tag = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
+                        sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
@@ -1601,7 +1657,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets the loaded active plug-ins.
         /// </summary>
-        List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance)> Plugins { get; set; } = new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance)>();
+        List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)> Plugins { get; set; } = new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the default session name has been localized.

@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.pbDefaultFolder = new System.Windows.Forms.PictureBox();
             this.btSelectPluginFolder = new System.Windows.Forms.Button();
             this.tbPluginFolder = new System.Windows.Forms.TextBox();
             this.lbPluginFolder = new System.Windows.Forms.Label();
@@ -52,15 +53,14 @@
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
-            this.pbDefaultFolder = new System.Windows.Forms.PictureBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).BeginInit();
             this.gpDefaultEncoding.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -97,6 +97,19 @@
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
             // 
+            // pbDefaultFolder
+            // 
+            this.pbDefaultFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbDefaultFolder.Image = global::ScriptNotepad.Properties.Resources._default;
+            this.pbDefaultFolder.Location = new System.Drawing.Point(494, 195);
+            this.pbDefaultFolder.Name = "pbDefaultFolder";
+            this.pbDefaultFolder.Size = new System.Drawing.Size(21, 21);
+            this.pbDefaultFolder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbDefaultFolder.TabIndex = 31;
+            this.pbDefaultFolder.TabStop = false;
+            this.ttMain.SetToolTip(this.pbDefaultFolder, "Set to default");
+            this.pbDefaultFolder.Click += new System.EventHandler(this.pbDefaultFolder_Click);
+            // 
             // btSelectPluginFolder
             // 
             this.btSelectPluginFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -121,11 +134,14 @@
             // lbPluginFolder
             // 
             this.lbPluginFolder.AutoSize = true;
+            this.lbPluginFolder.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbPluginFolder.Location = new System.Drawing.Point(6, 199);
             this.lbPluginFolder.Name = "lbPluginFolder";
             this.lbPluginFolder.Size = new System.Drawing.Size(164, 13);
             this.lbPluginFolder.TabIndex = 28;
             this.lbPluginFolder.Text = "Plug-in path (a restart is required):";
+            this.ttMain.SetToolTip(this.lbPluginFolder, "Open the plug-in folder");
+            this.lbPluginFolder.Click += new System.EventHandler(this.lbPluginFolder_Click);
             // 
             // lbSelectLanguageDescription
             // 
@@ -329,19 +345,6 @@
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
             // 
-            // pbDefaultFolder
-            // 
-            this.pbDefaultFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbDefaultFolder.Image = global::ScriptNotepad.Properties.Resources._default;
-            this.pbDefaultFolder.Location = new System.Drawing.Point(494, 195);
-            this.pbDefaultFolder.Name = "pbDefaultFolder";
-            this.pbDefaultFolder.Size = new System.Drawing.Size(21, 21);
-            this.pbDefaultFolder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pbDefaultFolder.TabIndex = 31;
-            this.pbDefaultFolder.TabStop = false;
-            this.ttMain.SetToolTip(this.pbDefaultFolder, "Set to default");
-            this.pbDefaultFolder.Click += new System.EventHandler(this.pbDefaultFolder_Click);
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -364,13 +367,13 @@
             this.tcMain.ResumeLayout(false);
             this.tpgGeneralSettings.ResumeLayout(false);
             this.tpgGeneralSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).EndInit();
             this.gpDefaultEncoding.ResumeLayout(false);
             this.gpDefaultEncoding.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).EndInit();
             this.ResumeLayout(false);
 
         }

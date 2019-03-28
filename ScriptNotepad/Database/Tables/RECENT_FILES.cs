@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 using System.IO;
 using System.Text;
@@ -33,7 +34,8 @@ namespace ScriptNotepad.Database.Tables
     /// <summary>
     /// A class indicating a recent file in the database.
     /// </summary>
-    public class RECENT_FILES
+    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase"/>
+    public class RECENT_FILES : ErrorHandlingBase
     {
         /// <summary>
         /// Creates a <see cref="RECENT_FILES"/> class instance from a given file name.

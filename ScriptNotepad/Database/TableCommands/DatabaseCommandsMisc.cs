@@ -72,6 +72,25 @@ namespace ScriptNotepad.Database.TableCommands
         }
 
         /// <summary>
+        /// Generates a SQL sentence to get the most recent ID for an auto-increment table.
+        /// </summary>
+        /// <param name="tableName">Name of the table of which next ID number to get.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenGetCurrentIDForTable(string tableName)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"SELECT",
+                $"CASE",
+                $"  WHEN(EXISTS(SELECT SEQ FROM SQLITE_SEQUENCE WHERE NAME = {QS(tableName)})) THEN",
+                $"    (SELECT SEQ FROM SQLITE_SEQUENCE WHERE NAME = {QS(tableName)})",
+                $"  ELSE 1",
+                $"END");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Generates a SQL sentence to get an ID for a given session name.
         /// </summary>
         /// <param name="sessionName">The name of the session which ID to get.</param>

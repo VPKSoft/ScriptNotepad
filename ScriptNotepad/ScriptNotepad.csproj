@@ -123,6 +123,10 @@
     <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsRecentFiles.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsPlugins.cs" />
+    <Compile Include="Database\TableMethods\DatabaseCodeSnippets.cs" />
+    <Compile Include="Database\TableMethods\DatabasePlugins.cs" />
+    <Compile Include="Database\TableMethods\DatabaseRecentFiles.cs" />
+    <Compile Include="Database\TableMethods\DatabaseFileSave.cs" />
     <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
     <Compile Include="Database\DatabaseEnumerations.cs" />
     <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
@@ -169,6 +173,7 @@
     <Compile Include="PluginHandling\FormPluginManage.Designer.cs">
       <DependentUpon>FormPluginManage.cs</DependentUpon>
     </Compile>
+    <Compile Include="PluginHandling\PluginDatabaseEntry.cs" />
     <Compile Include="PluginHandling\PluginDirectoryRoaming.cs" />
     <Compile Include="PluginHandling\PluginInitializer.cs" />
     <Compile Include="Settings\FormSettings.cs">
@@ -249,6 +254,9 @@
     <EmbeddedResource Include="Localization\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PluginHandling\FormPluginManage.resx">
+      <DependentUpon>FormPluginManage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 
 namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
@@ -31,13 +32,8 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
     /// <summary>
     /// A class to interact with Windows explorer.
     /// </summary>
-    public static class WindowsExplorerInteraction
+    public class WindowsExplorerInteraction: ErrorHandlingBase
     {
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception> ExceptionLogAction { get; set; } = null;
-
         /// <summary>
         /// Shows the file or path in Windows explorer.
         /// </summary>
@@ -48,7 +44,7 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
             try
             {
                 // (C): https://social.msdn.microsoft.com/Forums/vstudio/en-US/a6e1458a-20d0-48b4-8e3a-0a00c8618d75/opening-folder-in-explorer-by-c-code?forum=netfxbcl
-                System.Diagnostics.Process.Start(@"explorer.exe", $"/e,/select,{fileOrPath}");
+                System.Diagnostics.Process.Start("explorer.exe", $"/e,/select,{fileOrPath}");
                 return true;
             }
             catch (Exception ex)
@@ -58,6 +54,27 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
                 return false;
             }
         }
+
+        /// <summary>
+        /// Opens the folder in explorer.
+        /// </summary>
+        /// <param name="folder">The folder to show in the Windows explorer.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        public static bool OpenFolderInExplorer(string folder)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("explorer.exe", folder);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// Opens the file with associated program.

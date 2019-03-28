@@ -26,6 +26,7 @@ SOFTWARE.
 
 using Ookii.Dialogs.WinForms;
 using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
+using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -253,6 +254,14 @@ namespace ScriptNotepad.Settings
         private void tbPluginFolder_TextChanged(object sender, EventArgs e)
         {
             btOK.Enabled = Directory.Exists(tbPluginFolder.Text);
+        }
+
+        private void lbPluginFolder_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(tbPluginFolder.Text))
+            {
+                WindowsExplorerInteraction.OpenFolderInExplorer(tbPluginFolder.Text);
+            }
         }
     }
 }

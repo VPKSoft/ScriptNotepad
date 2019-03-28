@@ -37,6 +37,7 @@ using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using System.Threading;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.Database.Tables;
+using ScriptNotepad.Database.TableMethods;
 
 namespace ScriptNotepad
 {
@@ -402,7 +403,7 @@ namespace ScriptNotepad
                 }
 
                 // manipulate the currentCodeSnippet instance so it doest override reserved scripts in the database..
-                Database.Database.MakeCodeSnippetValidForInsertOrUpdate(
+                DatabaseCodeSnippets.MakeCodeSnippetValidForInsertOrUpdate(
                     ref currentCodeSnippet,
                     // the reserved word list..
                     defaultNameScriptTemplateText,
@@ -412,7 +413,7 @@ namespace ScriptNotepad
                      "Simple XML manipulation script");
 
                 // save the script snippet into the database..
-                Database.Database.AddOrUpdateCodeSnippet(currentCodeSnippet);
+                DatabaseCodeSnippets.AddOrUpdateCodeSnippet(currentCodeSnippet);
 
                 // enable the controls as the user chose to save the changes of the script..
                 EnableDisableControlsOnChange(true);

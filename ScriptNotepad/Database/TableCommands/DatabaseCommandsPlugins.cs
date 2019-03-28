@@ -44,7 +44,7 @@ namespace ScriptNotepad.TableCommands
         {
             string sql =
                 string.Join(Environment.NewLine,
-                $"INSERT INTO PLUGINS(FILENAME_FULL, FILENAME, FILEPATH, PLUGIN_NAME, PLUGIN_DESCTIPTION,",
+                $"INSERT INTO PLUGINS(FILENAME_FULL, FILENAME, FILEPATH, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_DESCTIPTION,",
                 $"ISACTIVE, EXCEPTION_COUNT, LOAD_FAILURES, APPLICATION_CRASHES, SORTORDER, RATING,",
                 $"PLUGIN_INSTALLED, PLUGIN_UPDATED)",
                 $"SELECT",
@@ -52,6 +52,7 @@ namespace ScriptNotepad.TableCommands
                 $"{QS(plugin.FILENAME)},",
                 $"{QS(plugin.FILEPATH)},",
                 $"{QS(plugin.PLUGIN_NAME)},",
+                $"{QS(plugin.PLUGIN_VERSION)},",
                 $"{QS(plugin.PLUGIN_DESCTIPTION)},",
                 $"{BS(plugin.ISACTIVE)},",
                 $"{plugin.EXCEPTION_COUNT},",
@@ -59,10 +60,9 @@ namespace ScriptNotepad.TableCommands
                 $"{plugin.APPLICATION_CRASHES},",
                 $"{plugin.SORTORDER},",
                 $"{plugin.RATING},",
-                $"{plugin.PLUGIN_INSTALLED},",
                 $"{DateToDBString(plugin.PLUGIN_INSTALLED)},",
                 $"{DateToDBString(plugin.PLUGIN_UPDATED)}",
-                $"WHERE NOT EXISTS(SELECT * FROM PLUGINS WHERE PLUGIN_NAME = {QS(plugin.PLUGIN_NAME)} AND FILENAME = {QS(plugin.FILENAME)});");
+                $"WHERE NOT EXISTS(SELECT * FROM PLUGINS WHERE FILENAME = {QS(plugin.FILENAME)});");
 
             return sql;
         }
@@ -112,7 +112,7 @@ namespace ScriptNotepad.TableCommands
                 $"LOAD_FAILURES, APPLICATION_CRASHES, SORTORDER,",
                 $"RATING, PLUGIN_INSTALLED, PLUGIN_UPDATED",
                 $"FROM PLUGINS",
-                $"ORDER BY SORTORDER, PLUGIN_NAME COLLATE NOCASE, PLUGIN_DESCTIPTION COLLATE NOCASE;");
+                $"ORDER BY SORTORDER, RATING DESC, PLUGIN_NAME COLLATE NOCASE, PLUGIN_DESCTIPTION COLLATE NOCASE;");
 
             return sql;
         }

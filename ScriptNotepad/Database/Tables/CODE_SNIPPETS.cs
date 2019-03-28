@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,8 @@ namespace ScriptNotepad.Database.Tables
     /// <summary>
     /// A class for indicating for code snippets in the database.
     /// </summary>
-    public class CODE_SNIPPETS
+    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase"/>
+    public class CODE_SNIPPETS: ErrorHandlingBase
     {
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

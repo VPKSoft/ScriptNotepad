@@ -32,13 +32,15 @@ using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.Database.Tables
 {
     /// <summary>
     /// Represents a file saved to the database.
     /// </summary>
-    public class DBFILE_SAVE
+    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase"/>
+    public class DBFILE_SAVE: ErrorHandlingBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DBFILE_SAVE"/> class.
@@ -211,8 +213,11 @@ namespace ScriptNotepad.Database.Tables
                     return false; // the file didn't exists, so fail..
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+
                 return false; // an exception occurred, so fail..
             }
         }
@@ -225,8 +230,8 @@ namespace ScriptNotepad.Database.Tables
         /// <returns>True if the <paramref name="dt1"/> is larger than <paramref name="dt2"/> value; otherwise false.</returns>
         public static bool DateTimeLarger(DateTime dt1, DateTime dt2)
         {
-            string s1 = Database.DateToDBString(dt1);
-            string s2 = Database.DateToDBString(dt2);
+            string s1 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt1);
+            string s2 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt2);
             return s1.CompareTo(s2) > 0;
         }
 

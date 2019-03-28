@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 
 namespace ScriptNotepad.UtilityClasses.Clipboard
@@ -31,13 +32,8 @@ namespace ScriptNotepad.UtilityClasses.Clipboard
     /// <summary>
     /// A simple class to help to set clipboard text contents.
     /// </summary>
-    public static class ClipboardTextHelper
+    public class ClipboardTextHelper: ErrorHandlingBase
     {
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception> ExceptionLogAction { get; set; } = null;
-
         /// <summary>
         /// Set the Clipboard's contents to a given text.
         /// </summary>

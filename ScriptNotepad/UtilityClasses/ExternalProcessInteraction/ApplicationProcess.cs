@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -33,7 +34,7 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
     /// <summary>
     /// A class to run the current application with parameters.
     /// </summary>
-    public static class ApplicationProcess
+    public class ApplicationProcess: ErrorHandlingBase
     {
         /// <summary>
         /// Executes a new instance of the current application with possible elevated permissions.
@@ -65,10 +66,5 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
                 return false;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception> ExceptionLogAction { get; set; } = null;
     }
 }

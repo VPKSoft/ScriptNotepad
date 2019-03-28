@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
 using System;
 using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace ScriptNotepad.DialogForms
             }
 
             // get the code snippets in the database..
-            codeSnippets = Database.Database.GetCodeSnippets();
+            codeSnippets = DatabaseCodeSnippets.GetCodeSnippets();
 
             // localize the script type default names..
             defaultNameScriptTemplateText =
@@ -218,14 +219,14 @@ namespace ScriptNotepad.DialogForms
                     if (IsScriptPossibleToDelete(snippet.SCRIPT_NAME))
                     {
                         // some boolean algebra to determine if anything was actually delete from the database..
-                        deleted |= Database.Database.DeleteCodeSnippet(snippet);
+                        deleted |= DatabaseCodeSnippets.DeleteCodeSnippet(snippet);
                     }
                 }
 
                 if (deleted) // only refresh the list if some deletions were made..
                 {
                     // get the remaining code snippets in the database..
-                    codeSnippets = Database.Database.GetCodeSnippets();
+                    codeSnippets = DatabaseCodeSnippets.GetCodeSnippets();
 
                     // filter the list box contents based on the given filters..
                     FilterSnippets(cmbScriptType.SelectedIndex, tbFilter.Text);

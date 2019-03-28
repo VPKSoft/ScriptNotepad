@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 using System.Reflection;
 
@@ -32,7 +33,8 @@ namespace ScriptNotepad.Database.Tables
     /// <summary>
     /// A class representing the PLUGINS table in the database.
     /// </summary>
-    public class PLUGINS
+    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase"/>
+    public class PLUGINS: ErrorHandlingBase
     {
         /// <summary>
         /// Gets or sets the ID number of the entry in the PLUGINS database table.
@@ -97,7 +99,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the rating for the plug-in (0-100).
         /// </summary>
-        public int RATING { get; set; } = 0;
+        public int RATING { get; set; } = 50;
 
         /// <summary>
         /// Gets or sets the date and time when the plug-in was installed.
@@ -115,7 +117,19 @@ namespace ScriptNotepad.Database.Tables
         /// <param name="assembly">The assembly to set the version from.</param>
         public void VersionFromAssembly(Assembly assembly)
         {
-            PLUGIN_VERSION = assembly.GetName().Version.ToString();
+            try
+            {
+                // get the plug-in version from the given assembly..
+                PLUGIN_VERSION = assembly.GetName().Version.ToString();
+            }
+            catch (Exception ex)
+            {
+                // set the version to a default value..
+                PLUGIN_VERSION = "1.0.0.0";
+
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+            }
         }
 
         /// <summary>
@@ -124,14 +138,26 @@ namespace ScriptNotepad.Database.Tables
         /// <param name="assembly">The assembly which version to compare to the current <see cref="PLUGIN_VERSION"/> one.</param>
         public void SetPluginUpdated(Assembly assembly)
         {
-            Version newVersion = assembly.GetName().Version; // get the assembly version..
-            Version previousVersion = new Version(PLUGIN_VERSION); // get the previous version..
-
-            // if the new version is larger than the previous one..
-            if (newVersion > previousVersion) 
+            try
             {
-                // ..set a new time for the PLUGIN_UPDATED property..
-                PLUGIN_UPDATED = DateTime.Now;
+                Version newVersion = assembly.GetName().Version; // get the assembly version..
+                Version previousVersion = new Version(PLUGIN_VERSION); // get the previous version..
+
+                // update the version whether required or not..
+                VersionFromAssembly(assembly);
+
+
+                // if the new version is larger than the previous one..
+                if (newVersion > previousVersion)
+                {
+                    // ..set a new time for the PLUGIN_UPDATED property..
+                    PLUGIN_UPDATED = DateTime.Now;
+                }
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
             }
         }
     }

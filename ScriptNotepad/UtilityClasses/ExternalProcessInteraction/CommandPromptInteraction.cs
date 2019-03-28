@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 using System.Diagnostics;
 
@@ -32,13 +33,8 @@ namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
     /// <summary>
     /// A class for interacting with the Command Prompt (cmd.exe) and with Windows PowerShell (powershell.exe).
     /// </summary>
-    public static class CommandPromptInteraction
+    public class CommandPromptInteraction: ErrorHandlingBase
     {
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception> ExceptionLogAction { get; set; } = null;
-
         /// <summary>
         /// Shows the Command Prompt (cmd.exe) with a given specific path.
         /// </summary>

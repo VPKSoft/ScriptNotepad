@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.UtilityClasses.Common;
 using System;
@@ -58,7 +59,7 @@ namespace ScriptNotepad.Database.UtilityClasses
             DisposeRecentFilesMenu(menuItem);
 
             // get the recent files from the database..
-            IEnumerable<RECENT_FILES> recentFiles = Database.GetRecentFiles(sessionName, maxCount);
+            IEnumerable<RECENT_FILES> recentFiles = DatabaseRecentFiles.GetRecentFiles(sessionName, maxCount);
 
             if (addMenuOpenAll)
             {

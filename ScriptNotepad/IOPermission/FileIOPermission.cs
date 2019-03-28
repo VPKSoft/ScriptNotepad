@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
 using System.IO;
 using System.Security;
@@ -33,7 +34,7 @@ namespace ScriptNotepad.IOPermission
     /// <summary>
     /// A class to check for file permissions; i.e. the file access requires elevation.
     /// </summary>
-    public static class FileIOPermission
+    public  class FileIOPermission: ErrorHandlingBase
     {
         /// <summary>
         /// Checks if the access to a given file with given permissions requires elevation.
@@ -116,10 +117,5 @@ namespace ScriptNotepad.IOPermission
             // call the "mother" method..
             return FileRequiresElevation(fileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
-
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception> ExceptionLogAction { get; set; } = null;
     }
 }
