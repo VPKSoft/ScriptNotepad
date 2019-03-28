@@ -35,5 +35,31 @@ namespace ScriptNotepad.PluginHandling
             // initialize the language/localization database..
             DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
         }
+
+        /// <summary>
+        /// Displays the dialog.
+        /// </summary>
+        /// <returns>True if the user accepted the changes made in the dialog; otherwise false.</returns>
+        public static bool Execute()
+        {
+            FormPluginManage formPluginManage = new FormPluginManage();
+            return formPluginManage.ShowDialog() == DialogResult.OK;
+        }
+
+        private void AlignArrangeToolStrip()
+        {
+            ttArrangePlugins.Left = (pnArrangePlugins.Width - ttArrangePlugins.Width) / 2;
+            ttArrangePlugins.Top = (pnArrangePlugins.Height - ttArrangePlugins.Height) / 2;
+        }
+
+        private void FormPluginManage_SizeChanged(object sender, EventArgs e)
+        {
+            AlignArrangeToolStrip();
+        }
+
+        private void FormPluginManage_Shown(object sender, EventArgs e)
+        {
+            AlignArrangeToolStrip();
+        }
     }
 }

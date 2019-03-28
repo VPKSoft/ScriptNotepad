@@ -319,6 +319,11 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\plugin-go.png" />
+    <None Include="Resources\Delete.png" />
+    <None Include="Resources\up_down.png" />
+    <None Include="Resources\Up.png" />
+    <None Include="Resources\Down_2.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\folder-database.png" />
     <None Include="Resources\folder-page.png" />

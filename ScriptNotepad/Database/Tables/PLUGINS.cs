@@ -26,6 +26,7 @@ SOFTWARE.
 
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace ScriptNotepad.Database.Tables
@@ -110,6 +111,19 @@ namespace ScriptNotepad.Database.Tables
         /// Gets or sets the date and time when the plug-in was updated.
         /// </summary>
         public DateTime PLUGIN_UPDATED { get; set; } = DateTime.MinValue;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="PLUGINS"/> exists in the file system.
+        /// </summary>
+        public bool Exists { get => File.Exists(FILENAME_FULL); }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        public override string ToString()
+        {
+            return PLUGIN_NAME + " / " + PLUGIN_DESCTIPTION;
+        }
 
         /// <summary>
         /// Sets the <see cref="PLUGIN_VERSION"/> from a given assembly.

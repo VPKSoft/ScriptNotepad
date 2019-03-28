@@ -1829,5 +1829,10 @@ namespace ScriptNotepad
             CloseAllFunction(sender.Equals(mnuCloseAllToTheRight), sender.Equals(mnuCloseAllToTheLeft));
         }
         #endregion
+
+        private void mnuManagePlugins_Click(object sender, EventArgs e)
+        {
+            FormPluginManage.Execute();
+        }
     }
 }

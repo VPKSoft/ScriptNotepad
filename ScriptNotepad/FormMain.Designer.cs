@@ -82,6 +82,7 @@
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuManagePlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -525,7 +526,8 @@
             // 
             this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuManageScriptSnippets,
-            this.mnuSettings});
+            this.mnuSettings,
+            this.mnuManagePlugins});
             this.mnuTools.Name = "mnuTools";
             this.mnuTools.Size = new System.Drawing.Size(47, 20);
             this.mnuTools.Text = "Tools";
@@ -545,6 +547,14 @@
             this.mnuSettings.Size = new System.Drawing.Size(196, 22);
             this.mnuSettings.Text = "Settings";
             this.mnuSettings.Click += new System.EventHandler(this.mnuSettings_Click);
+            // 
+            // mnuManagePlugins
+            // 
+            this.mnuManagePlugins.Image = global::ScriptNotepad.Properties.Resources.plugin_go;
+            this.mnuManagePlugins.Name = "mnuManagePlugins";
+            this.mnuManagePlugins.Size = new System.Drawing.Size(196, 22);
+            this.mnuManagePlugins.Text = "Manage plug-ins";
+            this.mnuManagePlugins.Click += new System.EventHandler(this.mnuManagePlugins_Click);
             // 
             // mnuPlugins
             // 
@@ -783,6 +793,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheLeft;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheRight;
         private System.Windows.Forms.ToolStripMenuItem mnuPlugins;
+        private System.Windows.Forms.ToolStripMenuItem mnuManagePlugins;
     }
 }
 
