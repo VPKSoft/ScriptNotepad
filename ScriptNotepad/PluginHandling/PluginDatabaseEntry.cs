@@ -42,7 +42,7 @@ namespace ScriptNotepad.PluginHandling
                 };
 
                 // set the version for the plug-in..
-                result.VersionFromAssembly(assembly);
+                result.SetPluginUpdated(assembly);
 
                 // return the result..
                 return result;
@@ -74,7 +74,7 @@ namespace ScriptNotepad.PluginHandling
                 pluginEntry.PLUGIN_DESCTIPTION = plugin.PluginDescription;
 
                 // set the version for the plug-in..
-                pluginEntry.VersionFromAssembly(assembly);
+                pluginEntry.SetPluginUpdated(assembly);
                 return pluginEntry;
             }
             catch (Exception ex)
@@ -116,7 +116,7 @@ namespace ScriptNotepad.PluginHandling
                 };
 
                 // set the version for the plug-in..
-                result.VersionFromAssembly(assembly);
+                result.SetPluginUpdated(assembly);
 
                 // return the result..
                 return result;

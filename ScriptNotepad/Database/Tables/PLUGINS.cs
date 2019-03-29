@@ -134,7 +134,7 @@ namespace ScriptNotepad.Database.Tables
         /// Sets the <see cref="PLUGIN_VERSION"/> from a given assembly.
         /// </summary>
         /// <param name="assembly">The assembly to set the version from.</param>
-        public void VersionFromAssembly(Assembly assembly)
+        private void VersionFromAssembly(Assembly assembly)
         {
             try
             {
