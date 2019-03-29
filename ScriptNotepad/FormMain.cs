@@ -192,6 +192,9 @@ namespace ScriptNotepad
             // create the default directory for the plug-ins if it doesn't exist yet..
             Settings.FormSettings.CreateDefaultPluginDirectory();
 
+            // localize the about "box"..
+            VPKSoft.About.FormAbout.OverrideCultureString = Settings.FormSettings.Settings.Culture.Name;
+
             // initialize the plug-in assemblies..
             InitializePlugins();
         }

@@ -86,8 +86,8 @@
     <Reference Include="VPKSof.ConfLib, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSof.ConfLib.1.0.0.4\lib\net461\VPKSof.ConfLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.About, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.About.1.0.0.4\lib\net45\VPKSoft.About.dll</HintPath>
+    <Reference Include="VPKSoft.About, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.About.1.0.0.5\lib\net45\VPKSoft.About.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.5\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
