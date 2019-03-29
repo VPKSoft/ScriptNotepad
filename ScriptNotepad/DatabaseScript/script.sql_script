@@ -329,3 +329,36 @@ CREATE TABLE IF NOT EXISTS PLUGINS -- a table for the plug-ins for the software.
   PLUGIN_UPDATED TEXT NOT NULL DEFAULT '0000-00-00 00:00:00.000' -- when the plug-in was updated, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
 );
 --ENDVER 13
+
+--VER 14
+ALTER TABLE PLUGINS RENAME TO PLUGINS_OLD;
+
+CREATE TABLE IF NOT EXISTS PLUGINS -- a table for the plug-ins for the software..
+(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  FILENAME_FULL TEXT NOT NULL, -- the full file name with path..
+  FILENAME TEXT NOT NULL, -- the full file name without path..
+  FILEPATH TEXT NOT NULL, -- the full path of the plug-in..
+  PLUGIN_NAME TEXT NOT NULL, -- the name of the plug-in..
+  PLUGIN_VERSION TEXT NOT NULL, -- the version of the plug-in..
+  PLUGIN_DESCTIPTION TEXT NOT NULL, -- the description of the plug-in..
+  ISACTIVE INTEGER NOT NULL, -- an indicator if the plug-in is active..
+  EXCEPTION_COUNT INTEGER NOT NULL, -- a counter of how many exceptions the plug-in has reported via an event..
+  LOAD_FAILURES INTEGER NOT NULL, -- a counter of how many times the plug-in has failed to load..
+  APPLICATION_CRASHES INTEGER NOT NULL, -- a counter of how many times the plug-in has crashed the application..
+  SORTORDER INTEGER NOT NULL, -- a sort order for the plug-in during the load process..
+  RATING INTEGER NOT NULL, -- a rating for the plug-in (0-100)..
+  PLUGIN_INSTALLED TEXT NOT NULL, -- when the plug-in was installed for to be used within the software, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  PLUGIN_UPDATED TEXT NOT NULL DEFAULT '0000-00-00 00:00:00.000', -- when the plug-in was updated, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  PENDING_DELETION INTEGER NOT NULL -- an flag indicating if the plug-in is pending for deletion from the plug-ins folder on application restart..
+);
+
+INSERT INTO PLUGINS (ID, FILENAME_FULL, FILENAME, FILEPATH, PLUGIN_NAME, PLUGIN_VERSION, 
+PLUGIN_DESCTIPTION, ISACTIVE, EXCEPTION_COUNT, LOAD_FAILURES, APPLICATION_CRASHES, SORTORDER, 
+RATING, PLUGIN_INSTALLED, PLUGIN_UPDATED, PENDING_DELETION)
+SELECT ID, FILENAME_FULL, FILENAME, FILEPATH, PLUGIN_NAME, PLUGIN_VERSION, 
+PLUGIN_DESCTIPTION, ISACTIVE, EXCEPTION_COUNT, LOAD_FAILURES, APPLICATION_CRASHES, SORTORDER, 
+RATING, PLUGIN_INSTALLED, PLUGIN_UPDATED, 0 FROM PLUGINS_OLD;
+
+DROP TABLE PLUGINS_OLD;
+--ENDVER 14

@@ -61,9 +61,15 @@ namespace ScriptNotepad
                 return;
             }
 
+            Paths.MakeAppSettingsFolder(); // ensure there is an application settings folder..
+
+            ExceptionLogger.Bind(); // bind before any visual objects are created
+            ExceptionLogger.ApplicationCrashData += ExceptionLogger_ApplicationCrashData;
+
             // if the application is running send the arguments to the existing instance..
             if (AppRunning.CheckIfRunning("VPKSoft.ScriptNotepad.C#"))
             {
+                ExceptionLogger.LogMessage($"Application is running. Checking for open file requests. The current directory is: '{Environment.CurrentDirectory}'.");
                 try
                 {
                     IpcClientServer ipcClient = new IpcClientServer();
@@ -75,24 +81,34 @@ namespace ScriptNotepad
                     for (int i = 1; i < args.Length; i++)
                     {
                         string file = args[i];
+                        
+                        ExceptionLogger.LogMessage($"Request file open: '{file}'.");
                         if (File.Exists(file))
                         {
+                            ExceptionLogger.LogMessage($"File exists: '{file}'. Send open request.");
                             ipcClient.SendMessage(file);
+                        }
+                        else
+                        {
+                            file = Path.Combine(Environment.CurrentDirectory, file);
+                            ExceptionLogger.LogMessage($"Request file open: '{file}'.");
+                            if (File.Exists(file))
+                            {
+                                ExceptionLogger.LogMessage($"File exists: '{file}'. Send open request.");
+                                ipcClient.SendMessage(file);
+                            }
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    ExceptionLogger.LogError(ex);
                     // just in case something fails with the IPC communication..
                 }
+                ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+                ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
                 return;
             }
-
-            ExceptionLogger.Bind(); // bind before any visual objects are created
-            ExceptionLogger.ApplicationCrash += ExceptionLogger_ApplicationCrash;
-
-
-            Paths.MakeAppSettingsFolder(); // ensure there is an application settings folder..
 
             // Save languages..
             if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)
@@ -105,7 +121,7 @@ namespace ScriptNotepad
                 new Settings.FormSettings();
                 new FormPluginManage();
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
-                ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
+                ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
                 return;
             }
 
@@ -124,7 +140,7 @@ namespace ScriptNotepad
             Application.Run(new FormMain());
             PositionCore.UnBind(); // release the event handlers used by the PosLib and save the default data
             ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
-            ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
+            ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
 
             if (RestartElevated && File.Exists(ElevateFile))
             {
@@ -132,11 +148,19 @@ namespace ScriptNotepad
             }
         }
 
-        // as the application is about to crash do some cleanup..
-        private static void ExceptionLogger_ApplicationCrash()
+        private static void ExceptionLogger_ApplicationCrashData(ApplicationCrashEventArgs e)
         {
+            try
+            {
+                FormMain.ModuleExceptionHandler?.Invoke(e.Exception.TargetSite.Module.FullyQualifiedName);
+            }
+            catch
+            {
+
+            }
+
             // unsubscribe this event handler..
-            ExceptionLogger.ApplicationCrash -= ExceptionLogger_ApplicationCrash;
+            ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
             ExceptionLogger.UnBind(); // unbind the exception logger..
 
             // kill self as the native inter-op libraries may have some issues of keeping the process alive..

@@ -113,6 +113,11 @@ namespace ScriptNotepad.Database.Tables
         public DateTime PLUGIN_UPDATED { get; set; } = DateTime.MinValue;
 
         /// <summary>
+        /// Gets or sets a flag indicating if the plug-in is pending for deletion from the plug-ins folder on application restart.
+        /// </summary>
+        public bool PENDING_DELETION { get; set; } = false;
+
+        /// <summary>
         /// Gets a value indicating whether this <see cref="PLUGINS"/> exists in the file system.
         /// </summary>
         public bool Exists { get => File.Exists(FILENAME_FULL); }

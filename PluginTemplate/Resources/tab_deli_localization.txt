@@ -4,6 +4,8 @@ The tab-delimited text can also include comments, etc. by adding a new tab-delim
 [en-US]
 plgDescription	Sample plug-in by VPKSoft
 txtAbout	About	This text is discarded by the localization as this is the third tab-delimited field.
+txtCauseException	Cause an exception
 [fi-FI]
 plgDescription	Esimerkkiliitännäinen VPKSoftilta
 txtAbout	Tietoja
+txtCauseException	Aiheuta poikkeus

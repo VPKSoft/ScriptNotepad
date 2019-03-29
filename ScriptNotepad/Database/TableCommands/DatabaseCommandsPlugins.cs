@@ -46,7 +46,7 @@ namespace ScriptNotepad.TableCommands
                 string.Join(Environment.NewLine,
                 $"INSERT INTO PLUGINS(FILENAME_FULL, FILENAME, FILEPATH, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_DESCTIPTION,",
                 $"ISACTIVE, EXCEPTION_COUNT, LOAD_FAILURES, APPLICATION_CRASHES, SORTORDER, RATING,",
-                $"PLUGIN_INSTALLED, PLUGIN_UPDATED)",
+                $"PLUGIN_INSTALLED, PLUGIN_UPDATED, PENDING_DELETION)",
                 $"SELECT",
                 $"{QS(plugin.FILENAME_FULL)},",
                 $"{QS(plugin.FILENAME)},",
@@ -61,7 +61,8 @@ namespace ScriptNotepad.TableCommands
                 $"{plugin.SORTORDER},",
                 $"{plugin.RATING},",
                 $"{DateToDBString(plugin.PLUGIN_INSTALLED)},",
-                $"{DateToDBString(plugin.PLUGIN_UPDATED)}",
+                $"{DateToDBString(plugin.PLUGIN_UPDATED)},",
+                $"{BS(plugin.PENDING_DELETION)}",
                 $"WHERE NOT EXISTS(SELECT * FROM PLUGINS WHERE FILENAME = {QS(plugin.FILENAME)});");
 
             return sql;
@@ -80,6 +81,7 @@ namespace ScriptNotepad.TableCommands
                 $"FILENAME_FULL = {QS(plugin.FILENAME_FULL)},",
                 $"FILENAME = {QS(plugin.FILENAME)},",
                 $"FILEPATH = {QS(plugin.FILEPATH)},",
+                $"PLUGIN_NAME = {QS(plugin.PLUGIN_NAME)},",
                 $"PLUGIN_VERSION = {QS(plugin.PLUGIN_VERSION)},",
                 $"PLUGIN_DESCTIPTION = {QS(plugin.PLUGIN_DESCTIPTION)},",
                 $"ISACTIVE = {BS(plugin.ISACTIVE)},",
@@ -88,7 +90,8 @@ namespace ScriptNotepad.TableCommands
                 $"APPLICATION_CRASHES = {plugin.APPLICATION_CRASHES},",
                 $"SORTORDER = {plugin.SORTORDER},",
                 $"RATING = {plugin.RATING},",
-                $"PLUGIN_UPDATED = {DateToDBString(plugin.PLUGIN_UPDATED)}",
+                $"PLUGIN_UPDATED = {DateToDBString(plugin.PLUGIN_UPDATED)},",
+                $"PENDING_DELETION = {BS(plugin.PENDING_DELETION)}",
                 $"WHERE ID = {plugin.ID};");
 
             return sql;
@@ -103,14 +106,14 @@ namespace ScriptNotepad.TableCommands
             // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, PLUGIN_NAME: 4, PLUGIN_VERSION: 5,
             // PLUGIN_DESCTIPTION: 6, ISACTIVE: 7, EXCEPTION_COUNT: 8,
             // LOAD_FAILURES : 9, APPLICATION_CRASHES: 10, SORTORDER: 11,
-            // RATING: 12, PLUGIN_INSTALLED: 13, PLUGIN_UPDATED: 14
+            // RATING: 12, PLUGIN_INSTALLED: 13, PLUGIN_UPDATED: 14, PENDING_DELETION: 15
             string sql =
                 string.Join(Environment.NewLine,
                 $"SELECT ID, FILENAME_FULL, FILENAME,",
                 $"FILEPATH, PLUGIN_NAME, PLUGIN_VERSION,",
                 $"PLUGIN_DESCTIPTION, ISACTIVE, EXCEPTION_COUNT,",
                 $"LOAD_FAILURES, APPLICATION_CRASHES, SORTORDER,",
-                $"RATING, PLUGIN_INSTALLED, PLUGIN_UPDATED",
+                $"RATING, PLUGIN_INSTALLED, PLUGIN_UPDATED, PENDING_DELETION",
                 $"FROM PLUGINS",
                 $"ORDER BY SORTORDER, RATING DESC, PLUGIN_NAME COLLATE NOCASE, PLUGIN_DESCTIPTION COLLATE NOCASE;");
 
@@ -118,7 +121,7 @@ namespace ScriptNotepad.TableCommands
         }
 
         /// <summary>
-        /// Gets the existing database plug-in identifier sentence.
+        /// Generates the existing database plug-in identifier sentence.
         /// </summary>
         /// <param name="plugin">A PLUGINS class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
@@ -128,7 +131,24 @@ namespace ScriptNotepad.TableCommands
                 string.Join(Environment.NewLine,
                 $"SELECT ID FROM PLUGINS",
                 $"WHERE",
-                $"WHERE PLUGIN_NAME = {QS(plugin.PLUGIN_NAME)} AND FILENAME = {QS(plugin.FILENAME)};");
+                $"WHERE FILENAME = {QS(plugin.FILENAME)};");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates the delete plug-in SQL sentence.
+        /// </summary>
+        /// <param name="plugin">The plug-in to delete from the database.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenDeletePluginSentence(PLUGINS plugin)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                $"DELETE FROM PLUGINS",
+                $"WHERE",
+                $"ID = {plugin.ID} OR",
+                $"FILENAME = {QS(plugin.FILENAME)};");
 
             return sql;
         }

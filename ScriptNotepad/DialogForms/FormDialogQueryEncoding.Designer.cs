@@ -121,7 +121,7 @@
             // btSystemDefaultEncoding
             // 
             this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources._default;
+            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources.default_image;
             this.btSystemDefaultEncoding.Location = new System.Drawing.Point(428, 6);
             this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
             this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);

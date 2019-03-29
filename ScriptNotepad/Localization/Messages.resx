@@ -528,4 +528,16 @@
   <data name="msgSetToDefault" xml:space="preserve">
     <value>Set to default|A some value is set to default value</value>
   </data>
+  <data name="msgErrorPluginInstall" xml:space="preserve">
+    <value>The plug-in instillation failed with the following error: '{0}'.|Something failed during copying a plug-in to the plug-ins folder</value>
+  </data>
+  <data name="msgNA" xml:space="preserve">
+    <value>N/A|A message indicating a none value</value>
+  </data>
+  <data name="msgWarning" xml:space="preserve">
+    <value>Warning|A message warning of some kind problem</value>
+  </data>
+  <data name="msgWarningPluginNotAssembly" xml:space="preserve">
+    <value>The plug-in initialization failed because it is not a valid .NET Framework assembly.|The given assembly isn't a .NET Framework assembly</value>
+  </data>
 </root>

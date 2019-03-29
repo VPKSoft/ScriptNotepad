@@ -155,7 +155,7 @@
             // tsbNew
             // 
             this.tsbNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
+            this.tsbNew.Image = global::ScriptNotepad.Properties.Resources.new_document;
             this.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbNew.Name = "tsbNew";
             this.tsbNew.Size = new System.Drawing.Size(23, 22);
@@ -165,7 +165,7 @@
             // tsbOpen
             // 
             this.tsbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
+            this.tsbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpen.Image")));
             this.tsbOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOpen.Name = "tsbOpen";
             this.tsbOpen.Size = new System.Drawing.Size(23, 22);
@@ -403,7 +403,7 @@
             // 
             // mnuNew
             // 
-            this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.New_document;
+            this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.new_document;
             this.mnuNew.Name = "mnuNew";
             this.mnuNew.Size = new System.Drawing.Size(191, 22);
             this.mnuNew.Text = "New";
@@ -411,7 +411,7 @@
             // 
             // mnuOpen
             // 
-            this.mnuOpen.Image = global::ScriptNotepad.Properties.Resources.folder_page;
+            this.mnuOpen.Image = ((System.Drawing.Image)(resources.GetObject("mnuOpen.Image")));
             this.mnuOpen.Name = "mnuOpen";
             this.mnuOpen.Size = new System.Drawing.Size(191, 22);
             this.mnuOpen.Text = "Open...";
@@ -495,7 +495,7 @@
             // 
             this.mnuRunScript.Image = global::ScriptNotepad.Properties.Resources.CSharp;
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -503,7 +503,7 @@
             // 
             this.mnuCharSets.Image = global::ScriptNotepad.Properties.Resources.unicode;
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
             this.mnuCharSets.Text = "Change encoding";
             // 
             // mnuSearch
@@ -518,7 +518,7 @@
             // 
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
-            this.mnuFind.Size = new System.Drawing.Size(103, 22);
+            this.mnuFind.Size = new System.Drawing.Size(180, 22);
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
@@ -550,7 +550,7 @@
             // 
             // mnuManagePlugins
             // 
-            this.mnuManagePlugins.Image = global::ScriptNotepad.Properties.Resources.plugin_go;
+            this.mnuManagePlugins.Image = global::ScriptNotepad.Properties.Resources.preferences_plugin;
             this.mnuManagePlugins.Name = "mnuManagePlugins";
             this.mnuManagePlugins.Size = new System.Drawing.Size(196, 22);
             this.mnuManagePlugins.Text = "Manage plug-ins";

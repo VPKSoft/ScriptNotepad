@@ -97,8 +97,15 @@ namespace PluginTemplate
             // leave no references to the host program (ScriptNotepad)..
             ScriptNotepadMainForm = null;
 
+            // leave no references to the host program (ScriptNotepad)..
+            ScriptNotepadMainMenu = null;
+
+
             // dispose of the menu constructed by this plug-in..
             DisposeMenu();
+
+            // set the initialization flag..
+            Initialized = false;
         }
 
         /// <summary>
@@ -137,10 +144,11 @@ namespace PluginTemplate
                 PluginDescription = GetMessage("plgDescription", "Sample plug-in by VPKSoft", value);
 
                 // the about menu for this plug-in has been constructed..
-                if (pluginAboutMenu != null)
+                if (Initialized)
                 {
                     // ..localize the about menu constructed by this plug-in..
                     pluginAboutMenu.Text = GetMessage("txtAbout", "About", value);
+                    pluginCauseException.Text = GetMessage("txtCauseException", "Cause an exception", value);
                 }
             }
         }
@@ -156,6 +164,11 @@ namespace PluginTemplate
         ToolStripMenuItem pluginMainMenu;
 
         /// <summary>
+        /// A menu item to cause an non-handled exception on purpose.
+        /// </summary>
+        ToolStripMenuItem pluginCauseException;
+
+        /// <summary>
         /// A drop down menu item for the <see cref="pluginMainMenu"/>.
         /// </summary>
         ToolStripMenuItem pluginAboutMenu;
@@ -166,12 +179,14 @@ namespace PluginTemplate
         /// <param name="onRequestActiveDocument">The event provided by the hosting software (ScriptNotepad) to request for the active document within the software.</param>
         /// <param name="onRequestAllDocuments">The event provided by the hosting software (ScriptNotepad) to request for all open documents within the software.</param>
         /// <param name="onPluginException">The event provided by the hosting software (ScriptNotepad) for error reporting.</param>
+        /// <param name="mainMenu">The <see cref="MenuStrip"/> which is the main menu of the hosting software (ScriptNotepad).</param>
         /// <param name="pluginMenuStrip">The <see cref="T:System.Windows.Forms.ToolStripMenuItem" /> which is the plug-in menu in the hosting software (ScriptNotepad).</param>
         /// <param name="sessionName">The name of the current session in the hosting software (ScriptNotepad).</param>
         /// <param name="scriptNotepadMainForm">A reference to the main form of the hosting software (ScriptNotepad).</param>
         public void Initialize(OnRequestActiveDocument onRequestActiveDocument, 
             OnRequestAllDocuments onRequestAllDocuments,
             OnPluginException onPluginException,
+            MenuStrip mainMenu,
             ToolStripMenuItem pluginMenuStrip,
             string sessionName,
             Form scriptNotepadMainForm)
@@ -196,6 +211,9 @@ namespace PluginTemplate
             PluginException += onPluginException;
             // END: subscribe the event handlers..
 
+            // save the hosting process (ScriptNotepad) main menu to a property..
+            ScriptNotepadMainMenu = mainMenu;
+
             // create a menu for the plug-in..
             pluginMainMenu = new ToolStripMenuItem() { Text = PluginName, Tag = this };
             pluginMenuStrip.DropDownItems.Add(pluginMainMenu);
@@ -203,10 +221,24 @@ namespace PluginTemplate
             pluginAboutMenu = new ToolStripMenuItem() { Text = GetMessage("txtAbout", "About", Locale), Tag = this };
             pluginMainMenu.DropDownItems.Add(pluginAboutMenu);
 
+            pluginCauseException = new ToolStripMenuItem() { Text = GetMessage("txtCauseException", "Cause an exception", Locale), Tag = this };
+            pluginMainMenu.DropDownItems.Add(pluginCauseException);
+
             // subscribe events for the menu created by the plug-in..
             pluginAboutMenu.Click += PluginAboutMenu_Click;
+            pluginCauseException.Click += PluginCauseException_Click;
+            // END: subscribe events for the menu created by the plug-in..
+
+            // set the initialization flag..
+            Initialized = true;
 
             // write extra initialization code here if required..
+        }
+
+        private void PluginCauseException_Click(object sender, System.EventArgs e)
+        {
+            // fool the code check..
+            int i = 5 / int.Parse("0"); // this will cause an exception..
         }
 
         /// <summary>
@@ -262,15 +294,16 @@ namespace PluginTemplate
         public void DisposeMenu()
         {
             // the Dispose method or this method may be called before the Initialize method (!),
-            // so the null check if the menu even has been constructed..
-            if (pluginMainMenu != null)
+            // so check the Initialized field..
+            if (Initialized)
             {
                 // remove the menu constructed by the plug-in from the hosting
                 // program's (ScriptNotepad) menu for plug-ins..
                 pluginMenuStrip.DropDownItems.Remove(pluginMainMenu);
 
                 // unsubscribe the events..
-                pluginAboutMenu.Click -= PluginAboutMenu_Click; 
+                pluginAboutMenu.Click -= PluginAboutMenu_Click;
+                pluginCauseException.Click -= PluginCauseException_Click;
 
                 using (pluginMainMenu)
                 {

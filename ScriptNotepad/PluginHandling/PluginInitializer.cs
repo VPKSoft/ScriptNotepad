@@ -62,7 +62,8 @@ namespace ScriptNotepad.PluginHandling
                     try
                     {
                         // check the validity of the found type..
-                        if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type))
+                        if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type) &&
+                            typeof(ScriptNotepadPlugin).IsAssignableFrom(type))
                         {
                             // create an instance of the class implementing the IScriptNotepadPlugin interface..
                             IScriptNotepadPlugin plugin =
@@ -99,6 +100,7 @@ namespace ScriptNotepad.PluginHandling
         /// <param name="onRequestActiveDocument">The event provided by the hosting software (ScriptNotepad) to request for the active document within the software.</param>
         /// <param name="onRequestAllDocuments">The event provided by the hosting software (ScriptNotepad) to request for all open documents within the software.</param>
         /// <param name="onPluginException">The event provided by the hosting software (ScriptNotepad) for error reporting.</param>
+        /// <param name="mainMenu">The <see cref="MenuStrip"/> which is the main menu of the hosting software (ScriptNotepad).</param>
         /// <param name="pluginMenuStrip">The <see cref="ToolStripMenuItem"/> which is the plug-in menu in the hosting software (ScriptNotepad).</param>
         /// <param name="sessionName">The name of the current session in the hosting software (ScriptNotepad).</param>
         /// <param name="formMain">A reference to the main form of the hosting software (ScriptNotepad).</param>
@@ -107,6 +109,7 @@ namespace ScriptNotepad.PluginHandling
             OnRequestActiveDocument onRequestActiveDocument,
             OnRequestAllDocuments onRequestAllDocuments,
             OnPluginException onPluginException,
+            MenuStrip mainMenu,
             ToolStripMenuItem pluginMenuStrip,
             string sessionName,
             FormMain formMain
@@ -115,7 +118,8 @@ namespace ScriptNotepad.PluginHandling
             try
             {
                 // initialize the plug-in..
-                plugin.Initialize(onRequestActiveDocument, onRequestAllDocuments, onPluginException, pluginMenuStrip, sessionName, formMain);
+                plugin.Initialize(onRequestActiveDocument, onRequestAllDocuments, onPluginException, 
+                    mainMenu, pluginMenuStrip, sessionName, formMain);
                 return true; // success..
             }
             catch (Exception ex)

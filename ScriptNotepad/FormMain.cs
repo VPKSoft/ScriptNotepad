@@ -203,7 +203,49 @@ namespace ScriptNotepad
         /// </summary>
         private void InitializePlugins()
         {
+            // initialize the action to detect if a plug-in has crashed the program..
+            ModuleExceptionHandler = delegate (string module) 
+            {
+                try
+                {
+                    var plugin = Plugins.FirstOrDefault(f => f.Plugin.FILENAME_FULL == module);
+                    if (plugin.Plugin != null)
+                    {
+                        plugin.Plugin.APPLICATION_CRASHES++;
+                        plugin.Plugin.ISACTIVE = false;
+                        DatabasePlugins.UpdatePlugin(plugin.Plugin);
+                    }
+                }
+                catch
+                {
+
+                }
+            };
+
             IEnumerable<PLUGINS> databaseEntries = DatabasePlugins.GetPlugins();
+            bool pluginDeleted = false;
+            foreach (var pluginEntry in databaseEntries)
+            {
+                if (pluginEntry.PENDING_DELETION)
+                {
+                    try
+                    {
+                        File.Delete(pluginEntry.FILENAME_FULL);
+                    }
+                    catch (Exception ex)
+                    {
+                        // log the exception..
+                        ExceptionLogger.LogError(ex);
+                    }
+                    DatabasePlugins.DeletePlugin(pluginEntry);
+                    pluginDeleted = true;
+                }
+            }
+
+            if (pluginDeleted)
+            {
+                databaseEntries = DatabasePlugins.GetPlugins();
+            }
 
             // load the existing plug-ins..
             var plugins = PluginDirectoryRoaming.GetPluginAssemblies(Settings.FormSettings.Settings.PluginFolder);
@@ -241,11 +283,17 @@ namespace ScriptNotepad
                     if (PluginInitializer.InitializePlugin(pluginAssembly.Plugin,
                         RequestActiveDocument,
                         RequestAllDocuments,
-                        PluginException, mnuPlugins, CurrentSession, this))
+                        PluginException, menuMain, 
+                        mnuPlugins, 
+                        CurrentSession, this))
                     {
                         if (pluginEntry == null)
                         {
                             pluginEntry = PluginDatabaseEntry.FromPlugin(plugin.Assembly, pluginAssembly.Plugin, plugin.Path);
+                        }
+                        else
+                        {
+                            pluginEntry = PluginDatabaseEntry.UpdateFromPlugin(pluginEntry, plugin.Assembly, pluginAssembly.Plugin, plugin.Path);
                         }
 
                         // on success, add the plug-in assembly and its instance to the internal list..
@@ -273,6 +321,9 @@ namespace ScriptNotepad
 
                     // update the plug-in information to the database..
                     DatabasePlugins.AddOrUpdatePlugin(pluginEntry);
+
+                    // on failure, add the "invalid" plug-in assembly and its instance to the internal list..
+                    Plugins.Add((plugin.Assembly, null, pluginEntry));
                 }
             }
 
@@ -1100,6 +1151,12 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+
+        /// <summary>
+        /// Tries catch an event crashing the whole application if the error is causes by a plug-in.
+        /// </summary>
+        public static Action<string> ModuleExceptionHandler { get; set; } = null;
+
         // checks if file selected in the open file dialog requires elevation and the file exists..
         private void odAnyFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -1288,6 +1345,15 @@ namespace ScriptNotepad
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // get the list of plug-in database entries..
+            var pluginDatabaseEntries = Plugins.Select(f => f.Plugin);
+
+            // update the list of plug-in database into the database..
+            foreach (var entry in pluginDatabaseEntries)
+            {
+                DatabasePlugins.UpdatePlugin(entry);
+            }
+
             // dispose of the loaded plug-in instances..
             DisposePlugins();
         }
@@ -1613,6 +1679,32 @@ namespace ScriptNotepad
             ExceptionLogger.LogMessage($"PLUG-IN EXCEPTION: '{e.PluginModuleName}'.");
             ExceptionLogger.LogError(e.Exception);
         }
+
+        // a user wishes to manage the plug-ins used by the software..
+        private void mnuManagePlugins_Click(object sender, EventArgs e)
+        {
+            // get the current plug-ins as a List<T>..
+            var plugins = Plugins.Select(f => f.Plugin).ToList();
+
+            // display the plug-in management form passing a reference to the plug-in list..
+            if (FormPluginManage.Execute(ref plugins))
+            {
+                // if the user selected OK, accepted the dialog,
+                // loop through the plug-ins..
+                for (int i = 0; i < plugins.Count; i++)
+                {
+                    // find an index to the plug-in possibly modified by the dialog..
+                    int idx = Plugins.FindIndex(f => f.Plugin.ID == plugins[i].ID);
+
+                    // if a valid index was found..
+                    if (idx != -1)
+                    {
+                        // set the new value for the PLUGINS class instance..
+                        Plugins[idx] = (Plugins[idx].Assembly, Plugins[idx].PluginInstance, plugins[i]);
+                    }
+                }
+            }
+        }
         #endregion
 
         #region PrivateFields        
@@ -1829,10 +1921,5 @@ namespace ScriptNotepad
             CloseAllFunction(sender.Equals(mnuCloseAllToTheRight), sender.Equals(mnuCloseAllToTheLeft));
         }
         #endregion
-
-        private void mnuManagePlugins_Click(object sender, EventArgs e)
-        {
-            FormPluginManage.Execute();
-        }
     }
 }

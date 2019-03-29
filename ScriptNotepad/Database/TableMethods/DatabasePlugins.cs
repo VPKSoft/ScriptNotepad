@@ -128,7 +128,16 @@ namespace ScriptNotepad.Database.TableMethods
         /// <returns>A PLUGINS class instance if the plug-in was successfully added or updated to the database; otherwise null.</returns>
         public static PLUGINS AddOrUpdatePlugin(PLUGINS plugin)
         {
-            return UpdatePlugin(AddPlugin(plugin));
+            try
+            {
+                return UpdatePlugin(AddPlugin(plugin));
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+                return plugin;
+            }
         }
 
         /// <summary>
@@ -147,7 +156,7 @@ namespace ScriptNotepad.Database.TableMethods
                     // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, PLUGIN_NAME: 4, PLUGIN_VERSION: 5,
                     // PLUGIN_DESCTIPTION: 6, ISACTIVE: 7, EXCEPTION_COUNT: 8,
                     // LOAD_FAILURES : 9, APPLICATION_CRASHES: 10, SORTORDER: 11,
-                    // RATING: 12, PLUGIN_INSTALLED: 13, PLUGIN_UPDATED: 14
+                    // RATING: 12, PLUGIN_INSTALLED: 13, PLUGIN_UPDATED: 14, PENDING_DELETION: 15
                     while (reader.Read())
                     {
                         PLUGINS plugin =
@@ -168,6 +177,7 @@ namespace ScriptNotepad.Database.TableMethods
                                 RATING = reader.GetInt32(12),
                                 PLUGIN_INSTALLED = DateFromDBString(reader.GetString(13)),
                                 PLUGIN_UPDATED = DateFromDBString(reader.GetString(14)),
+                                PENDING_DELETION = reader.GetInt32(15) == 1,
                             };
 
                         result.Add(plugin);
@@ -175,6 +185,16 @@ namespace ScriptNotepad.Database.TableMethods
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// Deletes a given plug-in from the database.
+        /// </summary>
+        /// <param name="plugin">The plug-in to delete.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        public static bool DeletePlugin(PLUGINS plugin)
+        {
+            return ExecuteArbitrarySQL(DatabaseCommandsPlugins.GenDeletePluginSentence(plugin));
         }
     }
 }

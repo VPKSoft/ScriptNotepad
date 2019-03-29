@@ -79,7 +79,8 @@ namespace ScriptNotepad.PluginHandling
                             try
                             {
                                 // check the validity of the found type..
-                                if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type))
+                                if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type) &&
+                                    typeof(ScriptNotepadPlugin).IsAssignableFrom(type))
                                 {
                                     // create an instance of the class implementing the IScriptNotepadPlugin interface..
                                     IScriptNotepadPlugin plugin =
@@ -88,7 +89,10 @@ namespace ScriptNotepad.PluginHandling
                                     // the IScriptNotepadPlugin is also disposable, so do dispose of it..
                                     using (plugin)
                                     {
-                                        result.Add((assembly, assemblyFile, true));
+                                        if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
+                                        {
+                                            result.Add((assembly, assemblyFile, true));
+                                        }
                                     }
                                 }
                             }
@@ -98,7 +102,10 @@ namespace ScriptNotepad.PluginHandling
                                 ExceptionLogAction?.Invoke(ex, assembly, assemblyFile);
 
                                 // indicate a failure in the result as well..
-                                result.Add((assembly, assemblyFile, false));
+                                if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
+                                {
+                                    result.Add((assembly, assemblyFile, false));
+                                }
                             }
                         }
 
@@ -109,7 +116,10 @@ namespace ScriptNotepad.PluginHandling
                         ExceptionLogAction?.Invoke(ex, null, assemblyFile);
 
                         // indicate a failure in the result as well..
-                        result.Add((null, assemblyFile, false));
+                        if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
+                        {
+                            result.Add((null, assemblyFile, false));
+                        }
                     }
                 }
             }

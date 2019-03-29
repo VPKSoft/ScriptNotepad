@@ -63,8 +63,8 @@
     <Reference Include="ScintillaNET_FindReplaceDialog, Version=1.0.3.3, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ScintillaNET_FindReplaceDialog.1.0.3.3\lib\net40-client\ScintillaNET_FindReplaceDialog.dll</HintPath>
     </Reference>
-    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.2\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
+    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.4\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -89,8 +89,8 @@
     <Reference Include="VPKSoft.About, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.About.1.0.0.4\lib\net45\VPKSoft.About.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.4\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
+    <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.5\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.LangLib, Version=1.0.1.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.LangLib.1.0.1.2\lib\net461\VPKSoft.LangLib.dll</HintPath>
@@ -195,6 +195,7 @@
     <Compile Include="Test\FormTestThings.Designer.cs">
       <DependentUpon>FormTestThings.cs</DependentUpon>
     </Compile>
+    <Compile Include="UtilityClasses\Assembly\TestFileIsAssembly.cs" />
     <Compile Include="UtilityClasses\Clipboard\ClipboardTextHelper.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerLines.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerParent.cs" />
@@ -319,12 +320,16 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />
     <None Include="Resources\up_down.png" />
     <None Include="Resources\Up.png" />
     <None Include="Resources\Down_2.png" />
-    <Content Include="VPKSoft.ico" />
+    <None Include="Resources\plugin-add.png" />
+    <None Include="Resources\preferences-plugin.png" />
+    <None Include="Resources\plugin-delete.png" />
+    <None Include="Resources\plugin-error.png" />
     <None Include="Resources\folder-database.png" />
     <None Include="Resources\folder-page.png" />
     <Content Include="Icons\notepad5.ico" />

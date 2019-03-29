@@ -637,6 +637,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The plug-in instillation failed with the following error: &apos;{0}&apos;.|Something failed during copying a plug-in to the plug-ins folder.
+        /// </summary>
+        internal static string msgErrorPluginInstall {
+            get {
+                return ResourceManager.GetString("msgErrorPluginInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to eXtensible Markup Language file|*.xml;*.xsml;*.xls;*.xsd;*.kml;*.wsdl;*.xlf;*.xliff|A text in a file dialog indicating eXtensible Markup Language files.
         /// </summary>
         internal static string msgeXtensibleMarkupLanguageFile {
@@ -961,6 +970,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to N/A|A message indicating a none value.
+        /// </summary>
+        internal static string msgNA {
+            get {
+                return ResourceManager.GetString("msgNA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to new |A starting text of how a new document should be named.
         /// </summary>
         internal static string msgNewFileStart {
@@ -1263,6 +1281,24 @@ namespace ScriptNotepad.Localization {
         internal static string msgVisualBasicFile {
             get {
                 return ResourceManager.GetString("msgVisualBasicFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning|A message warning of some kind problem.
+        /// </summary>
+        internal static string msgWarning {
+            get {
+                return ResourceManager.GetString("msgWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The plug-in initialization failed because it is not a valid .NET Framework assembly.|The given assembly isn&apos;t a .NET Framework assembly.
+        /// </summary>
+        internal static string msgWarningPluginNotAssembly {
+            get {
+                return ResourceManager.GetString("msgWarningPluginNotAssembly", resourceCulture);
             }
         }
         

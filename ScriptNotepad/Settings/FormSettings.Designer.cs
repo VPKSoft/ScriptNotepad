@@ -100,7 +100,7 @@
             // pbDefaultFolder
             // 
             this.pbDefaultFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbDefaultFolder.Image = global::ScriptNotepad.Properties.Resources._default;
+            this.pbDefaultFolder.Image = global::ScriptNotepad.Properties.Resources.default_image;
             this.pbDefaultFolder.Location = new System.Drawing.Point(494, 195);
             this.pbDefaultFolder.Name = "pbDefaultFolder";
             this.pbDefaultFolder.Size = new System.Drawing.Size(21, 21);
@@ -273,7 +273,7 @@
             // btSystemDefaultEncoding
             // 
             this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources._default;
+            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources.default_image;
             this.btSystemDefaultEncoding.Location = new System.Drawing.Point(504, 22);
             this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
             this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);

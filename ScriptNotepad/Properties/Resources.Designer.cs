@@ -63,16 +63,6 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _default {
-            get {
-                object obj = ResourceManager.GetObject("default", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap astonished {
             get {
                 object obj = ResourceManager.GetObject("astonished", resourceCulture);
@@ -86,6 +76,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap CSharp {
             get {
                 object obj = ResourceManager.GetObject("CSharp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap default_image {
+            get {
+                object obj = ResourceManager.GetObject("default_image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,7 +163,7 @@ namespace ScriptNotepad.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap folder_database {
             get {
-                object obj = ResourceManager.GetObject("folder-database", resourceCulture);
+                object obj = ResourceManager.GetObject("folder_database", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,7 +173,7 @@ namespace ScriptNotepad.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap folder_page {
             get {
-                object obj = ResourceManager.GetObject("folder-page", resourceCulture);
+                object obj = ResourceManager.GetObject("folder_page", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -181,9 +181,9 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap New_document {
+        internal static System.Drawing.Bitmap new_document {
             get {
-                object obj = ResourceManager.GetObject("New document", resourceCulture);
+                object obj = ResourceManager.GetObject("new_document", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -211,9 +211,39 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap plugin_add {
+            get {
+                object obj = ResourceManager.GetObject("plugin_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap plugin_delete {
+            get {
+                object obj = ResourceManager.GetObject("plugin_delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap plugin_error {
+            get {
+                object obj = ResourceManager.GetObject("plugin_error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap plugin_go {
             get {
-                object obj = ResourceManager.GetObject("plugin-go", resourceCulture);
+                object obj = ResourceManager.GetObject("plugin_go", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -224,6 +254,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap preferences {
             get {
                 object obj = ResourceManager.GetObject("preferences", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap preferences_plugin {
+            get {
+                object obj = ResourceManager.GetObject("preferences_plugin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

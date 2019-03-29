@@ -34,8 +34,8 @@
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
     </Reference>
-    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.2\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
+    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.4\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
