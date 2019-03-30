@@ -56,7 +56,9 @@ namespace ScriptNotepad.DialogForms
             DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
 
             // create a new instance of the CharacterSetComboBuilder class..
-            CharacterSetComboBuilder = new CharacterSetComboBuilder(cmbCharacterSet, cmbEncoding, false, "encoding");
+            CharacterSetComboBuilder = new CharacterSetComboBuilder(cmbCharacterSet, cmbEncoding, tbFilterEncodings, false, "encoding");
+
+            Encoding = CharacterSetComboBuilder.CurrentEncoding;
 
             // subscribe the encoding selected event..
             CharacterSetComboBuilder.EncodingSelected += CaracterSetComboBuilder_EncodingSelected;
@@ -99,10 +101,21 @@ namespace ScriptNotepad.DialogForms
             Encoding = e.Encoding;
         }
 
+        private Encoding _Encoding = null;
+
         /// <summary>
         /// Gets or sets the encoding a user selected from the dialog.
         /// </summary>
-        private Encoding Encoding { get; set; }
+        private Encoding Encoding
+        {
+            get => _Encoding;
+
+            set
+            {
+                _Encoding = value;
+                btOK.Enabled = value != null;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the character set combo box builder.
@@ -123,6 +136,21 @@ namespace ScriptNotepad.DialogForms
         {
             // select the encoding based on which button the user clicked..
             CharacterSetComboBuilder.SelectItemByEncoding(sender.Equals(btUTF8) ? Encoding.UTF8 : Encoding.Default, false);
+        }
+
+        private void FormDialogQueryEncoding_Shown(object sender, System.EventArgs e)
+        {
+            tbFilterEncodings.Focus();
+        }
+
+        private void cmbCharacterSet_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            tbFilterEncodings.Focus();
+        }
+
+        private void pbClearFilterText_Click(object sender, System.EventArgs e)
+        {
+            tbFilterEncodings.Text = string.Empty;
         }
     }
 }

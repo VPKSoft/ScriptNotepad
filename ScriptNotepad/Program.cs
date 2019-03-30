@@ -88,16 +88,6 @@ namespace ScriptNotepad
                             ExceptionLogger.LogMessage($"File exists: '{file}'. Send open request.");
                             ipcClient.SendMessage(file);
                         }
-                        else
-                        {
-                            file = Path.Combine(Environment.CurrentDirectory, file);
-                            ExceptionLogger.LogMessage($"Request file open: '{file}'.");
-                            if (File.Exists(file))
-                            {
-                                ExceptionLogger.LogMessage($"File exists: '{file}'. Send open request.");
-                                ipcClient.SendMessage(file);
-                            }
-                        }
                     }
                 }
                 catch (Exception ex)

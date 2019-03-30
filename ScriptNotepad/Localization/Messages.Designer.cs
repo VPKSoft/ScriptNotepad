@@ -673,6 +673,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file &apos;{0}&apos; has been changed in the editor and a reload from the file system is required. Continue?|A file has been changed in the editor and a reload from the file system is required to complete an arbitrary action.
+        /// </summary>
+        internal static string msgFileHasChangedInEditorAction {
+            get {
+                return ResourceManager.GetString("msgFileHasChangedInEditorAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The file &apos;{0}&apos; has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it&apos;s contents from the file system.
         /// </summary>
         internal static string msgFileHasReappeared {

@@ -251,6 +251,11 @@ namespace ScriptNotepad.Database.Tables
             get => !EXISTS_INFILESYS && File.Exists(FILENAME_FULL);
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the document is changed in the editor versus the file system.
+        /// </summary>
+        public bool IsChangedInEditor {get => EXISTS_INFILESYS ? DB_MODIFIED > FILESYS_MODIFIED : false; }
+
         // a value indicating if the user want's to reload the changes from the file system if the file has been changed..
         private bool _ShouldQueryDiskReload = true;
 

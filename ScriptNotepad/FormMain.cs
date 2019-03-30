@@ -221,7 +221,7 @@ namespace ScriptNotepad
                 }
                 catch
                 {
-
+                    // the application is about to crash - let the ExceptionLogger do it's job and log the crash..
                 }
             };
 
@@ -1259,6 +1259,8 @@ namespace ScriptNotepad
 
                         // undo the encoding change..
                         fileSave.UndoEncodingChange();
+
+                        sttcMain.CurrentDocument.Tag = fileSave;
                     }
                 }
                 UpdateUndoRedoIndicators();
@@ -1372,31 +1374,76 @@ namespace ScriptNotepad
         /// </summary>
         private bool TextChangedViaEncodingChange { get; set; } = false;
 
-        // an event which is fired if an encoding menu item is clicked..
-        private void CharacterSetMenuBuilder_EncodingMenuClicked(object sender, EncodingMenuClickEventArgs e)
+        /// <summary>
+        /// A common method to change or convert the encoding of the active document.
+        /// </summary>
+        /// <param name="encoding">The encoding to change or convert into.</param>
+        internal void ChangeDocumentEncoding(Encoding encoding)
         {
-            // a user requested to change the encoding of the file..
-            if (e.Data != null && e.Data.ToString() == "convert_encoding")
+            if (encoding != null)
             {
                 // if there is an active document..
                 if (sttcMain.CurrentDocument != null)
                 {
                     // get the DBFILE_SAVE class instance from the tag..
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+                    if (fileSave.EXISTS_INFILESYS) // the file exists in the file system..
+                    {
+                        // if the file has been changed in the editor, so confirm the user for a 
+                        // reload from the file system..
+                        if (fileSave.IsChangedInEditor)
+                        {
+                            if (MessageBox.Show(
+                                DBLangEngine.GetMessage("msgFileHasChangedInEditorAction", "The file '{0}' has been changed in the editor and a reload from the file system is required. Continue?|A file has been changed in the editor and a reload from the file system is required to complete an arbitrary action", fileSave.FILENAME_FULL),
+                                DBLangEngine.GetMessage("msgFileArbitraryFileChange", "A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded"),
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question,
+                                MessageBoxDefaultButton.Button2) == DialogResult.No)
+                            {
+                                return; // the user decided not to reload..
+                            }
+                        }
 
-                    // convert the contents to a new encoding..
-                    sttcMain.CurrentDocument.Scintilla.Text =
-                        StreamStringHelpers.ConvertEncoding(fileSave.ENCODING, e.Encoding, sttcMain.CurrentDocument.Scintilla.Text);
+                        fileSave.ENCODING = encoding; // set the new encoding..
 
-                    fileSave.PreviousEncodings.Add(fileSave.ENCODING);
+                        // reload the file with the user given encoding..
+                        fileSave.ReloadFromDisk(sttcMain.CurrentDocument);
 
-                    // set the new encoding..
-                    fileSave.ENCODING = e.Encoding;
+                        // save the DBFILE_SAVE instance to the document's Tag property..
+                        sttcMain.CurrentDocument.Tag = fileSave; 
+                    }
+                    // the file only exists in the database..
+                    else
+                    {
+                        // convert the contents to a new encoding..
+                        sttcMain.CurrentDocument.Scintilla.Text =
+                            StreamStringHelpers.ConvertEncoding(fileSave.ENCODING, encoding, sttcMain.CurrentDocument.Scintilla.Text);
 
-                    TextChangedViaEncodingChange = true;
+                        // save the previous encoding for an undo-possibility..
+                        fileSave.PreviousEncodings.Add(fileSave.ENCODING);
 
-                    UpdateUndoRedoIndicators();
+                        fileSave.ENCODING = encoding; // set the new encoding..
+
+                        // save the DBFILE_SAVE instance to the document's Tag property..
+                        sttcMain.CurrentDocument.Tag = fileSave;
+                    }
                 }
+            }
+        }
+
+        // an event when user clicks the change encoding main menu..
+        private void mnuCharSets_Click(object sender, EventArgs e)
+        {
+            ChangeDocumentEncoding(FormDialogQueryEncoding.Execute());
+        }
+
+        // an event which is fired if an encoding menu item is clicked..
+        private void CharacterSetMenuBuilder_EncodingMenuClicked(object sender, EncodingMenuClickEventArgs e)
+        {
+            // a user requested to change the encoding of the file..
+            if (e.Data != null && e.Data.ToString() == "convert_encoding")
+            {
+                ChangeDocumentEncoding(e.Encoding);
             }
         }
 

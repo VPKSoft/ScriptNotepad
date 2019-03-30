@@ -39,8 +39,12 @@
             this.btUTF8 = new System.Windows.Forms.PictureBox();
             this.btSystemDefaultEncoding = new System.Windows.Forms.PictureBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
+            this.lbFilterEncodings = new System.Windows.Forms.Label();
+            this.tbFilterEncodings = new System.Windows.Forms.TextBox();
+            this.pbClearFilterText = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClearFilterText)).BeginInit();
             this.SuspendLayout();
             // 
             // lbCharacterSet
@@ -62,6 +66,7 @@
             this.cmbCharacterSet.Name = "cmbCharacterSet";
             this.cmbCharacterSet.Size = new System.Drawing.Size(269, 21);
             this.cmbCharacterSet.TabIndex = 1;
+            this.cmbCharacterSet.SelectedIndexChanged += new System.EventHandler(this.cmbCharacterSet_SelectedIndexChanged);
             // 
             // lbEncoding
             // 
@@ -82,12 +87,13 @@
             this.cmbEncoding.Name = "cmbEncoding";
             this.cmbEncoding.Size = new System.Drawing.Size(269, 21);
             this.cmbEncoding.TabIndex = 3;
+            this.cmbEncoding.SelectedIndexChanged += new System.EventHandler(this.cmbCharacterSet_SelectedIndexChanged);
             // 
             // btOK
             // 
             this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOK.Location = new System.Drawing.Point(12, 60);
+            this.btOK.Location = new System.Drawing.Point(12, 90);
             this.btOK.Name = "btOK";
             this.btOK.Size = new System.Drawing.Size(75, 23);
             this.btOK.TabIndex = 4;
@@ -98,7 +104,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(374, 60);
+            this.btCancel.Location = new System.Drawing.Point(374, 90);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 5;
@@ -131,13 +137,47 @@
             this.ttMain.SetToolTip(this.btSystemDefaultEncoding, "Set to system default");
             this.btSystemDefaultEncoding.Click += new System.EventHandler(this.btDefaultEncodings_Click);
             // 
+            // lbFilterEncodings
+            // 
+            this.lbFilterEncodings.AutoSize = true;
+            this.lbFilterEncodings.Location = new System.Drawing.Point(12, 65);
+            this.lbFilterEncodings.Name = "lbFilterEncodings";
+            this.lbFilterEncodings.Size = new System.Drawing.Size(84, 13);
+            this.lbFilterEncodings.TabIndex = 13;
+            this.lbFilterEncodings.Text = "Filter encodings:";
+            // 
+            // tbFilterEncodings
+            // 
+            this.tbFilterEncodings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbFilterEncodings.Location = new System.Drawing.Point(153, 60);
+            this.tbFilterEncodings.Name = "tbFilterEncodings";
+            this.tbFilterEncodings.Size = new System.Drawing.Size(269, 20);
+            this.tbFilterEncodings.TabIndex = 14;
+            // 
+            // pbClearFilterText
+            // 
+            this.pbClearFilterText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbClearFilterText.Image = global::ScriptNotepad.Properties.Resources.Erase;
+            this.pbClearFilterText.Location = new System.Drawing.Point(428, 60);
+            this.pbClearFilterText.Name = "pbClearFilterText";
+            this.pbClearFilterText.Size = new System.Drawing.Size(21, 21);
+            this.pbClearFilterText.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbClearFilterText.TabIndex = 15;
+            this.pbClearFilterText.TabStop = false;
+            this.ttMain.SetToolTip(this.pbClearFilterText, "Clear filter text");
+            this.pbClearFilterText.Click += new System.EventHandler(this.pbClearFilterText_Click);
+            // 
             // FormDialogQueryEncoding
             // 
             this.AcceptButton = this.btOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(461, 95);
+            this.ClientSize = new System.Drawing.Size(461, 125);
+            this.Controls.Add(this.pbClearFilterText);
+            this.Controls.Add(this.tbFilterEncodings);
+            this.Controls.Add(this.lbFilterEncodings);
             this.Controls.Add(this.btUTF8);
             this.Controls.Add(this.btSystemDefaultEncoding);
             this.Controls.Add(this.btCancel);
@@ -155,8 +195,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select encoding";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDialogQueryEncoding_FormClosing);
+            this.Shown += new System.EventHandler(this.FormDialogQueryEncoding_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClearFilterText)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,5 +215,8 @@
         private System.Windows.Forms.PictureBox btUTF8;
         private System.Windows.Forms.PictureBox btSystemDefaultEncoding;
         private System.Windows.Forms.ToolTip ttMain;
+        private System.Windows.Forms.Label lbFilterEncodings;
+        private System.Windows.Forms.TextBox tbFilterEncodings;
+        private System.Windows.Forms.PictureBox pbClearFilterText;
     }
 }

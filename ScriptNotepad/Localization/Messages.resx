@@ -540,4 +540,7 @@
   <data name="msgWarningPluginNotAssembly" xml:space="preserve">
     <value>The plug-in initialization failed because it is not a valid .NET Framework assembly.|The given assembly isn't a .NET Framework assembly</value>
   </data>
+  <data name="msgFileHasChangedInEditorAction" xml:space="preserve">
+    <value>The file '{0}' has been changed in the editor and a reload from the file system is required. Continue?|A file has been changed in the editor and a reload from the file system is required to complete an arbitrary action</value>
+  </data>
 </root>

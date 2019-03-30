@@ -505,6 +505,7 @@
             this.mnuCharSets.Name = "mnuCharSets";
             this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
             this.mnuCharSets.Text = "Change encoding";
+            this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
             // 
             // mnuSearch
             // 
@@ -518,7 +519,7 @@
             // 
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
-            this.mnuFind.Size = new System.Drawing.Size(180, 22);
+            this.mnuFind.Size = new System.Drawing.Size(103, 22);
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 

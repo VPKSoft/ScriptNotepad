@@ -79,9 +79,49 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
         /// </summary>
         /// <param name="characterSetComboBox">An instance to a combo box containing the character sets.</param>
         /// <param name="encodingComboBox">An instance to a combo box containing the encodings belonging to a character set.</param>
+        /// <param name="filterEncondingTextBox">A text box for searching for an encoding.</param>
         /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be used.</param>
         /// <param name="data">Additional data to be assigned to an instance of the CharacterSetComboItem class.</param>
-        public CharacterSetComboBuilder(ComboBox characterSetComboBox, ComboBox encodingComboBox, bool singleCodePageResults, object data)
+        public CharacterSetComboBuilder(
+            ComboBox characterSetComboBox,
+            ComboBox encodingComboBox,
+            TextBox filterEncondingTextBox,
+            bool singleCodePageResults,
+            object data)
+        {
+            ConstructorHelper(characterSetComboBox, encodingComboBox, filterEncondingTextBox, singleCodePageResults, data);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterSetComboBuilder"/> class.
+        /// </summary>
+        /// <param name="characterSetComboBox">An instance to a combo box containing the character sets.</param>
+        /// <param name="encodingComboBox">An instance to a combo box containing the encodings belonging to a character set.</param>
+        /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be used.</param>
+        /// <param name="data">Additional data to be assigned to an instance of the CharacterSetComboItem class.</param>
+        public CharacterSetComboBuilder(
+            ComboBox characterSetComboBox, 
+            ComboBox encodingComboBox, 
+            bool singleCodePageResults, 
+            object data)
+        {
+            ConstructorHelper(characterSetComboBox, encodingComboBox, null, singleCodePageResults, data);
+        }
+
+        /// <summary>
+        /// A helper method for multiple constructor overloads.
+        /// </summary>
+        /// <param name="characterSetComboBox">An instance to a combo box containing the character sets.</param>
+        /// <param name="encodingComboBox">An instance to a combo box containing the encodings belonging to a character set.</param>
+        /// <param name="filterEncondingTextBox">A text box for searching for an encoding.</param>
+        /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be used.</param>
+        /// <param name="data">Additional data to be assigned to an instance of the CharacterSetComboItem class.</param>
+        private void ConstructorHelper(
+            ComboBox characterSetComboBox,
+            ComboBox encodingComboBox,
+            TextBox filterEncondingTextBox,
+            bool singleCodePageResults,
+            object data)
         {
             // save the combo box instance to the class..
             CharacterSetComboBox = characterSetComboBox;
@@ -89,21 +129,17 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
             // save the combo box instance to the class..
             EncodingComboBox = encodingComboBox;
 
+            // save the text box instance to the class..
+            FilterEncodingTextBox = filterEncondingTextBox;
+
+            // save the singleCodePageResults parameter value..
+            SingleCodePageResults = singleCodePageResults;
+
             // save the data for the combo boxes..
             Data = data;
 
             // get an instance of the EncodingCharacterSet class..
             var encodingCharacterSet = EncodingCharacterSet;
-
-            // get the character sets contained in the EncodingCharacterSet class..
-            var charSets = encodingCharacterSet.GetCharacterSetList(singleCodePageResults);
-
-            // loop through the character sets..
-            foreach (var item in charSets)
-            {
-                // add the character sets to the characterSetComboBox..
-                characterSetComboBox.Items.Add(new CharacterSetComboItem { CharacterSet = item, Tag = data });
-            }
 
             // subscribe the SelectedIndexChanged event..
             CharacterSetComboBox.SelectedIndexChanged += CharacterSetComboBox_SelectedIndexChanged;
@@ -111,12 +147,143 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
             // subscribe the SelectedIndexChanged event..
             EncodingComboBox.SelectedIndexChanged += EncodingComboBox_SelectedIndexChanged;
 
+            // subscribe the text changed event..
+            if (FilterEncodingTextBox != null) // this can be null for the constructor overload..
+            {
+                FilterEncodingTextBox.TextChanged += FilterEncodingTextBox_TextChanged;
+            }
+
+            // list the encodings..
+            if (FilterEncodingTextBox != null)
+            {
+                CreateFilteredEncodingList();
+            }
+            else
+            {
+                CreateUnFilteredEncodingList();
+            }
+        }
+
+        /// <summary>
+        /// Creates a non-filtered encoding list for the combo box.
+        /// </summary>
+        private void CreateUnFilteredEncodingList()
+        {
+            // get the character sets contained in the EncodingCharacterSet class..
+            var charSets = EncodingCharacterSet.GetCharacterSetList(SingleCodePageResults);
+
+            CharacterSetComboBox.Items.Clear();
+
+            // loop through the character sets..
+            foreach (var item in charSets)
+            {
+                // add the character sets to the characterSetComboBox..
+                CharacterSetComboBox.Items.Add(new CharacterSetComboItem { CharacterSet = item, Tag = Data });
+            }
+
             // set the index for the combo box..
-            if (characterSetComboBox.Items.Count > 0)
+            if (CharacterSetComboBox.Items.Count > 0)
             {
                 // ..if the combo box has any items..
-                characterSetComboBox.SelectedIndex = 0;
+                CharacterSetComboBox.SelectedIndex = 0;
             }
+            else
+            {
+                // if there are no character sets, clear the encoding combo box as well..
+                EncodingComboBox.Items.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Creates a filtered encoding list for the combo box.
+        /// </summary>
+        private void CreateFilteredEncodingList()
+        {
+            string text = FilterText;
+
+            // if there is no filter the just list the encodings non-filtered..
+            if (text == string.Empty)
+            {
+                CreateUnFilteredEncodingList();
+                return;
+            }
+
+            // get an instance of the EncodingCharacterSet class..
+            var encodingCharacterSet = EncodingCharacterSet;
+
+            // get the character sets contained in the EncodingCharacterSet class..
+            var charSets = encodingCharacterSet.GetCharacterSetList(SingleCodePageResults);
+
+            CharacterSetComboBox.Items.Clear();
+
+            // loop through the character sets..
+            foreach (var item in charSets)
+            {
+                var encodings = encodingCharacterSet[item];
+                encodings = encodings.Where(f => FilterEncoding(f));
+
+                if (encodings.ToList().Count > 0)
+                {
+                    // add the character sets to the characterSetComboBox..
+                    CharacterSetComboBox.Items.Add(new CharacterSetComboItem { CharacterSet = item, Tag = Data });
+                }
+            }
+
+            // set the index for the combo box..
+            if (CharacterSetComboBox.Items.Count > 0)
+            {
+                // ..if the combo box has any items..
+                CharacterSetComboBox.SelectedIndex = 0;
+            }
+            else
+            {
+                // if there are no character sets, clear the encoding combo box as well..
+                EncodingComboBox.Items.Clear();
+            }
+            EncodingSelected?.Invoke(this, new OnEncodingSelectedEventArgs { Data = Data, Encoding = CurrentEncoding });
+        }
+
+        /// <summary>
+        /// Gets the filter text for the encodings.
+        /// </summary>
+        private string FilterText { get => FilterEncodingTextBox == null ? string.Empty :
+                string.IsNullOrWhiteSpace(FilterEncodingTextBox.Text) ? string.Empty : FilterEncodingTextBox.Text.Trim(' ').ToLowerInvariant(); }
+
+        /// <summary>
+        /// Checks if the given encoding matches the current filter text.
+        /// </summary>
+        /// <param name="encoding">The encoding to check.</param>
+        /// <returns>True if the encoding matches the filter text; otherwise false;</returns>
+        private bool FilterEncoding(System.Text.Encoding encoding)
+        {
+            if (FilterText == string.Empty)
+            {
+                return true;
+            }
+
+            // split the filter text with space character..
+            string[] filters = FilterText.Split(' ');
+
+            bool match = true;
+            foreach (string filter in filters)
+            {
+                // check the string property match..
+                match &= encoding.BodyName.ToLowerInvariant().Contains(filter) ||
+                                            encoding.EncodingName.ToLowerInvariant().Contains(filter) ||
+                                            encoding.HeaderName.ToLowerInvariant().Contains(filter) ||
+                                            encoding.WebName.ToLowerInvariant().Contains(filter);
+
+                // check the code page match..
+                match |= encoding.CodePage.ToString() == filter;
+            }
+            return match;
+        }
+
+        // the filter text box text was changed..
+        private void FilterEncodingTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // so filter the encodings..
+            CreateFilteredEncodingList();
         }
 
         /// <summary>
@@ -175,7 +342,15 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
         /// </summary>
         private ComboBox EncodingComboBox { get; set; }
 
-        
+        /// <summary>
+        /// Gets or sets the filter text box.
+        /// </summary>
+        private TextBox FilterEncodingTextBox { get; set; }
+
+        /// <summary>
+        /// A flag indicating if character sets containing only single encoding should be used.
+        /// </summary>
+        private bool SingleCodePageResults { get; set; }
 
         /// <summary>
         /// Gets or sets the encoding character set (a single instance is required and needs not to be disposed of).
@@ -201,7 +376,20 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
                 // loop through the encodings and add them the combo box containing the encodings.. 
                 foreach (var encoding in encodings)
                 {
-                    EncodingComboBox.Items.Add(new CharacterSetComboItem { CharacterSet = item.CharacterSet, Encoding = encoding, Tag = Data });
+                    // if the encodings are being filtered..
+                    if (FilterText != string.Empty)
+                    {
+                        if (FilterEncoding(encoding))
+                        {
+                            // only add the matching encodings..
+                            EncodingComboBox.Items.Add(new CharacterSetComboItem { CharacterSet = item.CharacterSet, Encoding = encoding, Tag = Data });
+                        }
+                    }
+                    else
+                    {
+                        // add all the encoding as the encodings are not being filtered..
+                        EncodingComboBox.Items.Add(new CharacterSetComboItem { CharacterSet = item.CharacterSet, Encoding = encoding, Tag = Data });
+                    }
                 }
 
                 // set the index for the combo box..
@@ -213,19 +401,15 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
             }
         }
 
+        /// <summary>
+        /// Gets the currently selected encoding in the encoding combo box.
+        /// </summary>
+        public System.Text.Encoding CurrentEncoding { get => EncodingComboBox.SelectedItem == null ? null : ((CharacterSetComboItem)EncodingComboBox.SelectedItem).Encoding; }
+
         // the encoding combo box selected item was changed..
         private void EncodingComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // get the combo box instance..
-            ComboBox comboBox = (ComboBox)sender;
-
-            // a null check just in case..
-            if (comboBox.SelectedItem != null)
-            {
-                // get the selected item of the combo box..
-                CharacterSetComboItem item = (CharacterSetComboItem)comboBox.SelectedItem;
-                EncodingSelected?.Invoke(this, new OnEncodingSelectedEventArgs { Data = Data, Encoding = item.Encoding } );
-            }
+            EncodingSelected?.Invoke(this, new OnEncodingSelectedEventArgs { Data = Data, Encoding = CurrentEncoding });
         }
 
         /// <summary>
@@ -238,6 +422,12 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
 
             // unsubscribe the SelectedIndexChanged event..
             EncodingComboBox.SelectedIndexChanged -= EncodingComboBox_SelectedIndexChanged;
+
+            // unsubscribe the TextChanged event if the FilterEncodingTextBox is not null..
+            if (FilterEncodingTextBox != null)
+            {
+                FilterEncodingTextBox.TextChanged -= FilterEncodingTextBox_TextChanged;
+            }
         }
 
         /// <summary>
