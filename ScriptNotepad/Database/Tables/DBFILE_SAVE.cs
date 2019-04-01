@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses;
 using System;
 using System.IO;
 using System.Text;
