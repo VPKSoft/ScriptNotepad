@@ -87,7 +87,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the session ID.
         /// </summary>
-        public int SESSIONID { get; set; } = 1;
+        public long SESSIONID { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the name of the session.

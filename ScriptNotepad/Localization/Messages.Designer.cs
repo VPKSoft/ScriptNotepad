@@ -79,6 +79,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add a new named session|A message indicating an action to add a new session to the database.
+        /// </summary>
+        internal static string msgAddSessionWithName {
+            get {
+                return ResourceManager.GetString("msgAddSessionWithName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All types|*.*|A text in a file dialog indicating all files.
         /// </summary>
         internal static string msgAllFileTypes {
@@ -588,6 +597,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgDeleteScriptConfirm {
             get {
                 return ResourceManager.GetString("msgDeleteScriptConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete selected session|A message indicating an action to delete a session from the database.
+        /// </summary>
+        internal static string msgDeleteSession {
+            get {
+                return ResourceManager.GetString("msgDeleteSession", resourceCulture);
             }
         }
         
@@ -1105,6 +1123,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename selected session|A message indicating an action to rename a session in the database.
+        /// </summary>
+        internal static string msgRenameSession {
+            get {
+                return ResourceManager.GetString("msgRenameSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to R programming language file|*.r|A text in a file dialog indicating R programming language files.
         /// </summary>
         internal static string msgRProgrammingLanguageFile {
@@ -1299,6 +1326,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgWarning {
             get {
                 return ResourceManager.GetString("msgWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The session name &apos;{0}&apos; is either invalid or already exists in the database|The given session name is invalid (white space or null) or the given session name already exists in the database.
+        /// </summary>
+        internal static string msgWarningInvalidSessionName {
+            get {
+                return ResourceManager.GetString("msgWarningInvalidSessionName", resourceCulture);
             }
         }
         

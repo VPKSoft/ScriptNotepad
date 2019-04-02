@@ -29,9 +29,6 @@ using ScriptNotepad.Database.Tables;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScriptNotepad.Database.TableMethods
 {
@@ -97,7 +94,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// Gets a collection of the sessions in the database.
         /// </summary>
         /// <returns>A collection of session in the database.</returns>
-        public static IEnumerable<SESSION_NAME> GetSessions()
+        public static List<SESSION_NAME> GetSessions()
         {
             List<SESSION_NAME> result = new List<SESSION_NAME>();
 

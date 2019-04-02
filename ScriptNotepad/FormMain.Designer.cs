@@ -83,6 +83,7 @@
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManagePlugins = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuManageSessions = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,6 +104,8 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSession = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -393,6 +396,8 @@
             this.mnuSplit1,
             this.mnuRecentFiles,
             this.mnuSplit2,
+            this.mnuSession,
+            this.toolStripMenuItem1,
             this.munSave,
             this.mnuSaveAs,
             this.mnuSaveAll,
@@ -495,7 +500,7 @@
             // 
             this.mnuRunScript.Image = global::ScriptNotepad.Properties.Resources.CSharp;
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -503,7 +508,7 @@
             // 
             this.mnuCharSets.Image = global::ScriptNotepad.Properties.Resources.unicode;
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
             this.mnuCharSets.Text = "Change encoding";
             this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
             // 
@@ -528,7 +533,8 @@
             this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuManageScriptSnippets,
             this.mnuSettings,
-            this.mnuManagePlugins});
+            this.mnuManagePlugins,
+            this.mnuManageSessions});
             this.mnuTools.Name = "mnuTools";
             this.mnuTools.Size = new System.Drawing.Size(47, 20);
             this.mnuTools.Text = "Tools";
@@ -556,6 +562,14 @@
             this.mnuManagePlugins.Size = new System.Drawing.Size(196, 22);
             this.mnuManagePlugins.Text = "Manage plug-ins";
             this.mnuManagePlugins.Click += new System.EventHandler(this.mnuManagePlugins_Click);
+            // 
+            // mnuManageSessions
+            // 
+            this.mnuManageSessions.Image = ((System.Drawing.Image)(resources.GetObject("mnuManageSessions.Image")));
+            this.mnuManageSessions.Name = "mnuManageSessions";
+            this.mnuManageSessions.Size = new System.Drawing.Size(196, 22);
+            this.mnuManageSessions.Text = "Manage sessions";
+            this.mnuManageSessions.Click += new System.EventHandler(this.mnuManageSessions_Click);
             // 
             // mnuPlugins
             // 
@@ -693,6 +707,18 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.commonCloseManyDocuments);
             // 
+            // mnuSession
+            // 
+            this.mnuSession.Image = global::ScriptNotepad.Properties.Resources.session_properties;
+            this.mnuSession.Name = "mnuSession";
+            this.mnuSession.Size = new System.Drawing.Size(191, 22);
+            this.mnuSession.Text = "Session";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -795,6 +821,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheRight;
         private System.Windows.Forms.ToolStripMenuItem mnuPlugins;
         private System.Windows.Forms.ToolStripMenuItem mnuManagePlugins;
+        private System.Windows.Forms.ToolStripMenuItem mnuManageSessions;
+        private System.Windows.Forms.ToolStripMenuItem mnuSession;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

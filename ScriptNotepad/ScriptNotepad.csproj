@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props')" />
+  <Import Project="..\packages\PropertyChanged.Fody.2.6.1\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.2.6.1\build\PropertyChanged.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,8 +51,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="PropertyChanged, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
-      <HintPath>..\packages\PropertyChanged.Fody.2.6.0\lib\net452\PropertyChanged.dll</HintPath>
+    <Reference Include="PropertyChanged, Version=2.6.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.2.6.1\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
@@ -101,8 +101,8 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.8\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.2.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.2.3\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.2.4\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -170,6 +170,7 @@
     <Compile Include="FormHexEdit.Designer.cs">
       <DependentUpon>FormHexEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Localization\StatusStripTexts.cs" />
     <Compile Include="PluginHandling\FormPluginManage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,11 +237,12 @@
     <Compile Include="UtilityClasses\Process\ProcessElevation.cs" />
     <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\CloseFormUtils.cs" />
-    <Compile Include="UtilityClasses\Session\FormSessionManage.cs">
+    <Compile Include="UtilityClasses\SessionHelpers\SessionMenuBuilder.cs" />
+    <Compile Include="UtilityClasses\Session\FormDialogSessionManage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\Session\FormSessionManage.Designer.cs">
-      <DependentUpon>FormSessionManage.cs</DependentUpon>
+    <Compile Include="UtilityClasses\Session\FormDialogSessionManage.Designer.cs">
+      <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
     </Compile>
     <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
     <EmbeddedResource Include="DialogForms\FormDialogQueryEncoding.resx">
@@ -287,8 +289,8 @@
     <EmbeddedResource Include="Test\FormTestThings.resx">
       <DependentUpon>FormTestThings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\Session\FormSessionManage.resx">
-      <DependentUpon>FormSessionManage.cs</DependentUpon>
+    <EmbeddedResource Include="UtilityClasses\Session\FormDialogSessionManage.resx">
+      <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Installer\DotNetChecker.nsh" />
     <None Include="Installer\make_installer.bat" />
@@ -332,6 +334,8 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\textfield-rename.png" />
+    <None Include="Resources\session-properties.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />
@@ -387,8 +391,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets'))" />
-    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props'))" />
     <Error Condition="!Exists('..\packages\Fody.4.2.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.4.2.1\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.2.6.1\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.2.6.1\build\PropertyChanged.Fody.props'))" />
   </Target>
   <Import Project="..\packages\Fody.4.2.1\build\Fody.targets" Condition="Exists('..\packages\Fody.4.2.1\build\Fody.targets')" />
 </Project>

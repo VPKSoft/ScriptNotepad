@@ -47,6 +47,19 @@ namespace ScriptNotepad.Database.TableCommands
         }
 
         /// <summary>
+        /// Generates a SQL sentence to get a session ID by it's name.
+        /// </summary>
+        /// <param name="sessionName">Name of the session.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenSessionNameIDSelect(string sessionName)
+        {
+            string sql =
+                $"SELECT IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";
+
+            return sql;
+        }
+
+        /// <summary>
         /// Generates a SQL snippet to get the session name by it's ID.
         /// </summary>
         /// <param name="sessionID">The ID of the session.</param>

@@ -49,7 +49,7 @@ namespace ScriptNotepad.Database.TableCommands
                 $"SELECT SESSIONID, SESSIONNAME",
                 $"FROM",
                 $"SESSION_NAME",
-                $"ORDER BY (CASE WHEN SESSIONID = 1 THEN 1 ELSE 0 END), SESSIONNAME COLLATE NOCASE;");
+                $"ORDER BY (CASE WHEN SESSIONID = 1 THEN 1 ELSE 0 END) DESC, SESSIONNAME COLLATE NOCASE;");
 
             return sql;
         }
@@ -115,7 +115,7 @@ namespace ScriptNotepad.Database.TableCommands
                 $"SELECT {QS(name)}",
                 $"WHERE",
                 // prevent multiple sessions with the same name..
-                $"NOT EXISTS(SELECT * FROM SESSION_NAME WHERE NAME = {QS(name)};");
+                $"NOT EXISTS(SELECT * FROM SESSION_NAME WHERE SESSIONNAME = {QS(name)});");
 
             return sql;
         }

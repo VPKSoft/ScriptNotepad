@@ -46,5 +46,13 @@ namespace ScriptNotepad.Database.Tables
         /// Gets a value indicating whether this session instance is the default session.
         /// </summary>
         public bool IsDefault { get => SESSIONID == 1; }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        public override string ToString()
+        {
+            return SESSIONNAME;
+        }
     }
 }

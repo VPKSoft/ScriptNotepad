@@ -37,6 +37,7 @@ using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.PluginHandling;
+using ScriptNotepad.UtilityClasses.Session;
 
 // limit the PropertyChanged to the Settings class (https://github.com/Fody/PropertyChanged)
 [assembly: PropertyChanged.FilterType("ScriptNotepad.Settings.")] 
@@ -110,6 +111,7 @@ namespace ScriptNotepad
                 new FormHexEdit();
                 new Settings.FormSettings();
                 new FormPluginManage();
+                new FormDialogSessionManage();
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
                 return;

@@ -543,4 +543,16 @@
   <data name="msgFileHasChangedInEditorAction" xml:space="preserve">
     <value>The file '{0}' has been changed in the editor and a reload from the file system is required. Continue?|A file has been changed in the editor and a reload from the file system is required to complete an arbitrary action</value>
   </data>
+  <data name="msgWarningInvalidSessionName" xml:space="preserve">
+    <value>The session name '{0}' is either invalid or already exists in the database|The given session name is invalid (white space or null) or the given session name already exists in the database</value>
+  </data>
+  <data name="msgAddSessionWithName" xml:space="preserve">
+    <value>Add a new named session|A message indicating an action to add a new session to the database</value>
+  </data>
+  <data name="msgDeleteSession" xml:space="preserve">
+    <value>Delete selected session|A message indicating an action to delete a session from the database</value>
+  </data>
+  <data name="msgRenameSession" xml:space="preserve">
+    <value>Rename selected session|A message indicating an action to rename a session in the database</value>
+  </data>
 </root>

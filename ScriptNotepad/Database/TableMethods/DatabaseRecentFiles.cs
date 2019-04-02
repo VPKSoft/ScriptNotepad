@@ -143,6 +143,8 @@ namespace ScriptNotepad.Database.TableMethods
             {
                 recentFile.SESSIONNAME = sessionName;
 
+                recentFile.SESSIONID = GetScalar<long>(DatabaseCommandsGeneral.GenSessionNameIDSelect(sessionName));
+
                 string sql = DatabaseCommandsRecentFiles.GenHistoryInsert(recentFile);
 
                 // as the SQLiteCommand is disposable a using clause is required..

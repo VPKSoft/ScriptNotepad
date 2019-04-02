@@ -57,6 +57,8 @@ using ScriptNotepad.PluginHandling;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Database.TableMethods;
 using System.Linq;
+using ScriptNotepad.UtilityClasses.Session;
+using ScriptNotepad.Localization;
 #endregion
 
 namespace ScriptNotepad
@@ -121,14 +123,21 @@ namespace ScriptNotepad
             Database.Database.InitConnection("Data Source=" + DBLangEngine.DataDir + "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;"); // PRAGMA synchronous=OFF;PRAGMA journal_mode=OFF
 
             // localize the open file dialog..
-            Localization.StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
+            StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
 
             // localize the save file dialog..
-            Localization.StaticLocalizeFileDialog.InitFileDialog(sdAnyFile);
+            StaticLocalizeFileDialog.InitFileDialog(sdAnyFile);
 
             // localize the open and save file dialog titles..
             sdAnyFile.Title = DBLangEngine.GetMessage("msgSaveFileAs", "Save As|A title for a save file as dialog");
             odAnyFile.Title = DBLangEngine.GetMessage("msgOpenFile", "Open|A title for a open file dialog");
+
+            // initialize the helper class for the status strip's labels..
+            StatusStripTexts.InitLabels(ssLbLineColumn, ssLbLinesColumnSelection, ssLbLDocLinesSize, 
+                ssLbLineEnding, ssLbEncoding, ssLbSessionName, ssLbInsertOverride);
+
+            // set the status strip label's to indicate that there is no active document..
+            StatusStripTexts.SetEmptyTexts(CurrentSession);
 
             // localize some other class properties, etc..
             FormLocalizationHelper.LocalizeMisc();
@@ -159,6 +168,9 @@ namespace ScriptNotepad
             CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, "convert_encoding");
             CharacterSetMenuBuilder.EncodingMenuClicked += CharacterSetMenuBuilder_EncodingMenuClicked;
 
+            SessionMenuBuilder.SessionMenuClicked += SessionMenuBuilder_SessionMenuClicked;
+            SessionMenuBuilder.CreateSessionMenu(mnuSession, CurrentSession);
+
             // enable the test menu only when debugging..
             mnuTest.Visible = System.Diagnostics.Debugger.IsAttached;
 
@@ -176,8 +188,7 @@ namespace ScriptNotepad
             Database.Database.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
 
             // set the current session name to the status strip..
-            ssLbSessionName.Text =
-                DBLangEngine.GetMessage("msgSessionName", "Session: {0}|A message describing a session name with the name as a parameter", CurrentSession);
+            StatusStripTexts.SetSessionName(CurrentSession);
 
             // the user is either logging of from the system or is shutting down the system..
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
@@ -335,6 +346,39 @@ namespace ScriptNotepad
         }
 
         /// <summary>
+        /// Unsubscribes the external event handlers and disposes of the items created by other classes.
+        /// </summary>
+        private void DisposeExternal()
+        {
+            // release the references for the status strip labels..
+            StatusStripTexts.Initialized = false;
+
+            // dispose of the encoding menu items..
+            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
+
+            // dispose of the recent file menu items..
+            RecentFilesMenuBuilder.DisposeRecentFilesMenu(mnuRecentFiles);
+
+            // dispose the session menu items..
+            SessionMenuBuilder.DisposeSessionMenu();
+
+            // unsubscribe the recent file menu item click handler..
+            RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
+
+            // unsubscribe the IpcClientServer MessageReceived event handler..
+            IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
+
+            // unsubscribe the encoding menu clicked handler..
+            CharacterSetMenuBuilder.EncodingMenuClicked -= CharacterSetMenuBuilder_EncodingMenuClicked;
+
+            // unsubscribe the session menu clicked handler.. 
+            SessionMenuBuilder.SessionMenuClicked -= SessionMenuBuilder_SessionMenuClicked;
+
+            // dispose of the loaded plug-in..
+            DisposePlugins();
+        }
+
+        /// <summary>
         /// Disposes the plug-ins loaded into the software.
         /// </summary>
         private void DisposePlugins()
@@ -411,15 +455,6 @@ namespace ScriptNotepad
                 CloseFormUtils.CloseOpenForms(this);
             }
 
-            // unsubscribe the IpcClientServer MessageReceived event handler..
-            IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
-
-            // unsubscribe the encoding menu clicked handler..
-            CharacterSetMenuBuilder.EncodingMenuClicked -= CharacterSetMenuBuilder_EncodingMenuClicked;
-
-            // dispose of the encoding menu items..
-            CharacterSetMenuBuilder.DisposeCharacterSetMenu(mnuCharSets);
-
             // save the current session's documents to the database..
             SaveDocumentsToDatabase(CurrentSession, true);
 
@@ -433,9 +468,6 @@ namespace ScriptNotepad
 
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
-            // unsubscribe the recent file menu item click handler..
-            RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
-
             // close the main form as the call came from elsewhere than the FormMain_FormClosed event..
             if (noUserInteraction)
             {
@@ -444,88 +476,26 @@ namespace ScriptNotepad
         }
 
         /// <summary>
-        /// Sets the main status strip values for the currently active document..
+        /// Closes the current given session.
         /// </summary>
-        /// <param name="document">The <see cref="ScintillaTabbedDocument"/> document of which properties to use to set the status strip values to indicate.</param>
-        private void SetStatusStringText(ScintillaTabbedDocument document)
+        /// <param name="sessionName">The name of the session of which documents to close.</param>
+        private void CloseSession(string sessionName)
         {
-            // first check the parameter validity..
-            if (document == null)
-            {
-                return;
-            }
+            // save the current session's documents to the database..
+            SaveDocumentsToDatabase(sessionName, true);
 
-            ssLbLineColumn.Text =
-                DBLangEngine.GetMessage("msgColLine", "Line: {0}  Col: {1}|As in the current column and the current line in a ScintillaNET control",
-                document.LineNumber + 1, document.Column + 1);
+            // delete excess document contents saved in the database..
+            var cleanupContents = Database.Database.CleanupHistoryDocumentContents(sessionName, SaveFileHistoryContentsCount);
 
-            ssLbLinesColumnSelection.Text =
-                DBLangEngine.GetMessage("msgColLineSelection", "Sel1: {0}|{1}  Sel2: {2}|{3}  Len: {4}|The selection start, end and length in a ScintillaNET control in columns, lines and character count",
-                document.SelectionStartLine + 1,
-                document.SelectionStartColumn + 1,
-                document.SelectionEndLine + 1,
-                document.SelectionEndColumn + 1,
-                document.SelectionLength);
+            ExceptionLogger.LogMessage($"Database history contents cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
-            ssLbLineEnding.Text = string.Empty;
+            // delete excess entries from the file history list from the database..
+            cleanupContents = Database.Database.CleanUpHistoryList(sessionName, HistoryListAmount);
 
-            if (document.Tag != null) // TODO::Only detect the file line ending type if the contents have been changed..
-            {
-                DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
-                var fileLineTypes = UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(fileSave.FILE_CONTENTS);
+            ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
-                ssLbLineEnding.Text =
-                    DBLangEngine.GetMessage("msgLineEndingShort", "LE: |A short message indicating a file line ending type value(s) as a concatenated text");
-
-                string endAppend = string.Empty;
-
-                foreach (var fileLineType in fileLineTypes)
-                {
-                    if (!fileLineType.Key.HasFlag(UtilityClasses.LinesAndBinary.FileLineTypes.Mixed))
-                    {
-                        ssLbLineEnding.Text += fileLineType.Value + ", ";
-                    }
-                    else
-                    {
-                        endAppend = $" ({fileLineType.Value})";
-                    }
-
-                    ssLbLineEnding.Text = ssLbLineEnding.Text.TrimEnd(',', ' ') + endAppend;
-                }
-
-                ssLbEncoding.Text =
-                    DBLangEngine.GetMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
-                    fileSave.ENCODING.EncodingName;
-
-                ssLbSessionName.Text =
-                    DBLangEngine.GetMessage("msgSessionName", "Session: {0}|A message describing a session name with the name as a parameter", CurrentSession);
-            }
-
-            // set the insert / override text for the status strip..
-            SetInsertOverrideStatusStripText(document, false);
-        }
-
-        /// <summary>
-        /// Sets the main status strip value for insert / override mode for the currently active document..
-        /// </summary>
-        /// <param name="document">The <see cref="ScintillaTabbedDocument"/> document of which properties to use to set the status strip values to indicate.</param>
-        /// <param name="isKeyPreview">A flag indicating whether the software captured the change before the control; thus indicating an inverted value.</param>
-        private void SetInsertOverrideStatusStripText(ScintillaTabbedDocument document, bool isKeyPreview)
-        {
-            if (isKeyPreview)
-            {
-                ssLbInsertOverride.Text =
-                    !document.Scintilla.Overtype ?
-                        DBLangEngine.GetMessage("msgOverrideShort", "Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text") :
-                        DBLangEngine.GetMessage("msgInsertShort", "Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text");
-            }
-            else
-            {
-                ssLbInsertOverride.Text =
-                    document.Scintilla.Overtype ?
-                        DBLangEngine.GetMessage("msgOverrideShort", "Cursor mode: OVR|As in the text to be typed to the Scintilla would override the underlying text") :
-                        DBLangEngine.GetMessage("msgInsertShort", "Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text");
-            }
+            // close all the documents..
+            sttcMain.CloseAllDocuments();
         }
 
         /// <summary>
@@ -782,6 +752,9 @@ namespace ScriptNotepad
         /// <param name="history">An indicator if the documents should be closed ones. I.e. not existing with the current session.</param>
         private void LoadDocumentsFromDatabase(string sessionName, bool history)
         {
+            // set the status strip label's to indicate that there is no active document..
+            StatusStripTexts.SetEmptyTexts(CurrentSession);
+
             IEnumerable<DBFILE_SAVE> files = DatabaseFileSave.GetFilesFromDatabase(sessionName, DatabaseHistoryFlag.NotHistory);
 
             string activeDocument = string.Empty;
@@ -886,7 +859,9 @@ namespace ScriptNotepad
                             FILENAME = sttcMain.CurrentDocument.FileName,
                             FILENAME_FULL = sttcMain.CurrentDocument.FileName,
                             FILEPATH = string.Empty,
-                            FILE_CONTENTS = new MemoryStream()
+                            FILE_CONTENTS = new MemoryStream(),
+                            SESSIONNAME = CurrentSession,
+                            SESSIONID = CurrentSessionID,
                         };
 
                     // assign the context menu strip for the tabbed document..
@@ -1154,6 +1129,12 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a user wishes to manage sessions used by the software..
+        private void mnuManageSessions_Click(object sender, EventArgs e)
+        {
+            FormDialogSessionManage.Execute();
+            SessionMenuBuilder.CreateSessionMenu(mnuSession, CurrentSession);
+        }
 
         /// <summary>
         /// Tries catch an event crashing the whole application if the error is causes by a plug-in.
@@ -1272,7 +1253,7 @@ namespace ScriptNotepad
                     if (sttcMain.CurrentDocument != null)
                     {
                         // ..set the insert / override text for the status strip..
-                        SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
+                        StatusStripTexts.SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
                     }
                 }
             }
@@ -1301,7 +1282,7 @@ namespace ScriptNotepad
             {
                 // release the flag which suspends the selection update to avoid excess CPU load..
                 suspendSelectionUpdate = false;
-                SetStatusStringText(sttcMain.CurrentDocument);
+                StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession);
             }
         }
 
@@ -1315,7 +1296,7 @@ namespace ScriptNotepad
         {
             // release the flag which suspends the selection update to avoid excess CPU load..
             suspendSelectionUpdate = false;
-            SetStatusStringText(sttcMain.CurrentDocument);
+            StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession);
         }
 
         // this event is raised when another instance of this application receives a file name
@@ -1359,8 +1340,8 @@ namespace ScriptNotepad
                 DatabasePlugins.UpdatePlugin(entry);
             }
 
-            // dispose of the loaded plug-in instances..
-            DisposePlugins();
+            // unsubscribe the external event handlers and dispose of the items created by other classes..
+            DisposeExternal();
         }
 
         // if the form is closing, save the snapshots of the open documents to the SQLite database..
@@ -1447,6 +1428,13 @@ namespace ScriptNotepad
             }
         }
 
+        // a user wishes to change the current session..
+        private void SessionMenuBuilder_SessionMenuClicked(object sender, SessionMenuClickEventArgs e)
+        {
+            // set the current session to a new value..
+            CurrentSession = e.SessionName.SESSIONNAME;
+        }
+
         // a user is logging of or the system is shutting down..
         private void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
         {
@@ -1512,6 +1500,13 @@ namespace ScriptNotepad
         {
             // call the handle method..
             HandleCloseTab((DBFILE_SAVE)e.ScintillaTabbedDocument.Tag, false, false, true, false);
+
+            // if there are no documents any more..
+            if (sttcMain.DocumentsCount - 1 <= 0) 
+            {
+                // set the status strip label's to indicate that there is no active document..
+                StatusStripTexts.SetEmptyTexts(CurrentSession);
+            }
         }
 
         // a user activated a tab (document) so display it's file name..
@@ -1524,12 +1519,9 @@ namespace ScriptNotepad
                 (ProcessElevation.IsElevated ? " (" +
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
 
-            ssLbLDocLinesSize.Text =
-                DBLangEngine.GetMessage("msgDocSizeLines", "length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters",
-                e.ScintillaTabbedDocument.Scintilla.Text.Length,
-                e.ScintillaTabbedDocument.Scintilla.Lines.Count);
+            StatusStripTexts.SetDocumentSizeText(e.ScintillaTabbedDocument);
 
-            SetStatusStringText(e.ScintillaTabbedDocument);
+            StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
 
             UpdateUndoRedoIndicators();
         }
@@ -1545,7 +1537,7 @@ namespace ScriptNotepad
         {
             if (!suspendSelectionUpdate)
             {
-                SetStatusStringText(e.ScintillaTabbedDocument);
+                StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
             }
         }
 
@@ -1676,8 +1668,6 @@ namespace ScriptNotepad
             leftActivatedEvent = false;
         }
 
-        // TODO::!!
-
         // occurs when a plug-in requests for the currently active document..
         private void RequestActiveDocument(object sender, RequestScintillaDocumentEventArgs e)
         {
@@ -1793,7 +1783,29 @@ namespace ScriptNotepad
         private string CurrentSession
         {
             get => Settings.FormSettings.Settings.CurrentSession;
-            set => Settings.FormSettings.Settings.CurrentSession = value;
+
+            set
+            {
+                bool sessionChanged = Settings.FormSettings.Settings.CurrentSession != value;
+                string previousSession = Settings.FormSettings.Settings.CurrentSession;
+
+                Settings.FormSettings.Settings.CurrentSession = value;
+
+                if (sessionChanged)
+                {
+                    CloseSession(previousSession);
+
+                    // load the recent documents which were saved during the program close..
+                    LoadDocumentsFromDatabase(CurrentSession, false);
+                }
+
+                // get the session ID number from the database..
+                CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
+
+
+
+                // TODO::Add session support!!..
+            }
         }
 
         /// <summary>
