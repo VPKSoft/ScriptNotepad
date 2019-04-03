@@ -746,6 +746,32 @@ namespace ScriptNotepad
         }
 
         /// <summary>
+        /// Sets the application title to indicate no active document.
+        /// </summary>
+        private void SetEmptyApplicationTitle()
+        {
+            this.Text =
+                DBLangEngine.GetMessage("msgAppTitleWithoutFileName",
+                "ScriptNotepad|As in the application name without an active file name") +
+                (ProcessElevation.IsElevated ? " (" +
+                DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
+        }
+
+        /// <summary>
+        /// Sets the application title to indicate the currently active document.
+        /// </summary>
+        /// <param name="document">The <see cref="ScintillaTabbedDocument"/> document.</param>
+        private void SetApplicationTitle(ScintillaTabbedDocument document)
+        {
+            this.Text =
+                DBLangEngine.GetMessage("msgAppTitleWithFileName",
+                "ScriptNotepad [{0}]|As in the application name combined with an active file name",
+                document.FileName) +
+                (ProcessElevation.IsElevated ? " (" +
+                DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
+        }
+
+        /// <summary>
         /// Loads the document snapshots from the SQLite database.
         /// </summary>
         /// <param name="sessionName">A name of the session to which the documents are tagged with.</param>
@@ -754,6 +780,9 @@ namespace ScriptNotepad
         {
             // set the status strip label's to indicate that there is no active document..
             StatusStripTexts.SetEmptyTexts(CurrentSession);
+
+            // set the application title to indicate no active document..
+            SetEmptyApplicationTitle();
 
             IEnumerable<DBFILE_SAVE> files = DatabaseFileSave.GetFilesFromDatabase(sessionName, DatabaseHistoryFlag.NotHistory);
 
@@ -1132,8 +1161,44 @@ namespace ScriptNotepad
         // a user wishes to manage sessions used by the software..
         private void mnuManageSessions_Click(object sender, EventArgs e)
         {
+            // display the session management dialog..
             FormDialogSessionManage.Execute();
+
+            #region SessionRename
+            SESSION_NAME session = DatabaseSessionName.GetSessions().FirstOrDefault(f => f.SESSIONID == CurrentSessionID);
+            // if true the current session has been renamed..
+            if (session != null && CurrentSession != session.SESSIONNAME)
+            {
+                // set the current session name..
+                Settings.FormSettings.Settings.CurrentSession = session.SESSIONNAME;
+
+                // set the session name for all open documents..
+                for (int i = 0; i < sttcMain.DocumentsCount; i++)
+                {
+                    ((DBFILE_SAVE)sttcMain.Documents[i].Tag).SESSIONNAME = session.SESSIONNAME;
+                }
+
+                // re-display the current document's status strip if any documents is active..
+                if (sttcMain.CurrentDocument != null)
+                {
+                    StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession);
+                }
+                else
+                {
+                    // no documents are active so re-display status strip with empty contents..
+                    StatusStripTexts.SetEmptyTexts(CurrentSession);
+
+                    // set the application title to indicate no active document..
+                    SetEmptyApplicationTitle();
+                }
+            }
+            #endregion
+
+            // re-create the current session menu..
             SessionMenuBuilder.CreateSessionMenu(mnuSession, CurrentSession);
+
+            // re-create a menu for recent files..
+            RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
         }
 
         /// <summary>
@@ -1481,7 +1546,6 @@ namespace ScriptNotepad
             }
         }
 
-
         // the software's main form was activated so check if any open file has been changes..
         private void FormMain_Activated(object sender, EventArgs e)
         {
@@ -1506,18 +1570,17 @@ namespace ScriptNotepad
             {
                 // set the status strip label's to indicate that there is no active document..
                 StatusStripTexts.SetEmptyTexts(CurrentSession);
+
+                // set the application title to indicate no active document..
+                SetEmptyApplicationTitle();
             }
         }
 
         // a user activated a tab (document) so display it's file name..
         private void sttcMain_TabActivated(object sender, TabActivatedEventArgs e)
         {
-            this.Text =
-                DBLangEngine.GetMessage("msgAppTitleWithFileName",
-                "ScriptNotepad [{0}]|As in the application name combined with an active file name",
-                e.ScintillaTabbedDocument.FileName) +
-                (ProcessElevation.IsElevated ? " (" +
-                DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
+            // set the application title to indicate the currently active document..
+            SetApplicationTitle(e.ScintillaTabbedDocument);
 
             StatusStripTexts.SetDocumentSizeText(e.ScintillaTabbedDocument);
 

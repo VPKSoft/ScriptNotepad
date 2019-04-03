@@ -555,4 +555,31 @@
   <data name="msgRenameSession" xml:space="preserve">
     <value>Rename selected session|A message indicating an action to rename a session in the database</value>
   </data>
+  <data name="msgCurrentSessionCanNotDelete" xml:space="preserve">
+    <value>The currently active session can not be deleted.|A message informing that the currently active session can not be deleted.</value>
+  </data>
+  <data name="msgDefaultSessionCanNotDelete" xml:space="preserve">
+    <value>The default session can not be deleted.|A message informing that the default session can not be deleted.</value>
+  </data>
+  <data name="msgInformation" xml:space="preserve">
+    <value>Information|A message title describing of some kind information.</value>
+  </data>
+  <data name="msgConfirmDeleteEntireSession" xml:space="preserve">
+    <value>Please confirm you want to delete an entire session '{0}' from the database. This operation can not be undone. Continue?|A confirmation dialog if the user wishes to delete an entire session from the database. (NO POSSIBILITY TO UNDO!).</value>
+  </data>
+  <data name="msgSessionCreateSuccess" xml:space="preserve">
+    <value>The session was successfully created.|A message indicating a successful session creation.</value>
+  </data>
+  <data name="msgSessionDeleteSuccess" xml:space="preserve">
+    <value>The session was successfully deleted.|A message indicating a successful session delete.</value>
+  </data>
+  <data name="msgSessionRenameSuccess" xml:space="preserve">
+    <value>The session was successfully renamed.|A message indicating a successful session rename.</value>
+  </data>
+  <data name="msgSuccess" xml:space="preserve">
+    <value>Success|A message indicating a successful operation.</value>
+  </data>
+  <data name="msgAppTitleWithoutFileName" xml:space="preserve">
+    <value>ScriptNotepad|As in the application name without an active file name</value>
+  </data>
 </root>

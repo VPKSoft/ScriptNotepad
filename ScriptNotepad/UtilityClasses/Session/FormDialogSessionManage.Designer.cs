@@ -36,7 +36,7 @@
             this.tbRenameSession = new System.Windows.Forms.TextBox();
             this.pbRenameSelectedSession = new System.Windows.Forms.PictureBox();
             this.pbDeleteSelectedSession = new System.Windows.Forms.PictureBox();
-            this.btOK = new System.Windows.Forms.Button();
+            this.btClose = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.pbAddNewSessionWithName = new System.Windows.Forms.PictureBox();
             this.tbAddNewSessionWithName = new System.Windows.Forms.TextBox();
@@ -108,17 +108,18 @@
             this.pbDeleteSelectedSession.TabIndex = 13;
             this.pbDeleteSelectedSession.TabStop = false;
             this.ttMain.SetToolTip(this.pbDeleteSelectedSession, "Delete selected session");
+            this.pbDeleteSelectedSession.Click += new System.EventHandler(this.pbDeleteSelectedSession_Click);
             // 
-            // btOK
+            // btClose
             // 
-            this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btOK.Location = new System.Drawing.Point(520, 92);
-            this.btOK.Name = "btOK";
-            this.btOK.Size = new System.Drawing.Size(75, 23);
-            this.btOK.TabIndex = 14;
-            this.btOK.Text = "OK";
-            this.btOK.UseVisualStyleBackColor = true;
+            this.btClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btClose.Location = new System.Drawing.Point(520, 92);
+            this.btClose.Name = "btClose";
+            this.btClose.Size = new System.Drawing.Size(75, 23);
+            this.btClose.TabIndex = 14;
+            this.btClose.Text = "Close";
+            this.btClose.UseVisualStyleBackColor = true;
             // 
             // pbAddNewSessionWithName
             // 
@@ -153,15 +154,15 @@
             // 
             // FormDialogSessionManage
             // 
-            this.AcceptButton = this.btOK;
+            this.AcceptButton = this.btClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btOK;
+            this.CancelButton = this.btClose;
             this.ClientSize = new System.Drawing.Size(607, 125);
             this.Controls.Add(this.pbAddNewSessionWithName);
             this.Controls.Add(this.tbAddNewSessionWithName);
             this.Controls.Add(this.lbAddNewSessionWithName);
-            this.Controls.Add(this.btOK);
+            this.Controls.Add(this.btClose);
             this.Controls.Add(this.pbDeleteSelectedSession);
             this.Controls.Add(this.pbRenameSelectedSession);
             this.Controls.Add(this.tbRenameSession);
@@ -191,7 +192,7 @@
         private System.Windows.Forms.TextBox tbRenameSession;
         private System.Windows.Forms.PictureBox pbRenameSelectedSession;
         private System.Windows.Forms.PictureBox pbDeleteSelectedSession;
-        private System.Windows.Forms.Button btOK;
+        private System.Windows.Forms.Button btClose;
         private System.Windows.Forms.ToolTip ttMain;
         private System.Windows.Forms.TextBox tbAddNewSessionWithName;
         private System.Windows.Forms.Label lbAddNewSessionWithName;

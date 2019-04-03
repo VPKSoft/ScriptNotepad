@@ -27,7 +27,6 @@ SOFTWARE.
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Database.UtilityClasses;
 using System;
-using System.Collections;
 
 namespace ScriptNotepad.Database.TableCommands
 {

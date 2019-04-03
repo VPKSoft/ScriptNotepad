@@ -26,6 +26,7 @@ SOFTWARE.
 
 using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
+using ScriptNotepad.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -139,6 +140,12 @@ namespace ScriptNotepad.UtilityClasses.Session
 
                 // list the sessions to the combo box..
                 ListSessions();
+
+                MessageBox.Show(
+                    DBLangEngine.GetMessage("msgSessionCreateSuccess",
+                    "The session was successfully created.|A message indicating a successful session creation."),
+                    DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
             else
             {
@@ -193,6 +200,12 @@ namespace ScriptNotepad.UtilityClasses.Session
 
                         // set the instance back to the combo box..
                         cmbSessions.SelectedItem = session;
+
+                        MessageBox.Show(
+                            DBLangEngine.GetMessage("msgSessionRenameSuccess",
+                            "The session was successfully renamed.|A message indicating a successful session rename."),
+                            DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
+                            MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                     }
                     else
                     {
@@ -210,6 +223,53 @@ namespace ScriptNotepad.UtilityClasses.Session
                         "The session name '{0}' is either invalid or already exists in the database|The given session name is invalid (white space or null) or the given session name already exists in the database", tbRenameSession.Text),
                         DBLangEngine.GetMessage("msgWarning", "Warning|A message warning of some kind problem."),
                         MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                }
+            }
+        }
+
+        private void pbDeleteSelectedSession_Click(object sender, EventArgs e)
+        {
+            if (cmbSessions.SelectedItem != null)
+            {
+                SESSION_NAME session = (SESSION_NAME)cmbSessions.SelectedItem;
+
+                if (session.IsDefault)
+                {
+                    MessageBox.Show(
+                        DBLangEngine.GetMessage("msgDefaultSessionCanNotDelete",
+                        "The default session can not be deleted.|A message informing that the default session can not be deleted."),
+                        DBLangEngine.GetMessage("msgInformation", "Information|A message title describing of some kind information."),
+                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                }
+                else if (session.SESSIONNAME == FormSettings.Settings.CurrentSession)
+                {
+                    MessageBox.Show(
+                        DBLangEngine.GetMessage("msgCurrentSessionCanNotDelete",
+                        "The currently active session can not be deleted.|A message informing that the currently active session can not be deleted."),
+                        DBLangEngine.GetMessage("msgInformation", "Information|A message title describing of some kind information."),
+                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                }
+                else
+                {
+                    if (MessageBox.Show(
+                    DBLangEngine.GetMessage("msgConfirmDeleteEntireSession",
+                    "Please confirm you want to delete an entire session '{0}' from the database. This operation can not be undone. Continue?|A confirmation dialog if the user wishes to delete an entire session from the database. (NO POSSIBILITY TO UNDO!).", session.SESSIONNAME),
+                    DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        if (DatabaseSessionData.DeleteEntireSession(session))
+                        {
+                            // get the session list from the database..
+                            sessions = DatabaseSessionName.GetSessions();
+
+                            MessageBox.Show(
+                                DBLangEngine.GetMessage("msgSessionDeleteSuccess",
+                                "The session was successfully deleted.|A message indicating a successful session delete."),
+                                DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
+                                MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                        }
+                    }
                 }
             }
         }

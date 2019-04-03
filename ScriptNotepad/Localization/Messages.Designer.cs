@@ -106,6 +106,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ScriptNotepad|As in the application name without an active file name.
+        /// </summary>
+        internal static string msgAppTitleWithoutFileName {
+            get {
+                return ResourceManager.GetString("msgAppTitleWithoutFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assembly language source file|*.asm|A text in a file dialog indicating Assembly language source files.
         /// </summary>
         internal static string msgAssemblySourceFile {
@@ -538,6 +547,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please confirm you want to delete an entire session &apos;{0}&apos; from the database. This operation can not be undone. Continue?|A confirmation dialog if the user wishes to delete an entire session from the database. (NO POSSIBILITY TO UNDO!)..
+        /// </summary>
+        internal static string msgConfirmDeleteEntireSession {
+            get {
+                return ResourceManager.GetString("msgConfirmDeleteEntireSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to C++ source file|*.h;*.hpp;*.hxx;*.cpp;*.cxx;*.cc|A text in a file dialog indicating C++ source files.
         /// </summary>
         internal static string msgCPPSourceFile {
@@ -565,6 +583,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The currently active session can not be deleted.|A message informing that the currently active session can not be deleted..
+        /// </summary>
+        internal static string msgCurrentSessionCanNotDelete {
+            get {
+                return ResourceManager.GetString("msgCurrentSessionCanNotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A line script snippet|As in a script for manipulating Scintilla contents as lines.
         /// </summary>
         internal static string msgDefaultScriptSnippetLines {
@@ -579,6 +606,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgDefaultScriptSnippetText {
             get {
                 return ResourceManager.GetString("msgDefaultScriptSnippetText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default session can not be deleted.|A message informing that the default session can not be deleted..
+        /// </summary>
+        internal static string msgDefaultSessionCanNotDelete {
+            get {
+                return ResourceManager.GetString("msgDefaultSessionCanNotDelete", resourceCulture);
             }
         }
         
@@ -750,6 +786,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgHyperTextMarkupLanguageFile {
             get {
                 return ResourceManager.GetString("msgHyperTextMarkupLanguageFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information|A message title describing of some kind information..
+        /// </summary>
+        internal static string msgInformation {
+            get {
+                return ResourceManager.GetString("msgInformation", resourceCulture);
             }
         }
         
@@ -1204,11 +1249,38 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The session was successfully created.|A message indicating a successful session creation..
+        /// </summary>
+        internal static string msgSessionCreateSuccess {
+            get {
+                return ResourceManager.GetString("msgSessionCreateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The session was successfully deleted.|A message indicating a successful session delete..
+        /// </summary>
+        internal static string msgSessionDeleteSuccess {
+            get {
+                return ResourceManager.GetString("msgSessionDeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Session: {0}|A message describing a session name with the name as a parameter&quot;, CurrentSession.
         /// </summary>
         internal static string msgSessionName {
             get {
                 return ResourceManager.GetString("msgSessionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The session was successfully renamed.|A message indicating a successful session rename..
+        /// </summary>
+        internal static string msgSessionRenameSuccess {
+            get {
+                return ResourceManager.GetString("msgSessionRenameSuccess", resourceCulture);
             }
         }
         
@@ -1245,6 +1317,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgStructuredQueryLanguageFile {
             get {
                 return ResourceManager.GetString("msgStructuredQueryLanguageFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success|A message indicating a successful operation..
+        /// </summary>
+        internal static string msgSuccess {
+            get {
+                return ResourceManager.GetString("msgSuccess", resourceCulture);
             }
         }
         
