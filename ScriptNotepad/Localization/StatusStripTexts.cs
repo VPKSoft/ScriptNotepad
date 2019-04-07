@@ -166,9 +166,9 @@ namespace ScriptNotepad.Localization
             }
 
             LabelDocumentLinesSize.Text =
-                DBLangEngine.GetStatMessage("msgDocSizeLines", "length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters",
+                DBLangEngine.GetStatMessage("msgDocSizeLines", "length: {0}  lines: {1}, pos: {2}|As in the ScintillaNET document size in lines and in characters and the current location in characters",
                 document.Scintilla.Text.Length,
-                document.Scintilla.Lines.Count);
+                document.Scintilla.Lines.Count, document.Scintilla.CurrentPosition);
         }
 
         /// <summary>
@@ -202,6 +202,8 @@ namespace ScriptNotepad.Localization
                 document.SelectionEndLine + 1,
                 document.SelectionEndColumn + 1,
                 document.SelectionLength);
+
+            SetDocumentSizeText(document);
 
             LabelLineEnding.Text = string.Empty;
 

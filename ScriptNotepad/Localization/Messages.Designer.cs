@@ -19,7 +19,7 @@ namespace ScriptNotepad.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Messages {
@@ -655,7 +655,7 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to length: {0}  lines: {1}|As in the ScintillaNET document size in lines and in characters.
+        ///   Looks up a localized string similar to length: {0}  lines: {1}, pos: {2}|As in the ScintillaNET document size in lines and in characters and the current location in characters.
         /// </summary>
         internal static string msgDocSizeLines {
             get {

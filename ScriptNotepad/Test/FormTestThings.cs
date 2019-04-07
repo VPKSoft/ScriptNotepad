@@ -35,6 +35,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -71,6 +72,24 @@ namespace ScriptNotepad.Test
         private void button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show(ProcessElevation.IsElevated.ToString());
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(Regex.Unescape(textBox1.Text));
+        }
+
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                textBox3.Text.LastIndexOf(textBox2.Text, textBox3.TextLength - 1, textBox3.TextLength
+                        )
+                    .ToString());
+        }
+
+        private void TextBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

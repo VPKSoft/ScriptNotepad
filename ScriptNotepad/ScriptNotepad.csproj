@@ -98,11 +98,11 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.8\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.9\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.2.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.2.4\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.2.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.2.5\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -238,6 +238,16 @@
     <Compile Include="UtilityClasses\LinesAndBinary\StreamEncoding.cs" />
     <Compile Include="UtilityClasses\Process\ProcessElevation.cs" />
     <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.Designer.cs">
+      <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UtilityClasses\SearchAndReplace\Misc\DoubleClickSelectAllHelper.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\ScintillaDocumentEventArgs.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\ScintillaSearchFlagHelper.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\SearchOpenDocuments.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\CloseFormUtils.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\SessionMenuBuilder.cs" />
     <Compile Include="UtilityClasses\Session\FormDialogSessionManage.cs">
@@ -290,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Test\FormTestThings.resx">
       <DependentUpon>FormTestThings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.resx">
+      <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UtilityClasses\Session\FormDialogSessionManage.resx">
       <DependentUpon>FormDialogSessionManage.cs</DependentUpon>

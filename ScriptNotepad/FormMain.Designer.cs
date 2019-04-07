@@ -70,6 +70,8 @@
             this.mnuSplit1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSplit2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuSession = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.munSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSaveAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,8 +106,6 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuSession = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -133,7 +133,7 @@
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpMain.Size = new System.Drawing.Size(776, 411);
+            this.tlpMain.Size = new System.Drawing.Size(825, 540);
             this.tlpMain.TabIndex = 3;
             // 
             // tsMain
@@ -151,7 +151,7 @@
             this.tsbRedo});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(776, 25);
+            this.tsMain.Size = new System.Drawing.Size(825, 25);
             this.tsMain.TabIndex = 0;
             this.tsMain.Text = "toolStrip1";
             // 
@@ -258,9 +258,9 @@
             this.ssLbInsertOverride,
             this.ssLbSpace6,
             this.ssLbSessionName});
-            this.ssMain.Location = new System.Drawing.Point(0, 391);
+            this.ssMain.Location = new System.Drawing.Point(0, 520);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(776, 20);
+            this.ssMain.Size = new System.Drawing.Size(825, 20);
             this.ssMain.TabIndex = 3;
             this.ssMain.Text = "statusStrip1";
             // 
@@ -360,7 +360,7 @@
             this.sttcMain.RightButtonTabActivation = true;
             this.sttcMain.RightButtonTabDragging = false;
             this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
-            this.sttcMain.Size = new System.Drawing.Size(770, 360);
+            this.sttcMain.Size = new System.Drawing.Size(819, 489);
             this.sttcMain.SuspendTextChangedEvents = false;
             this.sttcMain.TabIndex = 4;
             this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);
@@ -368,6 +368,7 @@
             this.sttcMain.CaretPositionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnCaretPositionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.DocumentMouseDown += new System.Windows.Forms.MouseEventHandler(this.sttcMain_DocumentMouseDown);
             this.sttcMain.DocumentMouseUp += new System.Windows.Forms.MouseEventHandler(this.sttcMain_DocumentMouseUp);
+            this.sttcMain.DocumentMouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.SttcMain_DocumentMouseDoubleClick);
             this.sttcMain.SelectionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnSelectionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.DocumentTextChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnDocumentTextChanged(this.sttcMain_DocumentTextChanged);
             // 
@@ -382,7 +383,7 @@
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(800, 24);
+            this.menuMain.Size = new System.Drawing.Size(849, 24);
             this.menuMain.TabIndex = 4;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -455,6 +456,18 @@
             this.mnuSplit2.Name = "mnuSplit2";
             this.mnuSplit2.Size = new System.Drawing.Size(188, 6);
             // 
+            // mnuSession
+            // 
+            this.mnuSession.Image = global::ScriptNotepad.Properties.Resources.session_properties;
+            this.mnuSession.Name = "mnuSession";
+            this.mnuSession.Size = new System.Drawing.Size(191, 22);
+            this.mnuSession.Text = "Session";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            // 
             // munSave
             // 
             this.munSave.Image = global::ScriptNotepad.Properties.Resources.Save;
@@ -524,7 +537,8 @@
             // 
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
-            this.mnuFind.Size = new System.Drawing.Size(103, 22);
+            this.mnuFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.mnuFind.Size = new System.Drawing.Size(143, 22);
             this.mnuFind.Text = "Find..";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
@@ -691,39 +705,27 @@
             this.mnuCloseAllButThis.Name = "mnuCloseAllButThis";
             this.mnuCloseAllButThis.Size = new System.Drawing.Size(323, 22);
             this.mnuCloseAllButThis.Text = "Close all but this";
-            this.mnuCloseAllButThis.Click += new System.EventHandler(this.commonCloseManyDocuments);
+            this.mnuCloseAllButThis.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
             // mnuCloseAllToTheLeft
             // 
             this.mnuCloseAllToTheLeft.Name = "mnuCloseAllToTheLeft";
             this.mnuCloseAllToTheLeft.Size = new System.Drawing.Size(323, 22);
             this.mnuCloseAllToTheLeft.Text = "Close all to the left";
-            this.mnuCloseAllToTheLeft.Click += new System.EventHandler(this.commonCloseManyDocuments);
+            this.mnuCloseAllToTheLeft.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
             // mnuCloseAllToTheRight
             // 
             this.mnuCloseAllToTheRight.Name = "mnuCloseAllToTheRight";
             this.mnuCloseAllToTheRight.Size = new System.Drawing.Size(323, 22);
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
-            this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.commonCloseManyDocuments);
-            // 
-            // mnuSession
-            // 
-            this.mnuSession.Image = global::ScriptNotepad.Properties.Resources.session_properties;
-            this.mnuSession.Name = "mnuSession";
-            this.mnuSession.Size = new System.Drawing.Size(191, 22);
-            this.mnuSession.Text = "Session";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(849, 579);
             this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.menuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -735,8 +737,11 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
+            this.ResizeBegin += new System.EventHandler(this.FormMain_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.FormMain_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyUp);
+            this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.tlpMain.ResumeLayout(false);
             this.tlpMain.PerformLayout();
             this.tsMain.ResumeLayout(false);

@@ -59,6 +59,9 @@ using ScriptNotepad.Database.TableMethods;
 using System.Linq;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
+using ScriptNotepad.UtilityClasses.SearchAndReplace;
+using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
+
 #endregion
 
 namespace ScriptNotepad
@@ -73,7 +76,7 @@ namespace ScriptNotepad
         public FormMain()
         {
             // Add this form to be positioned..
-            PositionForms.Add(this, PositionCore.SizeChangeMode.MoveTopLeft);
+            PositionForms.Add(this);
 
             // add positioning..
             PositionCore.Bind();
@@ -185,10 +188,16 @@ namespace ScriptNotepad
             RecentFilesMenuBuilder.RecentFileMenuClicked += RecentFilesMenuBuilder_RecentFileMenuClicked;
 
             // create a dynamic action for the database exception logging..
-            Database.Database.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            Database.Database.ExceptionLogAction = ExceptionLogger.LogError;
 
             // set the current session name to the status strip..
             StatusStripTexts.SetSessionName(CurrentSession);
+
+            // subscribe the RequestDocuments event of the search and replace dialog..
+            FormSearchAndReplace.Instance.RequestDocuments += InstanceRequestDocuments;
+
+            // set the flag to reset the search area as the functionality is incomplete as of yet..
+            FormSearchAndReplace.ResetSearchArea = false; // TODO::Make this a setting..
 
             // the user is either logging of from the system or is shutting down the system..
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
@@ -374,6 +383,12 @@ namespace ScriptNotepad
             // unsubscribe the session menu clicked handler.. 
             SessionMenuBuilder.SessionMenuClicked -= SessionMenuBuilder_SessionMenuClicked;
 
+            // unsubscribe the request documents event handler of the search and replace dialog..
+            FormSearchAndReplace.Instance.RequestDocuments -= InstanceRequestDocuments;
+
+            // set the search and replace dialog to be allowed to be disposed of..
+            FormSearchAndReplace.AllowInstanceDispose = true;
+
             // dispose of the loaded plug-in..
             DisposePlugins();
         }
@@ -419,7 +434,7 @@ namespace ScriptNotepad
             // create a dynamic action for the class exception logging..
 
             // many classes are inherited from this one (less copy/paste code!).. 
-            ErrorHandlingBase.ExceptionLogAction = delegate (Exception ex) { ExceptionLogger.LogError(ex); };
+            ErrorHandlingBase.ExceptionLogAction = ExceptionLogger.LogError;
 
             PluginDirectoryRoaming.ExceptionLogAction =
                 delegate (Exception ex, Assembly assembly, string assemblyFile)
@@ -1158,6 +1173,19 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // the search and replace dialog is requesting for documents opened on this main form..
+        private void InstanceRequestDocuments(object sender, ScintillaDocumentEventArgs e)
+        {
+            if (e.RequestAllDocuments)
+            {
+                e.Documents = sttcMain.Documents.Select(f => f.Scintilla).ToList();
+            }
+            else if (sttcMain.CurrentDocument != null)
+            {
+                e.Documents.Add(sttcMain.CurrentDocument.Scintilla);
+            }
+        }
+
         // a user wishes to manage sessions used by the software..
         private void mnuManageSessions_Click(object sender, EventArgs e)
         {
@@ -1387,11 +1415,7 @@ namespace ScriptNotepad
         // a user wanted to find or find and replace something of the active document..
         private void mnuFind_Click(object sender, EventArgs e)
         {
-            if (sttcMain.CurrentDocument != null)
-            {
-                findReplace.Scintilla = sttcMain.CurrentDocument.Scintilla;
-                findReplace.ShowFind();
-            }
+            FormSearchAndReplace.ShowSearch();
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -1808,6 +1832,39 @@ namespace ScriptNotepad
                 }
             }
         }
+
+        private FormWindowState prev = FormWindowState.Normal;
+
+        private void FormMain_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized && prev != FormWindowState.Minimized)
+            {
+                FormSearchAndReplace.Instance.ToggleVisible(false);
+                prev = WindowState;
+            }
+            else if (prev != WindowState)
+            {
+                FormSearchAndReplace.Instance.ToggleVisible(true);
+                prev = WindowState;
+            }
+        }
+
+        private void FormMain_ResizeBegin(object sender, EventArgs e)
+        {
+            SuspendLayout();
+        }
+
+        private void FormMain_ResizeEnd(object sender, EventArgs e)
+        {
+            ResumeLayout();
+        }
+
+        private void SttcMain_DocumentMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            suspendSelectionUpdate = true;
+            DoubleClickSelectAllHelper.MultiSelectFromSelection((Scintilla) sender);
+            suspendSelectionUpdate = false;
+        }
         #endregion
 
         #region PrivateFields        
@@ -1891,7 +1948,6 @@ namespace ScriptNotepad
         private Encoding DefaultEncoding
         {
             get => Settings.FormSettings.Settings.DefaultEncoding;
-            set => Settings.FormSettings.Settings.DefaultEncoding = value;
         }
 
         /// <summary>
@@ -2040,7 +2096,7 @@ namespace ScriptNotepad
 
         // a user wishes to close all expect the active document or many documents 
         // to the right or to the left from the active document..
-        private void commonCloseManyDocuments(object sender, EventArgs e)
+        private void CommonCloseManyDocuments(object sender, EventArgs e)
         {
             // call the CloseAllFunction method with this "wondrous" logic..
             CloseAllFunction(sender.Equals(mnuCloseAllToTheRight), sender.Equals(mnuCloseAllToTheLeft));
