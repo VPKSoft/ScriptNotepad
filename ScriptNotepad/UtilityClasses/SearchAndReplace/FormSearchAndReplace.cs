@@ -126,30 +126,30 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Occurs when the search and replace dialog requests access to the open documents on the main form.
         /// </summary>
-        public event OnRequestDocuments RequestDocuments = null;
+        public event OnRequestDocuments RequestDocuments;
 
         /// <summary>
         /// Gets or sets the documents containing in the main form.
         /// </summary>
         private List<Scintilla> Documents { get; set; } = new List<Scintilla>();
 
-        private Scintilla _CurrentDocument = null;
+        private Scintilla currentDocument = null;
 
         /// <summary>
         /// Gets or sets the currently active document in the main form.
         /// </summary>
         private Scintilla CurrentDocument
         {
-            get => _CurrentDocument;
+            get => currentDocument;
 
             set
             {
-                if (_CurrentDocument != value && value != null)
+                if (currentDocument != value && value != null)
                 {
                     CreateSingleSearchAlgorithm(value);
                 }
 
-                _CurrentDocument = value;
+                currentDocument = value;
             }
         }
 

@@ -1902,7 +1902,7 @@ namespace ScriptNotepad
         /// </summary>
         private string CurrentSession
         {
-            get => Settings.FormSettings.Settings.CurrentSession;
+            get => Settings.FormSettings.Settings == null ? "Default" : Settings.FormSettings.Settings.CurrentSession;
 
             set
             {
