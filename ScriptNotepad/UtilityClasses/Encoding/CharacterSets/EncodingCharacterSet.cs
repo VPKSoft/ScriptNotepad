@@ -289,7 +289,10 @@ namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
             #endregion
 
             // the static list will be created with a constructor..
-            ConstructInternalCharacterSetEnumNamePairs();
+            if (internalEnumDescriptionPairs.Count == 0)
+            {
+                ConstructInternalCharacterSetEnumNamePairs();
+            }
         }
 
         /// <summary>

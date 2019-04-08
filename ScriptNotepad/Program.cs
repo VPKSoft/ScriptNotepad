@@ -37,6 +37,7 @@ using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.PluginHandling;
+using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 

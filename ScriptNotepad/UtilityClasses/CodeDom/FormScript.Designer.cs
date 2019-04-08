@@ -1,4 +1,4 @@
-﻿namespace ScriptNotepad
+﻿namespace ScriptNotepad.UtilityClasses.CodeDom
 {
     partial class FormScript
     {

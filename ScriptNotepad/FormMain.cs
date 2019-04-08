@@ -59,6 +59,7 @@ using ScriptNotepad.Database.TableMethods;
 using System.Linq;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
+using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 

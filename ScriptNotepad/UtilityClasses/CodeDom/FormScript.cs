@@ -27,19 +27,18 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
+using ScintillaNET;
+using ScriptNotepad.Database.TableMethods;
+using ScriptNotepad.Database.Tables;
+using ScriptNotepad.DialogForms;
+using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
-using ScriptNotepad.UtilityClasses.CodeDom;
-using ScintillaNET;
-using ScriptNotepad.UtilityClasses.ScintillaHelpers;
-using System.Threading;
-using ScriptNotepad.DialogForms;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.Database.TableMethods;
 
-namespace ScriptNotepad
+namespace ScriptNotepad.UtilityClasses.CodeDom
 {
     /// <summary>
     /// A windows form tho run a C# script against a Scintilla document's contents.
@@ -91,6 +90,9 @@ namespace ScriptNotepad
                 DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
                 return; // After localization don't do anything more..
             }
+
+            // initialize the language/localization database..
+            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
 
             // localize the script type default names..
             defaultNameScriptTemplateText = 

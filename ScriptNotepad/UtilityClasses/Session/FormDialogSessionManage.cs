@@ -61,6 +61,9 @@ namespace ScriptNotepad.UtilityClasses.Session
                 return; // After localization don't do anything more..
             }
 
+            // initialize the language/localization database..
+            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+
             ttMain.SetToolTip(pbDeleteSelectedSession,
                 DBLangEngine.GetMessage("msgDeleteSession", "Delete selected session|A message indicating an action to delete a session from the database"));
 

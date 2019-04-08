@@ -59,6 +59,9 @@ namespace ScriptNotepad
                 return; // After localization don't do anything more..
             }
 
+            // initialize the language/localization database..
+            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+
             LocalizeCharacterSets();
 
             // localize the names which are used to display line ending types of the document..
