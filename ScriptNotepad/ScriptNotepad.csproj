@@ -98,11 +98,11 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.0.0.9\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.2.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.2.5\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.3\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -245,6 +245,7 @@
       <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
     </Compile>
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\DoubleClickSelectAllHelper.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\Misc\Highlight.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ScintillaDocumentEventArgs.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ScintillaSearchFlagHelper.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\SearchOpenDocuments.cs" />

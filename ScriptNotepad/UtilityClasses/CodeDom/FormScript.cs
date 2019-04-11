@@ -37,6 +37,7 @@ using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
+using static VPKSoft.ScintillaLexers.LexerEnumerations;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
 {

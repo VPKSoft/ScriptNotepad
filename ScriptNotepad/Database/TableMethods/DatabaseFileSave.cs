@@ -36,6 +36,7 @@ using System.Text;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using static ScriptNotepad.Database.DatabaseEnumerations;
+using static VPKSoft.ScintillaLexers.LexerEnumerations;
 
 namespace ScriptNotepad.Database.TableMethods
 {

@@ -29,6 +29,7 @@ using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
 using ScintillaNET_FindReplaceDialog;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -62,7 +63,7 @@ using ScriptNotepad.Localization;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
-
+using VPKSoft.ScintillaLexers.HelperClasses;
 #endregion
 
 namespace ScriptNotepad
@@ -1116,7 +1117,7 @@ namespace ScriptNotepad
                             document.FileTabButton.Text = fileSave.FILENAME;
 
                             // a new lexer might have to be assigned..
-                            document.LexerType = ScintillaLexers.LexerTypeFromFileName(fileSave.FILENAME_FULL);
+                            document.LexerType = LexerFileExtensions.LexerTypeFromFileName(fileSave.FILENAME_FULL);
 
                             // update the file system modified time stamp so the software doesn't ask if the file should
                             // be reloaded from the file system..
@@ -1623,6 +1624,11 @@ namespace ScriptNotepad
         // this is the event listener for the ScintillaTabbedDocument's selection and caret position change events..
         private void sttcMain_SelectionCaretChanged(object sender, ScintillaTabbedDocumentEventArgsExt e)
         {
+            if (e.ScintillaTabbedDocument.Scintilla.SelectionEnd == e.ScintillaTabbedDocument.Scintilla.SelectionStart)
+            {
+                e.ScintillaTabbedDocument.Scintilla.IndicatorClearRange(0, e.ScintillaTabbedDocument.Scintilla.TextLength);
+            }
+
             if (!suspendSelectionUpdate)
             {
                 StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
@@ -1862,9 +1868,8 @@ namespace ScriptNotepad
 
         private void SttcMain_DocumentMouseDoubleClick(object sender, MouseEventArgs e)
         {
-            suspendSelectionUpdate = true;
-            DoubleClickSelectAllHelper.MultiSelectFromSelection((Scintilla) sender);
-            suspendSelectionUpdate = false;
+            var scintilla = (Scintilla)sender;
+            Highlight.HighlightWord(scintilla, scintilla.SelectedText, Color.LimeGreen);
         }
         #endregion
 

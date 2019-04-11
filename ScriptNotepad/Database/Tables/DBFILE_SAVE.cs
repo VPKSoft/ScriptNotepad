@@ -32,6 +32,7 @@ using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
+using static VPKSoft.ScintillaLexers.LexerEnumerations;
 
 namespace ScriptNotepad.Database.Tables
 {
