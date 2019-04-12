@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using ScriptNotepad.Database.Tables;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
@@ -171,6 +172,8 @@ namespace ScriptNotepad.Localization
                 document.Scintilla.Lines.Count, document.Scintilla.CurrentPosition);
         }
 
+        private double seconds = 0;
+
         /// <summary>
         /// Sets the main status strip values for the currently active document..
         /// </summary>
@@ -178,6 +181,7 @@ namespace ScriptNotepad.Localization
         /// <param name="sessionName">Name of the session to set for the label.</param>
         public static void SetStatusStringText(ScintillaTabbedDocument document, string sessionName)
         {
+            DateTime dt = DateTime.Now;
             // first check the parameter validity..
             if (document == null)
             {
@@ -210,26 +214,8 @@ namespace ScriptNotepad.Localization
             if (document.Tag != null) // TODO::Only detect the file line ending type if the contents have been changed..
             {
                 DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
-                var fileLineTypes = UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(fileSave.FILE_CONTENTS);
 
-                LabelLineEnding.Text =
-                    DBLangEngine.GetStatMessage("msgLineEndingShort", "LE: |A short message indicating a file line ending type value(s) as a concatenated text");
-
-                string endAppend = string.Empty;
-
-                foreach (var fileLineType in fileLineTypes)
-                {
-                    if (!fileLineType.Key.HasFlag(UtilityClasses.LinesAndBinary.FileLineTypes.Mixed))
-                    {
-                        LabelLineEnding.Text += fileLineType.Value + ", ";
-                    }
-                    else
-                    {
-                        endAppend = $" ({fileLineType.Value})";
-                    }
-
-                    LabelLineEnding.Text = LabelLineEnding.Text.TrimEnd(',', ' ') + endAppend;
-                }
+                LabelLineEnding.Text = fileSave.EncodingText;
 
                 LabelEncoding.Text =
                     DBLangEngine.GetStatMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +

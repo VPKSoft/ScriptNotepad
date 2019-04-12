@@ -473,7 +473,7 @@ namespace ScriptNotepad
             }
 
             // save the current session's documents to the database..
-            SaveDocumentsToDatabase(CurrentSession, true);
+            SaveDocumentsToDatabase(CurrentSession);
 
             // delete excess document contents saved in the database..
             var cleanupContents = Database.Database.CleanupHistoryDocumentContents(CurrentSession, SaveFileHistoryContentsCount);
@@ -499,7 +499,7 @@ namespace ScriptNotepad
         private void CloseSession(string sessionName)
         {
             // save the current session's documents to the database..
-            SaveDocumentsToDatabase(sessionName, true);
+            SaveDocumentsToDatabase(sessionName);
 
             // delete excess document contents saved in the database..
             var cleanupContents = Database.Database.CleanupHistoryDocumentContents(sessionName, SaveFileHistoryContentsCount);
@@ -742,9 +742,8 @@ namespace ScriptNotepad
         /// <summary>
         /// Saves the active document snapshots in to the SQLite database.
         /// </summary>
-        /// <param name="dispose">An indicator if the underlying MemoryStream should be disposed of.</param>
         /// <param name="sessionName">A name of the session to which the documents should be tagged with.</param>
-        private void SaveDocumentsToDatabase(string sessionName, bool dispose)
+        private void SaveDocumentsToDatabase(string sessionName)
         {
             for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
@@ -754,11 +753,6 @@ namespace ScriptNotepad
                 fileSave.VISIBILITY_ORDER = i;
                 DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
                 DatabaseRecentFiles.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName, fileSave.ENCODING);
-
-                if (dispose)
-                {
-                    fileSave.DisposeMemoryStream();
-                }
             }
         }
 
@@ -811,7 +805,7 @@ namespace ScriptNotepad
                 {
                     activeDocument = file.FILENAME_FULL;
                 }
-                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, file.FILE_CONTENTS);
+                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
                 if (sttcMain.LastAddedDocument != null)
                 {
                     sttcMain.LastAddedDocument.Tag = file;
@@ -842,7 +836,7 @@ namespace ScriptNotepad
             // only if something was gotten from the database..
             if (file != null)
             {
-                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, file.FILE_CONTENTS);
+                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
                 if (sttcMain.LastAddedDocument != null)
                 {
                     // not history any more..
@@ -905,7 +899,7 @@ namespace ScriptNotepad
                             FILENAME = sttcMain.CurrentDocument.FileName,
                             FILENAME_FULL = sttcMain.CurrentDocument.FileName,
                             FILEPATH = string.Empty,
-                            FILE_CONTENTS = new MemoryStream(),
+                            FILE_CONTENTS = "",
                             SESSIONNAME = CurrentSession,
                             SESSIONID = CurrentSessionID,
                         };
@@ -1068,17 +1062,12 @@ namespace ScriptNotepad
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
 
                     // set the contents to match the document's text..
-                    fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text, fileSave.ENCODING);
+                    fileSave.FILE_CONTENTS = document.Scintilla.Text;
 
                     // only an existing file can be saved directly..
                     if (fileSave.EXISTS_INFILESYS && !saveAs)
                     {
-                        // write the new contents of a file to the existing file overriding it's contents..
-                        using (FileStream fileStream = new FileStream(fileSave.FILENAME_FULL, FileMode.Create, FileAccess.Write))
-                        {
-                            fileSave.FILE_CONTENTS.Position = 0; // position the stream..
-                            fileSave.FILE_CONTENTS.WriteTo(fileStream); // write the contents of the stream to the file..
-                        }
+                        File.WriteAllText(fileSave.FILENAME_FULL, fileSave.FILE_CONTENTS, fileSave.ENCODING);
 
                         // update the file system modified time stamp so the software doesn't ask if the file should
                         // be reloaded from the file system..
@@ -1097,11 +1086,7 @@ namespace ScriptNotepad
                             fileSave.FILESYS_MODIFIED = DateTime.Now;
 
                             // write the new contents of a file to the existing file overriding it's contents..
-                            using (FileStream fileStream = new FileStream(sdAnyFile.FileName, FileMode.Create, FileAccess.Write))
-                            {
-                                fileSave.FILE_CONTENTS.Position = 0; // position the stream..
-                                fileSave.FILE_CONTENTS.WriteTo(fileStream); // write the contents of the stream to the file..
-                            }
+                            File.WriteAllText(sdAnyFile.FileName, fileSave.FILE_CONTENTS, fileSave.ENCODING);
 
                             // the file now exists in the file system..
                             fileSave.EXISTS_INFILESYS = true;
@@ -1530,7 +1515,7 @@ namespace ScriptNotepad
         private void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
         {
             // ..just no questions asked save the document snapshots into the SQLite database..
-            SaveDocumentsToDatabase(CurrentSession, true);
+            SaveDocumentsToDatabase(CurrentSession);
         }
 
         // the form is shown..
@@ -1646,9 +1631,8 @@ namespace ScriptNotepad
         private void sttcMain_DocumentTextChanged(object sender, ScintillaTextChangedEventArgs e)
         {
             DBFILE_SAVE fileSave = (DBFILE_SAVE)e.ScintillaTabbedDocument.Tag;
-            fileSave.DisposeMemoryStream();
             fileSave.DB_MODIFIED = DateTime.Now;
-            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(e.ScintillaTabbedDocument.Scintilla.Text, fileSave.ENCODING);
+            fileSave.FILE_CONTENTS = e.ScintillaTabbedDocument.Scintilla.Text;
 
             // if the text has been changed and id did not occur by encoding change
             // just clear the undo "buffer"..

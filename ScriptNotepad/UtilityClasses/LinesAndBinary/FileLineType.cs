@@ -378,6 +378,28 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
 
 
         /// <summary>
+        /// Gets the file line types of a text and a given encoding.
+        /// </summary>
+        /// <param name="contents">The text of which contents to check for the line endings.</param>
+        /// <param name="encoding">The encoding of the text.</param>
+        /// <param name="fileLineTypes">The types of line endings wanted to be included in the search.</param>
+        /// <returns>A collection of line ending key value pairs with their enumeration values and their names.</returns>
+        public static IEnumerable<KeyValuePair<FileLineTypes, string>> GetFileLineTypes(
+            string contents, System.Text.Encoding encoding,
+            FileLineTypes fileLineTypes = // the default set..
+                FileLineTypes.CR |
+                FileLineTypes.CRLF |
+                FileLineTypes.LF |
+                FileLineTypes.LFCR |
+                FileLineTypes.UCR |
+                FileLineTypes.UCRLF |
+                FileLineTypes.ULF |
+                FileLineTypes.ULFCR)
+        {
+            return GetFileLineTypes(encoding.GetBytes(contents));
+        }
+
+        /// <summary>
         /// Gets the file line types of a given byte array.
         /// </summary>
         /// <param name="buffer">The byte array to be used to check for the line endings.</param>
@@ -710,11 +732,11 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
                 i++; // the loop must not be infinite so increase the loop variable by one..
             }
 
-            // if nothing was found assume unknown..
+            // if nothing was found assume CR+LF..
             if (result.Count == 0)
             {
                 result.Add(
-                    new KeyValuePair<FileLineTypes, string>(FileLineTypes.Mixed, GetLineEndingDescriptionByEnumeration(FileLineTypes.Unknown, UseEnumNames)));
+                    new KeyValuePair<FileLineTypes, string>(FileLineTypes.CRLF, GetLineEndingDescriptionByEnumeration(FileLineTypes.CRLF, UseEnumNames)));
             }
 
             // if multiple items was found, assume mixed line endings..

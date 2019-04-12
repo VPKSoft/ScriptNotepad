@@ -46,24 +46,7 @@ namespace ScriptNotepad.UtilityClasses.StreamHelpers
         /// <returns>An instance to a MemoryStream class containing the given text.</returns>
         public static MemoryStream TextToMemoryStream(string text, System.Text.Encoding encoding)
         {
-            MemoryStream result;
-            byte[] streamContents;
-
-            using (MemoryStream ms = new MemoryStream())
-            {
-                StreamWriter streamWriter = new StreamWriter(ms, encoding);
-                {
-                    streamWriter.Write(text.ToArray());
-                    streamWriter.Flush();
-                    streamContents = ms.ToArray();
-                }
-            }
-
-            result = new MemoryStream(streamContents)
-            {
-                Position = 0
-            };
-            return result;
+            return new MemoryStream(encoding.GetBytes(text).ToArray());
         }
 
         /// <summary>
@@ -72,24 +55,9 @@ namespace ScriptNotepad.UtilityClasses.StreamHelpers
         /// <param name="memoryStream">The memory stream which contents to be returned as a string.</param>
         /// <param name="encoding">The encoding to be used to convert a memory stream to text.</param>
         /// <returns></returns>
-        public static string MemoryStreamToText(ref MemoryStream memoryStream, System.Text.Encoding encoding)
+        public static string MemoryStreamToText(MemoryStream memoryStream, System.Text.Encoding encoding)
         {
-            byte[] streamContents = memoryStream.ToArray();
-            string result = string.Empty;
-            using (memoryStream)
-            {
-                using (StreamReader streamReader = new StreamReader(memoryStream, encoding))
-                {
-                    memoryStream.Position = 0;
-                    result = streamReader.ReadToEnd();
-                }
-            }
-
-            memoryStream = new MemoryStream(streamContents)
-            {
-                Position = 0
-            };
-            return result;
+            return encoding.GetString(memoryStream.ToArray());
         }
 
         /// <summary>

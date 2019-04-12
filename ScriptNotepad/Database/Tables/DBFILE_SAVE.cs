@@ -33,6 +33,8 @@ using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
+using VPKSoft.LangLib;
+using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
 
 namespace ScriptNotepad.Database.Tables
 {
@@ -98,7 +100,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the file contents.
         /// </summary>
-        public MemoryStream FILE_CONTENTS { get; set; }
+        public string FILE_CONTENTS { get; set; }
 
         /// <summary>
         /// Gets or sets the visibility order (in a tabbed control).
@@ -156,20 +158,6 @@ namespace ScriptNotepad.Database.Tables
         }
 
         /// <summary>
-        /// Disposes the memory stream containing the document's contents.
-        /// </summary>
-        public void DisposeMemoryStream()
-        {
-            if (FILE_CONTENTS != null)
-            {
-                using (FILE_CONTENTS)
-                {
-                    FILE_CONTENTS = null;
-                }
-            }
-        }
-
-        /// <summary>
         /// Reloads the contents of the document from the disk.
         /// </summary>
         /// <param name="document">A ScintillaTabbedDocument to which contents should also be updated.</param>
@@ -181,9 +169,6 @@ namespace ScriptNotepad.Database.Tables
                 // can't reload what doesn't exist..
                 if (File.Exists(FILENAME_FULL))
                 {
-                    // dispose of the previous file contents..
-                    DisposeMemoryStream();
-
                     // read the file contents from the file..
                     using (FileStream fileStream = new FileStream(FILENAME_FULL, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
@@ -202,9 +187,9 @@ namespace ScriptNotepad.Database.Tables
                         // create a new memory stream to hold the file contents..
                         MemoryStream memoryStream = new MemoryStream(fileContents); 
 
-                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(ref memoryStream, ENCODING);
+                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, ENCODING);
 
-                        FILE_CONTENTS = memoryStream;
+                        FILE_CONTENTS = document.Scintilla.Text;
                     }
                     return true; // success..
                 }
@@ -286,6 +271,44 @@ namespace ScriptNotepad.Database.Tables
                 // set the flag whether the user want's to hear the
                 // stupid question of reloading the file on the next time..
                 _ShouldQueryDiskReload = value;
+            }
+        }
+
+        private string fileEndingText = string.Empty;
+
+        public string EncodingText
+        {
+            get
+            {
+                if (fileEndingText == string.Empty)
+                {
+                    fileEndingText = DBLangEngine.GetStatMessage("msgLineEndingShort",
+                        "LE: |A short message indicating a file line ending type value(s) as a concatenated text");
+
+
+                    var fileLineTypes =
+                        ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(FILE_CONTENTS,
+                            ENCODING);
+
+
+                    string endAppend = string.Empty;
+
+                    foreach (var fileLineType in fileLineTypes)
+                    {
+                        if (!fileLineType.Key.HasFlag(Mixed))
+                        {
+                            fileEndingText += fileLineType.Value + ", ";
+                        }
+                        else
+                        {
+                            endAppend = $" ({fileLineType.Value})";
+                        }
+
+                        fileEndingText = fileEndingText.TrimEnd(',', ' ') + endAppend;
+                    }
+                }
+
+                return fileEndingText;
             }
         }
     }

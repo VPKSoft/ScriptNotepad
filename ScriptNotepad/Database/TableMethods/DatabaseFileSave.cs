@@ -69,7 +69,7 @@ namespace ScriptNotepad.Database.TableMethods
                     // add parameters to the command..
 
                     // add the contents of the Scintilla.NET document as a parameter..
-                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = fileSave.FILE_CONTENTS.ToArray();
+                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = StreamStringHelpers.TextToMemoryStream(fileSave.FILE_CONTENTS, fileSave.ENCODING).ToArray();
 
                     // do the insert..
                     recordsAffected = command.ExecuteNonQuery();
@@ -120,7 +120,7 @@ namespace ScriptNotepad.Database.TableMethods
                         DateTime.MinValue,
                     DB_MODIFIED = DateTime.Now,
                     LEXER_CODE = document.LexerType,
-                    FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text, encoding),
+                    FILE_CONTENTS = document.Scintilla.Text,
                     VISIBILITY_ORDER = (int)document.FileTabButton.Tag,
                     SESSIONNAME = sessionName,
                     ISACTIVE = document.FileTabButton.IsActive,
@@ -170,7 +170,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
         public static DBFILE_SAVE AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
         {
-            fileSave.FILE_CONTENTS = StreamStringHelpers.TextToMemoryStream(document.Scintilla.Text, fileSave.ENCODING);
+            fileSave.FILE_CONTENTS = document.Scintilla.Text;
             return UpdateFile(AddFile(fileSave));
         }
 
@@ -195,7 +195,7 @@ namespace ScriptNotepad.Database.TableMethods
                     // add parameters to the command..
 
                     // add the contents of the Scintilla.NET document as a parameter..
-                    command.Parameters.Add("@FILE", DbType.Binary).Value = fileSave.FILE_CONTENTS.ToArray();
+                    command.Parameters.Add("@FILE", DbType.Binary).Value = StreamStringHelpers.TextToMemoryStream(fileSave.FILE_CONTENTS, fileSave.ENCODING).ToArray();
 
                     // do the insert..
                     command.ExecuteNonQuery();
@@ -244,6 +244,9 @@ namespace ScriptNotepad.Database.TableMethods
                 // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
                 // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
                 // FILESYS_SAVED: 14, ENCODING: 15
+
+                Encoding fileSaveEncoding = Encoding.GetEncoding(reader.GetString(15));
+
                 return
                     new DBFILE_SAVE()
                     {
@@ -255,7 +258,7 @@ namespace ScriptNotepad.Database.TableMethods
                         FILESYS_MODIFIED = DateFromDBString(reader.GetString(5)),
                         DB_MODIFIED = DateFromDBString(reader.GetString(6)),
                         LEXER_CODE = (LexerType)reader.GetInt32(7), // cast to a lexer type..
-                        FILE_CONTENTS = MemoryStreamFromBlob(reader.GetBlob(8, true)),
+                        FILE_CONTENTS = StreamStringHelpers.MemoryStreamToText(MemoryStreamFromBlob(reader.GetBlob(8, true)), fileSaveEncoding),
                         VISIBILITY_ORDER = reader.GetInt32(9),
                         SESSIONID = reader.GetInt32(10),
                         ISACTIVE = reader.GetInt32(11) == 1,
