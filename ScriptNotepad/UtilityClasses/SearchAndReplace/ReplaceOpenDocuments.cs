@@ -26,28 +26,19 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using ScintillaNET;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Test
+namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 {
     /// <summary>
-    /// A test dialog form for various things (...).
+    /// A helper class for search and replace operations with opened <see cref="Scintilla"/> documents.
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.Form" />
-    public partial class FormTestThingDialog : Form
+    /// <seealso cref="SearchOpenDocumentsBase"/>
+    public class ReplaceOpenDocuments: SearchOpenDocumentsBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormTestThingDialog"/> class.
-        /// </summary>
-        public FormTestThingDialog()
-        {
-            InitializeComponent();
-        }
     }
 }

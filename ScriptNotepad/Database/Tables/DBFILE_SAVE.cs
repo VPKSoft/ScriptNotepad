@@ -27,7 +27,6 @@ SOFTWARE.
 using System;
 using System.IO;
 using System.Text;
-using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
@@ -217,7 +216,7 @@ namespace ScriptNotepad.Database.Tables
         {
             string s1 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt1);
             string s2 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt2);
-            return s1.CompareTo(s2) > 0;
+            return String.Compare(s1, s2, StringComparison.Ordinal) > 0;
         }
 
         /// <summary>
@@ -239,10 +238,10 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets a value indicating whether the document is changed in the editor versus the file system.
         /// </summary>
-        public bool IsChangedInEditor {get => EXISTS_INFILESYS ? DB_MODIFIED > FILESYS_MODIFIED : false; }
+        public bool IsChangedInEditor => EXISTS_INFILESYS && DB_MODIFIED > FILESYS_MODIFIED;
 
         // a value indicating if the user want's to reload the changes from the file system if the file has been changed..
-        private bool _ShouldQueryDiskReload = true;
+        private bool shouldQueryDiskReload = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the user should be queried of to reload the changed document from the file system.
@@ -257,7 +256,7 @@ namespace ScriptNotepad.Database.Tables
                 DateTime dtUpdated = new FileInfo(FILENAME_FULL).LastWriteTime;
 
                 // get the result to be returned..
-                bool result = _ShouldQueryDiskReload && DateTimeLarger(dtUpdated, FILESYS_MODIFIED);// dtUpdated > FILESYS_MODIFIED;
+                bool result = shouldQueryDiskReload && DateTimeLarger(dtUpdated, FILESYS_MODIFIED);// dtUpdated > FILESYS_MODIFIED;
 
                 // reset this flag so the user can be annoyed again with a stupid question of reloading the file..
                 // .. after rethinking, don't do this:  _ShouldQueryDiskReload = true;
@@ -266,17 +265,20 @@ namespace ScriptNotepad.Database.Tables
                 return result;
             }
 
-            set
-            {
-                // set the flag whether the user want's to hear the
-                // stupid question of reloading the file on the next time..
-                _ShouldQueryDiskReload = value;
-            }
+            // set the flag whether the user want's to hear the
+            // stupid question of reloading the file on the next time..
+            set => shouldQueryDiskReload = value;
         }
 
+        /// <summary>
+        /// A text describing the file line ending type(s) of the document.
+        /// </summary>
         private string fileEndingText = string.Empty;
 
-        public string EncodingText
+        /// <summary>
+        /// Gets the text describing the file line ending type(s) of the document.
+        /// </summary>
+        public string FileLineEndingText
         {
             get
             {

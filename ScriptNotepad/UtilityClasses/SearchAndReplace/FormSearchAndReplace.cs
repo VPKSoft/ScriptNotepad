@@ -1,4 +1,30 @@
-﻿using ScintillaNET;
+﻿#region License
+/*
+MIT License
+
+Copyright(c) 2019 Petteri Kautonen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+#endregion
+
+using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -127,6 +153,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Toggles the TopMost property of this form.
+        /// </summary>
+        /// <param name="shouldStayOnTop">If set to <c>true</c> this form should be the top-most form of the application.</param>
+        public void ToggleStayTop(bool shouldStayOnTop)
+        {
+            if (shouldStayOnTop && TopMost)
+            {
+                return;
+            }
+            TopMost = shouldStayOnTop;
+        }            
+
+        /// <summary>
         /// Occurs when the search and replace dialog requests access to the open documents on the main form.
         /// </summary>
         public event OnRequestDocuments RequestDocuments;
@@ -134,7 +173,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Gets or sets the documents containing in the main form.
         /// </summary>
-        private List<Scintilla> Documents { get; set; } = new List<Scintilla>();
+        internal List<Scintilla> Documents { get; set; } = new List<Scintilla>();
 
         private Scintilla currentDocument = null;
 
@@ -166,7 +205,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 SearchOpenDocuments =
                     new SearchOpenDocuments(
-                        scintilla, rbRegEx.Checked, cbMatchCase.Checked, cbMatchWholeWord.Checked,
+                        scintilla, GetDocuments(true), rbRegEx.Checked, cbMatchCase.Checked, cbMatchWholeWord.Checked,
                         !cbMatchWholeWord.Checked, ResetSearchArea, cbWrapAround.Checked, rbExtented.Checked,
                         cmbFind.Text);
             }
@@ -252,6 +291,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
         }
 
+        // a new replace class is constructed if the replace conditions have changed..
+        private void ReplaceCondition_Changed(object sender, EventArgs e)
+        {
+
+        }
+
         private void FormSearchAndReplace_Deactivate(object sender, EventArgs e)
         {
             if (cbTransparency.Checked)
@@ -291,6 +336,21 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             if (tcMain.SelectedTab.Equals(tabFind))
             {
                 cmbFind.Focus();
+            }
+        }
+
+        private void BtClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void BtFindAllCurrent_Click(object sender, EventArgs e)
+        {
+            var result = SearchOpenDocuments?.SearchAll();
+            return; // TODO::NO selection, just results (tree view of matching locations).. add loop for all the documents..
+            foreach (var resultValue in result)
+            {
+                MessageBox.Show(resultValue.ToString());
             }
         }
     }

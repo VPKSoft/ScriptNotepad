@@ -86,6 +86,7 @@
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManagePlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageSessions = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuLocalization = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,6 +107,7 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDumpLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -548,7 +550,8 @@
             this.mnuManageScriptSnippets,
             this.mnuSettings,
             this.mnuManagePlugins,
-            this.mnuManageSessions});
+            this.mnuManageSessions,
+            this.mnuLocalization});
             this.mnuTools.Name = "mnuTools";
             this.mnuTools.Size = new System.Drawing.Size(47, 20);
             this.mnuTools.Text = "Tools";
@@ -584,6 +587,16 @@
             this.mnuManageSessions.Size = new System.Drawing.Size(196, 22);
             this.mnuManageSessions.Text = "Manage sessions";
             this.mnuManageSessions.Click += new System.EventHandler(this.mnuManageSessions_Click);
+            // 
+            // mnuLocalization
+            // 
+            this.mnuLocalization.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuDumpLanguage});
+            this.mnuLocalization.Image = global::ScriptNotepad.Properties.Resources.education_languages;
+            this.mnuLocalization.Name = "mnuLocalization";
+            this.mnuLocalization.Size = new System.Drawing.Size(196, 22);
+            this.mnuLocalization.Text = "Localization";
+            this.mnuLocalization.Click += new System.EventHandler(this.MnuLocalization_Click);
             // 
             // mnuPlugins
             // 
@@ -721,6 +734,13 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
+            // mnuDumpLanguage
+            // 
+            this.mnuDumpLanguage.Name = "mnuDumpLanguage";
+            this.mnuDumpLanguage.Size = new System.Drawing.Size(180, 22);
+            this.mnuDumpLanguage.Text = "Dump language";
+            this.mnuDumpLanguage.Click += new System.EventHandler(this.MnuDumpLanguage_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -734,6 +754,7 @@
             this.Name = "FormMain";
             this.Text = "ScriptNotepad";
             this.Activated += new System.EventHandler(this.FormMain_Activated);
+            this.Deactivate += new System.EventHandler(this.FormMain_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
@@ -829,6 +850,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuManageSessions;
         private System.Windows.Forms.ToolStripMenuItem mnuSession;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem mnuLocalization;
+        private System.Windows.Forms.ToolStripMenuItem mnuDumpLanguage;
     }
 }
 

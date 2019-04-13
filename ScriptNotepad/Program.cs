@@ -69,6 +69,23 @@ namespace ScriptNotepad
             ExceptionLogger.Bind(); // bind before any visual objects are created
             ExceptionLogger.ApplicationCrashData += ExceptionLogger_ApplicationCrashData;
 
+            // Save languages..
+            if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)
+            {
+                new FormMain();
+                new FormScript();
+                new FormDialogScriptLoad();
+                new FormDialogQueryEncoding();
+                new FormHexEdit();
+                new Settings.FormSettings();
+                new FormPluginManage();
+                new FormDialogSessionManage();
+                FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
+                ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+                ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
+                return;
+            }
+
             // if the application is running send the arguments to the existing instance..
             if (AppRunning.CheckIfRunning("VPKSoft.ScriptNotepad.C#"))
             {
@@ -79,7 +96,7 @@ namespace ScriptNotepad
                     ipcClient.CreateClient("localhost", 50670);
                     string[] args = Environment.GetCommandLineArgs();
 
-                    // only send the existing files to the running instance, don't send the executable's
+                    // only send the existing files to the running instance, don't send the executable
                     // file name thus the start from 1..
                     for (int i = 1; i < args.Length; i++)
                     {
@@ -98,23 +115,6 @@ namespace ScriptNotepad
                     ExceptionLogger.LogError(ex);
                     // just in case something fails with the IPC communication..
                 }
-                ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
-                ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
-                return;
-            }
-
-            // Save languages..
-            if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)
-            {
-                new FormMain();
-                new FormScript();
-                new FormDialogScriptLoad();
-                new FormDialogQueryEncoding();
-                new FormHexEdit();
-                new Settings.FormSettings();
-                new FormPluginManage();
-                new FormDialogSessionManage();
-                FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
                 return;
@@ -151,7 +151,7 @@ namespace ScriptNotepad
             }
             catch
             {
-
+                // ignored, no point of return..
             }
 
             // unsubscribe this event handler..

@@ -98,11 +98,11 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.1\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.3\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.3.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.3.1\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -246,9 +246,11 @@
     </Compile>
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\DoubleClickSelectAllHelper.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\Highlight.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\ReplaceOpenDocuments.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ScintillaDocumentEventArgs.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ScintillaSearchFlagHelper.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\SearchOpenDocuments.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\SearchOpenDocumentsBase.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\CloseFormUtils.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\SessionMenuBuilder.cs" />
     <Compile Include="UtilityClasses\Session\FormDialogSessionManage.cs">
@@ -324,6 +326,7 @@
     <None Include="DatabaseScript\script.sql_script">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="ScriptNotepad.licenseheader" />
     <None Include="WindowsRegistry\OpenWith.reg" />
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +355,7 @@
     </Content>
     <None Include="Resources\textfield-rename.png" />
     <None Include="Resources\session-properties.png" />
+    <None Include="Resources\education-languages.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

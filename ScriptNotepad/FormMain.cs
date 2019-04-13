@@ -29,6 +29,7 @@ using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
 using ScintillaNET_FindReplaceDialog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -1557,6 +1558,40 @@ namespace ScriptNotepad
             }
         }
 
+        // a user wishes to help with localization of the software (!!)..
+        private void MnuLocalization_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string args = "--localize=\"" +
+                              Path.Combine(
+                                  Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                                  "ScriptNotepad",
+                                  "lang.sqlite") + "\"";
+
+                Process.Start(Application.ExecutablePath, args);
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex, "Localization");
+            }
+        }
+
+        // a user wishes to dump (update) the current language database..
+        private void MnuDumpLanguage_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(Application.ExecutablePath, "--dblang");
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex, "Localization dump");
+            }
+        }
+
         // the software's main form was activated so check if any open file has been changes..
         private void FormMain_Activated(object sender, EventArgs e)
         {
@@ -1568,6 +1603,8 @@ namespace ScriptNotepad
             // start the timer to bring the main form to the front..
             leftActivatedEvent = true;
             tmGUI.Enabled = true;
+
+            FormSearchAndReplace.Instance.ToggleStayTop(true);
         }
 
         // a tab is closing so save it into the history..
@@ -1840,6 +1877,11 @@ namespace ScriptNotepad
             }
         }
 
+        private void FormMain_Deactivate(object sender, EventArgs e)
+        {
+            FormSearchAndReplace.Instance.ToggleStayTop(false);
+        }
+
         private void FormMain_ResizeBegin(object sender, EventArgs e)
         {
             SuspendLayout();
@@ -1911,10 +1953,6 @@ namespace ScriptNotepad
 
                 // get the session ID number from the database..
                 CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
-
-
-
-                // TODO::Add session support!!..
             }
         }
 

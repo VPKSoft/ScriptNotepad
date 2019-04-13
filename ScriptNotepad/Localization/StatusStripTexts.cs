@@ -172,8 +172,6 @@ namespace ScriptNotepad.Localization
                 document.Scintilla.Lines.Count, document.Scintilla.CurrentPosition);
         }
 
-        private double seconds = 0;
-
         /// <summary>
         /// Sets the main status strip values for the currently active document..
         /// </summary>
@@ -181,7 +179,6 @@ namespace ScriptNotepad.Localization
         /// <param name="sessionName">Name of the session to set for the label.</param>
         public static void SetStatusStringText(ScintillaTabbedDocument document, string sessionName)
         {
-            DateTime dt = DateTime.Now;
             // first check the parameter validity..
             if (document == null)
             {
@@ -211,11 +208,11 @@ namespace ScriptNotepad.Localization
 
             LabelLineEnding.Text = string.Empty;
 
-            if (document.Tag != null) // TODO::Only detect the file line ending type if the contents have been changed..
+            if (document.Tag != null)
             {
                 DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
 
-                LabelLineEnding.Text = fileSave.EncodingText;
+                LabelLineEnding.Text = fileSave.FileLineEndingText;
 
                 LabelEncoding.Text =
                     DBLangEngine.GetStatMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
