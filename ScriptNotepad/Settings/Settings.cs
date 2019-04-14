@@ -238,6 +238,12 @@ namespace ScriptNotepad.Settings
         [Setting("misc/pluginFolder", typeof(string))]
         public string PluginFolder { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the search three form should be an independent form or a docked control to the main form.
+        /// </summary>
+        [Setting("misc/dockSearchTree", typeof(bool))]
+        public bool DockSearchTreeForm { get; set; } = true;
+
         // the current language (Culture) to be used with the software..
         private static CultureInfo _Culture = null;
 

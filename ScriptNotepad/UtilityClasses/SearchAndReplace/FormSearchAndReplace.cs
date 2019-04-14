@@ -27,6 +27,7 @@ SOFTWARE.
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
@@ -173,20 +174,20 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Gets or sets the documents containing in the main form.
         /// </summary>
-        internal List<Scintilla> Documents { get; set; } = new List<Scintilla>();
+        internal List<(Scintilla scintilla, string fileName)> Documents { get; set; } = new List<(Scintilla scintilla, string fileName)>();
 
-        private Scintilla currentDocument = null;
+        private (Scintilla scintilla, string fileName) currentDocument;
 
         /// <summary>
         /// Gets or sets the currently active document in the main form.
         /// </summary>
-        private Scintilla CurrentDocument
+        private (Scintilla scintilla, string fileName) CurrentDocument
         {
             get => currentDocument;
 
             set
             {
-                if (currentDocument != value && value != null)
+                if (currentDocument != value && currentDocument.scintilla != null)
                 {
                     CreateSingleSearchAlgorithm(value);
                 }
@@ -199,9 +200,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// Creates the single search algorithm for a given <see cref="Scintilla"/> document.
         /// </summary>
         /// <param name="scintilla">The scintilla.</param>
-        private void CreateSingleSearchAlgorithm(Scintilla scintilla)
+        private void CreateSingleSearchAlgorithm((Scintilla scintilla, string fileName) scintilla)
         {
-            if (scintilla != null)
+            if (scintilla.scintilla != null)
             {
                 SearchOpenDocuments =
                     new SearchOpenDocuments(
@@ -218,7 +219,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </summary>
         /// <param name="allDocuments">If set to <c>true</c> all the open documents are returned.</param>
         /// <returns>The document(s) currently opened on the main form.</returns>
-        private List<Scintilla> GetDocuments(bool allDocuments)
+        private List<(Scintilla scintilla, string fileName)> GetDocuments(bool allDocuments)
         {
             ScintillaDocumentEventArgs scintillaDocumentEventArgs =
                 new ScintillaDocumentEventArgs
@@ -234,10 +235,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// Gets the current document active in the main form.
         /// </summary>
         /// <returns>A Scintilla document currently active in the main form.</returns>
-        private Scintilla GetCurrentDocument()
+        private (Scintilla scintilla, string fileName) GetCurrentDocument()
         {
             return GetDocuments(false).Count > 0 ?
-                GetDocuments(false)[0] : null;
+                GetDocuments(false)[0] : (null, null);
         }
         
         private void btFindPrevious_Click(object sender, EventArgs e)
@@ -285,7 +286,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // a new search class is constructed if the search conditions have changed..
         private void SearchCondition_Changed(object sender, EventArgs e)
         {
-            if (CurrentDocument != null)
+            if (CurrentDocument.scintilla != null)
             {
                 CreateSingleSearchAlgorithm(CurrentDocument);
             }
@@ -310,7 +311,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             CreateSingleSearchAlgorithm(CurrentDocument);
             SearchOpenDocuments?.ResetSearchArea();
             int count = 0;
-            CurrentDocument.SuspendLayout();
+            CurrentDocument.scintilla.SuspendLayout();
 
             if (rbExtented.Checked)
             {
@@ -324,7 +325,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 }
             }
 
-            CurrentDocument.ResumeLayout();
+            CurrentDocument.scintilla.ResumeLayout();
 
             MessageBox.Show(count.ToString());
         }
@@ -347,11 +348,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         private void BtFindAllCurrent_Click(object sender, EventArgs e)
         {
             var result = SearchOpenDocuments?.SearchAll();
-            return; // TODO::NO selection, just results (tree view of matching locations).. add loop for all the documents..
-            foreach (var resultValue in result)
-            {
-                MessageBox.Show(resultValue.ToString());
-            }
+
+            var tree = new FormSearchResultTree();
+
+            tree.Show();
+
+            tree.SearchResults = result;
         }
     }
 }

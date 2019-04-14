@@ -25,8 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScintillaNET;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -52,7 +50,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <param name="wrapAround">If set to <c>true</c> the search can continue from the beginning of the document after reaching the end of the document or from the end of the document after reaching the start of the document.</param>
         /// <param name="extended">If set to <c>true</c> the search translates escape characters into their corresponding character values.</param>
         /// <param name="searchText">The text to search from the <see cref="Scintilla"/> document.</param>
-        public SearchOpenDocuments(Scintilla scintilla, List<Scintilla> openDocuments, bool isRegExp, bool
+        public SearchOpenDocuments((Scintilla scintilla, string fileName) scintilla, List<(Scintilla, string fileName)> openDocuments, bool isRegExp, bool
             matchCase, bool matchWholeWord, bool matchWordStart, bool resetTarget, bool wrapAround, bool extended, string searchText)
         {
             // save the Scintilla instance..
@@ -66,13 +64,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             WrapAround = wrapAround;
 
             // apply some additional checks for the resetTarget parameter..
-            resetTarget |= scintilla.TargetStart == scintilla.TargetEnd;
+            resetTarget |= scintilla.scintilla.TargetStart == scintilla.scintilla.TargetEnd;
 
             // if the flag is set, reset the Scintilla's search area..
             if (resetTarget)
             {
-                scintilla.TargetStart = 0;
-                scintilla.TargetEnd = scintilla.TextLength;
+                scintilla.scintilla.TargetStart = 0;
+                scintilla.scintilla.TargetEnd = scintilla.scintilla.TextLength;
             }
             else // otherwise let it be as is..
             {
@@ -80,12 +78,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 previousSearchDirection = PreviousDirection.ResetOnDirection;
 
                 // set the search area assuming the search is done forwards..
-                scintilla.TargetStart = scintilla.CurrentPosition;
-                scintilla.TargetEnd = scintilla.TextLength;
+                scintilla.scintilla.TargetStart = scintilla.scintilla.CurrentPosition;
+                scintilla.scintilla.TargetEnd = scintilla.scintilla.TextLength;
             }
 
             // create the search flags for the Scintilla instance base on the given parameters..
-            Scintilla.SearchFlags =
+            Scintilla.scintilla.SearchFlags =
                 ScintillaSearchFlagHelper.CreateFlags(
                     isRegExp, matchCase, matchWholeWord && !isRegExp, matchWordStart && !isRegExp);
 
@@ -101,26 +99,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             IsRegExp = isRegExp;
             Extended = extended;
             // END: set the property values for further use..
-        }
-
-        /// <summary>
-        /// Searches all matches within the current document.
-        /// </summary>
-        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.Int32&gt;&gt; containing the search results.</returns>
-        public IEnumerable<(int lineNumber, int startLocation, int length)> SearchAll()
-        {
-            int len = SearchText.Length;
-            var result = new List<(int lineNumber, int startLocation, int length)>();
-            var find = Search(false, false);
-            while (!result.Exists(f => f.startLocation == find.foundLocation) && find.success)
-            {
-                result.Add((Scintilla.LineFromPosition(find.foundLocation) + 1, find.foundLocation, len));
-                find = Search(false, false);
-            }
-
-            result = result.OrderBy(f => f.startLocation).ToList();
-
-            return result;
         }
     }
 }

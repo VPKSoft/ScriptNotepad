@@ -244,8 +244,15 @@
     <Compile Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.Designer.cs">
       <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
     </Compile>
+    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchResultTree.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchResultTree.Designer.cs">
+      <DependentUpon>FormSearchResultTree.cs</DependentUpon>
+    </Compile>
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\DoubleClickSelectAllHelper.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\Highlight.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\Misc\SearchResultTreeViewClickEventArgs.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ReplaceOpenDocuments.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ScintillaDocumentEventArgs.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ScintillaSearchFlagHelper.cs" />
@@ -306,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.resx">
       <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormSearchResultTree.resx">
+      <DependentUpon>FormSearchResultTree.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UtilityClasses\Session\FormDialogSessionManage.resx">
       <DependentUpon>FormDialogSessionManage.cs</DependentUpon>

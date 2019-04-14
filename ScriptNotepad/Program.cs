@@ -80,6 +80,7 @@ namespace ScriptNotepad
                 new Settings.FormSettings();
                 new FormPluginManage();
                 new FormDialogSessionManage();
+                new FormSearchResultTree();
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;

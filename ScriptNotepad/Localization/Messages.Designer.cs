@@ -1249,6 +1249,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Line: {0}, contents {1}|A message describing a search result with a line number and the line&apos;s contents..
+        /// </summary>
+        internal static string msgSearchResultLine {
+            get {
+                return ResourceManager.GetString("msgSearchResultLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The session was successfully created.|A message indicating a successful session creation..
         /// </summary>
         internal static string msgSessionCreateSuccess {

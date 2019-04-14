@@ -130,6 +130,9 @@ namespace ScriptNotepad.Settings
 
             // set the current plug-in folder from the settings..
             tbPluginFolder.Text = Settings.PluginFolder;
+
+            // set the value of whether to dock the search tree form in the main form..
+            cbDockSearchTree.Checked = Settings.DockSearchTreeForm;
         }
 
         /// <summary>
@@ -154,6 +157,9 @@ namespace ScriptNotepad.Settings
 
             // save the selected plug-in folder to the settings..
             Settings.PluginFolder = tbPluginFolder.Text;
+
+            // save the value of whether to dock the search tree form in the main form..
+            Settings.DockSearchTreeForm = cbDockSearchTree.Checked;
         }
         #endregion
 

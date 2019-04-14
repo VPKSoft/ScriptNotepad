@@ -53,6 +53,7 @@
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
+            this.cbDockSearchTree = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
@@ -77,6 +78,7 @@
             // 
             // tpgGeneralSettings
             // 
+            this.tpgGeneralSettings.Controls.Add(this.cbDockSearchTree);
             this.tpgGeneralSettings.Controls.Add(this.pbDefaultFolder);
             this.tpgGeneralSettings.Controls.Add(this.btSelectPluginFolder);
             this.tpgGeneralSettings.Controls.Add(this.tbPluginFolder);
@@ -345,6 +347,16 @@
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
             // 
+            // cbDockSearchTree
+            // 
+            this.cbDockSearchTree.AutoSize = true;
+            this.cbDockSearchTree.Location = new System.Drawing.Point(6, 223);
+            this.cbDockSearchTree.Name = "cbDockSearchTree";
+            this.cbDockSearchTree.Size = new System.Drawing.Size(126, 17);
+            this.cbDockSearchTree.TabIndex = 32;
+            this.cbDockSearchTree.Text = "Dock the search tree";
+            this.cbDockSearchTree.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -403,5 +415,6 @@
         private System.Windows.Forms.TextBox tbPluginFolder;
         private System.Windows.Forms.Label lbPluginFolder;
         private System.Windows.Forms.PictureBox pbDefaultFolder;
+        private System.Windows.Forms.CheckBox cbDockSearchTree;
     }
 }

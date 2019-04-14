@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ScintillaNET;
+using ScriptNotepad.Database.Tables;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace
@@ -52,12 +53,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Gets or sets the Scintilla document which this class uses for searching text from.
         /// </summary>
-        internal Scintilla Scintilla { get; set; }
+        internal (Scintilla scintilla, string fileName) Scintilla { get; set; }
 
         /// <summary>
         /// Gets or sets all the open documents in the software.
         /// </summary>
-        internal List<Scintilla> OpenDocuments { get; set; } = new List<Scintilla>();
+        internal List<(Scintilla scintilla, string fileName)> OpenDocuments { get; set; } = new List<(Scintilla scintilla, string fileName)>();
 
         /// <summary>
         /// Gets or sets the search text to search from a <see cref="Scintilla"/> document.
@@ -119,19 +120,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     if (value == PreviousDirection.Backward)
                     {
                         // TODO::Make the logic work!
-                        Scintilla.TargetStart = 0;
-                        Scintilla.TargetEnd =
-                            Scintilla.CurrentPosition <= Scintilla.TargetStart
-                                ? Scintilla.TextLength
-                                : Scintilla.CurrentPosition;
+                        Scintilla.scintilla.TargetStart = 0;
+                        Scintilla.scintilla.TargetEnd =
+                            Scintilla.scintilla.CurrentPosition <= Scintilla.scintilla.TargetStart
+                                ? Scintilla.scintilla.TextLength
+                                : Scintilla.scintilla.CurrentPosition;
                     }
                     else if (value == PreviousDirection.Forward)
                     {
                         // TODO::Make the logic work!
-                        Scintilla.TargetStart = Scintilla.CurrentPosition == Scintilla.TextLength
+                        Scintilla.scintilla.TargetStart = Scintilla.scintilla.CurrentPosition == Scintilla.scintilla.TextLength
                             ? 0
-                            : Scintilla.CurrentPosition;
-                        Scintilla.TargetEnd = Scintilla.TextLength;
+                            : Scintilla.scintilla.CurrentPosition;
+                        Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
                     }
                 }
                 previousSearchDirection = value;
@@ -143,33 +144,34 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </summary>
         /// <param name="backward">If set to <c>true</c> the search is run backwards.</param>
         /// <param name="noReset">A flag indicating whether to reset allow the method to reset the search to match the entire document.</param>
+        /// <param name="noSelect">A flag indicating whether the search result should be selected in the <see cref="Scintilla"/> or not.</param>
         /// <returns>True if the text was found; otherwise false.</returns>
-        public (bool success, int foundLocation) Search(bool backward, bool noReset = false)
+        public (bool success, int foundLocation) Search(bool backward, bool noReset = false, bool noSelect = false)
         {
             // TODO::Make the noReset flag to work!
             PreviousSearchDirection = backward ? PreviousDirection.Backward : PreviousDirection.Forward;
 
             // the searching and selection methods change these values so do save them..
-            int targetEnd = Scintilla.TargetEnd;
+            int targetEnd = Scintilla.scintilla.TargetEnd;
             int targetStart;
 
             int foundLocation = Extended ? SearchExtended(backward) :
-                (backward ? FindLastOccurrence(false) : Scintilla.SearchInTarget(SearchText));
+                (backward ? FindLastOccurrence(false) : Scintilla.scintilla.SearchInTarget(SearchText));
 
             if (foundLocation == -1 && WrapAround && !noReset)
             {
                 targetStart = 0;
-                targetEnd = Scintilla.TextLength;
-                Scintilla.TargetStart = 0;
-                Scintilla.TargetEnd = Scintilla.TextLength;
+                targetEnd = Scintilla.scintilla.TextLength;
+                Scintilla.scintilla.TargetStart = 0;
+                Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
 
                 foundLocation = Extended ? SearchExtended(backward) :
-                    (backward ? FindLastOccurrence(false) : Scintilla.SearchInTarget(SearchText));
+                    (backward ? FindLastOccurrence(false) : Scintilla.scintilla.SearchInTarget(SearchText));
 
                 if (foundLocation == -1)
                 {
-                    Scintilla.TargetStart = targetStart;
-                    Scintilla.TargetEnd = targetEnd;
+                    Scintilla.scintilla.TargetStart = targetStart;
+                    Scintilla.scintilla.TargetEnd = targetEnd;
                     if (ResetSearchArea(backward))
                     {
                         return Search(backward);
@@ -188,45 +190,59 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             if (!noReset)
             {
-                Scintilla.GotoPosition(foundLocation);
+                Scintilla.scintilla.GotoPosition(foundLocation);
             }
 
             if (IsRegExp)
             {
                 if (noReset)
                 {
-                    var line = Scintilla.Lines[Scintilla.LineFromPosition(foundLocation)];
-                    Scintilla.TargetStart = line.EndPosition;
-                    Scintilla.TargetEnd = Scintilla.TextLength;
-                    if (Scintilla.TargetStart + SearchText.Length >= Scintilla.TextLength)
+                    var line = Scintilla.scintilla.Lines[Scintilla.scintilla.LineFromPosition(foundLocation)];
+                    Scintilla.scintilla.TargetStart = line.EndPosition;
+                    Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
+                    if (Scintilla.scintilla.TargetStart + SearchText.Length >= Scintilla.scintilla.TextLength)
                     {
                         return (false, -1);
                     }
                 }
                 else
                 {
-                    var line = Scintilla.Lines[Scintilla.LineFromPosition(Scintilla.CurrentPosition)];
-                    Scintilla.SetSelection(line.Position, line.EndPosition);
-                    Scintilla.TargetStart = backward ? 0 : line.EndPosition;
-                    Scintilla.TargetEnd = backward ? Scintilla.CurrentPosition - line.Length : targetEnd;
+                    var line = Scintilla.scintilla.Lines[
+                        Scintilla.scintilla.LineFromPosition(Scintilla.scintilla.CurrentPosition)];
+
+                    if (!noSelect) // just search, no selection..
+                    {
+                        Scintilla.scintilla.SetSelection(line.Position, 
+                            line.EndPosition);
+                    }
+
+                    Scintilla.scintilla.TargetStart = backward ? 0 : line.EndPosition;
+                    Scintilla.scintilla.TargetEnd =
+                        backward ? Scintilla.scintilla.CurrentPosition - line.Length : targetEnd;
                 }
             }
             else
             {
                 if (noReset)
                 {
-                    Scintilla.TargetStart += SearchText.Length;
-                    Scintilla.TargetEnd = Scintilla.TextLength;
-                    if (Scintilla.TargetStart + SearchText.Length >= Scintilla.TextLength)
+                    Scintilla.scintilla.TargetStart += SearchText.Length;
+                    Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
+                    if (Scintilla.scintilla.TargetStart + SearchText.Length >= Scintilla.scintilla.TextLength)
                     {
                         return (false, -1);
                     }
                 }
                 else
                 {
-                    Scintilla.SetSelection(Scintilla.CurrentPosition, Scintilla.CurrentPosition + SearchText.Length);
-                    Scintilla.TargetStart = backward ? 0 : Scintilla.CurrentPosition + SearchText.Length;
-                    Scintilla.TargetEnd = backward ? Scintilla.CurrentPosition - SearchText.Length : targetEnd;
+                    if (!noSelect) // just search, no selection..
+                    {
+
+                        Scintilla.scintilla.SetSelection(Scintilla.scintilla.CurrentPosition,
+                            Scintilla.scintilla.CurrentPosition + SearchText.Length);
+                    }
+
+                    Scintilla.scintilla.TargetStart = backward ? 0 : Scintilla.scintilla.CurrentPosition + SearchText.Length;
+                    Scintilla.scintilla.TargetEnd = backward ? Scintilla.scintilla.CurrentPosition - SearchText.Length : targetEnd;
                 }
             }
 
@@ -241,19 +257,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         public int FindLastOccurrence(bool noRecall)
         {
             // the searching and selection methods change these values so do save them..
-            int targetEnd = Scintilla.TargetEnd;
+            int targetEnd = Scintilla.scintilla.TargetEnd;
 
-            int targetStartModify = Scintilla.TargetStart;
+            int targetStartModify = Scintilla.scintilla.TargetStart;
 
-            int foundLocationPrevious = Scintilla.SearchInTarget(SearchText);
-            Scintilla.TargetStart = targetStartModify;
-            Scintilla.TargetEnd = targetEnd;
+            int foundLocationPrevious = Scintilla.scintilla.SearchInTarget(SearchText);
+            Scintilla.scintilla.TargetStart = targetStartModify;
+            Scintilla.scintilla.TargetEnd = targetEnd;
             int foundLocation = foundLocationPrevious;
 
             if (foundLocation == -1 && !noRecall)
             {
-                Scintilla.TargetStart = 0;
-                Scintilla.TargetEnd = Scintilla.TextLength;
+                Scintilla.scintilla.TargetStart = 0;
+                Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
                 return FindLastOccurrence(true);
             }
             else if (foundLocation == -1)
@@ -261,22 +277,22 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return foundLocation;
             }
 
-            while (Scintilla.TargetStart < Scintilla.TargetEnd &&
-                  (foundLocation = Scintilla.SearchInTarget(SearchText)) != -1)
+            while (Scintilla.scintilla.TargetStart < Scintilla.scintilla.TargetEnd &&
+                  (foundLocation = Scintilla.scintilla.SearchInTarget(SearchText)) != -1)
             {
                 foundLocationPrevious = foundLocation;
                 if (!IsRegExp)
                 {
                     targetStartModify = foundLocation + SearchText.Length;
-                    Scintilla.TargetStart = targetStartModify;
-                    Scintilla.TargetEnd = targetEnd;
+                    Scintilla.scintilla.TargetStart = targetStartModify;
+                    Scintilla.scintilla.TargetEnd = targetEnd;
                 }
                 else
                 {
-                    var line = Scintilla.Lines[Scintilla.LineFromPosition(foundLocation)];
+                    var line = Scintilla.scintilla.Lines[Scintilla.scintilla.LineFromPosition(foundLocation)];
                     targetStartModify = foundLocation + line.Length;
-                    Scintilla.TargetStart = targetStartModify;
-                    Scintilla.TargetEnd = targetEnd;
+                    Scintilla.scintilla.TargetStart = targetStartModify;
+                    Scintilla.scintilla.TargetEnd = targetEnd;
                 }
             }
             return foundLocationPrevious;
@@ -290,25 +306,25 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         public bool ResetSearchArea(bool backward)
         {
             // the searching and selection methods change these values so do save them..
-            int targetStart = Scintilla.TargetStart;
-            int targetEnd = Scintilla.TargetEnd;
+            int targetStart = Scintilla.scintilla.TargetStart;
+            int targetEnd = Scintilla.scintilla.TargetEnd;
 
             if ((Extended ? SearchExtended(backward) :
-                backward ? FindLastOccurrence(false) : Scintilla.SearchInTarget(SearchText)) == -1)
+                backward ? FindLastOccurrence(false) : Scintilla.scintilla.SearchInTarget(SearchText)) == -1)
             {
-                Scintilla.TargetStart = 0;
-                Scintilla.TargetEnd = Scintilla.TextLength;
+                Scintilla.scintilla.TargetStart = 0;
+                Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
                 if ((Extended ? SearchExtended(backward) :
-                        backward ? FindLastOccurrence(false) : Scintilla.SearchInTarget(SearchText)) != -1)
+                        backward ? FindLastOccurrence(false) : Scintilla.scintilla.SearchInTarget(SearchText)) != -1)
                 {
-                    Scintilla.TargetStart = 0;
-                    Scintilla.TargetEnd = Scintilla.TextLength;
+                    Scintilla.scintilla.TargetStart = 0;
+                    Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
                     return true;
                 }
                 else
                 {
-                    Scintilla.TargetStart = targetStart;
-                    Scintilla.TargetEnd = targetEnd;
+                    Scintilla.scintilla.TargetStart = targetStart;
+                    Scintilla.scintilla.TargetEnd = targetEnd;
                     return false;
                 }
             }
@@ -325,8 +341,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             try
             {
                 // the searching and selection methods change these values so do save them..
-                int targetStart = Scintilla.TargetStart;
-                int targetEnd = Scintilla.TargetEnd;
+                int targetStart = Scintilla.scintilla.TargetStart;
+                int targetEnd = Scintilla.scintilla.TargetEnd;
 
                 int count = targetEnd - targetStart - 1;
                 count += backward ? targetStart + count : 0;
@@ -334,7 +350,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 if (!backward)
                 {
                     int index =
-                        Scintilla.Text.IndexOf(SearchText,
+                        Scintilla.scintilla.Text.IndexOf(SearchText,
                             targetStart, count,
                             !MatchCase
                                 ? StringComparison.InvariantCultureIgnoreCase
@@ -371,8 +387,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         private int LastIndexOf()
         {
             // the searching and selection methods change these values so do save them..
-            int targetStart = Scintilla.TargetStart;
-            int targetEnd = Scintilla.TargetEnd;
+            int targetStart = Scintilla.scintilla.TargetStart;
+            int targetEnd = Scintilla.scintilla.TargetEnd;
 
             int count = targetEnd - targetStart - 1;
 
@@ -381,7 +397,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             List<int> indices = new List<int>();
 
             while ((index =
-                       Scintilla.Text.IndexOf(SearchText,
+                       Scintilla.scintilla.Text.IndexOf(SearchText,
                            targetStart, count,
                            !MatchCase
                                ? StringComparison.InvariantCultureIgnoreCase
@@ -416,8 +432,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </summary>
         public void ResetSearchArea()
         {
-            Scintilla.TargetStart = 0;
-            Scintilla.TargetEnd = Scintilla.TextLength;
+            Scintilla.scintilla.TargetStart = 0;
+            Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
         }
 
 
@@ -433,13 +449,41 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             int result = 0;
 
             //find all indexes/occurrences of specified substring in string
-            while ((index = Scintilla.Text.IndexOf(SearchText, index,
+            while ((index = Scintilla.scintilla.Text.IndexOf(SearchText, index,
                        MatchCase ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase)) !=
                    -1)
             {
                 result++;
                 index++;
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Searches all matches within the current document.
+        /// </summary>
+        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.Int32&gt;&gt; containing the search results.</returns>
+        public IEnumerable<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen)> SearchAll()
+        {
+
+            // save the current position as the Search() method changes it..
+            int pos = Scintilla.scintilla.CurrentPosition; 
+            int len = SearchText.Length;
+            var result = new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen)>();
+            var find = Search(false, false, true);
+            while (!result.Exists(f => f.startLocation == find.foundLocation) && find.success)
+            {
+                result.Add((Scintilla.fileName,
+                    Scintilla.scintilla.LineFromPosition(find.foundLocation) + 1, find.foundLocation, len,
+                    Scintilla.scintilla.Lines[Scintilla.scintilla.LineFromPosition(find.foundLocation)].Text, true));
+                find = Search(false, false, true);
+            }
+
+            result = result.OrderBy(f => f.startLocation).ToList();
+
+            // restore the current position before the Search() method changes..
+            Scintilla.scintilla.GotoPosition(pos);
 
             return result;
         }

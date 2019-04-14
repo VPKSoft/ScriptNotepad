@@ -582,4 +582,7 @@
   <data name="msgAppTitleWithoutFileName" xml:space="preserve">
     <value>ScriptNotepad|As in the application name without an active file name</value>
   </data>
+  <data name="msgSearchResultLine" xml:space="preserve">
+    <value>Line: {0}, contents {1}|A message describing a search result with a line number and the line's contents.</value>
+  </data>
 </root>

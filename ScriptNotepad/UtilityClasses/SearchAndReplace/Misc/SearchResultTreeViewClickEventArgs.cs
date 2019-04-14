@@ -24,29 +24,29 @@ SOFTWARE.
 */
 #endregion
 
-using ScintillaNET;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScriptNotepad.UtilityClasses.SearchAndReplace
+namespace ScriptNotepad.UtilityClasses.SearchAndReplace.Misc
 {
     /// <summary>
-    /// Event arguments for the search and replace dialog to be able to interact with the main form.
+    /// Event arguments for the search result form to request the application to do something with the search result.
+    /// Implements the <see cref="System.EventArgs" />
     /// </summary>
     /// <seealso cref="System.EventArgs" />
-    public class ScintillaDocumentEventArgs: EventArgs
+    public class SearchResultTreeViewClickEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets or sets a value indicating whether all the open documents are requested.
+        /// Gets or sets the search result passed by the <see cref="FormSearchResultTree"/> form.
         /// </summary>
-        public bool RequestAllDocuments { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets the <see cref="Scintilla"/> documents requested by an event.
-        /// </summary>
-        public List<(Scintilla scintilla, string fileName)> Documents { get; set; } = new List<(Scintilla scintilla, string fileName)>();
+        /// <value>The search results.</value>
+        public (string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen) SearchResult
+        {
+            get;
+            set;
+        }
     }
 }

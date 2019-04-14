@@ -61,6 +61,7 @@ using ScriptNotepad.Database.TableMethods;
 using System.Linq;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
+using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
@@ -205,6 +206,11 @@ namespace ScriptNotepad
             // the user is either logging of from the system or is shutting down the system..
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
 
+            // subscribe to the event when a search result is clicked from the FormSearchResultTree form..
+            FormSearchResultTree.SearchResultClick += FormSearchResultTree_SearchResultClick;
+
+            FormSearchResultTree.RequestDockMainForm += FormSearchResultTree_RequestDockMainForm;
+
             // localize the new file name..
             sttcMain.NewFilenameStart =
                 DBLangEngine.GetMessage("msgNewFileStart", "new |A starting text of how a new document should be named");
@@ -220,6 +226,48 @@ namespace ScriptNotepad
 
             // initialize the plug-in assemblies..
             InitializePlugins();
+        }
+
+        private void FormSearchResultTree_RequestDockMainForm(object sender, EventArgs e)
+        {
+            // no docking if disabled..
+            if (!FormSettings.Settings.DockSearchTreeForm)
+            {
+                return;
+            }
+
+            var dockForm = (Form) sender;
+            dockForm.TopLevel = false;
+            dockForm.AutoScroll = true;
+            dockForm.FormBorderStyle = FormBorderStyle.None;
+            dockForm.Location = new Point(0, 0);
+            dockForm.Width = pnDock.Width;
+            dockForm.Height = Height * 15 / 100;
+            pnDock.Controls.Add(dockForm);
+            //dockForm.Dock = DockStyle.Fill;
+            dockForm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+        }
+
+        private void FormSearchResultTree_SearchResultClick(object sender, SearchResultTreeViewClickEventArgs e)
+        {
+            // check if the file is opened in the editor..
+            if (e.SearchResult.isFileOpen)
+            {
+                int idx = sttcMain.Documents.FindIndex(f => f.FileName == e.SearchResult.fileName);
+                if (idx != -1)
+                {
+                    sttcMain.ActivateDocument(idx);
+                    var scintilla = sttcMain.Documents[idx].Scintilla;
+                    scintilla.GotoPosition(e.SearchResult.startLocation);
+                    scintilla.CurrentPosition = e.SearchResult.startLocation;
+                    scintilla.SetSelection(e.SearchResult.startLocation, e.SearchResult.startLocation + e.SearchResult.length);
+                    Focus();
+                }
+            }
+            else
+            {
+                //TODO::Open the file..
+            }
         }
         #endregion
 
@@ -1166,11 +1214,11 @@ namespace ScriptNotepad
         {
             if (e.RequestAllDocuments)
             {
-                e.Documents = sttcMain.Documents.Select(f => f.Scintilla).ToList();
+                e.Documents = sttcMain.Documents.Select(f => (f.Scintilla, f.FileName)).ToList();
             }
             else if (sttcMain.CurrentDocument != null)
             {
-                e.Documents.Add(sttcMain.CurrentDocument.Scintilla);
+                e.Documents.Add((sttcMain.CurrentDocument.Scintilla, sttcMain.CurrentDocument.FileName));
             }
         }
 

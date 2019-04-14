@@ -87,6 +87,7 @@
             this.mnuManagePlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageSessions = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuLocalization = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDumpLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,7 +108,7 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuDumpLanguage = new System.Windows.Forms.ToolStripMenuItem();
+            this.pnDock = new System.Windows.Forms.Panel();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -129,12 +130,14 @@
             this.tlpMain.Controls.Add(this.tsMain, 0, 0);
             this.tlpMain.Controls.Add(this.ssMain, 0, 2);
             this.tlpMain.Controls.Add(this.sttcMain, 0, 1);
+            this.tlpMain.Controls.Add(this.pnDock, 0, 3);
             this.tlpMain.Location = new System.Drawing.Point(12, 27);
             this.tlpMain.Name = "tlpMain";
-            this.tlpMain.RowCount = 3;
+            this.tlpMain.RowCount = 4;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.Size = new System.Drawing.Size(825, 540);
             this.tlpMain.TabIndex = 3;
             // 
@@ -598,6 +601,13 @@
             this.mnuLocalization.Text = "Localization";
             this.mnuLocalization.Click += new System.EventHandler(this.MnuLocalization_Click);
             // 
+            // mnuDumpLanguage
+            // 
+            this.mnuDumpLanguage.Name = "mnuDumpLanguage";
+            this.mnuDumpLanguage.Size = new System.Drawing.Size(159, 22);
+            this.mnuDumpLanguage.Text = "Dump language";
+            this.mnuDumpLanguage.Click += new System.EventHandler(this.MnuDumpLanguage_Click);
+            // 
             // mnuPlugins
             // 
             this.mnuPlugins.Name = "mnuPlugins";
@@ -734,12 +744,18 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
-            // mnuDumpLanguage
+            // pnDock
             // 
-            this.mnuDumpLanguage.Name = "mnuDumpLanguage";
-            this.mnuDumpLanguage.Size = new System.Drawing.Size(180, 22);
-            this.mnuDumpLanguage.Text = "Dump language";
-            this.mnuDumpLanguage.Click += new System.EventHandler(this.MnuDumpLanguage_Click);
+            this.pnDock.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnDock.AutoSize = true;
+            this.tlpMain.SetColumnSpan(this.pnDock, 5);
+            this.pnDock.Location = new System.Drawing.Point(0, 540);
+            this.pnDock.Margin = new System.Windows.Forms.Padding(0);
+            this.pnDock.Name = "pnDock";
+            this.pnDock.Size = new System.Drawing.Size(825, 1);
+            this.pnDock.TabIndex = 5;
             // 
             // FormMain
             // 
@@ -852,6 +868,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem mnuLocalization;
         private System.Windows.Forms.ToolStripMenuItem mnuDumpLanguage;
+        private System.Windows.Forms.Panel pnDock;
     }
 }
 
