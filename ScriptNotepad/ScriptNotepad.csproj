@@ -366,6 +366,9 @@
     <None Include="Resources\textfield-rename.png" />
     <None Include="Resources\session-properties.png" />
     <None Include="Resources\education-languages.png" />
+    <None Include="Resources\arrow_left.png" />
+    <None Include="Resources\arrow_right.png" />
+    <None Include="Resources\close_small.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

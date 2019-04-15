@@ -26,6 +26,7 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ScintillaNET;
 using ScriptNotepad.Database.Tables;
@@ -436,8 +437,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             Scintilla.scintilla.TargetEnd = Scintilla.scintilla.TextLength;
         }
 
-
-
         /// <summary>
         /// Gets a count of string occurrences with <seealso cref="Extended"/> set to true.
         /// </summary>
@@ -466,7 +465,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.Int32&gt;&gt; containing the search results.</returns>
         public IEnumerable<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen)> SearchAll()
         {
-
+            Scintilla.scintilla.SuspendLayout();
             // save the current position as the Search() method changes it..
             int pos = Scintilla.scintilla.CurrentPosition; 
             int len = SearchText.Length;
@@ -484,8 +483,33 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // restore the current position before the Search() method changes..
             Scintilla.scintilla.GotoPosition(pos);
+            Scintilla.scintilla.ResumeLayout();
 
             return result;
+        }
+
+        /// <summary>
+        /// Searches all in all opened documents.
+        /// </summary>
+        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.String, System.Int32, System.Int32, System.Int32, System.String, System.Boolean&gt;&gt;.</returns>
+        public IEnumerable<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+            isFileOpen)> SearchAllInAllOpened()
+        {
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> result =
+                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                    isFileOpen)>();
+
+            var currentDocument = Scintilla;
+            foreach (var openDocument in OpenDocuments)
+            {
+                Scintilla = openDocument;
+                result.AddRange(SearchAll().ToList());
+            }
+
+            Scintilla = currentDocument;
+
+            return result.OrderBy(f => Path.GetFileName(f.fileName)?.ToLowerInvariant());
         }
     }
 }

@@ -355,5 +355,16 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             tree.SearchResults = result;
         }
+
+        private void BtFindAllInAll_Click(object sender, EventArgs e)
+        {
+            var result = SearchOpenDocuments?.SearchAllInAllOpened();
+
+            var tree = new FormSearchResultTree();
+
+            tree.Show();
+
+            tree.SearchResults = result;
+        }
     }
 }

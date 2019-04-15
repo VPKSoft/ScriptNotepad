@@ -38,6 +38,7 @@ using System.Windows.Forms;
 using ScriptNotepad.Settings;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
+using VPKSoft.ScintillaTabbedTextControl;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 {
@@ -71,9 +72,33 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // initialize the language/localization database..
             DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+
+            ttMain.SetToolTip(pnPreviousResult,
+                DBLangEngine.GetMessage("msgPreviousResult",
+                    "Previous result|A tool-tip message describing that the button would go to the previous search result"));
+
+            ttMain.SetToolTip(pnNextResult,
+                DBLangEngine.GetMessage("msgNextResult",
+                    "Next result|A tool-tip message describing that the button would go to the next search result"));
             
+            ttMain.SetToolTip(pnClose,
+                DBLangEngine.GetMessage("msgButtonClose",
+                    "Close|A message describing a tool-tip for a button which would close something"));
+
             // don't allow multiple instances of this..
-            PreviousInstance?.Close();
+            if (PreviousInstance != null)
+            {
+                if (PreviousInstance.IsDocked)
+                {
+                    RequestDockReleaseMainForm?.Invoke(PreviousInstance, new EventArgs());
+                }
+                else
+                {
+                    PreviousInstance?.Close();                   
+                }
+            }
+
+            // save this as the new previous instance..
             PreviousInstance = this;
         }
 
@@ -119,15 +144,20 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // initialize a variable for the 0-level node (a file)..
             TreeNode upperNode = null;
-
+           
             // loop through the search results..
             foreach (var searchResult in SearchResults)
             {
                 // if the file name in the search result has changed, create a new primary node for the file..
                 if (fileName != searchResult.fileName)
                 {
+                    int count = searchResults.Count(f => f.fileName == searchResult.fileName);
                     // create the primary node..
-                    upperNode = tvMain.Nodes.Add(searchResult.fileName, Path.GetFileName(searchResult.fileName), 0);
+                    upperNode = tvMain.Nodes.Add(searchResult.fileName,
+                        DBLangEngine.GetMessage("msgFileNameMatchCount",
+                            "File: '{0}', matches: {1}|A message describing a file name and a count number of search matches",
+                            Path.GetFileName(searchResult.fileName), count), 0);
+
                     upperNode.Tag = searchResult; // save the result to the tag..
 
                     // save the file name so the comparison of the file name change can be done..
@@ -149,7 +179,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
-        /// A delegate for the SearchResultClick event.
+        /// A delegate for the SearchResultSelected event.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="SearchResultTreeViewClickEventArgs"/> instance containing the event data.</param>
@@ -158,29 +188,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Occurs when a search result was clicked.
         /// </summary>
-        public static event OnSearchResultClick SearchResultClick;
+        public static event OnSearchResultClick SearchResultSelected;
 
         /// <summary>
         /// Gets or sets the an event handler if the form requests to dock in the main form.
         /// </summary>
         public static event EventHandler RequestDockMainForm;
 
-        private void TvMain_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            // the parent node does not need to be handled..
-            if (e.Node.Level == 0)
-            {
-                return;
-            }
-
-            // get the tag of the clicked tree view node..
-            var clickResult =
-                ((string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen))
-                e.Node.Tag;
-
-            // raise the click event if subscribed..
-            SearchResultClick?.Invoke(this, new SearchResultTreeViewClickEventArgs { SearchResult = clickResult });
-        }
+        /// <summary>
+        /// Gets or sets the an event handler if the form requests the docking to the main form to be released.
+        /// </summary>
+        public static event EventHandler RequestDockReleaseMainForm;
 
         // the form is requesting to dock in to the main form..
         private void FormSearchResultTree_Shown(object sender, EventArgs e)
@@ -195,6 +213,233 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 Height = Application.OpenForms[0].Height * 20 / 100;
             }
+        }
+
+        // a flag indicating whether this instance is docked to the main form..
+        private bool isDocked = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is docked to the main form.
+        /// </summary>
+        public bool IsDocked
+        {
+            get => isDocked;
+
+            set
+            {
+                lbSearchResultDesc.Visible = value;
+                pnClose.Visible = value;
+                isDocked = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the absolute index of the selected node within the three branches.
+        /// </summary>
+        private int SelectedNodeIndex { get; set; } = 1;
+
+        /// <summary>
+        /// Selects the previous or the next node of a tree view based on the given direction.
+        /// </summary>
+        /// <param name="forward">if set to <c>true</c> the selection goes forward.</param>
+        private void SelectNode(TreeView treeView, bool forward)
+        {
+            if (forward) // forward..
+            {
+                SelectNextNode(treeView);
+            }
+            else
+            {
+                // backward..
+                SelectPreviousNode(treeView);
+            }
+        }
+
+        /// <summary>
+        /// Selects the next node within a tree view.
+        /// </summary>
+        private void SelectNextNode(TreeView treeView)
+        {
+            int count = treeView.GetNodeCount(true);
+
+            if (SelectedNodeIndex == count - 1)
+            {
+                SelectedNodeIndex = 1;
+            }
+
+            int counter = 0;
+            for (int i = 0; i < treeView.Nodes.Count; i++)
+            {
+                for (int j = 0; j < treeView.Nodes[i].Nodes.Count; j++)
+                {
+                    counter++;
+
+                    if (counter == SelectedNodeIndex)
+                    {
+                        treeView.SelectedNode = treeView.Nodes[i].Nodes[j];
+                        SelectedNodeIndex++;
+                        return;
+                    }
+                }
+            }
+
+            SelectedNodeIndex = 1;
+            SelectNextNode(treeView);
+        }
+
+        /// <summary>
+        /// Selects the previous node of a give <see cref="TreeView"/>.
+        /// </summary>
+        /// <param name="treeView">The tree view which previous node to select.</param>
+        private void SelectPreviousNode(TreeView treeView)
+        {
+            int counter = treeView.GetNodeCount(true);
+
+            for (int i = treeView.Nodes.Count - 1; i >= 0; i--)
+            {
+                for (int j = treeView.Nodes[i].Nodes.Count - 1; j >= 0; j--)
+                {
+                    if (counter == SelectedNodeIndex)
+                    {
+                        treeView.SelectedNode = treeView.Nodes[i].Nodes[j];
+                        SelectedNodeIndex--;
+                        return;
+                    }
+
+                    counter--;
+                }
+            }
+
+            SelectedNodeIndex = treeView.GetNodeCount(true);
+            SelectPreviousNode(treeView);
+        }
+
+        // a method to handle the "tiny" button clicks..
+        private void TinyButton_Click(object sender, EventArgs e)
+        {
+            // the search result window is requested to be closed..
+            if (sender.Equals(pnClose)) 
+            {
+                if (IsDocked)
+                {
+                    RequestDockReleaseMainForm?.Invoke(this, new EventArgs());
+                }
+                else
+                {
+                    Close();
+                }
+            }
+            // a user wishes to navigate to a next or to a previous search result..
+            else if (sender.Equals(pnNextResult) || sender.Equals(pnPreviousResult))
+            {
+                SelectNode(tvMain, sender.Equals(pnNextResult));
+            }
+        }
+
+        /// <summary>
+        /// Finds the "true" index of a give <see cref="TreeNode"/> within a given <see cref="TreeView"/>.
+        /// </summary>
+        /// <param name="treeView">The tree view to which the <paramref name="node"/> belongs to.</param>
+        /// <param name="node">The node which "true" index to get.</param>
+        /// <returns>An index for the node if the operation was successful; otherwise false.</returns>
+        private int FindNodeTrueIndex(TreeView treeView, TreeNode node)
+        {
+            int counter = 0;
+            for (int i = 0; i < treeView.Nodes.Count; i++)
+            {
+                for (int j = 0; j < treeView.Nodes[i].Nodes.Count; j++)
+                {
+                    counter++;
+
+                    if (node.Equals(treeView.Nodes[i].Nodes[j]))
+                    {
+                        return counter;
+                    }
+                }
+
+                counter++;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Handles the AfterSelect event of the TvMain control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TreeViewEventArgs"/> instance containing the event data.</param>
+        private void TvMain_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            // the parent node does not need to be handled..
+            if (e.Node.Level == 0)
+            {
+                return;
+            }
+
+            // if the node was selected by the user, the node index needs updating..
+            SelectedNodeIndex = FindNodeTrueIndex((TreeView) sender, e.Node);
+
+            // get the tag of the clicked tree view node..
+            var clickResult =
+                ((string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen))
+                e.Node.Tag;
+
+            // raise the click event if subscribed..
+            SearchResultSelected?.Invoke(this, new SearchResultTreeViewClickEventArgs { SearchResult = clickResult });
+        }
+
+        // (C):: https://social.msdn.microsoft.com/Forums/windows/en-US/7e7b25bd-7adf-43c1-8546-08a308084cf5/any-way-to-change-the-highlight-color-for-an-inactive-not-focused-treeview-control?forum=winforms
+        /// <summary>
+        /// A <see cref="TreeView.DrawNode"/>
+        /// <see cref="DrawTreeNodeEventHandler"/> delegate method. Called 
+        /// when the tree view node gets drawn. This handler keeps 
+        /// highlighting the selected node even  when the control does not 
+        /// have focus.
+        /// </summary>
+        /// <param name="sender">
+        /// The <see cref="TreeView"/> instance that called the event.
+        /// </param>
+        /// <param name="e">
+        /// The tree node event.
+        /// </param>
+        /// <remarks>
+        /// Set the <see cref="TreeView.DrawMode"/> property to
+        /// <see cref="TreeViewDrawMode.OwnerDrawText"/> so this event handler
+        /// gets called. 
+        /// </remarks>
+        private void DrawTreeNodeHighlightSelectedEvenWithoutFocus(object sender, DrawTreeNodeEventArgs e)
+        {
+            Color foreColor;
+            if (e.Node == ((TreeView)sender).SelectedNode)
+            {
+                // is selected, draw a highlighted text rectangle under the text..
+                foreColor = SystemColors.HighlightText;
+                e.Graphics.FillRectangle(SystemBrushes.Highlight, e.Bounds);
+                ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds, foreColor, SystemColors.Highlight);
+            }
+            else
+            {
+                foreColor = (e.Node.ForeColor == Color.Empty) ? ((TreeView)sender).ForeColor : e.Node.ForeColor;
+                e.Graphics.FillRectangle(SystemBrushes.Window, e.Bounds);
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                e.Node.Text,
+                e.Node.NodeFont ?? e.Node.TreeView.Font,
+                e.Bounds,
+                foreColor,
+                TextFormatFlags.GlyphOverhangPadding);
+        }
+
+        /// <summary>
+        /// Handles the DrawNode event of the TvMain control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DrawTreeNodeEventArgs"/> instance containing the event data.</param>
+        private void TvMain_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            DrawTreeNodeHighlightSelectedEvenWithoutFocus(sender, e);
         }
     }
 }

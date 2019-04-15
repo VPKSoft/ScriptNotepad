@@ -320,6 +320,7 @@
             this.btFindAllInAll.TabIndex = 6;
             this.btFindAllInAll.Text = "Find all in all opened documents";
             this.btFindAllInAll.UseVisualStyleBackColor = true;
+            this.btFindAllInAll.Click += new System.EventHandler(this.BtFindAllInAll_Click);
             // 
             // btCount
             // 

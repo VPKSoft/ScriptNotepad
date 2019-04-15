@@ -207,9 +207,11 @@ namespace ScriptNotepad
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
 
             // subscribe to the event when a search result is clicked from the FormSearchResultTree form..
-            FormSearchResultTree.SearchResultClick += FormSearchResultTree_SearchResultClick;
+            FormSearchResultTree.SearchResultSelected += FormSearchResultTreeSearchResultSelected;
 
+            // subscribe to events which will occur with the FormSearchResultTree instance docking..
             FormSearchResultTree.RequestDockMainForm += FormSearchResultTree_RequestDockMainForm;
+            FormSearchResultTree.RequestDockReleaseMainForm += FormSearchResultTree_RequestDockReleaseMainForm;
 
             // localize the new file name..
             sttcMain.NewFilenameStart =
@@ -228,6 +230,13 @@ namespace ScriptNotepad
             InitializePlugins();
         }
 
+        private void FormSearchResultTree_RequestDockReleaseMainForm(object sender, EventArgs e)
+        {
+            var dockForm = (FormSearchResultTree)sender;
+            pnDock.Controls.Remove(dockForm);
+            dockForm.Close();
+        }
+
         private void FormSearchResultTree_RequestDockMainForm(object sender, EventArgs e)
         {
             // no docking if disabled..
@@ -236,19 +245,20 @@ namespace ScriptNotepad
                 return;
             }
 
-            var dockForm = (Form) sender;
+            var dockForm = (FormSearchResultTree)sender;
             dockForm.TopLevel = false;
             dockForm.AutoScroll = true;
             dockForm.FormBorderStyle = FormBorderStyle.None;
             dockForm.Location = new Point(0, 0);
             dockForm.Width = pnDock.Width;
             dockForm.Height = Height * 15 / 100;
+            dockForm.IsDocked = true;
             pnDock.Controls.Add(dockForm);
             //dockForm.Dock = DockStyle.Fill;
             dockForm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
         }
 
-        private void FormSearchResultTree_SearchResultClick(object sender, SearchResultTreeViewClickEventArgs e)
+        private void FormSearchResultTreeSearchResultSelected(object sender, SearchResultTreeViewClickEventArgs e)
         {
             // check if the file is opened in the editor..
             if (e.SearchResult.isFileOpen)
@@ -424,6 +434,13 @@ namespace ScriptNotepad
 
             // unsubscribe the recent file menu item click handler..
             RecentFilesMenuBuilder.RecentFileMenuClicked -= RecentFilesMenuBuilder_RecentFileMenuClicked;
+
+            // unsubscribe to events which will occur with the FormSearchResultTree instance docking..
+            FormSearchResultTree.RequestDockMainForm -= FormSearchResultTree_RequestDockMainForm;
+            FormSearchResultTree.RequestDockReleaseMainForm -= FormSearchResultTree_RequestDockReleaseMainForm;
+
+            // unsubscribe to the event when a search result is clicked from the FormSearchResultTree form..
+            FormSearchResultTree.SearchResultSelected -= FormSearchResultTreeSearchResultSelected;
 
             // unsubscribe the IpcClientServer MessageReceived event handler..
             IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;

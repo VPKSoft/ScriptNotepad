@@ -142,6 +142,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close|A message describing a tool-tip for a button which would close something.
+        /// </summary>
+        internal static string msgButtonClose {
+            get {
+                return ResourceManager.GetString("msgButtonClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Categorical Abstract Machine Language|*.ml;*.mli;*.sml;*.thy|A text in a file dialog indicating Categorical Abstract Machine Language files.
         /// </summary>
         internal static string msgCategoricalAbstractMachineLanguageFile {
@@ -754,6 +763,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File: &apos;{0}&apos;, matches: {1}|A message describing a file name and a count number of search matches.
+        /// </summary>
+        internal static string msgFileNameMatchCount {
+            get {
+                return ResourceManager.GetString("msgFileNameMatchCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flash ActionScript file|*.as;*.mx|A text in a file dialog indicating Flash ActionScript files.
         /// </summary>
         internal static string msgFlashActionScriptFile {
@@ -1060,6 +1078,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next result|A tool-tip message describing that the button would go to the next search result.
+        /// </summary>
+        internal static string msgNextResult {
+            get {
+                return ResourceManager.GetString("msgNextResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal text file|*.txt|A text in a file dialog indicating .txt files.
         /// </summary>
         internal static string msgNormalTextFile {
@@ -1137,6 +1164,15 @@ namespace ScriptNotepad.Localization {
         internal static string msgPostScriptFile {
             get {
                 return ResourceManager.GetString("msgPostScriptFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous result|A tool-tip message describing that the button would go to the previous search result.
+        /// </summary>
+        internal static string msgPreviousResult {
+            get {
+                return ResourceManager.GetString("msgPreviousResult", resourceCulture);
             }
         }
         
