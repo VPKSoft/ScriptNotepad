@@ -241,6 +241,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Selects the previous or the next node of a tree view based on the given direction.
         /// </summary>
+        /// <param name="treeView">An instance to <see cref="TreeView"/> class to be used with the method.</param>
         /// <param name="forward">if set to <c>true</c> the selection goes forward.</param>
         private void SelectNode(TreeView treeView, bool forward)
         {
@@ -258,6 +259,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Selects the next node within a tree view.
         /// </summary>
+        /// <param name="treeView">The tree view which next node to select.</param>
         private void SelectNextNode(TreeView treeView)
         {
             int count = treeView.GetNodeCount(true);
