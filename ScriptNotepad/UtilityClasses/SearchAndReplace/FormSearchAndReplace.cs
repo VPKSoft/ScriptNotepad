@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 
@@ -75,6 +76,14 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             Documents = GetDocuments(true);
 
             CurrentDocument = GetCurrentDocument();
+
+            SearchOpenDocuments.SearchProgress += SearchOpenDocuments_SearchProgress;
+        }
+
+        private void SearchOpenDocuments_SearchProgress(object sender, Misc.SearchAndReplaceProgressEventArgs e)
+        {
+            ssLbStatus.Text = $"{e.CurrentFile}, {e.CurrentFileSearchPosition} / {e.CurrentFileLength}";
+            Application.DoEvents();
         }
 
         /// <summary>
