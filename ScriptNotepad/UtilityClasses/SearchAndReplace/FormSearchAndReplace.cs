@@ -27,11 +27,12 @@ SOFTWARE.
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
+using VPKSoft.SearchText;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 {
@@ -76,14 +77,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             Documents = GetDocuments(true);
 
             CurrentDocument = GetCurrentDocument();
-
-            SearchOpenDocuments.SearchProgress += SearchOpenDocuments_SearchProgress;
-        }
-
-        private void SearchOpenDocuments_SearchProgress(object sender, Misc.SearchAndReplaceProgressEventArgs e)
-        {
-            ssLbStatus.Text = $"{e.CurrentFile}, {e.CurrentFileSearchPosition} / {e.CurrentFileLength}";
-            Application.DoEvents();
         }
 
         /// <summary>
@@ -94,7 +87,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// The form search and replace instance holder.
         /// </summary>
-        private static FormSearchAndReplace _formSearchAndReplace = null;
+        private static FormSearchAndReplace _formSearchAndReplace;
 
         /// <summary>
         /// Gets the instance of a <see cref="FormSearchAndReplace"/> dialog.
@@ -126,10 +119,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Creates an instance of the dialog for localization.
         /// </summary>
-        public static void CreateLocalizationInstance()
-        {
-            new FormSearchAndReplace();
-        }
+        public static void CreateLocalizationInstance() => new FormSearchAndReplace();
 
         /// <summary>
         /// A delegate for the <see cref="FormSearchAndReplace.RequestDocuments"/> event.
@@ -138,7 +128,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <param name="e">The <see cref="ScintillaDocumentEventArgs"/> instance containing the event data.</param>
         public delegate void OnRequestDocuments(object sender, ScintillaDocumentEventArgs e);
 
-        private bool PreviousVisible { get; set; } = false;
+        private bool PreviousVisible { get; set; }
 
         /// <summary>
         /// Toggles the visible state of this form.
@@ -213,15 +203,66 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         {
             if (scintilla.scintilla != null)
             {
-                SearchOpenDocuments =
-                    new SearchOpenDocuments(
-                        scintilla, GetDocuments(true), rbRegEx.Checked, cbMatchCase.Checked, cbMatchWholeWord.Checked,
-                        !cbMatchWholeWord.Checked, ResetSearchArea, cbWrapAround.Checked, rbExtented.Checked,
-                        cmbFind.Text);
+                if (SearchOpenDocuments != null)
+                {
+                    using (SearchOpenDocuments)
+                    {
+                        // just dispose of the instance..
+                    }
+                }
+
+                Invoke(new MethodInvoker(delegate
+                {
+                    SearchOpenDocuments =
+                        new TextSearcherAndReplacer(scintilla.scintilla.Text, cmbFind.Text, SearchType);
+                    SearchOpenDocuments.WrapAround = cbWrapAround.Checked;
+                    SearchOpenDocuments.IgnoreCase = !cbMatchCase.Checked;
+                    SearchOpenDocuments.FileName = scintilla.fileName;
+                    SearchOpenDocuments.SearchProgress += SearchOpenDocuments_SearchProgress;
+                    SearchOpenDocuments.WholeWord = cbMatchWholeWord.Checked;
+                }));
             }
         }
 
-        private SearchOpenDocuments SearchOpenDocuments { get; set; } = null;
+
+        private void SearchOpenDocuments_SearchProgress(object sender, TextSearcherEventArgs e)
+        {
+            Invoke(new MethodInvoker(delegate
+            {
+                ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchProgress",
+                    "File: {0}, Progress: {1}|A message describing a search or replace progress with a file name and a progress percentage",
+                    Path.GetFileName(e.FileName), e.Percentage);
+                pbSearchProgress.Value = e.Percentage;
+            }));
+        }
+
+        private TextSearcherAndReplacer SearchOpenDocuments { get; set; }
+
+        /// <summary>
+        /// Gets the current search type.
+        /// </summary>
+        private TextSearcherEnums.SearchType SearchType
+        {
+            get
+            {
+                if (rbNormal.Checked)
+                {
+                    return TextSearcherEnums.SearchType.Normal;
+                }
+                
+                if (rbExtented.Checked)
+                {
+                    return TextSearcherEnums.SearchType.Extended;
+                }
+
+                if (rbRegEx.Checked)
+                {
+                    return TextSearcherEnums.SearchType.RegularExpression;
+                }
+
+                return TextSearcherEnums.SearchType.Normal;
+            }
+        }
 
         /// <summary>
         /// Gets the documents open in the main form.
@@ -249,15 +290,41 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             return GetDocuments(false).Count > 0 ?
                 GetDocuments(false)[0] : (null, null);
         }
-        
+
+        /// <summary>
+        /// Searches to backward direction.
+        /// </summary>
+        private void Backward()
+        {
+            var result = SearchOpenDocuments?.Backward();
+            if (result.HasValue)
+            {
+                GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
+                GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
+            }
+        }
+
+        /// <summary>
+        /// Searches to forward direction.
+        /// </summary>
+        private void Forward()
+        {
+            var result = SearchOpenDocuments?.Forward();
+            if (result.HasValue)
+            {
+                GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
+                GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
+            }
+        }
+
         private void btFindPrevious_Click(object sender, EventArgs e)
         {
-            SearchOpenDocuments?.Search(true);
+            Backward();
         }
 
         private void btFindNext_Click(object sender, EventArgs e)
         {
-            SearchOpenDocuments?.Search(false);
+            Forward();
         }
 
         private void FormSearchAndReplace_NeedReloadDocuments(object sender, EventArgs e)
@@ -317,26 +384,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
         private void BtCount_Click(object sender, EventArgs e)
         {
-            CreateSingleSearchAlgorithm(CurrentDocument);
-            SearchOpenDocuments?.ResetSearchArea();
             int count = 0;
-            CurrentDocument.scintilla.SuspendLayout();
-
-            if (rbExtented.Checked)
+            new FormDialogSearchReplaceProgress(delegate
             {
-                count = SearchOpenDocuments.CountExtended();
-            }
-            else
-            {
-                while (SearchOpenDocuments != null && SearchOpenDocuments.Search(false, true).success)
-                {
-                    count++;
-                }
-            }
+                var result = SearchOpenDocuments?.FindAll(100);
 
-            CurrentDocument.scintilla.ResumeLayout();
+                CreateSingleSearchAlgorithm(CurrentDocument);
+                SearchOpenDocuments?.ResetSearch();
 
-            MessageBox.Show(count.ToString());
+                count = result.Count();
+            }, SearchOpenDocuments);
+
+            ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchFoundCount",
+                "Found: {0}|A message describing a count of search or replace results", count);
         }
 
         // indicate the current function => active tab..
@@ -354,26 +414,85 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             Close();
         }
 
+        private
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> ToTreeResult(IEnumerable<(int posion, int length, string foundString)> searchResults,
+                Scintilla scintilla, string fileName, bool isFileOpen)
+        {
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> result =
+                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                    isFileOpen)>();
+
+            foreach (var searchResult in searchResults)
+            {
+                Invoke(new MethodInvoker(delegate
+                {
+                    result.Add((fileName, scintilla.LineFromPosition(searchResult.posion), searchResult.posion,
+                        searchResult.length, scintilla.Lines[scintilla.LineFromPosition(searchResult.posion)].Text,
+                        isFileOpen));
+                }));
+            }
+
+            return result;
+        }
+
         private void BtFindAllCurrent_Click(object sender, EventArgs e)
         {
-            var result = SearchOpenDocuments?.SearchAll();
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> results =
+                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                    isFileOpen)>();
+
+            if (CurrentDocument.scintilla != null)
+            {
+                CreateSingleSearchAlgorithm(CurrentDocument);
+
+                new FormDialogSearchReplaceProgress(delegate
+                {
+                    CreateSingleSearchAlgorithm(CurrentDocument);
+                    var result = SearchOpenDocuments?.FindAll(100);
+
+                    SearchOpenDocuments?.ResetSearch();
+
+                    results.AddRange(ToTreeResult(result, CurrentDocument.scintilla, CurrentDocument.fileName, true));
+
+                }, SearchOpenDocuments);
+            }
 
             var tree = new FormSearchResultTree();
 
             tree.Show();
 
-            tree.SearchResults = result;
+            tree.SearchResults = results;
         }
 
         private void BtFindAllInAll_Click(object sender, EventArgs e)
         {
-            var result = SearchOpenDocuments?.SearchAllInAllOpened();
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> results =
+                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                    isFileOpen)>();
+
+            foreach (var document in Documents)
+            {
+                new FormDialogSearchReplaceProgress(delegate
+                {
+                    CreateSingleSearchAlgorithm(document);
+                    var result = SearchOpenDocuments?.FindAll(100);
+
+                    SearchOpenDocuments?.ResetSearch();
+
+                    results.AddRange(ToTreeResult(result, document.scintilla, document.fileName, true));
+
+                }, SearchOpenDocuments);
+            }
 
             var tree = new FormSearchResultTree();
 
             tree.Show();
 
-            tree.SearchResults = result;
+            tree.SearchResults = results;
         }
     }
 }

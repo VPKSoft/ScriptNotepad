@@ -134,11 +134,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether not to perform owner drawing for the <seealso cref="TreeView"/> control.
+        /// </summary>
+        /// <value><c>true</c> if the owner drawing is disabled; otherwise, <c>false</c>.</value>
+        private bool NoDraw { get; set; }
+
+        /// <summary>
         /// Creates the tree view based on the <seealso cref="SearchResults"/> property value.
         /// </summary>
         private void CreateTree()
         {
+            SuspendLayout(); // suspend the layout of the form..
             tvMain.BeginUpdate(); // the tree can be large, so suspend the draw..
+            NoDraw = true;
             tvMain.Nodes.Clear(); // clear the previous nodes..
             string fileName = string.Empty;
 
@@ -175,7 +183,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     subNode.Tag = searchResult;
                 }
             }
+            NoDraw = false;
             tvMain.EndUpdate(); // END: the tree can be large, so suspend the draw..
+            ResumeLayout(); // END: suspend the layout of the form..
         }
 
         /// <summary>
@@ -411,6 +421,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </remarks>
         private void DrawTreeNodeHighlightSelectedEvenWithoutFocus(object sender, DrawTreeNodeEventArgs e)
         {
+            if (NoDraw)
+            {
+                return;
+            }
+
             Color foreColor;
             if (e.Node == ((TreeView)sender).SelectedNode)
             {

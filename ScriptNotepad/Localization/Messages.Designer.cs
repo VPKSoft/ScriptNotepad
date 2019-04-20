@@ -1285,6 +1285,24 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Found: {0}|A message describing a count of search or replace results.
+        /// </summary>
+        internal static string msgSearchFoundCount {
+            get {
+                return ResourceManager.GetString("msgSearchFoundCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File: {0}, Progress: {1}|A message describing a search or replace progress with a file name and a progress percentage.
+        /// </summary>
+        internal static string msgSearchProgress {
+            get {
+                return ResourceManager.GetString("msgSearchProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line: {0}, contents {1}|A message describing a search result with a line number and the line&apos;s contents..
         /// </summary>
         internal static string msgSearchResultLine {

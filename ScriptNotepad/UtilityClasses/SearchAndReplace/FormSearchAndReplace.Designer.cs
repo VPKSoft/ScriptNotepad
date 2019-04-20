@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSearchAndReplace));
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbSearchProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tabFind = new System.Windows.Forms.TabPage();
             this.cbTransparency = new System.Windows.Forms.CheckBox();
@@ -100,7 +101,8 @@
             // ssMain
             // 
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ssLbStatus});
+            this.ssLbStatus,
+            this.pbSearchProgress});
             this.ssMain.Location = new System.Drawing.Point(0, 298);
             this.ssMain.Name = "ssMain";
             this.ssMain.Size = new System.Drawing.Size(536, 22);
@@ -111,7 +113,13 @@
             this.ssLbStatus.AutoSize = false;
             this.ssLbStatus.Name = "ssLbStatus";
             this.ssLbStatus.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.ssLbStatus.Size = new System.Drawing.Size(490, 17);
+            this.ssLbStatus.Size = new System.Drawing.Size(400, 17);
+            // 
+            // pbSearchProgress
+            // 
+            this.pbSearchProgress.Name = "pbSearchProgress";
+            this.pbSearchProgress.Size = new System.Drawing.Size(100, 16);
+            this.pbSearchProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
             // tcMain
             // 
@@ -797,5 +805,6 @@
         private System.Windows.Forms.Panel pnLabelHolder02;
         private System.Windows.Forms.Label lbFind2;
         private System.Windows.Forms.ComboBox cmbFind2;
+        private System.Windows.Forms.ToolStripProgressBar pbSearchProgress;
     }
 }

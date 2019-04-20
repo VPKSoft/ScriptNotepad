@@ -1,6 +1,6 @@
-﻿namespace ScriptNotepad.DialogForms
+﻿namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 {
-    partial class FormDialogCommonProgress
+    partial class FormDialogSearchReplaceProgress
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDialogCommonProgress));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDialogSearchReplaceProgress));
             this.pbMain = new System.Windows.Forms.ProgressBar();
             this.lbProgressDesc = new System.Windows.Forms.Label();
             this.bwMain = new System.ComponentModel.BackgroundWorker();
@@ -61,9 +61,9 @@
             this.bwMain.WorkerReportsProgress = true;
             this.bwMain.WorkerSupportsCancellation = true;
             this.bwMain.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BwMain_DoWork);
-            this.bwMain.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BwMain_ProgressChanged);
+            this.bwMain.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BwMain_RunWorkerCompleted);
             // 
-            // FormDialogCommonProgress
+            // FormDialogSearchReplaceProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -72,10 +72,11 @@
             this.Controls.Add(this.pbMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormDialogCommonProgress";
+            this.Name = "FormDialogSearchReplaceProgress";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Progress..";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDialogSearchReplaceProgress_FormClosing);
             this.Shown += new System.EventHandler(this.FormDialogCommonProgress_Shown);
             this.ResumeLayout(false);
 

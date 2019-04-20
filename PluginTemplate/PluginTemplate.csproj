@@ -62,8 +62,8 @@
     <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.3.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.3.1\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.SearchText, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.SearchText.1.0.0\lib\net47\VPKSoft.SearchText.dll</HintPath>
+    <Reference Include="VPKSoft.SearchText, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.SearchText.1.0.0.4\lib\net47\VPKSoft.SearchText.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
