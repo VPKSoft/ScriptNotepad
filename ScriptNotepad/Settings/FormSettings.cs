@@ -71,7 +71,7 @@ namespace ScriptNotepad.Settings
             CharacterSetComboBuilder = new CharacterSetComboBuilder(cmbCharacterSet, cmbEncoding, false, "encoding");
 
             // subscribe the encoding selected event..
-            CharacterSetComboBuilder.EncodingSelected += CaracterSetComboBuilder_EncodingSelected;
+            CharacterSetComboBuilder.EncodingSelected += CharacterSetComboBuilder_EncodingSelected;
 
             // translate the tool tips..
             ttMain.SetToolTip(btUTF8,
@@ -133,6 +133,15 @@ namespace ScriptNotepad.Settings
 
             // set the value of whether to dock the search tree form in the main form..
             cbDockSearchTree.Checked = Settings.DockSearchTreeForm;
+
+            // get the color values..
+            btSmartHighlightColor.BackColor = Settings.SmartHighlight;
+            btMarkStyle1Color.BackColor = Settings.Mark1Color;
+            btMarkStyle2Color.BackColor = Settings.Mark2Color;
+            btMarkStyle3Color.BackColor = Settings.Mark3Color;
+            btMarkStyle4Color.BackColor = Settings.Mark4Color;
+            btMarkStyle5Color.BackColor = Settings.Mark5Color;
+            // END: get the color values..
         }
 
         /// <summary>
@@ -160,6 +169,15 @@ namespace ScriptNotepad.Settings
 
             // save the value of whether to dock the search tree form in the main form..
             Settings.DockSearchTreeForm = cbDockSearchTree.Checked;
+
+            // save the color values..
+            Settings.SmartHighlight = btSmartHighlightColor.BackColor;
+            Settings.Mark1Color = btMarkStyle1Color.BackColor;
+            Settings.Mark2Color = btMarkStyle2Color.BackColor;
+            Settings.Mark3Color = btMarkStyle3Color.BackColor;
+            Settings.Mark4Color = btMarkStyle4Color.BackColor;
+            Settings.Mark5Color = btMarkStyle5Color.BackColor;
+            // END: save the color values..
         }
         #endregion
 
@@ -169,7 +187,7 @@ namespace ScriptNotepad.Settings
         private CharacterSetComboBuilder CharacterSetComboBuilder { get; set; }
 
         // this event is fired when the encoding is changed from the corresponding combo box..
-        private void CaracterSetComboBuilder_EncodingSelected(object sender, OnEncodingSelectedEventArgs e)
+        private void CharacterSetComboBuilder_EncodingSelected(object sender, OnEncodingSelectedEventArgs e)
         {
             // save the changed value..
             SelectedEncoding = e.Encoding;
@@ -190,7 +208,7 @@ namespace ScriptNotepad.Settings
             using (CharacterSetComboBuilder)
             {
                 // unsubscribe the encoding selected event..
-                CharacterSetComboBuilder.EncodingSelected -= CaracterSetComboBuilder_EncodingSelected;
+                CharacterSetComboBuilder.EncodingSelected -= CharacterSetComboBuilder_EncodingSelected;
             }
         }
 
@@ -267,6 +285,15 @@ namespace ScriptNotepad.Settings
             if (Directory.Exists(tbPluginFolder.Text))
             {
                 WindowsExplorerInteraction.OpenFolderInExplorer(tbPluginFolder.Text);
+            }
+        }
+
+        private void BtSmartHighlightColor_Click(object sender, EventArgs e)
+        {
+            if (cdColors.ShowDialog() == DialogResult.OK)
+            {
+                Button button = (Button) sender;
+                button.BackColor = cdColors.Color;
             }
         }
     }

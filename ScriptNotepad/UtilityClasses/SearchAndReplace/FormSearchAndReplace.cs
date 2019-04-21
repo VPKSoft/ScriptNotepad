@@ -214,16 +214,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 Invoke(new MethodInvoker(delegate
                 {
                     SearchOpenDocuments =
-                        new TextSearcherAndReplacer(scintilla.scintilla.Text, cmbFind.Text, SearchType);
-                    SearchOpenDocuments.WrapAround = cbWrapAround.Checked;
-                    SearchOpenDocuments.IgnoreCase = !cbMatchCase.Checked;
-                    SearchOpenDocuments.FileName = scintilla.fileName;
+                        new TextSearcherAndReplacer(scintilla.scintilla.Text, cmbFind.Text, SearchType)
+                        {
+                            WrapAround = cbWrapAround.Checked,
+                            IgnoreCase = !cbMatchCase.Checked,
+                            FileName = scintilla.fileName
+                        };
                     SearchOpenDocuments.SearchProgress += SearchOpenDocuments_SearchProgress;
                     SearchOpenDocuments.WholeWord = cbMatchWholeWord.Checked;
                 }));
             }
         }
-
 
         private void SearchOpenDocuments_SearchProgress(object sender, TextSearcherEventArgs e)
         {
@@ -301,6 +302,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
                 GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
+                GetCurrentDocument().scintilla.ScrollCaret();
             }
         }
 
@@ -314,6 +316,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
                 GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
+                GetCurrentDocument().scintilla.ScrollCaret();
             }
         }
 
@@ -476,7 +479,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             foreach (var document in Documents)
             {
-                new FormDialogSearchReplaceProgress(delegate
+                var form = new FormDialogSearchReplaceProgress(delegate
                 {
                     CreateSingleSearchAlgorithm(document);
                     var result = SearchOpenDocuments?.FindAll(100);
@@ -486,6 +489,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     results.AddRange(ToTreeResult(result, document.scintilla, document.fileName, true));
 
                 }, SearchOpenDocuments);
+
+                if (form.Cancelled)
+                {
+                    return;
+                }
             }
 
             var tree = new FormSearchResultTree();

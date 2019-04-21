@@ -103,12 +103,30 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
         private void BwMain_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            NoReactOnClosing = true;
             Invoke(new MethodInvoker(delegate { DialogResult = DialogResult.OK; }));
         }
 
         private void FormDialogSearchReplaceProgress_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (NoReactOnClosing)
+            {
+                return;
+            }
+
+            NoReactOnClosing = true;
+
+            e.Cancel = true;
             TextSearcher.Cancelled = true;
+            Cancelled = true;
         }
+
+        private bool NoReactOnClosing { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="FormDialogSearchReplaceProgress"/> search or replace <see cref="Action"/> was cancelled.
+        /// </summary>
+        /// <value><c>true</c> if cancelled; otherwise, <c>false</c>.</value>
+        public bool Cancelled { get; set; }
     }
 }

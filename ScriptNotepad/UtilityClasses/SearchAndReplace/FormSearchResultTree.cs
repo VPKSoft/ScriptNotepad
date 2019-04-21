@@ -112,7 +112,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             searchResults;
 
         /// <summary>
-        /// Gets or sets the search results from the <see cref="SearchOpenDocumentsBase"/> class.
+        /// Gets or sets the search results for the tree view.
         /// </summary>
         public IEnumerable<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen)> SearchResults
         {

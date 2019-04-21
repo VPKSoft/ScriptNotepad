@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.cbDockSearchTree = new System.Windows.Forms.CheckBox();
             this.pbDefaultFolder = new System.Windows.Forms.PictureBox();
             this.btSelectPluginFolder = new System.Windows.Forms.Button();
             this.tbPluginFolder = new System.Windows.Forms.TextBox();
@@ -53,7 +54,20 @@
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
-            this.cbDockSearchTree = new System.Windows.Forms.CheckBox();
+            this.tpgColorSettings = new System.Windows.Forms.TabPage();
+            this.lbSmartHighlightColor = new System.Windows.Forms.Label();
+            this.cdColors = new System.Windows.Forms.ColorDialog();
+            this.btSmartHighlightColor = new System.Windows.Forms.Button();
+            this.btMarkStyle1Color = new System.Windows.Forms.Button();
+            this.lbMarkStyle1Color = new System.Windows.Forms.Label();
+            this.btMarkStyle2Color = new System.Windows.Forms.Button();
+            this.lbMarkStyle2Color = new System.Windows.Forms.Label();
+            this.btMarkStyle3Color = new System.Windows.Forms.Button();
+            this.lbMarkStyle3Color = new System.Windows.Forms.Label();
+            this.btMarkStyle4Color = new System.Windows.Forms.Button();
+            this.lbMarkStyle4Color = new System.Windows.Forms.Label();
+            this.btMarkStyle5Color = new System.Windows.Forms.Button();
+            this.lbMarkStyle5Color = new System.Windows.Forms.Label();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
@@ -62,6 +76,7 @@
             this.gpDefaultEncoding.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
+            this.tpgColorSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -70,6 +85,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpgGeneralSettings);
+            this.tcMain.Controls.Add(this.tpgColorSettings);
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -98,6 +114,16 @@
             this.tpgGeneralSettings.TabIndex = 0;
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbDockSearchTree
+            // 
+            this.cbDockSearchTree.AutoSize = true;
+            this.cbDockSearchTree.Location = new System.Drawing.Point(6, 223);
+            this.cbDockSearchTree.Name = "cbDockSearchTree";
+            this.cbDockSearchTree.Size = new System.Drawing.Size(126, 17);
+            this.cbDockSearchTree.TabIndex = 32;
+            this.cbDockSearchTree.Text = "Dock the search tree";
+            this.cbDockSearchTree.UseVisualStyleBackColor = true;
             // 
             // pbDefaultFolder
             // 
@@ -347,15 +373,146 @@
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
             // 
-            // cbDockSearchTree
+            // tpgColorSettings
             // 
-            this.cbDockSearchTree.AutoSize = true;
-            this.cbDockSearchTree.Location = new System.Drawing.Point(6, 223);
-            this.cbDockSearchTree.Name = "cbDockSearchTree";
-            this.cbDockSearchTree.Size = new System.Drawing.Size(126, 17);
-            this.cbDockSearchTree.TabIndex = 32;
-            this.cbDockSearchTree.Text = "Dock the search tree";
-            this.cbDockSearchTree.UseVisualStyleBackColor = true;
+            this.tpgColorSettings.Controls.Add(this.btMarkStyle5Color);
+            this.tpgColorSettings.Controls.Add(this.lbMarkStyle5Color);
+            this.tpgColorSettings.Controls.Add(this.btMarkStyle4Color);
+            this.tpgColorSettings.Controls.Add(this.lbMarkStyle4Color);
+            this.tpgColorSettings.Controls.Add(this.btMarkStyle3Color);
+            this.tpgColorSettings.Controls.Add(this.lbMarkStyle3Color);
+            this.tpgColorSettings.Controls.Add(this.btMarkStyle2Color);
+            this.tpgColorSettings.Controls.Add(this.lbMarkStyle2Color);
+            this.tpgColorSettings.Controls.Add(this.btMarkStyle1Color);
+            this.tpgColorSettings.Controls.Add(this.lbMarkStyle1Color);
+            this.tpgColorSettings.Controls.Add(this.btSmartHighlightColor);
+            this.tpgColorSettings.Controls.Add(this.lbSmartHighlightColor);
+            this.tpgColorSettings.Location = new System.Drawing.Point(4, 22);
+            this.tpgColorSettings.Name = "tpgColorSettings";
+            this.tpgColorSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpgColorSettings.Size = new System.Drawing.Size(557, 371);
+            this.tpgColorSettings.TabIndex = 1;
+            this.tpgColorSettings.Text = "Colors";
+            this.tpgColorSettings.UseVisualStyleBackColor = true;
+            // 
+            // lbSmartHighlightColor
+            // 
+            this.lbSmartHighlightColor.AutoSize = true;
+            this.lbSmartHighlightColor.Location = new System.Drawing.Point(6, 11);
+            this.lbSmartHighlightColor.Name = "lbSmartHighlightColor";
+            this.lbSmartHighlightColor.Size = new System.Drawing.Size(105, 13);
+            this.lbSmartHighlightColor.TabIndex = 0;
+            this.lbSmartHighlightColor.Text = "Smart highlight color:";
+            // 
+            // cdColors
+            // 
+            this.cdColors.AnyColor = true;
+            this.cdColors.FullOpen = true;
+            // 
+            // btSmartHighlightColor
+            // 
+            this.btSmartHighlightColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btSmartHighlightColor.Location = new System.Drawing.Point(363, 6);
+            this.btSmartHighlightColor.Name = "btSmartHighlightColor";
+            this.btSmartHighlightColor.Size = new System.Drawing.Size(188, 23);
+            this.btSmartHighlightColor.TabIndex = 1;
+            this.btSmartHighlightColor.UseVisualStyleBackColor = true;
+            this.btSmartHighlightColor.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            // 
+            // btMarkStyle1Color
+            // 
+            this.btMarkStyle1Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMarkStyle1Color.Location = new System.Drawing.Point(363, 35);
+            this.btMarkStyle1Color.Name = "btMarkStyle1Color";
+            this.btMarkStyle1Color.Size = new System.Drawing.Size(188, 23);
+            this.btMarkStyle1Color.TabIndex = 3;
+            this.btMarkStyle1Color.UseVisualStyleBackColor = true;
+            this.btMarkStyle1Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            // 
+            // lbMarkStyle1Color
+            // 
+            this.lbMarkStyle1Color.AutoSize = true;
+            this.lbMarkStyle1Color.Location = new System.Drawing.Point(6, 40);
+            this.lbMarkStyle1Color.Name = "lbMarkStyle1Color";
+            this.lbMarkStyle1Color.Size = new System.Drawing.Size(93, 13);
+            this.lbMarkStyle1Color.TabIndex = 2;
+            this.lbMarkStyle1Color.Text = "Mark style 1 color:";
+            // 
+            // btMarkStyle2Color
+            // 
+            this.btMarkStyle2Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMarkStyle2Color.Location = new System.Drawing.Point(363, 64);
+            this.btMarkStyle2Color.Name = "btMarkStyle2Color";
+            this.btMarkStyle2Color.Size = new System.Drawing.Size(188, 23);
+            this.btMarkStyle2Color.TabIndex = 5;
+            this.btMarkStyle2Color.UseVisualStyleBackColor = true;
+            this.btMarkStyle2Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            // 
+            // lbMarkStyle2Color
+            // 
+            this.lbMarkStyle2Color.AutoSize = true;
+            this.lbMarkStyle2Color.Location = new System.Drawing.Point(6, 69);
+            this.lbMarkStyle2Color.Name = "lbMarkStyle2Color";
+            this.lbMarkStyle2Color.Size = new System.Drawing.Size(93, 13);
+            this.lbMarkStyle2Color.TabIndex = 4;
+            this.lbMarkStyle2Color.Text = "Mark style 2 color:";
+            // 
+            // btMarkStyle3Color
+            // 
+            this.btMarkStyle3Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMarkStyle3Color.Location = new System.Drawing.Point(363, 93);
+            this.btMarkStyle3Color.Name = "btMarkStyle3Color";
+            this.btMarkStyle3Color.Size = new System.Drawing.Size(188, 23);
+            this.btMarkStyle3Color.TabIndex = 7;
+            this.btMarkStyle3Color.UseVisualStyleBackColor = true;
+            this.btMarkStyle3Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            // 
+            // lbMarkStyle3Color
+            // 
+            this.lbMarkStyle3Color.AutoSize = true;
+            this.lbMarkStyle3Color.Location = new System.Drawing.Point(6, 98);
+            this.lbMarkStyle3Color.Name = "lbMarkStyle3Color";
+            this.lbMarkStyle3Color.Size = new System.Drawing.Size(93, 13);
+            this.lbMarkStyle3Color.TabIndex = 6;
+            this.lbMarkStyle3Color.Text = "Mark style 3 color:";
+            // 
+            // btMarkStyle4Color
+            // 
+            this.btMarkStyle4Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMarkStyle4Color.Location = new System.Drawing.Point(363, 122);
+            this.btMarkStyle4Color.Name = "btMarkStyle4Color";
+            this.btMarkStyle4Color.Size = new System.Drawing.Size(188, 23);
+            this.btMarkStyle4Color.TabIndex = 9;
+            this.btMarkStyle4Color.UseVisualStyleBackColor = true;
+            this.btMarkStyle4Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            // 
+            // lbMarkStyle4Color
+            // 
+            this.lbMarkStyle4Color.AutoSize = true;
+            this.lbMarkStyle4Color.Location = new System.Drawing.Point(6, 127);
+            this.lbMarkStyle4Color.Name = "lbMarkStyle4Color";
+            this.lbMarkStyle4Color.Size = new System.Drawing.Size(93, 13);
+            this.lbMarkStyle4Color.TabIndex = 8;
+            this.lbMarkStyle4Color.Text = "Mark style 4 color:";
+            // 
+            // btMarkStyle5Color
+            // 
+            this.btMarkStyle5Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMarkStyle5Color.Location = new System.Drawing.Point(363, 151);
+            this.btMarkStyle5Color.Name = "btMarkStyle5Color";
+            this.btMarkStyle5Color.Size = new System.Drawing.Size(188, 23);
+            this.btMarkStyle5Color.TabIndex = 11;
+            this.btMarkStyle5Color.UseVisualStyleBackColor = true;
+            this.btMarkStyle5Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            // 
+            // lbMarkStyle5Color
+            // 
+            this.lbMarkStyle5Color.AutoSize = true;
+            this.lbMarkStyle5Color.Location = new System.Drawing.Point(6, 156);
+            this.lbMarkStyle5Color.Name = "lbMarkStyle5Color";
+            this.lbMarkStyle5Color.Size = new System.Drawing.Size(93, 13);
+            this.lbMarkStyle5Color.TabIndex = 10;
+            this.lbMarkStyle5Color.Text = "Mark style 5 color:";
             // 
             // FormSettings
             // 
@@ -386,6 +543,8 @@
             this.gpDefaultEncoding.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
+            this.tpgColorSettings.ResumeLayout(false);
+            this.tpgColorSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -416,5 +575,19 @@
         private System.Windows.Forms.Label lbPluginFolder;
         private System.Windows.Forms.PictureBox pbDefaultFolder;
         private System.Windows.Forms.CheckBox cbDockSearchTree;
+        private System.Windows.Forms.TabPage tpgColorSettings;
+        private System.Windows.Forms.Button btSmartHighlightColor;
+        private System.Windows.Forms.Label lbSmartHighlightColor;
+        private System.Windows.Forms.ColorDialog cdColors;
+        private System.Windows.Forms.Button btMarkStyle5Color;
+        private System.Windows.Forms.Label lbMarkStyle5Color;
+        private System.Windows.Forms.Button btMarkStyle4Color;
+        private System.Windows.Forms.Label lbMarkStyle4Color;
+        private System.Windows.Forms.Button btMarkStyle3Color;
+        private System.Windows.Forms.Label lbMarkStyle3Color;
+        private System.Windows.Forms.Button btMarkStyle2Color;
+        private System.Windows.Forms.Label lbMarkStyle2Color;
+        private System.Windows.Forms.Button btMarkStyle1Color;
+        private System.Windows.Forms.Label lbMarkStyle1Color;
     }
 }

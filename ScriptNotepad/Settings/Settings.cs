@@ -27,6 +27,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -126,7 +127,16 @@ namespace ScriptNotepad.Settings
 
                     // set the value for the property using the default value as a
                     // fall-back value..
-                    propertyInfos[i].SetValue(this, Convert.ChangeType(Conflib[settingAttribute.SettingName, currentValue.ToString()], settingAttribute.SettingType));
+
+                    if (settingAttribute.SettingType == typeof(Color))
+                    {
+                        propertyInfos[i].SetValue(this, ColorTranslator.FromHtml(
+                            Conflib[settingAttribute.SettingName, ColorTranslator.ToHtml((Color)currentValue)]));
+                    }
+                    else
+                    {
+                        propertyInfos[i].SetValue(this, Convert.ChangeType(Conflib[settingAttribute.SettingName, currentValue.ToString()], settingAttribute.SettingType));                        
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -167,6 +177,10 @@ namespace ScriptNotepad.Settings
                         Encoding encoding = (Encoding)value;
                         Conflib[settingAttribute.SettingName] = encoding.WebName;
                     }
+                    else if (settingAttribute.SettingType == typeof(Color))
+                    {
+                        Conflib[settingAttribute.SettingName] = ColorTranslator.ToHtml((Color) value);
+                    }
                     else // a simple type..
                     {
                         Conflib[settingAttribute.SettingName] = value.ToString();
@@ -183,7 +197,7 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// An instance to a Conflib class.
         /// </summary>
-        private Conflib Conflib = null;
+        private readonly Conflib Conflib;
 
         /// <summary>
         /// Occurs when a property value changes.
@@ -207,6 +221,55 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("gui/history", typeof(int))]
         public int HistoryListAmount { get; set; } = 20;
+
+        /// <summary>
+        /// Gets or sets the color of the current line background style.
+        /// </summary>
+        /// <value>The color of the current line background style.</value>
+        [Setting("color/currentLineBackground", typeof(Color))]
+        public Color CurrentLineBackground { get; set; } = Color.FromArgb(232, 232, 255);
+
+        /// <summary>
+        /// Gets or sets the color of the smart highlight style.
+        /// </summary>
+        /// <value>The color of the smart highlight style.</value>
+        [Setting("color/smartHighLight", typeof(Color))]
+        public Color SmartHighlight { get; set; } = Color.FromArgb(0, 255, 0);
+
+        /// <summary>
+        /// Gets or sets the color of the mark one style.
+        /// </summary>
+        /// <value>The color of the mark one style.</value>
+        [Setting("color/mark1", typeof(Color))]
+        public Color Mark1Color { get; set; } = Color.FromArgb(0, 255, 255);
+
+        /// <summary>
+        /// Gets or sets the color of the mark two style.
+        /// </summary>
+        /// <value>The color of the mark two style.</value>
+        [Setting("color/mark2", typeof(Color))]
+        public Color Mark2Color { get; set; } = Color.FromArgb(255, 128, 0);
+
+        /// <summary>
+        /// Gets or sets the color of the mark three style.
+        /// </summary>
+        /// <value>The color of the mark three style.</value>
+        [Setting("color/mark3", typeof(Color))]
+        public Color Mark3Color { get; set; } = Color.FromArgb(255, 255, 0);
+
+        /// <summary>
+        /// Gets or sets the color of the mark four style.
+        /// </summary>
+        /// <value>The color of the mark four style.</value>
+        [Setting("color/mark4", typeof(Color))]
+        public Color Mark4Color { get; set; } = Color.FromArgb(128, 0, 255);
+
+        /// <summary>
+        /// Gets or sets the color of the mark five style.
+        /// </summary>
+        /// <value>The color of the mark five style.</value>
+        [Setting("color/mark5", typeof(Color))]
+        public Color Mark5Color { get; set; } = Color.FromArgb(0, 128, 0);
 
         /// <summary>
         /// Gets or sets a value indicating whether save closed file contents to database as history.
@@ -253,12 +316,8 @@ namespace ScriptNotepad.Settings
         [DoNotNotify]
         public CultureInfo Culture
         {
-            get
-            {
-                return _Culture == null ?
-                    new CultureInfo(Conflib["language/culture", "en-US"].ToString()) :
-                    _Culture;
-            }
+            get =>
+                _Culture ?? new CultureInfo(Conflib["language/culture", "en-US"].ToString());
 
             set
             {
