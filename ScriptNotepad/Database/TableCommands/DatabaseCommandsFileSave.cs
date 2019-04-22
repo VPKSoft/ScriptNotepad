@@ -142,7 +142,7 @@ namespace ScriptNotepad.Database.TableCommands
                 $"FILESYS_MODIFIED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS,",
                 $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
                 $"{DatabaseCommandsGeneral.GenSessionNameNameCondition(sessionName)} AS SESSIONNAME,",
-                $"FILESYS_SAVED, ENCODING",
+                $"FILESYS_SAVED, ENCODING, CURRENT_POSITION",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
                 $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}",
@@ -169,11 +169,11 @@ namespace ScriptNotepad.Database.TableCommands
             {
                 existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ID = {fileSave.ID});";
             }
-
+            
             string sql =
                 string.Join(Environment.NewLine,
                 $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
-                $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID, ENCODING) ",
+                $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID, ENCODING, CURRENT_POSITION) ",
                 $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
                 $"{QS(fileSave.FILENAME_FULL)},",
                 $"{QS(fileSave.FILENAME)},",
@@ -186,7 +186,8 @@ namespace ScriptNotepad.Database.TableCommands
                 $"{BS(fileSave.ISACTIVE)},",
                 $"{BS(fileSave.ISHISTORY)},",
                 $"{DatabaseCommandsGeneral.GenSessionNameIDCondition(fileSave.SESSIONNAME)},",
-                $"{QS(fileSave.ENCODING.WebName)}",
+                $"{QS(fileSave.ENCODING.WebName)},",
+                $"{fileSave.CURRENT_POSITION}",
                 existsCondition,
                 $";");
 
@@ -234,6 +235,7 @@ namespace ScriptNotepad.Database.TableCommands
                 $"ISACTIVE = {BS(fileSave.ISACTIVE)},",
                 $"ISHISTORY = {BS(fileSave.ISHISTORY)},",
                 $"SESSIONID = {fileSave.SESSIONID},",
+                $"CURRENT_POSITION = {fileSave.CURRENT_POSITION},",
                 $"ENCODING = {QS(fileSave.ENCODING.WebName)}",
                 $"WHERE ID = {fileSave.ID};");
 

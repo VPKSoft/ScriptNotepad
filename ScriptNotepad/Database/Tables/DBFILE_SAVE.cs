@@ -132,6 +132,11 @@ namespace ScriptNotepad.Database.Tables
         public Encoding ENCODING { get; set; }
 
         /// <summary>
+        /// Gets or sets the current position (cursor / caret) of the file.
+        /// </summary>
+        public int CURRENT_POSITION { get; set; }
+
+        /// <summary>
         /// Gets or sets the previous encodings of the file save for undo possibility.
         /// <note type="note">Redo possibility does not exist.</note>
         /// </summary>
@@ -189,6 +194,16 @@ namespace ScriptNotepad.Database.Tables
                         document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, ENCODING);
 
                         FILE_CONTENTS = document.Scintilla.Text;
+
+                        // set the saved position of the document's caret..
+                        if (CURRENT_POSITION > 0 && CURRENT_POSITION < document.Scintilla.TextLength)
+                        {
+                            document.Scintilla.CurrentPosition = CURRENT_POSITION;
+                            document.Scintilla.SelectionStart = CURRENT_POSITION;
+                            document.Scintilla.SelectionEnd = CURRENT_POSITION;
+                            document.Scintilla.ScrollCaret();
+                        }
+
                     }
                     return true; // success..
                 }

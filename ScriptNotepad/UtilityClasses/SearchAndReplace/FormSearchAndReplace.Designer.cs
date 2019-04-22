@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSearchAndReplace));
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -82,6 +83,9 @@
             this.pnLabelHolder02 = new System.Windows.Forms.Panel();
             this.lbFind2 = new System.Windows.Forms.Label();
             this.cmbFind2 = new System.Windows.Forms.ComboBox();
+            this.rbSimpleExtended = new System.Windows.Forms.RadioButton();
+            this.rbSimpleExtended2 = new System.Windows.Forms.RadioButton();
+            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.ssMain.SuspendLayout();
             this.tcMain.SuspendLayout();
             this.tabFind.SuspendLayout();
@@ -219,12 +223,13 @@
             // gpSearchMode
             // 
             this.gpSearchMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gpSearchMode.Controls.Add(this.rbSimpleExtended);
             this.gpSearchMode.Controls.Add(this.rbRegEx);
             this.gpSearchMode.Controls.Add(this.rbExtented);
             this.gpSearchMode.Controls.Add(this.rbNormal);
-            this.gpSearchMode.Location = new System.Drawing.Point(8, 174);
+            this.gpSearchMode.Location = new System.Drawing.Point(8, 150);
             this.gpSearchMode.Name = "gpSearchMode";
-            this.gpSearchMode.Size = new System.Drawing.Size(198, 92);
+            this.gpSearchMode.Size = new System.Drawing.Size(258, 116);
             this.gpSearchMode.TabIndex = 12;
             this.gpSearchMode.TabStop = false;
             this.gpSearchMode.Text = "Search mode";
@@ -267,7 +272,7 @@
             // cbWrapAround
             // 
             this.cbWrapAround.AutoSize = true;
-            this.cbWrapAround.Location = new System.Drawing.Point(8, 138);
+            this.cbWrapAround.Location = new System.Drawing.Point(8, 127);
             this.cbWrapAround.Name = "cbWrapAround";
             this.cbWrapAround.Size = new System.Drawing.Size(88, 17);
             this.cbWrapAround.TabIndex = 11;
@@ -278,7 +283,7 @@
             // cbMatchCase
             // 
             this.cbMatchCase.AutoSize = true;
-            this.cbMatchCase.Location = new System.Drawing.Point(8, 115);
+            this.cbMatchCase.Location = new System.Drawing.Point(8, 104);
             this.cbMatchCase.Name = "cbMatchCase";
             this.cbMatchCase.Size = new System.Drawing.Size(82, 17);
             this.cbMatchCase.TabIndex = 10;
@@ -289,7 +294,7 @@
             // cbMatchWholeWord
             // 
             this.cbMatchWholeWord.AutoSize = true;
-            this.cbMatchWholeWord.Location = new System.Drawing.Point(8, 92);
+            this.cbMatchWholeWord.Location = new System.Drawing.Point(8, 81);
             this.cbMatchWholeWord.Name = "cbMatchWholeWord";
             this.cbMatchWholeWord.Size = new System.Drawing.Size(135, 17);
             this.cbMatchWholeWord.TabIndex = 9;
@@ -517,12 +522,13 @@
             // gpSearchMode2
             // 
             this.gpSearchMode2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gpSearchMode2.Controls.Add(this.rbSimpleExtended2);
             this.gpSearchMode2.Controls.Add(this.rbRegEx2);
             this.gpSearchMode2.Controls.Add(this.rbExtented2);
             this.gpSearchMode2.Controls.Add(this.rbNormal2);
-            this.gpSearchMode2.Location = new System.Drawing.Point(8, 174);
+            this.gpSearchMode2.Location = new System.Drawing.Point(8, 150);
             this.gpSearchMode2.Name = "gpSearchMode2";
-            this.gpSearchMode2.Size = new System.Drawing.Size(198, 92);
+            this.gpSearchMode2.Size = new System.Drawing.Size(258, 116);
             this.gpSearchMode2.TabIndex = 24;
             this.gpSearchMode2.TabStop = false;
             this.gpSearchMode2.Text = "Search mode";
@@ -565,7 +571,7 @@
             // cbWrapAround2
             // 
             this.cbWrapAround2.AutoSize = true;
-            this.cbWrapAround2.Location = new System.Drawing.Point(7, 138);
+            this.cbWrapAround2.Location = new System.Drawing.Point(8, 127);
             this.cbWrapAround2.Name = "cbWrapAround2";
             this.cbWrapAround2.Size = new System.Drawing.Size(88, 17);
             this.cbWrapAround2.TabIndex = 23;
@@ -576,7 +582,7 @@
             // cbMatchCase2
             // 
             this.cbMatchCase2.AutoSize = true;
-            this.cbMatchCase2.Location = new System.Drawing.Point(7, 115);
+            this.cbMatchCase2.Location = new System.Drawing.Point(8, 104);
             this.cbMatchCase2.Name = "cbMatchCase2";
             this.cbMatchCase2.Size = new System.Drawing.Size(82, 17);
             this.cbMatchCase2.TabIndex = 22;
@@ -587,7 +593,7 @@
             // cbMatchWholeWord2
             // 
             this.cbMatchWholeWord2.AutoSize = true;
-            this.cbMatchWholeWord2.Location = new System.Drawing.Point(7, 92);
+            this.cbMatchWholeWord2.Location = new System.Drawing.Point(8, 81);
             this.cbMatchWholeWord2.Name = "cbMatchWholeWord2";
             this.cbMatchWholeWord2.Size = new System.Drawing.Size(135, 17);
             this.cbMatchWholeWord2.TabIndex = 21;
@@ -706,6 +712,28 @@
             this.cmbFind2.Size = new System.Drawing.Size(251, 21);
             this.cmbFind2.TabIndex = 3;
             // 
+            // rbSimpleExtended
+            // 
+            this.rbSimpleExtended.AutoSize = true;
+            this.rbSimpleExtended.Location = new System.Drawing.Point(6, 88);
+            this.rbSimpleExtended.Name = "rbSimpleExtended";
+            this.rbSimpleExtended.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended.TabIndex = 3;
+            this.rbSimpleExtended.Text = "Simple extended (#, %, *, ?)";
+            this.ttMain.SetToolTip(this.rbSimpleExtended, "? = one character, * = multiple characters, # = digit, % = single digit");
+            this.rbSimpleExtended.UseVisualStyleBackColor = true;
+            this.rbSimpleExtended.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
+            // 
+            // rbSimpleExtended2
+            // 
+            this.rbSimpleExtended2.AutoSize = true;
+            this.rbSimpleExtended2.Location = new System.Drawing.Point(6, 88);
+            this.rbSimpleExtended2.Name = "rbSimpleExtended2";
+            this.rbSimpleExtended2.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended2.TabIndex = 4;
+            this.rbSimpleExtended2.Text = "Simple extended (#, %, *, ?)";
+            this.rbSimpleExtended2.UseVisualStyleBackColor = true;
+            // 
             // FormSearchAndReplace
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -806,5 +834,8 @@
         private System.Windows.Forms.Label lbFind2;
         private System.Windows.Forms.ComboBox cmbFind2;
         private System.Windows.Forms.ToolStripProgressBar pbSearchProgress;
+        private System.Windows.Forms.RadioButton rbSimpleExtended;
+        private System.Windows.Forms.RadioButton rbSimpleExtended2;
+        private System.Windows.Forms.ToolTip ttMain;
     }
 }

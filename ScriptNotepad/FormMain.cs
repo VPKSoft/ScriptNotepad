@@ -670,7 +670,8 @@ namespace ScriptNotepad
                         else
                         {
                             // call the handle method..
-                            HandleCloseTab(fileSave, true, false, false, false);
+                            HandleCloseTab(fileSave, true, false, false, false,
+                                sttcMain.Documents[i].Scintilla.CurrentPosition);
                         }
                     }
                     else if (fileSave.ShouldQueryFileReappeared)
@@ -712,15 +713,18 @@ namespace ScriptNotepad
         /// <param name="fileReappeared">A flag indicating that a file reappeared to the file system after being gone.</param>
         /// <param name="tabClosing">A flag indicating whether this call was made from the tab closing event of a <see cref="ScintillaTabbedDocument"/> class instance.</param>
         /// <param name="closeTab">A flag indicating whether the tab containing the given <paramref name="fileSave"/> should be closed.</param>
+        /// <param name="currentPosition">The position of the caret within the "file".</param>
         /// <returns>A modified <see cref="DBFILE_SAVE"/> class instance based on the given parameters.</returns>
         private DBFILE_SAVE HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, 
-            bool fileReappeared, bool tabClosing, bool closeTab)
+            bool fileReappeared, bool tabClosing, bool closeTab, int currentPosition)
         {
             // set the flags according to the parameters..
             fileSave.ISHISTORY = tabClosing || fileDeleted || closeTab; 
 
             // set the exists in file system flag..
             fileSave.EXISTS_INFILESYS = File.Exists(fileSave.FILENAME_FULL);
+
+            fileSave.CURRENT_POSITION = currentPosition;
 
             // get the tabbed document index via the ID number..
             int docIndex = sttcMain.Documents.FindIndex(f => f.ID == fileSave.ID);
@@ -848,6 +852,16 @@ namespace ScriptNotepad
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
         }
 
+        private void SetCaretLineColor(Scintilla scintilla)
+        {
+            // enabled the caret line background color..
+            sttcMain.LastAddedDocument.Scintilla.CaretLineVisible = true;
+
+            // set the color for the caret line..
+            sttcMain.LastAddedDocument.Scintilla.CaretLineBackColor =
+                FormSettings.Settings.CurrentLineBackground;
+        }
+
         /// <summary>
         /// Loads the document snapshots from the SQLite database.
         /// </summary>
@@ -874,7 +888,19 @@ namespace ScriptNotepad
                 sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
                 if (sttcMain.LastAddedDocument != null)
                 {
+                    // set the saved position of the document's caret..
+                    if (file.CURRENT_POSITION > 0 && file.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
+                    {
+                        sttcMain.LastAddedDocument.Scintilla.CurrentPosition = file.CURRENT_POSITION;
+                        sttcMain.LastAddedDocument.Scintilla.SelectionStart = file.CURRENT_POSITION;
+                        sttcMain.LastAddedDocument.Scintilla.SelectionEnd = file.CURRENT_POSITION;
+                        sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
+                    }
+
                     sttcMain.LastAddedDocument.Tag = file;
+
+                    // enabled the caret line background color..
+                    SetCaretLineColor(sttcMain.LastAddedDocument.Scintilla);
 
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
                     // the file load can't add an undo option the Scintilla..
@@ -908,11 +934,23 @@ namespace ScriptNotepad
                     // not history any more..
                     file.ISHISTORY = false;
 
+                    // set the saved position of the document's caret..
+                    if (file.CURRENT_POSITION > 0 && file.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
+                    {
+                        sttcMain.LastAddedDocument.Scintilla.CurrentPosition = file.CURRENT_POSITION;
+                        sttcMain.LastAddedDocument.Scintilla.SelectionStart = file.CURRENT_POSITION;
+                        sttcMain.LastAddedDocument.Scintilla.SelectionEnd = file.CURRENT_POSITION;
+                        sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
+                    }
+
                     // update the history flag to the database..
                     DatabaseFileSave.UpdateFileHistoryFlag(file);
 
                     // assign the context menu strip for the tabbed document..
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
+
+                    // enabled the caret line background color..
+                    SetCaretLineColor(sttcMain.LastAddedDocument.Scintilla);
 
                     sttcMain.LastAddedDocument.Tag = file;
                     // the file load can't add an undo option the Scintilla..
@@ -1022,6 +1060,15 @@ namespace ScriptNotepad
                         {
                             sttcMain.CurrentDocument.Tag = fileSave;
                             sttcMain.CurrentDocument.ID = (int)fileSave.ID;
+
+                            // set the saved position of the document's caret..
+                            if (fileSave.CURRENT_POSITION > 0 && fileSave.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
+                            {
+                                sttcMain.LastAddedDocument.Scintilla.CurrentPosition = fileSave.CURRENT_POSITION;
+                                sttcMain.LastAddedDocument.Scintilla.SelectionStart = fileSave.CURRENT_POSITION;
+                                sttcMain.LastAddedDocument.Scintilla.SelectionEnd = fileSave.CURRENT_POSITION;
+                                sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
+                            }
                         }
 
                         // get a DBFILE_SAVE class instance from the document's tag..
@@ -1040,53 +1087,11 @@ namespace ScriptNotepad
                         // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
                         sttcMain.CurrentDocument.Tag = fileSave;
 
+                        // enabled the caret line background color..
+                        SetCaretLineColor(sttcMain.CurrentDocument.Scintilla);
+
                         // assign the context menu strip for the tabbed document..
                         sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
-
-                        // the file load can't add an undo option the Scintilla..
-                        sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
-                        return true;
-                    }
-                    else
-                    {
-                        // fail with the current document being null..
-                        return false;
-                    }
-                }
-                else
-                {
-                    // fail with the ScintillaTabbedTextControl returning an error..
-                    return false;
-                }
-            }
-            else
-            {
-                // fail as the file does not exist..
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Opens the document with a given DBFILE_SAVE document snapshot into the view.
-        /// </summary>
-        /// <param name="fileSave">An instance to a DBFILE_SAVE class containing a snapshot of the document's contents to be loaded into the view.</param>
-        /// <param name="document">An instance to a ScintillaTabbedDocument class for the tabbed document view control.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        private bool OpenDocument(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
-        {
-            if (File.Exists(fileSave.FILENAME_FULL))
-            {
-                // a false would happen if the document (file) can not be accessed or required permissions to access a file
-                // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileSave.FILENAME_FULL, -1, fileSave.ENCODING))
-                {
-                    if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
-                    {
-                        // ..update the database with the document..
-                        fileSave = DatabaseFileSave.AddOrUpdateFile(fileSave, document);
-
-                        // save the DBFILE_SAVE class instance to the Tag property..
-                        sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
@@ -1676,7 +1681,8 @@ namespace ScriptNotepad
         private void sttcMain_TabClosing(object sender, TabClosingEventArgsExt e)
         {
             // call the handle method..
-            HandleCloseTab((DBFILE_SAVE)e.ScintillaTabbedDocument.Tag, false, false, true, false);
+            HandleCloseTab((DBFILE_SAVE) e.ScintillaTabbedDocument.Tag, false, false, true, false,
+                e.ScintillaTabbedDocument.Scintilla.CurrentPosition);
 
             // if there are no documents any more..
             if (sttcMain.DocumentsCount - 1 <= 0) 
@@ -1715,7 +1721,7 @@ namespace ScriptNotepad
             {
                 e.ScintillaTabbedDocument.Scintilla.IndicatorClearRange(0, e.ScintillaTabbedDocument.Scintilla.TextLength);
             }
-
+            
             if (!suspendSelectionUpdate)
             {
                 StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
@@ -1960,7 +1966,7 @@ namespace ScriptNotepad
         private void SttcMain_DocumentMouseDoubleClick(object sender, MouseEventArgs e)
         {
             var scintilla = (Scintilla)sender;
-            Highlight.HighlightWord(scintilla, scintilla.SelectedText, Color.LimeGreen);
+            Highlight.HighlightWord(scintilla, scintilla.SelectedText, FormSettings.Settings.SmartHighlight);
         }
         #endregion
 
@@ -2182,7 +2188,8 @@ namespace ScriptNotepad
                     }
 
                     // call the handle method..
-                    HandleCloseTab((DBFILE_SAVE)sttcMain.Documents[i].Tag, false, false, false, true);
+                    HandleCloseTab((DBFILE_SAVE) sttcMain.Documents[i].Tag, false, false, false, true,
+                        sttcMain.Documents[i].Scintilla.CurrentPosition);
                 }
             }
         }

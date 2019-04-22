@@ -77,6 +77,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             Documents = GetDocuments(true);
 
             CurrentDocument = GetCurrentDocument();
+
+            ttMain.SetToolTip(rbSimpleExtended, DBLangEngine.GetMessage("msgSimpleExtendedDesc", "? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me)."));
+            ttMain.SetToolTip(rbSimpleExtended2, DBLangEngine.GetMessage("msgSimpleExtendedDesc", "? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me)."));
         }
 
         /// <summary>
@@ -259,6 +262,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 if (rbRegEx.Checked)
                 {
                     return TextSearcherEnums.SearchType.RegularExpression;
+                }
+
+                if (rbSimpleExtended.Checked)
+                {
+                    return TextSearcherEnums.SearchType.SimpleExtended;
                 }
 
                 return TextSearcherEnums.SearchType.Normal;

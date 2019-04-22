@@ -603,4 +603,7 @@
   <data name="msgSearchFoundCount" xml:space="preserve">
     <value>Found: {0}|A message describing a count of search or replace results</value>
   </data>
+  <data name="msgSimpleExtendedDesc" xml:space="preserve">
+    <value>? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me).</value>
+  </data>
 </root>

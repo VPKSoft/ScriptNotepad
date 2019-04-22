@@ -125,7 +125,8 @@ namespace ScriptNotepad.Database.TableMethods
                     SESSIONNAME = sessionName,
                     ISACTIVE = document.FileTabButton.IsActive,
                     ENCODING = encoding,
-                    ISHISTORY = databaseHistoryFlag == DatabaseHistoryFlag.IsHistory // in a database sense only the value if IsHistory is true..
+                    ISHISTORY = databaseHistoryFlag == DatabaseHistoryFlag.IsHistory, // in a database sense only the value if IsHistory is true..
+                    CURRENT_POSITION = document.Scintilla.CurrentPosition,
                 };
 
                 return AddFile(fileSave);
@@ -159,7 +160,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
         public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, Encoding encoding, int ID = -1)
         {
-            return UpdateFile(AddFile(document, databaseHistoryFlag, sessionName, encoding, ID));
+            return UpdateFile(AddFile(document, databaseHistoryFlag, sessionName, encoding, ID), document.Scintilla.CurrentPosition);
         }
 
         /// <summary>
@@ -171,15 +172,17 @@ namespace ScriptNotepad.Database.TableMethods
         public static DBFILE_SAVE AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
         {
             fileSave.FILE_CONTENTS = document.Scintilla.Text;
-            return UpdateFile(AddFile(fileSave));
+            fileSave.CURRENT_POSITION = document.Scintilla.CurrentPosition;
+            return UpdateFile(AddFile(fileSave), document.Scintilla.CurrentPosition);
         }
 
         /// <summary>
         /// Updates a given file to the database cache.
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be updated into the database.</param>
+        /// <param name="currentPosition">The current caret position of the document.</param>
         /// <returns>A modified instance of the DBFILE_SAVE if the operation was successful; otherwise null;</returns>
-        public static DBFILE_SAVE UpdateFile(DBFILE_SAVE fileSave)
+        public static DBFILE_SAVE UpdateFile(DBFILE_SAVE fileSave, int currentPosition)
         {
             string sql = DatabaseCommandsFileSave.GenUpdateFileSentence(ref fileSave);
             try
@@ -187,6 +190,8 @@ namespace ScriptNotepad.Database.TableMethods
                 fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ?
                     new FileInfo(fileSave.FILENAME_FULL).LastWriteTime :
                     DateTime.MinValue;
+
+                fileSave.CURRENT_POSITION = currentPosition;
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 using (SQLiteCommand command = new SQLiteCommand(conn))
@@ -243,7 +248,7 @@ namespace ScriptNotepad.Database.TableMethods
                 // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
                 // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
                 // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
-                // FILESYS_SAVED: 14, ENCODING: 15
+                // FILESYS_SAVED: 14, ENCODING: 15, CURRENT_POSITION = 16
 
                 Encoding fileSaveEncoding = Encoding.GetEncoding(reader.GetString(15));
 
@@ -265,7 +270,8 @@ namespace ScriptNotepad.Database.TableMethods
                         ISHISTORY = reader.GetInt32(12) == 1,
                         SESSIONNAME = reader.GetString(13),
                         FILESYS_SAVED = DateFromDBString(reader.GetString(14)),
-                        ENCODING = Encoding.GetEncoding(reader.GetString(15))
+                        ENCODING = Encoding.GetEncoding(reader.GetString(15)),
+                        CURRENT_POSITION = reader.GetInt32(16),
                     };
             }
             catch (Exception ex)

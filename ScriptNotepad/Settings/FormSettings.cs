@@ -141,6 +141,7 @@ namespace ScriptNotepad.Settings
             btMarkStyle3Color.BackColor = Settings.Mark3Color;
             btMarkStyle4Color.BackColor = Settings.Mark4Color;
             btMarkStyle5Color.BackColor = Settings.Mark5Color;
+            btCurrentLineBackgroundColor.BackColor = Settings.CurrentLineBackground;
             // END: get the color values..
         }
 
@@ -177,6 +178,7 @@ namespace ScriptNotepad.Settings
             Settings.Mark3Color = btMarkStyle3Color.BackColor;
             Settings.Mark4Color = btMarkStyle4Color.BackColor;
             Settings.Mark5Color = btMarkStyle5Color.BackColor;
+            Settings.CurrentLineBackground = btCurrentLineBackgroundColor.BackColor;
             // END: save the color values..
         }
         #endregion
@@ -295,6 +297,18 @@ namespace ScriptNotepad.Settings
                 Button button = (Button) sender;
                 button.BackColor = cdColors.Color;
             }
+        }
+
+        private void BtDefaults_Click(object sender, EventArgs e)
+        {
+            btSmartHighlightColor.BackColor = Color.FromArgb(0, 255, 0);
+            btMarkStyle1Color.BackColor = Color.FromArgb(0, 255, 255);
+            btMarkStyle2Color.BackColor = Color.FromArgb(255, 128, 0);
+            btMarkStyle3Color.BackColor = Color.FromArgb(255, 255, 0);
+            btMarkStyle4Color.BackColor = Color.FromArgb(128, 0, 255);
+            btMarkStyle5Color.BackColor = Color.FromArgb(0, 128, 0);
+            btCurrentLineBackgroundColor.BackColor = Color.FromArgb(232, 232, 255);
+
         }
     }
 }

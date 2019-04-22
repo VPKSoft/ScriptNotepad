@@ -362,3 +362,34 @@ RATING, PLUGIN_INSTALLED, PLUGIN_UPDATED, 0 FROM PLUGINS_OLD;
 
 DROP TABLE PLUGINS_OLD;
 --ENDVER 14
+
+--VER 15
+ALTER TABLE DBFILE_SAVE RENAME TO DBFILE_SAVE_OLD;
+CREATE TABLE IF NOT EXISTS DBFILE_SAVE
+(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  EXISTS_INFILESYS INTEGER NOT NULL, -- an indicator if the file exists in the file system..
+  FILENAME_FULL TEXT NOT NULL, -- the full file name with path..
+  FILENAME TEXT NOT NULL, -- the file name without path..
+  FILEPATH TEXT NOT NULL, -- the full path for the file..
+  FILESYS_MODIFIED TEXT NOT NULL, -- when the file was modified in the file system, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  FILESYS_SAVED TEXT NOT NULL, -- when the file was saved to file system by the software, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  DB_MODIFIED TEXT NOT NULL, -- when the file was modified in the database, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  LEXER_CODE INTEGER NOT NULL, -- a lexer number with the ScintillaNET.. 
+  FILE_CONTENTS BLOB NOT NULL, -- the file contents..
+  VISIBILITY_ORDER INTEGER NOT NULL, -- the index of the file in a tabbed control..
+  ISACTIVE INTEGER NOT NULL, -- an indicator if the file is activated in the tab control..
+  SESSIONID INTEGER NOT NULL, -- an id for a session of the file..
+  ISHISTORY INTEGER NOT NULL, -- an indicator if the file is a history entry..
+  ENCODING TEXT NOT NULL, -- the encoding of the "file"..
+  CURRENT_POSITION INTEGER NOT NULL -- the previous caret position in the file..
+);
+
+INSERT INTO DBFILE_SAVE 
+(ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, FILESYS_SAVED, 
+DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, SESSIONID, ISHISTORY, ENCODING, CURRENT_POSITION)
+SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, '0000-00-00 00:00:00.000', 
+DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, SESSIONID, ISHISTORY, 'utf-8', 0 FROM DBFILE_SAVE_OLD;
+
+DROP TABLE DBFILE_SAVE_OLD;
+--ENDVER 15

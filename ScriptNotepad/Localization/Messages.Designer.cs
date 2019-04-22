@@ -1366,6 +1366,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me)..
+        /// </summary>
+        internal static string msgSimpleExtendedDesc {
+            get {
+                return ResourceManager.GetString("msgSimpleExtendedDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Smalltalk file|*.st|A text in a file dialog indicating Smalltalk files.
         /// </summary>
         internal static string msgSmalltalkFile {
