@@ -1470,6 +1470,12 @@ namespace ScriptNotepad
             FormSearchAndReplace.ShowSearch();
         }
 
+        // a user wanted to find or find and replace something of the active document..
+        private void MnuReplace_Click(object sender, EventArgs e)
+        {
+            FormSearchAndReplace.ShowReplace();
+        }
+
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // get the list of plug-in database entries..

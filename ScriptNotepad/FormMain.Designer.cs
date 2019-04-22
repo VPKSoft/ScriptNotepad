@@ -61,6 +61,7 @@
             this.ssLbSpace6 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbSessionName = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
+            this.pnDock = new System.Windows.Forms.Panel();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +82,7 @@
             this.mnuCharSets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,7 +110,6 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
-            this.pnDock = new System.Windows.Forms.Panel();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -377,6 +378,19 @@
             this.sttcMain.SelectionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnSelectionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.DocumentTextChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnDocumentTextChanged(this.sttcMain_DocumentTextChanged);
             // 
+            // pnDock
+            // 
+            this.pnDock.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnDock.AutoSize = true;
+            this.tlpMain.SetColumnSpan(this.pnDock, 5);
+            this.pnDock.Location = new System.Drawing.Point(0, 540);
+            this.pnDock.Margin = new System.Windows.Forms.Padding(0);
+            this.pnDock.Name = "pnDock";
+            this.pnDock.Size = new System.Drawing.Size(825, 1);
+            this.pnDock.TabIndex = 5;
+            // 
             // menuMain
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -533,7 +547,8 @@
             // mnuSearch
             // 
             this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFind});
+            this.mnuFind,
+            this.mnuReplace});
             this.mnuSearch.Name = "mnuSearch";
             this.mnuSearch.Size = new System.Drawing.Size(54, 20);
             this.mnuSearch.Text = "Search";
@@ -543,9 +558,18 @@
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
             this.mnuFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mnuFind.Size = new System.Drawing.Size(143, 22);
-            this.mnuFind.Text = "Find..";
+            this.mnuFind.Size = new System.Drawing.Size(180, 22);
+            this.mnuFind.Text = "Find...";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
+            // 
+            // mnuReplace
+            // 
+            this.mnuReplace.Image = global::ScriptNotepad.Properties.Resources.find_replace;
+            this.mnuReplace.Name = "mnuReplace";
+            this.mnuReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.mnuReplace.Size = new System.Drawing.Size(180, 22);
+            this.mnuReplace.Text = "Replace...";
+            this.mnuReplace.Click += new System.EventHandler(this.MnuReplace_Click);
             // 
             // mnuTools
             // 
@@ -744,19 +768,6 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
-            // pnDock
-            // 
-            this.pnDock.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnDock.AutoSize = true;
-            this.tlpMain.SetColumnSpan(this.pnDock, 5);
-            this.pnDock.Location = new System.Drawing.Point(0, 540);
-            this.pnDock.Margin = new System.Windows.Forms.Padding(0);
-            this.pnDock.Name = "pnDock";
-            this.pnDock.Size = new System.Drawing.Size(825, 1);
-            this.pnDock.TabIndex = 5;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -869,6 +880,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuLocalization;
         private System.Windows.Forms.ToolStripMenuItem mnuDumpLanguage;
         private System.Windows.Forms.Panel pnDock;
+        private System.Windows.Forms.ToolStripMenuItem mnuReplace;
     }
 }
 

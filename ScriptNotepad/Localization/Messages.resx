@@ -609,4 +609,7 @@
   <data name="msgSearchReplaceCount" xml:space="preserve">
     <value>Replaced: {0}|A message describing a count of occurrences replaced</value>
   </data>
+  <data name="msgSearchReplaceCountWithFiles" xml:space="preserve">
+    <value>Replaced {0} occurrences from {1} files|A message describing a count of occurrences replaced and in how many files</value>
+  </data>
 </root>

@@ -652,6 +652,7 @@
             this.btReplaceAllInAll.TabIndex = 19;
             this.btReplaceAllInAll.Text = "Replace all in all opended documents";
             this.btReplaceAllInAll.UseVisualStyleBackColor = true;
+            this.btReplaceAllInAll.Click += new System.EventHandler(this.BtReplaceAllInAll_Click);
             // 
             // btReplace
             // 

@@ -1312,6 +1312,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Replaced {0} occurrences from {1} files|A message describing a count of occurrences replaced and in how many files.
+        /// </summary>
+        internal static string msgSearchReplaceCountWithFiles {
+            get {
+                return ResourceManager.GetString("msgSearchReplaceCountWithFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line: {0}, contents {1}|A message describing a search result with a line number and the line&apos;s contents..
         /// </summary>
         internal static string msgSearchResultLine {

@@ -378,6 +378,7 @@
     <None Include="Resources\arrow_left.png" />
     <None Include="Resources\arrow_right.png" />
     <None Include="Resources\close_small.png" />
+    <None Include="Resources\find_replace.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

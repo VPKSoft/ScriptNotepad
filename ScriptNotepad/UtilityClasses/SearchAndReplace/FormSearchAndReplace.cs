@@ -673,6 +673,65 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             tree.SearchResults = results;
         }
 
+        // A users wishes to replace all occurrences within all the opened documents..
+        private void BtReplaceAllInAll_Click(object sender, EventArgs e)
+        {
+            // make a suitable for the results..
+            List<(string newContents, int count, string fileName, string fileNameNoPath)> results =
+                new List<(string newContents, int count, string fileName, string fileNameNoPath)>();
+
+            int fileCount = 0;
+
+            string replaceString = cmbReplace.Text;
+
+            // loop through all the open documents..
+            foreach (var document in Documents)
+            {
+                // an instance reference is required in case the user wishes to cancel the search process
+                // before completion..
+                var form = new FormDialogSearchReplaceProgress(delegate
+                {
+                    // create a new search algorithm for the document..
+                    CreateSingleSearchReplaceAlgorithm(document);
+
+                    // search for all the matches in the document..
+                    var result = SearchOpenDocuments?.ReplaceAll(replaceString, 100);
+
+                    if (result != null)
+                    {
+                        // invoke as running in another thread..
+                        document.scintilla.Invoke(new MethodInvoker(delegate
+                        {
+                            document.scintilla.Text = result.Value.newContents;
+                        }));
+
+                        results.Add((result.Value.newContents, result.Value.count, SearchOpenDocuments.FileName, SearchOpenDocuments.FileNameNoPath));
+
+                        if (result.Value.count > 0)
+                        {
+                            fileCount++;
+                        }
+                    }
+
+                    // reset the search algorithm..
+                    SearchOpenDocuments?.ResetSearch();
+
+                }, SearchOpenDocuments);
+
+                // if the user cancelled then break the loop..
+                if (form.Cancelled)
+                {
+                    break;
+                }
+            }
+
+            // set the count value of replaced occurrences and file count on the status strip..
+            ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchReplaceCountWithFiles",
+                "Replaced {0} occurrences from {1} files|A message describing a count of occurrences replaced and in how many files",
+                results.Sum(f => f.count), fileCount);
+
+        }
+
         // a user wishes to replace the current search result in the current document..
         private void BtReplace_Click(object sender, EventArgs e)
         {                        
