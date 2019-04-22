@@ -606,4 +606,7 @@
   <data name="msgSimpleExtendedDesc" xml:space="preserve">
     <value>? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me).</value>
   </data>
+  <data name="msgSearchReplaceCount" xml:space="preserve">
+    <value>Replaced: {0}|A message describing a count of occurrences replaced</value>
+  </data>
 </root>

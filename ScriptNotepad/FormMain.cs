@@ -26,7 +26,6 @@ SOFTWARE.
 
 #region Usings
 using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
-using ScintillaNET_FindReplaceDialog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -170,7 +169,7 @@ namespace ScriptNotepad
             CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
 
             // load the recent documents which were saved during the program close..
-            LoadDocumentsFromDatabase(CurrentSession, false);
+            LoadDocumentsFromDatabase(CurrentSession);
 
             CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, "convert_encoding");
             CharacterSetMenuBuilder.EncodingMenuClicked += CharacterSetMenuBuilder_EncodingMenuClicked;
@@ -507,14 +506,14 @@ namespace ScriptNotepad
             PluginDirectoryRoaming.ExceptionLogAction =
                 delegate (Exception ex, Assembly assembly, string assemblyFile)
                 {
-                    ExceptionLogger.LogMessage($"Assembly load failed. Assembly: {(assembly == null ? "unknown" : assembly.FullName)}, FileName: {(assemblyFile == null ? "unknown" : assemblyFile)}.");
+                    ExceptionLogger.LogMessage($"Assembly load failed. Assembly: {(assembly == null ? "unknown" : assembly.FullName)}, FileName: {assemblyFile ?? "unknown"}.");
                     ExceptionLogger.LogError(ex);
                 };
 
             PluginInitializer.ExceptionLogAction =
                 delegate (Exception ex, Assembly assembly, string assemblyFile, string methodName)
                 {
-                    ExceptionLogger.LogMessage($"Plug-in assembly initialization failed. Assembly: {(assembly == null ? "unknown" : assembly.FullName)}, FileName: {(assemblyFile == null ? "unknown" : assemblyFile)}, Method: {methodName}.");
+                    ExceptionLogger.LogMessage($"Plug-in assembly initialization failed. Assembly: {(assembly == null ? "unknown" : assembly.FullName)}, FileName: {assemblyFile ?? "unknown"}, Method: {methodName}.");
                     ExceptionLogger.LogError(ex);
                 };
 
@@ -670,7 +669,7 @@ namespace ScriptNotepad
                         else
                         {
                             // call the handle method..
-                            HandleCloseTab(fileSave, true, false, false, false,
+                            HandleCloseTab(fileSave, true, false, false,
                                 sttcMain.Documents[i].Scintilla.CurrentPosition);
                         }
                     }
@@ -710,13 +709,11 @@ namespace ScriptNotepad
         /// </summary>
         /// <param name="fileSave">An instance to <see cref="DBFILE_SAVE"/> class instance.</param>
         /// <param name="fileDeleted">A flag indicating if the file was deleted from the file system and a user decided to not the keep the file in the editor.</param>
-        /// <param name="fileReappeared">A flag indicating that a file reappeared to the file system after being gone.</param>
         /// <param name="tabClosing">A flag indicating whether this call was made from the tab closing event of a <see cref="ScintillaTabbedDocument"/> class instance.</param>
         /// <param name="closeTab">A flag indicating whether the tab containing the given <paramref name="fileSave"/> should be closed.</param>
         /// <param name="currentPosition">The position of the caret within the "file".</param>
         /// <returns>A modified <see cref="DBFILE_SAVE"/> class instance based on the given parameters.</returns>
-        private DBFILE_SAVE HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, 
-            bool fileReappeared, bool tabClosing, bool closeTab, int currentPosition)
+        private DBFILE_SAVE HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, bool tabClosing, bool closeTab, int currentPosition)
         {
             // set the flags according to the parameters..
             fileSave.ISHISTORY = tabClosing || fileDeleted || closeTab; 
@@ -799,8 +796,6 @@ namespace ScriptNotepad
         #endregion
 
         #region UselessCode
-        UTF8Encoding UTF8Encoding = new UTF8Encoding(false);
-
         // a test menu item for running "absurd" tests with the software..
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -852,7 +847,7 @@ namespace ScriptNotepad
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
         }
 
-        private void SetCaretLineColor(Scintilla scintilla)
+        private void SetCaretLineColor()
         {
             // enabled the caret line background color..
             sttcMain.LastAddedDocument.Scintilla.CaretLineVisible = true;
@@ -866,8 +861,7 @@ namespace ScriptNotepad
         /// Loads the document snapshots from the SQLite database.
         /// </summary>
         /// <param name="sessionName">A name of the session to which the documents are tagged with.</param>
-        /// <param name="history">An indicator if the documents should be closed ones. I.e. not existing with the current session.</param>
-        private void LoadDocumentsFromDatabase(string sessionName, bool history)
+        private void LoadDocumentsFromDatabase(string sessionName)
         {
             // set the status strip label's to indicate that there is no active document..
             StatusStripTexts.SetEmptyTexts(CurrentSession);
@@ -900,7 +894,7 @@ namespace ScriptNotepad
                     sttcMain.LastAddedDocument.Tag = file;
 
                     // enabled the caret line background color..
-                    SetCaretLineColor(sttcMain.LastAddedDocument.Scintilla);
+                    SetCaretLineColor();
 
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
                     // the file load can't add an undo option the Scintilla..
@@ -950,7 +944,7 @@ namespace ScriptNotepad
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
 
                     // enabled the caret line background color..
-                    SetCaretLineColor(sttcMain.LastAddedDocument.Scintilla);
+                    SetCaretLineColor();
 
                     sttcMain.LastAddedDocument.Tag = file;
                     // the file load can't add an undo option the Scintilla..
@@ -1088,7 +1082,7 @@ namespace ScriptNotepad
                         sttcMain.CurrentDocument.Tag = fileSave;
 
                         // enabled the caret line background color..
-                        SetCaretLineColor(sttcMain.CurrentDocument.Scintilla);
+                        SetCaretLineColor();
 
                         // assign the context menu strip for the tabbed document..
                         sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
@@ -1681,7 +1675,7 @@ namespace ScriptNotepad
         private void sttcMain_TabClosing(object sender, TabClosingEventArgsExt e)
         {
             // call the handle method..
-            HandleCloseTab((DBFILE_SAVE) e.ScintillaTabbedDocument.Tag, false, false, true, false,
+            HandleCloseTab((DBFILE_SAVE) e.ScintillaTabbedDocument.Tag, false, true, false,
                 e.ScintillaTabbedDocument.Scintilla.CurrentPosition);
 
             // if there are no documents any more..
@@ -1972,15 +1966,10 @@ namespace ScriptNotepad
 
         #region PrivateFields        
         /// <summary>
-        /// A find and replace dialog for the ScintillaNET.
-        /// </summary>
-        private FindReplace findReplace = new FindReplace();
-
-        /// <summary>
         /// An IPC client / server to transmit Windows shell file open requests to the current process.
         /// (C): VPKSoft: https://gist.github.com/VPKSoft/5d78f1c06ec51ebad34817b491fe6ac6
         /// </summary>
-        private IpcClientServer ipcServer = new IpcClientServer();
+        private readonly IpcClientServer ipcServer = new IpcClientServer();
 
         /// <summary>
         /// A flag indicating if the main form should be activated.
@@ -2019,7 +2008,7 @@ namespace ScriptNotepad
                     CloseSession(previousSession);
 
                     // load the recent documents which were saved during the program close..
-                    LoadDocumentsFromDatabase(CurrentSession, false);
+                    LoadDocumentsFromDatabase(CurrentSession);
                 }
 
                 // get the session ID number from the database..
@@ -2188,7 +2177,7 @@ namespace ScriptNotepad
                     }
 
                     // call the handle method..
-                    HandleCloseTab((DBFILE_SAVE) sttcMain.Documents[i].Tag, false, false, false, true,
+                    HandleCloseTab((DBFILE_SAVE) sttcMain.Documents[i].Tag, false, false, true,
                         sttcMain.Documents[i].Scintilla.CurrentPosition);
                 }
             }

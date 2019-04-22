@@ -36,6 +36,7 @@ using System.Reflection;
 using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
 using System.Globalization;
+using ScriptNotepad.UtilityClasses.SearchAndReplace;
 
 namespace ScriptNotepad.Settings
 {
@@ -276,6 +277,18 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("database/historyContents", typeof(bool))]
         public bool SaveFileHistoryContents { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether search and replace dialog should be transparent.
+        /// </summary>
+        [Setting("misc/searchBoxTransparency", typeof(int))]
+        public int SearchBoxTransparency { get; set; } = 1; // 0 = false, 1 = false when inactive, 2 = always..
+
+        /// <summary>
+        /// Gets or sets a value of opacity of the <see cref="FormSearchAndReplace"/> form.
+        /// </summary>
+        [Setting("misc/searchBoxOpacity", typeof(double))]
+        public double SearchBoxOpacity { get; set; } = 0.8;
 
         /// <summary>
         /// Gets or sets the save file history contents count.

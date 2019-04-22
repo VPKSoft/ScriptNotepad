@@ -234,7 +234,7 @@ namespace ScriptNotepad.Database
                 // log the exception if the action has a value..
                 ExceptionLogAction?.Invoke(ex);
                 // failed, return default(T).. 
-                return default(T);
+                return default;
             }
         }
 

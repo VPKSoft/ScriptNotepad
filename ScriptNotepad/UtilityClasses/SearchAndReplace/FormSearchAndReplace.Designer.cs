@@ -41,6 +41,7 @@
             this.rbTransparencyAlways = new System.Windows.Forms.RadioButton();
             this.rbTransparencyOnLosingFocus = new System.Windows.Forms.RadioButton();
             this.gpSearchMode = new System.Windows.Forms.GroupBox();
+            this.rbSimpleExtended = new System.Windows.Forms.RadioButton();
             this.rbRegEx = new System.Windows.Forms.RadioButton();
             this.rbExtented = new System.Windows.Forms.RadioButton();
             this.rbNormal = new System.Windows.Forms.RadioButton();
@@ -61,11 +62,12 @@
             this.cbInSelection = new System.Windows.Forms.CheckBox();
             this.btReplaceAll = new System.Windows.Forms.Button();
             this.cbTransparency2 = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gpTransparency2 = new System.Windows.Forms.GroupBox();
             this.tbOpacity2 = new System.Windows.Forms.TrackBar();
             this.rbTransparencyAlways2 = new System.Windows.Forms.RadioButton();
             this.rbTransparencyOnLosingFocus2 = new System.Windows.Forms.RadioButton();
             this.gpSearchMode2 = new System.Windows.Forms.GroupBox();
+            this.rbSimpleExtended2 = new System.Windows.Forms.RadioButton();
             this.rbRegEx2 = new System.Windows.Forms.RadioButton();
             this.rbExtented2 = new System.Windows.Forms.RadioButton();
             this.rbNormal2 = new System.Windows.Forms.RadioButton();
@@ -83,8 +85,6 @@
             this.pnLabelHolder02 = new System.Windows.Forms.Panel();
             this.lbFind2 = new System.Windows.Forms.Label();
             this.cmbFind2 = new System.Windows.Forms.ComboBox();
-            this.rbSimpleExtended = new System.Windows.Forms.RadioButton();
-            this.rbSimpleExtended2 = new System.Windows.Forms.RadioButton();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.ssMain.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -95,7 +95,7 @@
             this.pnLabelHolder01.SuspendLayout();
             this.tabReplace.SuspendLayout();
             this.gpInSelection.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gpTransparency2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbOpacity2)).BeginInit();
             this.gpSearchMode2.SuspendLayout();
             this.pnLabelHolder03.SuspendLayout();
@@ -173,6 +173,7 @@
             this.cbTransparency.TabIndex = 14;
             this.cbTransparency.Text = "Transparency";
             this.cbTransparency.UseVisualStyleBackColor = true;
+            this.cbTransparency.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
             // gpTransparency
             // 
@@ -197,6 +198,7 @@
             this.tbOpacity.TabIndex = 15;
             this.tbOpacity.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbOpacity.Value = 80;
+            this.tbOpacity.ValueChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
             // rbTransparencyAlways
             // 
@@ -207,6 +209,7 @@
             this.rbTransparencyAlways.TabIndex = 1;
             this.rbTransparencyAlways.Text = "Always";
             this.rbTransparencyAlways.UseVisualStyleBackColor = true;
+            this.rbTransparencyAlways.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
             // rbTransparencyOnLosingFocus
             // 
@@ -219,6 +222,7 @@
             this.rbTransparencyOnLosingFocus.TabStop = true;
             this.rbTransparencyOnLosingFocus.Text = "On losing focus";
             this.rbTransparencyOnLosingFocus.UseVisualStyleBackColor = true;
+            this.rbTransparencyOnLosingFocus.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
             // gpSearchMode
             // 
@@ -234,6 +238,18 @@
             this.gpSearchMode.TabStop = false;
             this.gpSearchMode.Text = "Search mode";
             // 
+            // rbSimpleExtended
+            // 
+            this.rbSimpleExtended.AutoSize = true;
+            this.rbSimpleExtended.Location = new System.Drawing.Point(6, 88);
+            this.rbSimpleExtended.Name = "rbSimpleExtended";
+            this.rbSimpleExtended.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended.TabIndex = 3;
+            this.rbSimpleExtended.Text = "Simple extended (#, %, *, ?)";
+            this.ttMain.SetToolTip(this.rbSimpleExtended, "? = one character, * = multiple characters, # = digit, % = single digit");
+            this.rbSimpleExtended.UseVisualStyleBackColor = true;
+            this.rbSimpleExtended.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
             // rbRegEx
             // 
             this.rbRegEx.AutoSize = true;
@@ -243,7 +259,7 @@
             this.rbRegEx.TabIndex = 2;
             this.rbRegEx.Text = "Regular expression";
             this.rbRegEx.UseVisualStyleBackColor = true;
-            this.rbRegEx.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
+            this.rbRegEx.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // rbExtented
             // 
@@ -254,7 +270,7 @@
             this.rbExtented.TabIndex = 1;
             this.rbExtented.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
             this.rbExtented.UseVisualStyleBackColor = true;
-            this.rbExtented.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
+            this.rbExtented.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // rbNormal
             // 
@@ -267,7 +283,7 @@
             this.rbNormal.TabStop = true;
             this.rbNormal.Text = "Normal";
             this.rbNormal.UseVisualStyleBackColor = true;
-            this.rbNormal.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
+            this.rbNormal.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbWrapAround
             // 
@@ -278,7 +294,7 @@
             this.cbWrapAround.TabIndex = 11;
             this.cbWrapAround.Text = "Wrap around";
             this.cbWrapAround.UseVisualStyleBackColor = true;
-            this.cbWrapAround.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
+            this.cbWrapAround.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbMatchCase
             // 
@@ -289,7 +305,7 @@
             this.cbMatchCase.TabIndex = 10;
             this.cbMatchCase.Text = "Match case";
             this.cbMatchCase.UseVisualStyleBackColor = true;
-            this.cbMatchCase.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
+            this.cbMatchCase.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbMatchWholeWord
             // 
@@ -300,7 +316,7 @@
             this.cbMatchWholeWord.TabIndex = 9;
             this.cbMatchWholeWord.Text = "Match whole word only";
             this.cbMatchWholeWord.UseVisualStyleBackColor = true;
-            this.cbMatchWholeWord.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
+            this.cbMatchWholeWord.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // btClose
             // 
@@ -397,13 +413,13 @@
             this.cmbFind.Name = "cmbFind";
             this.cmbFind.Size = new System.Drawing.Size(251, 21);
             this.cmbFind.TabIndex = 1;
-            this.cmbFind.TextChanged += new System.EventHandler(this.SearchCondition_Changed);
+            this.cmbFind.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // tabReplace
             // 
             this.tabReplace.Controls.Add(this.gpInSelection);
             this.tabReplace.Controls.Add(this.cbTransparency2);
-            this.tabReplace.Controls.Add(this.groupBox1);
+            this.tabReplace.Controls.Add(this.gpTransparency2);
             this.tabReplace.Controls.Add(this.gpSearchMode2);
             this.tabReplace.Controls.Add(this.cbWrapAround2);
             this.tabReplace.Controls.Add(this.cbMatchCase2);
@@ -441,14 +457,13 @@
             // cbInSelection
             // 
             this.cbInSelection.AutoSize = true;
-            this.cbInSelection.Enabled = false;
             this.cbInSelection.Location = new System.Drawing.Point(6, 13);
             this.cbInSelection.Name = "cbInSelection";
             this.cbInSelection.Size = new System.Drawing.Size(80, 17);
             this.cbInSelection.TabIndex = 24;
             this.cbInSelection.Text = "In selection";
             this.cbInSelection.UseVisualStyleBackColor = true;
-            this.cbInSelection.CheckedChanged += new System.EventHandler(this.ReplaceCondition_Changed);
+            this.cbInSelection.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // btReplaceAll
             // 
@@ -459,6 +474,7 @@
             this.btReplaceAll.TabIndex = 18;
             this.btReplaceAll.Text = "Replace all";
             this.btReplaceAll.UseVisualStyleBackColor = true;
+            this.btReplaceAll.Click += new System.EventHandler(this.BtReplaceAll_Click);
             // 
             // cbTransparency2
             // 
@@ -472,18 +488,19 @@
             this.cbTransparency2.TabIndex = 26;
             this.cbTransparency2.Text = "Transparency";
             this.cbTransparency2.UseVisualStyleBackColor = true;
+            this.cbTransparency2.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
-            // groupBox1
+            // gpTransparency2
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.tbOpacity2);
-            this.groupBox1.Controls.Add(this.rbTransparencyAlways2);
-            this.groupBox1.Controls.Add(this.rbTransparencyOnLosingFocus2);
-            this.groupBox1.Location = new System.Drawing.Point(338, 175);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(181, 91);
-            this.groupBox1.TabIndex = 25;
-            this.groupBox1.TabStop = false;
+            this.gpTransparency2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.gpTransparency2.Controls.Add(this.tbOpacity2);
+            this.gpTransparency2.Controls.Add(this.rbTransparencyAlways2);
+            this.gpTransparency2.Controls.Add(this.rbTransparencyOnLosingFocus2);
+            this.gpTransparency2.Location = new System.Drawing.Point(338, 175);
+            this.gpTransparency2.Name = "gpTransparency2";
+            this.gpTransparency2.Size = new System.Drawing.Size(181, 91);
+            this.gpTransparency2.TabIndex = 25;
+            this.gpTransparency2.TabStop = false;
             // 
             // tbOpacity2
             // 
@@ -496,6 +513,7 @@
             this.tbOpacity2.TabIndex = 15;
             this.tbOpacity2.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbOpacity2.Value = 80;
+            this.tbOpacity2.ValueChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
             // rbTransparencyAlways2
             // 
@@ -506,6 +524,7 @@
             this.rbTransparencyAlways2.TabIndex = 1;
             this.rbTransparencyAlways2.Text = "Always";
             this.rbTransparencyAlways2.UseVisualStyleBackColor = true;
+            this.rbTransparencyAlways2.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
             // rbTransparencyOnLosingFocus2
             // 
@@ -518,6 +537,7 @@
             this.rbTransparencyOnLosingFocus2.TabStop = true;
             this.rbTransparencyOnLosingFocus2.Text = "On losing focus";
             this.rbTransparencyOnLosingFocus2.UseVisualStyleBackColor = true;
+            this.rbTransparencyOnLosingFocus2.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
             // gpSearchMode2
             // 
@@ -533,6 +553,17 @@
             this.gpSearchMode2.TabStop = false;
             this.gpSearchMode2.Text = "Search mode";
             // 
+            // rbSimpleExtended2
+            // 
+            this.rbSimpleExtended2.AutoSize = true;
+            this.rbSimpleExtended2.Location = new System.Drawing.Point(6, 88);
+            this.rbSimpleExtended2.Name = "rbSimpleExtended2";
+            this.rbSimpleExtended2.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended2.TabIndex = 4;
+            this.rbSimpleExtended2.Text = "Simple extended (#, %, *, ?)";
+            this.rbSimpleExtended2.UseVisualStyleBackColor = true;
+            this.rbSimpleExtended2.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
             // rbRegEx2
             // 
             this.rbRegEx2.AutoSize = true;
@@ -542,7 +573,7 @@
             this.rbRegEx2.TabIndex = 2;
             this.rbRegEx2.Text = "Regular expression";
             this.rbRegEx2.UseVisualStyleBackColor = true;
-            this.rbRegEx2.CheckedChanged += new System.EventHandler(this.ReplaceCondition_Changed);
+            this.rbRegEx2.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // rbExtented2
             // 
@@ -553,7 +584,7 @@
             this.rbExtented2.TabIndex = 1;
             this.rbExtented2.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
             this.rbExtented2.UseVisualStyleBackColor = true;
-            this.rbExtented2.CheckedChanged += new System.EventHandler(this.ReplaceCondition_Changed);
+            this.rbExtented2.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // rbNormal2
             // 
@@ -566,7 +597,7 @@
             this.rbNormal2.TabStop = true;
             this.rbNormal2.Text = "Normal";
             this.rbNormal2.UseVisualStyleBackColor = true;
-            this.rbNormal2.CheckedChanged += new System.EventHandler(this.ReplaceCondition_Changed);
+            this.rbNormal2.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbWrapAround2
             // 
@@ -577,7 +608,7 @@
             this.cbWrapAround2.TabIndex = 23;
             this.cbWrapAround2.Text = "Wrap around";
             this.cbWrapAround2.UseVisualStyleBackColor = true;
-            this.cbWrapAround2.CheckedChanged += new System.EventHandler(this.ReplaceCondition_Changed);
+            this.cbWrapAround2.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbMatchCase2
             // 
@@ -588,7 +619,7 @@
             this.cbMatchCase2.TabIndex = 22;
             this.cbMatchCase2.Text = "Match case";
             this.cbMatchCase2.UseVisualStyleBackColor = true;
-            this.cbMatchCase2.CheckedChanged += new System.EventHandler(this.ReplaceCondition_Changed);
+            this.cbMatchCase2.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbMatchWholeWord2
             // 
@@ -599,7 +630,7 @@
             this.cbMatchWholeWord2.TabIndex = 21;
             this.cbMatchWholeWord2.Text = "Match whole word only";
             this.cbMatchWholeWord2.UseVisualStyleBackColor = true;
-            this.cbMatchWholeWord2.CheckedChanged += new System.EventHandler(this.ReplaceCondition_Changed);
+            this.cbMatchWholeWord2.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // btClose2
             // 
@@ -631,6 +662,7 @@
             this.btReplace.TabIndex = 17;
             this.btReplace.Text = "Replace";
             this.btReplace.UseVisualStyleBackColor = true;
+            this.btReplace.Click += new System.EventHandler(this.BtReplace_Click);
             // 
             // btFindNext2
             // 
@@ -641,6 +673,7 @@
             this.btFindNext2.TabIndex = 16;
             this.btFindNext2.Text = "Find >>";
             this.btFindNext2.UseVisualStyleBackColor = true;
+            this.btFindNext2.Click += new System.EventHandler(this.btFindNext_Click);
             // 
             // btFindPrevious2
             // 
@@ -651,6 +684,7 @@
             this.btFindPrevious2.TabIndex = 15;
             this.btFindPrevious2.Text = "<< Find";
             this.btFindPrevious2.UseVisualStyleBackColor = true;
+            this.btFindPrevious2.Click += new System.EventHandler(this.btFindPrevious_Click);
             // 
             // pnLabelHolder03
             // 
@@ -681,6 +715,7 @@
             this.cmbReplace.Name = "cmbReplace";
             this.cmbReplace.Size = new System.Drawing.Size(251, 21);
             this.cmbReplace.TabIndex = 5;
+            this.cmbReplace.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // pnLabelHolder02
             // 
@@ -711,28 +746,7 @@
             this.cmbFind2.Name = "cmbFind2";
             this.cmbFind2.Size = new System.Drawing.Size(251, 21);
             this.cmbFind2.TabIndex = 3;
-            // 
-            // rbSimpleExtended
-            // 
-            this.rbSimpleExtended.AutoSize = true;
-            this.rbSimpleExtended.Location = new System.Drawing.Point(6, 88);
-            this.rbSimpleExtended.Name = "rbSimpleExtended";
-            this.rbSimpleExtended.Size = new System.Drawing.Size(155, 17);
-            this.rbSimpleExtended.TabIndex = 3;
-            this.rbSimpleExtended.Text = "Simple extended (#, %, *, ?)";
-            this.ttMain.SetToolTip(this.rbSimpleExtended, "? = one character, * = multiple characters, # = digit, % = single digit");
-            this.rbSimpleExtended.UseVisualStyleBackColor = true;
-            this.rbSimpleExtended.CheckedChanged += new System.EventHandler(this.SearchCondition_Changed);
-            // 
-            // rbSimpleExtended2
-            // 
-            this.rbSimpleExtended2.AutoSize = true;
-            this.rbSimpleExtended2.Location = new System.Drawing.Point(6, 88);
-            this.rbSimpleExtended2.Name = "rbSimpleExtended2";
-            this.rbSimpleExtended2.Size = new System.Drawing.Size(155, 17);
-            this.rbSimpleExtended2.TabIndex = 4;
-            this.rbSimpleExtended2.Text = "Simple extended (#, %, *, ?)";
-            this.rbSimpleExtended2.UseVisualStyleBackColor = true;
+            this.cmbFind2.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // FormSearchAndReplace
             // 
@@ -767,8 +781,8 @@
             this.tabReplace.PerformLayout();
             this.gpInSelection.ResumeLayout(false);
             this.gpInSelection.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gpTransparency2.ResumeLayout(false);
+            this.gpTransparency2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbOpacity2)).EndInit();
             this.gpSearchMode2.ResumeLayout(false);
             this.gpSearchMode2.PerformLayout();
@@ -811,7 +825,7 @@
         private System.Windows.Forms.CheckBox cbInSelection;
         private System.Windows.Forms.Button btReplaceAll;
         private System.Windows.Forms.CheckBox cbTransparency2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gpTransparency2;
         private System.Windows.Forms.TrackBar tbOpacity2;
         private System.Windows.Forms.RadioButton rbTransparencyAlways2;
         private System.Windows.Forms.RadioButton rbTransparencyOnLosingFocus2;
