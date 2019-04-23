@@ -1476,6 +1476,12 @@ namespace ScriptNotepad
             FormSearchAndReplace.ShowReplace();
         }
 
+        // a user wanted to find or find and replace something in a defined set of files..
+        private void MnuFindInFiles_Click(object sender, EventArgs e)
+        {
+            FormSearchAndReplace.ShowFindInFiles();
+        }
+
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // get the list of plug-in database entries..
@@ -1717,6 +1723,12 @@ namespace ScriptNotepad
         // this is the event listener for the ScintillaTabbedDocument's selection and caret position change events..
         private void sttcMain_SelectionCaretChanged(object sender, ScintillaTabbedDocumentEventArgsExt e)
         {
+            // set the search and replace from selection flag..
+            if (Form.ActiveForm != null && (e.ScintillaTabbedDocument.SelectionLength > 0 && Form.ActiveForm.Equals(this)))
+            {
+                FormSearchAndReplace.Instance.SelectionChangedFromMainForm = true;
+            }
+
             if (e.ScintillaTabbedDocument.Scintilla.SelectionEnd == e.ScintillaTabbedDocument.Scintilla.SelectionStart)
             {
                 e.ScintillaTabbedDocument.Scintilla.IndicatorClearRange(0, e.ScintillaTabbedDocument.Scintilla.TextLength);
@@ -1951,6 +1963,7 @@ namespace ScriptNotepad
         private void FormMain_Deactivate(object sender, EventArgs e)
         {
             FormSearchAndReplace.Instance.ToggleStayTop(false);
+            
         }
 
         private void FormMain_ResizeBegin(object sender, EventArgs e)

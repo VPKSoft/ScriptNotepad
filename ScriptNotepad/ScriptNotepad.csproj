@@ -142,6 +142,7 @@
     <Compile Include="Database\Tables\SESSION_NAME.cs" />
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
     <Compile Include="Database\UtilityClasses\RecentFilesMenuBuilder.cs" />
+    <Compile Include="UtilityClasses\ApplicationHelpers\ApplicationActivateDeactivate.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -379,6 +380,7 @@
     <None Include="Resources\arrow_right.png" />
     <None Include="Resources\close_small.png" />
     <None Include="Resources\find_replace.png" />
+    <None Include="Resources\folder-find.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

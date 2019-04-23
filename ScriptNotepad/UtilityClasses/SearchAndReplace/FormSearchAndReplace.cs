@@ -34,6 +34,7 @@ using ScriptNotepad.Settings;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.SearchText;
+using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivateDeactivate;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 {
@@ -76,12 +77,53 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             AllowTransparency = true;
 
+            // get the open documents on the main form..
             Documents = GetDocuments(true);
 
             CurrentDocument = GetCurrentDocument();
 
+            // localize the tool tips..
             ttMain.SetToolTip(rbSimpleExtended, DBLangEngine.GetMessage("msgSimpleExtendedDesc", "? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me)."));
             ttMain.SetToolTip(rbSimpleExtended2, DBLangEngine.GetMessage("msgSimpleExtendedDesc", "? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me)."));
+            ttMain.SetToolTip(rbSimpleExtended3, DBLangEngine.GetMessage("msgSimpleExtendedDesc", "? = one character, * = multiple characters, # = digit, % = single digit|A message describing the usage of the simple extended search algorithm (meant for demented persons, such as me)."));
+
+            // subscribe to an event which is raised upon application activation..
+            ApplicationDeactivated += FormSearchAndReplace_ApplicationDeactivated;
+        }
+        #endregion
+
+        #region WndProc
+         /// <summary>Processes Windows messages.</summary>
+        /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
+        protected override void WndProc(ref Message m)
+        {
+            WndProcApplicationActivateHelper(this, ref m);
+
+            base.WndProc(ref m);
+        }
+        #endregion
+
+        #region PublicProperties
+        // value for the SelectionChangedFromMainForm property..
+        private bool selectionChangedFromMainForm = true;
+
+        /// <summary>
+        /// Gets or set a value indicating whether the active document's selection was changed from the application main form.
+        /// </summary>
+        public bool SelectionChangedFromMainForm
+        {
+            get => selectionChangedFromMainForm;
+            set
+            {
+                cbInSelection.Enabled = value;
+                selectionChangedFromMainForm = value;
+
+                if (!SelectionChangedFromMainForm)
+                {
+                    cbInSelection.Enabled = false;
+                    cbInSelection.Checked = false;
+                }
+            }
         }
         #endregion
 
@@ -136,6 +178,16 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Shows the form with the find (and replace) in files tab page opened.
+        /// </summary>
+        public static void ShowFindInFiles()
+        {
+            Instance.Show();
+            Instance.tcMain.SelectTab(2);
+            Instance.cmbFind3.Focus();
+        }
+
+        /// <summary>
         /// Creates an instance of the dialog for localization.
         /// </summary>
         public static void CreateLocalizationInstance() => new FormSearchAndReplace();
@@ -148,7 +200,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <param name="shouldShow">if set to <c>true</c> the form should be shown.</param>
         public void ToggleVisible(bool shouldShow)
         {
-            if (!Visible && shouldShow)
+            if (!Visible && shouldShow && !UserClosed)
             {
                 Show();
                 if (tcMain.SelectedTab.Equals(tabFind))
@@ -159,10 +211,15 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 {
                     cmbFind2.Focus();
                 }
+                else if (tcMain.SelectedTab.Equals(tabFindInFiles))
+                {
+                    cmbFind3.Focus();
+                }
             }
             else if (Visible && !shouldShow)
             {
                 Close();
+                UserClosed = false;
             }
         }
 
@@ -175,6 +232,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             if (!shouldStayOnTop && TopMost)
             {
                 TopMost = false;
+                SendToBack();
             }
             else if (shouldStayOnTop && !TopMost)
             {
@@ -199,6 +257,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         #endregion
 
         #region PrivateAndInternalProperties
+        /// <summary>
+        /// Gets or sets the value whether this form was previously closed by a user.
+        /// </summary>
+        private bool UserClosed { get; set; } = false;
+
         /// <summary>
         /// Gets or sets the documents containing in the main form.
         /// </summary>
@@ -240,28 +303,32 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 // based on the currently active tab, return the correct value..
                 if (rbNormal.Checked && tcMain.SelectedTab.Equals(tabFind) ||
-                    rbNormal2.Checked && tcMain.SelectedTab.Equals(tabReplace))
+                    rbNormal2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
+                    rbNormal3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
                 {
                     return TextSearcherEnums.SearchType.Normal;
                 }
                 
                 // based on the currently active tab, return the correct value..
                 if (rbExtented.Checked && tcMain.SelectedTab.Equals(tabFind) ||
-                    rbExtented2.Checked && tcMain.SelectedTab.Equals(tabReplace))
+                    rbExtented2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
+                    rbExtented3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
                 {
                     return TextSearcherEnums.SearchType.Extended;
                 }
 
                 // based on the currently active tab, return the correct value..
                 if (rbRegEx.Checked && tcMain.SelectedTab.Equals(tabFind) ||
-                    rbRegEx2.Checked && tcMain.SelectedTab.Equals(tabReplace))
+                    rbRegEx2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
+                    rbRegEx3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
                 {
                     return TextSearcherEnums.SearchType.RegularExpression;
                 }
 
                 // based on the currently active tab, return the correct value..
                 if (rbSimpleExtended.Checked && tcMain.SelectedTab.Equals(tabFind) ||
-                    rbSimpleExtended2.Checked && tcMain.SelectedTab.Equals(tabReplace))
+                    rbSimpleExtended2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
+                    rbSimpleExtended3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
                 {
                     return TextSearcherEnums.SearchType.SimpleExtended;
                 }
@@ -279,13 +346,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
         #region PrivateMethods
         /// <summary>
-        /// Creates the single search and/or replace algorithm for a given <see cref="Scintilla"/> document.
+        /// Creates the single search and/or replace algorithm for a given contents and file name.
         /// </summary>
-        /// <param name="scintilla">The scintilla and its file name to create the search algorithm from.</param>
-        private void CreateSingleSearchReplaceAlgorithm((Scintilla scintilla, string fileName) scintilla)
+        /// <param name="contents">A contents of a document of file and a file name of the document to create the search algorithm from.</param>
+        private void CreateSingleSearchReplaceAlgorithm((string contents, string fileName) contents)
         {
             // only create the algorithm if the the passed scintilla actually contains a ScintillaNET control..
-            if (scintilla.scintilla != null)
+            if (contents.contents != null)
             {
                 if (SearchOpenDocuments != null)
                 {
@@ -300,34 +367,61 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 Invoke(new MethodInvoker(delegate
                 {
                     // get the default controls for the search algorithm..
-                    ComboBox _cmbFind = cmbFind;
-                    CheckBox _cbWrapAround = cbWrapAround;
-                    CheckBox _cbMatchCase = cbMatchCase;
-                    CheckBox _cbMatchWholeWord = cbMatchWholeWord;
+                    string  cmbFindString = cmbFind.Text;
+                    bool cbWrapAroundChecked = cbWrapAround.Checked;
+                    bool cbMatchCaseChecked = cbMatchCase.Checked;
+                    bool cbMatchWholeWordChecked = cbMatchWholeWord.Checked;
 
                     // get the controls matching the active tab..
                     if (tcMain.SelectedTab.Equals(tabReplace))
                     {
-                        _cmbFind = cmbFind2;
-                        _cbWrapAround = cbWrapAround2;
-                        _cbMatchCase = cbMatchCase2;
-                        _cbMatchWholeWord = cbMatchWholeWord2;
+                        cmbFindString = cmbFind2.Text;
+                        cbWrapAroundChecked = cbWrapAround2.Checked;
+                        cbMatchCaseChecked = cbMatchCase2.Checked;
+                        cbMatchWholeWordChecked = cbMatchWholeWord2.Checked;
+                    }
+                    else if (tcMain.SelectedTab.Equals(tabFindInFiles))
+                    {
+                        cmbFindString = cmbFind3.Text;
+                        cbWrapAroundChecked = false; // no wrap-around with files..
+                        cbMatchCaseChecked = cbMatchCase3.Checked;
+                        cbMatchWholeWordChecked = cbMatchWholeWord3.Checked;
                     }
 
                     // create the search and replace algorithm..
                     SearchOpenDocuments =
-                        new TextSearcherAndReplacer(scintilla.scintilla.Text, _cmbFind.Text, SearchType)
+                        new TextSearcherAndReplacer(
+                            contents.contents, cmbFindString,
+                            SearchType)
                         {
-                            WrapAround = _cbWrapAround.Checked,
-                            IgnoreCase = !_cbMatchCase.Checked,
-                            FileName = scintilla.fileName,
-                            WholeWord = _cbMatchWholeWord.Checked,
-                            FileNameNoPath = Path.GetFileName(scintilla.fileName),
+                            WrapAround = cbWrapAroundChecked,
+                            IgnoreCase = !cbMatchCaseChecked,
+                            FileName = contents.fileName,
+                            WholeWord = cbMatchWholeWordChecked,
+                            FileNameNoPath = Path.GetFileName(contents.fileName),
                         };
 
                     // subscribe the search progress event..
                     SearchOpenDocuments.SearchProgress += SearchOpenDocuments_SearchProgress;
                 }));
+            }
+        }
+
+
+        /// <summary>
+        /// Creates the single search and/or replace algorithm for a given <see cref="Scintilla"/> document.
+        /// </summary>
+        /// <param name="scintilla">The scintilla and its file name to create the search algorithm from.</param>
+        private void CreateSingleSearchReplaceAlgorithm((Scintilla scintilla, string fileName) scintilla)
+        {
+            // get a value if only the selection is required to be used as text for the algorithm..
+            bool selection = cbInSelection.Checked && tcMain.SelectedTab.Equals(tabReplace);
+
+            if (scintilla.scintilla != null)
+            {
+                CreateSingleSearchReplaceAlgorithm((
+                    selection ? scintilla.scintilla.SelectedText : scintilla.scintilla.Text,
+                    scintilla.fileName));
             }
         }
 
@@ -342,6 +436,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
                 GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
                 GetCurrentDocument().scintilla.ScrollCaret();
+
+                // set the flag to indicate a the selection was changed from this form..
+                SelectionChangedFromMainForm = false;
             }
         }
 
@@ -356,6 +453,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
                 GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
                 GetCurrentDocument().scintilla.ScrollCaret();
+
+                // set the flag to indicate a the selection was changed from this form..
+                SelectionChangedFromMainForm = false;
             }
         }
 
@@ -403,6 +503,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // set the enabled value of the transparency setting group boxes to enabled..
             gpTransparency.Enabled = true;
             gpTransparency2.Enabled = true;
+            gpTransparency3.Enabled = true;
 
             // transparency is disabled..
             if (FormSettings.Settings.SearchBoxTransparency == 0) 
@@ -410,9 +511,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 // set the enabled value of the transparency setting group boxes to disabled..
                 cbTransparency.Checked = false;
                 cbTransparency2.Checked = false;
+                cbTransparency3.Checked = false;
 
                 gpTransparency.Enabled = false;
                 gpTransparency2.Enabled = false;
+                gpTransparency3.Enabled = false;
 
                 // set the opacity value to 100%..
                 Opacity = 1;
@@ -422,6 +525,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 rbTransparencyOnLosingFocus.Checked = true;
                 rbTransparencyOnLosingFocus2.Checked = true;
+                rbTransparencyOnLosingFocus3.Checked = true;
                 // set the opacity value to based on the active property..
                 Opacity = activated ? 1 : FormSettings.Settings.SearchBoxOpacity;
             }
@@ -429,6 +533,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 rbTransparencyAlways.Checked = true;
                 rbTransparencyAlways2.Checked = true;
+                rbTransparencyAlways3.Checked = true;
                 Opacity = FormSettings.Settings.SearchBoxOpacity;               
             }
             SuspendTransparencyChangeEvent = false;
@@ -469,6 +574,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         #endregion
 
         #region PrivateEvents
+        // occurs when the application is activated..
+        private void FormSearchAndReplace_ApplicationDeactivated(object sender, EventArgs e)
+        {
+            TopMost = false;
+            SendToBack();
+        }
+
         // a user wishes to search to the backward direction..
         private void btFindPrevious_Click(object sender, EventArgs e)
         {
@@ -507,11 +619,21 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // as this form acts a bit different, do save the positioning here..
             PositionForms.SavePosition(this);
 
+            // save the flag indicating whether the form was closed by the user..
+            UserClosed = e.CloseReason == CloseReason.UserClosing;
+
             e.Cancel = !AllowInstanceDispose;
             if (!AllowInstanceDispose)
             {
                 Hide();
             }
+        }
+
+        // the form was allowed to close, so do unsubscribe any events subscribed manually..
+        private void FormSearchAndReplace_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // unsubscribe from an event which is raised upon application activation..
+            ApplicationDeactivated += FormSearchAndReplace_ApplicationDeactivated;
         }
 
         // a new search class is constructed if the search or replace conditions have changed..
@@ -556,6 +678,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             else if (tcMain.SelectedTab.Equals(tabReplace))
             {
                 cmbFind2.Focus();
+            }
+            else if (tcMain.SelectedTab.Equals(tabFindInFiles))
+            {
+                cmbFind3.Focus();
             }
         }
 
@@ -772,8 +898,18 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // validate that there is a result..
             if (result.HasValue)
             {
+                // get a value if only the selection is required to be used as text for the algorithm..
+                bool selection = cbInSelection.Checked && tcMain.SelectedTab.Equals(tabReplace);
+
                 // set the new contents for the current document..
-                CurrentDocument.scintilla.Text = result?.newContents;
+                if (selection)
+                {
+                    CurrentDocument.scintilla.ReplaceSelection(result?.newContents);
+                }
+                else
+                {
+                    CurrentDocument.scintilla.Text = result?.newContents;
+                }
 
                 // set the count value of replaced occurrences on the status strip..
                 ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchReplaceCount",

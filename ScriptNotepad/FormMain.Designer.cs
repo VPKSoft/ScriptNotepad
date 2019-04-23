@@ -110,6 +110,7 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFindInFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -548,7 +549,8 @@
             // 
             this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFind,
-            this.mnuReplace});
+            this.mnuReplace,
+            this.mnuFindInFiles});
             this.mnuSearch.Name = "mnuSearch";
             this.mnuSearch.Size = new System.Drawing.Size(54, 20);
             this.mnuSearch.Text = "Search";
@@ -558,7 +560,7 @@
             this.mnuFind.Image = global::ScriptNotepad.Properties.Resources.Find;
             this.mnuFind.Name = "mnuFind";
             this.mnuFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.mnuFind.Size = new System.Drawing.Size(180, 22);
+            this.mnuFind.Size = new System.Drawing.Size(215, 22);
             this.mnuFind.Text = "Find...";
             this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
             // 
@@ -566,8 +568,8 @@
             // 
             this.mnuReplace.Image = global::ScriptNotepad.Properties.Resources.find_replace;
             this.mnuReplace.Name = "mnuReplace";
-            this.mnuReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.mnuReplace.Size = new System.Drawing.Size(180, 22);
+            this.mnuReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.mnuReplace.Size = new System.Drawing.Size(215, 22);
             this.mnuReplace.Text = "Replace...";
             this.mnuReplace.Click += new System.EventHandler(this.MnuReplace_Click);
             // 
@@ -768,6 +770,16 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
+            // mnuFindInFiles
+            // 
+            this.mnuFindInFiles.Image = global::ScriptNotepad.Properties.Resources.folder_find;
+            this.mnuFindInFiles.Name = "mnuFindInFiles";
+            this.mnuFindInFiles.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.F)));
+            this.mnuFindInFiles.Size = new System.Drawing.Size(215, 22);
+            this.mnuFindInFiles.Text = "Find in files...";
+            this.mnuFindInFiles.Click += new System.EventHandler(this.MnuFindInFiles_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -881,6 +893,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuDumpLanguage;
         private System.Windows.Forms.Panel pnDock;
         private System.Windows.Forms.ToolStripMenuItem mnuReplace;
+        private System.Windows.Forms.ToolStripMenuItem mnuFindInFiles;
     }
 }
 
