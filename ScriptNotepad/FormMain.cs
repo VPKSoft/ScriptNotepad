@@ -812,12 +812,20 @@ namespace ScriptNotepad
         {
             for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
-                DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.Documents[i].Tag;
+                try
+                {
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE) sttcMain.Documents[i].Tag;
 
-                fileSave.ISACTIVE = sttcMain.Documents[i].FileTabButton.IsActive;
-                fileSave.VISIBILITY_ORDER = i;
-                DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
-                DatabaseRecentFiles.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName, fileSave.ENCODING);
+                    fileSave.ISACTIVE = sttcMain.Documents[i].FileTabButton.IsActive;
+                    fileSave.VISIBILITY_ORDER = i;
+                    DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
+                    DatabaseRecentFiles.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName,
+                        fileSave.ENCODING);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionLogger.LogError(ex);
+                }
             }
         }
 
@@ -1039,21 +1047,23 @@ namespace ScriptNotepad
             {
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
-                if (sttcMain.AddDocument(fileName, -1, encoding))
+                bool addSuccess = sttcMain.AddDocument(fileName, -1, encoding);
+
+                if (addSuccess)
                 {
-                    if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
+                    if (sttcMain.LastAddedDocument != null) // if the document was added or updated to the control..
                     {
                         // check the database first for a DBFILE_SAVE class instance..
                         DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName);
 
-                        if (sttcMain.CurrentDocument.Tag == null && fileSave == null)
+                        if (sttcMain.LastAddedDocument.Tag == null && fileSave == null)
                         {
-                            sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, encoding);
+                            sttcMain.LastAddedDocument.Tag = DatabaseFileSave.AddOrUpdateFile(sttcMain.LastAddedDocument, DatabaseHistoryFlag.DontCare, CurrentSession, encoding);
                         }
                         else if (fileSave != null)
                         {
-                            sttcMain.CurrentDocument.Tag = fileSave;
-                            sttcMain.CurrentDocument.ID = (int)fileSave.ID;
+                            sttcMain.LastAddedDocument.Tag = fileSave;
+                            sttcMain.LastAddedDocument.ID = (int)fileSave.ID;
 
                             // set the saved position of the document's caret..
                             if (fileSave.CURRENT_POSITION > 0 && fileSave.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
@@ -1066,20 +1076,22 @@ namespace ScriptNotepad
                         }
 
                         // get a DBFILE_SAVE class instance from the document's tag..
-                        fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+                        fileSave = (DBFILE_SAVE)sttcMain.LastAddedDocument.Tag;
+
+                        fileSave.ISHISTORY = false;
 
                         // ..update the database with the document..
-                        fileSave = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
-                        sttcMain.CurrentDocument.ID = (int)fileSave.ID;
+                        fileSave = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.LastAddedDocument);
+                        sttcMain.LastAddedDocument.ID = (int)fileSave.ID;
 
                         if (reloadContents)
                         {
-                            fileSave.ReloadFromDisk(sttcMain.CurrentDocument);
+                            fileSave.ReloadFromDisk(sttcMain.LastAddedDocument);
                         }
 
                         // save the DBFILE_SAVE class instance to the Tag property..
                         // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
-                        sttcMain.CurrentDocument.Tag = fileSave;
+                        sttcMain.LastAddedDocument.Tag = fileSave;
 
                         // enabled the caret line background color..
                         SetCaretLineColor();
@@ -1088,7 +1100,7 @@ namespace ScriptNotepad
                         sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
 
                         // the file load can't add an undo option the Scintilla..
-                        sttcMain.CurrentDocument.Scintilla.EmptyUndoBuffer();
+                        sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
                         return true;
                     }
                     else

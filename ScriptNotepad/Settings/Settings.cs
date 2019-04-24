@@ -294,7 +294,7 @@ namespace ScriptNotepad.Settings
         /// Gets or sets the save file history contents count.
         /// </summary>
         [Setting("database/historyContentsCount", typeof(int))]
-        public int SaveFileHistoryContentsCount { get; set; } = 20;
+        public int SaveFileHistoryContentsCount { get; set; } = 100;
 
         /// <summary>
         /// Gets or sets the current session (for the documents).

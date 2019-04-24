@@ -52,6 +52,9 @@
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
             this.tpgColorSettings = new System.Windows.Forms.TabPage();
+            this.btDefaults = new System.Windows.Forms.Button();
+            this.btCurrentLineBackgroundColor = new System.Windows.Forms.Button();
+            this.lbCurrentLineBackgroundColor = new System.Windows.Forms.Label();
             this.btMarkStyle5Color = new System.Windows.Forms.Button();
             this.lbMarkStyle5Color = new System.Windows.Forms.Label();
             this.btMarkStyle4Color = new System.Windows.Forms.Button();
@@ -68,9 +71,8 @@
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cdColors = new System.Windows.Forms.ColorDialog();
-            this.btCurrentLineBackgroundColor = new System.Windows.Forms.Button();
-            this.lbCurrentLineBackgroundColor = new System.Windows.Forms.Label();
-            this.btDefaults = new System.Windows.Forms.Button();
+            this.lbMaximumSearchFileSize = new System.Windows.Forms.Label();
+            this.nudMaximumSearchFileSize = new System.Windows.Forms.NumericUpDown();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
@@ -80,6 +82,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.tpgColorSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -97,6 +100,8 @@
             // 
             // tpgGeneralSettings
             // 
+            this.tpgGeneralSettings.Controls.Add(this.nudMaximumSearchFileSize);
+            this.tpgGeneralSettings.Controls.Add(this.lbMaximumSearchFileSize);
             this.tpgGeneralSettings.Controls.Add(this.cbDockSearchTree);
             this.tpgGeneralSettings.Controls.Add(this.pbDefaultFolder);
             this.tpgGeneralSettings.Controls.Add(this.btSelectPluginFolder);
@@ -205,7 +210,7 @@
             this.cbDocumentContentHistory.AutoSize = true;
             this.cbDocumentContentHistory.Checked = true;
             this.cbDocumentContentHistory.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDocumentContentHistory.Location = new System.Drawing.Point(431, 126);
+            this.cbDocumentContentHistory.Location = new System.Drawing.Point(440, 126);
             this.cbDocumentContentHistory.Name = "cbDocumentContentHistory";
             this.cbDocumentContentHistory.Size = new System.Drawing.Size(15, 14);
             this.cbDocumentContentHistory.TabIndex = 13;
@@ -215,7 +220,7 @@
             // nudDocumentContentHistory
             // 
             this.nudDocumentContentHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudDocumentContentHistory.Location = new System.Drawing.Point(452, 124);
+            this.nudDocumentContentHistory.Location = new System.Drawing.Point(461, 124);
             this.nudDocumentContentHistory.Maximum = new decimal(new int[] {
             999,
             0,
@@ -242,7 +247,7 @@
             // nudHistoryDocuments
             // 
             this.nudHistoryDocuments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudHistoryDocuments.Location = new System.Drawing.Point(452, 98);
+            this.nudHistoryDocuments.Location = new System.Drawing.Point(461, 98);
             this.nudHistoryDocuments.Maximum = new decimal(new int[] {
             30,
             0,
@@ -283,7 +288,7 @@
             this.gpDefaultEncoding.Controls.Add(this.lbEncoding);
             this.gpDefaultEncoding.Location = new System.Drawing.Point(6, 6);
             this.gpDefaultEncoding.Name = "gpDefaultEncoding";
-            this.gpDefaultEncoding.Size = new System.Drawing.Size(536, 86);
+            this.gpDefaultEncoding.Size = new System.Drawing.Size(545, 86);
             this.gpDefaultEncoding.TabIndex = 8;
             this.gpDefaultEncoding.TabStop = false;
             this.gpDefaultEncoding.Text = "Default encoding";
@@ -292,7 +297,7 @@
             // 
             this.btUTF8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btUTF8.Image = global::ScriptNotepad.Properties.Resources.unicode;
-            this.btUTF8.Location = new System.Drawing.Point(504, 49);
+            this.btUTF8.Location = new System.Drawing.Point(513, 49);
             this.btUTF8.Name = "btUTF8";
             this.btUTF8.Size = new System.Drawing.Size(21, 21);
             this.btUTF8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -305,7 +310,7 @@
             // 
             this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources.default_image;
-            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(504, 22);
+            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(513, 22);
             this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
             this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);
             this.btSystemDefaultEncoding.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -322,7 +327,7 @@
             this.cmbCharacterSet.FormattingEnabled = true;
             this.cmbCharacterSet.Location = new System.Drawing.Point(147, 22);
             this.cmbCharacterSet.Name = "cmbCharacterSet";
-            this.cmbCharacterSet.Size = new System.Drawing.Size(351, 21);
+            this.cmbCharacterSet.Size = new System.Drawing.Size(360, 21);
             this.cmbCharacterSet.TabIndex = 5;
             // 
             // cmbEncoding
@@ -333,7 +338,7 @@
             this.cmbEncoding.FormattingEnabled = true;
             this.cmbEncoding.Location = new System.Drawing.Point(147, 49);
             this.cmbEncoding.Name = "cmbEncoding";
-            this.cmbEncoding.Size = new System.Drawing.Size(351, 21);
+            this.cmbEncoding.Size = new System.Drawing.Size(360, 21);
             this.cmbEncoding.TabIndex = 7;
             // 
             // lbCharacterSet
@@ -378,6 +383,34 @@
             this.tpgColorSettings.TabIndex = 1;
             this.tpgColorSettings.Text = "Colors";
             this.tpgColorSettings.UseVisualStyleBackColor = true;
+            // 
+            // btDefaults
+            // 
+            this.btDefaults.Location = new System.Drawing.Point(9, 342);
+            this.btDefaults.Name = "btDefaults";
+            this.btDefaults.Size = new System.Drawing.Size(146, 23);
+            this.btDefaults.TabIndex = 14;
+            this.btDefaults.Text = "Defaults";
+            this.btDefaults.UseVisualStyleBackColor = true;
+            this.btDefaults.Click += new System.EventHandler(this.BtDefaults_Click);
+            // 
+            // btCurrentLineBackgroundColor
+            // 
+            this.btCurrentLineBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCurrentLineBackgroundColor.Location = new System.Drawing.Point(363, 180);
+            this.btCurrentLineBackgroundColor.Name = "btCurrentLineBackgroundColor";
+            this.btCurrentLineBackgroundColor.Size = new System.Drawing.Size(188, 23);
+            this.btCurrentLineBackgroundColor.TabIndex = 13;
+            this.btCurrentLineBackgroundColor.UseVisualStyleBackColor = true;
+            // 
+            // lbCurrentLineBackgroundColor
+            // 
+            this.lbCurrentLineBackgroundColor.AutoSize = true;
+            this.lbCurrentLineBackgroundColor.Location = new System.Drawing.Point(6, 185);
+            this.lbCurrentLineBackgroundColor.Name = "lbCurrentLineBackgroundColor";
+            this.lbCurrentLineBackgroundColor.Size = new System.Drawing.Size(149, 13);
+            this.lbCurrentLineBackgroundColor.TabIndex = 12;
+            this.lbCurrentLineBackgroundColor.Text = "Current line background color:";
             // 
             // btMarkStyle5Color
             // 
@@ -520,33 +553,37 @@
             this.cdColors.AnyColor = true;
             this.cdColors.FullOpen = true;
             // 
-            // btCurrentLineBackgroundColor
+            // lbMaximumSearchFileSize
             // 
-            this.btCurrentLineBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCurrentLineBackgroundColor.Location = new System.Drawing.Point(363, 180);
-            this.btCurrentLineBackgroundColor.Name = "btCurrentLineBackgroundColor";
-            this.btCurrentLineBackgroundColor.Size = new System.Drawing.Size(188, 23);
-            this.btCurrentLineBackgroundColor.TabIndex = 13;
-            this.btCurrentLineBackgroundColor.UseVisualStyleBackColor = true;
+            this.lbMaximumSearchFileSize.AutoSize = true;
+            this.lbMaximumSearchFileSize.Location = new System.Drawing.Point(6, 249);
+            this.lbMaximumSearchFileSize.Name = "lbMaximumSearchFileSize";
+            this.lbMaximumSearchFileSize.Size = new System.Drawing.Size(194, 13);
+            this.lbMaximumSearchFileSize.TabIndex = 33;
+            this.lbMaximumSearchFileSize.Text = "Maximum file size for searhing text (MB):";
             // 
-            // lbCurrentLineBackgroundColor
+            // nudMaximumSearchFileSize
             // 
-            this.lbCurrentLineBackgroundColor.AutoSize = true;
-            this.lbCurrentLineBackgroundColor.Location = new System.Drawing.Point(6, 185);
-            this.lbCurrentLineBackgroundColor.Name = "lbCurrentLineBackgroundColor";
-            this.lbCurrentLineBackgroundColor.Size = new System.Drawing.Size(149, 13);
-            this.lbCurrentLineBackgroundColor.TabIndex = 12;
-            this.lbCurrentLineBackgroundColor.Text = "Current line background color:";
-            // 
-            // btDefaults
-            // 
-            this.btDefaults.Location = new System.Drawing.Point(9, 342);
-            this.btDefaults.Name = "btDefaults";
-            this.btDefaults.Size = new System.Drawing.Size(146, 23);
-            this.btDefaults.TabIndex = 14;
-            this.btDefaults.Text = "Defaults";
-            this.btDefaults.UseVisualStyleBackColor = true;
-            this.btDefaults.Click += new System.EventHandler(this.BtDefaults_Click);
+            this.nudMaximumSearchFileSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 247);
+            this.nudMaximumSearchFileSize.Maximum = new decimal(new int[] {
+            1999,
+            0,
+            0,
+            0});
+            this.nudMaximumSearchFileSize.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudMaximumSearchFileSize.Name = "nudMaximumSearchFileSize";
+            this.nudMaximumSearchFileSize.Size = new System.Drawing.Size(90, 20);
+            this.nudMaximumSearchFileSize.TabIndex = 35;
+            this.nudMaximumSearchFileSize.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // FormSettings
             // 
@@ -579,6 +616,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.tpgColorSettings.ResumeLayout(false);
             this.tpgColorSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -626,5 +664,7 @@
         private System.Windows.Forms.Button btCurrentLineBackgroundColor;
         private System.Windows.Forms.Label lbCurrentLineBackgroundColor;
         private System.Windows.Forms.Button btDefaults;
+        private System.Windows.Forms.NumericUpDown nudMaximumSearchFileSize;
+        private System.Windows.Forms.Label lbMaximumSearchFileSize;
     }
 }
