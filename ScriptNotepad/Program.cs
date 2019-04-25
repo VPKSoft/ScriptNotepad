@@ -72,15 +72,28 @@ namespace ScriptNotepad
             // Save languages..
             if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)
             {
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormMain();
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormScript();
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogScriptLoad();
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogQueryEncoding();
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormHexEdit();
+                // ReSharper disable once ObjectCreationAsStatement
                 new Settings.FormSettings();
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormPluginManage();
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogSessionManage();
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormSearchResultTree();
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormDialogSearchReplaceProgress();
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormDialogSearchReplaceProgressFiles();
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;

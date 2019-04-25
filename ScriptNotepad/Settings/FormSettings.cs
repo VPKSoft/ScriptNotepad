@@ -143,6 +143,9 @@ namespace ScriptNotepad.Settings
             btMarkStyle5Color.BackColor = Settings.Mark5Color;
             btCurrentLineBackgroundColor.BackColor = Settings.CurrentLineBackground;
             // END: get the color values..
+
+            // get the value of file's maximum size in megabytes (MB) to include in the file search..
+            nudMaximumSearchFileSize.Value = Settings.FileSearchMaxSizeMb;
         }
 
         /// <summary>
@@ -180,6 +183,9 @@ namespace ScriptNotepad.Settings
             Settings.Mark5Color = btMarkStyle5Color.BackColor;
             Settings.CurrentLineBackground = btCurrentLineBackgroundColor.BackColor;
             // END: save the color values..
+
+            // set the value of file's maximum size in megabytes (MB) to include in the file search..
+            Settings.FileSearchMaxSizeMb = (long)nudMaximumSearchFileSize.Value;
         }
         #endregion
 

@@ -1177,6 +1177,24 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processing directory: &apos;{0}&apos;...|A message indicating that a directory with a given name is being processed somehow.
+        /// </summary>
+        internal static string msgProcessingDirectory {
+            get {
+                return ResourceManager.GetString("msgProcessingDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing file: &apos;{0}&apos;...|A message indicating that a file with a given name is being processed somehow.
+        /// </summary>
+        internal static string msgProcessingFile {
+            get {
+                return ResourceManager.GetString("msgProcessingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administrator|A message indicating that a process is elevated..
         /// </summary>
         internal static string msgProcessIsElevated {

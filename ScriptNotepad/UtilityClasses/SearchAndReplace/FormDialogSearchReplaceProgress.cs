@@ -41,15 +41,27 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
     /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
     public partial class FormDialogSearchReplaceProgress : DBLangEngineWinforms
     {
+        /// <summary>
+        /// Gets or sets the action to run in the background.
+        /// </summary>
         private Action Action { get; set; }
 
+        /// <summary>
+        /// Gets or sets the text searcher to be used with the search.
+        /// </summary>
         private TextSearcherAndReplacer TextSearcher { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether a new action should be requested after the previous has completed it self.
+        /// </summary>
+        /// <value><c>true</c> if [request new action]; otherwise, <c>false</c>.</value>
+        private bool RequestNewAction { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormDialogSearchReplaceProgress"/> class.
         /// </summary>
         /// <param name="action">The action to perform in a <see cref="BackgroundWorker"/>.</param>
-        /// <param name="textSearcher">The text searcher class intance.</param>
+        /// <param name="textSearcher">The text searcher class instance.</param>
         public FormDialogSearchReplaceProgress(Action action, TextSearcherAndReplacer textSearcher)
         {
             if (!ConstructorHelper())
@@ -57,12 +69,24 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return;
             }
 
+            // initialize the language/localization database..
+            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+
             textSearcher.SearchProgress += SearchOpenDocuments_SearchProgress;
             TextSearcher = textSearcher;
 
             Action = action;
 
             ShowDialog();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormDialogSearchReplaceProgress"/> class.
+        /// </summary>
+        public FormDialogSearchReplaceProgress()
+        {
+            // a constructor for localization purposes only..
+            ConstructorHelper();
         }
 
         private bool ConstructorHelper()

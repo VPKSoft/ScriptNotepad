@@ -31,6 +31,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ScriptNotepad.Settings;
+using ScriptNotepad.UtilityClasses.IO;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.SearchText;
@@ -287,7 +288,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
         }
 
-        private TextSearcherAndReplacer SearchOpenDocuments { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="TextSearcherAndReplacer"/> instance used to search and replace with either open or closed documents.
+        /// </summary>
+        /// <value>The search open documents.</value>
+        private TextSearcherAndReplacer SearchReplaceDocuments { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to allow the singleton instance to be disposed of.
@@ -354,12 +359,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // only create the algorithm if the the passed scintilla actually contains a ScintillaNET control..
             if (contents.contents != null)
             {
-                if (SearchOpenDocuments != null)
+                if (SearchReplaceDocuments != null)
                 {
-                    using (SearchOpenDocuments) // dispose of the previous algorithm..
+                    using (SearchReplaceDocuments) // dispose of the previous algorithm..
                     {
                         // ..and unsubscribe the search/replace progress event..
-                        SearchOpenDocuments.SearchProgress -= SearchOpenDocuments_SearchProgress;
+                        SearchReplaceDocuments.SearchProgress -= SearchOpenDocuments_SearchProgress;
                     }
                 }
 
@@ -389,7 +394,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     }
 
                     // create the search and replace algorithm..
-                    SearchOpenDocuments =
+                    SearchReplaceDocuments =
                         new TextSearcherAndReplacer(
                             contents.contents, cmbFindString,
                             SearchType)
@@ -402,7 +407,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                         };
 
                     // subscribe the search progress event..
-                    SearchOpenDocuments.SearchProgress += SearchOpenDocuments_SearchProgress;
+                    SearchReplaceDocuments.SearchProgress += SearchOpenDocuments_SearchProgress;
                 }));
             }
         }
@@ -430,7 +435,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </summary>
         private void Backward()
         {
-            var result = SearchOpenDocuments?.Backward();
+            var result = SearchReplaceDocuments?.Backward();
             if (result.HasValue)
             {
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
@@ -447,7 +452,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </summary>
         private void Forward()
         {
-            var result = SearchOpenDocuments?.Forward();
+            var result = SearchReplaceDocuments?.Forward();
             if (result.HasValue)
             {
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
@@ -653,14 +658,14 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             new FormDialogSearchReplaceProgress(delegate
             {
                 // search all the occurrences..
-                var result = SearchOpenDocuments?.FindAll(100);
+                var result = SearchReplaceDocuments?.FindAll(100);
 
                 CreateSingleSearchReplaceAlgorithm(CurrentDocument);
-                SearchOpenDocuments?.ResetSearch();
+                SearchReplaceDocuments?.ResetSearch();
 
                 // save the count value..
                 count = result.Count();
-            }, SearchOpenDocuments);
+            }, SearchReplaceDocuments);
 
             // indicate the count value to the user..
             ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchFoundCount",
@@ -731,15 +736,15 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     CreateSingleSearchReplaceAlgorithm(CurrentDocument);
 
                     // search for all the matches in the current document..
-                    var result = SearchOpenDocuments?.FindAll(100);
+                    var result = SearchReplaceDocuments?.FindAll(100);
 
                     // reset the search algorithm..
-                    SearchOpenDocuments?.ResetSearch();
+                    SearchReplaceDocuments?.ResetSearch();
 
                     // get the results in a suitable format for the FormSearchResultTree class instance..
                     results.AddRange(ToTreeResult(result, CurrentDocument.scintilla, CurrentDocument.fileName, true));
 
-                }, SearchOpenDocuments);
+                }, SearchReplaceDocuments);
             }
 
             // create the FormSearchResultTree class instance..
@@ -772,17 +777,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     CreateSingleSearchReplaceAlgorithm(document);
 
                     // search for all the matches in the document..
-                    var result = SearchOpenDocuments?.FindAll(100);
+                    var result = SearchReplaceDocuments?.FindAll(100);
 
                     // reset the search algorithm..
-                    SearchOpenDocuments?.ResetSearch();
+                    SearchReplaceDocuments?.ResetSearch();
 
                     // get the results in a suitable format for the FormSearchResultTree class instance..
                     results.AddRange(ToTreeResult(result, document.scintilla, document.fileName, true));
 
-                }, SearchOpenDocuments);
+                }, SearchReplaceDocuments);
 
-                // if the user cancelled then break the loop..
+                // if the user canceled then break the loop..
                 if (form.Cancelled)
                 {
                     break;
@@ -821,7 +826,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     CreateSingleSearchReplaceAlgorithm(document);
 
                     // search for all the matches in the document..
-                    var result = SearchOpenDocuments?.ReplaceAll(replaceString, 100);
+                    var result = SearchReplaceDocuments?.ReplaceAll(replaceString, 100);
 
                     if (result != null)
                     {
@@ -831,7 +836,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                             document.scintilla.Text = result.Value.newContents;
                         }));
 
-                        results.Add((result.Value.newContents, result.Value.count, SearchOpenDocuments.FileName, SearchOpenDocuments.FileNameNoPath));
+                        results.Add((result.Value.newContents, result.Value.count, SearchReplaceDocuments.FileName, SearchReplaceDocuments.FileNameNoPath));
 
                         if (result.Value.count > 0)
                         {
@@ -840,11 +845,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     }
 
                     // reset the search algorithm..
-                    SearchOpenDocuments?.ResetSearch();
+                    SearchReplaceDocuments?.ResetSearch();
 
-                }, SearchOpenDocuments);
+                }, SearchReplaceDocuments);
 
-                // if the user cancelled then break the loop..
+                // if the user canceled then break the loop..
                 if (form.Cancelled)
                 {
                     break;
@@ -889,11 +894,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 CreateSingleSearchReplaceAlgorithm(CurrentDocument);
 
                 // get the replace results..
-                result = SearchOpenDocuments?.ReplaceAll(replaceStr, 100);
+                result = SearchReplaceDocuments?.ReplaceAll(replaceStr, 100);
                 
                 // reset the search algorithm..
-                SearchOpenDocuments?.ResetSearch();
-            }, SearchOpenDocuments);
+                SearchReplaceDocuments?.ResetSearch();
+            }, SearchReplaceDocuments);
 
             // validate that there is a result..
             if (result.HasValue)
@@ -965,6 +970,83 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // resume "self"..
             SuspendTransparencyChangeEvent = false;            
+        }
+
+        // searches for a text occurrences in multiple files on the file system..
+        private void BtFindAllInFiles_Click(object sender, EventArgs e)
+        {
+            // make a list suitable for the FormSearchResultTree class instance..            
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> results =
+                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                    isFileOpen)>();
+
+            // create a new instance of the DirectoryCrawler class by user given "arguments"..
+            DirectoryCrawler crawler = new DirectoryCrawler(cmbDirectory3.Text, DirectoryCrawler.SearchTypeMatch.Regex,
+                cmbFilters3.Text, cbInSubFolders.Checked);
+
+            // create a invisible scintilla control for the process..
+            Scintilla contents = new Scintilla {Visible = false};
+
+            // invocations to the control can't be made if the control has no handle..
+            Controls.Add(contents);
+
+            // ReSharper disable once ObjectCreationAsStatement
+
+            // initialize a new FormDialogSearchReplaceProgressFiles dialog form with the
+            // DirectoryCrawler class instance as parameter and a delegate for the
+            // FormDialogSearchReplaceProgressFiles.RequestNextAction..
+            new FormDialogSearchReplaceProgressFiles(crawler,
+                // no name for this delegate..
+                (o, args) =>
+                {
+                    // check the settings for a maximum search file size..
+                    if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)
+                    {
+                        // .. and if exceeded, skip the file..
+                        args.SkipFile = true;
+                    }
+                    else // ..otherwise do continue..
+                    {
+                        // invoke the Scintilla to get new contents of the new file..
+                        contents.Invoke(new MethodInvoker(delegate
+                        {
+                            // just read all the text in the file and set it to the Scintilla..
+                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
+
+                            // by not doing this the memory consumption might get HIGH..
+                            contents.EmptyUndoBuffer();
+
+                            // create a new search algorithm for the file and it's contents..
+                            CreateSingleSearchReplaceAlgorithm((contents, args.FileName));
+                        }));
+
+                        // set the new TextSearcherAndReplacer class instance to the event's argument..
+                        args.SearchAndReplacer = SearchReplaceDocuments;
+                        
+                        // set the action to run for the file in the FormDialogSearchReplaceProgressFiles class instance..
+                        args.Action = () =>
+                        {
+                            results.AddRange(ToTreeResult(SearchReplaceDocuments?.FindAll(100), contents,
+                                args.FileName, false));
+                        };
+                    }
+                });
+            
+            // create the FormSearchResultTree class instance..
+            var tree = new FormSearchResultTree();
+
+            // display the tree..
+            tree.Show();
+
+            // set the search results for the FormSearchResultTree class instance..
+            tree.SearchResults = results;
+
+            // set the Scintilla free (!)..
+            using (contents)
+            {
+                Controls.Remove(contents);
+            }
         }
         #endregion
     }

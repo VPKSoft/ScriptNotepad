@@ -285,6 +285,14 @@ namespace ScriptNotepad.Settings
         public int SearchBoxTransparency { get; set; } = 1; // 0 = false, 1 = false when inactive, 2 = always..
 
         /// <summary>
+        /// Gets or sets the file's maximum size in megabytes (MB) to include in the file search.
+        /// </summary>
+        /// <value>The file search maximum size mb.</value>
+        [Setting("search/fileSysFileMaxSizeMB", typeof(long))]
+        public long FileSearchMaxSizeMb { get; set; } = 100; 
+
+
+        /// <summary>
         /// Gets or sets a value of opacity of the <see cref="FormSearchAndReplace"/> form.
         /// </summary>
         [Setting("misc/searchBoxOpacity", typeof(double))]

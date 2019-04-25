@@ -56,7 +56,7 @@ namespace ScriptNotepad.UtilityClasses.ApplicationHelpers
         /// </summary>
         /// <param name="form">The form from which WndProc method this method was called.</param>
         /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
-        /// <returns><c>true</c> if the <see cref="m"/> was handled by the method, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if the <see cref="T:System.Windows.Forms.Message m"/> was handled by the method, <c>false</c> otherwise.</returns>
         public static bool WndProcApplicationActivateHelper(Form form, ref Message m)
         {
             if (m.Msg == WM_ACTIVATEAPP)

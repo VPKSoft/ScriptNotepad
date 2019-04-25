@@ -85,39 +85,39 @@
             this.pnLabelHolder02 = new System.Windows.Forms.Panel();
             this.lbFind2 = new System.Windows.Forms.Label();
             this.cmbFind2 = new System.Windows.Forms.ComboBox();
-            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.tabFindInFiles = new System.Windows.Forms.TabPage();
-            this.pnLabelHolder04 = new System.Windows.Forms.Panel();
-            this.lbFind3 = new System.Windows.Forms.Label();
-            this.cmbFind3 = new System.Windows.Forms.ComboBox();
-            this.pnLabelHolder05 = new System.Windows.Forms.Panel();
-            this.lbReplace3 = new System.Windows.Forms.Label();
-            this.cmbReplace3 = new System.Windows.Forms.ComboBox();
-            this.pnLabelHolder06 = new System.Windows.Forms.Panel();
-            this.lbFilters3 = new System.Windows.Forms.Label();
-            this.cmbFilters3 = new System.Windows.Forms.ComboBox();
-            this.pnLabelHolder07 = new System.Windows.Forms.Panel();
-            this.lbDirectory3 = new System.Windows.Forms.Label();
-            this.cmbDirectory3 = new System.Windows.Forms.ComboBox();
-            this.btSelectFolder = new System.Windows.Forms.Button();
-            this.cbMatchCase3 = new System.Windows.Forms.CheckBox();
-            this.cbMatchWholeWord3 = new System.Windows.Forms.CheckBox();
-            this.btFindAllInFiles = new System.Windows.Forms.Button();
-            this.gpSearchMode3 = new System.Windows.Forms.GroupBox();
-            this.rbSimpleExtended3 = new System.Windows.Forms.RadioButton();
-            this.rbRegEx3 = new System.Windows.Forms.RadioButton();
-            this.rbExtented3 = new System.Windows.Forms.RadioButton();
-            this.rbNormal3 = new System.Windows.Forms.RadioButton();
-            this.btReplaceAllInFiles = new System.Windows.Forms.Button();
-            this.btClose3 = new System.Windows.Forms.Button();
+            this.cbInHiddenFiles = new System.Windows.Forms.CheckBox();
+            this.cbHiddenFolders = new System.Windows.Forms.CheckBox();
+            this.cbInSubFolders = new System.Windows.Forms.CheckBox();
             this.cbTransparency3 = new System.Windows.Forms.CheckBox();
             this.gpTransparency3 = new System.Windows.Forms.GroupBox();
             this.tbOpacity3 = new System.Windows.Forms.TrackBar();
             this.rbTransparencyAlways3 = new System.Windows.Forms.RadioButton();
             this.rbTransparencyOnLosingFocus3 = new System.Windows.Forms.RadioButton();
-            this.cbInSubFolders = new System.Windows.Forms.CheckBox();
-            this.cbHiddenFolders = new System.Windows.Forms.CheckBox();
-            this.cbInHiddenFiles = new System.Windows.Forms.CheckBox();
+            this.btClose3 = new System.Windows.Forms.Button();
+            this.btReplaceAllInFiles = new System.Windows.Forms.Button();
+            this.gpSearchMode3 = new System.Windows.Forms.GroupBox();
+            this.rbSimpleExtended3 = new System.Windows.Forms.RadioButton();
+            this.rbRegEx3 = new System.Windows.Forms.RadioButton();
+            this.rbExtented3 = new System.Windows.Forms.RadioButton();
+            this.rbNormal3 = new System.Windows.Forms.RadioButton();
+            this.btFindAllInFiles = new System.Windows.Forms.Button();
+            this.cbMatchCase3 = new System.Windows.Forms.CheckBox();
+            this.cbMatchWholeWord3 = new System.Windows.Forms.CheckBox();
+            this.btSelectFolder = new System.Windows.Forms.Button();
+            this.pnLabelHolder07 = new System.Windows.Forms.Panel();
+            this.lbDirectory3 = new System.Windows.Forms.Label();
+            this.cmbDirectory3 = new System.Windows.Forms.ComboBox();
+            this.pnLabelHolder06 = new System.Windows.Forms.Panel();
+            this.lbFilters3 = new System.Windows.Forms.Label();
+            this.cmbFilters3 = new System.Windows.Forms.ComboBox();
+            this.pnLabelHolder05 = new System.Windows.Forms.Panel();
+            this.lbReplace3 = new System.Windows.Forms.Label();
+            this.cmbReplace3 = new System.Windows.Forms.ComboBox();
+            this.pnLabelHolder04 = new System.Windows.Forms.Panel();
+            this.lbFind3 = new System.Windows.Forms.Label();
+            this.cmbFind3 = new System.Windows.Forms.ComboBox();
+            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.ssMain.SuspendLayout();
             this.tcMain.SuspendLayout();
             this.tabFind.SuspendLayout();
@@ -133,13 +133,13 @@
             this.pnLabelHolder03.SuspendLayout();
             this.pnLabelHolder02.SuspendLayout();
             this.tabFindInFiles.SuspendLayout();
-            this.pnLabelHolder04.SuspendLayout();
-            this.pnLabelHolder05.SuspendLayout();
-            this.pnLabelHolder06.SuspendLayout();
-            this.pnLabelHolder07.SuspendLayout();
-            this.gpSearchMode3.SuspendLayout();
             this.gpTransparency3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbOpacity3)).BeginInit();
+            this.gpSearchMode3.SuspendLayout();
+            this.pnLabelHolder07.SuspendLayout();
+            this.pnLabelHolder06.SuspendLayout();
+            this.pnLabelHolder05.SuspendLayout();
+            this.pnLabelHolder04.SuspendLayout();
             this.SuspendLayout();
             // 
             // ssMain
@@ -822,249 +822,35 @@
             this.tabFindInFiles.Text = "Find in files";
             this.tabFindInFiles.UseVisualStyleBackColor = true;
             // 
-            // pnLabelHolder04
+            // cbInHiddenFiles
             // 
-            this.pnLabelHolder04.Controls.Add(this.lbFind3);
-            this.pnLabelHolder04.Location = new System.Drawing.Point(5, 6);
-            this.pnLabelHolder04.Margin = new System.Windows.Forms.Padding(0);
-            this.pnLabelHolder04.Name = "pnLabelHolder04";
-            this.pnLabelHolder04.Size = new System.Drawing.Size(99, 21);
-            this.pnLabelHolder04.TabIndex = 8;
+            this.cbInHiddenFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbInHiddenFiles.Location = new System.Drawing.Point(364, 91);
+            this.cbInHiddenFiles.Name = "cbInHiddenFiles";
+            this.cbInHiddenFiles.Size = new System.Drawing.Size(156, 17);
+            this.cbInHiddenFiles.TabIndex = 42;
+            this.cbInHiddenFiles.Text = "In hidden files";
+            this.cbInHiddenFiles.UseVisualStyleBackColor = true;
             // 
-            // lbFind3
+            // cbHiddenFolders
             // 
-            this.lbFind3.AutoEllipsis = true;
-            this.lbFind3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbFind3.Location = new System.Drawing.Point(0, 0);
-            this.lbFind3.Name = "lbFind3";
-            this.lbFind3.Size = new System.Drawing.Size(99, 21);
-            this.lbFind3.TabIndex = 0;
-            this.lbFind3.Text = "Find:";
-            this.lbFind3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbHiddenFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbHiddenFolders.Location = new System.Drawing.Point(364, 137);
+            this.cbHiddenFolders.Name = "cbHiddenFolders";
+            this.cbHiddenFolders.Size = new System.Drawing.Size(156, 17);
+            this.cbHiddenFolders.TabIndex = 41;
+            this.cbHiddenFolders.Text = "In hidden folders";
+            this.cbHiddenFolders.UseVisualStyleBackColor = true;
             // 
-            // cmbFind3
+            // cbInSubFolders
             // 
-            this.cmbFind3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbFind3.FormattingEnabled = true;
-            this.cmbFind3.Location = new System.Drawing.Point(107, 6);
-            this.cmbFind3.Name = "cmbFind3";
-            this.cmbFind3.Size = new System.Drawing.Size(251, 21);
-            this.cmbFind3.TabIndex = 7;
-            // 
-            // pnLabelHolder05
-            // 
-            this.pnLabelHolder05.Controls.Add(this.lbReplace3);
-            this.pnLabelHolder05.Location = new System.Drawing.Point(5, 33);
-            this.pnLabelHolder05.Margin = new System.Windows.Forms.Padding(0);
-            this.pnLabelHolder05.Name = "pnLabelHolder05";
-            this.pnLabelHolder05.Size = new System.Drawing.Size(99, 21);
-            this.pnLabelHolder05.TabIndex = 10;
-            // 
-            // lbReplace3
-            // 
-            this.lbReplace3.AutoEllipsis = true;
-            this.lbReplace3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbReplace3.Location = new System.Drawing.Point(0, 0);
-            this.lbReplace3.Name = "lbReplace3";
-            this.lbReplace3.Size = new System.Drawing.Size(99, 21);
-            this.lbReplace3.TabIndex = 0;
-            this.lbReplace3.Text = "Replace:";
-            this.lbReplace3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cmbReplace3
-            // 
-            this.cmbReplace3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbReplace3.FormattingEnabled = true;
-            this.cmbReplace3.Location = new System.Drawing.Point(107, 33);
-            this.cmbReplace3.Name = "cmbReplace3";
-            this.cmbReplace3.Size = new System.Drawing.Size(251, 21);
-            this.cmbReplace3.TabIndex = 9;
-            // 
-            // pnLabelHolder06
-            // 
-            this.pnLabelHolder06.Controls.Add(this.lbFilters3);
-            this.pnLabelHolder06.Location = new System.Drawing.Point(5, 60);
-            this.pnLabelHolder06.Margin = new System.Windows.Forms.Padding(0);
-            this.pnLabelHolder06.Name = "pnLabelHolder06";
-            this.pnLabelHolder06.Size = new System.Drawing.Size(99, 21);
-            this.pnLabelHolder06.TabIndex = 12;
-            // 
-            // lbFilters3
-            // 
-            this.lbFilters3.AutoEllipsis = true;
-            this.lbFilters3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbFilters3.Location = new System.Drawing.Point(0, 0);
-            this.lbFilters3.Name = "lbFilters3";
-            this.lbFilters3.Size = new System.Drawing.Size(99, 21);
-            this.lbFilters3.TabIndex = 0;
-            this.lbFilters3.Text = "Filters:";
-            this.lbFilters3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cmbFilters3
-            // 
-            this.cmbFilters3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbFilters3.FormattingEnabled = true;
-            this.cmbFilters3.Location = new System.Drawing.Point(107, 60);
-            this.cmbFilters3.Name = "cmbFilters3";
-            this.cmbFilters3.Size = new System.Drawing.Size(251, 21);
-            this.cmbFilters3.TabIndex = 11;
-            // 
-            // pnLabelHolder07
-            // 
-            this.pnLabelHolder07.Controls.Add(this.lbDirectory3);
-            this.pnLabelHolder07.Location = new System.Drawing.Point(5, 87);
-            this.pnLabelHolder07.Margin = new System.Windows.Forms.Padding(0);
-            this.pnLabelHolder07.Name = "pnLabelHolder07";
-            this.pnLabelHolder07.Size = new System.Drawing.Size(68, 21);
-            this.pnLabelHolder07.TabIndex = 14;
-            // 
-            // lbDirectory3
-            // 
-            this.lbDirectory3.AutoEllipsis = true;
-            this.lbDirectory3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbDirectory3.Location = new System.Drawing.Point(0, 0);
-            this.lbDirectory3.Name = "lbDirectory3";
-            this.lbDirectory3.Size = new System.Drawing.Size(68, 21);
-            this.lbDirectory3.TabIndex = 0;
-            this.lbDirectory3.Text = "Directory:";
-            this.lbDirectory3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // cmbDirectory3
-            // 
-            this.cmbDirectory3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbDirectory3.FormattingEnabled = true;
-            this.cmbDirectory3.Location = new System.Drawing.Point(76, 87);
-            this.cmbDirectory3.Name = "cmbDirectory3";
-            this.cmbDirectory3.Size = new System.Drawing.Size(245, 21);
-            this.cmbDirectory3.TabIndex = 13;
-            // 
-            // btSelectFolder
-            // 
-            this.btSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSelectFolder.Location = new System.Drawing.Point(327, 87);
-            this.btSelectFolder.Name = "btSelectFolder";
-            this.btSelectFolder.Size = new System.Drawing.Size(31, 21);
-            this.btSelectFolder.TabIndex = 31;
-            this.btSelectFolder.Text = "...";
-            this.btSelectFolder.UseVisualStyleBackColor = true;
-            // 
-            // cbMatchCase3
-            // 
-            this.cbMatchCase3.AutoSize = true;
-            this.cbMatchCase3.Location = new System.Drawing.Point(6, 137);
-            this.cbMatchCase3.Name = "cbMatchCase3";
-            this.cbMatchCase3.Size = new System.Drawing.Size(82, 17);
-            this.cbMatchCase3.TabIndex = 33;
-            this.cbMatchCase3.Text = "Match case";
-            this.cbMatchCase3.UseVisualStyleBackColor = true;
-            this.cbMatchCase3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // cbMatchWholeWord3
-            // 
-            this.cbMatchWholeWord3.AutoSize = true;
-            this.cbMatchWholeWord3.Location = new System.Drawing.Point(6, 114);
-            this.cbMatchWholeWord3.Name = "cbMatchWholeWord3";
-            this.cbMatchWholeWord3.Size = new System.Drawing.Size(135, 17);
-            this.cbMatchWholeWord3.TabIndex = 32;
-            this.cbMatchWholeWord3.Text = "Match whole word only";
-            this.cbMatchWholeWord3.UseVisualStyleBackColor = true;
-            this.cbMatchWholeWord3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // btFindAllInFiles
-            // 
-            this.btFindAllInFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindAllInFiles.Location = new System.Drawing.Point(364, 6);
-            this.btFindAllInFiles.Name = "btFindAllInFiles";
-            this.btFindAllInFiles.Size = new System.Drawing.Size(156, 21);
-            this.btFindAllInFiles.TabIndex = 34;
-            this.btFindAllInFiles.Text = "Find all";
-            this.btFindAllInFiles.UseVisualStyleBackColor = true;
-            // 
-            // gpSearchMode3
-            // 
-            this.gpSearchMode3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.gpSearchMode3.Controls.Add(this.rbSimpleExtended3);
-            this.gpSearchMode3.Controls.Add(this.rbRegEx3);
-            this.gpSearchMode3.Controls.Add(this.rbExtented3);
-            this.gpSearchMode3.Controls.Add(this.rbNormal3);
-            this.gpSearchMode3.Location = new System.Drawing.Point(8, 160);
-            this.gpSearchMode3.Name = "gpSearchMode3";
-            this.gpSearchMode3.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.gpSearchMode3.Size = new System.Drawing.Size(258, 106);
-            this.gpSearchMode3.TabIndex = 35;
-            this.gpSearchMode3.TabStop = false;
-            this.gpSearchMode3.Text = "Search mode";
-            // 
-            // rbSimpleExtended3
-            // 
-            this.rbSimpleExtended3.AutoSize = true;
-            this.rbSimpleExtended3.Location = new System.Drawing.Point(6, 85);
-            this.rbSimpleExtended3.Name = "rbSimpleExtended3";
-            this.rbSimpleExtended3.Size = new System.Drawing.Size(155, 17);
-            this.rbSimpleExtended3.TabIndex = 4;
-            this.rbSimpleExtended3.Text = "Simple extended (#, %, *, ?)";
-            this.rbSimpleExtended3.UseVisualStyleBackColor = true;
-            this.rbSimpleExtended3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // rbRegEx3
-            // 
-            this.rbRegEx3.AutoSize = true;
-            this.rbRegEx3.Location = new System.Drawing.Point(6, 62);
-            this.rbRegEx3.Name = "rbRegEx3";
-            this.rbRegEx3.Size = new System.Drawing.Size(115, 17);
-            this.rbRegEx3.TabIndex = 2;
-            this.rbRegEx3.Text = "Regular expression";
-            this.rbRegEx3.UseVisualStyleBackColor = true;
-            this.rbRegEx3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // rbExtented3
-            // 
-            this.rbExtented3.AutoSize = true;
-            this.rbExtented3.Location = new System.Drawing.Point(6, 39);
-            this.rbExtented3.Name = "rbExtented3";
-            this.rbExtented3.Size = new System.Drawing.Size(154, 17);
-            this.rbExtented3.TabIndex = 1;
-            this.rbExtented3.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
-            this.rbExtented3.UseVisualStyleBackColor = true;
-            this.rbExtented3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // rbNormal3
-            // 
-            this.rbNormal3.AutoSize = true;
-            this.rbNormal3.Checked = true;
-            this.rbNormal3.Location = new System.Drawing.Point(6, 16);
-            this.rbNormal3.Name = "rbNormal3";
-            this.rbNormal3.Size = new System.Drawing.Size(58, 17);
-            this.rbNormal3.TabIndex = 0;
-            this.rbNormal3.TabStop = true;
-            this.rbNormal3.Text = "Normal";
-            this.rbNormal3.UseVisualStyleBackColor = true;
-            this.rbNormal3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // btReplaceAllInFiles
-            // 
-            this.btReplaceAllInFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btReplaceAllInFiles.Location = new System.Drawing.Point(364, 33);
-            this.btReplaceAllInFiles.Name = "btReplaceAllInFiles";
-            this.btReplaceAllInFiles.Size = new System.Drawing.Size(156, 21);
-            this.btReplaceAllInFiles.TabIndex = 36;
-            this.btReplaceAllInFiles.Text = "Replace all in files";
-            this.btReplaceAllInFiles.UseVisualStyleBackColor = true;
-            // 
-            // btClose3
-            // 
-            this.btClose3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btClose3.Location = new System.Drawing.Point(364, 60);
-            this.btClose3.Name = "btClose3";
-            this.btClose3.Size = new System.Drawing.Size(156, 21);
-            this.btClose3.TabIndex = 37;
-            this.btClose3.Text = "Close";
-            this.btClose3.UseVisualStyleBackColor = true;
-            this.btClose3.Click += new System.EventHandler(this.BtClose_Click);
+            this.cbInSubFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbInSubFolders.Location = new System.Drawing.Point(364, 114);
+            this.cbInSubFolders.Name = "cbInSubFolders";
+            this.cbInSubFolders.Size = new System.Drawing.Size(156, 17);
+            this.cbInSubFolders.TabIndex = 40;
+            this.cbInSubFolders.Text = "In all sub-folders";
+            this.cbInSubFolders.UseVisualStyleBackColor = true;
             // 
             // cbTransparency3
             // 
@@ -1129,35 +915,250 @@
             this.rbTransparencyOnLosingFocus3.UseVisualStyleBackColor = true;
             this.rbTransparencyOnLosingFocus3.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
-            // cbInSubFolders
+            // btClose3
             // 
-            this.cbInSubFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbInSubFolders.Location = new System.Drawing.Point(364, 114);
-            this.cbInSubFolders.Name = "cbInSubFolders";
-            this.cbInSubFolders.Size = new System.Drawing.Size(156, 17);
-            this.cbInSubFolders.TabIndex = 40;
-            this.cbInSubFolders.Text = "In all sub-folders";
-            this.cbInSubFolders.UseVisualStyleBackColor = true;
+            this.btClose3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btClose3.Location = new System.Drawing.Point(364, 60);
+            this.btClose3.Name = "btClose3";
+            this.btClose3.Size = new System.Drawing.Size(156, 21);
+            this.btClose3.TabIndex = 37;
+            this.btClose3.Text = "Close";
+            this.btClose3.UseVisualStyleBackColor = true;
+            this.btClose3.Click += new System.EventHandler(this.BtClose_Click);
             // 
-            // cbHiddenFolders
+            // btReplaceAllInFiles
             // 
-            this.cbHiddenFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbHiddenFolders.Location = new System.Drawing.Point(364, 137);
-            this.cbHiddenFolders.Name = "cbHiddenFolders";
-            this.cbHiddenFolders.Size = new System.Drawing.Size(156, 17);
-            this.cbHiddenFolders.TabIndex = 41;
-            this.cbHiddenFolders.Text = "In hidden folders";
-            this.cbHiddenFolders.UseVisualStyleBackColor = true;
+            this.btReplaceAllInFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btReplaceAllInFiles.Location = new System.Drawing.Point(364, 33);
+            this.btReplaceAllInFiles.Name = "btReplaceAllInFiles";
+            this.btReplaceAllInFiles.Size = new System.Drawing.Size(156, 21);
+            this.btReplaceAllInFiles.TabIndex = 36;
+            this.btReplaceAllInFiles.Text = "Replace all in files";
+            this.btReplaceAllInFiles.UseVisualStyleBackColor = true;
             // 
-            // cbInHiddenFiles
+            // gpSearchMode3
             // 
-            this.cbInHiddenFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbInHiddenFiles.Location = new System.Drawing.Point(364, 91);
-            this.cbInHiddenFiles.Name = "cbInHiddenFiles";
-            this.cbInHiddenFiles.Size = new System.Drawing.Size(156, 17);
-            this.cbInHiddenFiles.TabIndex = 42;
-            this.cbInHiddenFiles.Text = "In hidden files";
-            this.cbInHiddenFiles.UseVisualStyleBackColor = true;
+            this.gpSearchMode3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gpSearchMode3.Controls.Add(this.rbSimpleExtended3);
+            this.gpSearchMode3.Controls.Add(this.rbRegEx3);
+            this.gpSearchMode3.Controls.Add(this.rbExtented3);
+            this.gpSearchMode3.Controls.Add(this.rbNormal3);
+            this.gpSearchMode3.Location = new System.Drawing.Point(8, 160);
+            this.gpSearchMode3.Name = "gpSearchMode3";
+            this.gpSearchMode3.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.gpSearchMode3.Size = new System.Drawing.Size(258, 106);
+            this.gpSearchMode3.TabIndex = 35;
+            this.gpSearchMode3.TabStop = false;
+            this.gpSearchMode3.Text = "Search mode";
+            // 
+            // rbSimpleExtended3
+            // 
+            this.rbSimpleExtended3.AutoSize = true;
+            this.rbSimpleExtended3.Location = new System.Drawing.Point(6, 85);
+            this.rbSimpleExtended3.Name = "rbSimpleExtended3";
+            this.rbSimpleExtended3.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended3.TabIndex = 4;
+            this.rbSimpleExtended3.Text = "Simple extended (#, %, *, ?)";
+            this.rbSimpleExtended3.UseVisualStyleBackColor = true;
+            this.rbSimpleExtended3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
+            // rbRegEx3
+            // 
+            this.rbRegEx3.AutoSize = true;
+            this.rbRegEx3.Location = new System.Drawing.Point(6, 62);
+            this.rbRegEx3.Name = "rbRegEx3";
+            this.rbRegEx3.Size = new System.Drawing.Size(115, 17);
+            this.rbRegEx3.TabIndex = 2;
+            this.rbRegEx3.Text = "Regular expression";
+            this.rbRegEx3.UseVisualStyleBackColor = true;
+            this.rbRegEx3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
+            // rbExtented3
+            // 
+            this.rbExtented3.AutoSize = true;
+            this.rbExtented3.Location = new System.Drawing.Point(6, 39);
+            this.rbExtented3.Name = "rbExtented3";
+            this.rbExtented3.Size = new System.Drawing.Size(154, 17);
+            this.rbExtented3.TabIndex = 1;
+            this.rbExtented3.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
+            this.rbExtented3.UseVisualStyleBackColor = true;
+            this.rbExtented3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
+            // rbNormal3
+            // 
+            this.rbNormal3.AutoSize = true;
+            this.rbNormal3.Checked = true;
+            this.rbNormal3.Location = new System.Drawing.Point(6, 16);
+            this.rbNormal3.Name = "rbNormal3";
+            this.rbNormal3.Size = new System.Drawing.Size(58, 17);
+            this.rbNormal3.TabIndex = 0;
+            this.rbNormal3.TabStop = true;
+            this.rbNormal3.Text = "Normal";
+            this.rbNormal3.UseVisualStyleBackColor = true;
+            this.rbNormal3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
+            // btFindAllInFiles
+            // 
+            this.btFindAllInFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btFindAllInFiles.Location = new System.Drawing.Point(364, 6);
+            this.btFindAllInFiles.Name = "btFindAllInFiles";
+            this.btFindAllInFiles.Size = new System.Drawing.Size(156, 21);
+            this.btFindAllInFiles.TabIndex = 34;
+            this.btFindAllInFiles.Text = "Find all";
+            this.btFindAllInFiles.UseVisualStyleBackColor = true;
+            this.btFindAllInFiles.Click += new System.EventHandler(this.BtFindAllInFiles_Click);
+            // 
+            // cbMatchCase3
+            // 
+            this.cbMatchCase3.AutoSize = true;
+            this.cbMatchCase3.Location = new System.Drawing.Point(6, 137);
+            this.cbMatchCase3.Name = "cbMatchCase3";
+            this.cbMatchCase3.Size = new System.Drawing.Size(82, 17);
+            this.cbMatchCase3.TabIndex = 33;
+            this.cbMatchCase3.Text = "Match case";
+            this.cbMatchCase3.UseVisualStyleBackColor = true;
+            this.cbMatchCase3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
+            // cbMatchWholeWord3
+            // 
+            this.cbMatchWholeWord3.AutoSize = true;
+            this.cbMatchWholeWord3.Location = new System.Drawing.Point(6, 114);
+            this.cbMatchWholeWord3.Name = "cbMatchWholeWord3";
+            this.cbMatchWholeWord3.Size = new System.Drawing.Size(135, 17);
+            this.cbMatchWholeWord3.TabIndex = 32;
+            this.cbMatchWholeWord3.Text = "Match whole word only";
+            this.cbMatchWholeWord3.UseVisualStyleBackColor = true;
+            this.cbMatchWholeWord3.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
+            // btSelectFolder
+            // 
+            this.btSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btSelectFolder.Location = new System.Drawing.Point(327, 87);
+            this.btSelectFolder.Name = "btSelectFolder";
+            this.btSelectFolder.Size = new System.Drawing.Size(31, 21);
+            this.btSelectFolder.TabIndex = 31;
+            this.btSelectFolder.Text = "...";
+            this.btSelectFolder.UseVisualStyleBackColor = true;
+            // 
+            // pnLabelHolder07
+            // 
+            this.pnLabelHolder07.Controls.Add(this.lbDirectory3);
+            this.pnLabelHolder07.Location = new System.Drawing.Point(5, 87);
+            this.pnLabelHolder07.Margin = new System.Windows.Forms.Padding(0);
+            this.pnLabelHolder07.Name = "pnLabelHolder07";
+            this.pnLabelHolder07.Size = new System.Drawing.Size(68, 21);
+            this.pnLabelHolder07.TabIndex = 14;
+            // 
+            // lbDirectory3
+            // 
+            this.lbDirectory3.AutoEllipsis = true;
+            this.lbDirectory3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbDirectory3.Location = new System.Drawing.Point(0, 0);
+            this.lbDirectory3.Name = "lbDirectory3";
+            this.lbDirectory3.Size = new System.Drawing.Size(68, 21);
+            this.lbDirectory3.TabIndex = 0;
+            this.lbDirectory3.Text = "Directory:";
+            this.lbDirectory3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cmbDirectory3
+            // 
+            this.cmbDirectory3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbDirectory3.FormattingEnabled = true;
+            this.cmbDirectory3.Location = new System.Drawing.Point(76, 87);
+            this.cmbDirectory3.Name = "cmbDirectory3";
+            this.cmbDirectory3.Size = new System.Drawing.Size(245, 21);
+            this.cmbDirectory3.TabIndex = 13;
+            // 
+            // pnLabelHolder06
+            // 
+            this.pnLabelHolder06.Controls.Add(this.lbFilters3);
+            this.pnLabelHolder06.Location = new System.Drawing.Point(5, 60);
+            this.pnLabelHolder06.Margin = new System.Windows.Forms.Padding(0);
+            this.pnLabelHolder06.Name = "pnLabelHolder06";
+            this.pnLabelHolder06.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder06.TabIndex = 12;
+            // 
+            // lbFilters3
+            // 
+            this.lbFilters3.AutoEllipsis = true;
+            this.lbFilters3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbFilters3.Location = new System.Drawing.Point(0, 0);
+            this.lbFilters3.Name = "lbFilters3";
+            this.lbFilters3.Size = new System.Drawing.Size(99, 21);
+            this.lbFilters3.TabIndex = 0;
+            this.lbFilters3.Text = "Filters:";
+            this.lbFilters3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cmbFilters3
+            // 
+            this.cmbFilters3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFilters3.FormattingEnabled = true;
+            this.cmbFilters3.Location = new System.Drawing.Point(107, 60);
+            this.cmbFilters3.Name = "cmbFilters3";
+            this.cmbFilters3.Size = new System.Drawing.Size(251, 21);
+            this.cmbFilters3.TabIndex = 11;
+            // 
+            // pnLabelHolder05
+            // 
+            this.pnLabelHolder05.Controls.Add(this.lbReplace3);
+            this.pnLabelHolder05.Location = new System.Drawing.Point(5, 33);
+            this.pnLabelHolder05.Margin = new System.Windows.Forms.Padding(0);
+            this.pnLabelHolder05.Name = "pnLabelHolder05";
+            this.pnLabelHolder05.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder05.TabIndex = 10;
+            // 
+            // lbReplace3
+            // 
+            this.lbReplace3.AutoEllipsis = true;
+            this.lbReplace3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbReplace3.Location = new System.Drawing.Point(0, 0);
+            this.lbReplace3.Name = "lbReplace3";
+            this.lbReplace3.Size = new System.Drawing.Size(99, 21);
+            this.lbReplace3.TabIndex = 0;
+            this.lbReplace3.Text = "Replace:";
+            this.lbReplace3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cmbReplace3
+            // 
+            this.cmbReplace3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbReplace3.FormattingEnabled = true;
+            this.cmbReplace3.Location = new System.Drawing.Point(107, 33);
+            this.cmbReplace3.Name = "cmbReplace3";
+            this.cmbReplace3.Size = new System.Drawing.Size(251, 21);
+            this.cmbReplace3.TabIndex = 9;
+            // 
+            // pnLabelHolder04
+            // 
+            this.pnLabelHolder04.Controls.Add(this.lbFind3);
+            this.pnLabelHolder04.Location = new System.Drawing.Point(5, 6);
+            this.pnLabelHolder04.Margin = new System.Windows.Forms.Padding(0);
+            this.pnLabelHolder04.Name = "pnLabelHolder04";
+            this.pnLabelHolder04.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder04.TabIndex = 8;
+            // 
+            // lbFind3
+            // 
+            this.lbFind3.AutoEllipsis = true;
+            this.lbFind3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbFind3.Location = new System.Drawing.Point(0, 0);
+            this.lbFind3.Name = "lbFind3";
+            this.lbFind3.Size = new System.Drawing.Size(99, 21);
+            this.lbFind3.TabIndex = 0;
+            this.lbFind3.Text = "Find:";
+            this.lbFind3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cmbFind3
+            // 
+            this.cmbFind3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFind3.FormattingEnabled = true;
+            this.cmbFind3.Location = new System.Drawing.Point(107, 6);
+            this.cmbFind3.Name = "cmbFind3";
+            this.cmbFind3.Size = new System.Drawing.Size(251, 21);
+            this.cmbFind3.TabIndex = 7;
             // 
             // FormSearchAndReplace
             // 
@@ -1202,15 +1203,15 @@
             this.pnLabelHolder02.ResumeLayout(false);
             this.tabFindInFiles.ResumeLayout(false);
             this.tabFindInFiles.PerformLayout();
-            this.pnLabelHolder04.ResumeLayout(false);
-            this.pnLabelHolder05.ResumeLayout(false);
-            this.pnLabelHolder06.ResumeLayout(false);
-            this.pnLabelHolder07.ResumeLayout(false);
-            this.gpSearchMode3.ResumeLayout(false);
-            this.gpSearchMode3.PerformLayout();
             this.gpTransparency3.ResumeLayout(false);
             this.gpTransparency3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbOpacity3)).EndInit();
+            this.gpSearchMode3.ResumeLayout(false);
+            this.gpSearchMode3.PerformLayout();
+            this.pnLabelHolder07.ResumeLayout(false);
+            this.pnLabelHolder06.ResumeLayout(false);
+            this.pnLabelHolder05.ResumeLayout(false);
+            this.pnLabelHolder04.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -143,6 +143,8 @@
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
     <Compile Include="Database\UtilityClasses\RecentFilesMenuBuilder.cs" />
     <Compile Include="UtilityClasses\ApplicationHelpers\ApplicationActivateDeactivate.cs" />
+    <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
+    <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +250,12 @@
     <Compile Include="UtilityClasses\LinesAndBinary\StreamEncoding.cs" />
     <Compile Include="UtilityClasses\Process\ProcessElevation.cs" />
     <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.Designer.cs">
+      <DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -264,6 +272,7 @@
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\Highlight.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\SearchAndReplaceProgressEventArgs.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\Misc\SearchResultTreeViewClickEventArgs.cs" />
+    <Compile Include="UtilityClasses\SearchAndReplace\ProgressRequestActionEventArgs.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\ScintillaDocumentEventArgs.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\CloseFormUtils.cs" />
     <Compile Include="UtilityClasses\SessionHelpers\SessionMenuBuilder.cs" />
@@ -320,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Test\FormTestThings.resx">
       <DependentUpon>FormTestThings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.resx">
+      <DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.resx">
       <DependentUpon>FormSearchAndReplace.cs</DependentUpon>

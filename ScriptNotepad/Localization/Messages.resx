@@ -612,4 +612,10 @@
   <data name="msgSearchReplaceCountWithFiles" xml:space="preserve">
     <value>Replaced {0} occurrences from {1} files|A message describing a count of occurrences replaced and in how many files</value>
   </data>
+  <data name="msgProcessingDirectory" xml:space="preserve">
+    <value>Processing directory: '{0}'...|A message indicating that a directory with a given name is being processed somehow</value>
+  </data>
+  <data name="msgProcessingFile" xml:space="preserve">
+    <value>Processing file: '{0}'...|A message indicating that a file with a given name is being processed somehow</value>
+  </data>
 </root>
