@@ -393,3 +393,34 @@ DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, SESSIONID, I
 
 DROP TABLE DBFILE_SAVE_OLD;
 --ENDVER 15
+
+--VER 16
+CREATE TABLE IF NOT EXISTS SEARCH_HISTORY
+(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  SEARCHTEXT TEXT NOT NULL, -- The text used for searching..
+  CASE_SENSITIVE INTEGER NOT NULL, -- A flag indicating whether the search was case-sensitive..
+  TYPE INTEGER NOT NULL, -- the search type (0 = normal, 1 = extended, 2 = regular expression, 3 = simple extended)..
+  ADDED TEXT NOT NULL, -- when the entry was inserted into the database, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  SESSIONID INTEGER NOT NULL -- an id for the session the search was used..
+);
+
+CREATE TABLE IF NOT EXISTS REPLACE_HISTORY
+(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  REPLACETEXT TEXT NOT NULL, -- The text used for replacing..
+  CASE_SENSITIVE INTEGER NOT NULL, -- A flag indicating whether the replace was case-sensitive..
+  TYPE INTEGER NOT NULL, -- the search type (0 = normal, 1 = extended, 2 = regular expression, 3 = simple extended)..
+  ADDED TEXT NOT NULL, -- when the entry was inserted into the database, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  SESSIONID INTEGER NOT NULL -- an id for a session the replace was used..
+);
+
+CREATE TABLE IF NOT EXISTS MISCTEXT_LIST
+(
+  ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  TEXTVALUE TEXT NOT NULL, -- The text value of type MISCTEXT_LIST.TYPE..
+  TYPE INTEGER NOT NULL, -- the search type (0 = Directory, 1 = Search file filter)..
+  ADDED TEXT NOT NULL, -- when the entry was inserted into the database, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
+  SESSIONID INTEGER NOT NULL -- an id for a session the misc text was used..
+);
+--ENDVER 16

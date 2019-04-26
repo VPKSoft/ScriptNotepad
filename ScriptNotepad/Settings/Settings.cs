@@ -289,8 +289,13 @@ namespace ScriptNotepad.Settings
         /// </summary>
         /// <value>The file search maximum size mb.</value>
         [Setting("search/fileSysFileMaxSizeMB", typeof(long))]
-        public long FileSearchMaxSizeMb { get; set; } = 100; 
+        public long FileSearchMaxSizeMb { get; set; } = 100;
 
+        /// <summary>
+        /// Gets or sets the limit count of the history texts (filters, search texts, replace texts and directories) to be saved and retrieved to the <see cref="FormSearchAndReplace"/> form.
+        /// </summary>
+        [Setting("search/commonHistoryLimit", typeof(int))]
+        public int FileSearchHistoriesLimit { get; set; } = 25;
 
         /// <summary>
         /// Gets or sets a value of opacity of the <see cref="FormSearchAndReplace"/> form.
