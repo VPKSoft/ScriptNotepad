@@ -25,8 +25,6 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
@@ -50,12 +48,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// Gets or sets the text searcher to be used with the search.
         /// </summary>
         private TextSearcherAndReplacer TextSearcher { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether a new action should be requested after the previous has completed it self.
-        /// </summary>
-        /// <value><c>true</c> if [request new action]; otherwise, <c>false</c>.</value>
-        private bool RequestNewAction { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormDialogSearchReplaceProgress"/> class.
@@ -89,6 +81,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             ConstructorHelper();
         }
 
+        /// <summary>
+        /// A helper for multiple constructors.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if the execution can continue after this call (no localization process), <c>false</c> otherwise.</returns>
         private bool ConstructorHelper()
         {
             InitializeComponent();
@@ -104,8 +101,15 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             return true;
         }
 
+
+        /// <summary>
+        /// Handles the SearchProgress event of the SearchOpenDocuments control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="TextSearcherEventArgs"/> instance containing the event data.</param>
         private void SearchOpenDocuments_SearchProgress(object sender, TextSearcherEventArgs e)
         {
+            // invocation is required as this is coming from another thread..
             pbMain.Invoke(new MethodInvoker(delegate { pbMain.Value = e.Percentage; }));
             lbProgressDesc.Invoke(new MethodInvoker(delegate
             {
@@ -115,36 +119,51 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }));
         }
 
+        // just run the action with the BackgroundWorker's DoWork event..
         private void BwMain_DoWork(object sender, DoWorkEventArgs e)
         {
+            
             Action();
         }
 
+        // run the BackgroundWorker on the dialog shown event..
         private void FormDialogCommonProgress_Shown(object sender, EventArgs e)
         {
             bwMain.RunWorkerAsync();
         }
 
+        // the BackgroundWorker worker has completed running the action, so allow the dialog to be closed..
         private void BwMain_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             NoReactOnClosing = true;
             Invoke(new MethodInvoker(delegate { DialogResult = DialogResult.OK; }));
         }
 
+        // the dialog is closing..
         private void FormDialogSearchReplaceProgress_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (NoReactOnClosing)
+            // if the flag is set, allow the dialog to close..
+            if (NoReactOnClosing) 
             {
                 return;
             }
 
+            // set the flag for the next round..
             NoReactOnClosing = true;
 
+            // cancel the Close(); ..
             e.Cancel = true;
+
+            // cancel the TextSearcherAndReplacer processing..
             TextSearcher.Cancelled = true;
+
+            // indicate that the dialogs background processing has been cancelled..
             Cancelled = true;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the code in the form's closing event should be run.
+        /// </summary>
         private bool NoReactOnClosing { get; set; }
 
         /// <summary>
