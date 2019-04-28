@@ -113,7 +113,7 @@ namespace ScriptNotepad.Database.TableCommands
                 string.Join(Environment.NewLine,
                     $"DELETE FROM MISCTEXT_LIST WHERE TYPE = {(int)textType} AND ID IN(",
                     $"SELECT ID FROM MISCTEXT_LIST",
-                    $"ORDER BY ADDED, TEXTVALUE COLLATE NOCASE",
+                    $"ORDER BY ADDED",
                     $"LIMIT",
                     $"CASE WHEN (SELECT COUNT(*) FROM MISCTEXT_LIST WHERE TYPE = {(int)textType}) - {remainAmount} > 0 THEN (SELECT COUNT(*) FROM MISCTEXT_LIST WHERE TYPE = {(int)textType}) - {remainAmount} ELSE 0 END);");
 
@@ -132,7 +132,7 @@ namespace ScriptNotepad.Database.TableCommands
                 string.Join(Environment.NewLine,
                     $"SELECT ID FROM MISCTEXT_LIST",
                     $"WHERE",
-                    $"{DatabaseCommandsGeneral.GenSessionNameIDConditionIsNull(miscText.SESSIONNAME)} AND",
+                    $"SESSIONID {DatabaseCommandsGeneral.GenSessionNameIDConditionIsNull(miscText.SESSIONNAME)} AND",
                     $"TYPE = {(int)miscText.TYPE} AND TEXTVALUE = {QS(miscText.TEXTVALUE)};");
 
             return sql;

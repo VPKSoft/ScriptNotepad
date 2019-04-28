@@ -226,7 +226,10 @@ namespace ScriptNotepad.Database
                     command.CommandText = sql;
 
                     // ..and return the value casted into a typeof(T)..
-                    return (T)command.ExecuteScalar();
+
+                    var value = command.ExecuteScalar();
+
+                    return (T)value;
                 }
             }
             catch (Exception ex)

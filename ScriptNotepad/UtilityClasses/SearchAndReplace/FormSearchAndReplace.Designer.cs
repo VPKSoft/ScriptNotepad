@@ -756,6 +756,8 @@
             // 
             this.cmbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbReplace.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbReplace.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbReplace.FormattingEnabled = true;
             this.cmbReplace.Location = new System.Drawing.Point(107, 33);
             this.cmbReplace.Name = "cmbReplace";
@@ -787,6 +789,8 @@
             // 
             this.cmbFind2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFind2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbFind2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbFind2.FormattingEnabled = true;
             this.cmbFind2.Location = new System.Drawing.Point(107, 6);
             this.cmbFind2.Name = "cmbFind2";
@@ -1067,6 +1071,8 @@
             // 
             this.cmbDirectory3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbDirectory3.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbDirectory3.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbDirectory3.FormattingEnabled = true;
             this.cmbDirectory3.Location = new System.Drawing.Point(76, 87);
             this.cmbDirectory3.Name = "cmbDirectory3";
@@ -1097,6 +1103,8 @@
             // 
             this.cmbFilters3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFilters3.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbFilters3.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbFilters3.FormattingEnabled = true;
             this.cmbFilters3.Location = new System.Drawing.Point(107, 60);
             this.cmbFilters3.Name = "cmbFilters3";
@@ -1127,6 +1135,8 @@
             // 
             this.cmbReplace3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbReplace3.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbReplace3.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbReplace3.FormattingEnabled = true;
             this.cmbReplace3.Location = new System.Drawing.Point(107, 33);
             this.cmbReplace3.Name = "cmbReplace3";
@@ -1157,6 +1167,8 @@
             // 
             this.cmbFind3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFind3.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbFind3.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbFind3.FormattingEnabled = true;
             this.cmbFind3.Location = new System.Drawing.Point(107, 6);
             this.cmbFind3.Name = "cmbFind3";

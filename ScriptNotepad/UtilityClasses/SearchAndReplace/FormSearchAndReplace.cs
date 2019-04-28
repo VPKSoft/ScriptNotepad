@@ -83,6 +83,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // get the open documents on the main form..
             Documents = GetDocuments(true);
 
+            // get the current document..
             CurrentDocument = GetCurrentDocument();
 
             // localize the tool tips..
@@ -105,7 +106,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 "REPLACE_HISTORY",
                 FormSettings.Settings.FileSearchHistoriesLimit);
 
+            // get the filter used in the search and/or replace in files..
             FilterHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.FileExtensionList, 25);
+
+            // get the path(s) used in the search and/or replace in files..
+            PathHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.Path, 25);
         }
         #endregion
 
@@ -166,6 +171,30 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
                 // fill the combo boxes..
                 ReListFilterHistory();
+            }
+        }
+
+        // the search and/or replace path values..
+        private List<MISCTEXT_LIST> pathHistory = new List<MISCTEXT_LIST>();
+
+        /// <summary>
+        /// Gets or sets the search and/or replace path values.
+        /// </summary>
+        public List<MISCTEXT_LIST> PathHistory
+        {
+            get => pathHistory;
+
+            set
+            {
+                // sort the list as sorted in the database..
+                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.TEXTVALUE.ToLowerInvariant())
+                    .ToList();
+
+                // save the value..
+                pathHistory = value;
+
+                // fill the combo boxes..
+                ReListPathHistory();
             }
         }
 
@@ -305,7 +334,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
-        /// Re-lists the search history combo boxes contents.
+        /// Re-lists the search and/or replace history filter combo boxes contents.
         /// </summary>
         public void ReListFilterHistory()
         {
@@ -315,6 +344,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // fill the combo boxes..
             // ReSharper disable once CoVariantArrayConversion
             cmbFilters3.Items.AddRange(filterHistory.ToArray());
+        }
+
+        /// <summary>
+        /// Re-lists the search and/or replace directory combo boxes contents.
+        /// </summary>
+        public void ReListPathHistory()
+        {
+            // clear the combo boxes..
+            cmbDirectory3.Items.Clear();
+
+            // fill the combo boxes..
+            // ReSharper disable once CoVariantArrayConversion
+            cmbDirectory3.Items.AddRange(pathHistory.ToArray());
         }
 
         /// <summary>
@@ -589,6 +631,31 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 FilterHistory.Add(inserted);
                 ReListFilterHistory();
+            }
+        }
+
+        /// <summary>
+        /// Saves the search and/or replace paths to the database.
+        /// </summary>
+        private void SavePaths()
+        {
+            if (cmbDirectory3.Text.Trim() == string.Empty) // no empty strings..
+            {
+                return;
+            }
+
+            var inserted = DatabaseMiscText.AddOrUpdateMiscText(
+                new MISCTEXT_LIST
+                {
+                    TEXTVALUE = cmbDirectory3.Text, TYPE = MiscTextType.Path
+                });
+
+            // conditional insert to the list..
+            if (inserted != null && !FilterHistory.Exists(f =>
+                    f.TYPE == inserted.TYPE && f.TEXTVALUE == inserted.TEXTVALUE))
+            {
+                PathHistory.Add(inserted);
+                ReListPathHistory();
             }
         }
 
@@ -1274,6 +1341,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             SaveSearchText(); // save the used search text to the database..
             SaveReplaceText(); // save the used replace text to the database..
             SaveFilters(); // save the used file extension filter to the database..
+            SavePaths(); // save the path used in the search into the database..
 
             // make a list suitable for the FormSearchResultTree class instance..            
             List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
@@ -1356,6 +1424,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             SaveSearchText(); // save the used search text to the database..
             SaveReplaceText(); // save the used replace text to the database..
             SaveFilters(); // save the used file extension filter to the database..
+            SavePaths(); // save the path used in the search into the database..
 
             string toReplaceWith = cmbReplace3.Text;
 

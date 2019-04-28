@@ -109,7 +109,7 @@ namespace ScriptNotepad.Database.TableCommands
         public static string GenSessionNameIdSelectNull(string sessionName)
         {
             string sql =
-                $"SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {NI(sessionName)}";
+                $"SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME {NIS(sessionName)}";
 
             return sql;
         }

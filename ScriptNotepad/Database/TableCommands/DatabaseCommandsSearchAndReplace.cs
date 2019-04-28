@@ -156,7 +156,7 @@ namespace ScriptNotepad.Database.TableCommands
                     $"DELETE FROM {tableName} WHERE ID IN(",
                     $"SELECT ID FROM {tableName}",
                     $"WHERE SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)} AND TYPE IN ({string.Join(", ", types)})",
-                    $"ORDER BY ADDED,  {FieldNameByTableName(tableName)} COLLATE NOCASE ",
+                    $"ORDER BY ADDED",
                     $"LIMIT",
                     $"CASE WHEN (SELECT COUNT(*) FROM {tableName} WHERE TYPE IN ({string.Join(", ", types)}) AND SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}) - {remainAmount} > 0 THEN (SELECT COUNT(*) FROM {tableName} WHERE TYPE IN ({string.Join(", ", types)}) AND SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}) - {remainAmount} ELSE 0 END);");
 

@@ -78,6 +78,13 @@ namespace ScriptNotepad.Database.TableMethods
 
                 miscText.SESSIONID = GetScalar<long>(DatabaseCommandsGeneral.GenSessionNameIdSelectNull(sessionName));
 
+                // default(long) returns 0, so make it a null..
+                if (miscText.SESSIONID == 0)
+                {
+                    // ..as we are dealing with a nullable long..
+                    miscText.SESSIONID = null;
+                }
+
                 string sql = DatabaseCommandsMiscText.GenInsertMiscText(miscText, sessionName);
 
                 // as the SQLiteCommand is disposable a using clause is required..
