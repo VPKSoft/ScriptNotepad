@@ -273,9 +273,20 @@ namespace ScriptNotepad
                     Focus();
                 }
             }
-            else
-            {
-                //TODO::Open the file..
+            else if (!e.SearchResult.isFileOpen)
+            {              
+                OpenDocument(e.SearchResult.fileName, DefaultEncoding);
+                var scintilla = sttcMain.LastAddedDocument?.Scintilla;
+                if (scintilla != null)
+                {
+                    scintilla.GotoPosition(e.SearchResult.startLocation);
+                    scintilla.CurrentPosition = e.SearchResult.startLocation;
+                    scintilla.SetSelection(e.SearchResult.startLocation, e.SearchResult.startLocation + e.SearchResult.length);
+
+                    var formSearchResultTree = (FormSearchResultTree) sender;
+                    formSearchResultTree.SetFileOpened(e.SearchResult.fileName, true);
+                    Focus();
+                }
             }
         }
         #endregion
@@ -551,14 +562,14 @@ namespace ScriptNotepad
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
             // clean the old search path entries from the database..
-            DatabaseMiscText.DeleteOlderEntries(MiscTextType.Path, FormSettings.Settings.HistoryListAmount);
+            DatabaseMiscText.DeleteOlderEntries(MiscTextType.Path, FormSettings.Settings.FileSearchHistoriesLimit);
 
             // clean the old replace replace history entries from the database..
-            DatabaseSearchAndReplace.DeleteOlderEntries("REPLACE_HISTORY", FormSettings.Settings.HistoryListAmount,
+            DatabaseSearchAndReplace.DeleteOlderEntries("REPLACE_HISTORY", FormSettings.Settings.FileSearchHistoriesLimit,
                 CurrentSession, 0, 1, 2, 3);
 
             // clean the old replace search history entries from the database..
-            DatabaseSearchAndReplace.DeleteOlderEntries("SEARCH_HISTORY", FormSettings.Settings.HistoryListAmount,
+            DatabaseSearchAndReplace.DeleteOlderEntries("SEARCH_HISTORY", FormSettings.Settings.FileSearchHistoriesLimit,
                 CurrentSession, 0, 1, 2, 3);
 
             // close the main form as the call came from elsewhere than the FormMain_FormClosed event..

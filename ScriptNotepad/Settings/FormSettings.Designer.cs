@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.nudMaximumSearchFileSize = new System.Windows.Forms.NumericUpDown();
+            this.lbMaximumSearchFileSize = new System.Windows.Forms.Label();
             this.cbDockSearchTree = new System.Windows.Forms.CheckBox();
             this.pbDefaultFolder = new System.Windows.Forms.PictureBox();
             this.btSelectPluginFolder = new System.Windows.Forms.Button();
@@ -71,10 +73,11 @@
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cdColors = new System.Windows.Forms.ColorDialog();
-            this.lbMaximumSearchFileSize = new System.Windows.Forms.Label();
-            this.nudMaximumSearchFileSize = new System.Windows.Forms.NumericUpDown();
+            this.lbHistoryAmount = new System.Windows.Forms.Label();
+            this.nudHistoryAmount = new System.Windows.Forms.NumericUpDown();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).BeginInit();
@@ -82,7 +85,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.tpgColorSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -100,6 +103,8 @@
             // 
             // tpgGeneralSettings
             // 
+            this.tpgGeneralSettings.Controls.Add(this.nudHistoryAmount);
+            this.tpgGeneralSettings.Controls.Add(this.lbHistoryAmount);
             this.tpgGeneralSettings.Controls.Add(this.nudMaximumSearchFileSize);
             this.tpgGeneralSettings.Controls.Add(this.lbMaximumSearchFileSize);
             this.tpgGeneralSettings.Controls.Add(this.cbDockSearchTree);
@@ -122,6 +127,38 @@
             this.tpgGeneralSettings.TabIndex = 0;
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
+            // 
+            // nudMaximumSearchFileSize
+            // 
+            this.nudMaximumSearchFileSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 247);
+            this.nudMaximumSearchFileSize.Maximum = new decimal(new int[] {
+            1999,
+            0,
+            0,
+            0});
+            this.nudMaximumSearchFileSize.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudMaximumSearchFileSize.Name = "nudMaximumSearchFileSize";
+            this.nudMaximumSearchFileSize.Size = new System.Drawing.Size(90, 20);
+            this.nudMaximumSearchFileSize.TabIndex = 35;
+            this.nudMaximumSearchFileSize.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // lbMaximumSearchFileSize
+            // 
+            this.lbMaximumSearchFileSize.AutoSize = true;
+            this.lbMaximumSearchFileSize.Location = new System.Drawing.Point(3, 249);
+            this.lbMaximumSearchFileSize.Name = "lbMaximumSearchFileSize";
+            this.lbMaximumSearchFileSize.Size = new System.Drawing.Size(194, 13);
+            this.lbMaximumSearchFileSize.TabIndex = 33;
+            this.lbMaximumSearchFileSize.Text = "Maximum file size for searhing text (MB):";
             // 
             // cbDockSearchTree
             // 
@@ -171,7 +208,7 @@
             // 
             this.lbPluginFolder.AutoSize = true;
             this.lbPluginFolder.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbPluginFolder.Location = new System.Drawing.Point(6, 199);
+            this.lbPluginFolder.Location = new System.Drawing.Point(3, 198);
             this.lbPluginFolder.Name = "lbPluginFolder";
             this.lbPluginFolder.Size = new System.Drawing.Size(164, 13);
             this.lbPluginFolder.TabIndex = 28;
@@ -553,34 +590,34 @@
             this.cdColors.AnyColor = true;
             this.cdColors.FullOpen = true;
             // 
-            // lbMaximumSearchFileSize
+            // lbHistoryAmount
             // 
-            this.lbMaximumSearchFileSize.AutoSize = true;
-            this.lbMaximumSearchFileSize.Location = new System.Drawing.Point(6, 249);
-            this.lbMaximumSearchFileSize.Name = "lbMaximumSearchFileSize";
-            this.lbMaximumSearchFileSize.Size = new System.Drawing.Size(194, 13);
-            this.lbMaximumSearchFileSize.TabIndex = 33;
-            this.lbMaximumSearchFileSize.Text = "Maximum file size for searhing text (MB):";
+            this.lbHistoryAmount.AutoSize = true;
+            this.lbHistoryAmount.Location = new System.Drawing.Point(3, 275);
+            this.lbHistoryAmount.Name = "lbHistoryAmount";
+            this.lbHistoryAmount.Size = new System.Drawing.Size(211, 13);
+            this.lbHistoryAmount.TabIndex = 36;
+            this.lbHistoryAmount.Text = "Maximum amount of search history to keep:";
             // 
-            // nudMaximumSearchFileSize
+            // nudHistoryAmount
             // 
-            this.nudMaximumSearchFileSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 247);
-            this.nudMaximumSearchFileSize.Maximum = new decimal(new int[] {
-            1999,
+            this.nudHistoryAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudHistoryAmount.Location = new System.Drawing.Point(461, 273);
+            this.nudHistoryAmount.Maximum = new decimal(new int[] {
+            1000,
             0,
             0,
             0});
-            this.nudMaximumSearchFileSize.Minimum = new decimal(new int[] {
+            this.nudHistoryAmount.Minimum = new decimal(new int[] {
             5,
             0,
             0,
             0});
-            this.nudMaximumSearchFileSize.Name = "nudMaximumSearchFileSize";
-            this.nudMaximumSearchFileSize.Size = new System.Drawing.Size(90, 20);
-            this.nudMaximumSearchFileSize.TabIndex = 35;
-            this.nudMaximumSearchFileSize.Value = new decimal(new int[] {
-            100,
+            this.nudHistoryAmount.Name = "nudHistoryAmount";
+            this.nudHistoryAmount.Size = new System.Drawing.Size(90, 20);
+            this.nudHistoryAmount.TabIndex = 37;
+            this.nudHistoryAmount.Value = new decimal(new int[] {
+            25,
             0,
             0,
             0});
@@ -607,6 +644,7 @@
             this.tcMain.ResumeLayout(false);
             this.tpgGeneralSettings.ResumeLayout(false);
             this.tpgGeneralSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).EndInit();
@@ -616,7 +654,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.tpgColorSettings.ResumeLayout(false);
             this.tpgColorSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -666,5 +704,7 @@
         private System.Windows.Forms.Button btDefaults;
         private System.Windows.Forms.NumericUpDown nudMaximumSearchFileSize;
         private System.Windows.Forms.Label lbMaximumSearchFileSize;
+        private System.Windows.Forms.NumericUpDown nudHistoryAmount;
+        private System.Windows.Forms.Label lbHistoryAmount;
     }
 }

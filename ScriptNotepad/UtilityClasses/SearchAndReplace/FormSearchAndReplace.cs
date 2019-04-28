@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Ookii.Dialogs.WinForms;
 using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Settings;
@@ -107,10 +108,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 FormSettings.Settings.FileSearchHistoriesLimit);
 
             // get the filter used in the search and/or replace in files..
-            FilterHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.FileExtensionList, 25);
+            FilterHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.FileExtensionList, FormSettings.Settings.FileSearchHistoriesLimit);
 
             // get the path(s) used in the search and/or replace in files..
-            PathHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.Path, 25);
+            PathHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.Path, FormSettings.Settings.FileSearchHistoriesLimit);
         }
         #endregion
 
@@ -584,6 +585,44 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
         #region PrivateMethods        
         /// <summary>
+        /// Gets ta value indicating whether the search and/or replace algorithm is correctly set.
+        /// </summary>
+        /// <param name="replacing">A value indicating whether the current method is a search method or a replace method.-</param>
+        /// <returns>True if the search and/or replace algorithm is correctly set; otherwise false.</returns>
+        private bool ValidSearchAndReplace(bool replacing)
+        {
+            if (CurrentDocument.scintilla == null)
+            {
+                return false;
+            }
+
+            if (tcMain.SelectedTab.Equals(tabFind))
+            {
+                return cmbFind.Text != string.Empty;
+            }
+
+            if (tcMain.SelectedTab.Equals(tabReplace))
+            {
+                if (replacing && (cmbReplace.Text == string.Empty | cmbFind2.Text == string.Empty))
+                {
+                    return false;
+                }
+
+                return cmbFind2.Text != string.Empty;
+            }
+
+            if (tcMain.SelectedTab.Equals(tabFindInFiles))
+            {
+                return ((cmbFind3.Text != string.Empty && !replacing) ||
+                       (cmbReplace3.Text != string.Empty && replacing)) &&
+                       cmbFilters3.Text.Trim() != string.Empty && cmbDirectory3.Text != string.Empty;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
         /// Saves the search text(s) to the database.
         /// </summary>
         private void SaveSearchText()
@@ -986,6 +1025,30 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 CreateSingleSearchReplaceAlgorithm(CurrentDocument);
             }
+
+            // set the navigation control states to enabled/disabled depending on the search condition..
+            AppendValidation();
+        }
+
+        /// <summary>
+        /// Set the navigation control states to enabled/disabled depending on the search condition.
+        /// </summary>
+        private void AppendValidation()
+        {
+            btFindNext.Enabled = ValidSearchAndReplace(false);
+            btFindPrevious.Enabled = ValidSearchAndReplace(false);
+            btCount.Enabled = ValidSearchAndReplace(false);
+            btFindAllInAll.Enabled = ValidSearchAndReplace(false);
+            btFindAllCurrent.Enabled = ValidSearchAndReplace(false);
+
+            btFindPrevious2.Enabled = ValidSearchAndReplace(false);
+            btFindNext2.Enabled = ValidSearchAndReplace(false);
+            btReplace.Enabled = ValidSearchAndReplace(true);
+            btReplaceAll.Enabled = ValidSearchAndReplace(true);
+            btReplaceAllInAll.Enabled = ValidSearchAndReplace(true);
+
+            btFindAllInFiles.Enabled = ValidSearchAndReplace(false);
+            btReplaceAllInFiles.Enabled = ValidSearchAndReplace(true);
         }
 
         // a user wishes to count all the matching strings of the currently active document..
@@ -1033,6 +1096,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 cmbFind3.Focus();
             }
+
+            // set the navigation control states to enabled/disabled depending on the search condition..
+            AppendValidation();
         }
 
         // the form is activated..
@@ -1048,12 +1114,18 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // for some reason this seems to be required..
             TopMost = true;
             BringToFront();
+
+            // set the navigation control states to enabled/disabled depending on the search condition..
+            AppendValidation();
         }
 
         // the form is deactivated so set the transparency value..
         private void FormSearchAndReplace_Deactivate(object sender, EventArgs e)
         {
             TransparencyToggle(false);
+
+            // set the navigation control states to enabled/disabled depending on the search condition..
+            AppendValidation();
         }
 
         // a user wishes to close the form..
@@ -1416,7 +1488,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 Controls.Remove(contents);
             }
         }
-        #endregion
 
         // replaces a text occurrences in multiple files on the file system..
         private void BtReplaceAllInFiles_Click(object sender, EventArgs e)
@@ -1510,5 +1581,23 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 "Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.",
                 replaceCount, filesAffected);
         }
+
+        // set the folder via the Ookii.Dialogs.WinForms.VistaFolderBrowserDialog class..
+        private void BtSelectFolder_Click(object sender, EventArgs e)
+        {
+            var dialog = new VistaFolderBrowserDialog();
+
+            if (Directory.Exists(cmbDirectory3.Text))
+            {
+                dialog.SelectedPath = cmbDirectory3.Text;
+            }
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                cmbDirectory3.Text = dialog.SelectedPath;
+                SavePaths(); // save the path used in the search into the database..
+            }
+        }
+        #endregion
     }
 }

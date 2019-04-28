@@ -147,6 +147,9 @@ namespace ScriptNotepad.Settings
 
             // get the value of file's maximum size in megabytes (MB) to include in the file search..
             nudMaximumSearchFileSize.Value = Settings.FileSearchMaxSizeMb;
+
+            // get the amount of how much search history (search text, replace text, directories, paths, etc.) to keep..
+            nudHistoryAmount.Value = Settings.FileSearchHistoriesLimit;
         }
 
         /// <summary>
@@ -187,6 +190,9 @@ namespace ScriptNotepad.Settings
 
             // set the value of file's maximum size in megabytes (MB) to include in the file search..
             Settings.FileSearchMaxSizeMb = (long)nudMaximumSearchFileSize.Value;
+
+            // set the amount of how much search history (search text, replace text, directories, paths, etc.) to keep..
+            Settings.FileSearchHistoriesLimit = (int)nudHistoryAmount.Value;
         }
         #endregion
 

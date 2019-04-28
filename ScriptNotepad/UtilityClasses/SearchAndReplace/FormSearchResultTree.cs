@@ -398,6 +398,51 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // raise the click event if subscribed..
             SearchResultSelected?.Invoke(this, new SearchResultTreeViewClickEventArgs { SearchResult = clickResult });
+
+            // set the value back to the node's tag..
+            e.Node.Tag = clickResult;
+        }
+
+        /// <summary>
+        /// Sets the tree view data for a file name to <paramref name="value"/>.
+        /// </summary>
+        /// <param name="fileName">Name of the file which flag to set.</param>
+        /// <param name="value">if set to <c>true</c> the file in the tree view is set as opened, <c>false</c> otherwise.</param>
+        public void SetFileOpened(string fileName, bool value)
+        {
+            SuspendLayout(); // suspend the layout of the form..
+            tvMain.BeginUpdate(); // the tree can be large, so suspend the draw..
+            NoDraw = true;
+
+            for (int i = 0; i < tvMain.Nodes.Count; i++)
+            {
+                var node =
+                    ((string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                        isFileOpen)) (tvMain.Nodes[i].Tag);
+
+                if (node.fileName == fileName)
+                {
+                    node.isFileOpen = value;
+
+                    tvMain.Nodes[i].Tag = node;
+
+                    for (int j = 0; j < tvMain.Nodes[i].Nodes.Count; j++)
+                    {
+                        var subNode = 
+                            ((string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                                isFileOpen)) (tvMain.Nodes[i].Nodes[j].Tag);
+
+                        subNode.isFileOpen = value;
+
+                        tvMain.Nodes[i].Nodes[j].Tag = subNode;
+                    }
+
+                }
+            }
+
+            NoDraw = false;
+            tvMain.EndUpdate(); // END: the tree can be large, so suspend the draw..
+            ResumeLayout(); // END: suspend the layout of the form..
         }
 
         // (C):: https://social.msdn.microsoft.com/Forums/windows/en-US/7e7b25bd-7adf-43c1-8546-08a308084cf5/any-way-to-change-the-highlight-color-for-an-inactive-not-focused-treeview-control?forum=winforms

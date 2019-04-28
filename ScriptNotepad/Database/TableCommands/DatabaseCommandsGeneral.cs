@@ -64,7 +64,7 @@ namespace ScriptNotepad.Database.TableCommands
             }
 
             string sql =
-                $"(SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {NI(sessionName)}";
+                $"(SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME {NIS(sessionName)}";
 
             return sql;
         }
@@ -82,7 +82,7 @@ namespace ScriptNotepad.Database.TableCommands
             }
 
             string sql =
-                $"= (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {NI(sessionName)}";
+                $"= (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME {NIS(sessionName)}";
 
             return sql;
         }

@@ -457,6 +457,7 @@
             this.cmbFind.Name = "cmbFind";
             this.cmbFind.Size = new System.Drawing.Size(251, 21);
             this.cmbFind.TabIndex = 1;
+            this.cmbFind.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbFind.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // tabReplace
@@ -763,6 +764,7 @@
             this.cmbReplace.Name = "cmbReplace";
             this.cmbReplace.Size = new System.Drawing.Size(251, 21);
             this.cmbReplace.TabIndex = 5;
+            this.cmbReplace.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbReplace.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // pnLabelHolder02
@@ -796,6 +798,7 @@
             this.cmbFind2.Name = "cmbFind2";
             this.cmbFind2.Size = new System.Drawing.Size(251, 21);
             this.cmbFind2.TabIndex = 3;
+            this.cmbFind2.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbFind2.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // tabFindInFiles
@@ -837,6 +840,7 @@
             this.cbInHiddenFiles.TabIndex = 42;
             this.cbInHiddenFiles.Text = "In hidden files";
             this.cbInHiddenFiles.UseVisualStyleBackColor = true;
+            this.cbInHiddenFiles.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbHiddenFolders
             // 
@@ -847,6 +851,7 @@
             this.cbHiddenFolders.TabIndex = 41;
             this.cbHiddenFolders.Text = "In hidden folders";
             this.cbHiddenFolders.UseVisualStyleBackColor = true;
+            this.cbHiddenFolders.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbInSubFolders
             // 
@@ -857,6 +862,7 @@
             this.cbInSubFolders.TabIndex = 40;
             this.cbInSubFolders.Text = "In all sub-folders";
             this.cbInSubFolders.UseVisualStyleBackColor = true;
+            this.cbInSubFolders.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cbTransparency3
             // 
@@ -1046,6 +1052,7 @@
             this.btSelectFolder.TabIndex = 31;
             this.btSelectFolder.Text = "...";
             this.btSelectFolder.UseVisualStyleBackColor = true;
+            this.btSelectFolder.Click += new System.EventHandler(this.BtSelectFolder_Click);
             // 
             // pnLabelHolder07
             // 
@@ -1078,6 +1085,8 @@
             this.cmbDirectory3.Name = "cmbDirectory3";
             this.cmbDirectory3.Size = new System.Drawing.Size(245, 21);
             this.cmbDirectory3.TabIndex = 13;
+            this.cmbDirectory3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.cmbDirectory3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // pnLabelHolder06
             // 
@@ -1110,6 +1119,8 @@
             this.cmbFilters3.Name = "cmbFilters3";
             this.cmbFilters3.Size = new System.Drawing.Size(251, 21);
             this.cmbFilters3.TabIndex = 11;
+            this.cmbFilters3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.cmbFilters3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // pnLabelHolder05
             // 
@@ -1142,6 +1153,8 @@
             this.cmbReplace3.Name = "cmbReplace3";
             this.cmbReplace3.Size = new System.Drawing.Size(251, 21);
             this.cmbReplace3.TabIndex = 9;
+            this.cmbReplace3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.cmbReplace3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // pnLabelHolder04
             // 
@@ -1174,6 +1187,8 @@
             this.cmbFind3.Name = "cmbFind3";
             this.cmbFind3.Size = new System.Drawing.Size(251, 21);
             this.cmbFind3.TabIndex = 7;
+            this.cmbFind3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.cmbFind3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // FormSearchAndReplace
             // 

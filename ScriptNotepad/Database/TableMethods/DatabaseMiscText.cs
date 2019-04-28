@@ -181,6 +181,5 @@ namespace ScriptNotepad.Database.TableMethods
 
             return ExecuteArbitrarySQL(sql);
         }
-
     }
 }
