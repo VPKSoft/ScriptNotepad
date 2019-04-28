@@ -450,6 +450,8 @@
             // 
             this.cmbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFind.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbFind.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbFind.FormattingEnabled = true;
             this.cmbFind.Location = new System.Drawing.Point(107, 6);
             this.cmbFind.Name = "cmbFind";
@@ -935,6 +937,7 @@
             this.btReplaceAllInFiles.TabIndex = 36;
             this.btReplaceAllInFiles.Text = "Replace all in files";
             this.btReplaceAllInFiles.UseVisualStyleBackColor = true;
+            this.btReplaceAllInFiles.Click += new System.EventHandler(this.BtReplaceAllInFiles_Click);
             // 
             // gpSearchMode3
             // 

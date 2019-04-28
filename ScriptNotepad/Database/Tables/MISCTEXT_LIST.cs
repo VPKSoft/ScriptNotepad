@@ -25,16 +25,36 @@ SOFTWARE.
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.Database.Tables
 {
     /// <summary>
-    /// A class representing either an database entry from the SEARCH_HISTORY or SEARCH_HISTORY table.
+    /// An enumeration for the <see cref="MISCTEXT_LIST.TYPE"/> field in the database.
+    /// </summary>
+    public enum MiscTextType
+    {
+        /// <summary>
+        /// Indicates a path/directory in the file system.
+        /// </summary>
+        Path = 0,
+
+        /// <summary>
+        /// Indicates a file extension list delimited with semicolon (;); I.e. *.txt;*.cs.
+        /// </summary>
+        FileExtensionList = 1,
+    }
+
+    /// <summary>
+    /// A class representing a database entry in the MISCTEXT_LIST database table.
     /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class SEARCH_AND_REPLACE_HISTORY: ErrorHandlingBase
+    public class MISCTEXT_LIST: ErrorHandlingBase
     {
         /// <summary>
         /// Gets or sets the ID number (database).
@@ -42,29 +62,24 @@ namespace ScriptNotepad.Database.Tables
         public long ID { get; set; } = -1;
 
         /// <summary>
-        /// Gets or sets the search or replace text.
+        /// Gets or sets the text value of the entry.
         /// </summary>
-        public string SEARCH_OR_REPLACE_TEXT { get; set; }
+        public string TEXTVALUE { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether search or replace was case sensitive.
+        /// Gets or sets the type of the entry where 0 = directory/path, 1 = file filter, 2 = Regular expression, 3 = Simple extended.
         /// </summary>
-        public bool CASE_SENSITIVE { get; set; }
+        public MiscTextType TYPE { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the search where 0 = Normal, 1 = Extended, 2 = Regular expression, 3 = Simple extended.
-        /// </summary>
-        public int TYPE { get; set; }
-
-        /// <summary>
-        /// Gets or sets the added date and time when the entry was added to the database or created.
+        /// Gets or sets the added date and time when the entry was added or updated to the database.
         /// </summary>
         public DateTime ADDED { get; set; } = DateTime.Now;
 
         /// <summary>
-        /// Gets or sets the session ID.
+        /// Gets or sets the session ID the entry belongs to. This can be null.
         /// </summary>
-        public long SESSIONID { get; set; } = 1;
+        public long? SESSIONID { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the name of a session.
@@ -77,7 +92,7 @@ namespace ScriptNotepad.Database.Tables
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
         public override string ToString()
         {
-            return SEARCH_OR_REPLACE_TEXT;
+            return TEXTVALUE;
         }
     }
 }

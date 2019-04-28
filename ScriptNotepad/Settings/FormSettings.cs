@@ -89,6 +89,7 @@ namespace ScriptNotepad.Settings
             List<CultureInfo> cultures = DBLangEngine.GetLocalizedCultures();
 
             // a the translated cultures to the selection combo box..
+            // ReSharper disable once CoVariantArrayConversion
             cmbSelectLanguageValue.Items.AddRange(cultures.ToArray());
         }
 

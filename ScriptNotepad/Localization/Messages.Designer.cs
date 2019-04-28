@@ -1231,6 +1231,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected..
+        /// </summary>
+        internal static string msgReplacementsMadeFilesAmount {
+            get {
+                return ResourceManager.GetString("msgReplacementsMadeFilesAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to R programming language file|*.r|A text in a file dialog indicating R programming language files.
         /// </summary>
         internal static string msgRProgrammingLanguageFile {

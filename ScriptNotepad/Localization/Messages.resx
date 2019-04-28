@@ -618,4 +618,7 @@
   <data name="msgProcessingFile" xml:space="preserve">
     <value>Processing file: '{0}'...|A message indicating that a file with a given name is being processed somehow</value>
   </data>
+  <data name="msgReplacementsMadeFilesAmount" xml:space="preserve">
+    <value>Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.</value>
+  </data>
 </root>

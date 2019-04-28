@@ -48,7 +48,10 @@ namespace ScriptNotepad.Database.TableMethods
         public static SEARCH_AND_REPLACE_HISTORY UpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
         {
             searchAndReplace.SESSIONNAME = sessionName;
-            if (ExecuteArbitrarySQL(DatabaseCommandsSearchAndReplace.GenInsertUpdateSearchAndReplace(searchAndReplace, tableName)))
+
+            string sql = DatabaseCommandsSearchAndReplace.GenInsertUpdateSearchAndReplace(searchAndReplace, tableName);
+
+            if (ExecuteArbitrarySQL(sql))
             {
                 return searchAndReplace;
             }
@@ -111,11 +114,28 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="searchAndReplace">A SEARCH_AND_REPLACE_HISTORY class instance to add or to update to the database's SEARCH_HISTORY or to the database's REPLACE_HISTORY table.</param>
         /// <param name="sessionName">A name of the session to which the search and replace entry belongs to.</param>
         /// <param name="tableName">A name of the table the entry to be inserted belongs to; Either SEARCH_HISTORY or REPLACE_HISTORY tables are accepted values.</param>
-        /// <returns>True if the operations was successful; otherwise false;</returns>
-        public static bool AddOrUpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
+        /// <returns>An instance to a <see cref="SEARCH_AND_REPLACE_HISTORY"/> class if the operations was successful; otherwise null;</returns>
+        public static SEARCH_AND_REPLACE_HISTORY AddOrUpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
         {
             return UpdateSearchAndReplace(AddSearchAndReplace(searchAndReplace, sessionName, tableName), sessionName,
-                       tableName) != null;
+                       tableName);
+        }
+
+        /// <summary>
+        /// Deletes the older entries from the database.
+        /// </summary>
+        /// <param name="tableName">A name of the table the cleanup should be done to; Either SEARCH_HISTORY or REPLACE_HISTORY tables are accepted values.</param>
+        /// <param name="remainAmount">The remaining amount of entries that should be left untouched.</param>
+        /// <param name="sessionName">A name of the session to which the search or the replace entries belong to.</param>
+        /// <param name="types">A array of types to include to the cleanup.</param>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool DeleteOlderEntries(string tableName, int remainAmount, string sessionName,
+            params int[] types)
+        {
+            string sql =
+                DatabaseCommandsSearchAndReplace.GenDeleteOlderEntries(tableName, remainAmount, sessionName, types);
+
+            return ExecuteArbitrarySQL(sql);
         }
 
         /// <summary>
@@ -125,11 +145,13 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="tableName">The name of the table where the results should be gotten from.</param>
         /// <param name="maxCount">Maximum count of recent file entries to return.</param>
         /// <returns>A collection RECENT_FILES classes.</returns>
-        public static IEnumerable<SEARCH_AND_REPLACE_HISTORY> GetSearchesAndReplaces(string sessionName, string tableName, int maxCount)
+        public static List<SEARCH_AND_REPLACE_HISTORY> GetSearchesAndReplaces(string sessionName, string tableName, int maxCount)
         {
             List<SEARCH_AND_REPLACE_HISTORY> result = new List<SEARCH_AND_REPLACE_HISTORY>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsSearchAndReplace.GenSearchAndReplaceSelect(tableName, sessionName, maxCount), conn))
+            string sql = DatabaseCommandsSearchAndReplace.GenSearchAndReplaceSelect(tableName, sessionName, maxCount);
+
+            using (SQLiteCommand command = new SQLiteCommand(sql, conn))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())

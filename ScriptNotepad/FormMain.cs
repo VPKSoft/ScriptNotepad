@@ -178,7 +178,7 @@ namespace ScriptNotepad
             SessionMenuBuilder.CreateSessionMenu(mnuSession, CurrentSession);
 
             // enable the test menu only when debugging..
-            mnuTest.Visible = System.Diagnostics.Debugger.IsAttached;
+            mnuTest.Visible = Debugger.IsAttached;
 
             // localize the recent files open all files text..
             RecentFilesMenuBuilder.MenuOpenAllRecentText =
@@ -549,6 +549,17 @@ namespace ScriptNotepad
             cleanupContents = Database.Database.CleanUpHistoryList(CurrentSession, HistoryListAmount);
 
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
+
+            // clean the old search path entries from the database..
+            DatabaseMiscText.DeleteOlderEntries(MiscTextType.Path, FormSettings.Settings.HistoryListAmount);
+
+            // clean the old replace replace history entries from the database..
+            DatabaseSearchAndReplace.DeleteOlderEntries("REPLACE_HISTORY", FormSettings.Settings.HistoryListAmount,
+                CurrentSession, 0, 1, 2, 3);
+
+            // clean the old replace search history entries from the database..
+            DatabaseSearchAndReplace.DeleteOlderEntries("SEARCH_HISTORY", FormSettings.Settings.HistoryListAmount,
+                CurrentSession, 0, 1, 2, 3);
 
             // close the main form as the call came from elsewhere than the FormMain_FormClosed event..
             if (noUserInteraction)

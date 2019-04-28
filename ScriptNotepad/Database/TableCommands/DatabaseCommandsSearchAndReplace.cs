@@ -69,11 +69,11 @@ namespace ScriptNotepad.Database.TableCommands
                 string.Join(Environment.NewLine,
                     $"INSERT INTO {tableName} ({FieldNameByTableName(tableName)}, CASE_SENSITIVE, TYPE, ADDED, SESSIONID) ",
                     $"SELECT {QS(searchAndReplace.SEARCH_OR_REPLACE_TEXT)},",
-                    $"{BS(searchAndReplace.CASE_SENSITIVE)}",
-                    $"{searchAndReplace.TYPE}",
+                    $"{BS(searchAndReplace.CASE_SENSITIVE)},",
+                    $"{searchAndReplace.TYPE},",
                     $"{DateToDBString(DateTime.Now)},",
                     $"{DatabaseCommandsGeneral.GenSessionNameIDCondition(searchAndReplace.SESSIONNAME)}",
-                    $"WHERE NOT EXISTS(SELECT * FROM {tableName} WHERE ID = {searchAndReplace.ID} AND",
+                    $"WHERE NOT EXISTS(SELECT * FROM {tableName} WHERE",
                     $"TYPE = {searchAndReplace.TYPE} AND {FieldNameByTableName(tableName)} = {QS(searchAndReplace.SEARCH_OR_REPLACE_TEXT)});");
 
             return sql;
@@ -119,8 +119,8 @@ namespace ScriptNotepad.Database.TableCommands
                     $"{tableName}",
                     $"WHERE",
                     $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}",
-                    $"ORDER BY ADDED, {FieldNameByTableName(tableName)} COLLATE NOCASE",
-                    $"LIMIT BY {maxCount};");
+                    $"ORDER BY ADDED DESC, {FieldNameByTableName(tableName)} COLLATE NOCASE",
+                    $"LIMIT {maxCount};");
 
             return sql;
         }
@@ -143,5 +143,24 @@ namespace ScriptNotepad.Database.TableCommands
             return sql;
         }
 
+        /// <summary>Generates a sentence to delete older entries from the <see cref="T:ScriptNotepad.Database.Tables.SEARCH_AND_REPLACE_HISTORY"/> database table.</summary>
+        /// <param name="tableName">The name of the table to generate the cleanup sentence to.</param>
+        /// <param name="remainAmount">The remaining amount of entries that should be left untouched.</param>
+        /// <param name="sessionName">A name of the session to which the search or the replace entries belong to.</param>
+        /// <param name="types">Types of either search and/or replace history entries.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenDeleteOlderEntries(string tableName, int remainAmount, string sessionName, params int[] types)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                    $"DELETE FROM {tableName} WHERE ID IN(",
+                    $"SELECT ID FROM {tableName}",
+                    $"WHERE SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)} AND TYPE IN ({string.Join(", ", types)})",
+                    $"ORDER BY ADDED,  {FieldNameByTableName(tableName)} COLLATE NOCASE ",
+                    $"LIMIT",
+                    $"CASE WHEN (SELECT COUNT(*) FROM {tableName} WHERE TYPE IN ({string.Join(", ", types)}) AND SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}) - {remainAmount} > 0 THEN (SELECT COUNT(*) FROM {tableName} WHERE TYPE IN ({string.Join(", ", types)}) AND SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}) - {remainAmount} ELSE 0 END);");
+
+            return sql;
+        }
     }
 }

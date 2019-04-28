@@ -40,11 +40,53 @@ namespace ScriptNotepad.Database.TableCommands
         /// <returns>A generated SQL snippet based on the given parameters.</returns>
         public static string GenSessionNameIDCondition(string sessionName)
         {
+            if (string.IsNullOrEmpty(sessionName))
+            {
+                return "NULL";
+            }
+
             string sql =
                 $"IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";
 
             return sql;
         }
+
+        /// <summary>
+        /// Generates a SQL snippet to get the session ID by it's name accepting null values.
+        /// </summary>
+        /// <param name="sessionName">Name of the session.</param>
+        /// <returns>A generated SQL snippet based on the given parameters.</returns>
+        public static string GenSessionNameIDConditionNull(string sessionName)
+        {
+            if (string.IsNullOrEmpty(sessionName))
+            {
+                return "NULL";
+            }
+
+            string sql =
+                $"(SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {NI(sessionName)}";
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL snippet to get the session ID by it's name accepting null values with SQL equality (IS NULL or =).
+        /// </summary>
+        /// <param name="sessionName">Name of the session.</param>
+        /// <returns>A generated SQL snippet based on the given parameters.</returns>
+        public static string GenSessionNameIDConditionIsNull(string sessionName)
+        {
+            if (string.IsNullOrEmpty(sessionName))
+            {
+                return "IS NULL";
+            }
+
+            string sql =
+                $"= (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {NI(sessionName)}";
+
+            return sql;
+        }
+
 
         /// <summary>
         /// Generates a SQL sentence to get a session ID by it's name.
@@ -58,6 +100,20 @@ namespace ScriptNotepad.Database.TableCommands
 
             return sql;
         }
+
+        /// <summary>
+        /// Generates a SQL sentence to get a session ID by it's name accepting database NULL.
+        /// </summary>
+        /// <param name="sessionName">Name of the session.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenSessionNameIdSelectNull(string sessionName)
+        {
+            string sql =
+                $"SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {NI(sessionName)}";
+
+            return sql;
+        }
+
 
         /// <summary>
         /// Generates a SQL snippet to get the session name by it's ID.

@@ -129,7 +129,9 @@
     <Compile Include="Database\TableCommands\DatabaseCommandsSearchAndReplace.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSessionData.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSessionName.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsMiscText.cs" />
     <Compile Include="Database\TableMethods\DatabaseCodeSnippets.cs" />
+    <Compile Include="Database\TableMethods\DatabaseMiscText.cs" />
     <Compile Include="Database\TableMethods\DatabasePlugins.cs" />
     <Compile Include="Database\TableMethods\DatabaseRecentFiles.cs" />
     <Compile Include="Database\TableMethods\DatabaseFileSave.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
     <Compile Include="Database\DatabaseEnumerations.cs" />
     <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
+    <Compile Include="Database\Tables\MISCTEXT_LIST.cs" />
     <Compile Include="Database\Tables\RECENT_FILES.cs" />
     <Compile Include="Database\Tables\PLUGINS.cs" />
     <Compile Include="Database\Tables\SEARCH_AND_REPLACE_HISTORY.cs" />

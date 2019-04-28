@@ -421,6 +421,6 @@ CREATE TABLE IF NOT EXISTS MISCTEXT_LIST
   TEXTVALUE TEXT NOT NULL, -- The text value of type MISCTEXT_LIST.TYPE..
   TYPE INTEGER NOT NULL, -- the search type (0 = Directory, 1 = Search file filter)..
   ADDED TEXT NOT NULL, -- when the entry was inserted into the database, C# string format: yyyy-MM-dd HH':'mm':'ss.fff
-  SESSIONID INTEGER NOT NULL -- an id for a session the misc text was used..
+  SESSIONID INTEGER NULL -- an id for a session the misc text was used..
 );
 --ENDVER 16

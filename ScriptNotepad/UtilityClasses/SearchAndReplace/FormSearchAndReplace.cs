@@ -30,6 +30,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ScriptNotepad.Database.TableMethods;
+using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.IO;
 using VPKSoft.LangLib;
@@ -90,6 +92,20 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // subscribe to an event which is raised upon application activation..
             ApplicationDeactivated += FormSearchAndReplace_ApplicationDeactivated;
+
+            // get the search text history from the database..
+            SearchHistory = DatabaseSearchAndReplace.GetSearchesAndReplaces(
+                FormSettings.Settings.CurrentSession,
+                "SEARCH_HISTORY",
+                FormSettings.Settings.FileSearchHistoriesLimit);
+
+            // get the replace text history from the database..
+            ReplaceHistory = DatabaseSearchAndReplace.GetSearchesAndReplaces(
+                FormSettings.Settings.CurrentSession,
+                "REPLACE_HISTORY",
+                FormSettings.Settings.FileSearchHistoriesLimit);
+
+            FilterHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.FileExtensionList, 25);
         }
         #endregion
 
@@ -105,6 +121,79 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         #endregion
 
         #region PublicProperties
+        // the search history texts..
+        private List<SEARCH_AND_REPLACE_HISTORY> searchHistory = new List<SEARCH_AND_REPLACE_HISTORY>();
+
+        /// <summary>
+        /// Gets or sets the search history texts.
+        /// </summary>
+        public List<SEARCH_AND_REPLACE_HISTORY> SearchHistory
+        {
+            get => searchHistory;
+
+            set
+            {
+                // sort the list as sorted in the database..
+                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.SEARCH_OR_REPLACE_TEXT.ToLowerInvariant())
+                    .ToList();
+
+                // save the value..
+                searchHistory = value;
+
+                // fill the combo boxes..
+                ReListSearchHistory();
+            }
+        }
+
+        // the search filter history values..
+        private List<MISCTEXT_LIST> filterHistory = new List<MISCTEXT_LIST>();
+
+        /// <summary>
+        /// Gets or sets the search filter history values.
+        /// </summary>
+        public List<MISCTEXT_LIST> FilterHistory
+        {
+            get => filterHistory;
+
+            set
+            {
+                // sort the list as sorted in the database..
+                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.TEXTVALUE.ToLowerInvariant())
+                    .ToList();
+
+                // save the value..
+                filterHistory = value;
+
+                // fill the combo boxes..
+                ReListFilterHistory();
+            }
+        }
+
+        // the replace history texts..
+        private List<SEARCH_AND_REPLACE_HISTORY> replaceHistory = new List<SEARCH_AND_REPLACE_HISTORY>();
+
+        /// <summary>
+        /// Gets or sets the replace history texts.
+        /// </summary>
+        public List<SEARCH_AND_REPLACE_HISTORY> ReplaceHistory
+        {
+            get => replaceHistory;
+
+            set
+            {
+                // sort the list as sorted in the database..
+                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.SEARCH_OR_REPLACE_TEXT.ToLowerInvariant())
+                    .ToList();
+
+                // save the value..
+                replaceHistory = value;
+
+                // fill the combo boxes..
+                ReListReplaceHistory();
+            }
+        }
+
+
         // value for the SelectionChangedFromMainForm property..
         private bool selectionChangedFromMainForm = true;
 
@@ -191,10 +280,59 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Creates an instance of the dialog for localization.
         /// </summary>
+        // ReSharper disable once ObjectCreationAsStatement
         public static void CreateLocalizationInstance() => new FormSearchAndReplace();
         #endregion
 
-        #region PublicMethods
+        #region PublicMethods        
+        /// <summary>
+        /// Re-lists the search history combo boxes contents.
+        /// </summary>
+        public void ReListSearchHistory()
+        {
+            // clear the combo boxes..
+            cmbFind.Items.Clear();
+            cmbFind2.Items.Clear();
+            cmbFind3.Items.Clear();
+
+            // fill the combo boxes..
+            // ReSharper disable once CoVariantArrayConversion
+            cmbFind.Items.AddRange(searchHistory.ToArray());
+            // ReSharper disable once CoVariantArrayConversion
+            cmbFind2.Items.AddRange(searchHistory.ToArray());
+            // ReSharper disable once CoVariantArrayConversion
+            cmbFind3.Items.AddRange(searchHistory.ToArray());
+        }
+
+        /// <summary>
+        /// Re-lists the search history combo boxes contents.
+        /// </summary>
+        public void ReListFilterHistory()
+        {
+            // clear the combo boxes..
+            cmbFilters3.Items.Clear();
+
+            // fill the combo boxes..
+            // ReSharper disable once CoVariantArrayConversion
+            cmbFilters3.Items.AddRange(filterHistory.ToArray());
+        }
+
+        /// <summary>
+        /// Re-lists the replace history combo boxes contents.
+        /// </summary>
+        public void ReListReplaceHistory()
+        {
+            // clear the combo boxes..
+            cmbReplace.Items.Clear();
+            cmbReplace3.Items.Clear();
+
+            // fill the combo boxes..
+            // ReSharper disable once CoVariantArrayConversion
+            cmbReplace.Items.AddRange(replaceHistory.ToArray());
+            // ReSharper disable once CoVariantArrayConversion
+            cmbReplace3.Items.AddRange(replaceHistory.ToArray());
+        }
+
         /// <summary>
         /// Toggles the visible state of this form.
         /// </summary>
@@ -261,7 +399,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Gets or sets the value whether this form was previously closed by a user.
         /// </summary>
-        private bool UserClosed { get; set; } = false;
+        private bool UserClosed { get; set; }
 
         /// <summary>
         /// Gets or sets the documents containing in the main form.
@@ -344,12 +482,143 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Gets the search text.
+        /// </summary>
+        private string SearchText
+        {
+            get
+            {
+                if (tcMain.SelectedTab.Equals(tabFind))
+                {
+                    return cmbFind.Text;
+                } 
+                
+                if (tcMain.SelectedTab.Equals(tabReplace))
+                {
+                    return cmbFind2.Text;
+                }
+
+                if (tcMain.SelectedTab.Equals(tabFindInFiles))
+                {
+                    return cmbFind3.Text;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets the replace text.
+        /// </summary>
+        private string ReplaceText
+        {
+            get
+            {
+                if (tcMain.SelectedTab.Equals(tabFind))
+                {
+                    return string.Empty;
+                } 
+                
+                if (tcMain.SelectedTab.Equals(tabReplace))
+                {
+                    return cmbReplace.Text;
+                }
+
+                if (tcMain.SelectedTab.Equals(tabFindInFiles))
+                {
+                    return cmbReplace3.Text;
+                }
+
+                return string.Empty;
+            }
+        }
+
+
+        /// <summary>
         /// A value indicating whether the <see cref="TransparencySettings_Changed"/> should suspend it self from executing any code.
         /// </summary>
-        private bool SuspendTransparencyChangeEvent { get; set; } = false;
+        private bool SuspendTransparencyChangeEvent { get; set; }
         #endregion
 
-        #region PrivateMethods
+        #region PrivateMethods        
+        /// <summary>
+        /// Saves the search text(s) to the database.
+        /// </summary>
+        private void SaveSearchText()
+        {
+            if (SearchText == string.Empty) // no empty strings..
+            {
+                return;
+            }
+
+            var inserted = DatabaseSearchAndReplace.AddOrUpdateSearchAndReplace(
+                new SEARCH_AND_REPLACE_HISTORY
+                {
+                    SEARCH_OR_REPLACE_TEXT = SearchText, CASE_SENSITIVE = cbMatchCase.Checked, TYPE = (int) SearchType
+                },
+                FormSettings.Settings.CurrentSession, "SEARCH_HISTORY");
+
+            // conditional insert to the list..
+            if (inserted != null && !SearchHistory.Exists(f =>
+                    f.TYPE == inserted.TYPE && f.SEARCH_OR_REPLACE_TEXT == inserted.SEARCH_OR_REPLACE_TEXT))
+            {
+                SearchHistory.Add(inserted);
+                ReListSearchHistory();
+            }
+        }
+
+        /// <summary>
+        /// Saves the search text(s) to the database.
+        /// </summary>
+        private void SaveFilters()
+        {
+            if (cmbFilters3.Text.Trim() == string.Empty) // no empty strings..
+            {
+                return;
+            }
+
+            var inserted = DatabaseMiscText.AddOrUpdateMiscText(
+                new MISCTEXT_LIST
+                {
+                    TEXTVALUE = cmbFilters3.Text.Trim(), TYPE = MiscTextType.FileExtensionList
+                });
+
+            // conditional insert to the list..
+            if (inserted != null && !FilterHistory.Exists(f =>
+                    f.TYPE == inserted.TYPE && f.TEXTVALUE == inserted.TEXTVALUE))
+            {
+                FilterHistory.Add(inserted);
+                ReListFilterHistory();
+            }
+        }
+
+        /// <summary>
+        /// Saves the replace text(s) to the database.
+        /// </summary>
+        private void SaveReplaceText()
+        {
+            if (ReplaceText == string.Empty) // no empty strings..
+            {
+                return;
+            }
+
+            var inserted = DatabaseSearchAndReplace.AddOrUpdateSearchAndReplace(
+                new SEARCH_AND_REPLACE_HISTORY
+                {
+                    SEARCH_OR_REPLACE_TEXT = ReplaceText, CASE_SENSITIVE = cbMatchCase.Checked, TYPE = (int) SearchType
+                },
+                FormSettings.Settings.CurrentSession, "REPLACE_HISTORY");
+
+            // conditional insert to the list..
+            if (inserted != null && !ReplaceHistory.Exists(f =>
+                    f.TYPE == inserted.TYPE && f.SEARCH_OR_REPLACE_TEXT == inserted.SEARCH_OR_REPLACE_TEXT))
+            {
+                ReplaceHistory.Add(inserted);
+                ReListReplaceHistory();
+            }
+        }
+
+
         /// <summary>
         /// Creates the single search and/or replace algorithm for a given contents and file name.
         /// </summary>
@@ -589,12 +858,14 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // a user wishes to search to the backward direction..
         private void btFindPrevious_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
             Backward();
         }
 
         // a user wishes to search to the forward direction..
         private void btFindNext_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
             Forward();
         }
 
@@ -653,18 +924,25 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // a user wishes to count all the matching strings of the currently active document..
         private void BtCount_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
+
             int count = 0; // set the occurrence count variable..
 
+            // ReSharper disable once ObjectCreationAsStatement
             new FormDialogSearchReplaceProgress(delegate
             {
                 // search all the occurrences..
                 var result = SearchReplaceDocuments?.FindAll(100);
 
-                CreateSingleSearchReplaceAlgorithm(CurrentDocument);
+                Invoke(new MethodInvoker(delegate { CreateSingleSearchReplaceAlgorithm(CurrentDocument); }));
+
                 SearchReplaceDocuments?.ResetSearch();
 
                 // save the count value..
-                count = result.Count();
+                if (result != null)
+                {
+                    count = result.Count();
+                }
             }, SearchReplaceDocuments);
 
             // indicate the count value to the user..
@@ -721,6 +999,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // A users wishes to find all occurrences within the active document..
         private void BtFindAllCurrent_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
+
             // make a list suitable for the FormSearchResultTree class instance..            
             List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
                 isFileOpen)> results =
@@ -730,10 +1010,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // a necessary null check..
             if (CurrentDocument.scintilla != null)
             {
+                // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogSearchReplaceProgress(delegate
                 {
                     // create a new search algorithm for the current document..
-                    CreateSingleSearchReplaceAlgorithm(CurrentDocument);
+                    Invoke(new MethodInvoker(delegate { CreateSingleSearchReplaceAlgorithm(CurrentDocument); }));
 
                     // search for all the matches in the current document..
                     var result = SearchReplaceDocuments?.FindAll(100);
@@ -760,6 +1041,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // A users wishes to find all occurrences within all the opened documents..
         private void BtFindAllInAll_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
+
             // make a list suitable for the FormSearchResultTree class instance..            
             List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
                 isFileOpen)> results =
@@ -774,7 +1057,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 var form = new FormDialogSearchReplaceProgress(delegate
                 {
                     // create a new search algorithm for the document..
-                    CreateSingleSearchReplaceAlgorithm(document);
+                    Invoke(new MethodInvoker(delegate { CreateSingleSearchReplaceAlgorithm(document); }));
 
                     // search for all the matches in the document..
                     var result = SearchReplaceDocuments?.FindAll(100);
@@ -807,6 +1090,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // A users wishes to replace all occurrences within all the opened documents..
         private void BtReplaceAllInAll_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
+            SaveReplaceText(); // save the used replace text to the database..
+
             // make a suitable for the results..
             List<(string newContents, int count, string fileName, string fileNameNoPath)> results =
                 new List<(string newContents, int count, string fileName, string fileNameNoPath)>();
@@ -866,6 +1152,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // a user wishes to replace the current search result in the current document..
         private void BtReplace_Click(object sender, EventArgs e)
         {                        
+            SaveSearchText(); // save the used search text to the database..
+            SaveReplaceText(); // save the used replace text to the database..
+
             // ..so do replace the selection gotten via call to Forward() or Backward() method..
             CurrentDocument.scintilla?.ReplaceSelection(cmbReplace.Text);
 
@@ -880,6 +1169,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // a user wishes to replace all occurrences in the current document..
         private void BtReplaceAll_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
+            SaveReplaceText(); // save the used replace text to the database..
+
             // get the text to replace the occurrences with..
             string replaceStr = cmbReplace.Text; 
 
@@ -888,10 +1180,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             (string newContents, int count)? result = (string.Empty, 0);
 
 
+            // ReSharper disable once ObjectCreationAsStatement
             new FormDialogSearchReplaceProgress(delegate
             {
                 // create a new search algorithm for the current document..
-                CreateSingleSearchReplaceAlgorithm(CurrentDocument);
+                Invoke(new MethodInvoker(delegate { CreateSingleSearchReplaceAlgorithm(CurrentDocument); }));
 
                 // get the replace results..
                 result = SearchReplaceDocuments?.ReplaceAll(replaceStr, 100);
@@ -934,8 +1227,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // suspend "self"..
             SuspendTransparencyChangeEvent = true;
 
+            // ReSharper disable once InconsistentNaming
             RadioButton _rbTransparencyAlways = rbTransparencyAlways;
+            // ReSharper disable once InconsistentNaming
             TrackBar _tbOpacity = tbOpacity;
+            // ReSharper disable once InconsistentNaming
             CheckBox _cbTransparency = cbTransparency;
             if (sender.Equals(cbTransparency2) || 
                 sender.Equals(rbTransparencyAlways2) || 
@@ -966,7 +1262,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             FormSettings.Settings.SearchBoxOpacity = _tbOpacity.Value / 100.0;
 
             // toggle the transparency control states..
-            TransparencyToggle(Form.ActiveForm != null && Form.ActiveForm.Equals(this));
+            TransparencyToggle(ActiveForm != null && ActiveForm.Equals(this));
 
             // resume "self"..
             SuspendTransparencyChangeEvent = false;            
@@ -975,6 +1271,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // searches for a text occurrences in multiple files on the file system..
         private void BtFindAllInFiles_Click(object sender, EventArgs e)
         {
+            SaveSearchText(); // save the used search text to the database..
+            SaveReplaceText(); // save the used replace text to the database..
+            SaveFilters(); // save the used file extension filter to the database..
+
             // make a list suitable for the FormSearchResultTree class instance..            
             List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
                 isFileOpen)> results =
@@ -1049,5 +1349,97 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
         }
         #endregion
+
+        // replaces a text occurrences in multiple files on the file system..
+        private void BtReplaceAllInFiles_Click(object sender, EventArgs e)
+        {
+            SaveSearchText(); // save the used search text to the database..
+            SaveReplaceText(); // save the used replace text to the database..
+            SaveFilters(); // save the used file extension filter to the database..
+
+            string toReplaceWith = cmbReplace3.Text;
+
+            // make a list suitable for the FormSearchResultTree class instance..            
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> results =
+                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                    isFileOpen)>();
+
+            // create a new instance of the DirectoryCrawler class by user given "arguments"..
+            DirectoryCrawler crawler = new DirectoryCrawler(cmbDirectory3.Text, DirectoryCrawler.SearchTypeMatch.Regex,
+                cmbFilters3.Text, cbInSubFolders.Checked);
+
+            // create a invisible scintilla control for the process..
+            Scintilla contents = new Scintilla {Visible = false};
+
+            // invocations to the control can't be made if the control has no handle..
+            Controls.Add(contents);
+
+            int replaceCount = 0;
+            int filesAffected = 0;
+
+            // ReSharper disable once ObjectCreationAsStatement
+
+            // initialize a new FormDialogSearchReplaceProgressFiles dialog form with the
+            // DirectoryCrawler class instance as parameter and a delegate for the
+            // FormDialogSearchReplaceProgressFiles.RequestNextAction..
+            new FormDialogSearchReplaceProgressFiles(crawler,
+                // no name for this delegate..
+                (o, args) =>
+                {
+                    // check the settings for a maximum search file size..
+                    if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)
+                    {
+                        // .. and if exceeded, skip the file..
+                        args.SkipFile = true;
+                    }
+                    else // ..otherwise do continue..
+                    {
+                        // invoke the Scintilla to get new contents of the new file..
+                        contents.Invoke(new MethodInvoker(delegate
+                        {
+                            // just read all the text in the file and set it to the Scintilla..
+                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
+
+                            // by not doing this the memory consumption might get HIGH..
+                            contents.EmptyUndoBuffer();
+
+                            // create a new search algorithm for the file and it's contents..
+                            CreateSingleSearchReplaceAlgorithm((contents, args.FileName));
+                        }));
+
+                        // set the new TextSearcherAndReplacer class instance to the event's argument..
+                        args.SearchAndReplacer = SearchReplaceDocuments;
+                        
+                        // set the action to run for the file in the FormDialogSearchReplaceProgressFiles class instance..
+                        args.Action = () =>
+                        {
+                            var replacements = SearchReplaceDocuments?.ReplaceAll(toReplaceWith, 100);
+                            if (replacements.HasValue)
+                            {
+                                if (replacements.Value.count > 0)
+                                {
+                                    File.WriteAllText(args.FileName, replacements.Value.newContents,
+                                        FormSettings.Settings.DefaultEncoding);
+                                    filesAffected++;
+
+                                    replaceCount += replacements.Value.count;
+                                }                               
+                            }
+                        };
+                    }
+                });            
+
+            // set the Scintilla free (!)..
+            using (contents)
+            {
+                Controls.Remove(contents);
+            }
+
+            // indicate the replacement count..
+            ssLbStatus.Text = DBLangEngine.GetMessage("msgReplacementsMadeFilesAmount",
+                "Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.",
+                replaceCount, filesAffected);
+        }
     }
 }

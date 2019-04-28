@@ -59,6 +59,30 @@ namespace ScriptNotepad.Database.UtilityClasses
         }
 
         /// <summary>
+        /// Converts a value type of T to string to be inserted into the database ('NI' stands for NULLIF).
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="value">The value to be inserted to the database..</param>
+        /// <returns>System.String; if the value is null a string "NULL" is returned. If the type of the value is string it's automatically quoted.</returns>
+        public static string NI<T>(T value)
+        {
+            // null is NULL..
+            if (value == null)
+            {
+                return "NULL";
+            }
+
+            // a string needs to be quoted..
+            if (value is string)
+            {
+                return (QS(value.ToString()));
+            }
+
+            // otherwise just return the value converted to a string..
+            return value.ToString();
+        }
+
+        /// <summary>
         /// Gets a DateTime value from a give string from the database.
         /// </summary>
         /// <param name="value">The date and time value as it's stored in to the database.</param>
