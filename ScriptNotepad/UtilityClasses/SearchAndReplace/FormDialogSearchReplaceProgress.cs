@@ -121,14 +121,18 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
         // just run the action with the BackgroundWorker's DoWork event..
         private void BwMain_DoWork(object sender, DoWorkEventArgs e)
-        {
-            
+        {            
             Action();
         }
 
         // run the BackgroundWorker on the dialog shown event..
         private void FormDialogCommonProgress_Shown(object sender, EventArgs e)
         {
+            // this form needs to be the top most as it is a dialog..
+            TopMost = true;
+            BringToFront();
+
+            // run the BackgroundWorker to do the search and replace..
             bwMain.RunWorkerAsync();
         }
 

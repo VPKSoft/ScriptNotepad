@@ -62,6 +62,7 @@ using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
+using ScriptNotepad.UtilityClasses.Keyboard;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using VPKSoft.ScintillaLexers.HelperClasses;
@@ -1397,16 +1398,43 @@ namespace ScriptNotepad
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
+            // a user wishes to navigate within the FormSearchResultTree..
+            if (e.OnlyAlt() && e.KeyCodeIn(Keys.Left, Keys.Right, Keys.X))
+            {
+                // validate that there is an instance of the FormSearchResultTree which is visible..
+                if (FormSearchResultTree.PreviousInstance != null && FormSearchResultTree.PreviousInstance.Visible)
+                {
+                    // Alt+Left navigates to the previous tree node within the form..
+                    if (e.KeyCode == Keys.Left) 
+                    {
+                        FormSearchResultTree.PreviousInstance.PreviousOccurrence();
+                    }
+                    // Alt+Right navigates to the next tree node within the form..
+                    else if (e.KeyCode == Keys.Right)
+                    {
+                        FormSearchResultTree.PreviousInstance.NextOccurrence();
+                    }
+                    // Alt+X closes the FormSearchResultTree instance..
+                    else
+                    {
+                        FormSearchResultTree.PreviousInstance.CloseTree();
+                    }
+
+                    // this is handled..
+                    e.Handled = true;
+                }
+            }
+
             if (
                 // a user pressed a keyboard combination of CTRL+Z, which indicates undo for
                 // the Scintilla control..
-                (e.KeyCode == Keys.Z && e.Control && !e.Shift && !e.Alt) ||
+                e.KeyCode == Keys.Z && e.ModifierKeysDown(false, true, false) ||
                 // a user pressed a keyboard combination of CTRL+Y, which indicates redo for
                 // the Scintilla control..
-                (e.KeyCode == Keys.Y && e.Control && !e.Shift && !e.Alt) ||
+                e.KeyCode == Keys.Y && e.ModifierKeysDown(false, true, false) ||
                 // a user pressed the insert key a of a keyboard, which indicates toggling for
                 // insert / override mode for the Scintilla control..
-                (e.KeyCode == Keys.Insert && !e.Control && !e.Shift && !e.Alt))
+                e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
             {
                 // if there is an active document..
                 if (sttcMain.CurrentDocument != null)
@@ -1415,7 +1443,7 @@ namespace ScriptNotepad
                     if (sttcMain.CurrentDocument.Scintilla.CanUndo)
                     {
                         // get a DBFILE_SAVE class instance from the document's tag..
-                        DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+                        DBFILE_SAVE fileSave = (DBFILE_SAVE) sttcMain.CurrentDocument.Tag;
 
                         // undo the encoding change..
                         fileSave.UndoEncodingChange();
@@ -1423,26 +1451,23 @@ namespace ScriptNotepad
                         sttcMain.CurrentDocument.Tag = fileSave;
                     }
                 }
+
                 UpdateUndoRedoIndicators();
 
-                // special case called the "Insert" key..
-                if (e.KeyCode == Keys.Insert)
+                // this is handled..
+                e.Handled = true;
+            }
+            // special case called the "Insert" key..
+            else if (e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
+            {
+                // only if a document exists..
+                if (sttcMain.CurrentDocument != null)
                 {
-                    // only if a document exists..
-                    if (sttcMain.CurrentDocument != null)
-                    {
-                        // ..set the insert / override text for the status strip..
-                        StatusStripTexts.SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
-                    }
+                    // ..set the insert / override text for the status strip..
+                    StatusStripTexts.SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
                 }
             }
-            else if (
-                e.KeyCode == Keys.Up || 
-                e.KeyCode == Keys.Down || 
-                e.KeyCode == Keys.Left || 
-                e.KeyCode == Keys.Right ||
-                e.KeyCode == Keys.PageDown ||
-                e.KeyCode == Keys.PageUp)
+            else if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
             {
                 // set the flag to suspend the selection update to avoid excess CPU load..
                 suspendSelectionUpdate = true;
@@ -1451,13 +1476,7 @@ namespace ScriptNotepad
 
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
-            if (
-                e.KeyCode == Keys.Up ||
-                e.KeyCode == Keys.Down ||
-                e.KeyCode == Keys.Left ||
-                e.KeyCode == Keys.Right ||
-                e.KeyCode == Keys.PageDown ||
-                e.KeyCode == Keys.PageUp)
+            if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
             {
                 // release the flag which suspends the selection update to avoid excess CPU load..
                 suspendSelectionUpdate = false;

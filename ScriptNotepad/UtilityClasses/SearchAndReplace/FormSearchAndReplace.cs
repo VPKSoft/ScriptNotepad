@@ -35,6 +35,7 @@ using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.IO;
+using ScriptNotepad.UtilityClasses.Keyboard;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.SearchText;
@@ -810,6 +811,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </summary>
         private void Backward()
         {
+            SaveSearchText(); // save the used search text to the database..
             var result = SearchReplaceDocuments?.Backward();
             if (result.HasValue)
             {
@@ -827,6 +829,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// </summary>
         private void Forward()
         {
+            SaveSearchText(); // save the used search text to the database..
             var result = SearchReplaceDocuments?.Forward();
             if (result.HasValue)
             {
@@ -964,14 +967,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // a user wishes to search to the backward direction..
         private void btFindPrevious_Click(object sender, EventArgs e)
         {
-            SaveSearchText(); // save the used search text to the database..
             Backward();
         }
 
         // a user wishes to search to the forward direction..
         private void btFindNext_Click(object sender, EventArgs e)
         {
-            SaveSearchText(); // save the used search text to the database..
             Forward();
         }
 
@@ -1499,12 +1500,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             string toReplaceWith = cmbReplace3.Text;
 
-            // make a list suitable for the FormSearchResultTree class instance..            
-            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
-                isFileOpen)> results =
-                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
-                    isFileOpen)>();
-
             // create a new instance of the DirectoryCrawler class by user given "arguments"..
             DirectoryCrawler crawler = new DirectoryCrawler(cmbDirectory3.Text, DirectoryCrawler.SearchTypeMatch.Regex,
                 cmbFilters3.Text, cbInSubFolders.Checked);
@@ -1596,6 +1591,61 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 cmbDirectory3.Text = dialog.SelectedPath;
                 SavePaths(); // save the path used in the search into the database..
+            }
+        }
+
+        /// <summary>
+        /// Some keyboard shortcuts for the search and replace dialog.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+        private void FormSearchAndReplace_KeyDown(object sender, KeyEventArgs e)
+        {
+            // escape key was pressed, so the dialog can be closed..
+            if (e.KeyCode == Keys.Escape && e.NoModifierKeysDown())
+            {
+                e.Handled = true;
+                Close();
+                return;
+            }
+
+            // use the return key to search either to forwards or to backwards direction..
+            if (e.KeyCode == Keys.Return)
+            {
+                // if the find tab is active..
+                if (tcMain.SelectedTab.Equals(tabFind))
+                {
+                    if (btFindNext.Enabled && e.NoModifierKeysDown())
+                    {
+                        // the return key was pressed with no modifiers, so search forwards..
+                        Forward();
+                    }
+                    else if (btFindPrevious.Enabled && e.ModifierKeysDown(false, true, false))
+                    {
+                        // the return key was pressed with the Control key down, so search backwards..
+                        Backward();
+                    }
+
+                    // flag the event as handled..
+                    e.Handled = true;
+                }
+                // if the search and replace tab is active..
+                else if (tcMain.SelectedTab.Equals(tabReplace))
+                {
+                    if (btFindNext2.Enabled && e.NoModifierKeysDown())
+                    {
+                        // the return key was pressed with no modifiers, so search forwards..
+                        Forward();
+                    }
+                    else if (btFindPrevious2.Enabled && e.ModifierKeysDown(false, true, false))
+                    {
+                        // the return key was pressed with the Control key down, so search backwards..
+                        Backward();
+                    }
+
+                    // flag the event as handled..
+                    e.Handled = true;
+                }
             }
         }
         #endregion

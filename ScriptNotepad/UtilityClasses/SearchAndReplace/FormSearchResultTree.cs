@@ -27,18 +27,14 @@ SOFTWARE.
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScriptNotepad.Settings;
+using ScriptNotepad.UtilityClasses.Keyboard;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
-using VPKSoft.ScintillaTabbedTextControl;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 {
@@ -105,9 +101,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Gets or sets the previous instance of this class.
         /// </summary>
-        public static FormSearchResultTree PreviousInstance { get; set; } = null;
+        public static FormSearchResultTree PreviousInstance { get; set; }
 
-
+        // the search results for the tree view..
         private IEnumerable<(string fileName, int lineNumber, int startLocation, int length, string lineContent, bool isFileOpen)>
             searchResults;
 
@@ -122,7 +118,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             set
             {
                 // value changed..
-                if (value != searchResults)
+                if (!Equals(value, searchResults))
                 {
                     // save the value..
                     searchResults = value;
@@ -189,6 +185,37 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Selects the next occurrence within the tree view.
+        /// </summary>
+        public void NextOccurrence()
+        {
+            SelectNode(tvMain, true);
+        }
+
+        /// <summary>
+        /// Selects the previous occurrence within the tree view.
+        /// </summary>
+        public void PreviousOccurrence()
+        {
+            SelectNode(tvMain, false);
+        }
+
+        /// <summary>
+        /// Closes the tree view and its form.
+        /// </summary>
+        public void CloseTree()
+        {
+            if (IsDocked)
+            {
+                RequestDockReleaseMainForm?.Invoke(this, new EventArgs());
+            }
+            else
+            {
+                Close();
+            }
+        }
+
+        /// <summary>
         /// A delegate for the SearchResultSelected event.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
@@ -226,7 +253,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         // a flag indicating whether this instance is docked to the main form..
-        private bool isDocked = false;
+        private bool isDocked;
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is docked to the main form.
@@ -332,14 +359,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // the search result window is requested to be closed..
             if (sender.Equals(pnClose)) 
             {
-                if (IsDocked)
-                {
-                    RequestDockReleaseMainForm?.Invoke(this, new EventArgs());
-                }
-                else
-                {
-                    Close();
-                }
+                CloseTree();
             }
             // a user wishes to navigate to a next or to a previous search result..
             else if (sender.Equals(pnNextResult) || sender.Equals(pnPreviousResult))
@@ -502,6 +522,41 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         private void TvMain_DrawNode(object sender, DrawTreeNodeEventArgs e)
         {
             DrawTreeNodeHighlightSelectedEvenWithoutFocus(sender, e);
+        }
+
+        /// <summary>
+        /// Handles the KeyDown event of the FormSearchResultTree control for navigating within the tree view.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+        private void FormSearchResultTree_KeyDown(object sender, KeyEventArgs e)
+        {
+            // a user wishes to navigate within the FormSearchResultTree..
+            if (e.OnlyAlt() && e.KeyCodeIn(Keys.Left, Keys.Right, Keys.X))
+            {
+                // validate that there is an instance of the FormSearchResultTree which is visible..
+                if (Visible)
+                {
+                    // Alt+Left navigates to the previous tree node within the form..
+                    if (e.KeyCode == Keys.Left) 
+                    {
+                        PreviousOccurrence();
+                    }
+                    // Alt+Right navigates to the next tree node within the form..
+                    else if (e.KeyCode == Keys.Right)
+                    {
+                        NextOccurrence();
+                    }
+                    // Alt+X closes the FormSearchResultTree instance..
+                    else
+                    {
+                        CloseTree();
+                    }
+
+                    // this is handled..
+                    e.Handled = true;
+                }
+            }
         }
     }
 }

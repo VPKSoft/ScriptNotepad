@@ -1199,6 +1199,7 @@
             this.Controls.Add(this.ssMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "FormSearchAndReplace";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -1209,6 +1210,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSearchAndReplace_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormSearchAndReplace_FormClosed);
             this.Shown += new System.EventHandler(this.FormSearchAndReplace_NeedReloadDocuments);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSearchAndReplace_KeyDown);
             this.ssMain.ResumeLayout(false);
             this.ssMain.PerformLayout();
             this.tcMain.ResumeLayout(false);

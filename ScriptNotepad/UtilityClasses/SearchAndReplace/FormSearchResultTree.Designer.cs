@@ -141,9 +141,11 @@
             this.Controls.Add(this.tvMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "FormSearchResultTree";
             this.Text = "Search results";
             this.Shown += new System.EventHandler(this.FormSearchResultTree_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormSearchResultTree_KeyDown);
             this.tlpToolStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
