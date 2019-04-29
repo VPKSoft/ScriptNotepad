@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using ScintillaNET_FindReplaceDialog;
 using System;
 using System.Windows.Forms;
 using VPKSoft.Utils;
@@ -138,9 +137,6 @@ namespace ScriptNotepad
 
             // create a Settings class instance for the settings form..
             Settings.FormSettings.Settings = new Settings.Settings();
-
-            // localize the ScintillaNET_FindReplaceDialog..
-            LocalizationSetting.Locale = Settings.FormSettings.Settings.Culture.Name.Split('-')[0];
 
             DBLangEngine.UseCulture = Settings.FormSettings.Settings.Culture; // set the localization value..
 

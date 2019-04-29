@@ -883,6 +883,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // suspend the change event..
             SuspendTransparencyChangeEvent = true;
 
+            // set the enabled value of the transparency setting group boxes to disabled..
+            cbTransparency.Checked = true;
+            cbTransparency2.Checked = true;
+            cbTransparency3.Checked = true;
+
             // set the enabled value of the transparency setting group boxes to enabled..
             gpTransparency.Enabled = true;
             gpTransparency2.Enabled = true;
@@ -1382,6 +1387,16 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 _tbOpacity = tbOpacity2;
                 _cbTransparency = cbTransparency2;
             }
+            else if (sender.Equals(cbTransparency3) || 
+                 sender.Equals(rbTransparencyAlways3) || 
+                 sender.Equals(rbTransparencyOnLosingFocus3) || 
+                 sender.Equals(tbOpacity3))
+            {
+                _rbTransparencyAlways = rbTransparencyAlways3;
+                _tbOpacity = tbOpacity3;
+                _cbTransparency = cbTransparency3;
+            }
+
                 
             if (_cbTransparency.Checked)
             {
