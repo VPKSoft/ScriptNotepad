@@ -221,7 +221,7 @@ namespace ScriptNotepad
             AssignExceptionReportingActions();
 
             // create the default directory for the plug-ins if it doesn't exist yet..
-            Settings.FormSettings.CreateDefaultPluginDirectory();
+            FormSettings.CreateDefaultPluginDirectory();
 
             // localize the about "box"..
             VPKSoft.About.FormAbout.OverrideCultureString = Settings.FormSettings.Settings.Culture.Name;
@@ -794,12 +794,22 @@ namespace ScriptNotepad
                 // if the document exists in the file system, use different methods of detection..
                 else
                 {
-                    document.FileTabButton.IsSaved = 
-                        !DBFILE_SAVE.DateTimeLarger(fileSave.FILESYS_MODIFIED, fileSave.FILESYS_SAVED) ||
-                        !DBFILE_SAVE.DateTimeLarger(fileSave.DB_MODIFIED, fileSave.FILESYS_SAVED);
+                    document.FileTabButton.IsSaved = IsFileChanged(fileSave);
                 }
             }
             UpdateUndoRedoIndicators();
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="DBFILE_SAVE"/> has changed in the editor vs. the file system.
+        /// </summary>
+        /// <param name="fileSave">The <see cref="DBFILE_SAVE"/> class to check for.</param>
+        private bool IsFileChanged(DBFILE_SAVE fileSave)
+        {
+            return fileSave.EXISTS_INFILESYS &&
+                   !(fileSave.EXISTS_INFILESYS && (fileSave.FILESYS_SAVED == DateTime.MinValue ||
+                                                   fileSave.FILESYS_SAVED == fileSave.FILESYS_MODIFIED) &&
+                     fileSave.FILESYS_MODIFIED < fileSave.DB_MODIFIED);
         }
 
         /// <summary>
@@ -927,10 +937,13 @@ namespace ScriptNotepad
                     // enabled the caret line background color..
                     SetCaretLineColor();
 
+                    // set the context menu strip for the file tab..
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
+
                     // the file load can't add an undo option the Scintilla..
                     sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
                 }                
+                UpdateDocumentSaveIndicators();
             }
 
             if (activeDocument != string.Empty)
@@ -1871,6 +1884,13 @@ namespace ScriptNotepad
 
                     // undo the encoding change..
                     fileSave.UndoEncodingChange();
+
+                    if (!sttcMain.CurrentDocument.Scintilla.CanUndo)
+                    {
+                        fileSave.PopPreviousDbModified();
+                        sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                    }
+
                 }
             }
             UpdateUndoRedoIndicators();

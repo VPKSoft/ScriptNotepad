@@ -83,6 +83,7 @@
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFindInFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,7 +111,6 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFindInFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -431,6 +431,7 @@
             // 
             this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.new_document;
             this.mnuNew.Name = "mnuNew";
+            this.mnuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.mnuNew.Size = new System.Drawing.Size(191, 22);
             this.mnuNew.Text = "New";
             this.mnuNew.Click += new System.EventHandler(this.tsbNew_Click);
@@ -439,7 +440,8 @@
             // 
             this.mnuOpen.Image = ((System.Drawing.Image)(resources.GetObject("mnuOpen.Image")));
             this.mnuOpen.Name = "mnuOpen";
-            this.mnuOpen.Size = new System.Drawing.Size(191, 22);
+            this.mnuOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.mnuOpen.Size = new System.Drawing.Size(249, 22);
             this.mnuOpen.Text = "Open...";
             this.mnuOpen.Click += new System.EventHandler(this.mnuOpen_Click);
             // 
@@ -492,7 +494,8 @@
             // 
             this.munSave.Image = global::ScriptNotepad.Properties.Resources.Save;
             this.munSave.Name = "munSave";
-            this.munSave.Size = new System.Drawing.Size(191, 22);
+            this.munSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.munSave.Size = new System.Drawing.Size(249, 22);
             this.munSave.Text = "Save";
             this.munSave.Click += new System.EventHandler(this.munSave_Click);
             // 
@@ -500,7 +503,9 @@
             // 
             this.mnuSaveAs.Image = global::ScriptNotepad.Properties.Resources.SaveAs;
             this.mnuSaveAs.Name = "mnuSaveAs";
-            this.mnuSaveAs.Size = new System.Drawing.Size(191, 22);
+            this.mnuSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.S)));
+            this.mnuSaveAs.Size = new System.Drawing.Size(249, 22);
             this.mnuSaveAs.Text = "Save as";
             this.mnuSaveAs.Click += new System.EventHandler(this.munSave_Click);
             // 
@@ -508,7 +513,9 @@
             // 
             this.mnuSaveAll.Image = global::ScriptNotepad.Properties.Resources.save_all;
             this.mnuSaveAll.Name = "mnuSaveAll";
-            this.mnuSaveAll.Size = new System.Drawing.Size(191, 22);
+            this.mnuSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.mnuSaveAll.Size = new System.Drawing.Size(249, 22);
             this.mnuSaveAll.Text = "Save all";
             this.mnuSaveAll.Click += new System.EventHandler(this.mnuSaveAll_Click);
             // 
@@ -516,7 +523,10 @@
             // 
             this.mnuSaveAllWithUnsaved.Image = global::ScriptNotepad.Properties.Resources.save_all_plus;
             this.mnuSaveAllWithUnsaved.Name = "mnuSaveAllWithUnsaved";
-            this.mnuSaveAllWithUnsaved.Size = new System.Drawing.Size(191, 22);
+            this.mnuSaveAllWithUnsaved.ShortcutKeys = ((System.Windows.Forms.Keys)((((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.mnuSaveAllWithUnsaved.Size = new System.Drawing.Size(249, 22);
             this.mnuSaveAllWithUnsaved.Text = "Save all (+new)";
             this.mnuSaveAllWithUnsaved.Click += new System.EventHandler(this.mnuSaveAll_Click);
             // 
@@ -572,6 +582,16 @@
             this.mnuReplace.Size = new System.Drawing.Size(215, 22);
             this.mnuReplace.Text = "Replace...";
             this.mnuReplace.Click += new System.EventHandler(this.MnuReplace_Click);
+            // 
+            // mnuFindInFiles
+            // 
+            this.mnuFindInFiles.Image = global::ScriptNotepad.Properties.Resources.folder_find;
+            this.mnuFindInFiles.Name = "mnuFindInFiles";
+            this.mnuFindInFiles.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.F)));
+            this.mnuFindInFiles.Size = new System.Drawing.Size(215, 22);
+            this.mnuFindInFiles.Text = "Find in files...";
+            this.mnuFindInFiles.Click += new System.EventHandler(this.MnuFindInFiles_Click);
             // 
             // mnuTools
             // 
@@ -769,16 +789,6 @@
             this.mnuCloseAllToTheRight.Size = new System.Drawing.Size(323, 22);
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
-            // 
-            // mnuFindInFiles
-            // 
-            this.mnuFindInFiles.Image = global::ScriptNotepad.Properties.Resources.folder_find;
-            this.mnuFindInFiles.Name = "mnuFindInFiles";
-            this.mnuFindInFiles.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.F)));
-            this.mnuFindInFiles.Size = new System.Drawing.Size(215, 22);
-            this.mnuFindInFiles.Text = "Find in files...";
-            this.mnuFindInFiles.Click += new System.EventHandler(this.MnuFindInFiles_Click);
             // 
             // FormMain
             // 

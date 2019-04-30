@@ -87,9 +87,59 @@ namespace ScriptNotepad.Database.Tables
         public DateTime FILESYS_SAVED { get; set; } = DateTime.MinValue;
 
         /// <summary>
+        /// Resets the previous database modified property, so it can be set again.
+        /// </summary>
+        public void ResetPreviousDbModified()
+        {
+            previousDbModifiedIsSet = false;
+            previousDbModified = DateTime.MinValue;
+        }
+
+        /// <summary>
+        /// The field to hold a value if the <see cref="PreviousDbModified"/> property has been set once.
+        /// </summary>
+        private bool previousDbModifiedIsSet;
+
+        /// <summary>
+        /// A field to hold the <see cref="PreviousDbModified"/> property value.
+        /// </summary>
+        private DateTime previousDbModified = DateTime.MinValue;
+
+        /// <summary>
+        /// Gets or sets the value indicating when the file was previously modified in the database.
+        /// </summary>
+        public DateTime PreviousDbModified
+        {
+            get => previousDbModified;
+
+            set
+            {
+                if (previousDbModified.CompareTo(value) != 0 && !previousDbModifiedIsSet)
+                {
+                    previousDbModified = value;
+                }
+                previousDbModifiedIsSet = true;
+            }
+        }
+
+        /// <summary>
+        /// A field to hold the <see cref="DB_MODIFIED"/> property value.
+        /// </summary>
+        private DateTime dbModified = DateTime.MinValue;
+
+        /// <summary>
         /// Gets or sets the value indicating when the file was modified in the database.
         /// </summary>
-        public DateTime DB_MODIFIED { get; set; } = DateTime.MinValue;
+        public DateTime DB_MODIFIED
+        {
+            get => dbModified;
+
+            set 
+            { 
+                PreviousDbModified = dbModified;
+                dbModified = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the lexer number with the ScintillaNET.
@@ -143,6 +193,14 @@ namespace ScriptNotepad.Database.Tables
         public List<Encoding> PreviousEncodings { get; set; } = new List<Encoding>();
 
         /// <summary>
+        /// Restores the previous time stamp for the <see cref="DB_MODIFIED"/> field.
+        /// </summary>
+        public void PopPreviousDbModified()
+        {
+            DB_MODIFIED = PreviousDbModified;
+        }
+
+        /// <summary>
         /// Undoes the encoding change.
         /// </summary>
         public void UndoEncodingChange()
@@ -192,6 +250,9 @@ namespace ScriptNotepad.Database.Tables
                         MemoryStream memoryStream = new MemoryStream(fileContents); 
 
                         document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, ENCODING);
+
+                        // a reload doesn't need to be undone..
+                        document.Scintilla.EmptyUndoBuffer(); 
 
                         FILE_CONTENTS = document.Scintilla.Text;
 
