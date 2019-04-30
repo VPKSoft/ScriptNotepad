@@ -1428,10 +1428,10 @@ namespace ScriptNotepad
             if (
                 // a user pressed a keyboard combination of CTRL+Z, which indicates undo for
                 // the Scintilla control..
-                e.KeyCode == Keys.Z && e.ModifierKeysDown(false, true, false) ||
+                e.KeyCode == Keys.Z && e.OnlyControl() ||
                 // a user pressed a keyboard combination of CTRL+Y, which indicates redo for
                 // the Scintilla control..
-                e.KeyCode == Keys.Y && e.ModifierKeysDown(false, true, false) ||
+                e.KeyCode == Keys.Y && e.OnlyControl() ||
                 // a user pressed the insert key a of a keyboard, which indicates toggling for
                 // insert / override mode for the Scintilla control..
                 e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
@@ -1453,9 +1453,6 @@ namespace ScriptNotepad
                 }
 
                 UpdateUndoRedoIndicators();
-
-                // this is handled..
-                e.Handled = true;
             }
             // special case called the "Insert" key..
             else if (e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
