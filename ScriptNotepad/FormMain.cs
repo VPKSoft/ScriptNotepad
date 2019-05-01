@@ -34,7 +34,6 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
-using VPKSoft.ScintillaLexers;
 using VPKSoft.IPC;
 using Microsoft.Win32;
 using VPKSoft.PosLib;
@@ -68,7 +67,6 @@ using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using VPKSoft.ScintillaLexers.HelperClasses;
-using TabDrawMode = ScintillaNET.TabDrawMode;
 
 #endregion
 
@@ -126,6 +124,8 @@ namespace ScriptNotepad
                     "A script error occurred on the database update|Something failed during running the database update script"));
             }
 
+            // ReSharper disable once ArrangeThisQualifier
+            // ReSharper disable once VirtualMemberCallInConstructor
             this.Text +=
                 (ProcessElevation.IsElevated ? " (" +
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
@@ -231,7 +231,7 @@ namespace ScriptNotepad
             FormSettings.CreateDefaultPluginDirectory();
 
             // localize the about "box"..
-            VPKSoft.About.FormAbout.OverrideCultureString = Settings.FormSettings.Settings.Culture.Name;
+            VPKSoft.About.FormAbout.OverrideCultureString = FormSettings.Settings.Culture.Name;
 
             // initialize the plug-in assemblies..
             InitializePlugins();
@@ -298,6 +298,7 @@ namespace ScriptNotepad
 
             IEnumerable<PLUGINS> databaseEntries = DatabasePlugins.GetPlugins();
             bool pluginDeleted = false;
+            // ReSharper disable once PossibleMultipleEnumeration
             foreach (var pluginEntry in databaseEntries)
             {
                 if (pluginEntry.PENDING_DELETION)
@@ -322,13 +323,14 @@ namespace ScriptNotepad
             }
 
             // load the existing plug-ins..
-            var plugins = PluginDirectoryRoaming.GetPluginAssemblies(Settings.FormSettings.Settings.PluginFolder);
+            var plugins = PluginDirectoryRoaming.GetPluginAssemblies(FormSettings.Settings.PluginFolder);
 
             // loop through the found plug-ins..
             foreach (var plugin in plugins)
             {
                 // check if the plug-in is already in the database..
                 var pluginEntry =
+                    // ReSharper disable once PossibleMultipleEnumeration
                     databaseEntries.
                     FirstOrDefault(
                         f => f.FILENAME == Path.GetFileName(plugin.Path));
@@ -350,7 +352,7 @@ namespace ScriptNotepad
                     // set the locale for the plug-in..
                     if (pluginAssembly.Plugin != null)
                     {
-                        pluginAssembly.Plugin.Locale = Settings.FormSettings.Settings.Culture.Name;
+                        pluginAssembly.Plugin.Locale = FormSettings.Settings.Culture.Name;
                     }
 
                     // try to initialize the plug-in..
@@ -375,10 +377,13 @@ namespace ScriptNotepad
                     }
 
                     // update the possible version and the update time stamp..
-                    pluginEntry.SetPluginUpdated(plugin.Assembly);
+                    if (pluginEntry != null)
+                    {
+                        pluginEntry.SetPluginUpdated(plugin.Assembly);
 
-                    // update the plug-in information to the database..
-                    DatabasePlugins.AddOrUpdatePlugin(pluginEntry);
+                        // update the plug-in information to the database..
+                        DatabasePlugins.AddOrUpdatePlugin(pluginEntry);
+                    }
                 }
                 else
                 {
@@ -715,7 +720,8 @@ namespace ScriptNotepad
         /// <param name="closeTab">A flag indicating whether the tab containing the given <paramref name="fileSave"/> should be closed.</param>
         /// <param name="currentPosition">The position of the caret within the "file".</param>
         /// <returns>A modified <see cref="DBFILE_SAVE"/> class instance based on the given parameters.</returns>
-        private DBFILE_SAVE HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, bool tabClosing, bool closeTab, int currentPosition)
+        private void HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, bool tabClosing, bool closeTab,
+            int currentPosition)
         {
             // set the flags according to the parameters..
             fileSave.ISHISTORY = tabClosing || fileDeleted || closeTab; 
@@ -753,9 +759,6 @@ namespace ScriptNotepad
 
             // re-create a menu for recent files..
             RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
-
-            // return the modified DBFILE_SAVE class instance.. 
-            return fileSave; 
         }
 
         /// <summary>
@@ -849,6 +852,7 @@ namespace ScriptNotepad
         /// </summary>
         private void SetEmptyApplicationTitle()
         {
+            // ReSharper disable once ArrangeThisQualifier
             this.Text =
                 DBLangEngine.GetMessage("msgAppTitleWithoutFileName",
                 "ScriptNotepad|As in the application name without an active file name") +
@@ -862,6 +866,7 @@ namespace ScriptNotepad
         /// <param name="document">The <see cref="ScintillaTabbedDocument"/> document.</param>
         private void SetApplicationTitle(ScintillaTabbedDocument document)
         {
+            // ReSharper disable once ArrangeThisQualifier
             this.Text =
                 DBLangEngine.GetMessage("msgAppTitleWithFileName",
                 "ScriptNotepad [{0}]|As in the application name combined with an active file name",
@@ -1029,7 +1034,7 @@ namespace ScriptNotepad
         /// Adds a new document in to the view.
         /// </summary>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private bool NewDocument()
+        private void NewDocument()
         {
             // a false would happen if the document (file) can not be accessed or required permissions to access a file
             // would be missing (also a bug might occur)..
@@ -1066,18 +1071,7 @@ namespace ScriptNotepad
 
                     // save the DBFILE_SAVE class instance to the Tag property..
                     sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
-                    return true;
                 }
-                else
-                {
-                    // fail with the current document being null..
-                    return false;
-                }
-            }
-            else
-            {
-                // fail with the ScintillaTabbedTextControl returning an error..
-                return false;
             }
         }
 
@@ -1088,7 +1082,7 @@ namespace ScriptNotepad
         /// <param name="encoding">The encoding to be used to open the file.</param>
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private bool OpenDocument(string fileName, Encoding encoding, bool reloadContents = false)
+        private void OpenDocument(string fileName, Encoding encoding, bool reloadContents = false)
         {
             // check the file's existence first..
             if (File.Exists(fileName))
@@ -1159,24 +1153,8 @@ namespace ScriptNotepad
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
-                        return true;
-                    }
-                    else
-                    {
-                        // fail with the current document being null..
-                        return false;
                     }
                 }
-                else
-                {
-                    // fail with the ScintillaTabbedTextControl returning an error..
-                    return false;
-                }
-            }
-            else
-            {
-                // fail as the file does not exist..
-                return false;
             }
         }
 
@@ -1186,7 +1164,7 @@ namespace ScriptNotepad
         /// <param name="document">The document to be saved.</param>
         /// <param name="saveAs">An indicator if the document should be saved as a new file.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private bool SaveDocument(ScintillaTabbedDocument document, bool saveAs)
+        private void SaveDocument(ScintillaTabbedDocument document, bool saveAs)
         {
             try
             {
@@ -1249,28 +1227,18 @@ namespace ScriptNotepad
                         else
                         {
                             // the user canceled the file save dialog..
-                            return false;
+                            return;
                         }
                     }
 
                     // update the saved indicators..
                     UpdateDocumentSaveIndicators();
-                    // indicate success..
-                    return true;
-                }
-                else
-                {
-                    // the given parameter was invalid so fail..
-                    return false;
                 }
             }
             catch (Exception ex)
             {
                 // log the exception..
                 ExceptionLogger.LogError(ex);
-
-                // an exception occurred so fail..
-                return false;
             }
         }
 
@@ -1863,6 +1831,7 @@ namespace ScriptNotepad
         // a user wanted to see an about dialog of the software..
         private void mnuAbout_Click(object sender, EventArgs e)
         {
+            // ReSharper disable once ObjectCreationAsStatement
             new VPKSoft.About.FormAbout(this, "MIT", "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE");
         }
 
@@ -1870,7 +1839,7 @@ namespace ScriptNotepad
         private void sttcMain_SelectionCaretChanged(object sender, ScintillaTabbedDocumentEventArgsExt e)
         {
             // set the search and replace from selection flag..
-            if (Form.ActiveForm != null && (e.ScintillaTabbedDocument.SelectionLength > 0 && Form.ActiveForm.Equals(this)))
+            if (ActiveForm != null && (e.ScintillaTabbedDocument.SelectionLength > 0 && ActiveForm.Equals(this)))
             {
                 FormSearchAndReplace.Instance.SelectionChangedFromMainForm = true;
             }
@@ -1991,12 +1960,6 @@ namespace ScriptNotepad
                 }
             }
             UpdateUndoRedoIndicators();
-        }
-
-        private void Database_ExceptionOccurred(object sender, ExceptionEventArgs exceptionEventArgs)
-        {
-            // log the database exception..
-            ExceptionLogger.LogError(exceptionEventArgs.Exception);
         }
 
         // a timer to prevent an endless loop with the form activated event (probably a poor solution)..
@@ -2213,18 +2176,18 @@ namespace ScriptNotepad
         /// <summary>
         /// A flag indicating if the main form should be activated.
         /// </summary>
-        private bool bringToFrontQueued = false;
+        private bool bringToFrontQueued;
 
         /// <summary>
         /// A flag indicating if the main form's execution has left the Activated event.
         /// </summary>
-        private bool leftActivatedEvent = false;
+        private bool leftActivatedEvent;
 
         /// <summary>
         /// A flag indicating whether the selection should be update to the status strip.
         /// Continuous updates with keyboard will cause excess CPU usage.
         /// </summary>
-        private bool suspendSelectionUpdate = false;
+        private bool suspendSelectionUpdate;
         #endregion
 
         #region PrivateProperties
@@ -2233,14 +2196,14 @@ namespace ScriptNotepad
         /// </summary>
         private string CurrentSession
         {
-            get => Settings.FormSettings.Settings == null ? "Default" : Settings.FormSettings.Settings.CurrentSession;
+            get => FormSettings.Settings == null ? "Default" : FormSettings.Settings.CurrentSession;
 
             set
             {
-                bool sessionChanged = Settings.FormSettings.Settings.CurrentSession != value;
-                string previousSession = Settings.FormSettings.Settings.CurrentSession;
+                bool sessionChanged = FormSettings.Settings.CurrentSession != value;
+                string previousSession = FormSettings.Settings.CurrentSession;
 
-                Settings.FormSettings.Settings.CurrentSession = value;
+                FormSettings.Settings.CurrentSession = value;
 
                 if (sessionChanged)
                 {
@@ -2265,8 +2228,8 @@ namespace ScriptNotepad
         /// </summary>
         private bool CurrentSessionLocalized
         {
-            get => Settings.FormSettings.Settings.DefaultSessionLocalized;
-            set => Settings.FormSettings.Settings.DefaultSessionLocalized = value;
+            get => FormSettings.Settings.DefaultSessionLocalized;
+            set => FormSettings.Settings.DefaultSessionLocalized = value;
         }
 
         /// <summary>
@@ -2274,7 +2237,7 @@ namespace ScriptNotepad
         /// </summary>
         private Encoding DefaultEncoding
         {
-            get => Settings.FormSettings.Settings.DefaultEncoding;
+            get => FormSettings.Settings.DefaultEncoding;
         }
 
         /// <summary>
@@ -2282,8 +2245,7 @@ namespace ScriptNotepad
         /// </summary>
         private int HistoryListAmount
         {
-            get => Settings.FormSettings.Settings.HistoryListAmount;
-            set => Settings.FormSettings.Settings.HistoryListAmount = value;
+            get => FormSettings.Settings.HistoryListAmount;
         }
 
         /// <summary>
@@ -2291,15 +2253,16 @@ namespace ScriptNotepad
         /// </summary>
         private int SaveFileHistoryContentsCount
         {
-            get => Settings.FormSettings.Settings.SaveFileHistoryContents ?
+            get => FormSettings.Settings.SaveFileHistoryContents ?
                 // the setting value if the setting is enabled..
-                Settings.FormSettings.Settings.SaveFileHistoryContentsCount : 
+                FormSettings.Settings.SaveFileHistoryContentsCount : 
                 int.MinValue; // the minimum value if the setting is disabled..
         }
 
         /// <summary>
         /// Gets or sets the ID number for the current session for the documents.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         private long CurrentSessionID { get; set; } = -1;
         #endregion
 
@@ -2365,8 +2328,6 @@ namespace ScriptNotepad
         {
             if (sttcMain.CurrentDocument != null) // the first null check..
             {
-                var document = sttcMain.CurrentDocument; // get the active document..
-
                 // get the DBFILE_SAVE from the active document..
                 var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
 
