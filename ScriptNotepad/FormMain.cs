@@ -63,6 +63,7 @@ using ScriptNotepad.Localization;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Keyboard;
+using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using VPKSoft.ScintillaLexers.HelperClasses;
@@ -169,6 +170,9 @@ namespace ScriptNotepad
             // get the session ID number from the database..
             CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
 
+            // localize the context menu before any of the context menus are build to the Scintilla controls..
+            ScintillaContextMenu.LocalizeTexts();
+
             // load the recent documents which were saved during the program close..
             LoadDocumentsFromDatabase(CurrentSession);
 
@@ -229,70 +233,42 @@ namespace ScriptNotepad
             // initialize the plug-in assemblies..
             InitializePlugins();
         }
-
-        private void FormSearchResultTree_RequestDockReleaseMainForm(object sender, EventArgs e)
-        {
-            var dockForm = (FormSearchResultTree)sender;
-            pnDock.Controls.Remove(dockForm);
-            dockForm.Close();
-        }
-
-        private void FormSearchResultTree_RequestDockMainForm(object sender, EventArgs e)
-        {
-            // no docking if disabled..
-            if (!FormSettings.Settings.DockSearchTreeForm)
-            {
-                return;
-            }
-
-            var dockForm = (FormSearchResultTree)sender;
-            dockForm.TopLevel = false;
-            dockForm.AutoScroll = true;
-            dockForm.FormBorderStyle = FormBorderStyle.None;
-            dockForm.Location = new Point(0, 0);
-            dockForm.Width = pnDock.Width;
-            dockForm.Height = Height * 15 / 100;
-            dockForm.IsDocked = true;
-            pnDock.Controls.Add(dockForm);
-            //dockForm.Dock = DockStyle.Fill;
-            dockForm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-        }
-
-        private void FormSearchResultTreeSearchResultSelected(object sender, SearchResultTreeViewClickEventArgs e)
-        {
-            // check if the file is opened in the editor..
-            if (e.SearchResult.isFileOpen)
-            {
-                int idx = sttcMain.Documents.FindIndex(f => f.FileName == e.SearchResult.fileName);
-                if (idx != -1)
-                {
-                    sttcMain.ActivateDocument(idx);
-                    var scintilla = sttcMain.Documents[idx].Scintilla;
-                    scintilla.GotoPosition(e.SearchResult.startLocation);
-                    scintilla.CurrentPosition = e.SearchResult.startLocation;
-                    scintilla.SetSelection(e.SearchResult.startLocation, e.SearchResult.startLocation + e.SearchResult.length);
-                    Focus();
-                }
-            }
-            else if (!e.SearchResult.isFileOpen)
-            {              
-                OpenDocument(e.SearchResult.fileName, DefaultEncoding);
-                var scintilla = sttcMain.LastAddedDocument?.Scintilla;
-                if (scintilla != null)
-                {
-                    scintilla.GotoPosition(e.SearchResult.startLocation);
-                    scintilla.CurrentPosition = e.SearchResult.startLocation;
-                    scintilla.SetSelection(e.SearchResult.startLocation, e.SearchResult.startLocation + e.SearchResult.length);
-
-                    var formSearchResultTree = (FormSearchResultTree) sender;
-                    formSearchResultTree.SetFileOpened(e.SearchResult.fileName, true);
-                    Focus();
-                }
-            }
-        }
         #endregion
 
         #region HelperMethods
+        /// <summary>
+        /// The context menu of the scintilla called this method, so do some related stuff.
+        /// </summary>
+        /// <param name="scintilla">A <see cref="Scintilla"/> class instance from which the context menu strip called the undo method.</param>
+        private void UndoFromExternal(Scintilla scintilla)
+        {
+            // if there is an active document..
+            if (sttcMain.CurrentDocument != null && sttcMain.CurrentDocument.Scintilla.Equals(scintilla))
+            {
+                // get a DBFILE_SAVE class instance from the document's tag..
+                DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+
+                // undo the encoding change..
+                fileSave.UndoEncodingChange();
+
+                if (!sttcMain.CurrentDocument.Scintilla.CanUndo)
+                {
+                    fileSave.PopPreviousDbModified();
+                    sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                }
+            }
+            UpdateUndoRedoIndicators();
+        }
+
+        /// <summary>
+        /// The context menu of the scintilla called this method, so do some related stuff.
+        /// </summary>
+        /// <param name="scintilla">A <see cref="Scintilla"/> class instance from which the context menu strip called the redo method.</param>
+        private void RedoFromExternal(Scintilla scintilla)
+        {
+            UpdateUndoRedoIndicators();
+        }
+
         /// <summary>
         /// Initializes the plug-ins for the software.
         /// </summary>
@@ -752,6 +728,9 @@ namespace ScriptNotepad
             // this should never be -1 but do check still in case of a bug..
             if (docIndex != -1)
             {
+                // unsubscribe the context menu event(s)..
+                ScintillaContextMenu.UnsubscribeEvents(sttcMain.Documents[docIndex].Scintilla);
+
                 // update the file save to the database..
                 DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[docIndex]);
 
@@ -923,6 +902,10 @@ namespace ScriptNotepad
                 sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
                 if (sttcMain.LastAddedDocument != null)
                 {
+                    // create a localizable context menu strip for the Scintilla..
+                    ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
+                        UndoFromExternal, RedoFromExternal);
+
                     // set the saved position of the document's caret..
                     if (file.CURRENT_POSITION > 0 && file.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
                     {
@@ -969,6 +952,10 @@ namespace ScriptNotepad
                 sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
                 if (sttcMain.LastAddedDocument != null)
                 {
+                    // create a localizable context menu strip for the Scintilla..
+                    ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
+                        UndoFromExternal, RedoFromExternal);
+
                     // not history any more..
                     file.ISHISTORY = false;
 
@@ -1035,6 +1022,10 @@ namespace ScriptNotepad
             {
                 if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                 {
+                    // create a localizable context menu strip for the Scintilla..
+                    ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.CurrentDocument.Scintilla,
+                        UndoFromExternal, RedoFromExternal);
+
                     sttcMain.CurrentDocument.Tag =
                         new DBFILE_SAVE()
                         {
@@ -1089,6 +1080,10 @@ namespace ScriptNotepad
                 {
                     if (sttcMain.LastAddedDocument != null) // if the document was added or updated to the control..
                     {
+                        // create a localizable context menu strip for the Scintilla..
+                        ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
+                            UndoFromExternal, RedoFromExternal);
+
                         // check the database first for a DBFILE_SAVE class instance..
                         DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName);
 
@@ -1273,6 +1268,67 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        private void FormSearchResultTree_RequestDockReleaseMainForm(object sender, EventArgs e)
+        {
+            var dockForm = (FormSearchResultTree)sender;
+            pnDock.Controls.Remove(dockForm);
+            dockForm.Close();
+        }
+
+        private void FormSearchResultTree_RequestDockMainForm(object sender, EventArgs e)
+        {
+            // no docking if disabled..
+            if (!FormSettings.Settings.DockSearchTreeForm)
+            {
+                return;
+            }
+
+            var dockForm = (FormSearchResultTree)sender;
+            dockForm.TopLevel = false;
+            dockForm.AutoScroll = true;
+            dockForm.FormBorderStyle = FormBorderStyle.None;
+            dockForm.Location = new Point(0, 0);
+            dockForm.Width = pnDock.Width;
+            dockForm.Height = Height * 15 / 100;
+            dockForm.IsDocked = true;
+            pnDock.Controls.Add(dockForm);
+            //dockForm.Dock = DockStyle.Fill;
+            dockForm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+        }
+
+        private void FormSearchResultTreeSearchResultSelected(object sender, SearchResultTreeViewClickEventArgs e)
+        {
+            // check if the file is opened in the editor..
+            if (e.SearchResult.isFileOpen)
+            {
+                int idx = sttcMain.Documents.FindIndex(f => f.FileName == e.SearchResult.fileName);
+                if (idx != -1)
+                {
+                    sttcMain.ActivateDocument(idx);
+                    var scintilla = sttcMain.Documents[idx].Scintilla;
+                    scintilla.GotoPosition(e.SearchResult.startLocation);
+                    scintilla.CurrentPosition = e.SearchResult.startLocation;
+                    scintilla.SetSelection(e.SearchResult.startLocation, e.SearchResult.startLocation + e.SearchResult.length);
+                    Focus();
+                }
+            }
+            else if (!e.SearchResult.isFileOpen)
+            {              
+                OpenDocument(e.SearchResult.fileName, DefaultEncoding);
+                var scintilla = sttcMain.LastAddedDocument?.Scintilla;
+                if (scintilla != null)
+                {
+                    scintilla.GotoPosition(e.SearchResult.startLocation);
+                    scintilla.CurrentPosition = e.SearchResult.startLocation;
+                    scintilla.SetSelection(e.SearchResult.startLocation, e.SearchResult.startLocation + e.SearchResult.length);
+
+                    var formSearchResultTree = (FormSearchResultTree) sender;
+                    formSearchResultTree.SetFileOpened(e.SearchResult.fileName, true);
+                    Focus();
+                }
+            }
+        }
+
         // the search and replace dialog is requesting for documents opened on this main form..
         private void InstanceRequestDocuments(object sender, ScintillaDocumentEventArgs e)
         {

@@ -149,6 +149,7 @@
     <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
     <Compile Include="UtilityClasses\Keyboard\KeyboardHelpers.cs" />
+    <Compile Include="UtilityClasses\ScintillaNETUtils\ScintillaContextMenu.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs">
       <SubType>Form</SubType>
     </Compile>

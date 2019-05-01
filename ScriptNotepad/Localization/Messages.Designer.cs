@@ -565,6 +565,60 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cut|A message for a context menu to describe a cut action.
+        /// </summary>
+        internal static string msgContextCut {
+            get {
+                return ResourceManager.GetString("msgContextCut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete|A message for a context menu to describe a delete text action.
+        /// </summary>
+        internal static string msgContextDelete {
+            get {
+                return ResourceManager.GetString("msgContextDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste|A message for a context menu to describe a paste action.
+        /// </summary>
+        internal static string msgContextPaste {
+            get {
+                return ResourceManager.GetString("msgContextPaste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redo|A message for a context menu to describe a redo action.
+        /// </summary>
+        internal static string msgContextRedo {
+            get {
+                return ResourceManager.GetString("msgContextRedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select All|A message for a context menu to describe a select all text action.
+        /// </summary>
+        internal static string msgContextSelectAll {
+            get {
+                return ResourceManager.GetString("msgContextSelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo|A message for a context menu to describe an undo action.
+        /// </summary>
+        internal static string msgContextUndo {
+            get {
+                return ResourceManager.GetString("msgContextUndo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to C++ source file|*.h;*.hpp;*.hxx;*.cpp;*.cxx;*.cc|A text in a file dialog indicating C++ source files.
         /// </summary>
         internal static string msgCPPSourceFile {

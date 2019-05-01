@@ -621,4 +621,22 @@
   <data name="msgReplacementsMadeFilesAmount" xml:space="preserve">
     <value>Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.</value>
   </data>
+  <data name="msgContextCut" xml:space="preserve">
+    <value>Cut|A message for a context menu to describe a cut action</value>
+  </data>
+  <data name="msgContextDelete" xml:space="preserve">
+    <value>Delete|A message for a context menu to describe a delete text action</value>
+  </data>
+  <data name="msgContextPaste" xml:space="preserve">
+    <value>Paste|A message for a context menu to describe a paste action</value>
+  </data>
+  <data name="msgContextRedo" xml:space="preserve">
+    <value>Redo|A message for a context menu to describe a redo action</value>
+  </data>
+  <data name="msgContextSelectAll" xml:space="preserve">
+    <value>Select All|A message for a context menu to describe a select all text action</value>
+  </data>
+  <data name="msgContextUndo" xml:space="preserve">
+    <value>Undo|A message for a context menu to describe an undo action</value>
+  </data>
 </root>
