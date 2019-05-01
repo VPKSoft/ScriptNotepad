@@ -36,6 +36,7 @@ using System.Reflection;
 using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
 using System.Globalization;
+using ScintillaNET;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 
 namespace ScriptNotepad.Settings
@@ -271,6 +272,39 @@ namespace ScriptNotepad.Settings
         /// <value>The color of the mark five style.</value>
         [Setting("color/mark5", typeof(Color))]
         public Color Mark5Color { get; set; } = Color.FromArgb(0, 128, 0);
+
+        /// <summary>
+        /// Gets the color of the mark.
+        /// </summary>
+        /// <param name="index">The index of the mark style (0-4).</param>
+        /// <returns>A color matching the given marks index.</returns>
+        public Color GetMarkColor(int index)
+        {
+            switch (index)
+            {
+                case 0: return Mark1Color;
+                case 1: return Mark2Color;
+                case 2: return Mark3Color;
+                case 3: return Mark4Color;
+                case 4: return Mark5Color;
+                default: return SmartHighlight;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor should use tabs.
+        /// </summary>
+        [Setting("editor/useTabs", typeof(bool))]
+        public bool EditorUseTabs { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value of the tab character symbol type.
+        /// </summary>
+        [Setting("editor/tabSymbol", typeof(int))]
+        public int EditorTabSymbol { get; set; } = (int)TabDrawMode.LongArrow;
+
+        [Setting("editor/whiteSpaceSize", typeof(int))]
+        public int EditorWhiteSpaceSize { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets a value indicating whether save closed file contents to database as history.

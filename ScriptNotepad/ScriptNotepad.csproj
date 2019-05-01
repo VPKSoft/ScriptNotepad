@@ -149,6 +149,7 @@
     <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
     <Compile Include="UtilityClasses\Keyboard\KeyboardHelpers.cs" />
+    <Compile Include="UtilityClasses\MenuHelpers\ContextMenuStyles.cs" />
     <Compile Include="UtilityClasses\ScintillaNETUtils\ScintillaContextMenu.cs" />
     <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs">
       <SubType>Form</SubType>
@@ -398,6 +399,9 @@
     <None Include="Resources\close_small.png" />
     <None Include="Resources\find_replace.png" />
     <None Include="Resources\folder-find.png" />
+    <None Include="Resources\database-go.png" />
+    <None Include="Resources\tab_arrow.png" />
+    <None Include="Resources\tab_strikethrough.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

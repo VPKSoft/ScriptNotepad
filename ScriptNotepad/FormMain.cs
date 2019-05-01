@@ -63,10 +63,13 @@ using ScriptNotepad.Localization;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Keyboard;
+using ScriptNotepad.UtilityClasses.MenuHelpers;
 using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using VPKSoft.ScintillaLexers.HelperClasses;
+using TabDrawMode = ScintillaNET.TabDrawMode;
+
 #endregion
 
 namespace ScriptNotepad
@@ -903,8 +906,14 @@ namespace ScriptNotepad
                 if (sttcMain.LastAddedDocument != null)
                 {
                     // create a localizable context menu strip for the Scintilla..
-                    ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
+                    var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
                         UndoFromExternal, RedoFromExternal);
+
+                    // add the style mark menu to the context menu..
+                    ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
+
+                    // set the editor (Scintilla) properties from the saved settings..
+                    FormSettings.SetEditorSettings(sttcMain.LastAddedDocument.Scintilla);
 
                     // set the saved position of the document's caret..
                     if (file.CURRENT_POSITION > 0 && file.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
@@ -953,8 +962,14 @@ namespace ScriptNotepad
                 if (sttcMain.LastAddedDocument != null)
                 {
                     // create a localizable context menu strip for the Scintilla..
-                    ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
+                    var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
                         UndoFromExternal, RedoFromExternal);
+
+                    // add the style mark menu to the context menu..
+                    ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
+
+                    // set the editor (Scintilla) properties from the saved settings..
+                    FormSettings.SetEditorSettings(sttcMain.LastAddedDocument.Scintilla);
 
                     // not history any more..
                     file.ISHISTORY = false;
@@ -1023,8 +1038,14 @@ namespace ScriptNotepad
                 if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                 {
                     // create a localizable context menu strip for the Scintilla..
-                    ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.CurrentDocument.Scintilla,
+                    var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.CurrentDocument.Scintilla,
                         UndoFromExternal, RedoFromExternal);
+
+                    // add the style mark menu to the context menu..
+                    ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
+
+                    // set the editor (Scintilla) properties from the saved settings..
+                    FormSettings.SetEditorSettings(sttcMain.CurrentDocument.Scintilla);
 
                     sttcMain.CurrentDocument.Tag =
                         new DBFILE_SAVE()
@@ -1081,8 +1102,14 @@ namespace ScriptNotepad
                     if (sttcMain.LastAddedDocument != null) // if the document was added or updated to the control..
                     {
                         // create a localizable context menu strip for the Scintilla..
-                        ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
+                        var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
                             UndoFromExternal, RedoFromExternal);
+
+                        // add the style mark menu to the context menu..
+                        ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
+
+                        // set the editor (Scintilla) properties from the saved settings..
+                        FormSettings.SetEditorSettings(sttcMain.LastAddedDocument.Scintilla);
 
                         // check the database first for a DBFILE_SAVE class instance..
                         DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName);
@@ -1354,7 +1381,7 @@ namespace ScriptNotepad
             if (session != null && CurrentSession != session.SESSIONNAME)
             {
                 // set the current session name..
-                Settings.FormSettings.Settings.CurrentSession = session.SESSIONNAME;
+                FormSettings.Settings.CurrentSession = session.SESSIONNAME;
 
                 // set the session name for all open documents..
                 for (int i = 0; i < sttcMain.DocumentsCount; i++)
@@ -1388,7 +1415,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Tries catch an event crashing the whole application if the error is causes by a plug-in.
         /// </summary>
-        public static Action<string> ModuleExceptionHandler { get; set; } = null;
+        public static Action<string> ModuleExceptionHandler { get; set; }
 
         // checks if file selected in the open file dialog requires elevation and the file exists..
         private void odAnyFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
@@ -1462,7 +1489,7 @@ namespace ScriptNotepad
         private void mnuSettings_Click(object sender, EventArgs e)
         {
             // ..so display the settings dialog..
-            Settings.FormSettings.Execute();
+            FormSettings.Execute();
         }
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
@@ -1625,7 +1652,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets a value indicating whether the text of the Scintilla changed via changing the encoding.
         /// </summary>
-        private bool TextChangedViaEncodingChange { get; set; } = false;
+        private bool TextChangedViaEncodingChange { get; set; }
 
         /// <summary>
         /// A common method to change or convert the encoding of the active document.
@@ -1850,7 +1877,7 @@ namespace ScriptNotepad
 
             if (e.ScintillaTabbedDocument.Scintilla.SelectionEnd == e.ScintillaTabbedDocument.Scintilla.SelectionStart)
             {
-                e.ScintillaTabbedDocument.Scintilla.IndicatorClearRange(0, e.ScintillaTabbedDocument.Scintilla.TextLength);
+                Highlight.ClearStyle(e.ScintillaTabbedDocument.Scintilla, 8);
             }
             
             if (!suspendSelectionUpdate)
@@ -2088,8 +2115,7 @@ namespace ScriptNotepad
 
         private void FormMain_Deactivate(object sender, EventArgs e)
         {
-            FormSearchAndReplace.Instance.ToggleStayTop(false);
-            
+            FormSearchAndReplace.Instance.ToggleStayTop(false);            
         }
 
         private void FormMain_ResizeBegin(object sender, EventArgs e)
@@ -2105,7 +2131,75 @@ namespace ScriptNotepad
         private void SttcMain_DocumentMouseDoubleClick(object sender, MouseEventArgs e)
         {
             var scintilla = (Scintilla)sender;
-            Highlight.HighlightWord(scintilla, scintilla.SelectedText, FormSettings.Settings.SmartHighlight);
+            // Indicators 0-7 could be in use by a lexer
+            // so we'll use indicator 8 to highlight words.
+            Highlight.HighlightWord(scintilla, 8, scintilla.SelectedText, FormSettings.Settings.SmartHighlight);
+        }
+
+        // a user wishes to mark all occurrences of the selected text with a style (1..5)..
+        private void StyleSelectOf_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                int styleNum = int.Parse(((ToolStripMenuItem) sender).Tag.ToString());
+
+                Highlight.HighlightWord(sttcMain.CurrentDocument.Scintilla, styleNum,
+                    sttcMain.CurrentDocument.Scintilla.SelectedText, FormSettings.Settings.GetMarkColor(styleNum - 9));
+            }
+        }
+
+        // a user wishes to clear style mark of style (1..5) from the editor..
+        private void ClearStyleOf_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                Highlight.ClearStyle(sttcMain.CurrentDocument.Scintilla,
+                    int.Parse(((ToolStripMenuItem) sender).Tag.ToString()));
+            }
+        }
+
+        // a user wishes to clear all style markings of the current document..
+        private void ClearAllStyles_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                for (int i = 9; i < 14; i++)
+                {
+                    Highlight.ClearStyle(sttcMain.CurrentDocument.Scintilla, i);
+                }
+            }
+        }
+
+        // a user wishes to show or hide the white space symbols..
+        private void MnuShowWhiteSpaceAndTab_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                var menuStrip = (ToolStripMenuItem) sender;
+                sttcMain.CurrentDocument.Scintilla.ViewWhitespace =
+                    menuStrip.Checked ? WhitespaceMode.VisibleAlways : WhitespaceMode.Invisible;
+            }
+        }
+
+        // a user wishes to hide or show the end of line symbols..
+        private void MnuShowEndOfLine_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                var menuStrip = (ToolStripMenuItem) sender;
+                sttcMain.CurrentDocument.Scintilla.ViewEol = menuStrip.Checked;
+            }
+        }
+
+        // the show symbol menu drop down items are going to be shown, so set their states accordingly..
+        private void MnuShowSymbol_DropDownOpening(object sender, EventArgs e)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                mnuShowEndOfLine.Checked = sttcMain.CurrentDocument.Scintilla.ViewEol;
+                mnuShowWhiteSpaceAndTab.Checked =
+                    sttcMain.CurrentDocument.Scintilla.ViewWhitespace != WhitespaceMode.Invisible;
+            }
         }
         #endregion
 
@@ -2335,6 +2429,7 @@ namespace ScriptNotepad
             // call the CloseAllFunction method with this "wondrous" logic..
             CloseAllFunction(sender.Equals(mnuCloseAllToTheRight), sender.Equals(mnuCloseAllToTheLeft));
         }
+
         #endregion
     }
 }

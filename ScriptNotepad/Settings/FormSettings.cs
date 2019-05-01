@@ -29,17 +29,15 @@ using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScintillaNET;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
+using TabDrawMode = ScintillaNET.TabDrawMode;
 
 namespace ScriptNotepad.Settings
 {
@@ -150,6 +148,16 @@ namespace ScriptNotepad.Settings
 
             // get the amount of how much search history (search text, replace text, directories, paths, etc.) to keep..
             nudHistoryAmount.Value = Settings.FileSearchHistoriesLimit;
+
+            // get the size of the white space dot..
+            nudWhiteSpaceSize.Value = Settings.EditorWhiteSpaceSize;
+
+            // get the value whether to use tabs in the editor (tabulator characters)..
+            cbUseTabs.Checked = Settings.EditorUseTabs;
+
+            // gets the type of the tab character symbol..
+            rbTabSymbolStrikeout.Checked = Settings.EditorTabSymbol != 0;
+            rbTabSymbolArrow.Checked = Settings.EditorTabSymbol == 0;
         }
 
         /// <summary>
@@ -193,6 +201,22 @@ namespace ScriptNotepad.Settings
 
             // set the amount of how much search history (search text, replace text, directories, paths, etc.) to keep..
             Settings.FileSearchHistoriesLimit = (int)nudHistoryAmount.Value;
+
+            // set the size of the white space dot..
+            Settings.EditorWhiteSpaceSize = (int)nudWhiteSpaceSize.Value;
+
+            // set the value whether to use tabs in the editor (tabulator characters)..
+            Settings.EditorUseTabs = cbUseTabs.Checked;
+
+            // set the type of the tab character symbol..
+            if (rbTabSymbolArrow.Checked)
+            {
+                Settings.EditorTabSymbol = (int) TabDrawMode.LongArrow;
+            }
+            else
+            {
+                Settings.EditorTabSymbol = (int) TabDrawMode.Strikeout;
+            }
         }
         #endregion
 
@@ -212,6 +236,22 @@ namespace ScriptNotepad.Settings
         /// Gets or sets the settings class instance containing the settings for the software.
         /// </summary>
         public static Settings Settings { get; set; }
+
+        /// <summary>
+        /// Sets the editor settings for a given <see cref="Scintilla"/>.
+        /// </summary>
+        /// <param name="scintilla">The scintilla which settings to set.</param>
+        public static void SetEditorSettings(Scintilla scintilla)
+        {
+            // set the size of the white space dot..
+            scintilla.WhitespaceSize = Settings.EditorWhiteSpaceSize;
+
+            // set the value whether to use tabs in the editor (tabulator characters)..
+            scintilla.UseTabs = Settings.EditorUseTabs;
+
+            // set the type of the tab character symbol..
+            scintilla.TabDrawMode = (TabDrawMode) Settings.EditorTabSymbol;
+        }
 
         /// <summary>
         /// Gets or sets the encoding a user selected from the dialog.
@@ -321,7 +361,6 @@ namespace ScriptNotepad.Settings
             btMarkStyle4Color.BackColor = Color.FromArgb(128, 0, 255);
             btMarkStyle5Color.BackColor = Color.FromArgb(0, 128, 0);
             btCurrentLineBackgroundColor.BackColor = Color.FromArgb(232, 232, 255);
-
         }
     }
 }

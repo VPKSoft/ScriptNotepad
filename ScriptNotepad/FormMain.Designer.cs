@@ -80,6 +80,21 @@
             this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRunScript = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCharSets = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuStyle = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuClearAllStyles = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuStyle1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuStyle2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuStyle3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuStyle4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuStyle5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuClearStyle1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuClearStyle2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuClearStyle3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuClearStyle4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuClearStyle5 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,6 +109,9 @@
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuShowSymbol = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuShowWhiteSpaceAndTab = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
             this.tmGUI = new System.Windows.Forms.Timer(this.components);
@@ -111,6 +129,7 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuShowEndOfLine = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -398,6 +417,7 @@
             this.mnuFile,
             this.mnuEdit,
             this.mnuSearch,
+            this.mnuView,
             this.mnuTools,
             this.mnuPlugins,
             this.mnuHelp});
@@ -432,7 +452,7 @@
             this.mnuNew.Image = global::ScriptNotepad.Properties.Resources.new_document;
             this.mnuNew.Name = "mnuNew";
             this.mnuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.mnuNew.Size = new System.Drawing.Size(191, 22);
+            this.mnuNew.Size = new System.Drawing.Size(249, 22);
             this.mnuNew.Text = "New";
             this.mnuNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
@@ -449,7 +469,7 @@
             // 
             this.mnuOpenWithEncoding.Image = global::ScriptNotepad.Properties.Resources.open_unknown_encoding;
             this.mnuOpenWithEncoding.Name = "mnuOpenWithEncoding";
-            this.mnuOpenWithEncoding.Size = new System.Drawing.Size(191, 22);
+            this.mnuOpenWithEncoding.Size = new System.Drawing.Size(249, 22);
             this.mnuOpenWithEncoding.Text = "Open with encoding...";
             this.mnuOpenWithEncoding.Click += new System.EventHandler(this.mnuOpenWithEncoding_Click);
             // 
@@ -457,7 +477,7 @@
             // 
             this.mnuTest.Image = global::ScriptNotepad.Properties.Resources.astonished;
             this.mnuTest.Name = "mnuTest";
-            this.mnuTest.Size = new System.Drawing.Size(191, 22);
+            this.mnuTest.Size = new System.Drawing.Size(249, 22);
             this.mnuTest.Text = "Test Form...";
             this.mnuTest.Visible = false;
             this.mnuTest.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
@@ -465,30 +485,30 @@
             // mnuSplit1
             // 
             this.mnuSplit1.Name = "mnuSplit1";
-            this.mnuSplit1.Size = new System.Drawing.Size(188, 6);
+            this.mnuSplit1.Size = new System.Drawing.Size(246, 6);
             // 
             // mnuRecentFiles
             // 
             this.mnuRecentFiles.Name = "mnuRecentFiles";
-            this.mnuRecentFiles.Size = new System.Drawing.Size(191, 22);
+            this.mnuRecentFiles.Size = new System.Drawing.Size(249, 22);
             this.mnuRecentFiles.Text = "Recent...";
             // 
             // mnuSplit2
             // 
             this.mnuSplit2.Name = "mnuSplit2";
-            this.mnuSplit2.Size = new System.Drawing.Size(188, 6);
+            this.mnuSplit2.Size = new System.Drawing.Size(246, 6);
             // 
             // mnuSession
             // 
             this.mnuSession.Image = global::ScriptNotepad.Properties.Resources.session_properties;
             this.mnuSession.Name = "mnuSession";
-            this.mnuSession.Size = new System.Drawing.Size(191, 22);
+            this.mnuSession.Size = new System.Drawing.Size(249, 22);
             this.mnuSession.Text = "Session";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(188, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(246, 6);
             // 
             // munSave
             // 
@@ -534,7 +554,9 @@
             // 
             this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuRunScript,
-            this.mnuCharSets});
+            this.mnuCharSets,
+            this.toolStripMenuItem6,
+            this.mnuStyle});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -554,6 +576,143 @@
             this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
             this.mnuCharSets.Text = "Change encoding";
             this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(165, 6);
+            // 
+            // mnuStyle
+            // 
+            this.mnuStyle.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuClearAllStyles,
+            this.toolStripMenuItem5,
+            this.mnuStyle1,
+            this.mnuStyle2,
+            this.mnuStyle3,
+            this.mnuStyle4,
+            this.mnuStyle5,
+            this.toolStripMenuItem2,
+            this.mnuClearStyle1,
+            this.mnuClearStyle2,
+            this.mnuClearStyle3,
+            this.mnuClearStyle4,
+            this.mnuClearStyle5});
+            this.mnuStyle.Name = "mnuStyle";
+            this.mnuStyle.Size = new System.Drawing.Size(168, 22);
+            this.mnuStyle.Text = "Style";
+            // 
+            // mnuClearAllStyles
+            // 
+            this.mnuClearAllStyles.Name = "mnuClearAllStyles";
+            this.mnuClearAllStyles.Size = new System.Drawing.Size(266, 22);
+            this.mnuClearAllStyles.Text = "Clear all style marks";
+            this.mnuClearAllStyles.Click += new System.EventHandler(this.ClearAllStyles_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(263, 6);
+            // 
+            // mnuStyle1
+            // 
+            this.mnuStyle1.Name = "mnuStyle1";
+            this.mnuStyle1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
+            this.mnuStyle1.Size = new System.Drawing.Size(266, 22);
+            this.mnuStyle1.Tag = "9";
+            this.mnuStyle1.Text = "Mark using the first style";
+            this.mnuStyle1.Click += new System.EventHandler(this.StyleSelectOf_Click);
+            // 
+            // mnuStyle2
+            // 
+            this.mnuStyle2.Name = "mnuStyle2";
+            this.mnuStyle2.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
+            this.mnuStyle2.Size = new System.Drawing.Size(266, 22);
+            this.mnuStyle2.Tag = "10";
+            this.mnuStyle2.Text = "Mark using the seconds style";
+            this.mnuStyle2.Click += new System.EventHandler(this.StyleSelectOf_Click);
+            // 
+            // mnuStyle3
+            // 
+            this.mnuStyle3.Name = "mnuStyle3";
+            this.mnuStyle3.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.mnuStyle3.Size = new System.Drawing.Size(266, 22);
+            this.mnuStyle3.Tag = "11";
+            this.mnuStyle3.Text = "Mark using the third style";
+            this.mnuStyle3.Click += new System.EventHandler(this.StyleSelectOf_Click);
+            // 
+            // mnuStyle4
+            // 
+            this.mnuStyle4.Name = "mnuStyle4";
+            this.mnuStyle4.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
+            this.mnuStyle4.Size = new System.Drawing.Size(266, 22);
+            this.mnuStyle4.Tag = "12";
+            this.mnuStyle4.Text = "Mark using the fourth style";
+            this.mnuStyle4.Click += new System.EventHandler(this.StyleSelectOf_Click);
+            // 
+            // mnuStyle5
+            // 
+            this.mnuStyle5.Name = "mnuStyle5";
+            this.mnuStyle5.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
+            this.mnuStyle5.Size = new System.Drawing.Size(266, 22);
+            this.mnuStyle5.Tag = "13";
+            this.mnuStyle5.Text = "Mark using the fifth style";
+            this.mnuStyle5.Click += new System.EventHandler(this.StyleSelectOf_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(263, 6);
+            // 
+            // mnuClearStyle1
+            // 
+            this.mnuClearStyle1.Name = "mnuClearStyle1";
+            this.mnuClearStyle1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D1)));
+            this.mnuClearStyle1.Size = new System.Drawing.Size(266, 22);
+            this.mnuClearStyle1.Tag = "9";
+            this.mnuClearStyle1.Text = "Clear style one";
+            this.mnuClearStyle1.Click += new System.EventHandler(this.ClearStyleOf_Click);
+            // 
+            // mnuClearStyle2
+            // 
+            this.mnuClearStyle2.Name = "mnuClearStyle2";
+            this.mnuClearStyle2.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D2)));
+            this.mnuClearStyle2.Size = new System.Drawing.Size(266, 22);
+            this.mnuClearStyle2.Tag = "10";
+            this.mnuClearStyle2.Text = "Clear style two";
+            this.mnuClearStyle2.Click += new System.EventHandler(this.ClearStyleOf_Click);
+            // 
+            // mnuClearStyle3
+            // 
+            this.mnuClearStyle3.Name = "mnuClearStyle3";
+            this.mnuClearStyle3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D3)));
+            this.mnuClearStyle3.Size = new System.Drawing.Size(266, 22);
+            this.mnuClearStyle3.Tag = "11";
+            this.mnuClearStyle3.Text = "Clear style three";
+            this.mnuClearStyle3.Click += new System.EventHandler(this.ClearStyleOf_Click);
+            // 
+            // mnuClearStyle4
+            // 
+            this.mnuClearStyle4.Name = "mnuClearStyle4";
+            this.mnuClearStyle4.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D4)));
+            this.mnuClearStyle4.Size = new System.Drawing.Size(266, 22);
+            this.mnuClearStyle4.Tag = "12";
+            this.mnuClearStyle4.Text = "Clear style four";
+            this.mnuClearStyle4.Click += new System.EventHandler(this.ClearStyleOf_Click);
+            // 
+            // mnuClearStyle5
+            // 
+            this.mnuClearStyle5.Name = "mnuClearStyle5";
+            this.mnuClearStyle5.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D5)));
+            this.mnuClearStyle5.Size = new System.Drawing.Size(266, 22);
+            this.mnuClearStyle5.Tag = "13";
+            this.mnuClearStyle5.Text = "Clear style five";
+            this.mnuClearStyle5.Click += new System.EventHandler(this.ClearStyleOf_Click);
             // 
             // mnuSearch
             // 
@@ -649,8 +808,9 @@
             // 
             // mnuDumpLanguage
             // 
+            this.mnuDumpLanguage.Image = global::ScriptNotepad.Properties.Resources.database_go;
             this.mnuDumpLanguage.Name = "mnuDumpLanguage";
-            this.mnuDumpLanguage.Size = new System.Drawing.Size(159, 22);
+            this.mnuDumpLanguage.Size = new System.Drawing.Size(180, 22);
             this.mnuDumpLanguage.Text = "Dump language";
             this.mnuDumpLanguage.Click += new System.EventHandler(this.MnuDumpLanguage_Click);
             // 
@@ -674,6 +834,32 @@
             this.mnuAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
+            // 
+            // mnuView
+            // 
+            this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuShowSymbol});
+            this.mnuView.Name = "mnuView";
+            this.mnuView.Size = new System.Drawing.Size(44, 20);
+            this.mnuView.Text = "View";
+            // 
+            // mnuShowSymbol
+            // 
+            this.mnuShowSymbol.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuShowWhiteSpaceAndTab,
+            this.mnuShowEndOfLine});
+            this.mnuShowSymbol.Name = "mnuShowSymbol";
+            this.mnuShowSymbol.Size = new System.Drawing.Size(180, 22);
+            this.mnuShowSymbol.Text = "Show symbol";
+            this.mnuShowSymbol.DropDownOpening += new System.EventHandler(this.MnuShowSymbol_DropDownOpening);
+            // 
+            // mnuShowWhiteSpaceAndTab
+            // 
+            this.mnuShowWhiteSpaceAndTab.CheckOnClick = true;
+            this.mnuShowWhiteSpaceAndTab.Name = "mnuShowWhiteSpaceAndTab";
+            this.mnuShowWhiteSpaceAndTab.Size = new System.Drawing.Size(211, 22);
+            this.mnuShowWhiteSpaceAndTab.Text = "Show white space and tab";
+            this.mnuShowWhiteSpaceAndTab.Click += new System.EventHandler(this.MnuShowWhiteSpaceAndTab_Click);
             // 
             // odAnyFile
             // 
@@ -790,6 +976,14 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
+            // mnuShowEndOfLine
+            // 
+            this.mnuShowEndOfLine.CheckOnClick = true;
+            this.mnuShowEndOfLine.Name = "mnuShowEndOfLine";
+            this.mnuShowEndOfLine.Size = new System.Drawing.Size(211, 22);
+            this.mnuShowEndOfLine.Text = "Show end of line";
+            this.mnuShowEndOfLine.Click += new System.EventHandler(this.MnuShowEndOfLine_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -904,6 +1098,25 @@
         private System.Windows.Forms.Panel pnDock;
         private System.Windows.Forms.ToolStripMenuItem mnuReplace;
         private System.Windows.Forms.ToolStripMenuItem mnuFindInFiles;
+        private System.Windows.Forms.ToolStripMenuItem mnuStyle;
+        private System.Windows.Forms.ToolStripMenuItem mnuStyle1;
+        private System.Windows.Forms.ToolStripMenuItem mnuStyle2;
+        private System.Windows.Forms.ToolStripMenuItem mnuStyle3;
+        private System.Windows.Forms.ToolStripMenuItem mnuStyle4;
+        private System.Windows.Forms.ToolStripMenuItem mnuStyle5;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem mnuClearStyle1;
+        private System.Windows.Forms.ToolStripMenuItem mnuClearStyle2;
+        private System.Windows.Forms.ToolStripMenuItem mnuClearStyle3;
+        private System.Windows.Forms.ToolStripMenuItem mnuClearStyle4;
+        private System.Windows.Forms.ToolStripMenuItem mnuClearStyle5;
+        private System.Windows.Forms.ToolStripMenuItem mnuClearAllStyles;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem mnuView;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowSymbol;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowWhiteSpaceAndTab;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowEndOfLine;
     }
 }
 

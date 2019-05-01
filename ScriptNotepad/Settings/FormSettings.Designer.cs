@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.nudHistoryAmount = new System.Windows.Forms.NumericUpDown();
+            this.lbHistoryAmount = new System.Windows.Forms.Label();
             this.nudMaximumSearchFileSize = new System.Windows.Forms.NumericUpDown();
             this.lbMaximumSearchFileSize = new System.Windows.Forms.Label();
             this.cbDockSearchTree = new System.Windows.Forms.CheckBox();
@@ -53,6 +55,12 @@
             this.cmbEncoding = new System.Windows.Forms.ComboBox();
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
+            this.tabEditorSettings = new System.Windows.Forms.TabPage();
+            this.gbTabSymbol = new System.Windows.Forms.GroupBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.rbTabSymbolStrikeout = new System.Windows.Forms.RadioButton();
+            this.rbTabSymbolArrow = new System.Windows.Forms.RadioButton();
+            this.cbUseTabs = new System.Windows.Forms.CheckBox();
             this.tpgColorSettings = new System.Windows.Forms.TabPage();
             this.btDefaults = new System.Windows.Forms.Button();
             this.btCurrentLineBackgroundColor = new System.Windows.Forms.Button();
@@ -73,10 +81,12 @@
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cdColors = new System.Windows.Forms.ColorDialog();
-            this.lbHistoryAmount = new System.Windows.Forms.Label();
-            this.nudHistoryAmount = new System.Windows.Forms.NumericUpDown();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.lbWhiteSpaceSize = new System.Windows.Forms.Label();
+            this.nudWhiteSpaceSize = new System.Windows.Forms.NumericUpDown();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
@@ -84,8 +94,12 @@
             this.gpDefaultEncoding.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
+            this.tabEditorSettings.SuspendLayout();
+            this.gbTabSymbol.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tpgColorSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -94,6 +108,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpgGeneralSettings);
+            this.tcMain.Controls.Add(this.tabEditorSettings);
             this.tcMain.Controls.Add(this.tpgColorSettings);
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
@@ -128,10 +143,42 @@
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
             // 
+            // nudHistoryAmount
+            // 
+            this.nudHistoryAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudHistoryAmount.Location = new System.Drawing.Point(461, 290);
+            this.nudHistoryAmount.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudHistoryAmount.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudHistoryAmount.Name = "nudHistoryAmount";
+            this.nudHistoryAmount.Size = new System.Drawing.Size(90, 20);
+            this.nudHistoryAmount.TabIndex = 37;
+            this.nudHistoryAmount.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            // 
+            // lbHistoryAmount
+            // 
+            this.lbHistoryAmount.AutoSize = true;
+            this.lbHistoryAmount.Location = new System.Drawing.Point(3, 292);
+            this.lbHistoryAmount.Name = "lbHistoryAmount";
+            this.lbHistoryAmount.Size = new System.Drawing.Size(211, 13);
+            this.lbHistoryAmount.TabIndex = 36;
+            this.lbHistoryAmount.Text = "Maximum amount of search history to keep:";
+            // 
             // nudMaximumSearchFileSize
             // 
             this.nudMaximumSearchFileSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 247);
+            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 264);
             this.nudMaximumSearchFileSize.Maximum = new decimal(new int[] {
             1999,
             0,
@@ -154,7 +201,7 @@
             // lbMaximumSearchFileSize
             // 
             this.lbMaximumSearchFileSize.AutoSize = true;
-            this.lbMaximumSearchFileSize.Location = new System.Drawing.Point(3, 249);
+            this.lbMaximumSearchFileSize.Location = new System.Drawing.Point(3, 266);
             this.lbMaximumSearchFileSize.Name = "lbMaximumSearchFileSize";
             this.lbMaximumSearchFileSize.Size = new System.Drawing.Size(194, 13);
             this.lbMaximumSearchFileSize.TabIndex = 33;
@@ -163,7 +210,7 @@
             // cbDockSearchTree
             // 
             this.cbDockSearchTree.AutoSize = true;
-            this.cbDockSearchTree.Location = new System.Drawing.Point(6, 223);
+            this.cbDockSearchTree.Location = new System.Drawing.Point(6, 240);
             this.cbDockSearchTree.Name = "cbDockSearchTree";
             this.cbDockSearchTree.Size = new System.Drawing.Size(126, 17);
             this.cbDockSearchTree.TabIndex = 32;
@@ -174,7 +221,7 @@
             // 
             this.pbDefaultFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbDefaultFolder.Image = global::ScriptNotepad.Properties.Resources.default_image;
-            this.pbDefaultFolder.Location = new System.Drawing.Point(494, 195);
+            this.pbDefaultFolder.Location = new System.Drawing.Point(494, 214);
             this.pbDefaultFolder.Name = "pbDefaultFolder";
             this.pbDefaultFolder.Size = new System.Drawing.Size(21, 21);
             this.pbDefaultFolder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -186,7 +233,7 @@
             // btSelectPluginFolder
             // 
             this.btSelectPluginFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSelectPluginFolder.Location = new System.Drawing.Point(520, 195);
+            this.btSelectPluginFolder.Location = new System.Drawing.Point(520, 214);
             this.btSelectPluginFolder.Name = "btSelectPluginFolder";
             this.btSelectPluginFolder.Size = new System.Drawing.Size(31, 20);
             this.btSelectPluginFolder.TabIndex = 30;
@@ -198,9 +245,9 @@
             // 
             this.tbPluginFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPluginFolder.Location = new System.Drawing.Point(225, 195);
+            this.tbPluginFolder.Location = new System.Drawing.Point(6, 214);
             this.tbPluginFolder.Name = "tbPluginFolder";
-            this.tbPluginFolder.Size = new System.Drawing.Size(263, 20);
+            this.tbPluginFolder.Size = new System.Drawing.Size(482, 20);
             this.tbPluginFolder.TabIndex = 29;
             this.tbPluginFolder.TextChanged += new System.EventHandler(this.tbPluginFolder_TextChanged);
             // 
@@ -396,6 +443,75 @@
             this.lbEncoding.TabIndex = 6;
             this.lbEncoding.Text = "Encoding:";
             // 
+            // tabEditorSettings
+            // 
+            this.tabEditorSettings.Controls.Add(this.nudWhiteSpaceSize);
+            this.tabEditorSettings.Controls.Add(this.lbWhiteSpaceSize);
+            this.tabEditorSettings.Controls.Add(this.gbTabSymbol);
+            this.tabEditorSettings.Controls.Add(this.cbUseTabs);
+            this.tabEditorSettings.Location = new System.Drawing.Point(4, 22);
+            this.tabEditorSettings.Name = "tabEditorSettings";
+            this.tabEditorSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEditorSettings.Size = new System.Drawing.Size(557, 371);
+            this.tabEditorSettings.TabIndex = 2;
+            this.tabEditorSettings.Text = "Editor";
+            this.tabEditorSettings.UseVisualStyleBackColor = true;
+            // 
+            // gbTabSymbol
+            // 
+            this.gbTabSymbol.Controls.Add(this.pictureBox2);
+            this.gbTabSymbol.Controls.Add(this.pictureBox1);
+            this.gbTabSymbol.Controls.Add(this.rbTabSymbolStrikeout);
+            this.gbTabSymbol.Controls.Add(this.rbTabSymbolArrow);
+            this.gbTabSymbol.Location = new System.Drawing.Point(6, 31);
+            this.gbTabSymbol.Name = "gbTabSymbol";
+            this.gbTabSymbol.Size = new System.Drawing.Size(201, 70);
+            this.gbTabSymbol.TabIndex = 1;
+            this.gbTabSymbol.TabStop = false;
+            this.gbTabSymbol.Text = "Tab symbol";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ScriptNotepad.Properties.Resources.tab_arrow;
+            this.pictureBox1.Location = new System.Drawing.Point(159, 29);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(24, 7);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
+            // rbTabSymbolStrikeout
+            // 
+            this.rbTabSymbolStrikeout.AutoSize = true;
+            this.rbTabSymbolStrikeout.Location = new System.Drawing.Point(6, 42);
+            this.rbTabSymbolStrikeout.Name = "rbTabSymbolStrikeout";
+            this.rbTabSymbolStrikeout.Size = new System.Drawing.Size(67, 17);
+            this.rbTabSymbolStrikeout.TabIndex = 1;
+            this.rbTabSymbolStrikeout.Text = "Strikeout";
+            this.rbTabSymbolStrikeout.UseVisualStyleBackColor = true;
+            // 
+            // rbTabSymbolArrow
+            // 
+            this.rbTabSymbolArrow.AutoSize = true;
+            this.rbTabSymbolArrow.Checked = true;
+            this.rbTabSymbolArrow.Location = new System.Drawing.Point(6, 19);
+            this.rbTabSymbolArrow.Name = "rbTabSymbolArrow";
+            this.rbTabSymbolArrow.Size = new System.Drawing.Size(52, 17);
+            this.rbTabSymbolArrow.TabIndex = 0;
+            this.rbTabSymbolArrow.TabStop = true;
+            this.rbTabSymbolArrow.Text = "Arrow";
+            this.rbTabSymbolArrow.UseVisualStyleBackColor = true;
+            // 
+            // cbUseTabs
+            // 
+            this.cbUseTabs.AutoSize = true;
+            this.cbUseTabs.Location = new System.Drawing.Point(6, 8);
+            this.cbUseTabs.Name = "cbUseTabs";
+            this.cbUseTabs.Size = new System.Drawing.Size(68, 17);
+            this.cbUseTabs.TabIndex = 0;
+            this.cbUseTabs.Text = "Use tabs";
+            this.cbUseTabs.UseVisualStyleBackColor = true;
+            // 
             // tpgColorSettings
             // 
             this.tpgColorSettings.Controls.Add(this.btDefaults);
@@ -590,34 +706,44 @@
             this.cdColors.AnyColor = true;
             this.cdColors.FullOpen = true;
             // 
-            // lbHistoryAmount
+            // pictureBox2
             // 
-            this.lbHistoryAmount.AutoSize = true;
-            this.lbHistoryAmount.Location = new System.Drawing.Point(3, 275);
-            this.lbHistoryAmount.Name = "lbHistoryAmount";
-            this.lbHistoryAmount.Size = new System.Drawing.Size(211, 13);
-            this.lbHistoryAmount.TabIndex = 36;
-            this.lbHistoryAmount.Text = "Maximum amount of search history to keep:";
+            this.pictureBox2.Image = global::ScriptNotepad.Properties.Resources.tab_strikethrough;
+            this.pictureBox2.Location = new System.Drawing.Point(159, 52);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(24, 7);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
             // 
-            // nudHistoryAmount
+            // lbWhiteSpaceSize
             // 
-            this.nudHistoryAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudHistoryAmount.Location = new System.Drawing.Point(461, 273);
-            this.nudHistoryAmount.Maximum = new decimal(new int[] {
-            1000,
+            this.lbWhiteSpaceSize.AutoSize = true;
+            this.lbWhiteSpaceSize.Location = new System.Drawing.Point(6, 109);
+            this.lbWhiteSpaceSize.Name = "lbWhiteSpaceSize";
+            this.lbWhiteSpaceSize.Size = new System.Drawing.Size(88, 13);
+            this.lbWhiteSpaceSize.TabIndex = 2;
+            this.lbWhiteSpaceSize.Text = "White space size";
+            // 
+            // nudWhiteSpaceSize
+            // 
+            this.nudWhiteSpaceSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudWhiteSpaceSize.Location = new System.Drawing.Point(461, 107);
+            this.nudWhiteSpaceSize.Maximum = new decimal(new int[] {
+            10,
             0,
             0,
             0});
-            this.nudHistoryAmount.Minimum = new decimal(new int[] {
-            5,
+            this.nudWhiteSpaceSize.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
-            this.nudHistoryAmount.Name = "nudHistoryAmount";
-            this.nudHistoryAmount.Size = new System.Drawing.Size(90, 20);
-            this.nudHistoryAmount.TabIndex = 37;
-            this.nudHistoryAmount.Value = new decimal(new int[] {
-            25,
+            this.nudWhiteSpaceSize.Name = "nudWhiteSpaceSize";
+            this.nudWhiteSpaceSize.Size = new System.Drawing.Size(90, 20);
+            this.nudWhiteSpaceSize.TabIndex = 3;
+            this.nudWhiteSpaceSize.Value = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -644,6 +770,7 @@
             this.tcMain.ResumeLayout(false);
             this.tpgGeneralSettings.ResumeLayout(false);
             this.tpgGeneralSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
@@ -652,9 +779,15 @@
             this.gpDefaultEncoding.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
+            this.tabEditorSettings.ResumeLayout(false);
+            this.tabEditorSettings.PerformLayout();
+            this.gbTabSymbol.ResumeLayout(false);
+            this.gbTabSymbol.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tpgColorSettings.ResumeLayout(false);
             this.tpgColorSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -706,5 +839,14 @@
         private System.Windows.Forms.Label lbMaximumSearchFileSize;
         private System.Windows.Forms.NumericUpDown nudHistoryAmount;
         private System.Windows.Forms.Label lbHistoryAmount;
+        private System.Windows.Forms.TabPage tabEditorSettings;
+        private System.Windows.Forms.GroupBox gbTabSymbol;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.RadioButton rbTabSymbolStrikeout;
+        private System.Windows.Forms.RadioButton rbTabSymbolArrow;
+        private System.Windows.Forms.CheckBox cbUseTabs;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.NumericUpDown nudWhiteSpaceSize;
+        private System.Windows.Forms.Label lbWhiteSpaceSize;
     }
 }

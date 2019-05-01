@@ -24,12 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ScintillaNET;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace.Misc
@@ -43,30 +38,27 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace.Misc
         /// Highlights a given word (string) with a given color and given alpha values.
         /// </summary>
         /// <param name="scintilla">The scintilla of which words to highlight.</param>
+        /// <param name="num">The indicator number for the <paramref name="scintilla"/>.Indicators 0-7 could be in use by a lexer so use a higher value.</param>
         /// <param name="text">The text to highlight.</param>
         /// <param name="color">The color to use for the highlight.</param>
         /// <param name="alpha">The transparency value of the indicator.</param>
         /// <param name="outlineAlpha">The transparency value of the indicator outline.</param>
         /// <note>(C): https://github.com/jacobslusser/ScintillaNET/wiki/Find-and-Highlight-Words</note>
-        public static void HighlightWord(Scintilla scintilla, string text, Color color, byte alpha = 255, byte outlineAlpha = 255)
+        public static void HighlightWord(Scintilla scintilla, int num, string text, Color color, byte alpha = 255, byte outlineAlpha = 255)
         {
             if (string.IsNullOrEmpty(text))
                 return;
 
-            // Indicators 0-7 could be in use by a lexer
-            // so we'll use indicator 8 to highlight words.
-            const int NUM = 8;
-
             // Remove all uses of our indicator
-            scintilla.IndicatorCurrent = NUM;
+            scintilla.IndicatorCurrent = num;
             scintilla.IndicatorClearRange(0, scintilla.TextLength);
 
             // Update indicator appearance
-            scintilla.Indicators[NUM].Style = IndicatorStyle.StraightBox;
-            scintilla.Indicators[NUM].Under = true;
-            scintilla.Indicators[NUM].ForeColor = color;
-            scintilla.Indicators[NUM].OutlineAlpha = alpha;
-            scintilla.Indicators[NUM].Alpha = outlineAlpha;
+            scintilla.Indicators[num].Style = IndicatorStyle.StraightBox;
+            scintilla.Indicators[num].Under = true;
+            scintilla.Indicators[num].ForeColor = color;
+            scintilla.Indicators[num].OutlineAlpha = alpha;
+            scintilla.Indicators[num].Alpha = outlineAlpha;
 
             // Search the document
             scintilla.TargetStart = 0;
@@ -81,6 +73,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace.Misc
                 scintilla.TargetStart = scintilla.TargetEnd;
                 scintilla.TargetEnd = scintilla.TextLength;
             }
+        }
+
+        /// <summary>
+        /// Clears the given style form a <see cref="Scintilla"/>.
+        /// </summary>
+        /// <param name="scintilla">The scintilla to clear the style from.</param>
+        /// <param name="num">The number of the style to clear.</param>
+        public static void ClearStyle(Scintilla scintilla, int num)
+        {
+            scintilla.IndicatorCurrent = num;
+            scintilla.IndicatorClearRange(0, scintilla.TextLength);
         }
     }
 }

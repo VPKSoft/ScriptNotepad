@@ -508,7 +508,7 @@
     <value>Default|A name of the default session for the documents</value>
   </data>
   <data name="msgSessionName" xml:space="preserve">
-    <value>Session: {0}|A message describing a session name with the name as a parameter", CurrentSession</value>
+    <value>Session: {0}|A message describing a session name with the name as a parameter</value>
   </data>
   <data name="msgFileHasReappeared" xml:space="preserve">
     <value>The file '{0}' has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it's contents from the file system</value>
@@ -638,5 +638,41 @@
   </data>
   <data name="msgContextUndo" xml:space="preserve">
     <value>Undo|A message for a context menu to describe an undo action</value>
+  </data>
+  <data name="msgStyleClear1" xml:space="preserve">
+    <value>Clear style one|A menu item text to indicate clearing the text style 1 marks</value>
+  </data>
+  <data name="msgStyleClear2" xml:space="preserve">
+    <value>Clear style two|A menu item text to indicate clearing the text style 2 marks</value>
+  </data>
+  <data name="msgStyleClear3" xml:space="preserve">
+    <value>Clear style three|A menu item text to indicate clearing the text style 3 marks</value>
+  </data>
+  <data name="msgStyleClear4" xml:space="preserve">
+    <value>Clear style four|A menu item text to indicate clearing the text style 4 marks</value>
+  </data>
+  <data name="msgStyleClear5" xml:space="preserve">
+    <value>Clear style five|A menu item text to indicate clearing the text style 5 marks</value>
+  </data>
+  <data name="msgStyleClearAll" xml:space="preserve">
+    <value>Clear all styles|A menu item text to indicate clearing all style marks</value>
+  </data>
+  <data name="msgStyleSet" xml:space="preserve">
+    <value>Style|A menu item text to indicate marking / un-marking text using some style</value>
+  </data>
+  <data name="msgStyleSet1" xml:space="preserve">
+    <value>Mark using the first style|A menu item text to indicate marking text using style 1</value>
+  </data>
+  <data name="msgStyleSet2" xml:space="preserve">
+    <value>Mark using the seconds style|A menu item text to indicate marking text using style 2</value>
+  </data>
+  <data name="msgStyleSet3" xml:space="preserve">
+    <value>Mark using the third style|A menu item text to indicate marking text using style 3</value>
+  </data>
+  <data name="msgStyleSet4" xml:space="preserve">
+    <value>Mark using the fourth style|A menu item text to indicate marking text using style 4</value>
+  </data>
+  <data name="msgStyleSet5" xml:space="preserve">
+    <value>Mark using the fifth style|A menu item text to indicate marking text using style 5</value>
   </data>
 </root>

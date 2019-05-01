@@ -1429,7 +1429,7 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Session: {0}|A message describing a session name with the name as a parameter&quot;, CurrentSession.
+        ///   Looks up a localized string similar to Session: {0}|A message describing a session name with the name as a parameter.
         /// </summary>
         internal static string msgSessionName {
             get {
@@ -1488,6 +1488,114 @@ namespace ScriptNotepad.Localization {
         internal static string msgStructuredQueryLanguageFile {
             get {
                 return ResourceManager.GetString("msgStructuredQueryLanguageFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear style one|A menu item text to indicate clearing the text style 1 marks.
+        /// </summary>
+        internal static string msgStyleClear1 {
+            get {
+                return ResourceManager.GetString("msgStyleClear1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear style two|A menu item text to indicate clearing the text style 2 marks.
+        /// </summary>
+        internal static string msgStyleClear2 {
+            get {
+                return ResourceManager.GetString("msgStyleClear2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear style three|A menu item text to indicate clearing the text style 3 marks.
+        /// </summary>
+        internal static string msgStyleClear3 {
+            get {
+                return ResourceManager.GetString("msgStyleClear3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear style four|A menu item text to indicate clearing the text style 4 marks.
+        /// </summary>
+        internal static string msgStyleClear4 {
+            get {
+                return ResourceManager.GetString("msgStyleClear4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear style five|A menu item text to indicate clearing the text style 5 marks.
+        /// </summary>
+        internal static string msgStyleClear5 {
+            get {
+                return ResourceManager.GetString("msgStyleClear5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear all styles|A menu item text to indicate clearing all style marks.
+        /// </summary>
+        internal static string msgStyleClearAll {
+            get {
+                return ResourceManager.GetString("msgStyleClearAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style|A menu item text to indicate marking / un-marking text using some style.
+        /// </summary>
+        internal static string msgStyleSet {
+            get {
+                return ResourceManager.GetString("msgStyleSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark using the first style|A menu item text to indicate marking text using style 1.
+        /// </summary>
+        internal static string msgStyleSet1 {
+            get {
+                return ResourceManager.GetString("msgStyleSet1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark using the seconds style|A menu item text to indicate marking text using style 2.
+        /// </summary>
+        internal static string msgStyleSet2 {
+            get {
+                return ResourceManager.GetString("msgStyleSet2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark using the third style|A menu item text to indicate marking text using style 3.
+        /// </summary>
+        internal static string msgStyleSet3 {
+            get {
+                return ResourceManager.GetString("msgStyleSet3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark using the fourth style|A menu item text to indicate marking text using style 4.
+        /// </summary>
+        internal static string msgStyleSet4 {
+            get {
+                return ResourceManager.GetString("msgStyleSet4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark using the fifth style|A menu item text to indicate marking text using style 5.
+        /// </summary>
+        internal static string msgStyleSet5 {
+            get {
+                return ResourceManager.GetString("msgStyleSet5", resourceCulture);
             }
         }
         

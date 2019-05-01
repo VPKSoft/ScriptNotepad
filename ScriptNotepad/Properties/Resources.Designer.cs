@@ -113,6 +113,16 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap database_go {
+            get {
+                object obj = ResourceManager.GetObject("database-go", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap default_image {
             get {
                 object obj = ResourceManager.GetObject("default_image", resourceCulture);
@@ -404,6 +414,26 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap session_properties {
             get {
                 object obj = ResourceManager.GetObject("session_properties", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tab_arrow {
+            get {
+                object obj = ResourceManager.GetObject("tab_arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tab_strikethrough {
+            get {
+                object obj = ResourceManager.GetObject("tab_strikethrough", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
