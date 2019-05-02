@@ -63,6 +63,16 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap About {
+            get {
+                object obj = ResourceManager.GetObject("About", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arrow_left {
             get {
                 object obj = ResourceManager.GetObject("arrow_left", resourceCulture);
@@ -251,6 +261,16 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap History {
+            get {
+                object obj = ResourceManager.GetObject("History", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap new_document {
             get {
                 object obj = ResourceManager.GetObject("new_document", resourceCulture);
@@ -264,6 +284,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap open_unknown_encoding {
             get {
                 object obj = ResourceManager.GetObject("open_unknown_encoding", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap paragraph {
+            get {
+                object obj = ResourceManager.GetObject("paragraph", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -344,6 +374,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap Redo {
             get {
                 object obj = ResourceManager.GetObject("Redo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reload_disk {
+            get {
+                object obj = ResourceManager.GetObject("reload_disk", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -484,6 +524,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap up_down {
             get {
                 object obj = ResourceManager.GetObject("up_down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap word_wrap {
+            get {
+                object obj = ResourceManager.GetObject("word_wrap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -60,8 +60,8 @@
     <Reference Include="ScintillaNetPrinting, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ScintillaNetPrinting.1.0.0.1\lib\net40\ScintillaNetPrinting.dll</HintPath>
     </Reference>
-    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.4\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
+    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.5\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -145,6 +145,11 @@
     <Compile Include="Database\Tables\SESSION_NAME.cs" />
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
     <Compile Include="Database\UtilityClasses\RecentFilesMenuBuilder.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UtilityClasses\ApplicationHelpers\ApplicationActivateDeactivate.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
@@ -319,14 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Settings\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -402,6 +402,11 @@
     <None Include="Resources\database-go.png" />
     <None Include="Resources\tab_arrow.png" />
     <None Include="Resources\tab_strikethrough.png" />
+    <None Include="Resources\reload_disk.png" />
+    <None Include="Resources\History.png" />
+    <None Include="Resources\About.png" />
+    <None Include="Resources\paragraph.png" />
+    <None Include="Resources\word_wrap.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

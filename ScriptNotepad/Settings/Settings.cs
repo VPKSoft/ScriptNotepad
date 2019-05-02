@@ -298,11 +298,20 @@ namespace ScriptNotepad.Settings
         public bool EditorUseTabs { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the editor <see cref="Scintilla"/> indent guide is enabled.
+        /// </summary>
+        [Setting("editor/indentGuideOn", typeof(bool))]
+        public bool EditorIndentGuideOn { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value of the tab character symbol type.
         /// </summary>
         [Setting("editor/tabSymbol", typeof(int))]
         public int EditorTabSymbol { get; set; } = (int)TabDrawMode.LongArrow;
 
+        /// <summary>
+        /// Gets or sets the size of the editor white space in points.
+        /// </summary>
         [Setting("editor/whiteSpaceSize", typeof(int))]
         public int EditorWhiteSpaceSize { get; set; } = 1;
 

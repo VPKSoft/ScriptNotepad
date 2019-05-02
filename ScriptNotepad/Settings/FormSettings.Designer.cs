@@ -56,7 +56,10 @@
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
             this.tabEditorSettings = new System.Windows.Forms.TabPage();
+            this.nudWhiteSpaceSize = new System.Windows.Forms.NumericUpDown();
+            this.lbWhiteSpaceSize = new System.Windows.Forms.Label();
             this.gbTabSymbol = new System.Windows.Forms.GroupBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.rbTabSymbolStrikeout = new System.Windows.Forms.RadioButton();
             this.rbTabSymbolArrow = new System.Windows.Forms.RadioButton();
@@ -81,9 +84,7 @@
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cdColors = new System.Windows.Forms.ColorDialog();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.lbWhiteSpaceSize = new System.Windows.Forms.Label();
-            this.nudWhiteSpaceSize = new System.Windows.Forms.NumericUpDown();
+            this.cbIndentGuideOn = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -95,11 +96,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.tabEditorSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).BeginInit();
             this.gbTabSymbol.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tpgColorSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -445,6 +446,7 @@
             // 
             // tabEditorSettings
             // 
+            this.tabEditorSettings.Controls.Add(this.cbIndentGuideOn);
             this.tabEditorSettings.Controls.Add(this.nudWhiteSpaceSize);
             this.tabEditorSettings.Controls.Add(this.lbWhiteSpaceSize);
             this.tabEditorSettings.Controls.Add(this.gbTabSymbol);
@@ -456,6 +458,38 @@
             this.tabEditorSettings.TabIndex = 2;
             this.tabEditorSettings.Text = "Editor";
             this.tabEditorSettings.UseVisualStyleBackColor = true;
+            // 
+            // nudWhiteSpaceSize
+            // 
+            this.nudWhiteSpaceSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudWhiteSpaceSize.Location = new System.Drawing.Point(461, 107);
+            this.nudWhiteSpaceSize.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudWhiteSpaceSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudWhiteSpaceSize.Name = "nudWhiteSpaceSize";
+            this.nudWhiteSpaceSize.Size = new System.Drawing.Size(90, 20);
+            this.nudWhiteSpaceSize.TabIndex = 3;
+            this.nudWhiteSpaceSize.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lbWhiteSpaceSize
+            // 
+            this.lbWhiteSpaceSize.AutoSize = true;
+            this.lbWhiteSpaceSize.Location = new System.Drawing.Point(6, 109);
+            this.lbWhiteSpaceSize.Name = "lbWhiteSpaceSize";
+            this.lbWhiteSpaceSize.Size = new System.Drawing.Size(88, 13);
+            this.lbWhiteSpaceSize.TabIndex = 2;
+            this.lbWhiteSpaceSize.Text = "White space size";
             // 
             // gbTabSymbol
             // 
@@ -469,6 +503,16 @@
             this.gbTabSymbol.TabIndex = 1;
             this.gbTabSymbol.TabStop = false;
             this.gbTabSymbol.Text = "Tab symbol";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::ScriptNotepad.Properties.Resources.tab_strikethrough;
+            this.pictureBox2.Location = new System.Drawing.Point(159, 52);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(24, 7);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
             // 
             // pictureBox1
             // 
@@ -706,47 +750,15 @@
             this.cdColors.AnyColor = true;
             this.cdColors.FullOpen = true;
             // 
-            // pictureBox2
+            // cbIndentGuideOn
             // 
-            this.pictureBox2.Image = global::ScriptNotepad.Properties.Resources.tab_strikethrough;
-            this.pictureBox2.Location = new System.Drawing.Point(159, 52);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(24, 7);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
-            // 
-            // lbWhiteSpaceSize
-            // 
-            this.lbWhiteSpaceSize.AutoSize = true;
-            this.lbWhiteSpaceSize.Location = new System.Drawing.Point(6, 109);
-            this.lbWhiteSpaceSize.Name = "lbWhiteSpaceSize";
-            this.lbWhiteSpaceSize.Size = new System.Drawing.Size(88, 13);
-            this.lbWhiteSpaceSize.TabIndex = 2;
-            this.lbWhiteSpaceSize.Text = "White space size";
-            // 
-            // nudWhiteSpaceSize
-            // 
-            this.nudWhiteSpaceSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudWhiteSpaceSize.Location = new System.Drawing.Point(461, 107);
-            this.nudWhiteSpaceSize.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nudWhiteSpaceSize.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudWhiteSpaceSize.Name = "nudWhiteSpaceSize";
-            this.nudWhiteSpaceSize.Size = new System.Drawing.Size(90, 20);
-            this.nudWhiteSpaceSize.TabIndex = 3;
-            this.nudWhiteSpaceSize.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.cbIndentGuideOn.AutoSize = true;
+            this.cbIndentGuideOn.Location = new System.Drawing.Point(6, 134);
+            this.cbIndentGuideOn.Name = "cbIndentGuideOn";
+            this.cbIndentGuideOn.Size = new System.Drawing.Size(149, 17);
+            this.cbIndentGuideOn.TabIndex = 4;
+            this.cbIndentGuideOn.Text = "Indent guide on by default";
+            this.cbIndentGuideOn.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -781,13 +793,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.tabEditorSettings.ResumeLayout(false);
             this.tabEditorSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).EndInit();
             this.gbTabSymbol.ResumeLayout(false);
             this.gbTabSymbol.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tpgColorSettings.ResumeLayout(false);
             this.tpgColorSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -848,5 +860,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.NumericUpDown nudWhiteSpaceSize;
         private System.Windows.Forms.Label lbWhiteSpaceSize;
+        private System.Windows.Forms.CheckBox cbIndentGuideOn;
     }
 }

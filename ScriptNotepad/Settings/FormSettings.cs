@@ -158,6 +158,9 @@ namespace ScriptNotepad.Settings
             // gets the type of the tab character symbol..
             rbTabSymbolStrikeout.Checked = Settings.EditorTabSymbol != 0;
             rbTabSymbolArrow.Checked = Settings.EditorTabSymbol == 0;
+
+            // get the indent guide value..
+            cbIndentGuideOn.Checked = Settings.EditorIndentGuideOn;
         }
 
         /// <summary>
@@ -217,6 +220,9 @@ namespace ScriptNotepad.Settings
             {
                 Settings.EditorTabSymbol = (int) TabDrawMode.Strikeout;
             }
+
+            // set the indent guide value..
+            Settings.EditorIndentGuideOn = cbIndentGuideOn.Checked;
         }
         #endregion
 
@@ -251,6 +257,9 @@ namespace ScriptNotepad.Settings
 
             // set the type of the tab character symbol..
             scintilla.TabDrawMode = (TabDrawMode) Settings.EditorTabSymbol;
+
+            // set the value whether to show the indent guides..
+            scintilla.IndentationGuides = Settings.EditorIndentGuideOn ? IndentView.Real : IndentView.None;
         }
 
         /// <summary>

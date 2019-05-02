@@ -238,7 +238,37 @@ namespace ScriptNotepad
         }
         #endregion
 
-        #region HelperMethods
+        #region HelperMethods        
+        /// <summary>
+        /// Runs an action to the current document if there is a current document.
+        /// </summary>
+        /// <param name="action">The action to run.</param>
+        public void CurrentDocumentAction(Action<Scintilla> action)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                try
+                {
+                    action(sttcMain.CurrentDocument.Scintilla);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionLogger.LogError(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets an item of type from a given object. Useful with events.
+        /// </summary>
+        /// <typeparam name="T">The type of the object</typeparam>
+        /// <param name="sender">The sender of the event.</param>
+        /// <returns>(T)<paramref name="sender"/>.</returns>
+        public T ItemFromObj<T>(object sender)
+        {
+            return (T) sender;
+        }
+
         /// <summary>
         /// The context menu of the scintilla called this method, so do some related stuff.
         /// </summary>
@@ -2133,35 +2163,41 @@ namespace ScriptNotepad
             }
         }
 
-        // a user wishes to show or hide the white space symbols..
-        private void MnuShowWhiteSpaceAndTab_Click(object sender, EventArgs e)
+        // a user wishes to reload the file contents from the disk..
+        private void MnuReloadFromDisk_Click(object sender, EventArgs e)
         {
             if (sttcMain.CurrentDocument != null)
             {
-                var menuStrip = (ToolStripMenuItem) sender;
-                sttcMain.CurrentDocument.Scintilla.ViewWhitespace =
-                    menuStrip.Checked ? WhitespaceMode.VisibleAlways : WhitespaceMode.Invisible;
-            }
-        }
+                // get the DBFILE_SAVE class instance from the document's tag..
+                DBFILE_SAVE fileSave = (DBFILE_SAVE) sttcMain.CurrentDocument.Tag;
 
-        // a user wishes to hide or show the end of line symbols..
-        private void MnuShowEndOfLine_Click(object sender, EventArgs e)
-        {
-            if (sttcMain.CurrentDocument != null)
-            {
-                var menuStrip = (ToolStripMenuItem) sender;
-                sttcMain.CurrentDocument.Scintilla.ViewEol = menuStrip.Checked;
-            }
-        }
+                // avoid excess checks further in the code..
+                if (fileSave == null)
+                {
+                    return;
+                }
 
-        // the show symbol menu drop down items are going to be shown, so set their states accordingly..
-        private void MnuShowSymbol_DropDownOpening(object sender, EventArgs e)
-        {
-            if (sttcMain.CurrentDocument != null)
-            {
-                mnuShowEndOfLine.Checked = sttcMain.CurrentDocument.Scintilla.ViewEol;
-                mnuShowWhiteSpaceAndTab.Checked =
-                    sttcMain.CurrentDocument.Scintilla.ViewWhitespace != WhitespaceMode.Invisible;
+                // check if the file exists because it cannot be reloaded otherwise 
+                // from the file system..
+                if (File.Exists(sttcMain.CurrentDocument.FileName))
+                {
+                    // the user answered yes..
+                    sttcMain.SuspendTextChangedEvents =
+                        true; // suspend the changed events on the ScintillaTabbedTextControl..
+
+                    fileSave.ReloadFromDisk(sttcMain.CurrentDocument); // reload the file..
+                    sttcMain.SuspendTextChangedEvents =
+                        false; // resume the changed events on the ScintillaTabbedTextControl..
+
+                    // just in case set the tag back..
+                    sttcMain.CurrentDocument.Tag = fileSave;
+
+                    fileSave.DB_MODIFIED = fileSave.FILESYS_MODIFIED;
+
+                    sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
+
+                    UpdateUndoRedoIndicators();
+                }
             }
         }
         #endregion
@@ -2390,7 +2426,68 @@ namespace ScriptNotepad
             // call the CloseAllFunction method with this "wondrous" logic..
             CloseAllFunction(sender.Equals(mnuCloseAllToTheRight), sender.Equals(mnuCloseAllToTheLeft));
         }
+        #endregion
 
+        #region EditorSymbols
+        // enable/disable word wrap..
+        private void MnuWordWrap_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(scintilla =>
+            {
+                scintilla.WrapMode = ItemFromObj<ToolStripMenuItem>(sender).Checked ? WrapMode.Word : WrapMode.None;
+            });
+        }
+
+        // a user wishes to show or hide the white space symbols..
+        private void MnuShowWhiteSpaceAndTab_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(scintilla =>
+            {
+                scintilla.ViewWhitespace = ItemFromObj<ToolStripMenuItem>(sender).Checked
+                    ? WhitespaceMode.VisibleAlways
+                    : WhitespaceMode.Invisible;
+            });
+        }
+
+        // a user wishes to hide or show the end of line symbols..
+        private void MnuShowEndOfLine_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(scintilla => { scintilla.ViewEol = ItemFromObj<ToolStripMenuItem>(sender).Checked; });
+        }
+
+        // the show symbol menu drop down items are going to be shown, so set their states accordingly..
+        private void MnuShowSymbol_DropDownOpening(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(scintilla => 
+            {
+                mnuShowEndOfLine.Checked = scintilla.ViewEol;
+
+                mnuShowWhiteSpaceAndTab.Checked =
+                    scintilla.ViewWhitespace != WhitespaceMode.Invisible;
+
+                mnuShowIndentGuide.Checked = scintilla.IndentationGuides == IndentView.Real;
+
+                mnuShowWrapSymbol.Checked = scintilla.WrapVisualFlags == WrapVisualFlags.End;
+            });
+        }
+
+        // a user wishes to toggle the scintilla to show or hide the indentation guides..
+        private void MnuShowIndentGuide_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(scintilla => 
+                scintilla.IndentationGuides = ItemFromObj<ToolStripMenuItem>(sender).Checked
+                    ? IndentView.Real
+                    : IndentView.None);
+        }
+
+        // toggle whether to show the word wrap symbol..
+        private void MnuShowWrapSymbol_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(scintilla =>
+                scintilla.WrapVisualFlags = ItemFromObj<ToolStripMenuItem>(sender).Checked
+                    ? WrapVisualFlags.End
+                    : WrapVisualFlags.None);
+        }
         #endregion
     }
 }

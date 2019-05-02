@@ -5,7 +5,13 @@ The tab-delimited text can also include comments, etc. by adding a new tab-delim
 plgDescription	Sample plug-in by VPKSoft
 txtAbout	About	This text is discarded by the localization as this is the third tab-delimited field.
 txtCauseException	Cause an exception
+txtModifiedROT13	Modified ROT-13
+txtModifiedUnROT13	Decrypt modified ROT-13
+txtCauseHandledException	Cause a handled exception
 [fi-FI]
 plgDescription	Esimerkkiliitännäinen VPKSoftilta
 txtAbout	Tietoja
 txtCauseException	Aiheuta poikkeus
+txtModifiedROT13	Muokattu ROT-13
+txtModifiedUnROT13	Pura muokattu ROT-13
+txtCauseHandledException	Aiheuta käsitelty poikkeus
