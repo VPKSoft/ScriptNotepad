@@ -368,7 +368,7 @@ namespace PluginTemplate
             catch (Exception ex)
             {
                 // ..report the exception to the hosting software (ScriptNotepad) for logging..
-                onPluginException?.Invoke(this, new PluginExceptionEventArgs {Exception = ex});
+                onPluginException?.Invoke(this, new PluginExceptionEventArgs {Exception = ex, PluginModuleName = PluginName});
             }
         }
 
@@ -431,7 +431,7 @@ namespace PluginTemplate
             catch (Exception ex)
             {
                 // ..report the exception to the hosting software (ScriptNotepad) for logging..
-                onPluginException?.Invoke(this, new PluginExceptionEventArgs {Exception = ex});
+                onPluginException?.Invoke(this, new PluginExceptionEventArgs {Exception = ex, PluginModuleName = PluginName});
             }
         }
 
@@ -454,7 +454,7 @@ namespace PluginTemplate
             catch (Exception ex)
             {
                 // ..report the exception to the hosting software (ScriptNotepad) for logging..
-                onPluginException?.Invoke(this, new PluginExceptionEventArgs {Exception = ex});
+                onPluginException?.Invoke(this, new PluginExceptionEventArgs {Exception = ex, PluginModuleName = PluginName});
             }
         }
 

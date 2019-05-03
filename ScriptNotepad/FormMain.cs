@@ -2060,8 +2060,13 @@ namespace ScriptNotepad
         // occurs when an exception has occurred in a plug-in (NOTE: The plug-in must have exception handling!)..
         private void PluginException(object sender, PluginExceptionEventArgs e)
         {
-            ExceptionLogger.LogMessage($"PLUG-IN EXCEPTION: '{e.PluginModuleName}'.");
-            ExceptionLogger.LogError(e.Exception);
+            ExceptionLogger.LogError(e.Exception, $"PLUG-IN EXCEPTION: '{e.PluginModuleName}'.");
+            int idx = Plugins.FindIndex(f => f.Plugin.PLUGIN_NAME == e.PluginModuleName);
+            if (idx != -1)
+            {
+                Plugins[idx].Plugin.EXCEPTION_COUNT++;
+                DatabasePlugins.UpdatePlugin(Plugins[idx].Plugin);
+            }
         }
 
         // a user wishes to manage the plug-ins used by the software..
