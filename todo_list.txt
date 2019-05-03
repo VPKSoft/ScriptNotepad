@@ -1,0 +1,5 @@
+﻿* Done? [N/A] [2019/05/03] Make font a setting.							
+* Done? [N/A] [2019/05/03] Mark with the search and replace dialog.
+* Done? [N/A] [2019/05/03] Create a language (programming language) selection menu.
+* Done? [N/A] [2019/05/03] Save document's settings to the database.
+* Done? [N/A] [2019/05/03] Save document's marked positions to the database.

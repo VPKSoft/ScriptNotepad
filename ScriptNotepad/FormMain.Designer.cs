@@ -108,6 +108,8 @@
             this.mnuShowSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowWhiteSpaceAndTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowEndOfLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuShowIndentGuide = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuShowWrapSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWordWrap = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
@@ -136,8 +138,6 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuShowIndentGuide = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuShowWrapSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -612,7 +612,7 @@
             // 
             this.mnuRunScript.Image = ((System.Drawing.Image)(resources.GetObject("mnuRunScript.Image")));
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -620,14 +620,14 @@
             // 
             this.mnuCharSets.Image = ((System.Drawing.Image)(resources.GetObject("mnuCharSets.Image")));
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
             this.mnuCharSets.Text = "Change encoding";
             this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(165, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(177, 6);
             // 
             // mnuStyle
             // 
@@ -645,8 +645,9 @@
             this.mnuClearStyle3,
             this.mnuClearStyle4,
             this.mnuClearStyle5});
+            this.mnuStyle.Image = global::ScriptNotepad.Properties.Resources.style;
             this.mnuStyle.Name = "mnuStyle";
-            this.mnuStyle.Size = new System.Drawing.Size(168, 22);
+            this.mnuStyle.Size = new System.Drawing.Size(180, 22);
             this.mnuStyle.Text = "Style";
             // 
             // mnuClearAllStyles
@@ -837,10 +838,26 @@
             this.mnuShowEndOfLine.Text = "Show end of line";
             this.mnuShowEndOfLine.Click += new System.EventHandler(this.MnuShowEndOfLine_Click);
             // 
+            // mnuShowIndentGuide
+            // 
+            this.mnuShowIndentGuide.CheckOnClick = true;
+            this.mnuShowIndentGuide.Name = "mnuShowIndentGuide";
+            this.mnuShowIndentGuide.Size = new System.Drawing.Size(211, 22);
+            this.mnuShowIndentGuide.Text = "Show indent guide";
+            this.mnuShowIndentGuide.Click += new System.EventHandler(this.MnuShowIndentGuide_Click);
+            // 
+            // mnuShowWrapSymbol
+            // 
+            this.mnuShowWrapSymbol.CheckOnClick = true;
+            this.mnuShowWrapSymbol.Name = "mnuShowWrapSymbol";
+            this.mnuShowWrapSymbol.Size = new System.Drawing.Size(211, 22);
+            this.mnuShowWrapSymbol.Text = "Show wrap symbol";
+            this.mnuShowWrapSymbol.Click += new System.EventHandler(this.MnuShowWrapSymbol_Click);
+            // 
             // mnuWordWrap
             // 
             this.mnuWordWrap.CheckOnClick = true;
-            this.mnuWordWrap.Image = global::ScriptNotepad.Properties.Resources.word_wrap;
+            this.mnuWordWrap.Image = global::ScriptNotepad.Properties.Resources.word_wrap2;
             this.mnuWordWrap.Name = "mnuWordWrap";
             this.mnuWordWrap.Size = new System.Drawing.Size(180, 22);
             this.mnuWordWrap.Text = "Word wrap";
@@ -1044,22 +1061,6 @@
             this.mnuCloseAllToTheRight.Size = new System.Drawing.Size(323, 22);
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
-            // 
-            // mnuShowIndentGuide
-            // 
-            this.mnuShowIndentGuide.CheckOnClick = true;
-            this.mnuShowIndentGuide.Name = "mnuShowIndentGuide";
-            this.mnuShowIndentGuide.Size = new System.Drawing.Size(211, 22);
-            this.mnuShowIndentGuide.Text = "Show indent guide";
-            this.mnuShowIndentGuide.Click += new System.EventHandler(this.MnuShowIndentGuide_Click);
-            // 
-            // mnuShowWrapSymbol
-            // 
-            this.mnuShowWrapSymbol.CheckOnClick = true;
-            this.mnuShowWrapSymbol.Name = "mnuShowWrapSymbol";
-            this.mnuShowWrapSymbol.Size = new System.Drawing.Size(211, 22);
-            this.mnuShowWrapSymbol.Text = "Show wrap symbol";
-            this.mnuShowWrapSymbol.Click += new System.EventHandler(this.MnuShowWrapSymbol_Click);
             // 
             // FormMain
             // 
