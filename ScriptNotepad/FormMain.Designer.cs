@@ -48,6 +48,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbUndo = new System.Windows.Forms.ToolStripButton();
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
+            this.tsbSpellCheck = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
@@ -139,6 +140,7 @@
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
             this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -186,7 +188,9 @@
             this.tsbSaveAllWithUnsaved,
             this.toolStripSeparator1,
             this.tsbUndo,
-            this.tsbRedo});
+            this.tsbRedo,
+            this.toolStripSeparator4,
+            this.tsbSpellCheck});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(825, 25);
@@ -296,6 +300,15 @@
             this.tsbRedo.Size = new System.Drawing.Size(23, 22);
             this.tsbRedo.Text = "Redo";
             this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
+            // 
+            // tsbSpellCheck
+            // 
+            this.tsbSpellCheck.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSpellCheck.Image = global::ScriptNotepad.Properties.Resources.spell_check;
+            this.tsbSpellCheck.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSpellCheck.Name = "tsbSpellCheck";
+            this.tsbSpellCheck.Size = new System.Drawing.Size(23, 22);
+            this.tsbSpellCheck.Text = "toolStripButton1";
             // 
             // ssMain
             // 
@@ -1067,6 +1080,11 @@
             // 
             this.tmSpellCheck.Tick += new System.EventHandler(this.TmSpellCheck_Tick);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1209,6 +1227,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuShowIndentGuide;
         private System.Windows.Forms.ToolStripMenuItem mnuShowWrapSymbol;
         private System.Windows.Forms.Timer tmSpellCheck;
+        private System.Windows.Forms.ToolStripButton tsbSpellCheck;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 

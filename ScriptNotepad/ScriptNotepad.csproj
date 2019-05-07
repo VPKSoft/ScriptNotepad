@@ -111,8 +111,8 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.1\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.0.7\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.0.8\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.3.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.3.2\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
@@ -429,6 +429,7 @@
     <None Include="Resources\word_wrap.png" />
     <None Include="Resources\word_wrap2.png" />
     <None Include="Resources\style.png" />
+    <None Include="Resources\spell_check.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />
