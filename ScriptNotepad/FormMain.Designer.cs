@@ -138,6 +138,7 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -612,7 +613,7 @@
             // 
             this.mnuRunScript.Image = ((System.Drawing.Image)(resources.GetObject("mnuRunScript.Image")));
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(180, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -620,14 +621,14 @@
             // 
             this.mnuCharSets.Image = ((System.Drawing.Image)(resources.GetObject("mnuCharSets.Image")));
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(180, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
             this.mnuCharSets.Text = "Change encoding";
             this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(165, 6);
             // 
             // mnuStyle
             // 
@@ -647,7 +648,7 @@
             this.mnuClearStyle5});
             this.mnuStyle.Image = global::ScriptNotepad.Properties.Resources.style;
             this.mnuStyle.Name = "mnuStyle";
-            this.mnuStyle.Size = new System.Drawing.Size(180, 22);
+            this.mnuStyle.Size = new System.Drawing.Size(168, 22);
             this.mnuStyle.Text = "Style";
             // 
             // mnuClearAllStyles
@@ -818,7 +819,7 @@
             this.mnuShowWrapSymbol});
             this.mnuShowSymbol.Image = global::ScriptNotepad.Properties.Resources.paragraph;
             this.mnuShowSymbol.Name = "mnuShowSymbol";
-            this.mnuShowSymbol.Size = new System.Drawing.Size(180, 22);
+            this.mnuShowSymbol.Size = new System.Drawing.Size(145, 22);
             this.mnuShowSymbol.Text = "Show symbol";
             this.mnuShowSymbol.DropDownOpening += new System.EventHandler(this.MnuShowSymbol_DropDownOpening);
             // 
@@ -859,7 +860,7 @@
             this.mnuWordWrap.CheckOnClick = true;
             this.mnuWordWrap.Image = global::ScriptNotepad.Properties.Resources.word_wrap2;
             this.mnuWordWrap.Name = "mnuWordWrap";
-            this.mnuWordWrap.Size = new System.Drawing.Size(180, 22);
+            this.mnuWordWrap.Size = new System.Drawing.Size(145, 22);
             this.mnuWordWrap.Text = "Word wrap";
             this.mnuWordWrap.Click += new System.EventHandler(this.MnuWordWrap_Click);
             // 
@@ -1062,6 +1063,10 @@
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
             // 
+            // tmSpellCheck
+            // 
+            this.tmSpellCheck.Tick += new System.EventHandler(this.TmSpellCheck_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1203,6 +1208,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuWordWrap;
         private System.Windows.Forms.ToolStripMenuItem mnuShowIndentGuide;
         private System.Windows.Forms.ToolStripMenuItem mnuShowWrapSymbol;
+        private System.Windows.Forms.Timer tmSpellCheck;
     }
 }
 

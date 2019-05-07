@@ -111,6 +111,9 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.1\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
+    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.0.7\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
+    </Reference>
     <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.3.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.3.2\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
@@ -309,6 +312,7 @@
     <Compile Include="UtilityClasses\Session\FormDialogSessionManage.Designer.cs">
       <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
     </Compile>
+    <Compile Include="UtilityClasses\SpellCheck\TabbedDocumentSpellCheck.cs" />
     <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
     <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.resx">
       <DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
@@ -474,8 +478,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets'))" />
     <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.0.0\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.0.0\build\PropertyChanged.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Fody.5.0.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.5.0.3\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.5.0.5\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.5.0.5\build\Fody.targets'))" />
   </Target>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />
-  <Import Project="..\packages\Fody.5.0.3\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.3\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.5.0.5\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.5\build\Fody.targets')" />
 </Project>

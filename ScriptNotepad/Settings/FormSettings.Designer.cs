@@ -56,6 +56,7 @@
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
             this.tabEditorSettings = new System.Windows.Forms.TabPage();
+            this.cbIndentGuideOn = new System.Windows.Forms.CheckBox();
             this.nudWhiteSpaceSize = new System.Windows.Forms.NumericUpDown();
             this.lbWhiteSpaceSize = new System.Windows.Forms.Label();
             this.gbTabSymbol = new System.Windows.Forms.GroupBox();
@@ -80,11 +81,24 @@
             this.lbMarkStyle1Color = new System.Windows.Forms.Label();
             this.btSmartHighlightColor = new System.Windows.Forms.Button();
             this.lbSmartHighlightColor = new System.Windows.Forms.Label();
+            this.tabSpellCheck = new System.Windows.Forms.TabPage();
+            this.lbEditorSpellRecheckInactivity = new System.Windows.Forms.Label();
+            this.nudEditorSpellRecheckInactivity = new System.Windows.Forms.NumericUpDown();
+            this.btSpellCheckMarkColor = new System.Windows.Forms.Button();
+            this.lbSpellCheckMarkColor = new System.Windows.Forms.Label();
+            this.btHunspellAffixFile = new System.Windows.Forms.Button();
+            this.tbHunspellAffixFile = new System.Windows.Forms.TextBox();
+            this.lbHunspellAffixFile = new System.Windows.Forms.Label();
+            this.btHunspellDictionary = new System.Windows.Forms.Button();
+            this.tbHunspellDictionary = new System.Windows.Forms.TextBox();
+            this.lbHunspellDictionary = new System.Windows.Forms.Label();
+            this.cbSpellCheckInUse = new System.Windows.Forms.CheckBox();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cdColors = new System.Windows.Forms.ColorDialog();
-            this.cbIndentGuideOn = new System.Windows.Forms.CheckBox();
+            this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
+            this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -101,6 +115,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tpgColorSettings.SuspendLayout();
+            this.tabSpellCheck.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -111,6 +127,7 @@
             this.tcMain.Controls.Add(this.tpgGeneralSettings);
             this.tcMain.Controls.Add(this.tabEditorSettings);
             this.tcMain.Controls.Add(this.tpgColorSettings);
+            this.tcMain.Controls.Add(this.tabSpellCheck);
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -459,6 +476,16 @@
             this.tabEditorSettings.Text = "Editor";
             this.tabEditorSettings.UseVisualStyleBackColor = true;
             // 
+            // cbIndentGuideOn
+            // 
+            this.cbIndentGuideOn.AutoSize = true;
+            this.cbIndentGuideOn.Location = new System.Drawing.Point(6, 134);
+            this.cbIndentGuideOn.Name = "cbIndentGuideOn";
+            this.cbIndentGuideOn.Size = new System.Drawing.Size(149, 17);
+            this.cbIndentGuideOn.TabIndex = 4;
+            this.cbIndentGuideOn.Text = "Indent guide on by default";
+            this.cbIndentGuideOn.UseVisualStyleBackColor = true;
+            // 
             // nudWhiteSpaceSize
             // 
             this.nudWhiteSpaceSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -617,7 +644,7 @@
             this.btMarkStyle5Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle5Color.TabIndex = 11;
             this.btMarkStyle5Color.UseVisualStyleBackColor = true;
-            this.btMarkStyle5Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            this.btMarkStyle5Color.Click += new System.EventHandler(this.ColorButton_Click);
             // 
             // lbMarkStyle5Color
             // 
@@ -636,7 +663,7 @@
             this.btMarkStyle4Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle4Color.TabIndex = 9;
             this.btMarkStyle4Color.UseVisualStyleBackColor = true;
-            this.btMarkStyle4Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            this.btMarkStyle4Color.Click += new System.EventHandler(this.ColorButton_Click);
             // 
             // lbMarkStyle4Color
             // 
@@ -655,7 +682,7 @@
             this.btMarkStyle3Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle3Color.TabIndex = 7;
             this.btMarkStyle3Color.UseVisualStyleBackColor = true;
-            this.btMarkStyle3Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            this.btMarkStyle3Color.Click += new System.EventHandler(this.ColorButton_Click);
             // 
             // lbMarkStyle3Color
             // 
@@ -674,7 +701,7 @@
             this.btMarkStyle2Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle2Color.TabIndex = 5;
             this.btMarkStyle2Color.UseVisualStyleBackColor = true;
-            this.btMarkStyle2Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            this.btMarkStyle2Color.Click += new System.EventHandler(this.ColorButton_Click);
             // 
             // lbMarkStyle2Color
             // 
@@ -693,7 +720,7 @@
             this.btMarkStyle1Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle1Color.TabIndex = 3;
             this.btMarkStyle1Color.UseVisualStyleBackColor = true;
-            this.btMarkStyle1Color.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            this.btMarkStyle1Color.Click += new System.EventHandler(this.ColorButton_Click);
             // 
             // lbMarkStyle1Color
             // 
@@ -712,7 +739,7 @@
             this.btSmartHighlightColor.Size = new System.Drawing.Size(188, 23);
             this.btSmartHighlightColor.TabIndex = 1;
             this.btSmartHighlightColor.UseVisualStyleBackColor = true;
-            this.btSmartHighlightColor.Click += new System.EventHandler(this.BtSmartHighlightColor_Click);
+            this.btSmartHighlightColor.Click += new System.EventHandler(this.ColorButton_Click);
             // 
             // lbSmartHighlightColor
             // 
@@ -722,6 +749,142 @@
             this.lbSmartHighlightColor.Size = new System.Drawing.Size(105, 13);
             this.lbSmartHighlightColor.TabIndex = 0;
             this.lbSmartHighlightColor.Text = "Smart highlight color:";
+            // 
+            // tabSpellCheck
+            // 
+            this.tabSpellCheck.Controls.Add(this.lbEditorSpellRecheckInactivity);
+            this.tabSpellCheck.Controls.Add(this.nudEditorSpellRecheckInactivity);
+            this.tabSpellCheck.Controls.Add(this.btSpellCheckMarkColor);
+            this.tabSpellCheck.Controls.Add(this.lbSpellCheckMarkColor);
+            this.tabSpellCheck.Controls.Add(this.btHunspellAffixFile);
+            this.tabSpellCheck.Controls.Add(this.tbHunspellAffixFile);
+            this.tabSpellCheck.Controls.Add(this.lbHunspellAffixFile);
+            this.tabSpellCheck.Controls.Add(this.btHunspellDictionary);
+            this.tabSpellCheck.Controls.Add(this.tbHunspellDictionary);
+            this.tabSpellCheck.Controls.Add(this.lbHunspellDictionary);
+            this.tabSpellCheck.Controls.Add(this.cbSpellCheckInUse);
+            this.tabSpellCheck.Location = new System.Drawing.Point(4, 22);
+            this.tabSpellCheck.Name = "tabSpellCheck";
+            this.tabSpellCheck.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSpellCheck.Size = new System.Drawing.Size(557, 371);
+            this.tabSpellCheck.TabIndex = 3;
+            this.tabSpellCheck.Text = "Spell checking";
+            this.tabSpellCheck.UseVisualStyleBackColor = true;
+            // 
+            // lbEditorSpellRecheckInactivity
+            // 
+            this.lbEditorSpellRecheckInactivity.AutoSize = true;
+            this.lbEditorSpellRecheckInactivity.Location = new System.Drawing.Point(6, 167);
+            this.lbEditorSpellRecheckInactivity.Name = "lbEditorSpellRecheckInactivity";
+            this.lbEditorSpellRecheckInactivity.Size = new System.Drawing.Size(358, 13);
+            this.lbEditorSpellRecheckInactivity.TabIndex = 38;
+            this.lbEditorSpellRecheckInactivity.Text = "Recheck the spelling after text change after user inactivity for milliseconds:";
+            // 
+            // nudEditorSpellRecheckInactivity
+            // 
+            this.nudEditorSpellRecheckInactivity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudEditorSpellRecheckInactivity.Location = new System.Drawing.Point(461, 165);
+            this.nudEditorSpellRecheckInactivity.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudEditorSpellRecheckInactivity.Name = "nudEditorSpellRecheckInactivity";
+            this.nudEditorSpellRecheckInactivity.Size = new System.Drawing.Size(90, 20);
+            this.nudEditorSpellRecheckInactivity.TabIndex = 37;
+            this.nudEditorSpellRecheckInactivity.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            // 
+            // btSpellCheckMarkColor
+            // 
+            this.btSpellCheckMarkColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btSpellCheckMarkColor.Location = new System.Drawing.Point(363, 136);
+            this.btSpellCheckMarkColor.Name = "btSpellCheckMarkColor";
+            this.btSpellCheckMarkColor.Size = new System.Drawing.Size(188, 23);
+            this.btSpellCheckMarkColor.TabIndex = 36;
+            this.btSpellCheckMarkColor.UseVisualStyleBackColor = true;
+            this.btSpellCheckMarkColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // lbSpellCheckMarkColor
+            // 
+            this.lbSpellCheckMarkColor.AutoSize = true;
+            this.lbSpellCheckMarkColor.Location = new System.Drawing.Point(6, 141);
+            this.lbSpellCheckMarkColor.Name = "lbSpellCheckMarkColor";
+            this.lbSpellCheckMarkColor.Size = new System.Drawing.Size(118, 13);
+            this.lbSpellCheckMarkColor.TabIndex = 35;
+            this.lbSpellCheckMarkColor.Text = "Spell check mark color:";
+            // 
+            // btHunspellAffixFile
+            // 
+            this.btHunspellAffixFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btHunspellAffixFile.Location = new System.Drawing.Point(520, 110);
+            this.btHunspellAffixFile.Name = "btHunspellAffixFile";
+            this.btHunspellAffixFile.Size = new System.Drawing.Size(31, 20);
+            this.btHunspellAffixFile.TabIndex = 34;
+            this.btHunspellAffixFile.Text = "...";
+            this.btHunspellAffixFile.UseVisualStyleBackColor = true;
+            this.btHunspellAffixFile.Click += new System.EventHandler(this.BtHunspellAffixFile_Click);
+            // 
+            // tbHunspellAffixFile
+            // 
+            this.tbHunspellAffixFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbHunspellAffixFile.Location = new System.Drawing.Point(9, 110);
+            this.tbHunspellAffixFile.Name = "tbHunspellAffixFile";
+            this.tbHunspellAffixFile.Size = new System.Drawing.Size(505, 20);
+            this.tbHunspellAffixFile.TabIndex = 33;
+            // 
+            // lbHunspellAffixFile
+            // 
+            this.lbHunspellAffixFile.AutoSize = true;
+            this.lbHunspellAffixFile.Location = new System.Drawing.Point(6, 87);
+            this.lbHunspellAffixFile.Name = "lbHunspellAffixFile";
+            this.lbHunspellAffixFile.Size = new System.Drawing.Size(128, 13);
+            this.lbHunspellAffixFile.TabIndex = 32;
+            this.lbHunspellAffixFile.Text = "Hunspell affix file (UTF-8):";
+            // 
+            // btHunspellDictionary
+            // 
+            this.btHunspellDictionary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btHunspellDictionary.Location = new System.Drawing.Point(520, 58);
+            this.btHunspellDictionary.Name = "btHunspellDictionary";
+            this.btHunspellDictionary.Size = new System.Drawing.Size(31, 20);
+            this.btHunspellDictionary.TabIndex = 31;
+            this.btHunspellDictionary.Text = "...";
+            this.btHunspellDictionary.UseVisualStyleBackColor = true;
+            this.btHunspellDictionary.Click += new System.EventHandler(this.BtHunspellDictionary_Click);
+            // 
+            // tbHunspellDictionary
+            // 
+            this.tbHunspellDictionary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbHunspellDictionary.Location = new System.Drawing.Point(9, 58);
+            this.tbHunspellDictionary.Name = "tbHunspellDictionary";
+            this.tbHunspellDictionary.Size = new System.Drawing.Size(505, 20);
+            this.tbHunspellDictionary.TabIndex = 4;
+            // 
+            // lbHunspellDictionary
+            // 
+            this.lbHunspellDictionary.AutoSize = true;
+            this.lbHunspellDictionary.Location = new System.Drawing.Point(6, 35);
+            this.lbHunspellDictionary.Name = "lbHunspellDictionary";
+            this.lbHunspellDictionary.Size = new System.Drawing.Size(154, 13);
+            this.lbHunspellDictionary.TabIndex = 2;
+            this.lbHunspellDictionary.Text = "Hunspell dictionary file (UTF-8):";
+            // 
+            // cbSpellCheckInUse
+            // 
+            this.cbSpellCheckInUse.AutoSize = true;
+            this.cbSpellCheckInUse.Location = new System.Drawing.Point(6, 8);
+            this.cbSpellCheckInUse.Name = "cbSpellCheckInUse";
+            this.cbSpellCheckInUse.Size = new System.Drawing.Size(116, 17);
+            this.cbSpellCheckInUse.TabIndex = 1;
+            this.cbSpellCheckInUse.Text = "Use spell checking";
+            this.cbSpellCheckInUse.UseVisualStyleBackColor = true;
+            this.cbSpellCheckInUse.Click += new System.EventHandler(this.CbSpellCheckInUse_Click);
             // 
             // btCancel
             // 
@@ -750,15 +913,13 @@
             this.cdColors.AnyColor = true;
             this.cdColors.FullOpen = true;
             // 
-            // cbIndentGuideOn
+            // odDictionaryFile
             // 
-            this.cbIndentGuideOn.AutoSize = true;
-            this.cbIndentGuideOn.Location = new System.Drawing.Point(6, 134);
-            this.cbIndentGuideOn.Name = "cbIndentGuideOn";
-            this.cbIndentGuideOn.Size = new System.Drawing.Size(149, 17);
-            this.cbIndentGuideOn.TabIndex = 4;
-            this.cbIndentGuideOn.Text = "Indent guide on by default";
-            this.cbIndentGuideOn.UseVisualStyleBackColor = true;
+            this.odDictionaryFile.Filter = "Hunspell dictionary file|*.dic";
+            // 
+            // odAffixFile
+            // 
+            this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
             // FormSettings
             // 
@@ -800,6 +961,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tpgColorSettings.ResumeLayout(false);
             this.tpgColorSettings.PerformLayout();
+            this.tabSpellCheck.ResumeLayout(false);
+            this.tabSpellCheck.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -861,5 +1025,19 @@
         private System.Windows.Forms.NumericUpDown nudWhiteSpaceSize;
         private System.Windows.Forms.Label lbWhiteSpaceSize;
         private System.Windows.Forms.CheckBox cbIndentGuideOn;
+        private System.Windows.Forms.TabPage tabSpellCheck;
+        private System.Windows.Forms.Button btSpellCheckMarkColor;
+        private System.Windows.Forms.Label lbSpellCheckMarkColor;
+        private System.Windows.Forms.Button btHunspellAffixFile;
+        private System.Windows.Forms.TextBox tbHunspellAffixFile;
+        private System.Windows.Forms.Label lbHunspellAffixFile;
+        private System.Windows.Forms.Button btHunspellDictionary;
+        private System.Windows.Forms.TextBox tbHunspellDictionary;
+        private System.Windows.Forms.Label lbHunspellDictionary;
+        private System.Windows.Forms.CheckBox cbSpellCheckInUse;
+        private System.Windows.Forms.OpenFileDialog odDictionaryFile;
+        private System.Windows.Forms.OpenFileDialog odAffixFile;
+        private System.Windows.Forms.Label lbEditorSpellRecheckInactivity;
+        private System.Windows.Forms.NumericUpDown nudEditorSpellRecheckInactivity;
     }
 }

@@ -1483,6 +1483,33 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add word &quot;{0}&quot; to the dictionary.|A context menu item for spell checking to add a word to the dictionary.
+        /// </summary>
+        internal static string msgSpellCheckAddWordToDictionaryText {
+            get {
+                return ResourceManager.GetString("msgSpellCheckAddWordToDictionaryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore word &quot;{0}&quot;.|A context menu item for spell checking to ignore a word.
+        /// </summary>
+        internal static string msgSpellCheckIgnoreWordMenuText {
+            get {
+                return ResourceManager.GetString("msgSpellCheckIgnoreWordMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spell checking|A message displayed in a spelling correct menu&apos;s top item..
+        /// </summary>
+        internal static string msgSpellChecking {
+            get {
+                return ResourceManager.GetString("msgSpellChecking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Structured Query Language file|*.sql;*.sql_script|A text in a file dialog indicating Structured Query Language files.
         /// </summary>
         internal static string msgStructuredQueryLanguageFile {

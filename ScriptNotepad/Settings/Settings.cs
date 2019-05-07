@@ -316,6 +316,36 @@ namespace ScriptNotepad.Settings
         public int EditorWhiteSpaceSize { get; set; } = 1;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/useSpellChecking", typeof(bool))]
+        public bool EditorUseSpellChecking { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/dictionaryFile", typeof(string))]
+        public string EditorHunspellDictionaryFile { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets a value of the Hunspell affix file to be used with spell checking for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/affixFile", typeof(string))]
+        public string EditorHunspellAffixFile { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the color of the spell check mark.
+        /// </summary>
+        [Setting("editorSpell/markColor", typeof(Color))]
+        public Color EditorSpellCheckColor { get; set; } = Color.Red;
+
+        /// <summary>
+        /// Gets or sets the color of the spell check mark.
+        /// </summary>
+        [Setting("editorSpell/SpellRecheckAfterInactivity", typeof(int))]
+        public int EditorSpellCheckInactivity { get; set; } = 500; // set the default to 500 milliseconds..
+
+        /// <summary>
         /// Gets or sets a value indicating whether save closed file contents to database as history.
         /// </summary>
         [Setting("database/historyContents", typeof(bool))]

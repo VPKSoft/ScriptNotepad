@@ -3,3 +3,4 @@
 * Done? [N/A] [2019/05/03] Create a language (programming language) selection menu.
 * Done? [N/A] [2019/05/03] Save document's settings to the database.
 * Done? [N/A] [2019/05/03] Save document's marked positions to the database.
+* Done? [YES] [2019/05/07] Add spell checking.

@@ -161,6 +161,20 @@ namespace ScriptNotepad.Settings
 
             // get the indent guide value..
             cbIndentGuideOn.Checked = Settings.EditorIndentGuideOn;
+
+            // get the spell checking properties..
+            if (File.Exists(Settings.EditorHunspellDictionaryFile) && File.Exists(Settings.EditorHunspellAffixFile) &&
+                Settings.EditorUseSpellChecking)
+            {
+                cbSpellCheckInUse.Checked = true;
+            }
+
+            btSpellCheckMarkColor.BackColor = Settings.EditorSpellCheckColor;
+
+            tbHunspellAffixFile.Text = Settings.EditorHunspellAffixFile;
+            tbHunspellDictionary.Text = Settings.EditorHunspellDictionaryFile;
+            nudEditorSpellRecheckInactivity.Value = (decimal)Settings.EditorSpellCheckInactivity;
+
         }
 
         /// <summary>
@@ -223,6 +237,14 @@ namespace ScriptNotepad.Settings
 
             // set the indent guide value..
             Settings.EditorIndentGuideOn = cbIndentGuideOn.Checked;
+
+            // set the spell checking properties..
+            Settings.EditorUseSpellChecking = cbSpellCheckInUse.Checked;
+            Settings.EditorSpellCheckColor = btSpellCheckMarkColor.BackColor;
+            Settings.EditorHunspellAffixFile = tbHunspellAffixFile.Text;
+            Settings.EditorHunspellDictionaryFile = tbHunspellDictionary.Text;
+            Settings.EditorSpellCheckInactivity = (int)nudEditorSpellRecheckInactivity.Value;
+
         }
         #endregion
 
@@ -352,7 +374,7 @@ namespace ScriptNotepad.Settings
             }
         }
 
-        private void BtSmartHighlightColor_Click(object sender, EventArgs e)
+        private void ColorButton_Click(object sender, EventArgs e)
         {
             if (cdColors.ShowDialog() == DialogResult.OK)
             {
@@ -370,6 +392,30 @@ namespace ScriptNotepad.Settings
             btMarkStyle4Color.BackColor = Color.FromArgb(128, 0, 255);
             btMarkStyle5Color.BackColor = Color.FromArgb(0, 128, 0);
             btCurrentLineBackgroundColor.BackColor = Color.FromArgb(232, 232, 255);
+        }
+
+        private void BtHunspellDictionary_Click(object sender, EventArgs e)
+        {
+            if (odDictionaryFile.ShowDialog() == DialogResult.OK)
+            {
+                tbHunspellDictionary.Text = odDictionaryFile.FileName;
+            }
+        }
+
+        private void BtHunspellAffixFile_Click(object sender, EventArgs e)
+        {
+            if (odAffixFile.ShowDialog() == DialogResult.OK)
+            {
+                tbHunspellAffixFile.Text = odAffixFile.FileName;
+            }
+        }
+
+        private void CbSpellCheckInUse_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(tbHunspellDictionary.Text) || !File.Exists(tbHunspellAffixFile.Text))
+            {
+                cbSpellCheckInUse.Checked = false;
+            }
         }
     }
 }

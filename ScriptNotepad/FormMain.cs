@@ -66,6 +66,7 @@ using ScriptNotepad.UtilityClasses.MenuHelpers;
 using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
+using ScriptNotepad.UtilityClasses.SpellCheck;
 using VPKSoft.ScintillaLexers.HelperClasses;
 
 #endregion
@@ -235,21 +236,67 @@ namespace ScriptNotepad
 
             // initialize the plug-in assemblies..
             InitializePlugins();
+
+            // set the spell check timer interval..
+            tmSpellCheck.Interval = FormSettings.Settings.EditorSpellCheckInactivity;
+
+            // enable the spell check timer..
+            tmSpellCheck.Enabled = true;
         }
         #endregion
 
-        #region HelperMethods        
+        #region HelperMethods
         /// <summary>
-        /// Runs an action to the current document if there is a current document.
+        /// Disposes the spell checkers attached to the document tabs.
+        /// </summary>
+        private void DisposeSpellCheckers()
+        {
+            for (int i = 0; i < sttcMain.DocumentsCount; i++)
+            {
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (sttcMain.Documents[i].Tags[0] != null && sttcMain.Documents[i].Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                {
+                    // dispose of the spell checker
+                    var spellCheck = (TabbedDocumentSpellCheck)sttcMain.Documents[i].Tags[0];
+
+                    using (spellCheck)
+                    {
+                        sttcMain.Documents[i].Tags[0] = null;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Runs an action to the current document's <see cref="Scintilla"/> if there is a current document.
         /// </summary>
         /// <param name="action">The action to run.</param>
-        public void CurrentDocumentAction(Action<Scintilla> action)
+        public void CurrentScintillaAction(Action<Scintilla> action)
         {
             if (sttcMain.CurrentDocument != null)
             {
                 try
                 {
                     action(sttcMain.CurrentDocument.Scintilla);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionLogger.LogError(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Runs an action to the current document if there is a current document.
+        /// </summary>
+        /// <param name="action">The action to run.</param>
+        public void CurrentDocumentAction(Action<ScintillaTabbedDocument> action)
+        {
+            if (sttcMain.CurrentDocument != null)
+            {
+                try
+                {
+                    action(sttcMain.CurrentDocument);
                 }
                 catch (Exception ex)
                 {
@@ -592,6 +639,9 @@ namespace ScriptNotepad
             {
                 Close();
             }
+
+            // dispose of the spell checkers attached to the documents..
+            DisposeSpellCheckers();
         }
 
         /// <summary>
@@ -612,6 +662,9 @@ namespace ScriptNotepad
             cleanupContents = Database.Database.CleanUpHistoryList(sessionName, HistoryListAmount);
 
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
+
+            // dispose of the spell checkers attached to the documents..
+            DisposeSpellCheckers();
 
             // close all the documents..
             sttcMain.CloseAllDocuments();
@@ -783,6 +836,17 @@ namespace ScriptNotepad
                     sttcMain.CloseDocument(docIndex);
                 }
 
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (sttcMain.Documents[docIndex].Tags[0] != null && sttcMain.Documents[docIndex].Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                {
+                    // dispose of the spell checker
+                    var spellCheck = (TabbedDocumentSpellCheck)sttcMain.Documents[docIndex].Tags[0];
+
+                    using (spellCheck)
+                    {
+                        sttcMain.Documents[docIndex].Tags[0] = null;
+                    }
+                }
             }
             // set the bring to front flag based on the given parameters..
             bringToFrontQueued = fileDeleted;
@@ -961,6 +1025,9 @@ namespace ScriptNotepad
 
                     sttcMain.LastAddedDocument.Tag = file;
 
+                    // ReSharper disable once ObjectCreationAsStatement
+                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
+
                     // enabled the caret line background color..
                     SetCaretLineColor();
 
@@ -1028,8 +1095,12 @@ namespace ScriptNotepad
                     SetCaretLineColor();
 
                     sttcMain.LastAddedDocument.Tag = file;
+
                     // the file load can't add an undo option the Scintilla..
                     sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
+
+                    // ReSharper disable once ObjectCreationAsStatement
+                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
                 }
                 sttcMain.ActivateDocument(file.FILENAME_FULL);
 
@@ -1101,6 +1172,9 @@ namespace ScriptNotepad
 
                     // save the DBFILE_SAVE class instance to the Tag property..
                     sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+
+                    // ReSharper disable once ObjectCreationAsStatement
+                    new TabbedDocumentSpellCheck(sttcMain.CurrentDocument);
                 }
             }
         }
@@ -1174,6 +1248,9 @@ namespace ScriptNotepad
                         // save the DBFILE_SAVE class instance to the Tag property..
                         // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
                         sttcMain.LastAddedDocument.Tag = fileSave;
+
+                        // ReSharper disable once ObjectCreationAsStatement
+                        new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
 
                         // enabled the caret line background color..
                         SetCaretLineColor();
@@ -2437,7 +2514,7 @@ namespace ScriptNotepad
         // enable/disable word wrap..
         private void MnuWordWrap_Click(object sender, EventArgs e)
         {
-            CurrentDocumentAction(scintilla =>
+            CurrentScintillaAction(scintilla =>
             {
                 scintilla.WrapMode = ItemFromObj<ToolStripMenuItem>(sender).Checked ? WrapMode.Word : WrapMode.None;
             });
@@ -2446,7 +2523,7 @@ namespace ScriptNotepad
         // a user wishes to show or hide the white space symbols..
         private void MnuShowWhiteSpaceAndTab_Click(object sender, EventArgs e)
         {
-            CurrentDocumentAction(scintilla =>
+            CurrentScintillaAction(scintilla =>
             {
                 scintilla.ViewWhitespace = ItemFromObj<ToolStripMenuItem>(sender).Checked
                     ? WhitespaceMode.VisibleAlways
@@ -2457,13 +2534,13 @@ namespace ScriptNotepad
         // a user wishes to hide or show the end of line symbols..
         private void MnuShowEndOfLine_Click(object sender, EventArgs e)
         {
-            CurrentDocumentAction(scintilla => { scintilla.ViewEol = ItemFromObj<ToolStripMenuItem>(sender).Checked; });
+            CurrentScintillaAction(scintilla => { scintilla.ViewEol = ItemFromObj<ToolStripMenuItem>(sender).Checked; });
         }
 
         // the show symbol menu drop down items are going to be shown, so set their states accordingly..
         private void MnuShowSymbol_DropDownOpening(object sender, EventArgs e)
         {
-            CurrentDocumentAction(scintilla => 
+            CurrentScintillaAction(scintilla => 
             {
                 mnuShowEndOfLine.Checked = scintilla.ViewEol;
 
@@ -2479,7 +2556,7 @@ namespace ScriptNotepad
         // a user wishes to toggle the scintilla to show or hide the indentation guides..
         private void MnuShowIndentGuide_Click(object sender, EventArgs e)
         {
-            CurrentDocumentAction(scintilla => 
+            CurrentScintillaAction(scintilla => 
                 scintilla.IndentationGuides = ItemFromObj<ToolStripMenuItem>(sender).Checked
                     ? IndentView.Real
                     : IndentView.None);
@@ -2488,10 +2565,30 @@ namespace ScriptNotepad
         // toggle whether to show the word wrap symbol..
         private void MnuShowWrapSymbol_Click(object sender, EventArgs e)
         {
-            CurrentDocumentAction(scintilla =>
+            CurrentScintillaAction(scintilla =>
                 scintilla.WrapVisualFlags = ItemFromObj<ToolStripMenuItem>(sender).Checked
                     ? WrapVisualFlags.End
                     : WrapVisualFlags.None);
+        }
+
+        // a timer to run a spell check for a Scintilla document if it has
+        // been changed and the user has been idle for the timer's interval..
+        private void TmSpellCheck_Tick(object sender, EventArgs e)
+        {
+            tmSpellCheck.Enabled = false; // disable the timer..
+            CurrentDocumentAction(document =>
+            {
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (document.Tags[0] != null && document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                {
+                    // get the TabbedDocumentSpellCheck class instance..
+                    var spellCheck = (TabbedDocumentSpellCheck)document.Tags[0];
+
+                    // check the document's spelling..
+                    spellCheck.DoSpellCheck();
+                }
+            });
+            tmSpellCheck.Enabled = true; // enabled the timer..
         }
         #endregion
     }

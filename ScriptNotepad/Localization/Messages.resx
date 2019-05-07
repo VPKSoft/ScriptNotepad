@@ -675,4 +675,13 @@
   <data name="msgStyleSet5" xml:space="preserve">
     <value>Mark using the fifth style|A menu item text to indicate marking text using style 5</value>
   </data>
+  <data name="msgSpellCheckAddWordToDictionaryText" xml:space="preserve">
+    <value>Add word "{0}" to the dictionary.|A context menu item for spell checking to add a word to the dictionary</value>
+  </data>
+  <data name="msgSpellCheckIgnoreWordMenuText" xml:space="preserve">
+    <value>Ignore word "{0}".|A context menu item for spell checking to ignore a word</value>
+  </data>
+  <data name="msgSpellChecking" xml:space="preserve">
+    <value>Spell checking|A message displayed in a spelling correct menu's top item.</value>
+  </data>
 </root>
