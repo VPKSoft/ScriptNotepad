@@ -346,6 +346,18 @@ namespace ScriptNotepad.Settings
         public int EditorSpellCheckInactivity { get; set; } = 500; // set the default to 500 milliseconds..
 
         /// <summary>
+        /// Gets or sets the font for the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/fontName", typeof(string))]
+        public string EditorFontName { get; set; } = "Consolas";
+
+        /// <summary>
+        /// Gets or sets the size of the font used in the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/fontSize", typeof(int))]
+        public int EditorFontSize { get; set; } = 10;
+
+        /// <summary>
         /// Gets or sets a value indicating whether save closed file contents to database as history.
         /// </summary>
         [Setting("database/historyContents", typeof(bool))]

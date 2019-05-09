@@ -33,8 +33,10 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using ScintillaNET;
+using ScriptNotepad.UtilityClasses.GraphicUtils;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using TabDrawMode = ScintillaNET.TabDrawMode;
@@ -89,6 +91,32 @@ namespace ScriptNotepad.Settings
             // a the translated cultures to the selection combo box..
             // ReSharper disable once CoVariantArrayConversion
             cmbSelectLanguageValue.Items.AddRange(cultures.ToArray());
+
+            foreach (var fontFamily in FontFamily.Families)
+            {
+                // validate that the font is fixed of width type..
+                if (fontFamily.IsFixedWidth())
+                {
+                    cmbFont.Items.Add(new FontFamilyHolder {FontFamily = fontFamily});
+                }
+            }
+        }
+
+        private class FontFamilyHolder
+        {
+            public static FontFamilyHolder FromFontFamilyName(string fontFamilyName)
+            {
+                List<FontFamily> families = new List<FontFamily>(FontFamily.Families);
+                var family = families.Find(f => f.Name == fontFamilyName);
+                return new FontFamilyHolder {FontFamily = family};
+            }
+
+            public FontFamily FontFamily { get; set; }
+
+            public override string ToString()
+            {
+                return FontFamily.Name;
+            }
         }
 
         /// <summary>
@@ -175,6 +203,21 @@ namespace ScriptNotepad.Settings
             tbHunspellDictionary.Text = Settings.EditorHunspellDictionaryFile;
             nudEditorSpellRecheckInactivity.Value = (decimal)Settings.EditorSpellCheckInactivity;
 
+            // get the editor font settings..
+            nudFontSize.Value = Settings.EditorFontSize;
+
+            var item = FontFamilyHolder.FromFontFamilyName(Settings.EditorFontName);
+
+            for (int i = 0; i < cmbFont.Items.Count; i++)
+            {
+                if (Equals(((FontFamilyHolder)cmbFont.Items[i]).FontFamily, item.FontFamily))
+                {
+                    cmbFont.SelectedIndex = i;
+                    break;
+                }
+            }
+
+            nudFontSize.Value = Settings.EditorFontSize;
         }
 
         /// <summary>
@@ -245,6 +288,9 @@ namespace ScriptNotepad.Settings
             Settings.EditorHunspellDictionaryFile = tbHunspellDictionary.Text;
             Settings.EditorSpellCheckInactivity = (int)nudEditorSpellRecheckInactivity.Value;
 
+            // set the editor font settings..
+            Settings.EditorFontSize = (int) nudFontSize.Value;
+            Settings.EditorFontName = ((FontFamilyHolder) cmbFont.SelectedItem).ToString();
         }
         #endregion
 
@@ -415,6 +461,21 @@ namespace ScriptNotepad.Settings
             if (!File.Exists(tbHunspellDictionary.Text) || !File.Exists(tbHunspellAffixFile.Text))
             {
                 cbSpellCheckInUse.Checked = false;
+            }
+        }
+
+        private void CmbFont_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbFont.SelectedItem != null)
+            {
+                FontFamilyHolder holder = (FontFamilyHolder) cmbFont.SelectedItem;
+                scintilla.Styles[Style.Default].Font = holder.ToString();
+                scintilla.Styles[Style.Default].Size = (int) nudFontSize.Value;
+                btOK.Enabled = true;
+            }
+            else
+            {
+                btOK.Enabled = false;
             }
         }
     }

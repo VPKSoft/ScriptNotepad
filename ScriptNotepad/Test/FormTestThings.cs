@@ -91,5 +91,10 @@ namespace ScriptNotepad.Test
         {
 
         }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            FormDialogQueryNumber.Execute<int>(0, 0, 100, "Test", "Give a test value:");
+        }
     }
 }

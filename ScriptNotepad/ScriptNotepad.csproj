@@ -108,8 +108,8 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.1\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.2\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.0.8\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
@@ -164,12 +164,19 @@
     <Compile Include="Database\Tables\SESSION_NAME.cs" />
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
     <Compile Include="Database\UtilityClasses\RecentFilesMenuBuilder.cs" />
+    <Compile Include="DialogForms\FormDialogQueryNumber.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogForms\FormDialogQueryNumber.Designer.cs">
+      <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="UtilityClasses\ApplicationHelpers\ApplicationActivateDeactivate.cs" />
+    <Compile Include="UtilityClasses\GraphicUtils\FontFamilyHelpers.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
     <Compile Include="UtilityClasses\Keyboard\KeyboardHelpers.cs" />
@@ -314,6 +321,10 @@
     </Compile>
     <Compile Include="UtilityClasses\SpellCheck\TabbedDocumentSpellCheck.cs" />
     <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
+    <Compile Include="UtilityClasses\TextManipulationUtils\WordWrapToSize.cs" />
+    <EmbeddedResource Include="DialogForms\FormDialogQueryNumber.resx">
+      <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.resx">
       <DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
     </EmbeddedResource>
@@ -430,6 +441,7 @@
     <None Include="Resources\word_wrap2.png" />
     <None Include="Resources\style.png" />
     <None Include="Resources\spell_check.png" />
+    <None Include="Resources\word_wrapped.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

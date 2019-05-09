@@ -684,4 +684,10 @@
   <data name="msgSpellChecking" xml:space="preserve">
     <value>Spell checking|A message displayed in a spelling correct menu's top item.</value>
   </data>
+  <data name="msgWrapText" xml:space="preserve">
+    <value>Wrap text|A message describing that some kind of wrapping is going to be done to some text</value>
+  </data>
+  <data name="msgWrapTextToLength" xml:space="preserve">
+    <value>Wrap text to length:|A message describing that a text should be wrapped so the its lines have a specified maximum length</value>
+  </data>
 </root>

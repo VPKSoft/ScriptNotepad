@@ -1753,6 +1753,24 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wrap text|A message describing that some kind of wrapping is going to be done to some text.
+        /// </summary>
+        internal static string msgWrapText {
+            get {
+                return ResourceManager.GetString("msgWrapText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrap text to length:|A message describing that a text should be wrapped so the its lines have a specified maximum length.
+        /// </summary>
+        internal static string msgWrapTextToLength {
+            get {
+                return ResourceManager.GetString("msgWrapTextToLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to YAML Ain&apos;t a Markup Language file|*.yml|A text in a file dialog indicating YAML Ain&apos;t a Markup Language files.
         /// </summary>
         internal static string msgYAMLFile {

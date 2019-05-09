@@ -67,8 +67,9 @@ using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using ScriptNotepad.UtilityClasses.SpellCheck;
+using ScriptNotepad.UtilityClasses.TextManipulationUtils;
 using VPKSoft.ScintillaLexers.HelperClasses;
-
+using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 #endregion
 
 namespace ScriptNotepad
@@ -170,6 +171,9 @@ namespace ScriptNotepad
                         DBLangEngine.GetStatMessage("msgDefaultSessionName", "Default|A name of the default session for the documents");
                 }
             }
+
+            FontFamilyName = FormSettings.Settings.EditorFontName;
+            FontSize = FormSettings.Settings.EditorFontSize; 
 
             // get the session ID number from the database..
             CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
@@ -969,6 +973,30 @@ namespace ScriptNotepad
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
         }
 
+        /// <summary>
+        /// Sets the document miscellaneous indicators.
+        /// </summary>
+        /// <param name="document">The <see cref="ScintillaTabbedDocument"/> document.</param>
+        private void SetDocumentMiscIndicators(ScintillaTabbedDocument document)
+        {
+            // the spell checking enabled..
+            // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+            if (document.Tags.Count > 0 && document.Tags[0] != null &&
+                document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+            {
+                // get the TabbedDocumentSpellCheck class instance..
+                var spellCheck = (TabbedDocumentSpellCheck) document.Tags[0];
+
+                // set the spell check enable/disable button to indicate the document's spell check state..
+                tsbSpellCheck.Checked = spellCheck.Enabled;
+            }
+            else
+            {
+                // set the spell check enable/disable button to indicate the document's spell check state..
+                tsbSpellCheck.Checked = false;                
+            }
+        }
+
         private void SetCaretLineColor()
         {
             // enabled the caret line background color..
@@ -1026,7 +1054,7 @@ namespace ScriptNotepad
                     sttcMain.LastAddedDocument.Tag = file;
 
                     // ReSharper disable once ObjectCreationAsStatement
-                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
+                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);                     
 
                     // enabled the caret line background color..
                     SetCaretLineColor();
@@ -1370,6 +1398,72 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a timer to run a spell check for a Scintilla document if it has
+        // been changed and the user has been idle for the timer's interval..
+        private void TmSpellCheck_Tick(object sender, EventArgs e)
+        {
+            tmSpellCheck.Enabled = false; // disable the timer..
+            CurrentDocumentAction(document =>
+            {
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (document.Tags.Count > 0 && document.Tags[0] != null &&
+                    document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                {
+                    // get the TabbedDocumentSpellCheck class instance..
+                    var spellCheck = (TabbedDocumentSpellCheck) document.Tags[0];
+
+                    // check the document's spelling..
+                    spellCheck.DoSpellCheck();
+                }
+            });
+            tmSpellCheck.Enabled = true; // enabled the timer..
+        }
+
+        // a user wishes to temporarily disable or enable the spell checking of the current document..
+        private void TsbSpellCheck_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (document.Tags.Count > 0 && document.Tags[0] != null &&
+                    document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                {
+                    // get the TabbedDocumentSpellCheck class instance..
+                    var spellCheck = (TabbedDocumentSpellCheck) document.Tags[0];
+
+                    // set the document's spell check to either enabled or disabled..
+                    spellCheck.Enabled = ((ToolStripButton) sender).Checked;
+                }
+            });
+        }
+
+        // a user wishes to wrap the text to a specific line length..
+        private void MnuWrapDocumentTo_Click(object sender, EventArgs e)
+        {
+            // query the line length..
+            int wrapSize = FormDialogQueryNumber.Execute<int>(72,50, 150,
+                DBLangEngine.GetMessage("msgWrapText",
+                    "Wrap text|A message describing that some kind of wrapping is going to be done to some text"),
+                DBLangEngine.GetMessage("msgWrapTextToLength",
+                    "Wrap text to length:|A message describing that a text should be wrapped so the its lines have a specified maximum length"));
+
+            // if the user accepted the dialog, wrap either the selection or the whole document..
+            if (wrapSize != default)
+            {
+                CurrentScintillaAction(scintilla =>
+                {
+                    if (scintilla.SelectedText.Length > 0)
+                    {
+                        scintilla.ReplaceSelection(WordWrapToSize.Wrap(scintilla.SelectedText, wrapSize));
+                    }
+                    else
+                    {
+                        scintilla.Text = WordWrapToSize.Wrap(scintilla.Text, wrapSize);                        
+                    }
+                });
+            }
+        }
+
         private void FormSearchResultTree_RequestDockReleaseMainForm(object sender, EventArgs e)
         {
             var dockForm = (FormSearchResultTree)sender;
@@ -1928,6 +2022,8 @@ namespace ScriptNotepad
             // set the application title to indicate the currently active document..
             SetApplicationTitle(e.ScintillaTabbedDocument);
 
+            SetDocumentMiscIndicators(e.ScintillaTabbedDocument);
+
             StatusStripTexts.SetDocumentSizeText(e.ScintillaTabbedDocument);
 
             StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
@@ -2093,7 +2189,7 @@ namespace ScriptNotepad
         private void RequestActiveDocument(object sender, RequestScintillaDocumentEventArgs e)
         {
             // verify that there is an active document, etc..
-            if (sttcMain.CurrentDocument != null && sttcMain.CurrentDocument.Tag != null)
+            if (sttcMain.CurrentDocument?.Tag != null)
             {
                 DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
                 e.AllDocuments = false; // set to flag indicating all the documents to false..
@@ -2569,26 +2665,6 @@ namespace ScriptNotepad
                 scintilla.WrapVisualFlags = ItemFromObj<ToolStripMenuItem>(sender).Checked
                     ? WrapVisualFlags.End
                     : WrapVisualFlags.None);
-        }
-
-        // a timer to run a spell check for a Scintilla document if it has
-        // been changed and the user has been idle for the timer's interval..
-        private void TmSpellCheck_Tick(object sender, EventArgs e)
-        {
-            tmSpellCheck.Enabled = false; // disable the timer..
-            CurrentDocumentAction(document =>
-            {
-                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (document.Tags[0] != null && document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
-                {
-                    // get the TabbedDocumentSpellCheck class instance..
-                    var spellCheck = (TabbedDocumentSpellCheck)document.Tags[0];
-
-                    // check the document's spelling..
-                    spellCheck.DoSpellCheck();
-                }
-            });
-            tmSpellCheck.Enabled = true; // enabled the timer..
         }
         #endregion
     }

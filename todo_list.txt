@@ -4,3 +4,4 @@
 * Done? [N/A] [2019/05/03] Save document's settings to the database.
 * Done? [N/A] [2019/05/03] Save document's marked positions to the database.
 * Done? [YES] [2019/05/07] Add spell checking.
+* Done? [YES] [2019/05/08] Add word wrapping possibility.

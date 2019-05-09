@@ -48,6 +48,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbUndo = new System.Windows.Forms.ToolStripButton();
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbSpellCheck = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
@@ -101,6 +102,8 @@
             this.mnuClearStyle3 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuClearStyle4 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuClearStyle5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -140,7 +143,6 @@
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
             this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -301,14 +303,21 @@
             this.tsbRedo.Text = "Redo";
             this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
             // tsbSpellCheck
             // 
+            this.tsbSpellCheck.CheckOnClick = true;
             this.tsbSpellCheck.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbSpellCheck.Image = global::ScriptNotepad.Properties.Resources.spell_check;
             this.tsbSpellCheck.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSpellCheck.Name = "tsbSpellCheck";
             this.tsbSpellCheck.Size = new System.Drawing.Size(23, 22);
-            this.tsbSpellCheck.Text = "toolStripButton1";
+            this.tsbSpellCheck.Text = "Spell checking enabled";
+            this.tsbSpellCheck.Click += new System.EventHandler(this.TsbSpellCheck_Click);
             // 
             // ssMain
             // 
@@ -617,7 +626,9 @@
             this.mnuRunScript,
             this.mnuCharSets,
             this.toolStripMenuItem6,
-            this.mnuStyle});
+            this.mnuStyle,
+            this.toolStripMenuItem8,
+            this.mnuWrapDocumentTo});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -626,7 +637,7 @@
             // 
             this.mnuRunScript.Image = ((System.Drawing.Image)(resources.GetObject("mnuRunScript.Image")));
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(168, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(183, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -634,14 +645,14 @@
             // 
             this.mnuCharSets.Image = ((System.Drawing.Image)(resources.GetObject("mnuCharSets.Image")));
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(168, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(183, 22);
             this.mnuCharSets.Text = "Change encoding";
             this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(165, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 6);
             // 
             // mnuStyle
             // 
@@ -661,7 +672,7 @@
             this.mnuClearStyle5});
             this.mnuStyle.Image = global::ScriptNotepad.Properties.Resources.style;
             this.mnuStyle.Name = "mnuStyle";
-            this.mnuStyle.Size = new System.Drawing.Size(168, 22);
+            this.mnuStyle.Size = new System.Drawing.Size(183, 22);
             this.mnuStyle.Text = "Style";
             // 
             // mnuClearAllStyles
@@ -775,6 +786,19 @@
             this.mnuClearStyle5.Tag = "13";
             this.mnuClearStyle5.Text = "Clear style five";
             this.mnuClearStyle5.Click += new System.EventHandler(this.ClearStyleOf_Click);
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 6);
+            // 
+            // mnuWrapDocumentTo
+            // 
+            this.mnuWrapDocumentTo.Image = global::ScriptNotepad.Properties.Resources.word_wrapped;
+            this.mnuWrapDocumentTo.Name = "mnuWrapDocumentTo";
+            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(183, 22);
+            this.mnuWrapDocumentTo.Text = "Wrap document to...";
+            this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
             // 
             // mnuSearch
             // 
@@ -1080,11 +1104,6 @@
             // 
             this.tmSpellCheck.Tick += new System.EventHandler(this.TmSpellCheck_Tick);
             // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1229,6 +1248,8 @@
         private System.Windows.Forms.Timer tmSpellCheck;
         private System.Windows.Forms.ToolStripButton tsbSpellCheck;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
+        private System.Windows.Forms.ToolStripMenuItem mnuWrapDocumentTo;
     }
 }
 

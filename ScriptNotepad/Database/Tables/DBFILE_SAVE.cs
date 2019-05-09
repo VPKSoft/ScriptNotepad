@@ -117,8 +117,8 @@ namespace ScriptNotepad.Database.Tables
                 if (previousDbModified.CompareTo(value) != 0 && !previousDbModifiedIsSet)
                 {
                     previousDbModified = value;
+                    previousDbModifiedIsSet = true;
                 }
-                previousDbModifiedIsSet = true;
             }
         }
 

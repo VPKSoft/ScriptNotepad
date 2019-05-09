@@ -59,6 +59,10 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                         "Ignore word \"{0}\".|A context menu item for spell checking to ignore a word"),
                     MenuAddToDictionaryText = DBLangEngine.GetStatMessage("msgSpellCheckAddWordToDictionaryText",
                         "Add word \"{0}\" to the dictionary.|A context menu item for spell checking to add a word to the dictionary"),
+                    MenuDictionaryTopItemText =  DBLangEngine.GetStatMessage("msgSpellChecking",
+                    "Spell checking|A message displayed in a spelling correct menu's top item."),
+                    ShowDictionaryTopMenuItem = true,
+                    AddBottomSeparator = true,
                     ShowIgnoreMenu = true,
                     ShowAddToDictionaryMenu = true,
                     ScintillaIndicatorColor = FormSettings.Settings.EditorSpellCheckColor,
@@ -95,17 +99,22 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
         /// </summary>
         public void DoSpellCheck()
         {
-            if (ShouldSpellCheck)
+            // prevent the spell checking to take place if it's
+            // explicitly disabled or there is no need no redo the
+            // spell checking..
+            if (!ShouldSpellCheck || !Enabled)
             {
-                // spell check the document..
-                SpellCheck?.SpellCheckScintillaFast();
-
-                // reset the value of the flag..
-                SpellCheckEnabled = false;
-
-                // reset the time of the latest spell check..
-                LastSpellCheck = DateTime.Now;
+                return;
             }
+
+            // spell check the document..
+            SpellCheck?.SpellCheckScintillaFast();
+
+            // reset the value of the flag..
+            SpellCheckEnabled = false;
+
+            // reset the time of the latest spell check..
+            LastSpellCheck = DateTime.Now;
         }
 
         /// <summary>
@@ -176,6 +185,30 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                 return result;
             }
             set => textChangedViaSpellCheck = value ? 2 : 0;
+        }
+
+        // a field for the Enabled property..
+        private bool enabled = true;
+
+        /// <summary>
+        /// Gets or set a value whether the spell checking is enabled.
+        /// </summary>
+        public bool Enabled
+        {
+            get => enabled;
+
+            set
+            {
+                if (value != enabled)
+                {
+                    SpellCheckEnabled = value;
+                    enabled = value;
+                    if (!value)
+                    {
+                        SpellCheck.ClearSpellCheck();
+                    }
+                }
+            }
         }
 
         /// <summary>
