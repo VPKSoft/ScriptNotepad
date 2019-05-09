@@ -442,6 +442,7 @@
     <None Include="Resources\style.png" />
     <None Include="Resources\spell_check.png" />
     <None Include="Resources\word_wrapped.png" />
+    <None Include="Resources\sort_alphabet.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

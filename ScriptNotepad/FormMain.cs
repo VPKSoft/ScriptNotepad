@@ -172,6 +172,7 @@ namespace ScriptNotepad
                 }
             }
 
+            // get the font size and family from the settings..
             FontFamilyName = FormSettings.Settings.EditorFontName;
             FontSize = FormSettings.Settings.EditorFontSize; 
 
@@ -1398,6 +1399,66 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a user wishes to alphabetically order the the lines of the active document..
+        private void MnuSortLines_Click(object sender, EventArgs e)
+        {
+            CurrentScintillaAction(scintilla =>
+            {
+                // if text is selected, do the ordering with a bit more complex algorithm..
+                if (scintilla.SelectedText.Length > 0)
+                {
+                    // save the selection start into a variable..
+                    int selStart = scintilla.SelectionStart;
+
+                    // save the start line index of the selection into a variable..
+                    int startLine = scintilla.LineFromPosition(selStart);
+
+                    // adjust the selection start to match the actual line start of the selection..
+                    selStart = scintilla.Lines[startLine].Position;
+
+
+                    // save the selection end into a variable..
+                    int selEnd = scintilla.SelectionEnd;
+
+                    // save the end line index of the selection into a variable..
+                    int endLine = scintilla.LineFromPosition(selEnd);
+
+                    // adjust the selection end to match the actual line end of the selection..
+                    selEnd = scintilla.Lines[endLine].EndPosition;
+
+                    // reset the selection with the "corrected" values..
+                    scintilla.SelectionStart = selStart;
+                    scintilla.SelectionEnd = selEnd;
+
+                    // get the lines in the selection and order the lines alphabetically with LINQ..
+                    var lines = scintilla.Lines.Where(f => f.Index >= startLine && f.Index <= endLine)
+                        .OrderBy(f => f.Text.ToLowerInvariant()).Select(f => f.Text);
+
+                    // replace the modified selection with the sorted lines..
+                    scintilla.ReplaceSelection(string.Join("", lines));
+
+                    // get the "new" selection start..
+                    selStart = scintilla.Lines[startLine].Position;
+
+                    // get the "new" selection end..
+                    selEnd = scintilla.Lines[endLine].EndPosition;
+
+                    // set the "new" selection..
+                    scintilla.SelectionStart = selStart;
+                    scintilla.SelectionEnd = selEnd;
+                }
+                // somehow the whole document is easier..
+                else
+                {
+                    // just LINQ it to sorted list..
+                    var lines = scintilla.Lines.OrderBy(f => f.Text.ToLowerInvariant()).Select(f => f.Text);
+
+                    // set the text..
+                    scintilla.Text = string.Join("", lines);                    
+                }
+            });
+        }
+
         // a timer to run a spell check for a Scintilla document if it has
         // been changed and the user has been idle for the timer's interval..
         private void TmSpellCheck_Tick(object sender, EventArgs e)

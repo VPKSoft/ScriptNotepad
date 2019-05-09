@@ -143,6 +143,8 @@
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
             this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -628,7 +630,9 @@
             this.toolStripMenuItem6,
             this.mnuStyle,
             this.toolStripMenuItem8,
-            this.mnuWrapDocumentTo});
+            this.mnuWrapDocumentTo,
+            this.toolStripMenuItem9,
+            this.mnuSortLines});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -1104,6 +1108,19 @@
             // 
             this.tmSpellCheck.Tick += new System.EventHandler(this.TmSpellCheck_Tick);
             // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 6);
+            // 
+            // mnuSortLines
+            // 
+            this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
+            this.mnuSortLines.Name = "mnuSortLines";
+            this.mnuSortLines.Size = new System.Drawing.Size(183, 22);
+            this.mnuSortLines.Text = "Sort lines...";
+            this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1250,6 +1267,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
         private System.Windows.Forms.ToolStripMenuItem mnuWrapDocumentTo;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
+        private System.Windows.Forms.ToolStripMenuItem mnuSortLines;
     }
 }
 
