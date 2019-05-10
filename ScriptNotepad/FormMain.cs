@@ -247,10 +247,24 @@ namespace ScriptNotepad
 
             // enable the spell check timer..
             tmSpellCheck.Enabled = true;
+
+            // enable the GUI timer..
+            tmGUI.Enabled = true;
         }
         #endregion
 
         #region HelperMethods
+
+        /// <summary>
+        /// Enables or disables the main form's GUI timers.
+        /// </summary>
+        /// <param name="enabled">if set to <c>true</c> the timers are enabled.</param>
+        private void EnableDisableTimers(bool enabled)
+        {
+            tmSpellCheck.Enabled = enabled;
+            tmGUI.Enabled = enabled;
+        }
+
         /// <summary>
         /// Disposes the spell checkers attached to the document tabs.
         /// </summary>
@@ -259,14 +273,14 @@ namespace ScriptNotepad
             for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (sttcMain.Documents[i].Tags[0] != null && sttcMain.Documents[i].Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                if (sttcMain.Documents[i] != null && sttcMain.Documents[i].Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
                 {
                     // dispose of the spell checker
-                    var spellCheck = (TabbedDocumentSpellCheck)sttcMain.Documents[i].Tags[0];
+                    var spellCheck = (TabbedDocumentSpellCheck)sttcMain.Documents[i].Tag0;
 
                     using (spellCheck)
                     {
-                        sttcMain.Documents[i].Tags[0] = null;
+                        sttcMain.Documents[i].Tag0 = null;
                     }
                 }
             }
@@ -715,7 +729,6 @@ namespace ScriptNotepad
                             // just in case set the tag back..
                             sttcMain.Documents[i].Tag = fileSave;
 
-
                             // set the flag that the form should be activated after the dialog..
                             bringToFrontQueued = true;
                         }
@@ -811,6 +824,9 @@ namespace ScriptNotepad
         private void HandleCloseTab(DBFILE_SAVE fileSave, bool fileDeleted, bool tabClosing, bool closeTab,
             int currentPosition)
         {
+            // disable the timers while a document is closing..
+            EnableDisableTimers(false);
+
             // set the flags according to the parameters..
             fileSave.ISHISTORY = tabClosing || fileDeleted || closeTab; 
 
@@ -821,6 +837,8 @@ namespace ScriptNotepad
 
             // get the tabbed document index via the ID number..
             int docIndex = sttcMain.Documents.FindIndex(f => f.ID == fileSave.ID);
+
+            ExceptionLogger.LogMessage($"Tab closing: {docIndex}");
 
             // this should never be -1 but do check still in case of a bug..
             if (docIndex != -1)
@@ -834,23 +852,23 @@ namespace ScriptNotepad
                 // update the file history list in the database..
                 DatabaseRecentFiles.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME, fileSave.ENCODING);
 
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (sttcMain.Documents[docIndex].Tag0 != null && sttcMain.Documents[docIndex].Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
+                {
+                    // dispose of the spell checker
+                    var spellCheck = (TabbedDocumentSpellCheck)sttcMain.Documents[docIndex].Tag0;
+
+                    using (spellCheck)
+                    {
+                        sttcMain.Documents[docIndex].Tag0 = null;
+                    }
+                }
+
                 // the file was not requested to be kept in the editor after a deletion from the file system or the tab was requested to be closed..
                 if (fileDeleted || closeTab)
                 {
                     // ..so close the tab..
                     sttcMain.CloseDocument(docIndex);
-                }
-
-                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (sttcMain.Documents[docIndex].Tags[0] != null && sttcMain.Documents[docIndex].Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
-                {
-                    // dispose of the spell checker
-                    var spellCheck = (TabbedDocumentSpellCheck)sttcMain.Documents[docIndex].Tags[0];
-
-                    using (spellCheck)
-                    {
-                        sttcMain.Documents[docIndex].Tags[0] = null;
-                    }
                 }
             }
             // set the bring to front flag based on the given parameters..
@@ -858,6 +876,9 @@ namespace ScriptNotepad
 
             // re-create a menu for recent files..
             RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
+
+            // enable the timers after the document has closed..
+            EnableDisableTimers(true);
         }
 
         /// <summary>
@@ -982,11 +1003,11 @@ namespace ScriptNotepad
         {
             // the spell checking enabled..
             // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-            if (document.Tags.Count > 0 && document.Tags[0] != null &&
-                document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+            if (document.Tags.Count > 0 && document.Tag0 != null &&
+                document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
             {
                 // get the TabbedDocumentSpellCheck class instance..
-                var spellCheck = (TabbedDocumentSpellCheck) document.Tags[0];
+                var spellCheck = (TabbedDocumentSpellCheck) document.Tag0;
 
                 // set the spell check enable/disable button to indicate the document's spell check state..
                 tsbSpellCheck.Checked = spellCheck.Enabled;
@@ -1416,7 +1437,6 @@ namespace ScriptNotepad
                     // adjust the selection start to match the actual line start of the selection..
                     selStart = scintilla.Lines[startLine].Position;
 
-
                     // save the selection end into a variable..
                     int selEnd = scintilla.SelectionEnd;
 
@@ -1467,11 +1487,11 @@ namespace ScriptNotepad
             CurrentDocumentAction(document =>
             {
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (document.Tags.Count > 0 && document.Tags[0] != null &&
-                    document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                if (document.Tags.Count > 0 && document.Tag0 != null &&
+                    document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
                 {
                     // get the TabbedDocumentSpellCheck class instance..
-                    var spellCheck = (TabbedDocumentSpellCheck) document.Tags[0];
+                    var spellCheck = (TabbedDocumentSpellCheck) document.Tag0;
 
                     // check the document's spelling..
                     spellCheck.DoSpellCheck();
@@ -1486,11 +1506,11 @@ namespace ScriptNotepad
             CurrentDocumentAction(document =>
             {
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (document.Tags.Count > 0 && document.Tags[0] != null &&
-                    document.Tags[0].GetType() == typeof(TabbedDocumentSpellCheck))
+                if (document.Tags.Count > 0 && document.Tag0 != null &&
+                    document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
                 {
                     // get the TabbedDocumentSpellCheck class instance..
-                    var spellCheck = (TabbedDocumentSpellCheck) document.Tags[0];
+                    var spellCheck = (TabbedDocumentSpellCheck) document.Tag0;
 
                     // set the document's spell check to either enabled or disabled..
                     spellCheck.Enabled = ((ToolStripButton) sender).Checked;
@@ -1971,11 +1991,19 @@ namespace ScriptNotepad
             SaveDocumentsToDatabase(CurrentSession);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the form has shown once.
+        /// </summary>
+        /// <value><c>true</c> if [form first shown]; otherwise, <c>false</c>.</value>
+        private bool FormFirstShown { get; set; }
+
         // the form is shown..
         private void FormMain_Shown(object sender, EventArgs e)
         {
             // ..so open the files given as arguments for the program..
             OpenArgumentFiles();
+
+            FormFirstShown = true;
         }
 
         // a user decided to save the file..
@@ -2047,10 +2075,17 @@ namespace ScriptNotepad
         // the software's main form was activated so check if any open file has been changes..
         private void FormMain_Activated(object sender, EventArgs e)
         {
+            tmGUI.Enabled = false;
             // release the flag which suspends the selection update to avoid excess CPU load..
             suspendSelectionUpdate = false;
 
+            // this event in this case leads to an endless loop..
+            Activated -= FormMain_Activated;
+
             CheckFileSysChanges();
+
+            // this event in this case leads to an endless loop..
+            Activated += FormMain_Activated;
 
             // start the timer to bring the main form to the front..
             leftActivatedEvent = true;
@@ -2244,6 +2279,7 @@ namespace ScriptNotepad
             }
             bringToFrontQueued = false;
             leftActivatedEvent = false;
+            tmGUI.Enabled = true;
         }
 
         // occurs when a plug-in requests for the currently active document..
@@ -2329,19 +2365,30 @@ namespace ScriptNotepad
             }
         }
 
-        private FormWindowState prev = FormWindowState.Normal;
+        /// <summary>
+        /// The previous window state of this form.
+        /// </summary>
+        private FormWindowState previousWindowState = FormWindowState.Normal;
 
         private void FormMain_Resize(object sender, EventArgs e)
         {
-            if (WindowState == FormWindowState.Minimized && prev != FormWindowState.Minimized)
+            if (FormFirstShown)
             {
-                FormSearchAndReplace.Instance.ToggleVisible(false);
-                prev = WindowState;
+                if (WindowState == FormWindowState.Minimized && previousWindowState != FormWindowState.Minimized)
+                {
+                    FormSearchAndReplace.Instance.ToggleVisible(false);
+                    previousWindowState = WindowState;
+                }
+                else if (previousWindowState != WindowState &&
+                         (WindowState == FormWindowState.Maximized || WindowState == FormWindowState.Normal))
+                {
+                    FormSearchAndReplace.Instance.ToggleVisible(true);
+                    previousWindowState = WindowState;
+                }
             }
-            else if (prev != WindowState)
+            else
             {
-                FormSearchAndReplace.Instance.ToggleVisible(true);
-                prev = WindowState;
+                previousWindowState = WindowState;
             }
         }
 

@@ -104,6 +104,8 @@
             this.mnuClearStyle5 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,8 +145,6 @@
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
             this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
-            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -804,6 +804,19 @@
             this.mnuWrapDocumentTo.Text = "Wrap document to...";
             this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
             // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 6);
+            // 
+            // mnuSortLines
+            // 
+            this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
+            this.mnuSortLines.Name = "mnuSortLines";
+            this.mnuSortLines.Size = new System.Drawing.Size(183, 22);
+            this.mnuSortLines.Text = "Sort lines...";
+            this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
+            // 
             // mnuSearch
             // 
             this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -995,6 +1008,7 @@
             // 
             // tmGUI
             // 
+            this.tmGUI.Interval = 500;
             this.tmGUI.Tick += new System.EventHandler(this.tmGUI_Tick);
             // 
             // cmsFileTab
@@ -1107,19 +1121,6 @@
             // tmSpellCheck
             // 
             this.tmSpellCheck.Tick += new System.EventHandler(this.TmSpellCheck_Tick);
-            // 
-            // toolStripMenuItem9
-            // 
-            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 6);
-            // 
-            // mnuSortLines
-            // 
-            this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
-            this.mnuSortLines.Name = "mnuSortLines";
-            this.mnuSortLines.Size = new System.Drawing.Size(183, 22);
-            this.mnuSortLines.Text = "Sort lines...";
-            this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
             // 
             // FormMain
             // 

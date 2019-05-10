@@ -46,17 +46,24 @@ namespace ScriptNotepad.UtilityClasses.GraphicUtils
             {
                 using (Graphics graphics = Graphics.FromHwnd(Form.ActiveForm.Handle))
                 {
-                    using (Font font = new Font(fontFamily, 10, FontStyle.Regular, GraphicsUnit.Pixel))
+                    try
                     {
-                        float charWidth = graphics.MeasureString("I", font).Width;
-                        foreach (var measureChar in measureChars)
+                        using (Font font = new Font(fontFamily, 10, FontStyle.Regular, GraphicsUnit.Pixel))
                         {
-                            // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            if (graphics.MeasureString(measureChar.ToString(), font).Width != charWidth)
+                            float charWidth = graphics.MeasureString("I", font).Width;
+                            foreach (var measureChar in measureChars)
                             {
-                                return false;
+                                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                                if (graphics.MeasureString(measureChar.ToString(), font).Width != charWidth)
+                                {
+                                    return false;
+                                }
                             }
                         }
+                    }
+                    catch
+                    {
+                        return false;
                     }
                 }
             }

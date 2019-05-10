@@ -284,6 +284,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         public static void ShowSearch()
         {
             Instance.Show();
+            Instance.PreviousVisible = true;
             Instance.tcMain.SelectTab(0);
             Instance.cmbFind.Focus();
         }
@@ -294,6 +295,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         public static void ShowReplace()
         {
             Instance.Show();
+            Instance.PreviousVisible = true;
             Instance.tcMain.SelectTab(1);
             Instance.cmbFind2.Focus();
         }
@@ -304,6 +306,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         public static void ShowFindInFiles()
         {
             Instance.Show();
+            Instance.PreviousVisible = true;
             Instance.tcMain.SelectTab(2);
             Instance.cmbFind3.Focus();
         }
@@ -378,12 +381,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance has been visible previously.
+        /// </summary>
+        private bool PreviousVisible { get; set; }
+
+        /// <summary>
         /// Toggles the visible state of this form.
         /// </summary>
         /// <param name="shouldShow">if set to <c>true</c> the form should be shown.</param>
         public void ToggleVisible(bool shouldShow)
         {
-            if (!Visible && shouldShow && !UserClosed)
+            if (!Visible && shouldShow && !UserClosed && PreviousVisible)
             {
                 Show();
                 if (tcMain.SelectedTab.Equals(tabFind))
@@ -1013,6 +1021,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             e.Cancel = !AllowInstanceDispose;
             if (!AllowInstanceDispose)
             {
+                // set the value to the property..
+                PreviousVisible = Visible;
+
+
                 Hide();
             }
         }
