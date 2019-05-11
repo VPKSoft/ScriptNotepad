@@ -1258,6 +1258,159 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Batch script file|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingBatch {
+            get {
+                return ResourceManager.GetString("msgProgrammingBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to C++ programming language|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingCpp {
+            get {
+                return ResourceManager.GetString("msgProgrammingCpp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to C# programming language|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingCs {
+            get {
+                return ResourceManager.GetString("msgProgrammingCs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTML (Hypertext Markup Language)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingHtml {
+            get {
+                return ResourceManager.GetString("msgProgrammingHtml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INI properties file|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingIni {
+            get {
+                return ResourceManager.GetString("msgProgrammingIni", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Properties file (INI)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingIni2 {
+            get {
+                return ResourceManager.GetString("msgProgrammingIni2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NSIS (Nullsoft Scriptable Install System)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingNsis {
+            get {
+                return ResourceManager.GetString("msgProgrammingNsis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pascal programming language|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingPascal {
+            get {
+                return ResourceManager.GetString("msgProgrammingPascal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PHP programming language|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingPHP {
+            get {
+                return ResourceManager.GetString("msgProgrammingPHP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Python programming language|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingPython {
+            get {
+                return ResourceManager.GetString("msgProgrammingPython", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQL (Structured Query Language)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingSQL {
+            get {
+                return ResourceManager.GetString("msgProgrammingSQL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plain text document|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingText {
+            get {
+                return ResourceManager.GetString("msgProgrammingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text document (plain)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingText2 {
+            get {
+                return ResourceManager.GetString("msgProgrammingText2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingUnknown {
+            get {
+                return ResourceManager.GetString("msgProgrammingUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WindowsPowerShell|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingWindowsPowerShell {
+            get {
+                return ResourceManager.GetString("msgProgrammingWindowsPowerShell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML (eXtensible Markup Language)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingXML {
+            get {
+                return ResourceManager.GetString("msgProgrammingXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YAML (YAML Ain&apos;t Markup Language)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingYAML {
+            get {
+                return ResourceManager.GetString("msgProgrammingYAML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Properties file|*.properties|A text in a file dialog indicating Properties files.
         /// </summary>
         internal static string msgPropertiesFile {

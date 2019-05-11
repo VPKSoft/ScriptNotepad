@@ -63,6 +63,7 @@ using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Keyboard;
 using ScriptNotepad.UtilityClasses.MenuHelpers;
+using ScriptNotepad.UtilityClasses.ProgrammingLanguages;
 using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
@@ -250,6 +251,12 @@ namespace ScriptNotepad
 
             // enable the GUI timer..
             tmGUI.Enabled = true;
+
+            // create a programming language selection menu..
+            ProgrammingLanguageHelper = new ProgrammingLanguageHelper(mnuProgrammingLanguage,
+                FormSettings.Settings.CategorizeStartCharacterProgrammingLanguage);
+
+            ProgrammingLanguageHelper.LanguageMenuClick += ProgrammingLanguageHelper_LanguageMenuClick;
         }
         #endregion
 
@@ -273,10 +280,11 @@ namespace ScriptNotepad
             for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (sttcMain.Documents[i] != null && sttcMain.Documents[i].Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
+                if (sttcMain.Documents[i] != null && sttcMain.Documents[i].Tag0 != null &&
+                    sttcMain.Documents[i].Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
                 {
                     // dispose of the spell checker
-                    var spellCheck = (TabbedDocumentSpellCheck)sttcMain.Documents[i].Tag0;
+                    var spellCheck = (TabbedDocumentSpellCheck) sttcMain.Documents[i].Tag0;
 
                     using (spellCheck)
                     {
@@ -529,6 +537,13 @@ namespace ScriptNotepad
             // unsubscribe to events which will occur with the FormSearchResultTree instance docking..
             FormSearchResultTree.RequestDockMainForm -= FormSearchResultTree_RequestDockMainForm;
             FormSearchResultTree.RequestDockReleaseMainForm -= FormSearchResultTree_RequestDockReleaseMainForm;
+
+            // dispose of the programming language menu helper..
+            using (ProgrammingLanguageHelper)
+            {
+                // unsubscribe the programming language click event..
+                ProgrammingLanguageHelper.LanguageMenuClick += ProgrammingLanguageHelper_LanguageMenuClick;                
+            }            
 
             // unsubscribe to the event when a search result is clicked from the FormSearchResultTree form..
             FormSearchResultTree.SearchResultSelected -= FormSearchResultTreeSearchResultSelected;
@@ -1420,6 +1435,12 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a user wishes to change the lexer of the current document..
+        private void ProgrammingLanguageHelper_LanguageMenuClick(object sender, ProgrammingLanguageMenuClickEventArgs e)
+        {
+            CurrentDocumentAction(document => { document.LexerType = e.LexerType; });
+        }
+
         // a user wishes to alphabetically order the the lines of the active document..
         private void MnuSortLines_Click(object sender, EventArgs e)
         {
@@ -2512,7 +2533,12 @@ namespace ScriptNotepad
         private bool suspendSelectionUpdate;
         #endregion
 
-        #region PrivateProperties
+        #region PrivateProperties        
+        /// <summary>
+        /// Gets or sets the programming language helper class <see cref="ProgrammingLanguageHelper"/>.
+        /// </summary>
+        private ProgrammingLanguageHelper ProgrammingLanguageHelper { get; set; }
+
         /// <summary>
         /// Gets or sets the current session for the documents.
         /// </summary>

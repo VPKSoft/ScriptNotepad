@@ -149,17 +149,20 @@ namespace ScriptNotepad.Settings
             // get the amount of documents contents to be kept after a document has been closed..
             nudDocumentContentHistory.Value = Settings.SaveFileHistoryContentsCount;
 
-            // set the flag whether to save closed document contents..
+            // get the flag whether to save closed document contents..
             cbDocumentContentHistory.Checked = Settings.SaveFileHistoryContents;
 
-            // set the current culture from the settings..
+            // get the current culture from the settings..
             cmbSelectLanguageValue.SelectedItem = Settings.Culture;
 
-            // set the current plug-in folder from the settings..
+            // get the current plug-in folder from the settings..
             tbPluginFolder.Text = Settings.PluginFolder;
 
-            // set the value of whether to dock the search tree form in the main form..
+            // get the value of whether to dock the search tree form in the main form..
             cbDockSearchTree.Checked = Settings.DockSearchTreeForm;
+
+            // get the value whether to categorize the programming language menu with the language name starting character..
+            cbCategorizeProgrammingLanguages.Checked = Settings.CategorizeStartCharacterProgrammingLanguage;
 
             // get the color values..
             btSmartHighlightColor.BackColor = Settings.SmartHighlight;
@@ -245,6 +248,9 @@ namespace ScriptNotepad.Settings
 
             // save the value of whether to dock the search tree form in the main form..
             Settings.DockSearchTreeForm = cbDockSearchTree.Checked;
+
+            // save the value whether to categorize the programming language menu with the language name starting character..
+            Settings.CategorizeStartCharacterProgrammingLanguage = cbCategorizeProgrammingLanguages.Checked;
 
             // save the color values..
             Settings.SmartHighlight = btSmartHighlightColor.BackColor;

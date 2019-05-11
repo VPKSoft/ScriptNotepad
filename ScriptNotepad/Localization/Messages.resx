@@ -690,4 +690,55 @@
   <data name="msgWrapTextToLength" xml:space="preserve">
     <value>Wrap text to length:|A message describing that a text should be wrapped so the its lines have a specified maximum length</value>
   </data>
+  <data name="msgProgrammingBatch" xml:space="preserve">
+    <value>Batch script file|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingCpp" xml:space="preserve">
+    <value>C++ programming language|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingCs" xml:space="preserve">
+    <value>C# programming language|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingHtml" xml:space="preserve">
+    <value>HTML (Hypertext Markup Language)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingIni" xml:space="preserve">
+    <value>INI properties file|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingIni2" xml:space="preserve">
+    <value>Properties file (INI)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingNsis" xml:space="preserve">
+    <value>NSIS (Nullsoft Scriptable Install System)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingPascal" xml:space="preserve">
+    <value>Pascal programming language|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingPHP" xml:space="preserve">
+    <value>PHP programming language|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingPython" xml:space="preserve">
+    <value>Python programming language|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingSQL" xml:space="preserve">
+    <value>SQL (Structured Query Language)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingText" xml:space="preserve">
+    <value>Plain text document|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingText2" xml:space="preserve">
+    <value>Text document (plain)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingUnknown" xml:space="preserve">
+    <value>Unknown|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingWindowsPowerShell" xml:space="preserve">
+    <value>WindowsPowerShell|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingXML" xml:space="preserve">
+    <value>XML (eXtensible Markup Language)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingYAML" xml:space="preserve">
+    <value>YAML (YAML Ain't Markup Language)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
 </root>

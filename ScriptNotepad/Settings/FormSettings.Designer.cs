@@ -65,6 +65,13 @@
             this.rbTabSymbolStrikeout = new System.Windows.Forms.RadioButton();
             this.rbTabSymbolArrow = new System.Windows.Forms.RadioButton();
             this.cbUseTabs = new System.Windows.Forms.CheckBox();
+            this.tabEditorFont = new System.Windows.Forms.TabPage();
+            this.lbFontSample = new System.Windows.Forms.Label();
+            this.scintilla = new ScintillaNET.Scintilla();
+            this.nudFontSize = new System.Windows.Forms.NumericUpDown();
+            this.lbFontSize = new System.Windows.Forms.Label();
+            this.cmbFont = new System.Windows.Forms.ComboBox();
+            this.lbFont = new System.Windows.Forms.Label();
             this.tpgColorSettings = new System.Windows.Forms.TabPage();
             this.btDefaults = new System.Windows.Forms.Button();
             this.btCurrentLineBackgroundColor = new System.Windows.Forms.Button();
@@ -93,13 +100,6 @@
             this.tbHunspellDictionary = new System.Windows.Forms.TextBox();
             this.lbHunspellDictionary = new System.Windows.Forms.Label();
             this.cbSpellCheckInUse = new System.Windows.Forms.CheckBox();
-            this.tabEditorFont = new System.Windows.Forms.TabPage();
-            this.lbFontSample = new System.Windows.Forms.Label();
-            this.scintilla = new ScintillaNET.Scintilla();
-            this.nudFontSize = new System.Windows.Forms.NumericUpDown();
-            this.lbFontSize = new System.Windows.Forms.Label();
-            this.cmbFont = new System.Windows.Forms.ComboBox();
-            this.lbFont = new System.Windows.Forms.Label();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
@@ -107,6 +107,7 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
+            this.cbCategorizeProgrammingLanguages = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -122,11 +123,11 @@
             this.gbTabSymbol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabEditorFont.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
             this.tpgColorSettings.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
-            this.tabEditorFont.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -147,6 +148,7 @@
             // 
             // tpgGeneralSettings
             // 
+            this.tpgGeneralSettings.Controls.Add(this.cbCategorizeProgrammingLanguages);
             this.tpgGeneralSettings.Controls.Add(this.nudHistoryAmount);
             this.tpgGeneralSettings.Controls.Add(this.lbHistoryAmount);
             this.tpgGeneralSettings.Controls.Add(this.nudMaximumSearchFileSize);
@@ -594,6 +596,93 @@
             this.cbUseTabs.Text = "Use tabs";
             this.cbUseTabs.UseVisualStyleBackColor = true;
             // 
+            // tabEditorFont
+            // 
+            this.tabEditorFont.Controls.Add(this.lbFontSample);
+            this.tabEditorFont.Controls.Add(this.scintilla);
+            this.tabEditorFont.Controls.Add(this.nudFontSize);
+            this.tabEditorFont.Controls.Add(this.lbFontSize);
+            this.tabEditorFont.Controls.Add(this.cmbFont);
+            this.tabEditorFont.Controls.Add(this.lbFont);
+            this.tabEditorFont.Location = new System.Drawing.Point(4, 22);
+            this.tabEditorFont.Name = "tabEditorFont";
+            this.tabEditorFont.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEditorFont.Size = new System.Drawing.Size(557, 371);
+            this.tabEditorFont.TabIndex = 4;
+            this.tabEditorFont.Text = "Editor font";
+            this.tabEditorFont.UseVisualStyleBackColor = true;
+            // 
+            // lbFontSample
+            // 
+            this.lbFontSample.AutoSize = true;
+            this.lbFontSample.Location = new System.Drawing.Point(6, 84);
+            this.lbFontSample.Name = "lbFontSample";
+            this.lbFontSample.Size = new System.Drawing.Size(42, 13);
+            this.lbFontSample.TabIndex = 18;
+            this.lbFontSample.Text = "Sample";
+            // 
+            // scintilla
+            // 
+            this.scintilla.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scintilla.Location = new System.Drawing.Point(6, 100);
+            this.scintilla.Name = "scintilla";
+            this.scintilla.ScrollWidth = 2421;
+            this.scintilla.Size = new System.Drawing.Size(545, 265);
+            this.scintilla.TabIndex = 17;
+            this.scintilla.Text = resources.GetString("scintilla.Text");
+            // 
+            // nudFontSize
+            // 
+            this.nudFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudFontSize.Location = new System.Drawing.Point(461, 33);
+            this.nudFontSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudFontSize.Name = "nudFontSize";
+            this.nudFontSize.Size = new System.Drawing.Size(90, 20);
+            this.nudFontSize.TabIndex = 16;
+            this.nudFontSize.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudFontSize.ValueChanged += new System.EventHandler(this.CmbFont_SelectedIndexChanged);
+            // 
+            // lbFontSize
+            // 
+            this.lbFontSize.AutoSize = true;
+            this.lbFontSize.Location = new System.Drawing.Point(6, 35);
+            this.lbFontSize.Name = "lbFontSize";
+            this.lbFontSize.Size = new System.Drawing.Size(52, 13);
+            this.lbFontSize.TabIndex = 15;
+            this.lbFontSize.Text = "Font size:";
+            // 
+            // cmbFont
+            // 
+            this.cmbFont.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFont.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbFont.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbFont.FormattingEnabled = true;
+            this.cmbFont.Location = new System.Drawing.Point(190, 6);
+            this.cmbFont.Name = "cmbFont";
+            this.cmbFont.Size = new System.Drawing.Size(361, 21);
+            this.cmbFont.TabIndex = 14;
+            this.cmbFont.SelectedIndexChanged += new System.EventHandler(this.CmbFont_SelectedIndexChanged);
+            // 
+            // lbFont
+            // 
+            this.lbFont.AutoSize = true;
+            this.lbFont.Location = new System.Drawing.Point(6, 9);
+            this.lbFont.Name = "lbFont";
+            this.lbFont.Size = new System.Drawing.Size(31, 13);
+            this.lbFont.TabIndex = 13;
+            this.lbFont.Text = "Font:";
+            // 
             // tpgColorSettings
             // 
             this.tpgColorSettings.Controls.Add(this.btDefaults);
@@ -897,93 +986,6 @@
             this.cbSpellCheckInUse.UseVisualStyleBackColor = true;
             this.cbSpellCheckInUse.Click += new System.EventHandler(this.CbSpellCheckInUse_Click);
             // 
-            // tabEditorFont
-            // 
-            this.tabEditorFont.Controls.Add(this.lbFontSample);
-            this.tabEditorFont.Controls.Add(this.scintilla);
-            this.tabEditorFont.Controls.Add(this.nudFontSize);
-            this.tabEditorFont.Controls.Add(this.lbFontSize);
-            this.tabEditorFont.Controls.Add(this.cmbFont);
-            this.tabEditorFont.Controls.Add(this.lbFont);
-            this.tabEditorFont.Location = new System.Drawing.Point(4, 22);
-            this.tabEditorFont.Name = "tabEditorFont";
-            this.tabEditorFont.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEditorFont.Size = new System.Drawing.Size(557, 371);
-            this.tabEditorFont.TabIndex = 4;
-            this.tabEditorFont.Text = "Editor font";
-            this.tabEditorFont.UseVisualStyleBackColor = true;
-            // 
-            // lbFontSample
-            // 
-            this.lbFontSample.AutoSize = true;
-            this.lbFontSample.Location = new System.Drawing.Point(6, 84);
-            this.lbFontSample.Name = "lbFontSample";
-            this.lbFontSample.Size = new System.Drawing.Size(42, 13);
-            this.lbFontSample.TabIndex = 18;
-            this.lbFontSample.Text = "Sample";
-            // 
-            // scintilla
-            // 
-            this.scintilla.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scintilla.Location = new System.Drawing.Point(6, 100);
-            this.scintilla.Name = "scintilla";
-            this.scintilla.ScrollWidth = 2421;
-            this.scintilla.Size = new System.Drawing.Size(545, 265);
-            this.scintilla.TabIndex = 17;
-            this.scintilla.Text = resources.GetString("scintilla.Text");
-            // 
-            // nudFontSize
-            // 
-            this.nudFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudFontSize.Location = new System.Drawing.Point(461, 33);
-            this.nudFontSize.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudFontSize.Name = "nudFontSize";
-            this.nudFontSize.Size = new System.Drawing.Size(90, 20);
-            this.nudFontSize.TabIndex = 16;
-            this.nudFontSize.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudFontSize.ValueChanged += new System.EventHandler(this.CmbFont_SelectedIndexChanged);
-            // 
-            // lbFontSize
-            // 
-            this.lbFontSize.AutoSize = true;
-            this.lbFontSize.Location = new System.Drawing.Point(6, 35);
-            this.lbFontSize.Name = "lbFontSize";
-            this.lbFontSize.Size = new System.Drawing.Size(52, 13);
-            this.lbFontSize.TabIndex = 15;
-            this.lbFontSize.Text = "Font size:";
-            // 
-            // cmbFont
-            // 
-            this.cmbFont.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbFont.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbFont.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbFont.FormattingEnabled = true;
-            this.cmbFont.Location = new System.Drawing.Point(190, 6);
-            this.cmbFont.Name = "cmbFont";
-            this.cmbFont.Size = new System.Drawing.Size(361, 21);
-            this.cmbFont.TabIndex = 14;
-            this.cmbFont.SelectedIndexChanged += new System.EventHandler(this.CmbFont_SelectedIndexChanged);
-            // 
-            // lbFont
-            // 
-            this.lbFont.AutoSize = true;
-            this.lbFont.Location = new System.Drawing.Point(6, 9);
-            this.lbFont.Name = "lbFont";
-            this.lbFont.Size = new System.Drawing.Size(31, 13);
-            this.lbFont.TabIndex = 13;
-            this.lbFont.Text = "Font:";
-            // 
             // btCancel
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1018,6 +1020,17 @@
             // odAffixFile
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
+            // 
+            // cbCategorizeProgrammingLanguages
+            // 
+            this.cbCategorizeProgrammingLanguages.AutoSize = true;
+            this.cbCategorizeProgrammingLanguages.Location = new System.Drawing.Point(6, 317);
+            this.cbCategorizeProgrammingLanguages.Name = "cbCategorizeProgrammingLanguages";
+            this.cbCategorizeProgrammingLanguages.Size = new System.Drawing.Size(434, 17);
+            this.cbCategorizeProgrammingLanguages.TabIndex = 38;
+            this.cbCategorizeProgrammingLanguages.Text = "Categorize the programming language menu with the language name starting characte" +
+    "r";
+            this.cbCategorizeProgrammingLanguages.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1057,14 +1070,14 @@
             this.gbTabSymbol.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabEditorFont.ResumeLayout(false);
+            this.tabEditorFont.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).EndInit();
             this.tpgColorSettings.ResumeLayout(false);
             this.tpgColorSettings.PerformLayout();
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
-            this.tabEditorFont.ResumeLayout(false);
-            this.tabEditorFont.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1148,5 +1161,6 @@
         private System.Windows.Forms.Label lbFontSize;
         private System.Windows.Forms.ComboBox cmbFont;
         private System.Windows.Forms.Label lbFont;
+        private System.Windows.Forms.CheckBox cbCategorizeProgrammingLanguages;
     }
 }

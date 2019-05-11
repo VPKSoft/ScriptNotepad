@@ -127,6 +127,7 @@
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuProgrammingLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
             this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
             this.tmGUI = new System.Windows.Forms.Timer(this.components);
@@ -473,6 +474,7 @@
             this.mnuEdit,
             this.mnuSearch,
             this.mnuView,
+            this.mnuProgrammingLanguage,
             this.mnuTools,
             this.mnuPlugins,
             this.mnuHelp});
@@ -1002,6 +1004,12 @@
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
+            // mnuProgrammingLanguage
+            // 
+            this.mnuProgrammingLanguage.Name = "mnuProgrammingLanguage";
+            this.mnuProgrammingLanguage.Size = new System.Drawing.Size(71, 20);
+            this.mnuProgrammingLanguage.Text = "Language";
+            // 
             // odAnyFile
             // 
             this.odAnyFile.FileOk += new System.ComponentModel.CancelEventHandler(this.odAnyFile_FileOk);
@@ -1270,6 +1278,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuWrapDocumentTo;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
         private System.Windows.Forms.ToolStripMenuItem mnuSortLines;
+        private System.Windows.Forms.ToolStripMenuItem mnuProgrammingLanguage;
     }
 }
 

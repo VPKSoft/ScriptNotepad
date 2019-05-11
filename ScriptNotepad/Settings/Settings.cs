@@ -407,6 +407,12 @@ namespace ScriptNotepad.Settings
         public bool DefaultSessionLocalized { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether tp categorize the programming language menu with the language name starting character.
+        /// </summary>
+        [Setting("misc/categorizeStartCharacterProgrammingLanguage", typeof(bool))]
+        public bool CategorizeStartCharacterProgrammingLanguage { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the plug-in folder for the software.
         /// </summary>
         [Setting("misc/pluginFolder", typeof(string))]
