@@ -8,4 +8,5 @@
 * Done? [N/A] [2019/05/11] Add a helper function to extract colors from mark-up (i.e. #AB0FFE) to (A)RGB.
 * Done? [N/A] [2019/05/11] Add the Notepad++ style definition files to the installer and make their selection a setting.
 * Done? [N/A] [2019/05/11] Add LibreOffice's dictionary and affix files to the installer.
-* Done? [N/A] [2019/05/11] Add a question whether to add a context menu (open with) for the Windows shell to the installer.
+* Done? [YES] [2019/05/11] Add a question whether to add a context menu (open with) for the Windows shell to the installer.
+

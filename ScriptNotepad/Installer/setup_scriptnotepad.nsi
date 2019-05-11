@@ -1,4 +1,4 @@
-# MIT License
+Ôªø# MIT License
 # 
 # Copyright(c) 2019 Petteri Kautonen
 # 
@@ -88,7 +88,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyWebsite "${URL}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} FileVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} FileDescription "ScriptNotepad"
-VIAddVersionKey /LANG=${LANG_ENGLISH} LegalCopyright "Copyright © VPKSoft 2019"
+VIAddVersionKey /LANG=${LANG_ENGLISH} LegalCopyright "Copyright ÔøΩ VPKSoft 2019"
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails hide
 
@@ -115,7 +115,13 @@ Section -Main SEC0000
 	
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
 	
+    MessageBox MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON1 "$(AddMenuToShell)" IDYES addMenu IDNO noAddMenu
+
+	addMenu:
+    DetailPrint "User chose to associate with the Windows shell..."
 	Call MakeShellMenu
+    noAddMenu:
+    DetailPrint "User chose NOT to associate with the Windows shell..."
 SectionEnd
 
 Section -post SEC0001
@@ -227,8 +233,11 @@ LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_FINNISH} "Poista $(^Name)"
 
 # localization..
-LangString DeleteUserData ${LANG_FINNISH} "Poista paikalliset k‰ytt‰j‰tiedot?"
+LangString DeleteUserData ${LANG_FINNISH} "Poista paikalliset k√§ytt√§j√§tiedot?"
 LangString DeleteUserData ${LANG_ENGLISH} "Delete local user data?"
+
+LangString AddMenuToShell ${LANG_FINNISH} "Lis√§√§ avaa sovelluksella ScriptNotepad Windowsin tiedostoselaimen kontekstivalikkoon?"
+LangString AddMenuToShell ${LANG_ENGLISH} "Add Open with ScriptNotepad to Windows shell context menu?"
 
 LangString OpenWithScriptNotepad ${LANG_FINNISH} "Avaa sovelluksella ScriptNotepad"
 LangString OpenWithScriptNotepad ${LANG_ENGLISH} "Open with ScriptNotepad"
