@@ -183,6 +183,12 @@ namespace ScriptNotepad
             // localize the context menu before any of the context menus are build to the Scintilla controls..
             ScintillaContextMenu.LocalizeTexts();
 
+            // create a programming language selection menu..
+            ProgrammingLanguageHelper = new ProgrammingLanguageHelper(mnuProgrammingLanguage,
+                FormSettings.Settings.CategorizeStartCharacterProgrammingLanguage);
+
+            ProgrammingLanguageHelper.LanguageMenuClick += ProgrammingLanguageHelper_LanguageMenuClick;
+
             // load the recent documents which were saved during the program close..
             LoadDocumentsFromDatabase(CurrentSession);
 
@@ -251,12 +257,6 @@ namespace ScriptNotepad
 
             // enable the GUI timer..
             tmGUI.Enabled = true;
-
-            // create a programming language selection menu..
-            ProgrammingLanguageHelper = new ProgrammingLanguageHelper(mnuProgrammingLanguage,
-                FormSettings.Settings.CategorizeStartCharacterProgrammingLanguage);
-
-            ProgrammingLanguageHelper.LanguageMenuClick += ProgrammingLanguageHelper_LanguageMenuClick;
         }
         #endregion
 
@@ -1069,15 +1069,8 @@ namespace ScriptNotepad
                 sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
                 if (sttcMain.LastAddedDocument != null)
                 {
-                    // create a localizable context menu strip for the Scintilla..
-                    var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
-                        UndoFromExternal, RedoFromExternal);
-
-                    // add the style mark menu to the context menu..
-                    ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
-
-                    // set the editor (Scintilla) properties from the saved settings..
-                    FormSettings.SetEditorSettings(sttcMain.LastAddedDocument.Scintilla);
+                    // append additional initialization to the document..
+                    AdditionalInitializeDocument(sttcMain.LastAddedDocument);
 
                     // set the saved position of the document's caret..
                     if (file.CURRENT_POSITION > 0 && file.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
@@ -1114,6 +1107,29 @@ namespace ScriptNotepad
         }
 
         /// <summary>
+        /// Sets the additional data for a <see cref="ScintillaTabbedDocument"/> upon opening or creating one.
+        /// </summary>
+        /// <param name="document">The document to intialize the additional data for.</param>
+        private void AdditionalInitializeDocument(ScintillaTabbedDocument document)
+        {
+            // create a localizable context menu strip for the Scintilla..
+            var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(document.Scintilla,
+                UndoFromExternal, RedoFromExternal);
+
+            // set the editor (Scintilla) properties from the saved settings..
+            FormSettings.SetEditorSettings(document.Scintilla);
+
+            // add the style mark menu to the context menu..
+            ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
+
+            // set the editor (Scintilla) properties from the saved settings..
+            FormSettings.SetEditorSettings(document.Scintilla);
+
+            // check the programming language menu item with the current lexer..
+            ProgrammingLanguageHelper.CheckLanguage(document.LexerType);
+        }
+
+        /// <summary>
         /// Loads the document from the database based on a given <paramref name="recentFile"/> class instance.
         /// </summary>
         /// <param name="recentFile">A <see cref="RECENT_FILES"/> class instance containing the file data.</param>
@@ -1128,15 +1144,8 @@ namespace ScriptNotepad
                 sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
                 if (sttcMain.LastAddedDocument != null)
                 {
-                    // create a localizable context menu strip for the Scintilla..
-                    var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
-                        UndoFromExternal, RedoFromExternal);
-
-                    // add the style mark menu to the context menu..
-                    ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
-
-                    // set the editor (Scintilla) properties from the saved settings..
-                    FormSettings.SetEditorSettings(sttcMain.LastAddedDocument.Scintilla);
+                    // append additional initialization to the document..
+                    AdditionalInitializeDocument(sttcMain.LastAddedDocument);
 
                     // not history any more..
                     file.ISHISTORY = false;
@@ -1208,15 +1217,8 @@ namespace ScriptNotepad
             {
                 if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
                 {
-                    // create a localizable context menu strip for the Scintilla..
-                    var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.CurrentDocument.Scintilla,
-                        UndoFromExternal, RedoFromExternal);
-
-                    // add the style mark menu to the context menu..
-                    ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
-
-                    // set the editor (Scintilla) properties from the saved settings..
-                    FormSettings.SetEditorSettings(sttcMain.CurrentDocument.Scintilla);
+                    // append additional initialization to the document..
+                    AdditionalInitializeDocument(sttcMain.CurrentDocument);
 
                     sttcMain.CurrentDocument.Tag =
                         new DBFILE_SAVE()
@@ -1264,15 +1266,8 @@ namespace ScriptNotepad
                 {
                     if (sttcMain.LastAddedDocument != null) // if the document was added or updated to the control..
                     {
-                        // create a localizable context menu strip for the Scintilla..
-                        var menuStrip = ScintillaContextMenu.CreateBasicContextMenuStrip(sttcMain.LastAddedDocument.Scintilla,
-                            UndoFromExternal, RedoFromExternal);
-
-                        // add the style mark menu to the context menu..
-                        ContextMenuStyles.CreateStyleMenu(menuStrip, StyleSelectOf_Click, ClearStyleOf_Click, ClearAllStyles_Click);
-
-                        // set the editor (Scintilla) properties from the saved settings..
-                        FormSettings.SetEditorSettings(sttcMain.LastAddedDocument.Scintilla);
+                        // append additional initialization to the document..
+                        AdditionalInitializeDocument(sttcMain.LastAddedDocument);
 
                         // check the database first for a DBFILE_SAVE class instance..
                         DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName);
@@ -1508,7 +1503,7 @@ namespace ScriptNotepad
             CurrentDocumentAction(document =>
             {
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (document.Tags.Count > 0 && document.Tag0 != null &&
+                if (document.Tag0 != null &&
                     document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
                 {
                     // get the TabbedDocumentSpellCheck class instance..

@@ -25,8 +25,11 @@ SOFTWARE.
 #endregion
 
 using System;
+using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ScintillaNET;
+using ScriptNotepad.UtilityClasses.ColorHelpers;
 using VPKSoft.LangLib;
 
 // (C)::Loosely based on the article: https://github.com/jacobslusser/ScintillaNET/issues/334
@@ -85,6 +88,11 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
         public static string TextSelectAll { get; set; } = "Select All";
 
         /// <summary>
+        /// Gets or sets the text for picking a color from a hex string value for a tool strip menu item for localization.
+        /// </summary>
+        public static string TextHexadecimalColor { get; set; } = "Pick a color";
+
+        /// <summary>
         /// Localizes the texts used to build the <see cref="ContextMenuStrip"/> with the <seealso cref="CreateBasicContextMenuStrip"/> method.
         /// This should be called before any context menu strips have been created but after the <see cref="DBLangEngine"/> has been initialized.
         /// </summary>
@@ -107,6 +115,9 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
 
             TextSelectAll = DBLangEngine.GetStatMessage("msgContextSelectAll",
                 "Select All|A message for a context menu to describe a select all text action");
+
+            TextHexadecimalColor = DBLangEngine.GetStatMessage("msgPickAColor",
+                "Pick a color|A message for a context menu to describe a hexadecimal color in the text file converted to a color");
         }
 
         /// <summary>
@@ -167,6 +178,41 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
             contextMenu.Items.Add(new ToolStripMenuItem(TextSelectAll, null,
                     (sender, e) => ((ToolStripTagItem) ((ToolStripItem) sender).Tag).Scintilla.SelectAll())
                 {Tag = new ToolStripTagItem {FunctionId = 5, Scintilla = scintilla}});
+
+            // create a tool strip separator..
+            contextMenu.Items.Add(new ToolStripSeparator());
+
+            // create a color convert ToolStripMenuItem..
+            contextMenu.Items.Add(new ToolStripMenuItem(TextHexadecimalColor, null, (sender, args) =>
+                {
+                    var word = scintilla.GetWordFromPosition(scintilla.CurrentPosition);
+                    if (Regex.IsMatch(word, "^[A-Fa-f0-9]*$"))
+                    {
+                        Color color = Color.Empty;
+                        if (word.Length == 8)
+                        {
+                            color = Color.FromArgb(Convert.ToInt32(word.Substring(0, 2), 16),
+                                Convert.ToInt32(word.Substring(2, 2), 16),
+                                Convert.ToInt32(word.Substring(4, 2), 16),
+                                Convert.ToInt32(word.Substring(6, 2), 16));
+                        }
+                        else if (word.Length == 6)
+                        {
+                            color = Color.FromArgb(0xFF,
+                                Convert.ToInt32(word.Substring(0, 2), 16),
+                                Convert.ToInt32(word.Substring(2, 2), 16),
+                                Convert.ToInt32(word.Substring(4, 2), 16));
+                        }
+
+                        FormPickAColor.Execute(color);
+                    }
+                })
+            {
+                Tag = new ToolStripTagItem {FunctionId = 6, Scintilla = scintilla}
+            });
+
+            // ^[A-Fa-f0-9]*$ 
+
 
             // set the Scintilla's ContextMenuStrip property value to the just
             // created ContextMenuStrip instance..
@@ -234,6 +280,12 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
 
                         // if the Scintilla instance has any text, then the select all item is enabled..
                         case 5: contextMenu.Items[i].Enabled = tagItem.Scintilla.Text.Length > 0; break;
+
+                        // if the text under the Scintilla's selection might indicate a color, then the color drop down item is..
+                        case 6:
+                            contextMenu.Items[i].Enabled = Regex.IsMatch(
+                                tagItem.Scintilla.GetWordFromPosition(tagItem.Scintilla.CurrentPosition),
+                                "^[A-Fa-f0-9]*$"); break;
                     }
                 }
             }

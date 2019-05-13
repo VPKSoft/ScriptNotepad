@@ -741,4 +741,7 @@
   <data name="msgProgrammingYAML" xml:space="preserve">
     <value>YAML (YAML Ain't Markup Language)|A programming, markup, setting, script or other file and/or language/text</value>
   </data>
+  <data name="msgPickAColor" xml:space="preserve">
+    <value>Pick a color|A message for a context menu to describe a hexadecimal color in the text file converted to a color</value>
+  </data>
 </root>

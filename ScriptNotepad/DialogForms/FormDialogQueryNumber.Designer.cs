@@ -113,6 +113,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDialogQueryNumber";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormDialogQueryNumber";
             ((System.ComponentModel.ISupportInitialize)(this.nudValueStart)).EndInit();

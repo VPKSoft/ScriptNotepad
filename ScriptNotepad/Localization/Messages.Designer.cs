@@ -1213,6 +1213,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick a color|A message for a context menu to describe a hexadecimal color in the text file converted to a color.
+        /// </summary>
+        internal static string msgPickAColor {
+            get {
+                return ResourceManager.GetString("msgPickAColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PostScript file|*.ps|A text in a file dialog indicating PostScript files.
         /// </summary>
         internal static string msgPostScriptFile {

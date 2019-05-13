@@ -37,6 +37,7 @@ using VPKSoft.LangLib;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.PluginHandling;
 using ScriptNotepad.UtilityClasses.CodeDom;
+using ScriptNotepad.UtilityClasses.ColorHelpers;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 
@@ -95,6 +96,8 @@ namespace ScriptNotepad
                 new FormDialogSearchReplaceProgressFiles();
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogQueryNumber();
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormPickAColor();
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;

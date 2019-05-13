@@ -86,14 +86,47 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                     // add the language menu to the category menu item's drop down menu collection..
                     usedCharMenus[idx].charItem.DropDownItems
                         .Add(new ToolStripMenuItem(language.programmingLanguageName, null, menuClickLanguage)
-                            {Tag = language.lexerType});
+                            {Tag = language.lexerType, CheckOnClick = true});
                 }
                 else
                 {
                     // add the language menu to the given tool strip menu item's drop down menu collection..
                     languageMenuStrip.DropDownItems
                         .Add(new ToolStripMenuItem(language.programmingLanguageName, null, menuClickLanguage)
-                            {Tag = language.lexerType});
+                            {Tag = language.lexerType, CheckOnClick = true});
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds and checks the menu item(s) with the given <see cref="LexerType"/>.
+        /// </summary>
+        /// <param name="lexerType">Type of the lexer of which corresponding menu item(s) to check.</param>
+        public void CheckLanguage(LexerType lexerType)
+        {
+            foreach (ToolStripMenuItem menuItem in menuStrip.DropDownItems)
+            {
+                foreach (ToolStripMenuItem subMenuItem in menuItem.DropDownItems)
+                {
+                    // check or un-check the menu item..
+                    if (subMenuItem.Tag != null && subMenuItem.Tag.GetType() == typeof(LexerType))
+                    {
+                        subMenuItem.Checked = true;
+                    }
+                    else
+                    {
+                        subMenuItem.Checked = false;                        
+                    }
+                }
+
+                // check or un-check the menu item..
+                if (menuItem.Tag != null && menuItem.Tag.GetType() == typeof(LexerType))
+                {
+                    menuItem.Checked = true;
+                }
+                else
+                {
+                    menuItem.Checked = false;                        
                 }
             }
         }
@@ -118,7 +151,9 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
             menuStrip.DropDownItems.Clear();
         }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             DisposePreviousMenu();
