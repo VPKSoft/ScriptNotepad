@@ -1018,7 +1018,7 @@ namespace ScriptNotepad
         {
             // the spell checking enabled..
             // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-            if (document.Tags.Count > 0 && document.Tag0 != null &&
+            if (document.Tag0 != null &&
                 document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
             {
                 // get the TabbedDocumentSpellCheck class instance..
@@ -1522,7 +1522,7 @@ namespace ScriptNotepad
             CurrentDocumentAction(document =>
             {
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (document.Tags.Count > 0 && document.Tag0 != null &&
+                if (document.Tag0 != null &&
                     document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
                 {
                     // get the TabbedDocumentSpellCheck class instance..

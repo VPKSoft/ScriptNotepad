@@ -49,7 +49,7 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
             if (FormSettings.Settings.EditorUseSpellChecking &&
                 File.Exists(FormSettings.Settings.EditorHunspellDictionaryFile) &&
                 File.Exists(FormSettings.Settings.EditorHunspellAffixFile) &&
-                document.Tags.FindIndex(f => f.GetType() == typeof(TabbedDocumentSpellCheck)) == -1)
+                document.Tag0 == null)
             {
                 SpellCheck = new ScintillaSpellCheck(document.Scintilla,
                     FormSettings.Settings.EditorHunspellDictionaryFile,
@@ -68,8 +68,8 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                     ScintillaIndicatorColor = FormSettings.Settings.EditorSpellCheckColor,
                 };
 
-                // add this instance to the document's Tags property..
-                document.Tags.Add(this);
+                // add this instance to the document's Tag0 property..
+                document.Tag0 = this;
 
                 // subscribe to the event where a user wishes to correct a
                 // misspelled word via the context menu..

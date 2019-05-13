@@ -107,7 +107,19 @@ Section -Main SEC0000
     SetOutPath "$LOCALAPPDATA\ScriptNotepad"
     File ..\Localization\SQLiteDatabase\lang.sqlite   
 	
-   
+	#English dictionaries..
+    SetOutPath "$LOCALAPPDATA\ScriptNotepad\Dictionaries\en"
+
+	#replace this folder in order to compile the installer successfully..
+    File C:\Files\GitHub\dictionaries\en\en_GB.dic  
+    File C:\Files\GitHub\dictionaries\en\en_GB.aff  
+
+    File C:\Files\GitHub\dictionaries\en\en_US.dic  
+    File C:\Files\GitHub\dictionaries\en\en_US.aff  
+
+	#replace this folder in order to compile the installer successfully..
+	SetOutPath "$LOCALAPPDATA\ScriptNotepad\Notepad-plus-plus-themes"
+	File /r C:\Files\GitHub\notepad-plus-plus\PowerEditor\installer\themes
    
 	SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\ScriptNotepad.lnk" $INSTDIR\ScriptNotepad.exe	
