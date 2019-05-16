@@ -38,6 +38,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScriptNotepad.Localization.Hunspell;
 
 namespace ScriptNotepad.Test
 {
@@ -95,6 +96,14 @@ namespace ScriptNotepad.Test
         private void Button6_Click(object sender, EventArgs e)
         {
             FormDialogQueryNumber.Execute<int>(0, 0, 100, "Test", "Give a test value:");
+        }
+
+        private void Button7_Click(object sender, EventArgs e)
+        {
+            var data = HunspellData.FromDictionaryFile(@"C:\Files\GitHub\dictionaries\en\en_US.dic");
+            MessageBox.Show(data.HunspellCulture.ToString());
+
+            var result = HunspellDictionaryCrawler.CrawlDirectory(@"C:\Files\GitHub\dictionaries");
         }
     }
 }

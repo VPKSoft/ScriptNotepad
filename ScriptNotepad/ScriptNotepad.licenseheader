@@ -1,4 +1,4 @@
-﻿extensions: designer.cs generated.cs WordWrapToSize.cs
+﻿extensions: designer.cs generated.cs WordWrapToSize.cs IpcClientServer.cs MessageHelper.cs
 extensions: .cs .cpp .h
 #region License
 /*

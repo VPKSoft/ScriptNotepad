@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.cbCategorizeProgrammingLanguages = new System.Windows.Forms.CheckBox();
             this.nudHistoryAmount = new System.Windows.Forms.NumericUpDown();
             this.lbHistoryAmount = new System.Windows.Forms.Label();
             this.nudMaximumSearchFileSize = new System.Windows.Forms.NumericUpDown();
@@ -89,6 +90,11 @@
             this.btSmartHighlightColor = new System.Windows.Forms.Button();
             this.lbSmartHighlightColor = new System.Windows.Forms.Label();
             this.tabSpellCheck = new System.Windows.Forms.TabPage();
+            this.cmbInstalledDictionaries = new System.Windows.Forms.ComboBox();
+            this.lbInstalledDictionaries = new System.Windows.Forms.Label();
+            this.btDictionaryPath = new System.Windows.Forms.Button();
+            this.tbDictionaryPath = new System.Windows.Forms.TextBox();
+            this.lbDictionaryPath = new System.Windows.Forms.Label();
             this.lbEditorSpellRecheckInactivity = new System.Windows.Forms.Label();
             this.nudEditorSpellRecheckInactivity = new System.Windows.Forms.NumericUpDown();
             this.btSpellCheckMarkColor = new System.Windows.Forms.Button();
@@ -107,7 +113,11 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
-            this.cbCategorizeProgrammingLanguages = new System.Windows.Forms.CheckBox();
+            this.btNotepadPlusPlusThemePath = new System.Windows.Forms.Button();
+            this.tbNotepadPlusPlusThemePath = new System.Windows.Forms.TextBox();
+            this.lbNotepadPlusPlusThemePath = new System.Windows.Forms.Label();
+            this.cmbNotepadPlusPlusTheme = new System.Windows.Forms.ComboBox();
+            this.cbUseNotepadPlusPlusTheme = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -173,6 +183,17 @@
             this.tpgGeneralSettings.TabIndex = 0;
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbCategorizeProgrammingLanguages
+            // 
+            this.cbCategorizeProgrammingLanguages.AutoSize = true;
+            this.cbCategorizeProgrammingLanguages.Location = new System.Drawing.Point(6, 317);
+            this.cbCategorizeProgrammingLanguages.Name = "cbCategorizeProgrammingLanguages";
+            this.cbCategorizeProgrammingLanguages.Size = new System.Drawing.Size(434, 17);
+            this.cbCategorizeProgrammingLanguages.TabIndex = 38;
+            this.cbCategorizeProgrammingLanguages.Text = "Categorize the programming language menu with the language name starting characte" +
+    "r";
+            this.cbCategorizeProgrammingLanguages.UseVisualStyleBackColor = true;
             // 
             // nudHistoryAmount
             // 
@@ -268,9 +289,10 @@
             this.btSelectPluginFolder.Name = "btSelectPluginFolder";
             this.btSelectPluginFolder.Size = new System.Drawing.Size(31, 20);
             this.btSelectPluginFolder.TabIndex = 30;
+            this.btSelectPluginFolder.Tag = "tbPluginFolder";
             this.btSelectPluginFolder.Text = "...";
             this.btSelectPluginFolder.UseVisualStyleBackColor = true;
-            this.btSelectPluginFolder.Click += new System.EventHandler(this.btSelectPluginFolder_Click);
+            this.btSelectPluginFolder.Click += new System.EventHandler(this.btCommonSelectFolder_Click);
             // 
             // tbPluginFolder
             // 
@@ -685,6 +707,11 @@
             // 
             // tpgColorSettings
             // 
+            this.tpgColorSettings.Controls.Add(this.cbUseNotepadPlusPlusTheme);
+            this.tpgColorSettings.Controls.Add(this.cmbNotepadPlusPlusTheme);
+            this.tpgColorSettings.Controls.Add(this.btNotepadPlusPlusThemePath);
+            this.tpgColorSettings.Controls.Add(this.tbNotepadPlusPlusThemePath);
+            this.tpgColorSettings.Controls.Add(this.lbNotepadPlusPlusThemePath);
             this.tpgColorSettings.Controls.Add(this.btDefaults);
             this.tpgColorSettings.Controls.Add(this.btCurrentLineBackgroundColor);
             this.tpgColorSettings.Controls.Add(this.lbCurrentLineBackgroundColor);
@@ -705,7 +732,7 @@
             this.tpgColorSettings.Padding = new System.Windows.Forms.Padding(3);
             this.tpgColorSettings.Size = new System.Drawing.Size(557, 371);
             this.tpgColorSettings.TabIndex = 1;
-            this.tpgColorSettings.Text = "Colors";
+            this.tpgColorSettings.Text = "Colors & themes";
             this.tpgColorSettings.UseVisualStyleBackColor = true;
             // 
             // btDefaults
@@ -852,6 +879,11 @@
             // 
             // tabSpellCheck
             // 
+            this.tabSpellCheck.Controls.Add(this.cmbInstalledDictionaries);
+            this.tabSpellCheck.Controls.Add(this.lbInstalledDictionaries);
+            this.tabSpellCheck.Controls.Add(this.btDictionaryPath);
+            this.tabSpellCheck.Controls.Add(this.tbDictionaryPath);
+            this.tabSpellCheck.Controls.Add(this.lbDictionaryPath);
             this.tabSpellCheck.Controls.Add(this.lbEditorSpellRecheckInactivity);
             this.tabSpellCheck.Controls.Add(this.nudEditorSpellRecheckInactivity);
             this.tabSpellCheck.Controls.Add(this.btSpellCheckMarkColor);
@@ -870,6 +902,60 @@
             this.tabSpellCheck.TabIndex = 3;
             this.tabSpellCheck.Text = "Spell checking";
             this.tabSpellCheck.UseVisualStyleBackColor = true;
+            // 
+            // cmbInstalledDictionaries
+            // 
+            this.cmbInstalledDictionaries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbInstalledDictionaries.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbInstalledDictionaries.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbInstalledDictionaries.DisplayMember = "DisplayName";
+            this.cmbInstalledDictionaries.FormattingEnabled = true;
+            this.cmbInstalledDictionaries.Location = new System.Drawing.Point(9, 276);
+            this.cmbInstalledDictionaries.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.cmbInstalledDictionaries.Name = "cmbInstalledDictionaries";
+            this.cmbInstalledDictionaries.Size = new System.Drawing.Size(542, 21);
+            this.cmbInstalledDictionaries.TabIndex = 44;
+            this.cmbInstalledDictionaries.SelectedIndexChanged += new System.EventHandler(this.CmbInstalledDictionaries_SelectedIndexChanged);
+            // 
+            // lbInstalledDictionaries
+            // 
+            this.lbInstalledDictionaries.AutoSize = true;
+            this.lbInstalledDictionaries.Location = new System.Drawing.Point(6, 251);
+            this.lbInstalledDictionaries.Name = "lbInstalledDictionaries";
+            this.lbInstalledDictionaries.Size = new System.Drawing.Size(149, 13);
+            this.lbInstalledDictionaries.TabIndex = 43;
+            this.lbInstalledDictionaries.Text = "Installed Hunspell dictionaries:";
+            // 
+            // btDictionaryPath
+            // 
+            this.btDictionaryPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDictionaryPath.Location = new System.Drawing.Point(520, 217);
+            this.btDictionaryPath.Name = "btDictionaryPath";
+            this.btDictionaryPath.Size = new System.Drawing.Size(31, 20);
+            this.btDictionaryPath.TabIndex = 42;
+            this.btDictionaryPath.Tag = "tbDictionaryPath";
+            this.btDictionaryPath.Text = "...";
+            this.btDictionaryPath.UseVisualStyleBackColor = true;
+            this.btDictionaryPath.Click += new System.EventHandler(this.btCommonSelectFolder_Click);
+            // 
+            // tbDictionaryPath
+            // 
+            this.tbDictionaryPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDictionaryPath.Location = new System.Drawing.Point(9, 217);
+            this.tbDictionaryPath.Name = "tbDictionaryPath";
+            this.tbDictionaryPath.Size = new System.Drawing.Size(505, 20);
+            this.tbDictionaryPath.TabIndex = 41;
+            // 
+            // lbDictionaryPath
+            // 
+            this.lbDictionaryPath.AutoSize = true;
+            this.lbDictionaryPath.Location = new System.Drawing.Point(6, 194);
+            this.lbDictionaryPath.Name = "lbDictionaryPath";
+            this.lbDictionaryPath.Size = new System.Drawing.Size(139, 13);
+            this.lbDictionaryPath.TabIndex = 40;
+            this.lbDictionaryPath.Text = "Hunspell dictionary file path:";
             // 
             // lbEditorSpellRecheckInactivity
             // 
@@ -1021,16 +1107,59 @@
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
-            // cbCategorizeProgrammingLanguages
+            // btNotepadPlusPlusThemePath
             // 
-            this.cbCategorizeProgrammingLanguages.AutoSize = true;
-            this.cbCategorizeProgrammingLanguages.Location = new System.Drawing.Point(6, 317);
-            this.cbCategorizeProgrammingLanguages.Name = "cbCategorizeProgrammingLanguages";
-            this.cbCategorizeProgrammingLanguages.Size = new System.Drawing.Size(434, 17);
-            this.cbCategorizeProgrammingLanguages.TabIndex = 38;
-            this.cbCategorizeProgrammingLanguages.Text = "Categorize the programming language menu with the language name starting characte" +
-    "r";
-            this.cbCategorizeProgrammingLanguages.UseVisualStyleBackColor = true;
+            this.btNotepadPlusPlusThemePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btNotepadPlusPlusThemePath.Location = new System.Drawing.Point(520, 238);
+            this.btNotepadPlusPlusThemePath.Name = "btNotepadPlusPlusThemePath";
+            this.btNotepadPlusPlusThemePath.Size = new System.Drawing.Size(31, 20);
+            this.btNotepadPlusPlusThemePath.TabIndex = 45;
+            this.btNotepadPlusPlusThemePath.Tag = "tbNotepadPlusPlusThemePath";
+            this.btNotepadPlusPlusThemePath.Text = "...";
+            this.btNotepadPlusPlusThemePath.UseVisualStyleBackColor = true;
+            this.btNotepadPlusPlusThemePath.Click += new System.EventHandler(this.btCommonSelectFolder_Click);
+            // 
+            // tbNotepadPlusPlusThemePath
+            // 
+            this.tbNotepadPlusPlusThemePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbNotepadPlusPlusThemePath.Location = new System.Drawing.Point(9, 238);
+            this.tbNotepadPlusPlusThemePath.Name = "tbNotepadPlusPlusThemePath";
+            this.tbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(505, 20);
+            this.tbNotepadPlusPlusThemePath.TabIndex = 44;
+            // 
+            // lbNotepadPlusPlusThemePath
+            // 
+            this.lbNotepadPlusPlusThemePath.AutoSize = true;
+            this.lbNotepadPlusPlusThemePath.Location = new System.Drawing.Point(6, 215);
+            this.lbNotepadPlusPlusThemePath.Name = "lbNotepadPlusPlusThemePath";
+            this.lbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(119, 13);
+            this.lbNotepadPlusPlusThemePath.TabIndex = 43;
+            this.lbNotepadPlusPlusThemePath.Text = "Notepad++ theme path:";
+            // 
+            // cmbNotepadPlusPlusTheme
+            // 
+            this.cmbNotepadPlusPlusTheme.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbNotepadPlusPlusTheme.DisplayMember = "DisplayName";
+            this.cmbNotepadPlusPlusTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbNotepadPlusPlusTheme.FormattingEnabled = true;
+            this.cmbNotepadPlusPlusTheme.Location = new System.Drawing.Point(9, 302);
+            this.cmbNotepadPlusPlusTheme.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.cmbNotepadPlusPlusTheme.Name = "cmbNotepadPlusPlusTheme";
+            this.cmbNotepadPlusPlusTheme.Size = new System.Drawing.Size(542, 21);
+            this.cmbNotepadPlusPlusTheme.TabIndex = 47;
+            this.cmbNotepadPlusPlusTheme.SelectedIndexChanged += new System.EventHandler(this.CmbNotepadPlusPlusTheme_SelectedIndexChanged);
+            // 
+            // cbUseNotepadPlusPlusTheme
+            // 
+            this.cbUseNotepadPlusPlusTheme.AutoSize = true;
+            this.cbUseNotepadPlusPlusTheme.Location = new System.Drawing.Point(9, 276);
+            this.cbUseNotepadPlusPlusTheme.Name = "cbUseNotepadPlusPlusTheme";
+            this.cbUseNotepadPlusPlusTheme.Size = new System.Drawing.Size(136, 17);
+            this.cbUseNotepadPlusPlusTheme.TabIndex = 48;
+            this.cbUseNotepadPlusPlusTheme.Text = "Use Notepad++ theme:";
+            this.cbUseNotepadPlusPlusTheme.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1162,5 +1291,15 @@
         private System.Windows.Forms.ComboBox cmbFont;
         private System.Windows.Forms.Label lbFont;
         private System.Windows.Forms.CheckBox cbCategorizeProgrammingLanguages;
+        private System.Windows.Forms.Button btDictionaryPath;
+        private System.Windows.Forms.TextBox tbDictionaryPath;
+        private System.Windows.Forms.Label lbDictionaryPath;
+        private System.Windows.Forms.ComboBox cmbInstalledDictionaries;
+        private System.Windows.Forms.Label lbInstalledDictionaries;
+        private System.Windows.Forms.Button btNotepadPlusPlusThemePath;
+        private System.Windows.Forms.TextBox tbNotepadPlusPlusThemePath;
+        private System.Windows.Forms.Label lbNotepadPlusPlusThemePath;
+        private System.Windows.Forms.CheckBox cbUseNotepadPlusPlusTheme;
+        private System.Windows.Forms.ComboBox cmbNotepadPlusPlusTheme;
     }
 }

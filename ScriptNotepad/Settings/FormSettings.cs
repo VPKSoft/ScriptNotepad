@@ -32,10 +32,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using ScintillaNET;
+using ScriptNotepad.Localization.Hunspell;
+using ScriptNotepad.Settings.XmlNotepadPlusMarks;
 using ScriptNotepad.UtilityClasses.GraphicUtils;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
@@ -200,6 +203,7 @@ namespace ScriptNotepad.Settings
                 cbSpellCheckInUse.Checked = true;
             }
 
+            tbDictionaryPath.Text = Settings.EditorHunspellDictionaryPath;
             btSpellCheckMarkColor.BackColor = Settings.EditorSpellCheckColor;
 
             tbHunspellAffixFile.Text = Settings.EditorHunspellAffixFile;
@@ -221,6 +225,21 @@ namespace ScriptNotepad.Settings
             }
 
             nudFontSize.Value = Settings.EditorFontSize;
+
+            // get the Notepad++ them path..
+            tbNotepadPlusPlusThemePath.Text = Settings.NotepadPlusPlusThemePath;
+
+            // list the Notepad++ then files if any..
+            ListNotepadPlusPLusThemes();
+
+            // get the Notepad++ theme settings..
+            cbUseNotepadPlusPlusTheme.Checked = Settings.UseNotepadPlusPlusTheme;
+
+            if (Settings.NotepadPlusPlusThemeFile != null)
+            {
+                cmbNotepadPlusPlusTheme.SelectedIndex = cmbNotepadPlusPlusTheme.Items.IndexOf(
+                    Path.GetFileNameWithoutExtension(Settings.NotepadPlusPlusThemeFile));
+            }
         }
 
         /// <summary>
@@ -293,10 +312,28 @@ namespace ScriptNotepad.Settings
             Settings.EditorHunspellAffixFile = tbHunspellAffixFile.Text;
             Settings.EditorHunspellDictionaryFile = tbHunspellDictionary.Text;
             Settings.EditorSpellCheckInactivity = (int)nudEditorSpellRecheckInactivity.Value;
+            Settings.EditorHunspellDictionaryPath = tbDictionaryPath.Text;
 
             // set the editor font settings..
             Settings.EditorFontSize = (int) nudFontSize.Value;
             Settings.EditorFontName = ((FontFamilyHolder) cmbFont.SelectedItem).ToString();
+
+            // set the Notepad++ them settings..
+            Settings.NotepadPlusPlusThemePath = tbNotepadPlusPlusThemePath.Text;
+
+            if (cmbNotepadPlusPlusTheme.SelectedIndex != -1 && cbUseNotepadPlusPlusTheme.Checked)
+            {
+                var file = cmbNotepadPlusPlusTheme.Items[cmbNotepadPlusPlusTheme.SelectedIndex].ToString();
+                file += ".xml";
+
+                Settings.NotepadPlusPlusThemeFile = file;
+
+                file = Path.Combine(tbNotepadPlusPlusThemePath.Text, file);
+                if (File.Exists(file))
+                {
+                    Settings.UseNotepadPlusPlusTheme = cbUseNotepadPlusPlusTheme.Checked;
+                }
+            }
         }
         #endregion
 
@@ -316,6 +353,28 @@ namespace ScriptNotepad.Settings
         /// Gets or sets the settings class instance containing the settings for the software.
         /// </summary>
         public static Settings Settings { get; set; }
+
+        /// <summary>
+        /// Gets the Notepad++ style definition file if assigned in the settings.
+        /// </summary>
+        public static string NotepadPlusPlusStyleFile
+        {
+            get
+            {
+                if (Settings != null)
+                {
+                    var file = Path.Combine(Settings.NotepadPlusPlusThemePath, Settings.NotepadPlusPlusThemeFile);
+                    if (File.Exists(file))
+                    {
+                        return file;
+                    }
+
+                    return string.Empty;
+                }
+
+                return string.Empty;
+            }
+        }
 
         /// <summary>
         /// Sets the editor settings for a given <see cref="Scintilla"/>.
@@ -354,6 +413,11 @@ namespace ScriptNotepad.Settings
         {
             // load the settings visualized on the form..
             LoadSettings();
+
+            // ReSharper disable once CoVariantArrayConversion
+            cmbInstalledDictionaries.Items.AddRange(HunspellDictionaryCrawler
+                .CrawlDirectory(Settings.EditorHunspellDictionaryPath).OrderBy(f => f.ToString().ToLowerInvariant())
+                .ToArray());
         }
 
         private void btDefaultEncodings_Click(object sender, EventArgs e)
@@ -393,18 +457,35 @@ namespace ScriptNotepad.Settings
             return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins");
         }
 
-        private void btSelectPluginFolder_Click(object sender, EventArgs e)
+        private void btCommonSelectFolder_Click(object sender, EventArgs e)
         {
             var dialog = new VistaFolderBrowserDialog();
-
-            if (Directory.Exists(tbPluginFolder.Text))
+            var button = (Button) sender;
+            TextBox textBox = default;
+            if (button.Tag.ToString() == "tbPluginFolder")
             {
-                dialog.SelectedPath = tbPluginFolder.Text;
+                textBox = tbPluginFolder;
+            }
+            else if (button.Tag.ToString() == "tbDictionaryPath")
+            {
+                textBox = tbDictionaryPath;
+            }
+            else if (button.Tag.ToString() == "tbNotepadPlusPlusThemePath")
+            {
+                textBox = tbNotepadPlusPlusThemePath;
             }
 
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (textBox != null)
             {
-                tbPluginFolder.Text = dialog.SelectedPath;
+                if (Directory.Exists(tbPluginFolder.Text))
+                {
+                    dialog.SelectedPath = textBox.Text;
+                }
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    textBox.Text = dialog.SelectedPath;
+                }
             }
         }
 
@@ -446,6 +527,30 @@ namespace ScriptNotepad.Settings
             btCurrentLineBackgroundColor.BackColor = Color.FromArgb(232, 232, 255);
         }
 
+        /// <summary>
+        /// Lists the found Notepad++ themes to the selection combo box.
+        /// </summary>
+        private void ListNotepadPlusPLusThemes()
+        {
+            try
+            {
+                cmbNotepadPlusPlusTheme.Items.Clear();
+                if (Directory.Exists(tbNotepadPlusPlusThemePath.Text))
+                {
+                    var files = Directory.GetFiles(tbNotepadPlusPlusThemePath.Text, "*.xml");
+                    foreach (var file in files)
+                    {
+                        cmbNotepadPlusPlusTheme.Items.Add(Path.GetFileNameWithoutExtension(file));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex);
+            }
+        }
+
         private void BtHunspellDictionary_Click(object sender, EventArgs e)
         {
             if (odDictionaryFile.ShowDialog() == DialogResult.OK)
@@ -482,6 +587,39 @@ namespace ScriptNotepad.Settings
             else
             {
                 btOK.Enabled = false;
+            }
+        }
+
+        private void CmbInstalledDictionaries_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var comboBox = (ComboBox) sender;
+            if (comboBox.SelectedIndex != -1)
+            {
+                HunspellData data = (HunspellData) comboBox.Items[comboBox.SelectedIndex];
+                tbHunspellDictionary.Text = data.DictionaryFile;
+                tbHunspellAffixFile.Text = data.AffixFile;
+            }
+        }
+
+        private void CmbNotepadPlusPlusTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbNotepadPlusPlusTheme.SelectedIndex != -1 && cbUseNotepadPlusPlusTheme.Checked)
+            {
+                var file = cmbNotepadPlusPlusTheme.Items[cmbNotepadPlusPlusTheme.SelectedIndex].ToString();
+                file += ".xml";
+
+                file = Path.Combine(tbNotepadPlusPlusThemePath.Text, file);
+                if (File.Exists(file))
+                {
+                    var colors = MarkColorsHelper.FromFile(file);
+                    btSmartHighlightColor.BackColor = colors.SmartHighlight;
+                    btMarkStyle1Color.BackColor = colors.Mark1Color;
+                    btMarkStyle2Color.BackColor = colors.Mark2Color;
+                    btMarkStyle3Color.BackColor = colors.Mark3Color;
+                    btMarkStyle4Color.BackColor = colors.Mark4Color;
+                    btMarkStyle5Color.BackColor = colors.Mark5Color;
+                    btCurrentLineBackgroundColor.BackColor = colors.CurrentLineBackground;
+                }
             }
         }
     }

@@ -36,6 +36,7 @@ using System.Reflection;
 using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
 using System.Globalization;
+using System.IO;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 
@@ -352,6 +353,30 @@ namespace ScriptNotepad.Settings
         public string EditorFontName { get; set; } = "Consolas";
 
         /// <summary>
+        /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/dictionaryPath", typeof(string))]
+        public string EditorHunspellDictionaryPath { get; set; } = DefaultDirectory("Dictionaries");
+
+        /// <summary>
+        /// Gets or sets a value for the Notepad++ theme definition files for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("style/notepadPlusPlusThemePath", typeof(string))]
+        public string NotepadPlusPlusThemePath { get; set; } = DefaultDirectory("Notepad-plus-plus-themes");
+
+        /// <summary>
+        /// Gets or sets a value for the Notepad++ theme definition file name for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("style/notepadPlusPlusThemeFile", typeof(string))]
+        public string NotepadPlusPlusThemeFile { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use a style definition file from the Notepad++ software.
+        /// </summary>
+        [Setting("style/useNotepadPlusPlusTheme", typeof(bool))]
+        public bool UseNotepadPlusPlusTheme { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets the size of the font used in the <see cref="Scintilla"/> control.
         /// </summary>
         [Setting("editor/fontSize", typeof(int))]
@@ -442,9 +467,29 @@ namespace ScriptNotepad.Settings
                 Conflib["language/culture"] = _Culture.Name;
             }
         }
-
-
         #endregion
+
+        /// <summary>
+        /// Creates a directory to the local application data folder for the software.
+        /// </summary>
+        public static string DefaultDirectory(string defaultDirectory)
+        {
+            // create a folder for plug-ins if it doesn't exist already.. 
+            if (!Directory.Exists(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory)))
+            {
+                try
+                {
+                    // create the folder..
+                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory));
+                }
+                catch (Exception ex) // a failure so do log it..
+                {
+                    ExceptionLogger.LogError(ex);
+                    return string.Empty;
+                }
+            }
+            return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory);
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

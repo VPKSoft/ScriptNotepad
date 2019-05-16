@@ -69,6 +69,7 @@ using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using ScriptNotepad.UtilityClasses.SpellCheck;
 using ScriptNotepad.UtilityClasses.TextManipulationUtils;
+using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 #endregion
@@ -256,7 +257,7 @@ namespace ScriptNotepad
             tmSpellCheck.Enabled = true;
 
             // enable the GUI timer..
-            tmGUI.Enabled = true;
+            tmGUI.Enabled = true;            
         }
         #endregion
 
@@ -983,6 +984,25 @@ namespace ScriptNotepad
         }
 
         /// <summary>
+        /// Appends a possible style and a spell checking for the <see cref="ScintillaTabbedDocument"/> document.
+        /// </summary>
+        /// <param name="document">The document to append the possible style and a spell checking to.</param>
+        private void AppendStyleAndSpellChecking(ScintillaTabbedDocument document)
+        {
+            // ReSharper disable once ObjectCreationAsStatement
+            new TabbedDocumentSpellCheck(document);
+
+            string fileName = FormSettings.NotepadPlusPlusStyleFile;
+
+            // check if a user has selected a style definitions (Notepad++ style XML) file..
+            if (File.Exists(fileName))
+            {          
+                // ..set the style for the document..
+                ScintillaLexers.CreateLexerFromFile(document.Scintilla, document.LexerType, fileName);
+            }
+        }
+
+        /// <summary>
         /// Sets the application title to indicate no active document.
         /// </summary>
         private void SetEmptyApplicationTitle()
@@ -1083,8 +1103,8 @@ namespace ScriptNotepad
 
                     sttcMain.LastAddedDocument.Tag = file;
 
-                    // ReSharper disable once ObjectCreationAsStatement
-                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);                     
+                    // append possible style and spell checking for the document..
+                    AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);
 
                     // enabled the caret line background color..
                     SetCaretLineColor();
@@ -1240,8 +1260,8 @@ namespace ScriptNotepad
                     // save the DBFILE_SAVE class instance to the Tag property..
                     sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
 
-                    // ReSharper disable once ObjectCreationAsStatement
-                    new TabbedDocumentSpellCheck(sttcMain.CurrentDocument);
+                    // append possible style and spell checking for the document..
+                    AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);
                 }
             }
         }
@@ -1309,8 +1329,8 @@ namespace ScriptNotepad
                         // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
                         sttcMain.LastAddedDocument.Tag = fileSave;
 
-                        // ReSharper disable once ObjectCreationAsStatement
-                        new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
+                        // append possible style and spell checking for the document..
+                        AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);
 
                         // enabled the caret line background color..
                         SetCaretLineColor();

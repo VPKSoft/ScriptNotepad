@@ -173,11 +173,14 @@
     <Compile Include="DialogForms\FormDialogQueryNumber.Designer.cs">
       <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Localization\Hunspell\HunspellData.cs" />
+    <Compile Include="Localization\Hunspell\HunspellDictionaryCrawler.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings\XmlNotepadPlusMarks\MarkColorsHelper.cs" />
     <Compile Include="UtilityClasses\ApplicationHelpers\ApplicationActivateDeactivate.cs" />
     <Compile Include="UtilityClasses\ColorHelpers\FormPickAColor.cs">
       <SubType>Form</SubType>
