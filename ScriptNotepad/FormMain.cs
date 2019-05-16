@@ -1778,6 +1778,53 @@ namespace ScriptNotepad
             FormSettings.Execute();
         }
 
+        /// <summary>Processes a command key.</summary>
+        /// <param name="msg">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the Win32 message to process.</param>
+        /// <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values that represents the key to process.</param>
+        /// <returns>
+        ///   <span class="keyword">
+        ///     <span class="languageSpecificText">
+        ///       <span class="cs">true</span>
+        ///       <span class="vb">True</span>
+        ///       <span class="cpp">true</span>
+        ///     </span>
+        ///   </span>
+        ///   <span class="nu">
+        ///     <span class="keyword">true</span> (<span class="keyword">True</span> in Visual Basic)</span> if the keystroke was processed and consumed by the control; otherwise, <span class="keyword"><span class="languageSpecificText"><span class="cs">false</span><span class="vb">False</span><span class="cpp">false</span></span></span><span class="nu"><span class="keyword">false</span> (<span class="keyword">False</span> in Visual Basic)</span> to allow further processing.
+        /// </returns>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // somehow the software main form doesn't register keyboard keys of AltGr+2, AltGr+3, AltGr+4 on a finnish keyboard
+            // so bypass it by the hard way..
+            if (FormSettings.Settings.SimulateAltGrKey && FormSettings.Settings.SimulateAltGrKeyIndex == 0)
+            {
+                // something in the main form is capturing the "ALT GR" key - which at least in Finland is used to type few
+                // necessary characters such as '@', '£' and '$', so make the software do this..
+                if (keyData == (Keys.Control | Keys.Alt | Keys.D2))
+                {
+                    // the at sign ('@')..
+                    CurrentScintillaAction(scintilla => { scintilla.ReplaceSelection("@"); });
+                    return true;
+                }
+
+                // the pound sign ('£')..
+                if (keyData == (Keys.Control | Keys.Alt | Keys.D3))
+                {
+                    CurrentScintillaAction(scintilla => { scintilla.ReplaceSelection("£"); });
+                    return true;
+                }
+
+                // the dollar sign ('$')..
+                if (keyData == (Keys.Control | Keys.Alt | Keys.D4))
+                {
+                    CurrentScintillaAction(scintilla => { scintilla.ReplaceSelection("$"); });
+                    return true;
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
             // a user wishes to navigate within the FormSearchResultTree..
@@ -1805,6 +1852,7 @@ namespace ScriptNotepad
                     // this is handled..
                     e.Handled = true;
                 }
+                return;
             }
 
             if (
@@ -1813,10 +1861,7 @@ namespace ScriptNotepad
                 e.KeyCode == Keys.Z && e.OnlyControl() ||
                 // a user pressed a keyboard combination of CTRL+Y, which indicates redo for
                 // the Scintilla control..
-                e.KeyCode == Keys.Y && e.OnlyControl() ||
-                // a user pressed the insert key a of a keyboard, which indicates toggling for
-                // insert / override mode for the Scintilla control..
-                e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
+                e.KeyCode == Keys.Y && e.OnlyControl())
             {
                 // if there is an active document..
                 if (sttcMain.CurrentDocument != null)
@@ -1835,9 +1880,12 @@ namespace ScriptNotepad
                 }
 
                 UpdateUndoRedoIndicators();
+                return;
             }
-            // special case called the "Insert" key..
-            else if (e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
+
+            // a user pressed the insert key a of a keyboard, which indicates toggling for
+            // insert / override mode for the Scintilla control..
+            if (e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
             {
                 // only if a document exists..
                 if (sttcMain.CurrentDocument != null)
@@ -1845,8 +1893,10 @@ namespace ScriptNotepad
                     // ..set the insert / override text for the status strip..
                     StatusStripTexts.SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
                 }
+                return;
             }
-            else if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
+            
+            if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
             {
                 // set the flag to suspend the selection update to avoid excess CPU load..
                 suspendSelectionUpdate = true;

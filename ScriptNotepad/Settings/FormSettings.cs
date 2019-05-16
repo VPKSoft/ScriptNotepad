@@ -103,6 +103,11 @@ namespace ScriptNotepad.Settings
                     cmbFont.Items.Add(new FontFamilyHolder {FontFamily = fontFamily});
                 }
             }
+
+            // on my keyboard the AltGr+(2|3|4) keys somehow aren't registered by the active Scintilla tab,
+            // so make a way to bypass this weirdness..
+            cmbSimulateKeyboard.Items.Add(DBLangEngine.GetMessage("msgAltGrFinnish",
+                "Finnish AltGr simulation (@, £, $)|A message describing that the AltGr and some key would simulate a keypress for an active Scintilla control."));
         }
 
         private class FontFamilyHolder
@@ -240,6 +245,13 @@ namespace ScriptNotepad.Settings
                 cmbNotepadPlusPlusTheme.SelectedIndex = cmbNotepadPlusPlusTheme.Items.IndexOf(
                     Path.GetFileNameWithoutExtension(Settings.NotepadPlusPlusThemeFile));
             }
+
+            // get the AltGr capture bypass method if set..
+            if (Settings.SimulateAltGrKeyIndex != -1)
+            {
+                cbSimulateKeyboard.Checked = true;
+                cmbSimulateKeyboard.SelectedIndex = Settings.SimulateAltGrKeyIndex;
+            }
         }
 
         /// <summary>
@@ -321,6 +333,8 @@ namespace ScriptNotepad.Settings
             // set the Notepad++ them settings..
             Settings.NotepadPlusPlusThemePath = tbNotepadPlusPlusThemePath.Text;
 
+            Settings.UseNotepadPlusPlusTheme = cbUseNotepadPlusPlusTheme.Checked;
+
             if (cmbNotepadPlusPlusTheme.SelectedIndex != -1 && cbUseNotepadPlusPlusTheme.Checked)
             {
                 var file = cmbNotepadPlusPlusTheme.Items[cmbNotepadPlusPlusTheme.SelectedIndex].ToString();
@@ -333,6 +347,23 @@ namespace ScriptNotepad.Settings
                 {
                     Settings.UseNotepadPlusPlusTheme = cbUseNotepadPlusPlusTheme.Checked;
                 }
+            }
+            else // no deal here on the theme..
+            {
+                Settings.UseNotepadPlusPlusTheme = false;
+                Settings.NotepadPlusPlusThemeFile = string.Empty;
+            }
+
+            // set the AltGr capture bypass method if set..
+            if (cmbSimulateKeyboard.SelectedIndex != -1 && cbSimulateKeyboard.Checked)
+            {
+                Settings.SimulateAltGrKey = true;
+                Settings.SimulateAltGrKeyIndex = cmbSimulateKeyboard.SelectedIndex;
+            }
+            else // no deal here on the AltGr simulation..
+            {
+                Settings.SimulateAltGrKey = false;
+                Settings.SimulateAltGrKeyIndex = -1;
             }
         }
         #endregion

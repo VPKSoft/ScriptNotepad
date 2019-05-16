@@ -88,7 +88,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyWebsite "${URL}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} FileVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} FileDescription "ScriptNotepad"
-VIAddVersionKey /LANG=${LANG_ENGLISH} LegalCopyright "Copyright � VPKSoft 2019"
+VIAddVersionKey /LANG=${LANG_ENGLISH} LegalCopyright "Copyright © VPKSoft 2019"
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails hide
 
@@ -116,7 +116,7 @@ Section -Main SEC0000
 
 	#replace this folder in order to compile the installer successfully..
 	SetOutPath "$LOCALAPPDATA\ScriptNotepad\Notepad-plus-plus-themes"
-	File /r C:\Files\GitHub\notepad-plus-plus\PowerEditor\installer\themes
+	File /r C:\Files\GitHub\notepad-plus-plus\PowerEditor\installer\themes\*.xml
 	File C:\Files\GitHub\notepad-plus-plus\PowerEditor\src\stylers.model.xml
    
 	SetOutPath $SMPROGRAMS\$StartMenuGroup
@@ -129,9 +129,11 @@ Section -Main SEC0000
 
 	addMenu:
     DetailPrint "User chose to associate with the Windows shell..."
+	Goto menuEnd
 	Call MakeShellMenu
     noAddMenu:
     DetailPrint "User chose NOT to associate with the Windows shell..."
+    menuEnd:
 SectionEnd
 
 Section -post SEC0001

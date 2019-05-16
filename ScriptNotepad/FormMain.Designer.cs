@@ -67,7 +67,24 @@
             this.ssLbSessionName = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.pnDock = new System.Windows.Forms.Panel();
-            this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
+            this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
+            this.tmGUI = new System.Windows.Forms.Timer(this.components);
+            this.cmsFileTab = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuFullFilePathToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFileNameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFullFilePathAndNameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuOpenContainingFolderInExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenContainingFolderInCmd = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenContainingFolderInWindowsPowerShell = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenWithAssociatedApplication = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuCloseTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +134,7 @@
             this.mnuShowIndentGuide = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowWrapSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWordWrap = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuProgrammingLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,30 +145,12 @@
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuProgrammingLanguage = new System.Windows.Forms.ToolStripMenuItem();
-            this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
-            this.sdAnyFile = new System.Windows.Forms.SaveFileDialog();
-            this.tmGUI = new System.Windows.Forms.Timer(this.components);
-            this.cmsFileTab = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mnuFullFilePathToClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFileNameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFullFilePathAndNameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuOpenContainingFolderInExplorer = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuOpenContainingFolderInCmd = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuOpenContainingFolderInWindowsPowerShell = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuOpenWithAssociatedApplication = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuCloseTab = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
+            this.menuMain = new System.Windows.Forms.MenuStrip();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
-            this.menuMain.SuspendLayout();
             this.cmsFileTab.SuspendLayout();
+            this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMain
@@ -467,22 +467,125 @@
             this.pnDock.Size = new System.Drawing.Size(825, 1);
             this.pnDock.TabIndex = 5;
             // 
-            // menuMain
+            // odAnyFile
             // 
-            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFile,
-            this.mnuEdit,
-            this.mnuSearch,
-            this.mnuView,
-            this.mnuProgrammingLanguage,
-            this.mnuTools,
-            this.mnuPlugins,
-            this.mnuHelp});
-            this.menuMain.Location = new System.Drawing.Point(0, 0);
-            this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(849, 24);
-            this.menuMain.TabIndex = 4;
-            this.menuMain.Text = "menuStrip1";
+            this.odAnyFile.FileOk += new System.ComponentModel.CancelEventHandler(this.odAnyFile_FileOk);
+            // 
+            // tmGUI
+            // 
+            this.tmGUI.Interval = 500;
+            this.tmGUI.Tick += new System.EventHandler(this.tmGUI_Tick);
+            // 
+            // cmsFileTab
+            // 
+            this.cmsFileTab.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFullFilePathToClipboard,
+            this.mnuFileNameToClipboard,
+            this.mnuFullFilePathAndNameToClipboard,
+            this.toolStripMenuItem3,
+            this.mnuOpenContainingFolderInExplorer,
+            this.mnuOpenContainingFolderInCmd,
+            this.mnuOpenContainingFolderInWindowsPowerShell,
+            this.mnuOpenWithAssociatedApplication,
+            this.toolStripMenuItem4,
+            this.mnuCloseTab,
+            this.mnuCloseAllButThis,
+            this.mnuCloseAllToTheLeft,
+            this.mnuCloseAllToTheRight});
+            this.cmsFileTab.Name = "contextMenuStrip1";
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 258);
+            this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
+            // 
+            // mnuFullFilePathToClipboard
+            // 
+            this.mnuFullFilePathToClipboard.Name = "mnuFullFilePathToClipboard";
+            this.mnuFullFilePathToClipboard.Size = new System.Drawing.Size(323, 22);
+            this.mnuFullFilePathToClipboard.Text = "Full file path to clipboard";
+            this.mnuFullFilePathToClipboard.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // mnuFileNameToClipboard
+            // 
+            this.mnuFileNameToClipboard.Name = "mnuFileNameToClipboard";
+            this.mnuFileNameToClipboard.Size = new System.Drawing.Size(323, 22);
+            this.mnuFileNameToClipboard.Text = "File name to clipboard";
+            this.mnuFileNameToClipboard.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // mnuFullFilePathAndNameToClipboard
+            // 
+            this.mnuFullFilePathAndNameToClipboard.Name = "mnuFullFilePathAndNameToClipboard";
+            this.mnuFullFilePathAndNameToClipboard.Size = new System.Drawing.Size(323, 22);
+            this.mnuFullFilePathAndNameToClipboard.Text = "Full file path and name to clipboard";
+            this.mnuFullFilePathAndNameToClipboard.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(320, 6);
+            // 
+            // mnuOpenContainingFolderInExplorer
+            // 
+            this.mnuOpenContainingFolderInExplorer.Name = "mnuOpenContainingFolderInExplorer";
+            this.mnuOpenContainingFolderInExplorer.Size = new System.Drawing.Size(323, 22);
+            this.mnuOpenContainingFolderInExplorer.Text = "Open containing folder in explorer";
+            this.mnuOpenContainingFolderInExplorer.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // mnuOpenContainingFolderInCmd
+            // 
+            this.mnuOpenContainingFolderInCmd.Name = "mnuOpenContainingFolderInCmd";
+            this.mnuOpenContainingFolderInCmd.Size = new System.Drawing.Size(323, 22);
+            this.mnuOpenContainingFolderInCmd.Text = "Open containing folder in cmd";
+            this.mnuOpenContainingFolderInCmd.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // mnuOpenContainingFolderInWindowsPowerShell
+            // 
+            this.mnuOpenContainingFolderInWindowsPowerShell.Name = "mnuOpenContainingFolderInWindowsPowerShell";
+            this.mnuOpenContainingFolderInWindowsPowerShell.Size = new System.Drawing.Size(323, 22);
+            this.mnuOpenContainingFolderInWindowsPowerShell.Text = "Open containing folder in Windows PowerShell";
+            this.mnuOpenContainingFolderInWindowsPowerShell.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // mnuOpenWithAssociatedApplication
+            // 
+            this.mnuOpenWithAssociatedApplication.Name = "mnuOpenWithAssociatedApplication";
+            this.mnuOpenWithAssociatedApplication.Size = new System.Drawing.Size(323, 22);
+            this.mnuOpenWithAssociatedApplication.Text = "Open with associated application";
+            this.mnuOpenWithAssociatedApplication.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(320, 6);
+            // 
+            // mnuCloseTab
+            // 
+            this.mnuCloseTab.Name = "mnuCloseTab";
+            this.mnuCloseTab.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseTab.Text = "Close";
+            this.mnuCloseTab.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
+            // 
+            // mnuCloseAllButThis
+            // 
+            this.mnuCloseAllButThis.Name = "mnuCloseAllButThis";
+            this.mnuCloseAllButThis.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseAllButThis.Text = "Close all but this";
+            this.mnuCloseAllButThis.Click += new System.EventHandler(this.CommonCloseManyDocuments);
+            // 
+            // mnuCloseAllToTheLeft
+            // 
+            this.mnuCloseAllToTheLeft.Name = "mnuCloseAllToTheLeft";
+            this.mnuCloseAllToTheLeft.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseAllToTheLeft.Text = "Close all to the left";
+            this.mnuCloseAllToTheLeft.Click += new System.EventHandler(this.CommonCloseManyDocuments);
+            // 
+            // mnuCloseAllToTheRight
+            // 
+            this.mnuCloseAllToTheRight.Name = "mnuCloseAllToTheRight";
+            this.mnuCloseAllToTheRight.Size = new System.Drawing.Size(323, 22);
+            this.mnuCloseAllToTheRight.Text = "Close all to the right";
+            this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
+            // 
+            // tmSpellCheck
+            // 
+            this.tmSpellCheck.Tick += new System.EventHandler(this.TmSpellCheck_Tick);
             // 
             // mnuFile
             // 
@@ -920,6 +1023,12 @@
             this.mnuWordWrap.Text = "Word wrap";
             this.mnuWordWrap.Click += new System.EventHandler(this.MnuWordWrap_Click);
             // 
+            // mnuProgrammingLanguage
+            // 
+            this.mnuProgrammingLanguage.Name = "mnuProgrammingLanguage";
+            this.mnuProgrammingLanguage.Size = new System.Drawing.Size(71, 20);
+            this.mnuProgrammingLanguage.Text = "Language";
+            // 
             // mnuTools
             // 
             this.mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1004,131 +1113,22 @@
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
-            // mnuProgrammingLanguage
+            // menuMain
             // 
-            this.mnuProgrammingLanguage.Name = "mnuProgrammingLanguage";
-            this.mnuProgrammingLanguage.Size = new System.Drawing.Size(71, 20);
-            this.mnuProgrammingLanguage.Text = "Language";
-            // 
-            // odAnyFile
-            // 
-            this.odAnyFile.FileOk += new System.ComponentModel.CancelEventHandler(this.odAnyFile_FileOk);
-            // 
-            // tmGUI
-            // 
-            this.tmGUI.Interval = 500;
-            this.tmGUI.Tick += new System.EventHandler(this.tmGUI_Tick);
-            // 
-            // cmsFileTab
-            // 
-            this.cmsFileTab.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFullFilePathToClipboard,
-            this.mnuFileNameToClipboard,
-            this.mnuFullFilePathAndNameToClipboard,
-            this.toolStripMenuItem3,
-            this.mnuOpenContainingFolderInExplorer,
-            this.mnuOpenContainingFolderInCmd,
-            this.mnuOpenContainingFolderInWindowsPowerShell,
-            this.mnuOpenWithAssociatedApplication,
-            this.toolStripMenuItem4,
-            this.mnuCloseTab,
-            this.mnuCloseAllButThis,
-            this.mnuCloseAllToTheLeft,
-            this.mnuCloseAllToTheRight});
-            this.cmsFileTab.Name = "contextMenuStrip1";
-            this.cmsFileTab.Size = new System.Drawing.Size(324, 258);
-            this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
-            // 
-            // mnuFullFilePathToClipboard
-            // 
-            this.mnuFullFilePathToClipboard.Name = "mnuFullFilePathToClipboard";
-            this.mnuFullFilePathToClipboard.Size = new System.Drawing.Size(323, 22);
-            this.mnuFullFilePathToClipboard.Text = "Full file path to clipboard";
-            this.mnuFullFilePathToClipboard.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // mnuFileNameToClipboard
-            // 
-            this.mnuFileNameToClipboard.Name = "mnuFileNameToClipboard";
-            this.mnuFileNameToClipboard.Size = new System.Drawing.Size(323, 22);
-            this.mnuFileNameToClipboard.Text = "File name to clipboard";
-            this.mnuFileNameToClipboard.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // mnuFullFilePathAndNameToClipboard
-            // 
-            this.mnuFullFilePathAndNameToClipboard.Name = "mnuFullFilePathAndNameToClipboard";
-            this.mnuFullFilePathAndNameToClipboard.Size = new System.Drawing.Size(323, 22);
-            this.mnuFullFilePathAndNameToClipboard.Text = "Full file path and name to clipboard";
-            this.mnuFullFilePathAndNameToClipboard.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(320, 6);
-            // 
-            // mnuOpenContainingFolderInExplorer
-            // 
-            this.mnuOpenContainingFolderInExplorer.Name = "mnuOpenContainingFolderInExplorer";
-            this.mnuOpenContainingFolderInExplorer.Size = new System.Drawing.Size(323, 22);
-            this.mnuOpenContainingFolderInExplorer.Text = "Open containing folder in explorer";
-            this.mnuOpenContainingFolderInExplorer.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // mnuOpenContainingFolderInCmd
-            // 
-            this.mnuOpenContainingFolderInCmd.Name = "mnuOpenContainingFolderInCmd";
-            this.mnuOpenContainingFolderInCmd.Size = new System.Drawing.Size(323, 22);
-            this.mnuOpenContainingFolderInCmd.Text = "Open containing folder in cmd";
-            this.mnuOpenContainingFolderInCmd.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // mnuOpenContainingFolderInWindowsPowerShell
-            // 
-            this.mnuOpenContainingFolderInWindowsPowerShell.Name = "mnuOpenContainingFolderInWindowsPowerShell";
-            this.mnuOpenContainingFolderInWindowsPowerShell.Size = new System.Drawing.Size(323, 22);
-            this.mnuOpenContainingFolderInWindowsPowerShell.Text = "Open containing folder in Windows PowerShell";
-            this.mnuOpenContainingFolderInWindowsPowerShell.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // mnuOpenWithAssociatedApplication
-            // 
-            this.mnuOpenWithAssociatedApplication.Name = "mnuOpenWithAssociatedApplication";
-            this.mnuOpenWithAssociatedApplication.Size = new System.Drawing.Size(323, 22);
-            this.mnuOpenWithAssociatedApplication.Text = "Open with associated application";
-            this.mnuOpenWithAssociatedApplication.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(320, 6);
-            // 
-            // mnuCloseTab
-            // 
-            this.mnuCloseTab.Name = "mnuCloseTab";
-            this.mnuCloseTab.Size = new System.Drawing.Size(323, 22);
-            this.mnuCloseTab.Text = "Close";
-            this.mnuCloseTab.Click += new System.EventHandler(this.CommonContextMenu_FileInteractionClick);
-            // 
-            // mnuCloseAllButThis
-            // 
-            this.mnuCloseAllButThis.Name = "mnuCloseAllButThis";
-            this.mnuCloseAllButThis.Size = new System.Drawing.Size(323, 22);
-            this.mnuCloseAllButThis.Text = "Close all but this";
-            this.mnuCloseAllButThis.Click += new System.EventHandler(this.CommonCloseManyDocuments);
-            // 
-            // mnuCloseAllToTheLeft
-            // 
-            this.mnuCloseAllToTheLeft.Name = "mnuCloseAllToTheLeft";
-            this.mnuCloseAllToTheLeft.Size = new System.Drawing.Size(323, 22);
-            this.mnuCloseAllToTheLeft.Text = "Close all to the left";
-            this.mnuCloseAllToTheLeft.Click += new System.EventHandler(this.CommonCloseManyDocuments);
-            // 
-            // mnuCloseAllToTheRight
-            // 
-            this.mnuCloseAllToTheRight.Name = "mnuCloseAllToTheRight";
-            this.mnuCloseAllToTheRight.Size = new System.Drawing.Size(323, 22);
-            this.mnuCloseAllToTheRight.Text = "Close all to the right";
-            this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
-            // 
-            // tmSpellCheck
-            // 
-            this.tmSpellCheck.Tick += new System.EventHandler(this.TmSpellCheck_Tick);
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFile,
+            this.mnuEdit,
+            this.mnuSearch,
+            this.mnuView,
+            this.mnuProgrammingLanguage,
+            this.mnuTools,
+            this.mnuPlugins,
+            this.mnuHelp});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(849, 24);
+            this.menuMain.TabIndex = 4;
+            this.menuMain.Text = "menuStrip1";
             // 
             // FormMain
             // 
@@ -1158,9 +1158,9 @@
             this.tsMain.PerformLayout();
             this.ssMain.ResumeLayout(false);
             this.ssMain.PerformLayout();
+            this.cmsFileTab.ResumeLayout(false);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
-            this.cmsFileTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1170,36 +1170,19 @@
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.ToolStrip tsMain;
         private System.Windows.Forms.ToolStripButton tsbNew;
-        private System.Windows.Forms.MenuStrip menuMain;
-        private System.Windows.Forms.ToolStripMenuItem mnuFile;
-        private System.Windows.Forms.ToolStripMenuItem mnuNew;
-        private System.Windows.Forms.ToolStripMenuItem mnuSearch;
-        private System.Windows.Forms.ToolStripMenuItem mnuFind;
-        private System.Windows.Forms.ToolStripMenuItem mnuTest;
-        private System.Windows.Forms.ToolStripMenuItem mnuOpen;
         private System.Windows.Forms.OpenFileDialog odAnyFile;
-        private System.Windows.Forms.ToolStripMenuItem mnuHelp;
-        private System.Windows.Forms.ToolStripMenuItem mnuAbout;
         private System.Windows.Forms.StatusStrip ssMain;
         private System.Windows.Forms.ToolStripStatusLabel ssLbLineColumn;
         private VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl sttcMain;
         private System.Windows.Forms.ToolStripStatusLabel tsslLineCol;
         private System.Windows.Forms.ToolStripStatusLabel ssLbLinesColumnSelection;
         private System.Windows.Forms.ToolStripStatusLabel ssLbLDocLinesSize;
-        private System.Windows.Forms.ToolStripMenuItem munSave;
         private System.Windows.Forms.SaveFileDialog sdAnyFile;
-        private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
         private System.Windows.Forms.ToolStripButton tsbOpen;
         private System.Windows.Forms.ToolStripButton tsbSave;
         private System.Windows.Forms.ToolStripButton tsbSaveAs;
-        private System.Windows.Forms.ToolStripMenuItem mnuSaveAll;
         private System.Windows.Forms.ToolStripButton tsbSaveAll;
-        private System.Windows.Forms.ToolStripMenuItem mnuSaveAllWithUnsaved;
         private System.Windows.Forms.ToolStripButton tsbSaveAllWithUnsaved;
-        private System.Windows.Forms.ToolStripMenuItem mnuEdit;
-        private System.Windows.Forms.ToolStripMenuItem mnuRunScript;
-        private System.Windows.Forms.ToolStripMenuItem mnuTools;
-        private System.Windows.Forms.ToolStripMenuItem mnuManageScriptSnippets;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsbUndo;
         private System.Windows.Forms.ToolStripButton tsbRedo;
@@ -1211,12 +1194,6 @@
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace2;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace5;
         private System.Windows.Forms.ToolStripStatusLabel ssLbInsertOverride;
-        private System.Windows.Forms.ToolStripMenuItem mnuCharSets;
-        private System.Windows.Forms.ToolStripMenuItem mnuOpenWithEncoding;
-        private System.Windows.Forms.ToolStripMenuItem mnuSettings;
-        private System.Windows.Forms.ToolStripSeparator mnuSplit1;
-        private System.Windows.Forms.ToolStripMenuItem mnuRecentFiles;
-        private System.Windows.Forms.ToolStripSeparator mnuSplit2;
         private System.Windows.Forms.Timer tmGUI;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace6;
         private System.Windows.Forms.ToolStripStatusLabel ssLbSessionName;
@@ -1234,17 +1211,36 @@
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllButThis;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheLeft;
         private System.Windows.Forms.ToolStripMenuItem mnuCloseAllToTheRight;
-        private System.Windows.Forms.ToolStripMenuItem mnuPlugins;
-        private System.Windows.Forms.ToolStripMenuItem mnuManagePlugins;
-        private System.Windows.Forms.ToolStripMenuItem mnuManageSessions;
+        private System.Windows.Forms.Panel pnDock;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton tsbReloadFromDisk;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.Timer tmSpellCheck;
+        private System.Windows.Forms.ToolStripButton tsbSpellCheck;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem mnuFile;
+        private System.Windows.Forms.ToolStripMenuItem mnuNew;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpen;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpenWithEncoding;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem mnuReloadFromDisk;
+        private System.Windows.Forms.ToolStripMenuItem mnuTest;
+        private System.Windows.Forms.ToolStripSeparator mnuSplit1;
+        private System.Windows.Forms.ToolStripMenuItem mnuRecentFiles;
+        private System.Windows.Forms.ToolStripSeparator mnuSplit2;
         private System.Windows.Forms.ToolStripMenuItem mnuSession;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem mnuLocalization;
-        private System.Windows.Forms.ToolStripMenuItem mnuDumpLanguage;
-        private System.Windows.Forms.Panel pnDock;
-        private System.Windows.Forms.ToolStripMenuItem mnuReplace;
-        private System.Windows.Forms.ToolStripMenuItem mnuFindInFiles;
+        private System.Windows.Forms.ToolStripMenuItem munSave;
+        private System.Windows.Forms.ToolStripMenuItem mnuSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem mnuSaveAll;
+        private System.Windows.Forms.ToolStripMenuItem mnuSaveAllWithUnsaved;
+        private System.Windows.Forms.ToolStripMenuItem mnuEdit;
+        private System.Windows.Forms.ToolStripMenuItem mnuRunScript;
+        private System.Windows.Forms.ToolStripMenuItem mnuCharSets;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem mnuStyle;
+        private System.Windows.Forms.ToolStripMenuItem mnuClearAllStyles;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem mnuStyle1;
         private System.Windows.Forms.ToolStripMenuItem mnuStyle2;
         private System.Windows.Forms.ToolStripMenuItem mnuStyle3;
@@ -1256,29 +1252,33 @@
         private System.Windows.Forms.ToolStripMenuItem mnuClearStyle3;
         private System.Windows.Forms.ToolStripMenuItem mnuClearStyle4;
         private System.Windows.Forms.ToolStripMenuItem mnuClearStyle5;
-        private System.Windows.Forms.ToolStripMenuItem mnuClearAllStyles;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
-        private System.Windows.Forms.ToolStripMenuItem mnuView;
-        private System.Windows.Forms.ToolStripMenuItem mnuShowSymbol;
-        private System.Windows.Forms.ToolStripMenuItem mnuShowWhiteSpaceAndTab;
-        private System.Windows.Forms.ToolStripMenuItem mnuShowEndOfLine;
-        private System.Windows.Forms.ToolStripMenuItem mnuReloadFromDisk;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton tsbReloadFromDisk;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem mnuWordWrap;
-        private System.Windows.Forms.ToolStripMenuItem mnuShowIndentGuide;
-        private System.Windows.Forms.ToolStripMenuItem mnuShowWrapSymbol;
-        private System.Windows.Forms.Timer tmSpellCheck;
-        private System.Windows.Forms.ToolStripButton tsbSpellCheck;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
         private System.Windows.Forms.ToolStripMenuItem mnuWrapDocumentTo;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
         private System.Windows.Forms.ToolStripMenuItem mnuSortLines;
+        private System.Windows.Forms.ToolStripMenuItem mnuSearch;
+        private System.Windows.Forms.ToolStripMenuItem mnuFind;
+        private System.Windows.Forms.ToolStripMenuItem mnuReplace;
+        private System.Windows.Forms.ToolStripMenuItem mnuFindInFiles;
+        private System.Windows.Forms.ToolStripMenuItem mnuView;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowSymbol;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowWhiteSpaceAndTab;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowEndOfLine;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowIndentGuide;
+        private System.Windows.Forms.ToolStripMenuItem mnuShowWrapSymbol;
+        private System.Windows.Forms.ToolStripMenuItem mnuWordWrap;
         private System.Windows.Forms.ToolStripMenuItem mnuProgrammingLanguage;
+        private System.Windows.Forms.ToolStripMenuItem mnuTools;
+        private System.Windows.Forms.ToolStripMenuItem mnuManageScriptSnippets;
+        private System.Windows.Forms.ToolStripMenuItem mnuSettings;
+        private System.Windows.Forms.ToolStripMenuItem mnuManagePlugins;
+        private System.Windows.Forms.ToolStripMenuItem mnuManageSessions;
+        private System.Windows.Forms.ToolStripMenuItem mnuLocalization;
+        private System.Windows.Forms.ToolStripMenuItem mnuDumpLanguage;
+        private System.Windows.Forms.ToolStripMenuItem mnuPlugins;
+        private System.Windows.Forms.ToolStripMenuItem mnuHelp;
+        private System.Windows.Forms.ToolStripMenuItem mnuAbout;
+        private System.Windows.Forms.MenuStrip menuMain;
     }
 }
 

@@ -97,6 +97,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finnish AltGr simulation (@, £, $)|A message describing that the AltGr and some key would simulate a keypress for an active Scintilla control..
+        /// </summary>
+        internal static string msgAltGrFinnish {
+            get {
+                return ResourceManager.GetString("msgAltGrFinnish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ScriptNotepad [{0}]|As in the application name combined with an active file name.
         /// </summary>
         internal static string msgAppTitleWithFileName {

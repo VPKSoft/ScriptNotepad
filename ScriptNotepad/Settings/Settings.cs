@@ -317,6 +317,19 @@ namespace ScriptNotepad.Settings
         public int EditorWhiteSpaceSize { get; set; } = 1;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the main window should capture some key combinations to simulate an AltGr+Key press for the active editor <see cref="Scintilla"/>.
+        /// </summary>
+        [Setting("editor/simulateAltGrKey", typeof(bool))]
+        public bool SimulateAltGrKey { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the index of the type of simulation of an AltGr+Key press for the active editor <see cref="Scintilla"/>.
+        /// </summary>
+        /// <value>The index of the simulate alt gr key.</value>
+        [Setting("editor/simulateAltGrKeyIndex", typeof(int))]
+        public int SimulateAltGrKeyIndex { get; set; } = -1;
+
+        /// <summary>
         /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document.
         /// </summary>
         [Setting("editorSpell/useSpellChecking", typeof(bool))]

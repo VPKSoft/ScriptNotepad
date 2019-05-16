@@ -74,6 +74,11 @@
             this.cmbFont = new System.Windows.Forms.ComboBox();
             this.lbFont = new System.Windows.Forms.Label();
             this.tpgColorSettings = new System.Windows.Forms.TabPage();
+            this.cbUseNotepadPlusPlusTheme = new System.Windows.Forms.CheckBox();
+            this.cmbNotepadPlusPlusTheme = new System.Windows.Forms.ComboBox();
+            this.btNotepadPlusPlusThemePath = new System.Windows.Forms.Button();
+            this.tbNotepadPlusPlusThemePath = new System.Windows.Forms.TextBox();
+            this.lbNotepadPlusPlusThemePath = new System.Windows.Forms.Label();
             this.btDefaults = new System.Windows.Forms.Button();
             this.btCurrentLineBackgroundColor = new System.Windows.Forms.Button();
             this.lbCurrentLineBackgroundColor = new System.Windows.Forms.Label();
@@ -113,11 +118,8 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
-            this.btNotepadPlusPlusThemePath = new System.Windows.Forms.Button();
-            this.tbNotepadPlusPlusThemePath = new System.Windows.Forms.TextBox();
-            this.lbNotepadPlusPlusThemePath = new System.Windows.Forms.Label();
-            this.cmbNotepadPlusPlusTheme = new System.Windows.Forms.ComboBox();
-            this.cbUseNotepadPlusPlusTheme = new System.Windows.Forms.CheckBox();
+            this.cbSimulateKeyboard = new System.Windows.Forms.CheckBox();
+            this.cmbSimulateKeyboard = new System.Windows.Forms.ComboBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -498,6 +500,8 @@
             // 
             // tabEditorSettings
             // 
+            this.tabEditorSettings.Controls.Add(this.cmbSimulateKeyboard);
+            this.tabEditorSettings.Controls.Add(this.cbSimulateKeyboard);
             this.tabEditorSettings.Controls.Add(this.cbIndentGuideOn);
             this.tabEditorSettings.Controls.Add(this.nudWhiteSpaceSize);
             this.tabEditorSettings.Controls.Add(this.lbWhiteSpaceSize);
@@ -734,6 +738,60 @@
             this.tpgColorSettings.TabIndex = 1;
             this.tpgColorSettings.Text = "Colors & themes";
             this.tpgColorSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbUseNotepadPlusPlusTheme
+            // 
+            this.cbUseNotepadPlusPlusTheme.AutoSize = true;
+            this.cbUseNotepadPlusPlusTheme.Location = new System.Drawing.Point(9, 276);
+            this.cbUseNotepadPlusPlusTheme.Name = "cbUseNotepadPlusPlusTheme";
+            this.cbUseNotepadPlusPlusTheme.Size = new System.Drawing.Size(136, 17);
+            this.cbUseNotepadPlusPlusTheme.TabIndex = 48;
+            this.cbUseNotepadPlusPlusTheme.Text = "Use Notepad++ theme:";
+            this.cbUseNotepadPlusPlusTheme.UseVisualStyleBackColor = true;
+            // 
+            // cmbNotepadPlusPlusTheme
+            // 
+            this.cmbNotepadPlusPlusTheme.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbNotepadPlusPlusTheme.DisplayMember = "DisplayName";
+            this.cmbNotepadPlusPlusTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbNotepadPlusPlusTheme.FormattingEnabled = true;
+            this.cmbNotepadPlusPlusTheme.Location = new System.Drawing.Point(9, 302);
+            this.cmbNotepadPlusPlusTheme.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.cmbNotepadPlusPlusTheme.Name = "cmbNotepadPlusPlusTheme";
+            this.cmbNotepadPlusPlusTheme.Size = new System.Drawing.Size(542, 21);
+            this.cmbNotepadPlusPlusTheme.TabIndex = 47;
+            this.cmbNotepadPlusPlusTheme.SelectedIndexChanged += new System.EventHandler(this.CmbNotepadPlusPlusTheme_SelectedIndexChanged);
+            // 
+            // btNotepadPlusPlusThemePath
+            // 
+            this.btNotepadPlusPlusThemePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btNotepadPlusPlusThemePath.Location = new System.Drawing.Point(520, 238);
+            this.btNotepadPlusPlusThemePath.Name = "btNotepadPlusPlusThemePath";
+            this.btNotepadPlusPlusThemePath.Size = new System.Drawing.Size(31, 20);
+            this.btNotepadPlusPlusThemePath.TabIndex = 45;
+            this.btNotepadPlusPlusThemePath.Tag = "tbNotepadPlusPlusThemePath";
+            this.btNotepadPlusPlusThemePath.Text = "...";
+            this.btNotepadPlusPlusThemePath.UseVisualStyleBackColor = true;
+            this.btNotepadPlusPlusThemePath.Click += new System.EventHandler(this.btCommonSelectFolder_Click);
+            // 
+            // tbNotepadPlusPlusThemePath
+            // 
+            this.tbNotepadPlusPlusThemePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbNotepadPlusPlusThemePath.Location = new System.Drawing.Point(9, 238);
+            this.tbNotepadPlusPlusThemePath.Name = "tbNotepadPlusPlusThemePath";
+            this.tbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(505, 20);
+            this.tbNotepadPlusPlusThemePath.TabIndex = 44;
+            // 
+            // lbNotepadPlusPlusThemePath
+            // 
+            this.lbNotepadPlusPlusThemePath.AutoSize = true;
+            this.lbNotepadPlusPlusThemePath.Location = new System.Drawing.Point(6, 215);
+            this.lbNotepadPlusPlusThemePath.Name = "lbNotepadPlusPlusThemePath";
+            this.lbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(119, 13);
+            this.lbNotepadPlusPlusThemePath.TabIndex = 43;
+            this.lbNotepadPlusPlusThemePath.Text = "Notepad++ theme path:";
             // 
             // btDefaults
             // 
@@ -1107,59 +1165,26 @@
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
-            // btNotepadPlusPlusThemePath
+            // cbSimulateKeyboard
             // 
-            this.btNotepadPlusPlusThemePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btNotepadPlusPlusThemePath.Location = new System.Drawing.Point(520, 238);
-            this.btNotepadPlusPlusThemePath.Name = "btNotepadPlusPlusThemePath";
-            this.btNotepadPlusPlusThemePath.Size = new System.Drawing.Size(31, 20);
-            this.btNotepadPlusPlusThemePath.TabIndex = 45;
-            this.btNotepadPlusPlusThemePath.Tag = "tbNotepadPlusPlusThemePath";
-            this.btNotepadPlusPlusThemePath.Text = "...";
-            this.btNotepadPlusPlusThemePath.UseVisualStyleBackColor = true;
-            this.btNotepadPlusPlusThemePath.Click += new System.EventHandler(this.btCommonSelectFolder_Click);
+            this.cbSimulateKeyboard.AutoSize = true;
+            this.cbSimulateKeyboard.Location = new System.Drawing.Point(6, 160);
+            this.cbSimulateKeyboard.Name = "cbSimulateKeyboard";
+            this.cbSimulateKeyboard.Size = new System.Drawing.Size(201, 17);
+            this.cbSimulateKeyboard.TabIndex = 5;
+            this.cbSimulateKeyboard.Text = "AltGr (Alt Graph) keyboard simulation:";
+            this.cbSimulateKeyboard.UseVisualStyleBackColor = true;
             // 
-            // tbNotepadPlusPlusThemePath
+            // cmbSimulateKeyboard
             // 
-            this.tbNotepadPlusPlusThemePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cmbSimulateKeyboard.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbNotepadPlusPlusThemePath.Location = new System.Drawing.Point(9, 238);
-            this.tbNotepadPlusPlusThemePath.Name = "tbNotepadPlusPlusThemePath";
-            this.tbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(505, 20);
-            this.tbNotepadPlusPlusThemePath.TabIndex = 44;
-            // 
-            // lbNotepadPlusPlusThemePath
-            // 
-            this.lbNotepadPlusPlusThemePath.AutoSize = true;
-            this.lbNotepadPlusPlusThemePath.Location = new System.Drawing.Point(6, 215);
-            this.lbNotepadPlusPlusThemePath.Name = "lbNotepadPlusPlusThemePath";
-            this.lbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(119, 13);
-            this.lbNotepadPlusPlusThemePath.TabIndex = 43;
-            this.lbNotepadPlusPlusThemePath.Text = "Notepad++ theme path:";
-            // 
-            // cmbNotepadPlusPlusTheme
-            // 
-            this.cmbNotepadPlusPlusTheme.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbNotepadPlusPlusTheme.DisplayMember = "DisplayName";
-            this.cmbNotepadPlusPlusTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbNotepadPlusPlusTheme.FormattingEnabled = true;
-            this.cmbNotepadPlusPlusTheme.Location = new System.Drawing.Point(9, 302);
-            this.cmbNotepadPlusPlusTheme.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
-            this.cmbNotepadPlusPlusTheme.Name = "cmbNotepadPlusPlusTheme";
-            this.cmbNotepadPlusPlusTheme.Size = new System.Drawing.Size(542, 21);
-            this.cmbNotepadPlusPlusTheme.TabIndex = 47;
-            this.cmbNotepadPlusPlusTheme.SelectedIndexChanged += new System.EventHandler(this.CmbNotepadPlusPlusTheme_SelectedIndexChanged);
-            // 
-            // cbUseNotepadPlusPlusTheme
-            // 
-            this.cbUseNotepadPlusPlusTheme.AutoSize = true;
-            this.cbUseNotepadPlusPlusTheme.Location = new System.Drawing.Point(9, 276);
-            this.cbUseNotepadPlusPlusTheme.Name = "cbUseNotepadPlusPlusTheme";
-            this.cbUseNotepadPlusPlusTheme.Size = new System.Drawing.Size(136, 17);
-            this.cbUseNotepadPlusPlusTheme.TabIndex = 48;
-            this.cbUseNotepadPlusPlusTheme.Text = "Use Notepad++ theme:";
-            this.cbUseNotepadPlusPlusTheme.UseVisualStyleBackColor = true;
+            this.cmbSimulateKeyboard.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSimulateKeyboard.FormattingEnabled = true;
+            this.cmbSimulateKeyboard.Location = new System.Drawing.Point(6, 185);
+            this.cmbSimulateKeyboard.Name = "cmbSimulateKeyboard";
+            this.cmbSimulateKeyboard.Size = new System.Drawing.Size(545, 21);
+            this.cmbSimulateKeyboard.TabIndex = 8;
             // 
             // FormSettings
             // 
@@ -1301,5 +1326,7 @@
         private System.Windows.Forms.Label lbNotepadPlusPlusThemePath;
         private System.Windows.Forms.CheckBox cbUseNotepadPlusPlusTheme;
         private System.Windows.Forms.ComboBox cmbNotepadPlusPlusTheme;
+        private System.Windows.Forms.ComboBox cmbSimulateKeyboard;
+        private System.Windows.Forms.CheckBox cbSimulateKeyboard;
     }
 }

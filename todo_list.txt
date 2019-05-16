@@ -5,6 +5,7 @@
 * Done? [YES ] [2019/05/08] Add word wrapping possibility.
 * Done? [YES ] [2019/05/13] Add a helper function to extract colors from mark-up (i.e. #AB0FFE) to (A)RGB.
 * Done? [YES ] [2019/05/13] Add the Notepad++ style definition files to the installer.
+* Done? [YES ] [2019/05/16] Fix weird bug for the main form not accepting all the AltGr+(character) combinations.
 * Done? [SOME] [2019/05/13] Add LibreOffice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
 * Done? [N/A ] [2019/05/03] Mark with the search and replace dialog.
 * Done? [N/A ] [2019/05/03] Save document's settings to the database.
