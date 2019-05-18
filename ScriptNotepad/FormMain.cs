@@ -353,8 +353,6 @@ namespace ScriptNotepad
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
                 if (sttcMain.Documents[i] != null && sttcMain.Documents[i].Scintilla.ContextMenuStrip != null)
                 {
-                    var menu = sttcMain.Documents[i].Scintilla.ContextMenuStrip;
-
                     // unsubscribe the events from the context menu..
                     ScintillaContextMenu.UnsubscribeEvents(sttcMain.Documents[i].Scintilla);
                 }

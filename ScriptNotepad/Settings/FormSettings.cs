@@ -34,7 +34,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using ScintillaNET;
 using ScriptNotepad.Localization.Hunspell;
@@ -213,7 +212,7 @@ namespace ScriptNotepad.Settings
 
             tbHunspellAffixFile.Text = Settings.EditorHunspellAffixFile;
             tbHunspellDictionary.Text = Settings.EditorHunspellDictionaryFile;
-            nudEditorSpellRecheckInactivity.Value = (decimal)Settings.EditorSpellCheckInactivity;
+            nudEditorSpellRecheckInactivity.Value = Settings.EditorSpellCheckInactivity;
 
             // get the editor font settings..
             nudFontSize.Value = Settings.EditorFontSize;

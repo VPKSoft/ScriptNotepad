@@ -25,12 +25,9 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using PropertyChanged; // (C): https://github.com/Fody/PropertyChanged, MIT license
 using System.Reflection;
 using VPKSoft.ConfLib;
@@ -64,7 +61,7 @@ namespace ScriptNotepad.Settings
         /// </summary>
         /// <param name="settingName">Name of the setting (VPKSoft.ConfLib).</param>
         /// <param name="type">The type of the setting (VPKSoft.ConfLib).</param>
-        public SettingAttribute(string settingName, Type type): base()
+        public SettingAttribute(string settingName, Type type)
         {
             SettingName = settingName; // save the given values..
             SettingType = type;
@@ -82,9 +79,9 @@ namespace ScriptNotepad.Settings
         /// </summary>
         public Settings()
         {
-            if (Conflib == null) // don't initialize if already initialized..
+            if (conflib == null) // don't initialize if already initialized..
             {
-                Conflib = new Conflib
+                conflib = new Conflib
                 {
                     AutoCreateSettings = true // set it to auto-create SQLite database tables..
                 }; // create a new instance of the Conflib class..
@@ -95,56 +92,59 @@ namespace ScriptNotepad.Settings
                 GetType().GetProperty("DefaultEncoding", BindingFlags.Instance | BindingFlags.Public);
 
             // get the setting attribute value of the property.. 
-            SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
-
-            // set the default encoding value..
-            DefaultEncoding = Encoding.GetEncoding(Conflib[settingAttribute.SettingName, DefaultEncoding.WebName]);
-            #endregion
-
-            // get all public instance properties of this class..
-            PropertyInfo[] propertyInfos = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
-            // loop through the properties..
-            for (int i = 0; i < propertyInfos.Length; i++)
+            if (propertyInfo != null)
             {
-                // a special property to which the Convert class can't be used..
-                if (propertyInfos[i].Name == "DefaultEncoding")
+                SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
+
+                // set the default encoding value..
+                DefaultEncoding = Encoding.GetEncoding(conflib[settingAttribute.SettingName, DefaultEncoding.WebName]);
+                #endregion
+
+                // get all public instance properties of this class..
+                PropertyInfo[] propertyInfos = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+                // loop through the properties..
+                for (int i = 0; i < propertyInfos.Length; i++)
                 {
-                    continue; // ..so do continue..
-                }
-
-                // a CultureInfo instance, which is not an auto-property..
-                if (propertyInfos[i].Name == "Culture")
-                {
-                    continue; // ..so do continue..
-                }
-
-
-                try // avoid crashes..
-                {
-                    // get the SettingAttribute class instance of the property..
-                    settingAttribute = (SettingAttribute)propertyInfos[i].GetCustomAttribute(typeof(SettingAttribute));
-
-                    // get the default value for the property..
-                    object currentValue = propertyInfos[i].GetValue(this);
-
-                    // set the value for the property using the default value as a
-                    // fall-back value..
-
-                    if (settingAttribute.SettingType == typeof(Color))
+                    // a special property to which the Convert class can't be used..
+                    if (propertyInfos[i].Name == "DefaultEncoding")
                     {
-                        propertyInfos[i].SetValue(this, ColorTranslator.FromHtml(
-                            Conflib[settingAttribute.SettingName, ColorTranslator.ToHtml((Color)currentValue)]));
+                        continue; // ..so do continue..
                     }
-                    else
+
+                    // a CultureInfo instance, which is not an auto-property..
+                    if (propertyInfos[i].Name == "Culture")
                     {
-                        propertyInfos[i].SetValue(this, Convert.ChangeType(Conflib[settingAttribute.SettingName, currentValue.ToString()], settingAttribute.SettingType));                        
+                        continue; // ..so do continue..
                     }
-                }
-                catch (Exception ex)
-                {
-                    // log the exception..
-                    ExceptionLogger.LogError(ex);
+
+
+                    try // avoid crashes..
+                    {
+                        // get the SettingAttribute class instance of the property..
+                        settingAttribute = (SettingAttribute)propertyInfos[i].GetCustomAttribute(typeof(SettingAttribute));
+
+                        // get the default value for the property..
+                        object currentValue = propertyInfos[i].GetValue(this);
+
+                        // set the value for the property using the default value as a
+                        // fall-back value..
+
+                        if (settingAttribute.SettingType == typeof(Color))
+                        {
+                            propertyInfos[i].SetValue(this, ColorTranslator.FromHtml(
+                                conflib[settingAttribute.SettingName, ColorTranslator.ToHtml((Color)currentValue)]));
+                        }
+                        else
+                        {
+                            propertyInfos[i].SetValue(this, Convert.ChangeType(conflib[settingAttribute.SettingName, currentValue.ToString()], settingAttribute.SettingType));                        
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // log the exception..
+                        ExceptionLogger.LogError(ex);
+                    }
                 }
             }
 
@@ -170,23 +170,26 @@ namespace ScriptNotepad.Settings
                 object value = propertyInfo?.GetValue(this);
 
                 // get the setting attribute value of the property.. 
-                SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
-
-                if (value != null && settingAttribute != null)
+                if (propertyInfo != null)
                 {
-                    // this is a special case, otherwise try just to use simple types..
-                    if (settingAttribute.SettingType == typeof(Encoding))
+                    SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
+
+                    if (value != null && settingAttribute != null)
                     {
-                        Encoding encoding = (Encoding)value;
-                        Conflib[settingAttribute.SettingName] = encoding.WebName;
-                    }
-                    else if (settingAttribute.SettingType == typeof(Color))
-                    {
-                        Conflib[settingAttribute.SettingName] = ColorTranslator.ToHtml((Color) value);
-                    }
-                    else // a simple type..
-                    {
-                        Conflib[settingAttribute.SettingName] = value.ToString();
+                        // this is a special case, otherwise try just to use simple types..
+                        if (settingAttribute.SettingType == typeof(Encoding))
+                        {
+                            Encoding encoding = (Encoding)value;
+                            conflib[settingAttribute.SettingName] = encoding.WebName;
+                        }
+                        else if (settingAttribute.SettingType == typeof(Color))
+                        {
+                            conflib[settingAttribute.SettingName] = ColorTranslator.ToHtml((Color) value);
+                        }
+                        else // a simple type..
+                        {
+                            conflib[settingAttribute.SettingName] = value.ToString();
+                        }
                     }
                 }
             }
@@ -200,7 +203,7 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// An instance to a Conflib class.
         /// </summary>
-        private readonly Conflib Conflib;
+        private readonly Conflib conflib;
 
         /// <summary>
         /// Occurs when a property value changes.
@@ -463,7 +466,8 @@ namespace ScriptNotepad.Settings
         public bool DockSearchTreeForm { get; set; } = true;
 
         // the current language (Culture) to be used with the software..
-        private static CultureInfo _Culture = null;
+        // ReSharper disable once InconsistentNaming
+        private static CultureInfo culture;
 
         /// <summary>
         /// Gets or sets the current language (Culture) to be used with the software's localization.
@@ -472,12 +476,12 @@ namespace ScriptNotepad.Settings
         public CultureInfo Culture
         {
             get =>
-                _Culture ?? new CultureInfo(Conflib["language/culture", "en-US"].ToString());
+                culture ?? new CultureInfo(conflib["language/culture", "en-US"]);
 
             set
             {
-                _Culture = value;
-                Conflib["language/culture"] = _Culture.Name;
+                culture = value;
+                conflib["language/culture"] = culture.Name;
             }
         }
         #endregion
@@ -513,7 +517,7 @@ namespace ScriptNotepad.Settings
             PropertyChanged -= Settings_PropertyChanged;
 
             // close the conflib class instance..
-            Conflib?.Close();
+            conflib?.Close();
         }
     }
 }
