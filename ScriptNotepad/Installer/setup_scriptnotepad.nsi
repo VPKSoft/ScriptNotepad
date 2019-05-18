@@ -107,6 +107,9 @@ Section -Main SEC0000
     SetOutPath "$LOCALAPPDATA\ScriptNotepad"
     File ..\Localization\SQLiteDatabase\lang.sqlite   
 	
+    SetOutPath "$LOCALAPPDATA\ScriptNotepad\Plugins"
+    File ..\..\PluginTemplate\bin\Release\PluginTemplate.dll
+
 	#English dictionaries..
     SetOutPath "$LOCALAPPDATA\ScriptNotepad\Dictionaries\en"
 
@@ -129,8 +132,8 @@ Section -Main SEC0000
 
 	addMenu:
     DetailPrint "User chose to associate with the Windows shell..."
-	Goto menuEnd
 	Call MakeShellMenu
+	Goto menuEnd
     noAddMenu:
     DetailPrint "User chose NOT to associate with the Windows shell..."
     menuEnd:

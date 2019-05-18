@@ -262,6 +262,54 @@ namespace ScriptNotepad
         #endregion
 
         #region HelperMethods
+        /// <summary>
+        /// Undo the document changes if possible.
+        /// </summary>
+        private void Undo()
+        {
+            // if there is an active document..
+            CurrentDocumentAction(document =>
+            {
+                // ..then undo if it's possible..
+                if (document.Scintilla.CanUndo)
+                {
+                    // undo..
+                    document.Scintilla.Undo();
+
+                    // get a DBFILE_SAVE class instance from the document's tag..
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+
+                    // undo the encoding change..
+                    fileSave.UndoEncodingChange();
+
+                    if (!document.Scintilla.CanUndo)
+                    {
+                        fileSave.PopPreviousDbModified();
+                        document.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                    }
+                }
+            });
+
+            UpdateUndoRedoIndicators();
+        }
+
+        /// <summary>
+        /// Redo the document changes if possible.
+        /// </summary>
+        private void Redo()
+        {
+            // if there is an active document..
+            CurrentDocumentAction(document =>
+                {
+                    // ..then redo if it's possible..
+                    if (document.Scintilla.CanRedo)
+                    {
+                        document.Scintilla.Redo();
+                    }
+                }
+            );
+            UpdateUndoRedoIndicators();
+        }
 
         /// <summary>
         /// Enables or disables the main form's GUI timers.
@@ -291,6 +339,24 @@ namespace ScriptNotepad
                     {
                         sttcMain.Documents[i].Tag0 = null;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unsubscribes the event handlers from the context menus.
+        /// </summary>
+        private void DisposeContextMenus()
+        {
+            for (int i = 0; i < sttcMain.DocumentsCount; i++)
+            {
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (sttcMain.Documents[i] != null && sttcMain.Documents[i].Scintilla.ContextMenuStrip != null)
+                {
+                    var menu = sttcMain.Documents[i].Scintilla.ContextMenuStrip;
+
+                    // unsubscribe the events from the context menu..
+                    ScintillaContextMenu.UnsubscribeEvents(sttcMain.Documents[i].Scintilla);
                 }
             }
         }
@@ -677,6 +743,9 @@ namespace ScriptNotepad
 
             // dispose of the spell checkers attached to the documents..
             DisposeSpellCheckers();
+
+            // unsubscribe the event handlers from the context menus..
+            DisposeContextMenus();
         }
 
         /// <summary>
@@ -700,6 +769,9 @@ namespace ScriptNotepad
 
             // dispose of the spell checkers attached to the documents..
             DisposeSpellCheckers();
+
+            // unsubscribe the event handlers from the context menus..
+            DisposeContextMenus();
 
             // close all the documents..
             sttcMain.CloseAllDocuments();
@@ -1855,34 +1927,6 @@ namespace ScriptNotepad
                 return;
             }
 
-            if (
-                // a user pressed a keyboard combination of CTRL+Z, which indicates undo for
-                // the Scintilla control..
-                e.KeyCode == Keys.Z && e.OnlyControl() ||
-                // a user pressed a keyboard combination of CTRL+Y, which indicates redo for
-                // the Scintilla control..
-                e.KeyCode == Keys.Y && e.OnlyControl())
-            {
-                // if there is an active document..
-                if (sttcMain.CurrentDocument != null)
-                {
-                    // ..then if the is possible..
-                    if (sttcMain.CurrentDocument.Scintilla.CanUndo)
-                    {
-                        // get a DBFILE_SAVE class instance from the document's tag..
-                        DBFILE_SAVE fileSave = (DBFILE_SAVE) sttcMain.CurrentDocument.Tag;
-
-                        // undo the encoding change..
-                        fileSave.UndoEncodingChange();
-
-                        sttcMain.CurrentDocument.Tag = fileSave;
-                    }
-                }
-
-                UpdateUndoRedoIndicators();
-                return;
-            }
-
             // a user pressed the insert key a of a keyboard, which indicates toggling for
             // insert / override mode for the Scintilla control..
             if (e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
@@ -1910,6 +1954,38 @@ namespace ScriptNotepad
                 // release the flag which suspends the selection update to avoid excess CPU load..
                 suspendSelectionUpdate = false;
                 StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession);
+            }
+
+            if (
+                // a user pressed a keyboard combination of CTRL+Z, which indicates undo for
+                // the Scintilla control..
+                e.KeyCode == Keys.Z && e.OnlyControl() ||
+                // a user pressed a keyboard combination of CTRL+Y, which indicates redo for
+                // the Scintilla control..
+                e.KeyCode == Keys.Y && e.OnlyControl())
+            {
+                // if there is an active document..
+                CurrentDocumentAction(document =>
+                {
+                    // ..then if the undo is possible..
+                    if (!document.Scintilla.CanUndo)
+                    {
+                        // get a DBFILE_SAVE class instance from the document's tag..
+                        DBFILE_SAVE fileSave = (DBFILE_SAVE) document.Tag;
+
+                        if (e.KeyCode == Keys.Z)
+                        {
+                            // undo the encoding change..
+                            fileSave.UndoEncodingChange();
+                            document.Tag = fileSave;
+                        }
+
+                        fileSave.PopPreviousDbModified();
+                        document.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                    }
+                });
+
+                UpdateUndoRedoIndicators();
             }
         }
 
@@ -2307,44 +2383,13 @@ namespace ScriptNotepad
         // a user wishes to undo changes..
         private void tsbUndo_Click(object sender, EventArgs e)
         {
-            // if there is an active document..
-            if (sttcMain.CurrentDocument != null)
-            {
-                // ..then undo if it's possible..
-                if (sttcMain.CurrentDocument.Scintilla.CanUndo)
-                {
-                    // undo..
-                    sttcMain.CurrentDocument.Scintilla.Undo();
-
-                    // get a DBFILE_SAVE class instance from the document's tag..
-                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
-
-                    // undo the encoding change..
-                    fileSave.UndoEncodingChange();
-
-                    if (!sttcMain.CurrentDocument.Scintilla.CanUndo)
-                    {
-                        fileSave.PopPreviousDbModified();
-                        sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
-                    }
-
-                }
-            }
-            UpdateUndoRedoIndicators();
+            Undo();
         }
 
         // a user wishes to redo changes..
         private void tsbRedo_Click(object sender, EventArgs e)
         {
-            if (sttcMain.CurrentDocument != null)
-            {
-                // ..then redo if it's possible..
-                if (sttcMain.CurrentDocument.Scintilla.CanRedo)
-                {
-                    sttcMain.CurrentDocument.Scintilla.Redo();
-                }
-            }
-            UpdateUndoRedoIndicators();
+            Redo();
         }
 
         // a timer to prevent an endless loop with the form activated event (probably a poor solution)..

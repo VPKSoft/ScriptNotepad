@@ -898,6 +898,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert special character...|A message for a context menu to describe drop down menu items to insert a special character into the document.
+        /// </summary>
+        internal static string msgInsertSpecialCharacter {
+            get {
+                return ResourceManager.GetString("msgInsertSpecialCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Java script file|*.js|A text in a file dialog indicating Java script files.
         /// </summary>
         internal static string msgJavaScriptFile {

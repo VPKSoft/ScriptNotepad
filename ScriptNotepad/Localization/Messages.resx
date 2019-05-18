@@ -747,4 +747,7 @@
   <data name="msgAltGrFinnish" xml:space="preserve">
     <value>Finnish AltGr simulation (@, £, $)|A message describing that the AltGr and some key would simulate a keypress for an active Scintilla control.</value>
   </data>
+  <data name="msgInsertSpecialCharacter" xml:space="preserve">
+    <value>Insert special character...|A message for a context menu to describe drop down menu items to insert a special character into the document</value>
+  </data>
 </root>

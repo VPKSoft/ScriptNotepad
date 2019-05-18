@@ -11,9 +11,10 @@
 * Done? [N/A ] [2019/05/03] Save document's settings to the database.
 * Done? [N/A ] [2019/05/03] Save document's marked positions to the database.
 * Done? [N/A ] [2019/05/13] Make the Notepad++ style definition files into a setting.
-* Done? [N/A ] [2019/05/13] Set the default directory for the LibreOffice's dictionaries to 
-                            %LOCALAPPDATA%\ScriptNotepad\Dictionaries and try to crawl the directory with the locale settings
-							of the .NET Framework.
 * Done? [N/A ] [2019/05/14] Make the ignore word and add word to dictionary functions to work.
 * Done? [N/A ] [2019/05/14] Make the directory crawler to end the thread safe (DirectoryCrawler.Canceled)...
 * Done? [N/A ] [2019/05/14] Make the VPKSoft.SearchText library thread safe (SearchText.Canceled)...
+* Done? [YES ] [2019/05/18] Set the default directory for the LibreOffice's dictionaries to 
+                            %LOCALAPPDATA%\ScriptNotepad\Dictionaries and try to crawl the directory with the locale settings
+							of the .NET Framework.
+* Done? [YES ] [2019/05/18] Add insert special character drop down menu to the context menu.

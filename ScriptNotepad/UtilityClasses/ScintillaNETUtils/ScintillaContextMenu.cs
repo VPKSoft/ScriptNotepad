@@ -50,6 +50,16 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
         /// Gets or sets the <see cref="Scintilla"/>.
         /// </summary>
         public Scintilla Scintilla { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object that contains additional data for the <see cref="ToolStripTagItem"/>.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object that contains additional data for the <see cref="ToolStripTagItem"/>.
+        /// </summary>
+        public object Tag0 { get; set; }
     }
 
     /// <summary>
@@ -93,6 +103,12 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
         public static string TextHexadecimalColor { get; set; } = "Pick a color";
 
         /// <summary>
+        /// Gets or sets the text for inserting a special character to the <see cref="Scintilla"/> document.
+        /// </summary>
+        public static string TextInsertSpecialCharacter { get; set; } = "Insert special character...";
+
+
+        /// <summary>
         /// Localizes the texts used to build the <see cref="ContextMenuStrip"/> with the <seealso cref="CreateBasicContextMenuStrip"/> method.
         /// This should be called before any context menu strips have been created but after the <see cref="DBLangEngine"/> has been initialized.
         /// </summary>
@@ -118,6 +134,9 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
 
             TextHexadecimalColor = DBLangEngine.GetStatMessage("msgPickAColor",
                 "Pick a color|A message for a context menu to describe a hexadecimal color in the text file converted to a color");
+
+            TextInsertSpecialCharacter = DBLangEngine.GetStatMessage("msgInsertSpecialCharacter",
+                "Insert special character...|A message for a context menu to describe drop down menu items to insert a special character into the document");
         }
 
         /// <summary>
@@ -213,6 +232,36 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
 
             // ^[A-Fa-f0-9]*$ 
 
+            // create a tool strip separator..
+            contextMenu.Items.Add(new ToolStripSeparator());
+
+            // create a tool strip menu to add a special character from a list of drop down
+            // items..
+            ToolStripMenuItem item = new ToolStripMenuItem(TextInsertSpecialCharacter)
+                {Tag = new ToolStripTagItem {FunctionId = 1000, Scintilla = scintilla}};
+
+            contextMenu.Items.Add(item);
+
+
+            // add the copyright sign (©)..
+            item.DropDownItems.Add(new ToolStripMenuItem("©", null, OnSpecialCharacterClick)
+                {Tag = new ToolStripTagItem() {Scintilla = scintilla, Tag0 = "©"}});
+
+            // add the trademark sign (™)..
+            item.DropDownItems.Add(new ToolStripMenuItem("™", null, OnSpecialCharacterClick)
+                {Tag = new ToolStripTagItem() {Scintilla = scintilla, Tag0 = "™"}});
+
+            // add the registered sign (®)..
+            item.DropDownItems.Add(new ToolStripMenuItem("®", null, OnSpecialCharacterClick)
+                    {Tag = new ToolStripTagItem() {Scintilla = scintilla, Tag0 = "®"}});
+
+            // add the degree sign sign (°)..
+            item.DropDownItems.Add(new ToolStripMenuItem("°", null, OnSpecialCharacterClick)
+                    {Tag = new ToolStripTagItem() {Scintilla = scintilla, Tag0 = "°"}});
+
+            // add the bullet sign sign (•)..
+            item.DropDownItems.Add(new ToolStripMenuItem("•", null, OnSpecialCharacterClick)
+                    {Tag = new ToolStripTagItem() {Scintilla = scintilla, Tag0 = "•"}});                               
 
             // set the Scintilla's ContextMenuStrip property value to the just
             // created ContextMenuStrip instance..
@@ -227,6 +276,23 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
         }
 
         /// <summary>
+        /// Handles the <see cref="E:SpecialCharacterClick" /> event.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private static void OnSpecialCharacterClick(object sender, EventArgs e)
+        {
+            // get the ToolStripMenuItem..
+            var item = (ToolStripMenuItem) sender;
+
+            // get the ToolStripTagItem saved into the menu item's Tag property..
+            var tagItem = (ToolStripTagItem) item.Tag;
+
+            // "insert" the special character to the Scintilla document..
+            tagItem.Scintilla.ReplaceSelection((string)tagItem.Tag0);
+        }
+
+        /// <summary>
         /// Unsubscribes the events added to the created context menu item.
         /// </summary>
         /// <param name="scintilla">An instance to a <see cref="Scintilla"/> class of which <see cref="ContextMenuStrip"/> event subscriptions to unsubscribe.</param>
@@ -237,6 +303,25 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
             {
                 // ..unsubscribe the event(s)..
                 scintilla.ContextMenuStrip.Opening -= ContextMenuStrip_Opening;
+
+                for (int i = 0; i < scintilla.ContextMenuStrip.Items.Count; i++)
+                {
+                    // the must be an easier way (i.e. save the item to a property !)..
+                    if (scintilla.ContextMenuStrip.Items[i].GetType() == typeof(ToolStripMenuItem) &&
+                        scintilla.ContextMenuStrip.Items[i].Tag != null &&
+                        scintilla.ContextMenuStrip.Items[i].Tag.GetType() == typeof(ToolStripTagItem) &&
+                        ((ToolStripTagItem) scintilla.ContextMenuStrip.Items[i].Tag).FunctionId == 1000)
+                    {
+                        foreach (ToolStripMenuItem item in ((ToolStripMenuItem)scintilla.ContextMenuStrip.Items[i]).DropDownItems)
+                        {
+                            // ..unsubscribe the event(s)..
+                            item.Click -= OnSpecialCharacterClick;
+                        }
+
+                        // clear the sub-items..
+                        ((ToolStripMenuItem)scintilla.ContextMenuStrip.Items[i]).DropDownItems.Clear();
+                    }
+                }
             }
         }
 

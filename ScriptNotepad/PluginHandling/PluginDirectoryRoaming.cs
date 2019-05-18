@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using VPKSoft.ErrorLogger;
 
 namespace ScriptNotepad.PluginHandling
 {
@@ -54,6 +55,7 @@ namespace ScriptNotepad.PluginHandling
 
             try
             {
+                ExceptionLogger.LogMessage($"Plugin path, get: '{directory}'");
                 // recurse the plug-in path..
                 string[] assemblies = Directory.GetFiles(directory, "*.dll", SearchOption.AllDirectories);
 
@@ -61,7 +63,7 @@ namespace ScriptNotepad.PluginHandling
                 foreach (string assemblyFile in assemblies)
                 {
                     // some other files (.dll_blaa) might come with the *.dll mask..
-                    if (Path.GetExtension(assemblyFile).ToLowerInvariant() != ".dll".ToLowerInvariant())
+                    if (!String.Equals(Path.GetExtension(assemblyFile), ".dll", StringComparison.InvariantCultureIgnoreCase))
                     {
                         // ..in that case do continue..
                         continue;

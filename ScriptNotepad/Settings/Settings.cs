@@ -454,7 +454,7 @@ namespace ScriptNotepad.Settings
         /// Gets or sets the plug-in folder for the software.
         /// </summary>
         [Setting("misc/pluginFolder", typeof(string))]
-        public string PluginFolder { get; set; } = string.Empty;
+        public string PluginFolder { get; set; } = FormSettings.CreateDefaultPluginDirectory();
 
         /// <summary>
         /// Gets or sets a value indicating whether the search three form should be an independent form or a docked control to the main form.
