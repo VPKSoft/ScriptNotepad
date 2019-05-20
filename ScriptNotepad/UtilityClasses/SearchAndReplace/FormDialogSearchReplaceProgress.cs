@@ -159,7 +159,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             e.Cancel = true;
 
             // cancel the TextSearcherAndReplacer processing..
-            TextSearcher.Cancelled = true;
+            TextSearcher.Canceled = true;
 
             // indicate that the dialogs background processing has been cancelled..
             Cancelled = true;

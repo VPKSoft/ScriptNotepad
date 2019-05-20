@@ -31,6 +31,7 @@ using ScriptNotepad.Settings;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaSpellCheck;
 using VPKSoft.ScintillaTabbedTextControl;
+using VPKSoft.SearchText;
 
 namespace ScriptNotepad.UtilityClasses.SpellCheck
 {
@@ -53,7 +54,9 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
             {
                 SpellCheck = new ScintillaSpellCheck(document.Scintilla,
                     FormSettings.Settings.EditorHunspellDictionaryFile,
-                    FormSettings.Settings.EditorHunspellAffixFile)
+                    FormSettings.Settings.EditorHunspellAffixFile, 
+                    UserDictionaryFile, 
+                    UserIgnoreWordFile)
                 {
                     MenuIgnoreText = DBLangEngine.GetStatMessage("msgSpellCheckIgnoreWordMenuText",
                         "Ignore word \"{0}\".|A context menu item for spell checking to ignore a word"),
@@ -78,6 +81,12 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                 // subscribe to the Scintilla text changed event..
                 document.Scintilla.TextChanged += Scintilla_TextChanged;
 
+                // subscribe the event when a user is requesting a word to be added to the personal dictionary..
+                SpellCheck.WordAddDictionaryRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+                // subscribe to the event when a user is requesting to add a word to personal ignore list..
+                SpellCheck.WordIgnoreRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
                 // save the Scintilla instance to unsubscribe the events..
                 Scintilla = document.Scintilla;
                 
@@ -88,6 +97,36 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                 LastSpellCheck = DateTime.Now;
             }
         }
+
+        private void SpellCheck_WordAddDictionaryOrIgnoreRequested(object sender, WordHandleEventArgs e)
+        {
+            // check if the word was requested to be added to the dictionary..
+            if (e.AddToDictionary)
+            {                
+                e.ScintillaSpellCheck.AddToUserDictionary(e.Word);
+                SpellCheckEnabled = true; // indicate to force a spell check..
+                DoSpellCheck();
+            }
+            // check if the word was requested to be added to the ignore word list..
+            else if (e.AddToIgnore)
+            {
+                e.ScintillaSpellCheck.AddToUserIgnoreList(e.Word);
+                SpellCheckEnabled = true; // indicate to force a spell check..
+                DoSpellCheck();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the user dictionary file.
+        /// </summary>
+        public static string UserDictionaryFile { get; set; } =
+            Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "user_dictionary.dic");
+
+        /// <summary>
+        /// Gets or sets the user ignore word file.
+        /// </summary>
+        public static string UserIgnoreWordFile { get; set; } =
+            Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "user_dictionary.ignore");
 
         /// <summary>
         /// Gets or set the <see cref="Scintilla"/> instance this class has event subscription for.
@@ -159,6 +198,16 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
 
             // unsubscribe to the Scintilla text changed event..
             Scintilla.TextChanged -= Scintilla_TextChanged;
+
+            SpellCheck.WordAddDictionaryRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+            SpellCheck.WordIgnoreRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+            // save the user's dictionary to a file..
+            SpellCheck.SaveUserDictionaryToFile(UserDictionaryFile);
+
+            // save the user's ignore word list to a file..
+            SpellCheck.SaveUserWordIgnoreListToFile(UserIgnoreWordFile);
 
             // dispose of the ScintillaSpellCheck class..
             using (SpellCheck)

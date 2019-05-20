@@ -304,7 +304,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 // ..instead indicate classes working in the background worker to stop..
                 if (SearchAndReplacer != null)
                 {
-                    SearchAndReplacer.Cancelled = true;
+                    SearchAndReplacer.Canceled = true;
                 }
                 Crawler.Canceled = true;
 

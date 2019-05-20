@@ -111,7 +111,9 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                     // check or un-check the menu item..
                     if (subMenuItem.Tag != null && subMenuItem.Tag.GetType() == typeof(LexerType))
                     {
-                        subMenuItem.Checked = true;
+                        var menuLexerType = (LexerType) subMenuItem.Tag;
+
+                        subMenuItem.Checked = menuLexerType == lexerType;
                     }
                     else
                     {
@@ -122,7 +124,9 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                 // check or un-check the menu item..
                 if (menuItem.Tag != null && menuItem.Tag.GetType() == typeof(LexerType))
                 {
-                    menuItem.Checked = true;
+                    var menuLexerType = (LexerType) menuItem.Tag;
+
+                    menuItem.Checked = menuLexerType == lexerType;
                 }
                 else
                 {

@@ -369,6 +369,18 @@ namespace ScriptNotepad.Settings
         public string EditorFontName { get; set; } = "Consolas";
 
         /// <summary>
+        /// Gets or sets the tab width for the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/tabWidth", typeof(int))]
+        public int EditorTabWidth { get; set; } = 4;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use code indentation with the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/useCodeIndentation", typeof(bool))]
+        public bool UseCodeIndentation { get; set; }
+
+        /// <summary>
         /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.
         /// </summary>
         [Setting("editorSpell/dictionaryPath", typeof(string))]
@@ -491,6 +503,11 @@ namespace ScriptNotepad.Settings
         /// </summary>
         public static string DefaultDirectory(string defaultDirectory)
         {
+            if (defaultDirectory == string.Empty)
+            {
+                return VPKSoft.Utils.Paths.GetAppSettingsFolder();
+            }
+
             // create a folder for plug-ins if it doesn't exist already.. 
             if (!Directory.Exists(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory)))
             {

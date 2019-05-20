@@ -57,6 +57,8 @@
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
             this.tabEditorSettings = new System.Windows.Forms.TabPage();
+            this.cmbSimulateKeyboard = new System.Windows.Forms.ComboBox();
+            this.cbSimulateKeyboard = new System.Windows.Forms.CheckBox();
             this.cbIndentGuideOn = new System.Windows.Forms.CheckBox();
             this.nudWhiteSpaceSize = new System.Windows.Forms.NumericUpDown();
             this.lbWhiteSpaceSize = new System.Windows.Forms.Label();
@@ -118,8 +120,9 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
-            this.cbSimulateKeyboard = new System.Windows.Forms.CheckBox();
-            this.cmbSimulateKeyboard = new System.Windows.Forms.ComboBox();
+            this.cbUseCodeIndentation = new System.Windows.Forms.CheckBox();
+            this.nudTabWidth = new System.Windows.Forms.NumericUpDown();
+            this.lbTabWidth = new System.Windows.Forms.Label();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -140,6 +143,7 @@
             this.tpgColorSettings.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -500,6 +504,9 @@
             // 
             // tabEditorSettings
             // 
+            this.tabEditorSettings.Controls.Add(this.lbTabWidth);
+            this.tabEditorSettings.Controls.Add(this.nudTabWidth);
+            this.tabEditorSettings.Controls.Add(this.cbUseCodeIndentation);
             this.tabEditorSettings.Controls.Add(this.cmbSimulateKeyboard);
             this.tabEditorSettings.Controls.Add(this.cbSimulateKeyboard);
             this.tabEditorSettings.Controls.Add(this.cbIndentGuideOn);
@@ -514,6 +521,27 @@
             this.tabEditorSettings.TabIndex = 2;
             this.tabEditorSettings.Text = "Editor";
             this.tabEditorSettings.UseVisualStyleBackColor = true;
+            // 
+            // cmbSimulateKeyboard
+            // 
+            this.cmbSimulateKeyboard.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbSimulateKeyboard.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSimulateKeyboard.FormattingEnabled = true;
+            this.cmbSimulateKeyboard.Location = new System.Drawing.Point(6, 185);
+            this.cmbSimulateKeyboard.Name = "cmbSimulateKeyboard";
+            this.cmbSimulateKeyboard.Size = new System.Drawing.Size(545, 21);
+            this.cmbSimulateKeyboard.TabIndex = 8;
+            // 
+            // cbSimulateKeyboard
+            // 
+            this.cbSimulateKeyboard.AutoSize = true;
+            this.cbSimulateKeyboard.Location = new System.Drawing.Point(6, 160);
+            this.cbSimulateKeyboard.Name = "cbSimulateKeyboard";
+            this.cbSimulateKeyboard.Size = new System.Drawing.Size(201, 17);
+            this.cbSimulateKeyboard.TabIndex = 5;
+            this.cbSimulateKeyboard.Text = "AltGr (Alt Graph) keyboard simulation:";
+            this.cbSimulateKeyboard.UseVisualStyleBackColor = true;
             // 
             // cbIndentGuideOn
             // 
@@ -1165,26 +1193,47 @@
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
-            // cbSimulateKeyboard
+            // cbUseCodeIndentation
             // 
-            this.cbSimulateKeyboard.AutoSize = true;
-            this.cbSimulateKeyboard.Location = new System.Drawing.Point(6, 160);
-            this.cbSimulateKeyboard.Name = "cbSimulateKeyboard";
-            this.cbSimulateKeyboard.Size = new System.Drawing.Size(201, 17);
-            this.cbSimulateKeyboard.TabIndex = 5;
-            this.cbSimulateKeyboard.Text = "AltGr (Alt Graph) keyboard simulation:";
-            this.cbSimulateKeyboard.UseVisualStyleBackColor = true;
+            this.cbUseCodeIndentation.AutoSize = true;
+            this.cbUseCodeIndentation.Location = new System.Drawing.Point(6, 213);
+            this.cbUseCodeIndentation.Name = "cbUseCodeIndentation";
+            this.cbUseCodeIndentation.Size = new System.Drawing.Size(118, 17);
+            this.cbUseCodeIndentation.TabIndex = 9;
+            this.cbUseCodeIndentation.Text = "Use code intending";
+            this.cbUseCodeIndentation.UseVisualStyleBackColor = true;
             // 
-            // cmbSimulateKeyboard
+            // nudTabWidth
             // 
-            this.cmbSimulateKeyboard.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbSimulateKeyboard.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSimulateKeyboard.FormattingEnabled = true;
-            this.cmbSimulateKeyboard.Location = new System.Drawing.Point(6, 185);
-            this.cmbSimulateKeyboard.Name = "cmbSimulateKeyboard";
-            this.cmbSimulateKeyboard.Size = new System.Drawing.Size(545, 21);
-            this.cmbSimulateKeyboard.TabIndex = 8;
+            this.nudTabWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudTabWidth.Location = new System.Drawing.Point(461, 212);
+            this.nudTabWidth.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nudTabWidth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudTabWidth.Name = "nudTabWidth";
+            this.nudTabWidth.Size = new System.Drawing.Size(90, 20);
+            this.nudTabWidth.TabIndex = 10;
+            this.nudTabWidth.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            // 
+            // lbTabWidth
+            // 
+            this.lbTabWidth.AutoSize = true;
+            this.lbTabWidth.Location = new System.Drawing.Point(300, 214);
+            this.lbTabWidth.Name = "lbTabWidth";
+            this.lbTabWidth.Size = new System.Drawing.Size(57, 13);
+            this.lbTabWidth.TabIndex = 11;
+            this.lbTabWidth.Text = "Tab width:";
             // 
             // FormSettings
             // 
@@ -1232,6 +1281,7 @@
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1328,5 +1378,8 @@
         private System.Windows.Forms.ComboBox cmbNotepadPlusPlusTheme;
         private System.Windows.Forms.ComboBox cmbSimulateKeyboard;
         private System.Windows.Forms.CheckBox cbSimulateKeyboard;
+        private System.Windows.Forms.Label lbTabWidth;
+        private System.Windows.Forms.NumericUpDown nudTabWidth;
+        private System.Windows.Forms.CheckBox cbUseCodeIndentation;
     }
 }

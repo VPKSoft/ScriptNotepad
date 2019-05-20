@@ -257,7 +257,13 @@ namespace ScriptNotepad
             tmSpellCheck.Enabled = true;
 
             // enable the GUI timer..
-            tmGUI.Enabled = true;            
+            tmGUI.Enabled = true;
+
+            // set the code indentation value from the settings..
+            sttcMain.UseCodeIndenting = FormSettings.Settings.UseCodeIndentation;
+
+            // set the tab width value from the settings..
+            sttcMain.TabWidth = FormSettings.Settings.EditorTabWidth;
         }
         #endregion
 
@@ -1171,6 +1177,7 @@ namespace ScriptNotepad
                         sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
                     }
 
+                    sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
                     sttcMain.LastAddedDocument.Tag = file;
 
                     // append possible style and spell checking for the document..
@@ -1249,6 +1256,8 @@ namespace ScriptNotepad
                         sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
                     }
 
+                    sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
+
                     // update the history flag to the database..
                     DatabaseFileSave.UpdateFileHistoryFlag(file);
 
@@ -1321,6 +1330,8 @@ namespace ScriptNotepad
                             SESSIONID = CurrentSessionID,
                         };
 
+                    sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
+
                     // assign the context menu strip for the tabbed document..
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
 
@@ -1380,6 +1391,8 @@ namespace ScriptNotepad
                                 sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
                             }
                         }
+
+                        sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
 
                         // get a DBFILE_SAVE class instance from the document's tag..
                         fileSave = (DBFILE_SAVE)sttcMain.LastAddedDocument.Tag;

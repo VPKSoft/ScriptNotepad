@@ -251,6 +251,10 @@ namespace ScriptNotepad.Settings
                 cbSimulateKeyboard.Checked = true;
                 cmbSimulateKeyboard.SelectedIndex = Settings.SimulateAltGrKeyIndex;
             }
+
+            // get the code indentation and editor tab width values..
+            cbUseCodeIndentation.Checked = Settings.UseCodeIndentation;
+            nudTabWidth.Value = Settings.EditorTabWidth;
         }
 
         /// <summary>
@@ -364,6 +368,10 @@ namespace ScriptNotepad.Settings
                 Settings.SimulateAltGrKey = false;
                 Settings.SimulateAltGrKeyIndex = -1;
             }
+
+            // get the code indentation and editor tab width values..
+            Settings.UseCodeIndentation = cbUseCodeIndentation.Checked;
+            Settings.EditorTabWidth = (int)nudTabWidth.Value;
         }
         #endregion
 
