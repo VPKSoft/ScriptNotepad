@@ -127,6 +127,7 @@ namespace ScriptNotepad.Database.TableMethods
                     ENCODING = encoding,
                     ISHISTORY = databaseHistoryFlag == DatabaseHistoryFlag.IsHistory, // in a database sense only the value if IsHistory is true..
                     CURRENT_POSITION = document.Scintilla.CurrentPosition,
+                    USESPELL_CHECK = true,
                 };
 
                 return AddFile(fileSave);
@@ -248,7 +249,7 @@ namespace ScriptNotepad.Database.TableMethods
                 // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
                 // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
                 // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
-                // FILESYS_SAVED: 14, ENCODING: 15, CURRENT_POSITION = 16
+                // FILESYS_SAVED: 14, ENCODING: 15, CURRENT_POSITION = 16, USESPELL_CHECK = 17
 
                 Encoding fileSaveEncoding = Encoding.GetEncoding(reader.GetString(15));
 
@@ -272,6 +273,7 @@ namespace ScriptNotepad.Database.TableMethods
                         FILESYS_SAVED = DateFromDBString(reader.GetString(14)),
                         ENCODING = Encoding.GetEncoding(reader.GetString(15)),
                         CURRENT_POSITION = reader.GetInt32(16),
+                        USESPELL_CHECK = reader.GetInt32(17) == 1,
                     };
             }
             catch (Exception ex)

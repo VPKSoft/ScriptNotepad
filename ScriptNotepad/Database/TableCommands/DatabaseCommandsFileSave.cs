@@ -142,7 +142,8 @@ namespace ScriptNotepad.Database.TableCommands
                 $"FILESYS_MODIFIED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS,",
                 $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
                 $"{DatabaseCommandsGeneral.GenSessionNameNameCondition(sessionName)} AS SESSIONNAME,",
-                $"FILESYS_SAVED, ENCODING, CURRENT_POSITION",
+                $"FILESYS_SAVED, ENCODING, CURRENT_POSITION, ",
+                $"USESPELL_CHECK",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
                 $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}",
@@ -173,7 +174,8 @@ namespace ScriptNotepad.Database.TableCommands
             string sql =
                 string.Join(Environment.NewLine,
                 $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
-                $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID, ENCODING, CURRENT_POSITION) ",
+                $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID, ", 
+                $"ENCODING, CURRENT_POSITION, USESPELL_CHECK) ",
                 $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
                 $"{QS(fileSave.FILENAME_FULL)},",
                 $"{QS(fileSave.FILENAME)},",
@@ -187,7 +189,8 @@ namespace ScriptNotepad.Database.TableCommands
                 $"{BS(fileSave.ISHISTORY)},",
                 $"{DatabaseCommandsGeneral.GenSessionNameIDCondition(fileSave.SESSIONNAME)},",
                 $"{QS(fileSave.ENCODING.WebName)},",
-                $"{fileSave.CURRENT_POSITION}",
+                $"{fileSave.CURRENT_POSITION},",
+                $"{BS(fileSave.USESPELL_CHECK)}",
                 existsCondition,
                 $";");
 
@@ -204,6 +207,25 @@ namespace ScriptNotepad.Database.TableCommands
             string sql =
                 string.Join(Environment.NewLine,
                 $"UPDATE DBFILE_SAVE SET ISHISTORY = {fileSave.ISHISTORY} WHERE ID = {fileSave.ID};");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to update the miscellaneous data of the file save into the database.
+        /// </summary>
+        /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenUpdateFileMiscFlags(DBFILE_SAVE fileSave)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+         $"UPDATE DBFILE_SAVE SET",
+                    $"USESPELL_CHECK = {BS(fileSave.ISHISTORY)},",
+                    $"LEXER_CODE = {(int)fileSave.LEXER_CODE},",
+                    $"VISIBILITY_ORDER = {fileSave.VISIBILITY_ORDER},",
+                    $"ISACTIVE = {BS(fileSave.ISACTIVE)}",
+                    $"WHERE ID = {fileSave.ID};");
 
             return sql;
         }
@@ -236,7 +258,8 @@ namespace ScriptNotepad.Database.TableCommands
                 $"ISHISTORY = {BS(fileSave.ISHISTORY)},",
                 $"SESSIONID = {fileSave.SESSIONID},",
                 $"CURRENT_POSITION = {fileSave.CURRENT_POSITION},",
-                $"ENCODING = {QS(fileSave.ENCODING.WebName)}",
+                $"ENCODING = {QS(fileSave.ENCODING.WebName)},",
+                $"USESPELL_CHECK = {BS(fileSave.USESPELL_CHECK)}",
                 $"WHERE ID = {fileSave.ID};");
 
             return sql;

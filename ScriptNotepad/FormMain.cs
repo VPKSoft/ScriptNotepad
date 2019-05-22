@@ -57,6 +57,7 @@ using ScriptNotepad.PluginHandling;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Database.TableMethods;
 using System.Linq;
+using ScriptNotepad.Database.TableCommands;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
 using ScriptNotepad.Settings;
@@ -267,7 +268,39 @@ namespace ScriptNotepad
         }
         #endregion
 
-        #region HelperMethods
+        #region HelperMethods        
+        /// <summary>
+        /// Sets the state of the spell checker.
+        /// </summary>
+        /// <param name="enabled">if set to <c>true</c> the spell checking is enabled.</param>
+        /// <param name="noDatabaseUpdate">A flag indicating whether to save the spell checking state to the database.</param>
+        private void SetSpellCheckerState(bool enabled, bool noDatabaseUpdate)
+        {
+            CurrentDocumentAction(document =>
+            {
+                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
+                if (document.Tag0 != null &&
+                    document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
+                {
+                    // get the TabbedDocumentSpellCheck class instance..
+                    var spellCheck = (TabbedDocumentSpellCheck) document.Tag0;
+
+                    // set the document's spell check to either enabled or disabled..
+                    spellCheck.Enabled = enabled;
+
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE) document.Tag;
+                    fileSave.USESPELL_CHECK = spellCheck.Enabled;
+                    if (!noDatabaseUpdate)
+                    {
+                        Database.Database.ExecuteArbitrarySQL(
+                            DatabaseCommandsFileSave.GenUpdateFileMiscFlags(fileSave));
+                    }
+
+                    document.Tag = fileSave;
+                }
+            });
+        }
+
         /// <summary>
         /// Undo the document changes if possible.
         /// </summary>
@@ -1183,6 +1216,8 @@ namespace ScriptNotepad
                     // append possible style and spell checking for the document..
                     AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);
 
+                    SetSpellCheckerState(file.USESPELL_CHECK, true);
+
                     // enabled the caret line background color..
                     SetCaretLineColor();
 
@@ -1622,19 +1657,8 @@ namespace ScriptNotepad
         // a user wishes to temporarily disable or enable the spell checking of the current document..
         private void TsbSpellCheck_Click(object sender, EventArgs e)
         {
-            CurrentDocumentAction(document =>
-            {
-                // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
-                if (document.Tag0 != null &&
-                    document.Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
-                {
-                    // get the TabbedDocumentSpellCheck class instance..
-                    var spellCheck = (TabbedDocumentSpellCheck) document.Tag0;
-
-                    // set the document's spell check to either enabled or disabled..
-                    spellCheck.Enabled = ((ToolStripButton) sender).Checked;
-                }
-            });
+            // set the state of the spell checking functionality..
+            SetSpellCheckerState(((ToolStripButton) sender).Checked, false);
         }
 
         // a user wishes to wrap the text to a specific line length..

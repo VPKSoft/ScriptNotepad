@@ -30,6 +30,7 @@ using System.Text;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
+using System.Windows.Media.Effects;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 using VPKSoft.LangLib;
@@ -185,6 +186,11 @@ namespace ScriptNotepad.Database.Tables
         /// Gets or sets the current position (cursor / caret) of the file.
         /// </summary>
         public int CURRENT_POSITION { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use spell check with this document.
+        /// </summary>
+        public bool USESPELL_CHECK { get; set; }
 
         /// <summary>
         /// Gets or sets the previous encodings of the file save for undo possibility.

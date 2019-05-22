@@ -31,7 +31,6 @@ using ScriptNotepad.Settings;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaSpellCheck;
 using VPKSoft.ScintillaTabbedTextControl;
-using VPKSoft.SearchText;
 
 namespace ScriptNotepad.UtilityClasses.SpellCheck
 {
