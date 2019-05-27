@@ -134,6 +134,7 @@
             this.mnuShowIndentGuide = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowWrapSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWordWrap = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDiffFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuProgrammingLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,6 +147,9 @@
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuDiffRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDiffLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -445,6 +449,8 @@
             this.sttcMain.Size = new System.Drawing.Size(819, 489);
             this.sttcMain.SuspendTextChangedEvents = false;
             this.sttcMain.TabIndex = 4;
+            this.sttcMain.TabWidth = 4;
+            this.sttcMain.UseCodeIndenting = false;
             this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);
             this.sttcMain.TabClosing += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosing(this.sttcMain_TabClosing);
             this.sttcMain.CaretPositionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnCaretPositionChanged(this.sttcMain_SelectionCaretChanged);
@@ -491,9 +497,12 @@
             this.mnuCloseTab,
             this.mnuCloseAllButThis,
             this.mnuCloseAllToTheLeft,
-            this.mnuCloseAllToTheRight});
+            this.mnuCloseAllToTheRight,
+            this.toolStripMenuItem10,
+            this.mnuDiffRight,
+            this.mnuDiffLeft});
             this.cmsFileTab.Name = "contextMenuStrip1";
-            this.cmsFileTab.Size = new System.Drawing.Size(324, 258);
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 330);
             this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
             // 
             // mnuFullFilePathToClipboard
@@ -964,7 +973,8 @@
             // 
             this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuShowSymbol,
-            this.mnuWordWrap});
+            this.mnuWordWrap,
+            this.mnuDiffFiles});
             this.mnuView.Name = "mnuView";
             this.mnuView.Size = new System.Drawing.Size(44, 20);
             this.mnuView.Text = "View";
@@ -978,7 +988,7 @@
             this.mnuShowWrapSymbol});
             this.mnuShowSymbol.Image = global::ScriptNotepad.Properties.Resources.paragraph;
             this.mnuShowSymbol.Name = "mnuShowSymbol";
-            this.mnuShowSymbol.Size = new System.Drawing.Size(145, 22);
+            this.mnuShowSymbol.Size = new System.Drawing.Size(180, 22);
             this.mnuShowSymbol.Text = "Show symbol";
             this.mnuShowSymbol.DropDownOpening += new System.EventHandler(this.MnuShowSymbol_DropDownOpening);
             // 
@@ -1019,9 +1029,16 @@
             this.mnuWordWrap.CheckOnClick = true;
             this.mnuWordWrap.Image = global::ScriptNotepad.Properties.Resources.word_wrap2;
             this.mnuWordWrap.Name = "mnuWordWrap";
-            this.mnuWordWrap.Size = new System.Drawing.Size(145, 22);
+            this.mnuWordWrap.Size = new System.Drawing.Size(180, 22);
             this.mnuWordWrap.Text = "Word wrap";
             this.mnuWordWrap.Click += new System.EventHandler(this.MnuWordWrap_Click);
+            // 
+            // mnuDiffFiles
+            // 
+            this.mnuDiffFiles.Image = global::ScriptNotepad.Properties.Resources.diff_icon;
+            this.mnuDiffFiles.Name = "mnuDiffFiles";
+            this.mnuDiffFiles.Size = new System.Drawing.Size(180, 22);
+            this.mnuDiffFiles.Text = "Diff files...";
             // 
             // mnuProgrammingLanguage
             // 
@@ -1129,6 +1146,25 @@
             this.menuMain.Size = new System.Drawing.Size(849, 24);
             this.menuMain.TabIndex = 4;
             this.menuMain.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(320, 6);
+            // 
+            // mnuDiffRight
+            // 
+            this.mnuDiffRight.Name = "mnuDiffRight";
+            this.mnuDiffRight.Size = new System.Drawing.Size(323, 22);
+            this.mnuDiffRight.Text = "Diff to the right";
+            this.mnuDiffRight.Click += new System.EventHandler(this.MnuDiffRight_Click);
+            // 
+            // mnuDiffLeft
+            // 
+            this.mnuDiffLeft.Name = "mnuDiffLeft";
+            this.mnuDiffLeft.Size = new System.Drawing.Size(323, 22);
+            this.mnuDiffLeft.Text = "Diff to the left";
+            this.mnuDiffLeft.Click += new System.EventHandler(this.MnuDiffLeft_Click);
             // 
             // FormMain
             // 
@@ -1279,6 +1315,10 @@
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         private System.Windows.Forms.ToolStripMenuItem mnuAbout;
         private System.Windows.Forms.MenuStrip menuMain;
+        private System.Windows.Forms.ToolStripMenuItem mnuDiffFiles;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem10;
+        private System.Windows.Forms.ToolStripMenuItem mnuDiffRight;
+        private System.Windows.Forms.ToolStripMenuItem mnuDiffLeft;
     }
 }
 

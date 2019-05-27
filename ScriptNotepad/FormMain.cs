@@ -64,6 +64,7 @@ using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Keyboard;
 using ScriptNotepad.UtilityClasses.MenuHelpers;
+using ScriptNotepad.UtilityClasses.MiscForms;
 using ScriptNotepad.UtilityClasses.ProgrammingLanguages;
 using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
@@ -72,6 +73,7 @@ using ScriptNotepad.UtilityClasses.SpellCheck;
 using ScriptNotepad.UtilityClasses.TextManipulationUtils;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
+using WeCantSpell.Hunspell;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 #endregion
 
@@ -666,6 +668,9 @@ namespace ScriptNotepad
 
             // set the search and replace dialog to be allowed to be disposed of..
             FormSearchAndReplace.AllowInstanceDispose = true;
+
+            // set the flag for the diff viewer to allow the form to close..
+            FormFileDiffView.ApplicationClosing = true;
 
             // dispose of the loaded plug-in..
             DisposePlugins();
@@ -2876,6 +2881,49 @@ namespace ScriptNotepad
             }
         }
 
+        /// <summary>
+        /// A method for getting the right-most or the left-most document compared to the active document.
+        /// </summary>
+        /// <param name="right">A flag indicating whether to get the right-most or the left-most document compared to active document.</param>
+        /// <returns>The right-most or the left-most document compared to active document; if no document exists the method returns null.</returns>
+        private ScintillaTabbedDocument GetRightOrLeftFromCurrent(bool right)
+        {
+            // get the document in question..
+            var document = sttcMain.CurrentDocument;
+
+            // get the index for the active document..
+            int idx = document != null ? sttcMain.Documents.FindIndex(f => f.Equals(document)) : -1;
+
+            // validate the index..
+            if (idx != -1)
+            {
+                // do a backward loop and try to find the right-most or the left-most document
+                // compared to the current one..
+                for (int i = sttcMain.DocumentsCount - 1; i >= 0; i--)
+                {
+                    // validate the right flag..
+                    if ((!right && i > idx) || (right && i < idx))
+                    {
+                        // ..if this isn't a match then do continue..
+                        continue;
+                    }
+
+                    // the index is the active document..
+                    if (idx == i)
+                    {
+                        // ..so skip the document..
+                        continue;
+                    }
+
+                    // a value was found, so do return it..
+                    return sttcMain.Documents[i];
+                }
+            }
+
+            // no document was found, so do return null..
+            return null;
+        }
+
         // a user wishes to close all expect the active document or many documents 
         // to the right or to the left from the active document..
         private void CommonCloseManyDocuments(object sender, EventArgs e)
@@ -2946,5 +2994,29 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
+
+        private void MnuDiffRight_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                var documentTwo = GetRightOrLeftFromCurrent(true);
+                if (documentTwo != null)
+                {
+                    FormFileDiffView.Execute(document.Scintilla.Text, documentTwo.Scintilla.Text);
+                }
+            });
+        }
+
+        private void MnuDiffLeft_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                var documentTwo = GetRightOrLeftFromCurrent(false);
+                if (documentTwo != null)
+                {
+                    FormFileDiffView.Execute(document.Scintilla.Text, documentTwo.Scintilla.Text);
+                }
+            });
+        }
     }
 }

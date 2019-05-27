@@ -38,6 +38,7 @@ using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.PluginHandling;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.ColorHelpers;
+using ScriptNotepad.UtilityClasses.MiscForms;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 
@@ -98,6 +99,9 @@ namespace ScriptNotepad
                 new FormDialogQueryNumber();
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormPickAColor();
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormFileDiffView();
+
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;

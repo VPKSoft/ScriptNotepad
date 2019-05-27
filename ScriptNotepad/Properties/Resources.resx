@@ -172,8 +172,17 @@
   <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="plugin_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plugin-delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="book_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\book_previous.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Script" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Script.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="diff_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\diff_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="discard_changes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\discard_changes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -190,8 +199,8 @@
   <data name="About" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\About.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="reload_disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\reload_disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="sort_alphabet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sort_alphabet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Down_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Down_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -199,8 +208,8 @@
   <data name="paragraph" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\paragraph.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="default_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="reload_disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\reload_disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="folder_page" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\folder-page.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -214,11 +223,14 @@
   <data name="style" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\style.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="book_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\book_next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="tab_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tab_arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="plugin_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plugin-delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="split_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\split_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tab_strikethrough" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tab_strikethrough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -240,6 +252,9 @@
   </data>
   <data name="SaveWithDialog" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SaveWithDialog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="default_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="open_unknown_encoding" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\open_unknown_encoding.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -274,7 +289,7 @@
   <data name="save_all" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\save_all.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="sort_alphabet" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sort_alphabet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="swap_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\swap_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

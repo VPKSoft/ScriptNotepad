@@ -19,3 +19,4 @@
 * Done? [YES ] [2019/05/18] Make the Notepad++ style definition files into a setting.
 * Done? [YES ] [2019/05/20] Make the ignore word and add word to dictionary functions to work.
 * Done? [YES ] [2019/05/22] Save document's spell checking enabled state to the database.
+* Done? [N/A ] [2019/05/27] Add lexer(s) to the diff view.
