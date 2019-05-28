@@ -750,4 +750,10 @@
   <data name="msgInsertSpecialCharacter" xml:space="preserve">
     <value>Insert special character...|A message for a context menu to describe drop down menu items to insert a special character into the document</value>
   </data>
+  <data name="msgSelectFileDiff1" xml:space="preserve">
+    <value>Select the first file to diff|A title for an open file dialog to indicate user selecting the first file to find differences with a second file</value>
+  </data>
+  <data name="msgSelectFileDiff2" xml:space="preserve">
+    <value>Select the second file to diff|A title for an open file dialog to indicate user selecting the second file to find differences with a first file</value>
+  </data>
 </root>

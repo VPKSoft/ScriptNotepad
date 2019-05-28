@@ -84,6 +84,9 @@
             this.mnuCloseAllButThis = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCloseAllToTheRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuDiffRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDiffLeft = new System.Windows.Forms.ToolStripMenuItem();
             this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -134,7 +137,6 @@
             this.mnuShowIndentGuide = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowWrapSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWordWrap = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuDiffFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuProgrammingLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,13 +145,14 @@
             this.mnuManageSessions = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuLocalization = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDumpLanguage = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuDiffFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPlugins = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuDiffRight = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuDiffLeft = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
+            this.sscZoom = new ScriptNotepad.UtilityClasses.Common.StatusStripComboItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -343,7 +346,8 @@
             this.ssLbSpace5,
             this.ssLbInsertOverride,
             this.ssLbSpace6,
-            this.ssLbSessionName});
+            this.ssLbSessionName,
+            this.sscZoom});
             this.ssMain.Location = new System.Drawing.Point(0, 520);
             this.ssMain.Name = "ssMain";
             this.ssMain.Size = new System.Drawing.Size(825, 20);
@@ -502,7 +506,7 @@
             this.mnuDiffRight,
             this.mnuDiffLeft});
             this.cmsFileTab.Name = "contextMenuStrip1";
-            this.cmsFileTab.Size = new System.Drawing.Size(324, 330);
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 308);
             this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
             // 
             // mnuFullFilePathToClipboard
@@ -591,6 +595,25 @@
             this.mnuCloseAllToTheRight.Size = new System.Drawing.Size(323, 22);
             this.mnuCloseAllToTheRight.Text = "Close all to the right";
             this.mnuCloseAllToTheRight.Click += new System.EventHandler(this.CommonCloseManyDocuments);
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(320, 6);
+            // 
+            // mnuDiffRight
+            // 
+            this.mnuDiffRight.Name = "mnuDiffRight";
+            this.mnuDiffRight.Size = new System.Drawing.Size(323, 22);
+            this.mnuDiffRight.Text = "Diff to the right";
+            this.mnuDiffRight.Click += new System.EventHandler(this.MnuDiffRight_Click);
+            // 
+            // mnuDiffLeft
+            // 
+            this.mnuDiffLeft.Name = "mnuDiffLeft";
+            this.mnuDiffLeft.Size = new System.Drawing.Size(323, 22);
+            this.mnuDiffLeft.Text = "Diff to the left";
+            this.mnuDiffLeft.Click += new System.EventHandler(this.MnuDiffLeft_Click);
             // 
             // tmSpellCheck
             // 
@@ -973,8 +996,7 @@
             // 
             this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuShowSymbol,
-            this.mnuWordWrap,
-            this.mnuDiffFiles});
+            this.mnuWordWrap});
             this.mnuView.Name = "mnuView";
             this.mnuView.Size = new System.Drawing.Size(44, 20);
             this.mnuView.Text = "View";
@@ -988,7 +1010,7 @@
             this.mnuShowWrapSymbol});
             this.mnuShowSymbol.Image = global::ScriptNotepad.Properties.Resources.paragraph;
             this.mnuShowSymbol.Name = "mnuShowSymbol";
-            this.mnuShowSymbol.Size = new System.Drawing.Size(180, 22);
+            this.mnuShowSymbol.Size = new System.Drawing.Size(145, 22);
             this.mnuShowSymbol.Text = "Show symbol";
             this.mnuShowSymbol.DropDownOpening += new System.EventHandler(this.MnuShowSymbol_DropDownOpening);
             // 
@@ -1029,16 +1051,9 @@
             this.mnuWordWrap.CheckOnClick = true;
             this.mnuWordWrap.Image = global::ScriptNotepad.Properties.Resources.word_wrap2;
             this.mnuWordWrap.Name = "mnuWordWrap";
-            this.mnuWordWrap.Size = new System.Drawing.Size(180, 22);
+            this.mnuWordWrap.Size = new System.Drawing.Size(145, 22);
             this.mnuWordWrap.Text = "Word wrap";
             this.mnuWordWrap.Click += new System.EventHandler(this.MnuWordWrap_Click);
-            // 
-            // mnuDiffFiles
-            // 
-            this.mnuDiffFiles.Image = global::ScriptNotepad.Properties.Resources.diff_icon;
-            this.mnuDiffFiles.Name = "mnuDiffFiles";
-            this.mnuDiffFiles.Size = new System.Drawing.Size(180, 22);
-            this.mnuDiffFiles.Text = "Diff files...";
             // 
             // mnuProgrammingLanguage
             // 
@@ -1053,7 +1068,9 @@
             this.mnuSettings,
             this.mnuManagePlugins,
             this.mnuManageSessions,
-            this.mnuLocalization});
+            this.mnuLocalization,
+            this.toolStripMenuItem11,
+            this.mnuDiffFiles});
             this.mnuTools.Name = "mnuTools";
             this.mnuTools.Size = new System.Drawing.Size(47, 20);
             this.mnuTools.Text = "Tools";
@@ -1108,6 +1125,19 @@
             this.mnuDumpLanguage.Text = "Dump language";
             this.mnuDumpLanguage.Click += new System.EventHandler(this.MnuDumpLanguage_Click);
             // 
+            // toolStripMenuItem11
+            // 
+            this.toolStripMenuItem11.Name = "toolStripMenuItem11";
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(193, 6);
+            // 
+            // mnuDiffFiles
+            // 
+            this.mnuDiffFiles.Image = global::ScriptNotepad.Properties.Resources.diff_icon;
+            this.mnuDiffFiles.Name = "mnuDiffFiles";
+            this.mnuDiffFiles.Size = new System.Drawing.Size(196, 22);
+            this.mnuDiffFiles.Text = "Diff files...";
+            this.mnuDiffFiles.Click += new System.EventHandler(this.MnuDiffFiles_Click);
+            // 
             // mnuPlugins
             // 
             this.mnuPlugins.Name = "mnuPlugins";
@@ -1140,6 +1170,7 @@
             this.mnuProgrammingLanguage,
             this.mnuTools,
             this.mnuPlugins,
+            this.mnuWindow,
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -1147,24 +1178,21 @@
             this.menuMain.TabIndex = 4;
             this.menuMain.Text = "menuStrip1";
             // 
-            // toolStripMenuItem10
+            // mnuWindow
             // 
-            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(320, 6);
+            this.mnuWindow.Name = "mnuWindow";
+            this.mnuWindow.Size = new System.Drawing.Size(63, 20);
+            this.mnuWindow.Text = "Window";
             // 
-            // mnuDiffRight
+            // sscZoom
             // 
-            this.mnuDiffRight.Name = "mnuDiffRight";
-            this.mnuDiffRight.Size = new System.Drawing.Size(323, 22);
-            this.mnuDiffRight.Text = "Diff to the right";
-            this.mnuDiffRight.Click += new System.EventHandler(this.MnuDiffRight_Click);
-            // 
-            // mnuDiffLeft
-            // 
-            this.mnuDiffLeft.Name = "mnuDiffLeft";
-            this.mnuDiffLeft.Size = new System.Drawing.Size(323, 22);
-            this.mnuDiffLeft.Text = "Diff to the left";
-            this.mnuDiffLeft.Click += new System.EventHandler(this.MnuDiffLeft_Click);
+            this.sscZoom.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.sscZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+            this.sscZoom.Name = "sscZoom";
+            this.sscZoom.SelectedIndex = -1;
+            this.sscZoom.SelectedItem = null;
+            this.sscZoom.Size = new System.Drawing.Size(70, 18);
+            this.sscZoom.Text = "100%";
             // 
             // FormMain
             // 
@@ -1315,10 +1343,13 @@
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         private System.Windows.Forms.ToolStripMenuItem mnuAbout;
         private System.Windows.Forms.MenuStrip menuMain;
-        private System.Windows.Forms.ToolStripMenuItem mnuDiffFiles;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem10;
         private System.Windows.Forms.ToolStripMenuItem mnuDiffRight;
         private System.Windows.Forms.ToolStripMenuItem mnuDiffLeft;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem11;
+        private System.Windows.Forms.ToolStripMenuItem mnuDiffFiles;
+        private System.Windows.Forms.ToolStripMenuItem mnuWindow;
+        private UtilityClasses.Common.StatusStripComboItem sscZoom;
     }
 }
 

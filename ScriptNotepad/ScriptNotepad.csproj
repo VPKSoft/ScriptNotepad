@@ -194,12 +194,16 @@
     <Compile Include="UtilityClasses\ColorHelpers\FormPickAColor.Designer.cs">
       <DependentUpon>FormPickAColor.cs</DependentUpon>
     </Compile>
+    <Compile Include="UtilityClasses\Common\StatusStripComboItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UtilityClasses\GraphicUtils\FontFamilyHelpers.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
     <Compile Include="UtilityClasses\Keyboard\KeyboardHelpers.cs" />
     <Compile Include="UtilityClasses\MathUtils\MathUtils.cs" />
     <Compile Include="UtilityClasses\MenuHelpers\ContextMenuStyles.cs" />
+    <Compile Include="UtilityClasses\MenuHelpers\WinFormsFormMenuBuilder.cs" />
     <Compile Include="UtilityClasses\MiscForms\FormFileDiffView.cs">
       <SubType>Form</SubType>
     </Compile>

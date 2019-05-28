@@ -73,12 +73,16 @@ using ScriptNotepad.UtilityClasses.SpellCheck;
 using ScriptNotepad.UtilityClasses.TextManipulationUtils;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
-using WeCantSpell.Hunspell;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 #endregion
 
 namespace ScriptNotepad
 {
+    /// <summary>
+    /// The main form of this software.
+    /// Implements the <see cref="VPKSoft.LangLib.DBLangEngineWinforms" />
+    /// </summary>
+    /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
     public partial class FormMain : DBLangEngineWinforms
     {
         #region MassiveConstructor
@@ -267,6 +271,9 @@ namespace ScriptNotepad
 
             // set the tab width value from the settings..
             sttcMain.TabWidth = FormSettings.Settings.EditorTabWidth;
+
+            // create a menu for open forms within the application..
+            WinFormsFormMenuBuilder = new WinFormsFormMenuBuilder(mnuWindow);
         }
         #endregion
 
@@ -573,14 +580,10 @@ namespace ScriptNotepad
                         mnuPlugins, 
                         CurrentSession, this))
                     {
-                        if (pluginEntry == null)
-                        {
-                            pluginEntry = PluginDatabaseEntry.FromPlugin(plugin.Assembly, pluginAssembly.Plugin, plugin.Path);
-                        }
-                        else
-                        {
-                            pluginEntry = PluginDatabaseEntry.UpdateFromPlugin(pluginEntry, plugin.Assembly, pluginAssembly.Plugin, plugin.Path);
-                        }
+                        pluginEntry = pluginEntry == null
+                            ? PluginDatabaseEntry.FromPlugin(plugin.Assembly, pluginAssembly.Plugin, plugin.Path)
+                            : PluginDatabaseEntry.UpdateFromPlugin(pluginEntry, plugin.Assembly, pluginAssembly.Plugin,
+                                plugin.Path);
 
                         // on success, add the plug-in assembly and its instance to the internal list..
                         Plugins.Add((plugin.Assembly, pluginAssembly.Plugin, pluginEntry));
@@ -671,6 +674,12 @@ namespace ScriptNotepad
 
             // set the flag for the diff viewer to allow the form to close..
             FormFileDiffView.ApplicationClosing = true;
+
+            // dispose of the WinFormsFormMenuBuilder instance..
+            using (WinFormsFormMenuBuilder)
+            {
+                WinFormsFormMenuBuilder = null;
+            }
 
             // dispose of the loaded plug-in..
             DisposePlugins();
@@ -845,7 +854,7 @@ namespace ScriptNotepad
                     if (fileSave.ShouldQueryDiskReload)
                     {
                         if (MessageBox.Show(
-                            DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happed", fileSave.FILENAME_FULL),
+                            DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happen", fileSave.FILENAME_FULL),
                             DBLangEngine.GetMessage("msgFileArbitraryFileChange", "A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded"),
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question,
@@ -1022,15 +1031,7 @@ namespace ScriptNotepad
             {
                 // get the file DBFILE_SAVE instance from the tag..
                 DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
-                if (!fileSave.EXISTS_INFILESYS) // non-existing file is always changed by the software..
-                {
-                    document.FileTabButton.IsSaved = false; // ..so set the indicator accordingly..
-                }
-                // if the document exists in the file system, use different methods of detection..
-                else
-                {
-                    document.FileTabButton.IsSaved = IsFileChanged(fileSave);
-                }
+                document.FileTabButton.IsSaved = fileSave.EXISTS_INFILESYS && IsFileChanged(fileSave);
             }
             UpdateUndoRedoIndicators();
         }
@@ -1246,7 +1247,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Sets the additional data for a <see cref="ScintillaTabbedDocument"/> upon opening or creating one.
         /// </summary>
-        /// <param name="document">The document to intialize the additional data for.</param>
+        /// <param name="document">The document to initialize the additional data for.</param>
         private void AdditionalInitializeDocument(ScintillaTabbedDocument document)
         {
             // create a localizable context menu strip for the Scintilla..
@@ -1331,7 +1332,7 @@ namespace ScriptNotepad
         {
             string[] args = Environment.GetCommandLineArgs();
 
-            // only send the existing files to the running instance, don't send the executable's
+            // only send the existing files to the running instance, don't send the executable
             // file name thus the start from 1..
             for (int i = 1; i < args.Length; i++)
             {
@@ -1479,7 +1480,7 @@ namespace ScriptNotepad
             try
             {
                 // check that the given parameter is valid..
-                if (document != null && document.Tag != null)
+                if (document?.Tag != null)
                 {
                     // get the DBFILE_SAVE class instance from the document's tag..
                     DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
@@ -2521,16 +2522,16 @@ namespace ScriptNotepad
             {
                 // if the user selected OK, accepted the dialog,
                 // loop through the plug-ins..
-                for (int i = 0; i < plugins.Count; i++)
+                foreach (var plugin in plugins)
                 {
                     // find an index to the plug-in possibly modified by the dialog..
-                    int idx = Plugins.FindIndex(f => f.Plugin.ID == plugins[i].ID);
+                    int idx = Plugins.FindIndex(f => f.Plugin.ID == plugin.ID);
 
                     // if a valid index was found..
                     if (idx != -1)
                     {
                         // set the new value for the PLUGINS class instance..
-                        Plugins[idx] = (Plugins[idx].Assembly, Plugins[idx].PluginInstance, plugins[i]);
+                        Plugins[idx] = (Plugins[idx].Assembly, Plugins[idx].PluginInstance, plugin);
                     }
                 }
             }
@@ -2657,6 +2658,40 @@ namespace ScriptNotepad
                 }
             }
         }
+
+        // user wants to see the difference between two open files (tabs)
+        // comparing the current document to the right side document..
+        private void MnuDiffRight_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                // get the right side document..
+                var documentTwo = GetRightOrLeftFromCurrent(true);
+
+                // ..and if not null, do continue..
+                if (documentTwo != null)
+                {
+                    FormFileDiffView.Execute(document.Scintilla.Text, documentTwo.Scintilla.Text);
+                }
+            });
+        }
+
+        // user wants to see the difference between two open files (tabs)
+        // comparing the current document to the left side document..
+        private void MnuDiffLeft_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                // get the left side document..
+                var documentTwo = GetRightOrLeftFromCurrent(false);
+
+                // ..and if not null, do continue..
+                if (documentTwo != null)
+                {
+                    FormFileDiffView.Execute(document.Scintilla.Text, documentTwo.Scintilla.Text);
+                }
+            });
+        }
         #endregion
 
         #region PrivateFields        
@@ -2683,11 +2718,16 @@ namespace ScriptNotepad
         private bool suspendSelectionUpdate;
         #endregion
 
-        #region PrivateProperties        
+        #region PrivateProperties       
+        /// <summary>
+        /// Gets or sets menu builder used to build the menu of the <see cref="Application"/>'s open forms.
+        /// </summary>
+        private WinFormsFormMenuBuilder WinFormsFormMenuBuilder { get; set; }
+
         /// <summary>
         /// Gets or sets the programming language helper class <see cref="ProgrammingLanguageHelper"/>.
         /// </summary>
-        private ProgrammingLanguageHelper ProgrammingLanguageHelper { get; set; }
+        private ProgrammingLanguageHelper ProgrammingLanguageHelper { get; }
 
         /// <summary>
         /// Gets or sets the current session for the documents.
@@ -2719,7 +2759,8 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets the loaded active plug-ins.
         /// </summary>
-        List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)> Plugins { get; set; } = new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)>();
+        private List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)> Plugins { get; } =
+            new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the default session name has been localized.
@@ -2733,29 +2774,21 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets the default encoding to be used with the files within this software.
         /// </summary>
-        private Encoding DefaultEncoding
-        {
-            get => FormSettings.Settings.DefaultEncoding;
-        }
+        private Encoding DefaultEncoding => FormSettings.Settings.DefaultEncoding;
 
         /// <summary>
         /// The amount of files to be saved to a document history.
         /// </summary>
-        private int HistoryListAmount
-        {
-            get => FormSettings.Settings.HistoryListAmount;
-        }
+        private int HistoryListAmount => FormSettings.Settings.HistoryListAmount;
 
         /// <summary>
         /// Gets the save file history contents count.
         /// </summary>
-        private int SaveFileHistoryContentsCount
-        {
-            get => FormSettings.Settings.SaveFileHistoryContents ?
+        private int SaveFileHistoryContentsCount =>
+            FormSettings.Settings.SaveFileHistoryContents ?
                 // the setting value if the setting is enabled..
                 FormSettings.Settings.SaveFileHistoryContentsCount : 
-                int.MinValue; // the minimum value if the setting is disabled..
-        }
+                int.MinValue;
 
         /// <summary>
         /// Gets or sets the ID number for the current session for the documents.
@@ -2824,20 +2857,17 @@ namespace ScriptNotepad
         // the context menu is opening for user to "do something" with the file..
         private void cmsFileTab_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (sttcMain.CurrentDocument != null) // the first null check..
-            {
-                // get the DBFILE_SAVE from the active document..
-                var fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+            // get the DBFILE_SAVE from the active document..
+            var fileSave = (DBFILE_SAVE) sttcMain.CurrentDocument?.Tag;
 
-                if (fileSave != null) // the second null check..
-                {
-                    // enable / disable items which requires the file to exist in the file system..
-                    mnuOpenContainingFolderInExplorer.Enabled = File.Exists(fileSave.FILENAME_FULL);
-                    mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
-                    mnuOpenContainingFolderInCmd.Enabled = File.Exists(fileSave.FILENAME_FULL);
-                    mnuOpenContainingFolderInWindowsPowerShell.Enabled = File.Exists(fileSave.FILENAME_FULL);
-                    mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
-                }
+            if (fileSave != null) // the second null check..
+            {
+                // enable / disable items which requires the file to exist in the file system..
+                mnuOpenContainingFolderInExplorer.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                mnuOpenContainingFolderInCmd.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                mnuOpenContainingFolderInWindowsPowerShell.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
             }
         }
 
@@ -2931,6 +2961,46 @@ namespace ScriptNotepad
             // call the CloseAllFunction method with this "wondrous" logic..
             CloseAllFunction(sender.Equals(mnuCloseAllToTheRight), sender.Equals(mnuCloseAllToTheLeft));
         }
+
+        // a user wants to compare two unopened files..
+        private void MnuDiffFiles_Click(object sender, EventArgs e)
+        {
+            odAnyFile.Title = DBLangEngine.GetMessage("msgSelectFileDiff1",
+                "Select the first file to diff|A title for an open file dialog to indicate user selecting the first file to find differences with a second file");
+
+            try
+            {
+                string contentsOne;
+                string contentsTwo;
+
+                if (odAnyFile.ShowDialog() == DialogResult.OK)
+                {
+                    contentsOne = File.ReadAllText(odAnyFile.FileName);
+                }
+                else
+                {
+                    return;
+                }
+
+                odAnyFile.Title = DBLangEngine.GetMessage("msgSelectFileDiff2",
+                    "Select the second file to diff|A title for an open file dialog to indicate user selecting the second file to find differences with a first file");
+
+                if (odAnyFile.ShowDialog() == DialogResult.OK)
+                {
+                    contentsTwo = File.ReadAllText(odAnyFile.FileName);
+                }
+                else
+                {
+                    return;
+                }
+
+                FormFileDiffView.Execute(contentsOne, contentsTwo);
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogError(ex);
+            }
+        }
         #endregion
 
         #region EditorSymbols
@@ -2994,29 +3064,5 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
-
-        private void MnuDiffRight_Click(object sender, EventArgs e)
-        {
-            CurrentDocumentAction(document =>
-            {
-                var documentTwo = GetRightOrLeftFromCurrent(true);
-                if (documentTwo != null)
-                {
-                    FormFileDiffView.Execute(document.Scintilla.Text, documentTwo.Scintilla.Text);
-                }
-            });
-        }
-
-        private void MnuDiffLeft_Click(object sender, EventArgs e)
-        {
-            CurrentDocumentAction(document =>
-            {
-                var documentTwo = GetRightOrLeftFromCurrent(false);
-                if (documentTwo != null)
-                {
-                    FormFileDiffView.Execute(document.Scintilla.Text, documentTwo.Scintilla.Text);
-                }
-            });
-        }
     }
 }

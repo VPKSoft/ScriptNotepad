@@ -1591,6 +1591,24 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the first file to diff|A title for an open file dialog to indicate user selecting the first file to find differences with a second file.
+        /// </summary>
+        internal static string msgSelectFileDiff1 {
+            get {
+                return ResourceManager.GetString("msgSelectFileDiff1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the second file to diff|A title for an open file dialog to indicate user selecting the second file to find differences with a first file.
+        /// </summary>
+        internal static string msgSelectFileDiff2 {
+            get {
+                return ResourceManager.GetString("msgSelectFileDiff2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The session was successfully created.|A message indicating a successful session creation..
         /// </summary>
         internal static string msgSessionCreateSuccess {
