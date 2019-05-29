@@ -63,13 +63,14 @@ namespace ScriptNotepad.Database.TableMethods
                     DateTime.MinValue;
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
                     // add parameters to the command..
 
                     // add the contents of the Scintilla.NET document as a parameter..
-                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = StreamStringHelpers.TextToMemoryStream(fileSave.FILE_CONTENTS, fileSave.ENCODING).ToArray();
+                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = 
+                        StreamStringHelpers.TextToMemoryStream(fileSave.FILE_CONTENTS, fileSave.ENCODING).ToArray();
 
                     // do the insert..
                     recordsAffected = command.ExecuteNonQuery();
@@ -128,6 +129,7 @@ namespace ScriptNotepad.Database.TableMethods
                     ISHISTORY = databaseHistoryFlag == DatabaseHistoryFlag.IsHistory, // in a database sense only the value if IsHistory is true..
                     CURRENT_POSITION = document.Scintilla.CurrentPosition,
                     USESPELL_CHECK = true,
+                    EDITOR_ZOOM = document.ZoomPercentage,
                 };
 
                 return AddFile(fileSave);
@@ -195,7 +197,7 @@ namespace ScriptNotepad.Database.TableMethods
                 fileSave.CURRENT_POSITION = currentPosition;
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
                     // add parameters to the command..
@@ -224,7 +226,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
         public static DBFILE_SAVE GetFileFromDatabase(string sessionName, string fileNameFull)
         {
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, DatabaseHistoryFlag.DontCare, fileNameFull), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, DatabaseHistoryFlag.DontCare, fileNameFull), Connection))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
                 {
@@ -238,6 +240,16 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
+        /// Updates the miscellaneous flags of a given <see cref="DBFILE_SAVE"/> class instance.
+        /// </summary>
+        /// <param name="fileSave">An instance to a <see cref="DBFILE_SAVE"/> class.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        public static bool UpdateMiscFlags(DBFILE_SAVE fileSave)
+        {
+            return ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenUpdateFileMiscFlags(fileSave));
+        }
+
+        /// <summary>
         /// Gets a <see cref="DBFILE_SAVE"/> class instance from a <see cref="SQLiteDataReader"/> class instance.
         /// </summary>
         /// <param name="reader">The <see cref="SQLiteDataReader"/> class instance to read the data from.</param>
@@ -248,8 +260,9 @@ namespace ScriptNotepad.Database.TableMethods
             {
                 // ID: 0, EXISTS_INFILESYS: 1, FILENAME_FULL: 2, FILENAME: 3, FILEPATH: 4,
                 // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
-                // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13
-                // FILESYS_SAVED: 14, ENCODING: 15, CURRENT_POSITION = 16, USESPELL_CHECK = 17
+                // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13,
+                // FILESYS_SAVED: 14, ENCODING: 15, CURRENT_POSITION = 16, USESPELL_CHECK = 17,
+                // EDITOR_ZOOM = 18
 
                 Encoding fileSaveEncoding = Encoding.GetEncoding(reader.GetString(15));
 
@@ -274,6 +287,7 @@ namespace ScriptNotepad.Database.TableMethods
                         ENCODING = Encoding.GetEncoding(reader.GetString(15)),
                         CURRENT_POSITION = reader.GetInt32(16),
                         USESPELL_CHECK = reader.GetInt32(17) == 1,
+                        EDITOR_ZOOM = reader.GetInt32(18),
                     };
             }
             catch (Exception ex)
@@ -294,7 +308,7 @@ namespace ScriptNotepad.Database.TableMethods
         {
             List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, databaseHistoryFlag), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, databaseHistoryFlag), Connection))
             {
                 // can't get the BLOB without this (?!)..
                 using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))

@@ -65,6 +65,9 @@
             this.ssLbInsertOverride = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbSpace6 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssLbSessionName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ssLbSpace7 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sslbZoom = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sslbZoomPercentage = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.pnDock = new System.Windows.Forms.Panel();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
@@ -152,7 +155,6 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
-            this.sscZoom = new ScriptNotepad.UtilityClasses.Common.StatusStripComboItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -182,7 +184,7 @@
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpMain.Size = new System.Drawing.Size(825, 540);
+            this.tlpMain.Size = new System.Drawing.Size(945, 551);
             this.tlpMain.TabIndex = 3;
             // 
             // tsMain
@@ -205,7 +207,7 @@
             this.tsbSpellCheck});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(825, 25);
+            this.tsMain.Size = new System.Drawing.Size(945, 25);
             this.tsMain.TabIndex = 0;
             this.tsMain.Text = "toolStrip1";
             // 
@@ -347,10 +349,12 @@
             this.ssLbInsertOverride,
             this.ssLbSpace6,
             this.ssLbSessionName,
-            this.sscZoom});
-            this.ssMain.Location = new System.Drawing.Point(0, 520);
+            this.ssLbSpace7,
+            this.sslbZoom,
+            this.sslbZoomPercentage});
+            this.ssMain.Location = new System.Drawing.Point(0, 531);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(825, 20);
+            this.ssMain.Size = new System.Drawing.Size(945, 20);
             this.ssMain.TabIndex = 3;
             this.ssMain.Text = "statusStrip1";
             // 
@@ -437,11 +441,32 @@
             this.ssLbSessionName.Size = new System.Drawing.Size(90, 15);
             this.ssLbSessionName.Text = "Session: Default";
             // 
+            // ssLbSpace7
+            // 
+            this.ssLbSpace7.AutoSize = false;
+            this.ssLbSpace7.Name = "ssLbSpace7";
+            this.ssLbSpace7.Size = new System.Drawing.Size(30, 15);
+            // 
+            // sslbZoom
+            // 
+            this.sslbZoom.Name = "sslbZoom";
+            this.sslbZoom.Size = new System.Drawing.Size(42, 15);
+            this.sslbZoom.Text = "Zoom:";
+            this.sslbZoom.Click += new System.EventHandler(this.ResetZoom_Click);
+            // 
+            // sslbZoomPercentage
+            // 
+            this.sslbZoomPercentage.Name = "sslbZoomPercentage";
+            this.sslbZoomPercentage.Size = new System.Drawing.Size(35, 15);
+            this.sslbZoomPercentage.Text = "100%";
+            this.sslbZoomPercentage.Click += new System.EventHandler(this.ResetZoom_Click);
+            // 
             // sttcMain
             // 
             this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
             this.sttcMain.CloseButtonImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.CloseButtonImage")));
             this.tlpMain.SetColumnSpan(this.sttcMain, 5);
+            this.sttcMain.CurrentZoomPercentage = 100;
             this.sttcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sttcMain.LeftFileIndex = 0;
             this.sttcMain.Location = new System.Drawing.Point(3, 28);
@@ -450,12 +475,15 @@
             this.sttcMain.RightButtonTabActivation = true;
             this.sttcMain.RightButtonTabDragging = false;
             this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
-            this.sttcMain.Size = new System.Drawing.Size(819, 489);
+            this.sttcMain.Size = new System.Drawing.Size(939, 500);
             this.sttcMain.SuspendTextChangedEvents = false;
             this.sttcMain.TabIndex = 4;
             this.sttcMain.TabWidth = 4;
             this.sttcMain.UseCodeIndenting = false;
+            this.sttcMain.ZoomPercentageAll = 100;
+            this.sttcMain.ZoomSynchronization = false;
             this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);
+            this.sttcMain.DocumentZoomChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnDocumentZoomChanged(this.SttcMain_DocumentZoomChanged);
             this.sttcMain.TabClosing += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosing(this.sttcMain_TabClosing);
             this.sttcMain.CaretPositionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnCaretPositionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.DocumentMouseDown += new System.Windows.Forms.MouseEventHandler(this.sttcMain_DocumentMouseDown);
@@ -471,10 +499,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnDock.AutoSize = true;
             this.tlpMain.SetColumnSpan(this.pnDock, 5);
-            this.pnDock.Location = new System.Drawing.Point(0, 540);
+            this.pnDock.Location = new System.Drawing.Point(0, 551);
             this.pnDock.Margin = new System.Windows.Forms.Padding(0);
             this.pnDock.Name = "pnDock";
-            this.pnDock.Size = new System.Drawing.Size(825, 1);
+            this.pnDock.Size = new System.Drawing.Size(945, 1);
             this.pnDock.TabIndex = 5;
             // 
             // odAnyFile
@@ -1174,7 +1202,7 @@
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(849, 24);
+            this.menuMain.Size = new System.Drawing.Size(969, 24);
             this.menuMain.TabIndex = 4;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -1184,21 +1212,11 @@
             this.mnuWindow.Size = new System.Drawing.Size(63, 20);
             this.mnuWindow.Text = "Window";
             // 
-            // sscZoom
-            // 
-            this.sscZoom.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.sscZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-            this.sscZoom.Name = "sscZoom";
-            this.sscZoom.SelectedIndex = -1;
-            this.sscZoom.SelectedItem = null;
-            this.sscZoom.Size = new System.Drawing.Size(70, 18);
-            this.sscZoom.Text = "100%";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(849, 579);
+            this.ClientSize = new System.Drawing.Size(969, 590);
             this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.menuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1349,7 +1367,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem11;
         private System.Windows.Forms.ToolStripMenuItem mnuDiffFiles;
         private System.Windows.Forms.ToolStripMenuItem mnuWindow;
-        private UtilityClasses.Common.StatusStripComboItem sscZoom;
+        private System.Windows.Forms.ToolStripStatusLabel ssLbSpace7;
+        private System.Windows.Forms.ToolStripStatusLabel sslbZoom;
+        private System.Windows.Forms.ToolStripStatusLabel sslbZoomPercentage;
     }
 }
 

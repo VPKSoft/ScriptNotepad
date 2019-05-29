@@ -63,6 +63,7 @@ using ScriptNotepad.Localization;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Keyboard;
+using ScriptNotepad.UtilityClasses.MathUtils;
 using ScriptNotepad.UtilityClasses.MenuHelpers;
 using ScriptNotepad.UtilityClasses.MiscForms;
 using ScriptNotepad.UtilityClasses.ProgrammingLanguages;
@@ -156,7 +157,7 @@ namespace ScriptNotepad
 
             // initialize the helper class for the status strip's labels..
             StatusStripTexts.InitLabels(ssLbLineColumn, ssLbLinesColumnSelection, ssLbLDocLinesSize, 
-                ssLbLineEnding, ssLbEncoding, ssLbSessionName, ssLbInsertOverride);
+                ssLbLineEnding, ssLbEncoding, ssLbSessionName, ssLbInsertOverride, sslbZoom);
 
             // set the status strip label's to indicate that there is no active document..
             StatusStripTexts.SetEmptyTexts(CurrentSession);
@@ -267,13 +268,16 @@ namespace ScriptNotepad
             tmGUI.Enabled = true;
 
             // set the code indentation value from the settings..
-            sttcMain.UseCodeIndenting = FormSettings.Settings.UseCodeIndentation;
+            sttcMain.UseCodeIndenting = FormSettings.Settings.EditorUseCodeIndentation;
 
             // set the tab width value from the settings..
             sttcMain.TabWidth = FormSettings.Settings.EditorTabWidth;
 
             // create a menu for open forms within the application..
             WinFormsFormMenuBuilder = new WinFormsFormMenuBuilder(mnuWindow);
+
+            // set the value whether to use individual zoom for the open document(s)..
+            sttcMain.ZoomSynchronization = !FormSettings.Settings.EditorIndividualZoom;
         }
         #endregion
 
@@ -301,8 +305,7 @@ namespace ScriptNotepad
                     fileSave.USESPELL_CHECK = spellCheck.Enabled;
                     if (!noDatabaseUpdate)
                     {
-                        Database.Database.ExecuteArbitrarySQL(
-                            DatabaseCommandsFileSave.GenUpdateFileMiscFlags(fileSave));
+                        DatabaseFileSave.UpdateMiscFlags(fileSave);
                     }
 
                     document.Tag = fileSave;
@@ -1574,6 +1577,28 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // the user clicked the zoom percentage label or the zoom percentage value
+        // label on the tool strip --> reset the zoom..
+        private void ResetZoom_Click(object sender, EventArgs e)
+        {
+            sttcMain.CurrentDocument.ZoomPercentage = 100;
+        }
+
+        // the document's zoom has changed, so do display the value..
+        // NOTE: Ctrl+NP+, Ctrl+NP- and Control+NP/ and Control+mouse wheel control the zoom of the Scintilla..
+        private void SttcMain_DocumentZoomChanged(object sender, ScintillaZoomChangedEventArgs e)
+        {
+            // the percentage mark is also localizable (!)..
+            sslbZoomPercentage.Text = (e.ZoomPercentage / 100.0) .ToString("P0", DBLangEngine.UseCulture);
+
+            CurrentDocumentAction(document =>
+            {
+                var fileSave = (DBFILE_SAVE) document.Tag;
+                fileSave.EDITOR_ZOOM = e.ZoomPercentage;
+                DatabaseFileSave.UpdateMiscFlags(fileSave);
+            });
+        }
+
         // a user wishes to change the lexer of the current document..
         private void ProgrammingLanguageHelper_LanguageMenuClick(object sender, ProgrammingLanguageMenuClickEventArgs e)
         {

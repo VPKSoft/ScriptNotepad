@@ -26,16 +26,8 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using System.Text;
-using VPKSoft.ScintillaLexers;
-using VPKSoft.ScintillaTabbedTextControl;
-using ScriptNotepad.UtilityClasses.StreamHelpers;
-using static ScriptNotepad.Database.DatabaseEnumerations;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.TableCommands;
 using ScriptNotepad.Database.UtilityClasses;
 using ScriptNotepad.Database.TableCommands;
 
@@ -47,7 +39,7 @@ namespace ScriptNotepad.Database
     public class Database: DataFormulationHelpers
     {
         // the database connection to use..
-        internal static SQLiteConnection conn = null;
+        internal static SQLiteConnection Connection { get; set; }
 
         /// <summary>
         /// Creates a new SQLiteConnection class for the Database class with the given connection string.
@@ -55,18 +47,8 @@ namespace ScriptNotepad.Database
         /// <param name="connectionString">A connection string to create a SQLite database connection.</param>
         public static void InitConnection(string connectionString)
         {
-            conn = new SQLiteConnection(connectionString); // create a new SQLiteConnection class instance..
-            conn.Open();
-        }
-
-        /// <summary>
-        /// Gets the next ID number for an auto-increment table.
-        /// </summary>
-        /// <param name="tableName">Name of the table of which next ID number to get.</param>
-        /// <returns>The next ID number in the sequence.</returns>
-        public static long GetNextIDForTable(string tableName)
-        {
-            return GetScalar<long>(DatabaseCommandsMisc.GenGetNextIDForTable(tableName));
+            Connection = new SQLiteConnection(connectionString); // create a new SQLiteConnection class instance..
+            Connection.Open();
         }
 
         /// <summary>
@@ -86,7 +68,7 @@ namespace ScriptNotepad.Database
                 string sql = DatabaseCommandsRecentFiles.GenHistoryListSelect(sessionName);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
                 {
                     // loop through the result set..
                     using (SQLiteDataReader reader = command.ExecuteReader())
@@ -154,7 +136,7 @@ namespace ScriptNotepad.Database
                 string sql = DatabaseCommandsFileSave.GenHistoryCleanupListSelect(sessionName);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
                 {
                     // loop through the result set..
                     using (SQLiteDataReader reader = command.ExecuteReader())
@@ -221,7 +203,7 @@ namespace ScriptNotepad.Database
             try
             {
                 // execute a scalar SQL sentence against the database..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
 
@@ -246,10 +228,11 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="sql">A string containing SQL sentences to be executed to the database.</param>
         /// <returns>True if the given SQL sentences were executed successfully; otherwise false;</returns>
+        // ReSharper disable once InconsistentNaming
         public static bool ExecuteArbitrarySQL(string sql)
         {
             // as the SQLiteCommand is disposable a using clause is required..
-            using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+            using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
             {
                 try
                 {
@@ -294,6 +277,7 @@ namespace ScriptNotepad.Database
         /// </summary>
         /// <param name="sessionName">The name of the session which ID to get.</param>
         /// <returns>An ID number for the given session name.</returns>
+        // ReSharper disable once InconsistentNaming
         public static long GetSessionID(string sessionName)
         {
             return GetScalar<long>(DatabaseCommandsMisc.GenGetCurrentSessionID(sessionName));

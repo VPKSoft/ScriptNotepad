@@ -58,7 +58,7 @@ namespace ScriptNotepad.Database.TableMethods
                 string sql = DatabaseCommandsPlugins.GenPluginInsert(plugin);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
 
@@ -104,7 +104,7 @@ namespace ScriptNotepad.Database.TableMethods
             try
             {
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
 
@@ -148,7 +148,7 @@ namespace ScriptNotepad.Database.TableMethods
         {
             List<PLUGINS> result = new List<PLUGINS>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsPlugins.GenPluginSelect(), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsPlugins.GenPluginSelect(), Connection))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())

@@ -80,7 +80,7 @@ namespace ScriptNotepad.Database.TableMethods
 
                 // as the SQLiteCommand is disposable a using clause is required..
                 int recordsAffected;
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
 
@@ -151,7 +151,7 @@ namespace ScriptNotepad.Database.TableMethods
 
             string sql = DatabaseCommandsSearchAndReplace.GenSearchAndReplaceSelect(tableName, sessionName, maxCount);
 
-            using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+            using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())

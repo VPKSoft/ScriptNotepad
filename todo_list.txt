@@ -20,4 +20,6 @@
 * Done? [YES ] [2019/05/20] Make the ignore word and add word to dictionary functions to work.
 * Done? [YES ] [2019/05/22] Save document's spell checking enabled state to the database.
 * Done? [N/A ] [2019/05/27] Add lexer(s) to the diff view.
-* Done? [N/A ] [2019/05/28] Make the zoom value of the Scintilla a visible and adjustable element to the main form GUI.
+* Done? [SOME] [2019/05/29] Make the zoom value of the Scintilla a visible and adjustable element to the main form GUI.
+* Done? [YES ] [2019/05/29] Notify the ScintillaTabbedTextControl of the zoom change.
+* Done? [N/A ] [2019/05/28] Fix the 'Index was out of range.' error on the 'VPKSoft.SearchText.TextSearcherAndReplacer.Forward()' method.

@@ -193,6 +193,14 @@ namespace ScriptNotepad.Settings
             // get the value whether to use tabs in the editor (tabulator characters)..
             cbUseTabs.Checked = Settings.EditorUseTabs;
 
+            // get the value whether to use individual zoom value for all
+            // the open documents..
+            cbIndividualZoom.Checked = Settings.EditorIndividualZoom;
+
+            // get the value whether the zoom value of the document(s)
+            // should be saved into the database..
+            cbSaveDocumentZoom.Checked = Settings.EditorSaveZoom;
+
             // gets the type of the tab character symbol..
             rbTabSymbolStrikeout.Checked = Settings.EditorTabSymbol != 0;
             rbTabSymbolArrow.Checked = Settings.EditorTabSymbol == 0;
@@ -253,7 +261,7 @@ namespace ScriptNotepad.Settings
             }
 
             // get the code indentation and editor tab width values..
-            cbUseCodeIndentation.Checked = Settings.UseCodeIndentation;
+            cbUseCodeIndentation.Checked = Settings.EditorUseCodeIndentation;
             nudTabWidth.Value = Settings.EditorTabWidth;
         }
 
@@ -307,6 +315,14 @@ namespace ScriptNotepad.Settings
 
             // set the value whether to use tabs in the editor (tabulator characters)..
             Settings.EditorUseTabs = cbUseTabs.Checked;
+
+            // set the value whether to use individual zoom value for all
+            // the open documents..
+            Settings.EditorIndividualZoom = cbIndividualZoom.Checked;
+
+            // set the value whether the zoom value of the document(s)
+            // should be saved into the database..
+            Settings.EditorSaveZoom = cbSaveDocumentZoom.Checked;
 
             // set the type of the tab character symbol..
             if (rbTabSymbolArrow.Checked)
@@ -370,7 +386,7 @@ namespace ScriptNotepad.Settings
             }
 
             // get the code indentation and editor tab width values..
-            Settings.UseCodeIndentation = cbUseCodeIndentation.Checked;
+            Settings.EditorUseCodeIndentation = cbUseCodeIndentation.Checked;
             Settings.EditorTabWidth = (int)nudTabWidth.Value;
         }
         #endregion

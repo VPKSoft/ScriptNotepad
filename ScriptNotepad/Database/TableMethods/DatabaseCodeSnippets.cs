@@ -51,7 +51,7 @@ namespace ScriptNotepad.Database.TableMethods
                 string sql = DatabaseCommandsCodeSnippets.GenScriptInsertSentence(ref codeSnippet);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
                 {
                     // do the insert..
                     command.ExecuteNonQuery();
@@ -80,7 +80,7 @@ namespace ScriptNotepad.Database.TableMethods
                 string sql = DatabaseCommandsCodeSnippets.GenScriptUpdateSentence(ref codeSnippet);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
                 {
                     // do the insert..
                     command.ExecuteNonQuery();
@@ -119,7 +119,7 @@ namespace ScriptNotepad.Database.TableMethods
                 string sql = DatabaseCommandsCodeSnippets.GenScriptDelete(codeSnippet);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(sql, conn))
+                using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
                 {
                     // do the deletion..
                     command.ExecuteNonQuery();
@@ -155,7 +155,7 @@ namespace ScriptNotepad.Database.TableMethods
         {
             List<CODE_SNIPPETS> result = new List<CODE_SNIPPETS>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsCodeSnippets.GenScriptSelect(), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsCodeSnippets.GenScriptSelect(), Connection))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())

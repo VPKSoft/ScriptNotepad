@@ -26,6 +26,7 @@ SOFTWARE.
 
 using System;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
@@ -58,6 +59,16 @@ namespace ScriptNotepad.UtilityClasses.Common
                 ComboBox.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
                 ComboBox.SelectedValueChanged += ComboBox_SelectedValueChanged;
             }
+
+            Disposed += StatusStripComboItem_Disposed;
+        }
+
+        // release the event subscription..
+        private void StatusStripComboItem_Disposed(object sender, EventArgs e)
+        {
+            ComboBox.SelectedIndexChanged -= ComboBox_SelectedIndexChanged;
+            ComboBox.SelectedValueChanged -= ComboBox_SelectedValueChanged;
+            Disposed -= StatusStripComboItem_Disposed;
         }
 
         // event re-delegation..
@@ -79,6 +90,7 @@ namespace ScriptNotepad.UtilityClasses.Common
         [Browsable(true)]
         [Category("Data")]
         [Description("Gets an object representing the collection of the items contained in this ComboBox.")]
+        [Editor("System.Windows.Forms.Design.ListControlStringCollectionEditor", typeof (UITypeEditor))]
         public ComboBox.ObjectCollection Items => ComboBox.Items;
 
         /// <summary>
@@ -113,15 +125,25 @@ namespace ScriptNotepad.UtilityClasses.Common
             set => ComboBox.SelectedIndex = value;
         }
 
+
+
         /// <summary>
         /// Gets or sets the text associated with this control.
         /// </summary>
         [Browsable(true)]
         [Category("Appearance")]
         [Description("Gets or sets the text associated with this control.")]
-        public new string Text
+        public override string Text
         {
-            get => base.Text;
+            get
+            {
+                // some "weird" handling with the text..
+                if (!base.Text.Equals(ComboBox.Text))
+                {
+                    ComboBox.Text = base.Text;
+                }
+                return base.Text;
+            } 
 
             set
             {
@@ -133,11 +155,17 @@ namespace ScriptNotepad.UtilityClasses.Common
         /// <summary>
         /// Occurs when the <see cref="P:System.Windows.Forms.ComboBox.SelectedIndex" /> property has changed.
         /// </summary>
+        [Browsable(true)]
+        [Category("Behavior")]
+        [Description("Occurs when the ComboBox.SelectedIndex property has changed.")]
         public EventHandler SelectedIndexChanged;
 
         /// <summary>
         /// Occurs when the <see cref="P:System.Windows.Forms.ListControl.SelectedValue" /> property changes.
         /// </summary>
+        [Browsable(true)]
+        [Category("Behavior")]
+        [Description("Occurs when the ComboBox.SelectedValue property has changes.")]
         public EventHandler SelectedValueChanged;
         #endregion
     }

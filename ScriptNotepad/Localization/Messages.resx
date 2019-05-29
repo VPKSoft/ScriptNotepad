@@ -756,4 +756,7 @@
   <data name="msgSelectFileDiff2" xml:space="preserve">
     <value>Select the second file to diff|A title for an open file dialog to indicate user selecting the second file to find differences with a first file</value>
   </data>
+  <data name="msgZoomLabel" xml:space="preserve">
+    <value>Zoom:|A message indicating a text on a label of a following value of zoom percentage</value>
+  </data>
 </root>

@@ -143,7 +143,7 @@ namespace ScriptNotepad.Database.TableCommands
                 $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
                 $"{DatabaseCommandsGeneral.GenSessionNameNameCondition(sessionName)} AS SESSIONNAME,",
                 $"FILESYS_SAVED, ENCODING, CURRENT_POSITION, ",
-                $"USESPELL_CHECK",
+                $"USESPELL_CHECK, EDITOR_ZOOM",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
                 $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}",
@@ -175,7 +175,7 @@ namespace ScriptNotepad.Database.TableCommands
                 string.Join(Environment.NewLine,
                 $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
                 $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID, ", 
-                $"ENCODING, CURRENT_POSITION, USESPELL_CHECK) ",
+                $"ENCODING, CURRENT_POSITION, USESPELL_CHECK, EDITOR_ZOOM) ",
                 $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
                 $"{QS(fileSave.FILENAME_FULL)},",
                 $"{QS(fileSave.FILENAME)},",
@@ -190,7 +190,8 @@ namespace ScriptNotepad.Database.TableCommands
                 $"{DatabaseCommandsGeneral.GenSessionNameIDCondition(fileSave.SESSIONNAME)},",
                 $"{QS(fileSave.ENCODING.WebName)},",
                 $"{fileSave.CURRENT_POSITION},",
-                $"{BS(fileSave.USESPELL_CHECK)}",
+                $"{BS(fileSave.USESPELL_CHECK)},",
+                $"{fileSave.EDITOR_ZOOM}",
                 existsCondition,
                 $";");
 
@@ -224,7 +225,8 @@ namespace ScriptNotepad.Database.TableCommands
                     $"USESPELL_CHECK = {BS(fileSave.ISHISTORY)},",
                     $"LEXER_CODE = {(int)fileSave.LEXER_CODE},",
                     $"VISIBILITY_ORDER = {fileSave.VISIBILITY_ORDER},",
-                    $"ISACTIVE = {BS(fileSave.ISACTIVE)}",
+                    $"ISACTIVE = {BS(fileSave.ISACTIVE)},",
+                    $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM}",
                     $"WHERE ID = {fileSave.ID};");
 
             return sql;
@@ -259,7 +261,8 @@ namespace ScriptNotepad.Database.TableCommands
                 $"SESSIONID = {fileSave.SESSIONID},",
                 $"CURRENT_POSITION = {fileSave.CURRENT_POSITION},",
                 $"ENCODING = {QS(fileSave.ENCODING.WebName)},",
-                $"USESPELL_CHECK = {BS(fileSave.USESPELL_CHECK)}",
+                $"USESPELL_CHECK = {BS(fileSave.USESPELL_CHECK)},",
+                $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM}",
                 $"WHERE ID = {fileSave.ID};");
 
             return sql;

@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using ScriptNotepad.Database.Tables;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
@@ -73,6 +72,11 @@ namespace ScriptNotepad.Localization
         public static ToolStripStatusLabel LabelModeInsertOverride { get; set; }
 
         /// <summary>
+        /// Gets or sets a status label text translated from 'Zoom:'.
+        /// </summary>
+        public static ToolStripStatusLabel LabelZoom { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the status strip labels have been assigned.
         /// </summary>
         public static bool Initialized
@@ -83,7 +87,8 @@ namespace ScriptNotepad.Localization
                     LabelLineEnding != null &&
                     LabelEncoding != null &&
                     LabelSessionName != null &&
-                    LabelModeInsertOverride != null;
+                    LabelModeInsertOverride != null &&
+                    LabelZoom != null;
 
             set
             {
@@ -104,6 +109,7 @@ namespace ScriptNotepad.Localization
         /// <param name="labelEncoding">The status label for a file encoding name text.</param>
         /// <param name="labelSessionName">The status label for a session name text.</param>
         /// <param name="labelModeInsertOverride">The status label indicating whether a document editor is in insert or in override mode text.</param>
+        /// <param name="labelZoom">A status label indicating the zoom value.</param>
         public static void InitLabels(
             ToolStripStatusLabel labelLineColumn,
             ToolStripStatusLabel labelLineColumnSelection,
@@ -111,7 +117,8 @@ namespace ScriptNotepad.Localization
             ToolStripStatusLabel labelLineEnding,
             ToolStripStatusLabel labelEncoding,
             ToolStripStatusLabel labelSessionName,
-            ToolStripStatusLabel labelModeInsertOverride)
+            ToolStripStatusLabel labelModeInsertOverride,
+            ToolStripStatusLabel labelZoom)
         {
             LabelLineColumn = labelLineColumn;
             LabelLineColumnSelection = labelLineColumnSelection;
@@ -120,6 +127,7 @@ namespace ScriptNotepad.Localization
             LabelEncoding = labelEncoding;
             LabelSessionName = labelSessionName;
             LabelModeInsertOverride = labelModeInsertOverride;
+            LabelZoom = labelZoom;
         }
 
         /// <summary>
@@ -134,6 +142,7 @@ namespace ScriptNotepad.Localization
             LabelEncoding = null;
             LabelSessionName = null;
             LabelModeInsertOverride = null;
+            LabelZoom = null;
         }
 
         /// <summary>
@@ -279,6 +288,7 @@ namespace ScriptNotepad.Localization
 
             LabelLineEnding.Text =
                 DBLangEngine.GetStatMessage("msgLineEndingShort", "LE: |A short message indicating a file line ending type value(s) as a concatenated text") +
+                // ReSharper disable once LocalizableElement
                 $" ({DBLangEngine.GetStatMessage("msgNA", "N/A|A message indicating a none value")})";
 
             LabelEncoding.Text =
@@ -291,6 +301,9 @@ namespace ScriptNotepad.Localization
             LabelModeInsertOverride.Text =
                     DBLangEngine.GetStatMessage("msgInsertShort", "Cursor mode: INS|As in the text to be typed to the Scintilla would be inserted within the already existing text");
 
+            LabelZoom.Text =
+                DBLangEngine.GetStatMessage("msgZoomLabel",
+                    "Zoom:|A message indicating a text on a label of a following value of zoom percentage");
         }
     }
 }

@@ -1976,5 +1976,14 @@ namespace ScriptNotepad.Localization {
                 return ResourceManager.GetString("msgYAMLFile", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom:|A message indicating a text on a label of a following value of zoom percentage.
+        /// </summary>
+        internal static string msgZoomLabel {
+            get {
+                return ResourceManager.GetString("msgZoomLabel", resourceCulture);
+            }
+        }
     }
 }

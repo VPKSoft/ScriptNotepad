@@ -193,6 +193,11 @@ namespace ScriptNotepad.Database.Tables
         public bool USESPELL_CHECK { get; set; }
 
         /// <summary>
+        /// Gets or sets the editor zoom value in percentage.
+        /// </summary>
+        public int EDITOR_ZOOM { get; set; } = 100;
+
+        /// <summary>
         /// Gets or sets the previous encodings of the file save for undo possibility.
         /// <note type="note">Redo possibility does not exist.</note>
         /// </summary>

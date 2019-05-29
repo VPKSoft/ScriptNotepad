@@ -98,7 +98,7 @@ namespace ScriptNotepad.Database.TableMethods
         {
             List<SESSION_NAME> result = new List<SESSION_NAME>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsSessionName.GenSessionSelect(), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsSessionName.GenSessionSelect(), Connection))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -143,7 +143,7 @@ namespace ScriptNotepad.Database.TableMethods
                 string sql = DatabaseCommandsSessionName.GenInsertSessionName(name);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
 

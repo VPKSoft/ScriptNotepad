@@ -378,7 +378,19 @@ namespace ScriptNotepad.Settings
         /// Gets or sets a value indicating whether to use code indentation with the <see cref="Scintilla"/> control.
         /// </summary>
         [Setting("editor/useCodeIndentation", typeof(bool))]
-        public bool UseCodeIndentation { get; set; }
+        public bool EditorUseCodeIndentation { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the zoom value of the document should be to the database.
+        /// </summary>
+        [Setting("editor/saveZoom", typeof(bool))]
+        public bool EditorSaveZoom { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the zoom value should be individual for all the open <see cref="Scintilla"/> documents.
+        /// </summary>
+        [Setting("editor/individualZoom", typeof(bool))]
+        public bool EditorIndividualZoom { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.

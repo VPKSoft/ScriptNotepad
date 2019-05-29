@@ -82,7 +82,7 @@ namespace ScriptNotepad.Database.TableMethods
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsRecentFiles.GenHistorySelect(sessionName, maxCount), conn))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsRecentFiles.GenHistorySelect(sessionName, maxCount), Connection))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -148,7 +148,7 @@ namespace ScriptNotepad.Database.TableMethods
                 string sql = DatabaseCommandsRecentFiles.GenHistoryInsert(recentFile);
 
                 // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(conn))
+                using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
 

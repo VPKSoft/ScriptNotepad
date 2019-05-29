@@ -57,6 +57,9 @@
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
             this.tabEditorSettings = new System.Windows.Forms.TabPage();
+            this.lbTabWidth = new System.Windows.Forms.Label();
+            this.nudTabWidth = new System.Windows.Forms.NumericUpDown();
+            this.cbUseCodeIndentation = new System.Windows.Forms.CheckBox();
             this.cmbSimulateKeyboard = new System.Windows.Forms.ComboBox();
             this.cbSimulateKeyboard = new System.Windows.Forms.CheckBox();
             this.cbIndentGuideOn = new System.Windows.Forms.CheckBox();
@@ -120,9 +123,9 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
-            this.cbUseCodeIndentation = new System.Windows.Forms.CheckBox();
-            this.nudTabWidth = new System.Windows.Forms.NumericUpDown();
-            this.lbTabWidth = new System.Windows.Forms.Label();
+            this.gbZoomSetting = new System.Windows.Forms.GroupBox();
+            this.cbIndividualZoom = new System.Windows.Forms.CheckBox();
+            this.cbSaveDocumentZoom = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -134,6 +137,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.tabEditorSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).BeginInit();
             this.gbTabSymbol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -143,7 +147,7 @@
             this.tpgColorSettings.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).BeginInit();
+            this.gbZoomSetting.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -504,6 +508,7 @@
             // 
             // tabEditorSettings
             // 
+            this.tabEditorSettings.Controls.Add(this.gbZoomSetting);
             this.tabEditorSettings.Controls.Add(this.lbTabWidth);
             this.tabEditorSettings.Controls.Add(this.nudTabWidth);
             this.tabEditorSettings.Controls.Add(this.cbUseCodeIndentation);
@@ -521,6 +526,48 @@
             this.tabEditorSettings.TabIndex = 2;
             this.tabEditorSettings.Text = "Editor";
             this.tabEditorSettings.UseVisualStyleBackColor = true;
+            // 
+            // lbTabWidth
+            // 
+            this.lbTabWidth.AutoSize = true;
+            this.lbTabWidth.Location = new System.Drawing.Point(300, 214);
+            this.lbTabWidth.Name = "lbTabWidth";
+            this.lbTabWidth.Size = new System.Drawing.Size(57, 13);
+            this.lbTabWidth.TabIndex = 11;
+            this.lbTabWidth.Text = "Tab width:";
+            // 
+            // nudTabWidth
+            // 
+            this.nudTabWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudTabWidth.Location = new System.Drawing.Point(461, 212);
+            this.nudTabWidth.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nudTabWidth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudTabWidth.Name = "nudTabWidth";
+            this.nudTabWidth.Size = new System.Drawing.Size(90, 20);
+            this.nudTabWidth.TabIndex = 10;
+            this.nudTabWidth.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            // 
+            // cbUseCodeIndentation
+            // 
+            this.cbUseCodeIndentation.AutoSize = true;
+            this.cbUseCodeIndentation.Location = new System.Drawing.Point(6, 213);
+            this.cbUseCodeIndentation.Name = "cbUseCodeIndentation";
+            this.cbUseCodeIndentation.Size = new System.Drawing.Size(118, 17);
+            this.cbUseCodeIndentation.TabIndex = 9;
+            this.cbUseCodeIndentation.Text = "Use code intending";
+            this.cbUseCodeIndentation.UseVisualStyleBackColor = true;
             // 
             // cmbSimulateKeyboard
             // 
@@ -1193,47 +1240,38 @@
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
-            // cbUseCodeIndentation
+            // gbZoomSetting
             // 
-            this.cbUseCodeIndentation.AutoSize = true;
-            this.cbUseCodeIndentation.Location = new System.Drawing.Point(6, 213);
-            this.cbUseCodeIndentation.Name = "cbUseCodeIndentation";
-            this.cbUseCodeIndentation.Size = new System.Drawing.Size(118, 17);
-            this.cbUseCodeIndentation.TabIndex = 9;
-            this.cbUseCodeIndentation.Text = "Use code intending";
-            this.cbUseCodeIndentation.UseVisualStyleBackColor = true;
+            this.gbZoomSetting.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbZoomSetting.Controls.Add(this.cbSaveDocumentZoom);
+            this.gbZoomSetting.Controls.Add(this.cbIndividualZoom);
+            this.gbZoomSetting.Location = new System.Drawing.Point(6, 238);
+            this.gbZoomSetting.Name = "gbZoomSetting";
+            this.gbZoomSetting.Size = new System.Drawing.Size(545, 70);
+            this.gbZoomSetting.TabIndex = 12;
+            this.gbZoomSetting.TabStop = false;
+            this.gbZoomSetting.Text = "Zoom settings";
             // 
-            // nudTabWidth
+            // cbIndividualZoom
             // 
-            this.nudTabWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudTabWidth.Location = new System.Drawing.Point(461, 212);
-            this.nudTabWidth.Maximum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.nudTabWidth.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudTabWidth.Name = "nudTabWidth";
-            this.nudTabWidth.Size = new System.Drawing.Size(90, 20);
-            this.nudTabWidth.TabIndex = 10;
-            this.nudTabWidth.Value = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
+            this.cbIndividualZoom.AutoSize = true;
+            this.cbIndividualZoom.Location = new System.Drawing.Point(6, 19);
+            this.cbIndividualZoom.Name = "cbIndividualZoom";
+            this.cbIndividualZoom.Size = new System.Drawing.Size(171, 17);
+            this.cbIndividualZoom.TabIndex = 0;
+            this.cbIndividualZoom.Text = "Individual zoon (per document)";
+            this.cbIndividualZoom.UseVisualStyleBackColor = true;
             // 
-            // lbTabWidth
+            // cbSaveDocumentZoom
             // 
-            this.lbTabWidth.AutoSize = true;
-            this.lbTabWidth.Location = new System.Drawing.Point(300, 214);
-            this.lbTabWidth.Name = "lbTabWidth";
-            this.lbTabWidth.Size = new System.Drawing.Size(57, 13);
-            this.lbTabWidth.TabIndex = 11;
-            this.lbTabWidth.Text = "Tab width:";
+            this.cbSaveDocumentZoom.AutoSize = true;
+            this.cbSaveDocumentZoom.Location = new System.Drawing.Point(6, 42);
+            this.cbSaveDocumentZoom.Name = "cbSaveDocumentZoom";
+            this.cbSaveDocumentZoom.Size = new System.Drawing.Size(172, 17);
+            this.cbSaveDocumentZoom.TabIndex = 1;
+            this.cbSaveDocumentZoom.Text = "Save document zoom on close";
+            this.cbSaveDocumentZoom.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1268,6 +1306,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.tabEditorSettings.ResumeLayout(false);
             this.tabEditorSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).EndInit();
             this.gbTabSymbol.ResumeLayout(false);
             this.gbTabSymbol.PerformLayout();
@@ -1281,7 +1320,8 @@
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).EndInit();
+            this.gbZoomSetting.ResumeLayout(false);
+            this.gbZoomSetting.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1381,5 +1421,8 @@
         private System.Windows.Forms.Label lbTabWidth;
         private System.Windows.Forms.NumericUpDown nudTabWidth;
         private System.Windows.Forms.CheckBox cbUseCodeIndentation;
+        private System.Windows.Forms.GroupBox gbZoomSetting;
+        private System.Windows.Forms.CheckBox cbSaveDocumentZoom;
+        private System.Windows.Forms.CheckBox cbIndividualZoom;
     }
 }
