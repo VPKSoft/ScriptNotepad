@@ -136,18 +136,28 @@ namespace ScriptNotepad.Database.Tables
         /// <param name="assembly">The assembly to set the version from.</param>
         private void VersionFromAssembly(Assembly assembly)
         {
+            // get the plug-in version from the given assembly..
+            PLUGIN_VERSION = VersionStringFromAssembly(assembly);
+        }
+
+        /// <summary>
+        /// Gets a version string from a given <see cref="Assembly"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly to set the version from.</param>
+        public static string VersionStringFromAssembly(Assembly assembly)
+        {
             try
             {
-                // get the plug-in version from the given assembly..
-                PLUGIN_VERSION = assembly.GetName().Version.ToString();
+                // return the version from the given assembly..
+                return assembly.GetName().Version.ToString();
             }
             catch (Exception ex)
             {
-                // set the version to a default value..
-                PLUGIN_VERSION = "1.0.0.0";
-
                 // log the exception..
                 ExceptionLogAction?.Invoke(ex);
+
+                // return a default value..
+                return "1.0.0.0";
             }
         }
 

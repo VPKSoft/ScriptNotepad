@@ -65,6 +65,7 @@ namespace ScriptNotepad.PluginHandling
                     PLUGIN_DESCTIPTION = plugin.PluginDescription,
                     ISACTIVE = true,
                     PLUGIN_INSTALLED = DateTime.Now,
+                    PLUGIN_VERSION = PLUGINS.VersionStringFromAssembly(assembly),
                 };
 
                 // set the version for the plug-in..
@@ -139,6 +140,7 @@ namespace ScriptNotepad.PluginHandling
                     ISACTIVE = false,
                     PLUGIN_INSTALLED = DateTime.Now,
                     LOAD_FAILURES = 1,
+                    PLUGIN_VERSION = PLUGINS.VersionStringFromAssembly(assembly),
                 };
 
                 // set the version for the plug-in..

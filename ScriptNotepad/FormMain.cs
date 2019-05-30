@@ -1603,13 +1603,16 @@ namespace ScriptNotepad
         private void SttcMain_DocumentZoomChanged(object sender, ScintillaZoomChangedEventArgs e)
         {
             // the percentage mark is also localizable (!)..
-            sslbZoomPercentage.Text = (e.ZoomPercentage / 100.0) .ToString("P0", DBLangEngine.UseCulture);
+            sslbZoomPercentage.Text = (e.ZoomPercentage / 100.0).ToString("P0", DBLangEngine.UseCulture);
 
             CurrentDocumentAction(document =>
             {
-                var fileSave = (DBFILE_SAVE) document.Tag;
-                fileSave.EDITOR_ZOOM = e.ZoomPercentage;
-                DatabaseFileSave.UpdateMiscFlags(fileSave);
+                if (document.Tag != null)
+                {
+                    var fileSave = (DBFILE_SAVE) document.Tag;
+                    fileSave.EDITOR_ZOOM = e.ZoomPercentage;
+                    DatabaseFileSave.UpdateMiscFlags(fileSave);
+                }
             });
         }
 

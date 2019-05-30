@@ -28,6 +28,8 @@ using System;
 using System.IO;
 using ScintillaNET;
 using ScriptNotepad.Settings;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
+using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaSpellCheck;
 using VPKSoft.ScintillaTabbedTextControl;
@@ -37,7 +39,7 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
     /// <summary>
     /// A helper class for the <see cref="ScintillaTabbedDocument"/> for spell checking.
     /// </summary>
-    public class TabbedDocumentSpellCheck: IDisposable
+    public class TabbedDocumentSpellCheck: ErrorHandlingBase, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TabbedDocumentSpellCheck"/> class.
@@ -51,49 +53,73 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                 File.Exists(FormSettings.Settings.EditorHunspellAffixFile) &&
                 document.Tag0 == null)
             {
-                SpellCheck = new ScintillaSpellCheck(document.Scintilla,
-                    FormSettings.Settings.EditorHunspellDictionaryFile,
-                    FormSettings.Settings.EditorHunspellAffixFile, 
-                    UserDictionaryFile, 
-                    UserIgnoreWordFile)
+                try
                 {
-                    MenuIgnoreText = DBLangEngine.GetStatMessage("msgSpellCheckIgnoreWordMenuText",
-                        "Ignore word \"{0}\".|A context menu item for spell checking to ignore a word"),
-                    MenuAddToDictionaryText = DBLangEngine.GetStatMessage("msgSpellCheckAddWordToDictionaryText",
-                        "Add word \"{0}\" to the dictionary.|A context menu item for spell checking to add a word to the dictionary"),
-                    MenuDictionaryTopItemText =  DBLangEngine.GetStatMessage("msgSpellChecking",
-                    "Spell checking|A message displayed in a spelling correct menu's top item."),
-                    ShowDictionaryTopMenuItem = true,
-                    AddBottomSeparator = true,
-                    ShowIgnoreMenu = true,
-                    ShowAddToDictionaryMenu = true,
-                    ScintillaIndicatorColor = FormSettings.Settings.EditorSpellCheckColor,
-                };
+                    SpellCheck = new ScintillaSpellCheck(document.Scintilla,
+                        FormSettings.Settings.EditorHunspellDictionaryFile,
+                        FormSettings.Settings.EditorHunspellAffixFile,
+                        UserDictionaryFile,
+                        UserIgnoreWordFile)
+                    {
+                        MenuIgnoreText = DBLangEngine.GetStatMessage("msgSpellCheckIgnoreWordMenuText",
+                            "Ignore word \"{0}\".|A context menu item for spell checking to ignore a word"),
+                        MenuAddToDictionaryText = DBLangEngine.GetStatMessage("msgSpellCheckAddWordToDictionaryText",
+                            "Add word \"{0}\" to the dictionary.|A context menu item for spell checking to add a word to the dictionary"),
+                        MenuDictionaryTopItemText = DBLangEngine.GetStatMessage("msgSpellChecking",
+                            "Spell checking|A message displayed in a spelling correct menu's top item."),
+                        ShowDictionaryTopMenuItem = true,
+                        AddBottomSeparator = true,
+                        ShowIgnoreMenu = true,
+                        ShowAddToDictionaryMenu = true,
+                        ScintillaIndicatorColor = FormSettings.Settings.EditorSpellCheckColor,
+                    };
 
-                // add this instance to the document's Tag0 property..
-                document.Tag0 = this;
+                    // add this instance to the document's Tag0 property..
+                    document.Tag0 = this;
 
-                // subscribe to the event where a user wishes to correct a
-                // misspelled word via the context menu..
-                SpellCheck.UserWordReplace += SpellCheck_UserWordReplace;
+                    // subscribe to the event where a user wishes to correct a
+                    // misspelled word via the context menu..
+                    SpellCheck.UserWordReplace += SpellCheck_UserWordReplace;
 
-                // subscribe to the Scintilla text changed event..
-                document.Scintilla.TextChanged += Scintilla_TextChanged;
+                    // subscribe to the Scintilla text changed event..
+                    document.Scintilla.TextChanged += Scintilla_TextChanged;
 
-                // subscribe the event when a user is requesting a word to be added to the personal dictionary..
-                SpellCheck.WordAddDictionaryRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
+                    // subscribe the event when a user is requesting a word to be added to the personal dictionary..
+                    SpellCheck.WordAddDictionaryRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
 
-                // subscribe to the event when a user is requesting to add a word to personal ignore list..
-                SpellCheck.WordIgnoreRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
+                    // subscribe to the event when a user is requesting to add a word to personal ignore list..
+                    SpellCheck.WordIgnoreRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
 
-                // save the Scintilla instance to unsubscribe the events..
-                Scintilla = document.Scintilla;
-                
-                // spell check the document for the first time..
-                SpellCheck?.SpellCheckScintillaFast();
+                    // save the Scintilla instance to unsubscribe the events..
+                    Scintilla = document.Scintilla;
 
-                // save the time of the latest spell check..
-                LastSpellCheck = DateTime.Now;
+                    // spell check the document for the first time..
+                    SpellCheck?.SpellCheckScintillaFast();
+
+                    // save the time of the latest spell check..
+                    LastSpellCheck = DateTime.Now;
+                }
+                catch (Exception ex)
+                {
+                    // log the exception..
+                    ExceptionLogAction?.Invoke(ex);
+                }
+            }
+            else
+            {
+                try
+                {
+                    ExceptionLogger.LogMessage($"Spell check state: '{FormSettings.Settings.EditorUseSpellChecking}'.");
+                    ExceptionLogger.LogMessage(
+                        $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellDictionaryFile)}): '{FormSettings.Settings.EditorHunspellDictionaryFile}'.");
+                    ExceptionLogger.LogMessage(
+                        $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellAffixFile)}): '{FormSettings.Settings.EditorHunspellAffixFile}'.");
+                    ExceptionLogger.LogMessage($"Document Tag0: '{document.Tag0}'.");
+                }
+                catch (Exception ex)
+                {
+                    ExceptionLogger.LogError(ex);
+                }
             }
         }
 
