@@ -51,14 +51,14 @@ namespace PluginTemplate
         /// <summary>
         /// Occurs when the plug-in requests for all the open documents of the ScriptNotepad.
         /// </summary>
-        public event OnRequestAllDocuments RequestAllDocuments = null;
+        public event OnRequestAllDocuments RequestAllDocuments;
 
         /// <summary>
         /// Occurs when an exception occurred within the plug-in so the hosting 
         /// software (ScriptNotepad) can log it and possibly take necessary actions 
         /// for the plug-in (i.e. disable it).
         /// </summary>
-        public event OnPluginException PluginException = null;
+        public event OnPluginException PluginException;
 
         /// <summary>
         /// A field to save the event to unsubscribe it in the Dispose method.

@@ -759,4 +759,10 @@
   <data name="msgZoomLabel" xml:space="preserve">
     <value>Zoom:|A message indicating a text on a label of a following value of zoom percentage</value>
   </data>
+  <data name="msgSearchFound" xml:space="preserve">
+    <value>Find: found at {0}.|A message (in a status strip label) describing that the search text was found at a position with the search and replace dialog</value>
+  </data>
+  <data name="msgSearchNotFound" xml:space="preserve">
+    <value>Find: not found.|A message (in a status strip label) describing that the search text wasn't found with the search and replace dialog</value>
+  </data>
 </root>

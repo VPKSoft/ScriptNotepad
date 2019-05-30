@@ -158,6 +158,7 @@
             this.ssLbStatus.Name = "ssLbStatus";
             this.ssLbStatus.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.ssLbStatus.Size = new System.Drawing.Size(400, 17);
+            this.ssLbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbSearchProgress
             // 

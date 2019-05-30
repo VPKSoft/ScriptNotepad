@@ -276,6 +276,10 @@ namespace ScriptNotepad
 
             // set the value whether to use individual zoom for the open document(s)..
             sttcMain.ZoomSynchronization = !FormSettings.Settings.EditorIndividualZoom;
+
+            // this flag can suspend some events from taking place before
+            // the constructor has finished..
+            ConstructorFinished = true;
         }
         #endregion
 
@@ -1223,9 +1227,6 @@ namespace ScriptNotepad
 
                     sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
 
-                    // set the zoom value..
-                    sttcMain.LastAddedDocument.ZoomPercentage = file.EDITOR_ZOOM;
-
                     sttcMain.LastAddedDocument.Tag = file;
 
                     // append possible style and spell checking for the document..
@@ -1241,6 +1242,9 @@ namespace ScriptNotepad
 
                     // the file load can't add an undo option the Scintilla..
                     sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
+
+                    // set the zoom value..
+                    sttcMain.LastAddedDocument.ZoomPercentage = file.EDITOR_ZOOM;
                 }                
                 UpdateDocumentSaveIndicators();
             }
@@ -1463,9 +1467,6 @@ namespace ScriptNotepad
                             fileSave.ReloadFromDisk(sttcMain.LastAddedDocument);
                         }
 
-                        // set the zoom value..
-                        sttcMain.LastAddedDocument.ZoomPercentage = fileSave.EDITOR_ZOOM;
-
                         // save the DBFILE_SAVE class instance to the Tag property..
                         // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);
                         sttcMain.LastAddedDocument.Tag = fileSave;
@@ -1481,6 +1482,9 @@ namespace ScriptNotepad
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
+
+                        // set the zoom value..
+                        sttcMain.LastAddedDocument.ZoomPercentage = fileSave.EDITOR_ZOOM;
                     }
                 }
             }
@@ -1602,6 +1606,13 @@ namespace ScriptNotepad
         // NOTE: Ctrl+NP+, Ctrl+NP- and Control+NP/ and Control+mouse wheel control the zoom of the Scintilla..
         private void SttcMain_DocumentZoomChanged(object sender, ScintillaZoomChangedEventArgs e)
         {
+            // check that the initialization of this class is done..
+            if (!ConstructorFinished)
+            {
+                // ..if not, return..
+                return;
+            }
+
             // the percentage mark is also localizable (!)..
             sslbZoomPercentage.Text = (e.ZoomPercentage / 100.0).ToString("P0", DBLangEngine.UseCulture);
 
@@ -2760,7 +2771,12 @@ namespace ScriptNotepad
         private bool suspendSelectionUpdate;
         #endregion
 
-        #region PrivateProperties       
+        #region PrivateProperties        
+        /// <summary>
+        /// Gets or sets a value indicating whether constructor of this form has finished.
+        /// </summary>
+        private bool ConstructorFinished { get; set; }
+
         /// <summary>
         /// Gets or sets menu builder used to build the menu of the <see cref="Application"/>'s open forms.
         /// </summary>

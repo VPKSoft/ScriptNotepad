@@ -27,6 +27,7 @@ SOFTWARE.
 using ScintillaNET;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -803,15 +804,18 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <param name="scintilla">The scintilla and its file name to create the search algorithm from.</param>
         private void CreateSingleSearchReplaceAlgorithm((Scintilla scintilla, string fileName) scintilla)
         {
-            // get a value if only the selection is required to be used as text for the algorithm..
-            bool selection = cbInSelection.Checked && tcMain.SelectedTab.Equals(tabReplace);
-
-            if (scintilla.scintilla != null)
+            Invoke(new MethodInvoker(delegate
             {
-                CreateSingleSearchReplaceAlgorithm((
-                    selection ? scintilla.scintilla.SelectedText : scintilla.scintilla.Text,
-                    scintilla.fileName));
-            }
+                // get a value if only the selection is required to be used as text for the algorithm..
+                bool selection = cbInSelection.Checked && tcMain.SelectedTab.Equals(tabReplace);
+
+                if (scintilla.scintilla != null)
+                {
+                    CreateSingleSearchReplaceAlgorithm((
+                        selection ? scintilla.scintilla.SelectedText : scintilla.scintilla.Text,
+                        scintilla.fileName));
+                }
+            }));
         }
 
         /// <summary>
@@ -821,7 +825,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         {
             SaveSearchText(); // save the used search text to the database..
             var result = SearchReplaceDocuments?.Backward();
-            if (result.HasValue)
+            if (result.HasValue && !result.Equals(TextSearcherAndReplacer.Empty))
             {
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
                 GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
@@ -829,6 +833,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
                 // set the flag to indicate a the selection was changed from this form..
                 SelectionChangedFromMainForm = false;
+
+                SetStatus(Color.ForestGreen,
+                    DBLangEngine.GetMessage("msgSearchFound",
+                        "Find: found at {0}.|A message (in a status strip label) describing that the search text was found at a position with the search and replace dialog",
+                        result.Value.position));
+            }
+            else
+            {
+                SetStatus(Color.Red,
+                    DBLangEngine.GetMessage("msgSearchNotFound",
+                        "Find: not found.|A message (in a status strip label) describing that the search text wasn't found with the search and replace dialog"));
             }
         }
 
@@ -839,7 +854,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         {
             SaveSearchText(); // save the used search text to the database..
             var result = SearchReplaceDocuments?.Forward();
-            if (result.HasValue)
+            if (result.HasValue && !result.Equals(TextSearcherAndReplacer.Empty))
             {
                 GetCurrentDocument().scintilla.SelectionStart = result.Value.position;
                 GetCurrentDocument().scintilla.SelectionEnd = result.Value.position + result.Value.length;
@@ -847,7 +862,29 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
                 // set the flag to indicate a the selection was changed from this form..
                 SelectionChangedFromMainForm = false;
+
+                SetStatus(Color.ForestGreen,
+                    DBLangEngine.GetMessage("msgSearchFound",
+                        "Find: found at {0}.|A message (in a status strip label) describing that the search text was found at a position with the search and replace dialog",
+                        result.Value.position));
             }
+            else
+            {
+                SetStatus(Color.Red,
+                    DBLangEngine.GetMessage("msgSearchNotFound",
+                        "Find: not found.|A message (in a status strip label) describing that the search text wasn't found with the search and replace dialog"));
+            }
+        }
+
+        /// <summary>
+        /// Sets the status strip label text with a given color.
+        /// </summary>
+        /// <param name="color">The color of the status strip label.</param>
+        /// <param name="text">The text for the status strip label.</param>
+        private void SetStatus(Color color, string text)
+        {
+            ssLbStatus.ForeColor = color;
+            ssLbStatus.Text = text;
         }
 
         /// <summary>
@@ -1094,8 +1131,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }, SearchReplaceDocuments);
 
             // indicate the count value to the user..
-            ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchFoundCount",
-                "Found: {0}|A message describing a count of search or replace results", count);
+            SetStatus(count > 0 ? Color.RoyalBlue : Color.Red,
+                DBLangEngine.GetMessage("msgSearchFoundCount",
+                    "Found: {0}|A message describing a count of search or replace results", count));
         }
 
         // indicate the current search or replace function => active tab..
@@ -1185,14 +1223,23 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 }, SearchReplaceDocuments);
             }
 
-            // create the FormSearchResultTree class instance..
-            var tree = new FormSearchResultTree();
+            // no need to display an empty tree view; so the comparison..
+            if (results.Count > 0)
+            {
+                // create the FormSearchResultTree class instance..
+                var tree = new FormSearchResultTree();
 
-            // display the tree..
-            tree.Show();
+                // display the tree..
+                tree.Show();
 
-            // set the search results for the FormSearchResultTree class instance..
-            tree.SearchResults = results;
+                // set the search results for the FormSearchResultTree class instance..
+                tree.SearchResults = results;
+            }
+
+            // indicate the count value to the user..
+            SetStatus(results.Count > 0 ? Color.RoyalBlue : Color.Red,
+                DBLangEngine.GetMessage("msgSearchFoundCount",
+                    "Found: {0}|A message describing a count of search or replace results", results.Count));
         }
 
         // A users wishes to find all occurrences within all the opened documents..
@@ -1234,14 +1281,23 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 }
             }
 
-            // create the FormSearchResultTree class instance..
-            var tree = new FormSearchResultTree();
+            // no need to display an empty tree view; so the comparison..
+            if (results.Count > 0)
+            {
+                // create the FormSearchResultTree class instance..
+                var tree = new FormSearchResultTree();
 
-            // display the tree..
-            tree.Show();
+                // display the tree..
+                tree.Show();
 
-            // set the search results for the FormSearchResultTree class instance..
-            tree.SearchResults = results;
+                // set the search results for the FormSearchResultTree class instance..
+                tree.SearchResults = results;
+            }
+
+            // indicate the count value to the user..
+            SetStatus(results.Count > 0 ? Color.RoyalBlue : Color.Red,
+                DBLangEngine.GetMessage("msgSearchFoundCount",
+                    "Found: {0}|A message describing a count of search or replace results", results.Count));
         }
 
         // A users wishes to replace all occurrences within all the opened documents..
@@ -1300,10 +1356,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
 
             // set the count value of replaced occurrences and file count on the status strip..
-            ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchReplaceCountWithFiles",
-                "Replaced {0} occurrences from {1} files|A message describing a count of occurrences replaced and in how many files",
-                results.Sum(f => f.count), fileCount);
-
+            SetStatus(results.Sum(f => f.count) > 0 ? Color.RoyalBlue : Color.Red,
+                DBLangEngine.GetMessage("msgSearchReplaceCountWithFiles",
+                    "Replaced {0} occurrences from {1} files|A message describing a count of occurrences replaced and in how many files",
+                    results.Sum(f => f.count), fileCount));
         }
 
         // a user wishes to replace the current search result in the current document..
@@ -1367,9 +1423,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 }
 
                 // set the count value of replaced occurrences on the status strip..
-                ssLbStatus.Text = DBLangEngine.GetMessage("msgSearchReplaceCount",
-                    "Replaced: {0}|A message describing a count of occurrences replaced", result?.count);
-
+                SetStatus(Color.ForestGreen,DBLangEngine.GetMessage("msgSearchReplaceCount",
+                    "Replaced: {0}|A message describing a count of occurrences replaced", result?.count));
             }
         }
 
@@ -1515,6 +1570,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 Controls.Remove(contents);
             }
+
+            // TODO::Continue from here..
         }
 
         // replaces a text occurrences in multiple files on the file system..

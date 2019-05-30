@@ -1546,11 +1546,29 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find: found at {0}.|A message (in a status strip label) describing that the search text was found at a position with the search and replace dialog.
+        /// </summary>
+        internal static string msgSearchFound {
+            get {
+                return ResourceManager.GetString("msgSearchFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Found: {0}|A message describing a count of search or replace results.
         /// </summary>
         internal static string msgSearchFoundCount {
             get {
                 return ResourceManager.GetString("msgSearchFoundCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find: not found.|A message (in a status strip label) describing that the search text wasn&apos;t found with the search and replace dialog.
+        /// </summary>
+        internal static string msgSearchNotFound {
+            get {
+                return ResourceManager.GetString("msgSearchNotFound", resourceCulture);
             }
         }
         
