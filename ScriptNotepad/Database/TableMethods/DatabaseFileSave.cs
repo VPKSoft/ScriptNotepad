@@ -223,8 +223,9 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
         /// <param name="fileNameFull">The full file name of the file to get from the database.</param>
+        /// <param name="getZoom">A flag indicating whether to get the saved zoom value from the database.</param>
         /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
-        public static DBFILE_SAVE GetFileFromDatabase(string sessionName, string fileNameFull)
+        public static DBFILE_SAVE GetFileFromDatabase(string sessionName, string fileNameFull, bool getZoom)
         {
             using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, DatabaseHistoryFlag.DontCare, fileNameFull), Connection))
             {
@@ -232,7 +233,7 @@ namespace ScriptNotepad.Database.TableMethods
                 {
                     if (reader.Read())
                     {
-                        return FromDataReader(reader);
+                        return FromDataReader(reader, getZoom);
                     }
                 }
             }
@@ -253,8 +254,9 @@ namespace ScriptNotepad.Database.TableMethods
         /// Gets a <see cref="DBFILE_SAVE"/> class instance from a <see cref="SQLiteDataReader"/> class instance.
         /// </summary>
         /// <param name="reader">The <see cref="SQLiteDataReader"/> class instance to read the data from.</param>
+        /// <param name="getZoom">A flag indicating whether to get the saved zoom value from the database.</param>
         /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
-        public static DBFILE_SAVE FromDataReader(SQLiteDataReader reader)
+        public static DBFILE_SAVE FromDataReader(SQLiteDataReader reader, bool getZoom)
         {
             try
             {
@@ -287,7 +289,7 @@ namespace ScriptNotepad.Database.TableMethods
                         ENCODING = Encoding.GetEncoding(reader.GetString(15)),
                         CURRENT_POSITION = reader.GetInt32(16),
                         USESPELL_CHECK = reader.GetInt32(17) == 1,
-                        EDITOR_ZOOM = reader.GetInt32(18),
+                        EDITOR_ZOOM = getZoom ? reader.GetInt32(18) : 100,
                     };
             }
             catch (Exception ex)
@@ -303,8 +305,9 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
         /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
+        /// <param name="getZoom">A flag indicating whether to get the saved zoom value from the database.</param>
         /// <returns>A collection of DBFILE_SAVE class instances matching the given parameters.</returns>
-        public static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, DatabaseHistoryFlag databaseHistoryFlag)
+        public static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, DatabaseHistoryFlag databaseHistoryFlag, bool getZoom)
         {
             List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
 
@@ -315,7 +318,7 @@ namespace ScriptNotepad.Database.TableMethods
                 {
                     while (reader.Read())
                     {
-                        result.Add(FromDataReader(reader));
+                        result.Add(FromDataReader(reader, getZoom));
                     }
                 }
             }

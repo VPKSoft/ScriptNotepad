@@ -57,13 +57,11 @@ using ScriptNotepad.PluginHandling;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Database.TableMethods;
 using System.Linq;
-using ScriptNotepad.Database.TableCommands;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Keyboard;
-using ScriptNotepad.UtilityClasses.MathUtils;
 using ScriptNotepad.UtilityClasses.MenuHelpers;
 using ScriptNotepad.UtilityClasses.MiscForms;
 using ScriptNotepad.UtilityClasses.ProgrammingLanguages;
@@ -1170,6 +1168,9 @@ namespace ScriptNotepad
                 // set the spell check enable/disable button to indicate the document's spell check state..
                 tsbSpellCheck.Checked = false;                
             }
+
+            // the percentage mark is also localizable (!)..
+            sslbZoomPercentage.Text = (document.ZoomPercentage / 100.0) .ToString("P0", DBLangEngine.UseCulture);
         }
 
         private void SetCaretLineColor()
@@ -1194,7 +1195,8 @@ namespace ScriptNotepad
             // set the application title to indicate no active document..
             SetEmptyApplicationTitle();
 
-            IEnumerable<DBFILE_SAVE> files = DatabaseFileSave.GetFilesFromDatabase(sessionName, DatabaseHistoryFlag.NotHistory);
+            IEnumerable<DBFILE_SAVE> files = DatabaseFileSave.GetFilesFromDatabase(sessionName,
+                DatabaseHistoryFlag.NotHistory, FormSettings.Settings.EditorSaveZoom);
 
             string activeDocument = string.Empty;
 
@@ -1220,6 +1222,10 @@ namespace ScriptNotepad
                     }
 
                     sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
+
+                    // set the zoom value..
+                    sttcMain.LastAddedDocument.ZoomPercentage = file.EDITOR_ZOOM;
+
                     sttcMain.LastAddedDocument.Tag = file;
 
                     // append possible style and spell checking for the document..
@@ -1277,7 +1283,8 @@ namespace ScriptNotepad
         private void LoadDocumentFromDatabase(RECENT_FILES recentFile)
         {
             // get the file from the database..
-            DBFILE_SAVE file = DatabaseFileSave.GetFileFromDatabase(recentFile.SESSIONNAME, recentFile.FILENAME_FULL);
+            DBFILE_SAVE file = DatabaseFileSave.GetFileFromDatabase(recentFile.SESSIONNAME, recentFile.FILENAME_FULL,
+                FormSettings.Settings.EditorSaveZoom);
 
             // only if something was gotten from the database..
             if (file != null)
@@ -1307,6 +1314,9 @@ namespace ScriptNotepad
 
                     // assign the context menu strip for the tabbed document..
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
+
+                    // set the zoom value..
+                    sttcMain.LastAddedDocument.ZoomPercentage = file.EDITOR_ZOOM;
 
                     // enabled the caret line background color..
                     SetCaretLineColor();
@@ -1415,7 +1425,8 @@ namespace ScriptNotepad
                         AdditionalInitializeDocument(sttcMain.LastAddedDocument);
 
                         // check the database first for a DBFILE_SAVE class instance..
-                        DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName);
+                        DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName,
+                            FormSettings.Settings.EditorSaveZoom);
 
                         if (sttcMain.LastAddedDocument.Tag == null && fileSave == null)
                         {
@@ -1451,6 +1462,9 @@ namespace ScriptNotepad
                         {
                             fileSave.ReloadFromDisk(sttcMain.LastAddedDocument);
                         }
+
+                        // set the zoom value..
+                        sttcMain.LastAddedDocument.ZoomPercentage = fileSave.EDITOR_ZOOM;
 
                         // save the DBFILE_SAVE class instance to the Tag property..
                         // USELESS CODE?::fileSave = Database.Database.AddOrUpdateFile(sttcMain.CurrentDocument, DatabaseHistoryFlag.DontCare, CurrentSession, fileSave.ENCODING);

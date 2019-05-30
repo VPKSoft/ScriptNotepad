@@ -1,25 +1,25 @@
-﻿* Done? [YES ] [2019/05/11] Make font a setting.							
-* Done? [YES ] [2019/05/11] Add a question whether to add a context menu (open with) for the Windows shell to the installer.
-* Done? [YES ] [2019/05/11] Create a language (programming language) selection menu.
-* Done? [YES ] [2019/05/07] Add spell checking.
-* Done? [YES ] [2019/05/08] Add word wrapping possibility.
-* Done? [YES ] [2019/05/13] Add a helper function to extract colors from mark-up (i.e. #AB0FFE) to (A)RGB.
-* Done? [YES ] [2019/05/13] Add the Notepad++ style definition files to the installer.
-* Done? [YES ] [2019/05/16] Fix weird bug for the main form not accepting all the AltGr+(character) combinations.
-* Done? [SOME] [2019/05/13] Add LibreOffice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
-* Done? [N/A ] [2019/05/03] Mark with the search and replace dialog.
-* Done? [SOME] [2019/05/22] Save document's settings to the database.
-* Done? [N/A ] [2019/05/03] Save document's marked positions to the database.
-* Done? [N/A ] [2019/05/14] Make the directory crawler to end the thread safe (DirectoryCrawler.Canceled)...
-* Done? [N/A ] [2019/05/14] Make the VPKSoft.SearchText library thread safe (SearchText.Canceled)...
-* Done? [YES ] [2019/05/18] Set the default directory for the LibreOffice's dictionaries to 
-                            %LOCALAPPDATA%\ScriptNotepad\Dictionaries and try to crawl the directory with the locale settings
-							of the .NET Framework.
-* Done? [YES ] [2019/05/18] Add insert special character drop down menu to the context menu.
-* Done? [YES ] [2019/05/18] Make the Notepad++ style definition files into a setting.
-* Done? [YES ] [2019/05/20] Make the ignore word and add word to dictionary functions to work.
-* Done? [YES ] [2019/05/22] Save document's spell checking enabled state to the database.
-* Done? [N/A ] [2019/05/27] Add lexer(s) to the diff view.
-* Done? [SOME] [2019/05/29] Make the zoom value of the Scintilla a visible and adjustable element to the main form GUI.
-* Done? [YES ] [2019/05/29] Notify the ScintillaTabbedTextControl of the zoom change.
-* Done? [N/A ] [2019/05/28] Fix the 'Index was out of range.' error on the 'VPKSoft.SearchText.TextSearcherAndReplacer.Forward()' method.
+﻿* Done? [YES  ] [2019/05/11] Make font a setting.							
+* Done? [YES  ] [2019/05/11] Add a question whether to add a context menu (open with) for the Windows shell to the installer.
+* Done? [YES  ] [2019/05/11] Create a language (programming language) selection menu.
+* Done? [YES  ] [2019/05/07] Add spell checking.
+* Done? [YES  ] [2019/05/08] Add word wrapping possibility.
+* Done? [YES  ] [2019/05/13] Add a helper function to extract colors from mark-up (i.e. #AB0FFE) to (A)RGB.
+* Done? [YES  ] [2019/05/13] Add the Notepad++ style definition files to the installer.
+* Done? [YES  ] [2019/05/16] Fix weird bug for the main form not accepting all the AltGr+(character) combinations.
+* Done? [SOME ] [2019/05/13] Add LibreOffice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
+* Done? [N/A  ] [2019/05/03] Mark with the search and replace dialog.
+* Done? [SOME ] [2019/05/22] Save document's settings to the database.
+* Done? [N/A  ] [2019/05/03] Save document's marked positions to the database.
+* Done? [N/A  ] [2019/05/14] Make the directory crawler to end the thread safe (DirectoryCrawler.Canceled)...
+* Done? [N/A  ] [2019/05/14] Make the VPKSoft.SearchText library thread safe (SearchText.Canceled)...
+* Done? [YES  ] [2019/05/18] Set the default directory for the LibreOffice's dictionaries to 
+                             %LOCALAPPDATA%\ScriptNotepad\Dictionaries and try to crawl the directory with the locale settings
+				             of the .NET Framework.
+* Done? [YES  ] [2019/05/18] Add insert special character drop down menu to the context menu.
+* Done? [YES  ] [2019/05/18] Make the Notepad++ style definition files into a setting.
+* Done? [YES  ] [2019/05/20] Make the ignore word and add word to dictionary functions to work.
+* Done? [YES  ] [2019/05/22] Save document's spell checking enabled state to the database.
+* Done? [N/A  ] [2019/05/28] Fix the 'Index was out of range.' error on the 'VPKSoft.SearchText.TextSearcherAndReplacer.Forward()' method.
+* Done? [DON'T] [2019/05/30] Add lexer(s) to the diff view.
+* Done? [SOME ] [2019/05/30] Make the zoom value of the Scintilla a visible and adjustable element to the main form GUI.
+* Done? [YES  ] [2019/05/30] Notify the ScintillaTabbedTextControl of the zoom change.
