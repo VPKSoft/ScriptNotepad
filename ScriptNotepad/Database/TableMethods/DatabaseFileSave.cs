@@ -33,7 +33,6 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Text;
-using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
@@ -53,7 +52,6 @@ namespace ScriptNotepad.Database.TableMethods
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
         public static DBFILE_SAVE AddFile(DBFILE_SAVE fileSave)
         {
-            int recordsAffected = 0;
             try
             {
                 string sql = DatabaseCommandsFileSave.GenInsertFileSentence(fileSave);
@@ -63,13 +61,14 @@ namespace ScriptNotepad.Database.TableMethods
                     DateTime.MinValue;
 
                 // as the SQLiteCommand is disposable a using clause is required..
+                int recordsAffected;
                 using (SQLiteCommand command = new SQLiteCommand(Connection))
                 {
                     command.CommandText = sql;
                     // add parameters to the command..
 
                     // add the contents of the Scintilla.NET document as a parameter..
-                    command.Parameters.Add("@FILE", System.Data.DbType.Binary).Value = 
+                    command.Parameters.Add("@FILE", DbType.Binary).Value = 
                         StreamStringHelpers.TextToMemoryStream(fileSave.FILE_CONTENTS, fileSave.ENCODING).ToArray();
 
                     // do the insert..
@@ -105,6 +104,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="encoding">An encoding for the document.</param>
         /// <param name="ID">An unique identifier for the file.</param>
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
+        // ReSharper disable once InconsistentNaming
         public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, Encoding encoding, int ID = -1)
         {
             try
@@ -161,6 +161,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="encoding">An encoding for the document.</param>
         /// <param name="ID">An unique identifier for the file.</param>
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
+        // ReSharper disable once InconsistentNaming
         public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, Encoding encoding, int ID = -1)
         {
             return UpdateFile(AddFile(document, databaseHistoryFlag, sessionName, encoding, ID), document.Scintilla.CurrentPosition);

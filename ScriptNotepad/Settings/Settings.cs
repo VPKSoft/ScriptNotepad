@@ -472,6 +472,19 @@ namespace ScriptNotepad.Settings
         public bool DefaultSessionLocalized { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether to use auto-save with a specified <see cref="ProgramAutoSaveInterval"/>.
+        /// </summary>
+        [Setting("program/autoSave", typeof(bool))]
+        public bool ProgramAutoSave { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the program's automatic save interval in minutes.
+        /// </summary>
+        /// <value>The program automatic save interval.</value>
+        [Setting("program/autoSaveInterval", typeof(int))]
+        public int ProgramAutoSaveInterval { get; set; } = 5;
+
+        /// <summary>
         /// Gets or sets a value indicating whether tp categorize the programming language menu with the language name starting character.
         /// </summary>
         [Setting("misc/categorizeStartCharacterProgrammingLanguage", typeof(bool))]

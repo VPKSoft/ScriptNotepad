@@ -57,6 +57,9 @@
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
             this.tabEditorSettings = new System.Windows.Forms.TabPage();
+            this.gbZoomSetting = new System.Windows.Forms.GroupBox();
+            this.cbSaveDocumentZoom = new System.Windows.Forms.CheckBox();
+            this.cbIndividualZoom = new System.Windows.Forms.CheckBox();
             this.lbTabWidth = new System.Windows.Forms.Label();
             this.nudTabWidth = new System.Windows.Forms.NumericUpDown();
             this.cbUseCodeIndentation = new System.Windows.Forms.CheckBox();
@@ -123,9 +126,10 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
-            this.gbZoomSetting = new System.Windows.Forms.GroupBox();
-            this.cbIndividualZoom = new System.Windows.Forms.CheckBox();
-            this.cbSaveDocumentZoom = new System.Windows.Forms.CheckBox();
+            this.tpgAdditionalSettings = new System.Windows.Forms.TabPage();
+            this.cbUseAutoSave = new System.Windows.Forms.CheckBox();
+            this.nudAutoSaveInterval = new System.Windows.Forms.NumericUpDown();
+            this.tbNoteAutoSave = new System.Windows.Forms.TextBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -137,6 +141,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.tabEditorSettings.SuspendLayout();
+            this.gbZoomSetting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).BeginInit();
             this.gbTabSymbol.SuspendLayout();
@@ -147,7 +152,8 @@
             this.tpgColorSettings.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
-            this.gbZoomSetting.SuspendLayout();
+            this.tpgAdditionalSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -156,6 +162,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpgGeneralSettings);
+            this.tcMain.Controls.Add(this.tpgAdditionalSettings);
             this.tcMain.Controls.Add(this.tabEditorSettings);
             this.tcMain.Controls.Add(this.tabEditorFont);
             this.tcMain.Controls.Add(this.tpgColorSettings);
@@ -526,6 +533,39 @@
             this.tabEditorSettings.TabIndex = 2;
             this.tabEditorSettings.Text = "Editor";
             this.tabEditorSettings.UseVisualStyleBackColor = true;
+            // 
+            // gbZoomSetting
+            // 
+            this.gbZoomSetting.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbZoomSetting.Controls.Add(this.cbSaveDocumentZoom);
+            this.gbZoomSetting.Controls.Add(this.cbIndividualZoom);
+            this.gbZoomSetting.Location = new System.Drawing.Point(6, 238);
+            this.gbZoomSetting.Name = "gbZoomSetting";
+            this.gbZoomSetting.Size = new System.Drawing.Size(545, 70);
+            this.gbZoomSetting.TabIndex = 12;
+            this.gbZoomSetting.TabStop = false;
+            this.gbZoomSetting.Text = "Zoom settings";
+            // 
+            // cbSaveDocumentZoom
+            // 
+            this.cbSaveDocumentZoom.AutoSize = true;
+            this.cbSaveDocumentZoom.Location = new System.Drawing.Point(6, 42);
+            this.cbSaveDocumentZoom.Name = "cbSaveDocumentZoom";
+            this.cbSaveDocumentZoom.Size = new System.Drawing.Size(172, 17);
+            this.cbSaveDocumentZoom.TabIndex = 1;
+            this.cbSaveDocumentZoom.Text = "Save document zoom on close";
+            this.cbSaveDocumentZoom.UseVisualStyleBackColor = true;
+            // 
+            // cbIndividualZoom
+            // 
+            this.cbIndividualZoom.AutoSize = true;
+            this.cbIndividualZoom.Location = new System.Drawing.Point(6, 19);
+            this.cbIndividualZoom.Name = "cbIndividualZoom";
+            this.cbIndividualZoom.Size = new System.Drawing.Size(171, 17);
+            this.cbIndividualZoom.TabIndex = 0;
+            this.cbIndividualZoom.Text = "Individual zoon (per document)";
+            this.cbIndividualZoom.UseVisualStyleBackColor = true;
             // 
             // lbTabWidth
             // 
@@ -1240,38 +1280,67 @@
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
-            // gbZoomSetting
+            // tpgAdditionalSettings
             // 
-            this.gbZoomSetting.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tpgAdditionalSettings.Controls.Add(this.tbNoteAutoSave);
+            this.tpgAdditionalSettings.Controls.Add(this.nudAutoSaveInterval);
+            this.tpgAdditionalSettings.Controls.Add(this.cbUseAutoSave);
+            this.tpgAdditionalSettings.Location = new System.Drawing.Point(4, 22);
+            this.tpgAdditionalSettings.Name = "tpgAdditionalSettings";
+            this.tpgAdditionalSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpgAdditionalSettings.Size = new System.Drawing.Size(557, 371);
+            this.tpgAdditionalSettings.TabIndex = 5;
+            this.tpgAdditionalSettings.Text = "Additional";
+            this.tpgAdditionalSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbUseAutoSave
+            // 
+            this.cbUseAutoSave.AutoSize = true;
+            this.cbUseAutoSave.Location = new System.Drawing.Point(6, 7);
+            this.cbUseAutoSave.Name = "cbUseAutoSave";
+            this.cbUseAutoSave.Size = new System.Drawing.Size(170, 17);
+            this.cbUseAutoSave.TabIndex = 0;
+            this.cbUseAutoSave.Text = "Auto-save (interval in minutes):";
+            this.cbUseAutoSave.UseVisualStyleBackColor = true;
+            // 
+            // nudAutoSaveInterval
+            // 
+            this.nudAutoSaveInterval.Location = new System.Drawing.Point(486, 6);
+            this.nudAutoSaveInterval.Maximum = new decimal(new int[] {
+            1440,
+            0,
+            0,
+            0});
+            this.nudAutoSaveInterval.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudAutoSaveInterval.Name = "nudAutoSaveInterval";
+            this.nudAutoSaveInterval.Size = new System.Drawing.Size(65, 20);
+            this.nudAutoSaveInterval.TabIndex = 1;
+            this.nudAutoSaveInterval.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // tbNoteAutoSave
+            // 
+            this.tbNoteAutoSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbZoomSetting.Controls.Add(this.cbSaveDocumentZoom);
-            this.gbZoomSetting.Controls.Add(this.cbIndividualZoom);
-            this.gbZoomSetting.Location = new System.Drawing.Point(6, 238);
-            this.gbZoomSetting.Name = "gbZoomSetting";
-            this.gbZoomSetting.Size = new System.Drawing.Size(545, 70);
-            this.gbZoomSetting.TabIndex = 12;
-            this.gbZoomSetting.TabStop = false;
-            this.gbZoomSetting.Text = "Zoom settings";
-            // 
-            // cbIndividualZoom
-            // 
-            this.cbIndividualZoom.AutoSize = true;
-            this.cbIndividualZoom.Location = new System.Drawing.Point(6, 19);
-            this.cbIndividualZoom.Name = "cbIndividualZoom";
-            this.cbIndividualZoom.Size = new System.Drawing.Size(171, 17);
-            this.cbIndividualZoom.TabIndex = 0;
-            this.cbIndividualZoom.Text = "Individual zoon (per document)";
-            this.cbIndividualZoom.UseVisualStyleBackColor = true;
-            // 
-            // cbSaveDocumentZoom
-            // 
-            this.cbSaveDocumentZoom.AutoSize = true;
-            this.cbSaveDocumentZoom.Location = new System.Drawing.Point(6, 42);
-            this.cbSaveDocumentZoom.Name = "cbSaveDocumentZoom";
-            this.cbSaveDocumentZoom.Size = new System.Drawing.Size(172, 17);
-            this.cbSaveDocumentZoom.TabIndex = 1;
-            this.cbSaveDocumentZoom.Text = "Save document zoom on close";
-            this.cbSaveDocumentZoom.UseVisualStyleBackColor = true;
+            this.tbNoteAutoSave.BackColor = System.Drawing.Color.White;
+            this.tbNoteAutoSave.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbNoteAutoSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNoteAutoSave.ForeColor = System.Drawing.Color.DarkCyan;
+            this.tbNoteAutoSave.Location = new System.Drawing.Point(6, 30);
+            this.tbNoteAutoSave.Multiline = true;
+            this.tbNoteAutoSave.Name = "tbNoteAutoSave";
+            this.tbNoteAutoSave.ReadOnly = true;
+            this.tbNoteAutoSave.Size = new System.Drawing.Size(545, 30);
+            this.tbNoteAutoSave.TabIndex = 3;
+            this.tbNoteAutoSave.TabStop = false;
+            this.tbNoteAutoSave.Text = "NOTE: The auto-save doesn\'t use the file system.";
             // 
             // FormSettings
             // 
@@ -1306,6 +1375,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.tabEditorSettings.ResumeLayout(false);
             this.tabEditorSettings.PerformLayout();
+            this.gbZoomSetting.ResumeLayout(false);
+            this.gbZoomSetting.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWhiteSpaceSize)).EndInit();
             this.gbTabSymbol.ResumeLayout(false);
@@ -1320,8 +1391,9 @@
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
-            this.gbZoomSetting.ResumeLayout(false);
-            this.gbZoomSetting.PerformLayout();
+            this.tpgAdditionalSettings.ResumeLayout(false);
+            this.tpgAdditionalSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1424,5 +1496,9 @@
         private System.Windows.Forms.GroupBox gbZoomSetting;
         private System.Windows.Forms.CheckBox cbSaveDocumentZoom;
         private System.Windows.Forms.CheckBox cbIndividualZoom;
+        private System.Windows.Forms.TabPage tpgAdditionalSettings;
+        private System.Windows.Forms.NumericUpDown nudAutoSaveInterval;
+        private System.Windows.Forms.CheckBox cbUseAutoSave;
+        private System.Windows.Forms.TextBox tbNoteAutoSave;
     }
 }

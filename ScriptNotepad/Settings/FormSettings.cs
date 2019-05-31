@@ -263,6 +263,10 @@ namespace ScriptNotepad.Settings
             // get the code indentation and editor tab width values..
             cbUseCodeIndentation.Checked = Settings.EditorUseCodeIndentation;
             nudTabWidth.Value = Settings.EditorTabWidth;
+
+            // get the auto-save settings..
+            cbUseAutoSave.Checked = Settings.ProgramAutoSave;
+            nudAutoSaveInterval.Value = Settings.ProgramAutoSaveInterval;
         }
 
         /// <summary>
@@ -385,9 +389,13 @@ namespace ScriptNotepad.Settings
                 Settings.SimulateAltGrKeyIndex = -1;
             }
 
-            // get the code indentation and editor tab width values..
+            // set the code indentation and editor tab width values..
             Settings.EditorUseCodeIndentation = cbUseCodeIndentation.Checked;
             Settings.EditorTabWidth = (int)nudTabWidth.Value;
+
+            // set the auto-save settings..
+            Settings.ProgramAutoSave = cbUseAutoSave.Checked;
+            Settings.ProgramAutoSaveInterval = (int)nudAutoSaveInterval.Value;
         }
         #endregion
 

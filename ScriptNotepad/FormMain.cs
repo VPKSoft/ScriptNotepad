@@ -280,6 +280,11 @@ namespace ScriptNotepad
             // this flag can suspend some events from taking place before
             // the constructor has finished..
             ConstructorFinished = true;
+
+            // set the state of the auto-save..
+            tmAutoSave.Interval =
+                (int) TimeSpan.FromMinutes(FormSettings.Settings.ProgramAutoSaveInterval).TotalMilliseconds;
+            tmAutoSave.Enabled = FormSettings.Settings.ProgramAutoSave;
         }
         #endregion
 
@@ -1215,7 +1220,6 @@ namespace ScriptNotepad
                 {
                     // append additional initialization to the document..
                     AdditionalInitializeDocument(sttcMain.LastAddedDocument);
-
                     // set the saved position of the document's caret..
                     if (file.CURRENT_POSITION > 0 && file.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
                     {
@@ -1231,6 +1235,9 @@ namespace ScriptNotepad
 
                     // append possible style and spell checking for the document..
                     AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);
+
+                    // set the lexer type from the saved database value..
+                    sttcMain.LastAddedDocument.LexerType = file.LEXER_CODE;
 
                     SetSpellCheckerState(file.USESPELL_CHECK, true);
 
@@ -1298,6 +1305,9 @@ namespace ScriptNotepad
                 {
                     // append additional initialization to the document..
                     AdditionalInitializeDocument(sttcMain.LastAddedDocument);
+
+                    // set the lexer type from the saved database value..
+                    sttcMain.LastAddedDocument.LexerType = file.LEXER_CODE;
 
                     // not history any more..
                     file.ISHISTORY = false;
@@ -1474,6 +1484,9 @@ namespace ScriptNotepad
                         // append possible style and spell checking for the document..
                         AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);
 
+                        // set the lexer type from the saved database value..
+                        sttcMain.LastAddedDocument.LexerType = fileSave.LEXER_CODE;
+
                         // enabled the caret line background color..
                         SetCaretLineColor();
 
@@ -1595,6 +1608,35 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a user is dragging a file over the ScintillaTabbedControl instance..
+        private void SttcMain_DragEnterOrOver(object sender, DragEventArgs e)
+        {
+            // set the effect to Copy == Accept..
+            e.Effect = 
+                e.Data.GetDataPresent(DataFormats.FileDrop) ? 
+                    DragDropEffects.Copy : DragDropEffects.None;
+        }
+
+        // a user dropped file(s) over the ScintillaTabbedControl instance..
+        private void SttcMain_DragDrop(object sender, DragEventArgs e)
+        {
+            // verify the data format..
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // get the dropped files and directories..
+                string[] dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                // loop thought the files and directories
+                foreach (string filePath in dropFiles)
+                {
+                    if (File.Exists(filePath))
+                    {
+                        OpenDocument(filePath, FormSettings.Settings.DefaultEncoding);
+                    }
+                }
+            }
+        }
+
         // the user clicked the zoom percentage label or the zoom percentage value
         // label on the tool strip --> reset the zoom..
         private void ResetZoom_Click(object sender, EventArgs e)
@@ -1630,7 +1672,16 @@ namespace ScriptNotepad
         // a user wishes to change the lexer of the current document..
         private void ProgrammingLanguageHelper_LanguageMenuClick(object sender, ProgrammingLanguageMenuClickEventArgs e)
         {
-            CurrentDocumentAction(document => { document.LexerType = e.LexerType; });
+            CurrentDocumentAction(document =>
+            {
+                document.LexerType = e.LexerType;
+                if (document.Tag != null)
+                {
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE) document.Tag;
+                    fileSave.LEXER_CODE = e.LexerType;
+                    DatabaseFileSave.UpdateMiscFlags(fileSave);
+                }
+            });
         }
 
         // a user wishes to alphabetically order the the lines of the active document..
@@ -2380,6 +2431,9 @@ namespace ScriptNotepad
 
             StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
 
+            // check the programming language menu item with the current lexer..
+            ProgrammingLanguageHelper.CheckLanguage(e.ScintillaTabbedDocument.LexerType);
+
             UpdateUndoRedoIndicators();
         }
 
@@ -3123,26 +3177,12 @@ namespace ScriptNotepad
         }
         #endregion
 
-        private void SttcMain_DragEnterOrOver(object sender, DragEventArgs e)
+        private void TmAutoSave_Tick(object sender, EventArgs e)
         {
-            e.Effect = 
-                e.Data.GetDataPresent(DataFormats.FileDrop) ? 
-                    DragDropEffects.Copy : DragDropEffects.None;
-        }
-
-        private void SttcMain_DragDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-                foreach (string filePath in dropFiles)
-                {
-                    if (File.Exists(filePath))
-                    {
-                        OpenDocument(filePath, FormSettings.Settings.DefaultEncoding);
-                    }
-                }
-            }
+            tmAutoSave.Enabled = false;
+            // save the current session's documents to the database..
+            SaveDocumentsToDatabase(CurrentSession);
+            tmAutoSave.Enabled = true;
         }
     }
 }

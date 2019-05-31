@@ -60,8 +60,8 @@
     <Reference Include="PropertyChanged, Version=3.0.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.0.1\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
-    <Reference Include="ScintillaDiff, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScintillaDiff.1.0.0.1\lib\net47\ScintillaDiff.dll</HintPath>
+    <Reference Include="ScintillaDiff, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScintillaDiff.1.0.0.2\lib\net47\ScintillaDiff.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
@@ -120,8 +120,8 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.5\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.4\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.5\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.1\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>

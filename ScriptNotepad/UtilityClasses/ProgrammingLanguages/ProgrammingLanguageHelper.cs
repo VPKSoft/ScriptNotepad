@@ -104,6 +104,7 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
         /// <param name="lexerType">Type of the lexer of which corresponding menu item(s) to check.</param>
         public void CheckLanguage(LexerType lexerType)
         {
+            ToolStripMenuItem checkMainMenuItem = null;
             foreach (ToolStripMenuItem menuItem in menuStrip.DropDownItems)
             {
                 foreach (ToolStripMenuItem subMenuItem in menuItem.DropDownItems)
@@ -114,6 +115,11 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                         var menuLexerType = (LexerType) subMenuItem.Tag;
 
                         subMenuItem.Checked = menuLexerType == lexerType;
+                        if (menuLexerType == lexerType)
+                        {
+                            // this gets unchecked in drop down styled menu, so save it for later..
+                            checkMainMenuItem = menuItem;
+                        }
                     }
                     else
                     {
@@ -132,6 +138,13 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                 {
                     menuItem.Checked = false;                        
                 }
+            }
+
+            // if a menu item was assigned to be checked..
+            if (checkMainMenuItem != null)
+            {
+                // ..check it..
+                checkMainMenuItem.Checked = true;
             }
         }
 

@@ -27,12 +27,14 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using ScintillaNET;
 using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.DialogForms;
+using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
@@ -456,5 +458,53 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// </summary>
         public event OnScintillaRequired ScintillaRequired = null;
         #endregion
+
+        private void Scintilla_CharAdded(object sender, CharAddedEventArgs e)
+        {
+            var scintilla = (Scintilla) sender;
+
+            //The '}' char.
+            if (e.Char == '}') {
+                int curLine = scintilla.LineFromPosition(scintilla.CurrentPosition);
+		
+                if (scintilla.Lines[curLine].Text.Trim() == "}") { //Check whether the bracket is the only thing on the line.. For cases like "if() { }".
+                    SetIndent(scintilla, curLine, GetIndent(scintilla, curLine) - FormSettings.Settings.EditorTabWidth);
+                }
+            }
+        }
+
+        #region "CodeIndent Handlers"
+        // This (C): https://gist.github.com/Ahmad45123/f2910192987a73a52ab4
+        // ReSharper disable once InconsistentNaming
+        private const int SCI_SETLINEINDENTATION = 2126;
+        // ReSharper disable once InconsistentNaming
+        private const int SCI_GETLINEINDENTATION = 2127;
+        void SetIndent(Scintilla scintilla, int line, int indent)
+        {
+            scintilla.DirectMessage(SCI_SETLINEINDENTATION, new IntPtr(line), new IntPtr(indent));
+        }
+        int GetIndent(Scintilla scintilla, int line)
+        {
+            return (scintilla.DirectMessage(SCI_GETLINEINDENTATION, new IntPtr(line), IntPtr.Zero).ToInt32());
+        }
+        #endregion
+
+        private void Scintilla_InsertCheck(object sender, InsertCheckEventArgs e)
+        {
+            // This (C): https://gist.github.com/Ahmad45123/f2910192987a73a52ab4
+            var scintilla = (Scintilla) sender;
+
+            if ((e.Text.EndsWith("\r") || e.Text.EndsWith("\n"))) {
+                int startPos = scintilla.Lines[scintilla.LineFromPosition(scintilla.CurrentPosition)].Position;
+                int endPos = e.Position;
+                string curLineText = scintilla.GetTextRange(startPos, (endPos - startPos)); //Text until the caret so that the whitespace is always equal in every line.
+		
+                Match indent = Regex.Match(curLineText, "^[ \\t]*");
+                e.Text = (e.Text + indent.Value);
+                if (Regex.IsMatch(curLineText, "{\\s*$")) {
+                    e.Text = (e.Text + "\t");
+                }
+            }
+        }
     }
 }

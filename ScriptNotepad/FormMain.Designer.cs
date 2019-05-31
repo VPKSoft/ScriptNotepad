@@ -155,6 +155,7 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -1216,6 +1217,11 @@
             this.mnuWindow.Size = new System.Drawing.Size(63, 20);
             this.mnuWindow.Text = "Window";
             // 
+            // tmAutoSave
+            // 
+            this.tmAutoSave.Interval = 300000;
+            this.tmAutoSave.Tick += new System.EventHandler(this.TmAutoSave_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1374,6 +1380,7 @@
         private System.Windows.Forms.ToolStripStatusLabel ssLbSpace7;
         private System.Windows.Forms.ToolStripStatusLabel sslbZoom;
         private System.Windows.Forms.ToolStripStatusLabel sslbZoomPercentage;
+        private System.Windows.Forms.Timer tmAutoSave;
     }
 }
 

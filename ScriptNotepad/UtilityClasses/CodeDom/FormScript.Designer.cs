@@ -152,6 +152,8 @@
             this.scintilla.Name = "scintilla";
             this.scintilla.Size = new System.Drawing.Size(944, 420);
             this.scintilla.TabIndex = 0;
+            this.scintilla.CharAdded += new System.EventHandler<ScintillaNET.CharAddedEventArgs>(this.Scintilla_CharAdded);
+            this.scintilla.InsertCheck += new System.EventHandler<ScintillaNET.InsertCheckEventArgs>(this.Scintilla_InsertCheck);
             this.scintilla.TextChanged += new System.EventHandler(this.common_Changed);
             // 
             // statusStrip1

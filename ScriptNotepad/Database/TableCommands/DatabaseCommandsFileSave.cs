@@ -39,23 +39,11 @@ namespace ScriptNotepad.Database.TableCommands
     public class DatabaseCommandsFileSave: DataFormulationHelpers
     {
         /// <summary>
-        /// Gets the ID of the latest file insert from the database.
-        /// </summary>
-        /// <returns>A generated SQL sentence.</returns>
-        public static string GenLatestDBFileSaveIDSentence()
-        {
-            string sql =
-                string.Join(Environment.NewLine,
-                $"SELECT IFNULL(MAX(ID), 1) FROM DBFILE_SAVE;");
-
-            return sql;
-        }
-
-        /// <summary>
         /// Gets the existing database file save identifier sentence.
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        // ReSharper disable once InconsistentNaming
         public static string GetExistingDBFileSaveIDSentence(DBFILE_SAVE fileSave)
         {
             string sql =
@@ -114,12 +102,13 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="ids">A list of ID numbers to generate a SQL sentence to delete <see cref="DBFILE_SAVE"/> entries from the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        // ReSharper disable once InconsistentNaming
         public static string GenDeleteDBFileSaveIDList(List<long> ids)
         {
-            string deleteIDList = string.Join(", ", ids);
+            string deleteIdList = string.Join(", ", ids);
             string sql =
                 string.Join(Environment.NewLine,
-                $"DELETE FROM DBFILE_SAVE WHERE ID IN({deleteIDList});");
+                $"DELETE FROM DBFILE_SAVE WHERE ID IN({deleteIdList});");
 
             return sql;
         }
