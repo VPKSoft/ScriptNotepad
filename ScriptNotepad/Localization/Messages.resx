@@ -765,4 +765,7 @@
   <data name="msgSearchNotFound" xml:space="preserve">
     <value>Find: not found.|A message (in a status strip label) describing that the search text wasn't found with the search and replace dialog</value>
   </data>
+  <data name="msgSearchFoundCountFiles" xml:space="preserve">
+    <value>Found: {0} in {1} files|A message describing a count of search or replace results in multiple files</value>
+  </data>
 </root>

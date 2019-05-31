@@ -463,6 +463,7 @@
             // 
             // sttcMain
             // 
+            this.sttcMain.AllowDrop = true;
             this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
             this.sttcMain.CloseButtonImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.CloseButtonImage")));
             this.tlpMain.SetColumnSpan(this.sttcMain, 5);
@@ -491,6 +492,9 @@
             this.sttcMain.DocumentMouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.SttcMain_DocumentMouseDoubleClick);
             this.sttcMain.SelectionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnSelectionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.DocumentTextChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnDocumentTextChanged(this.sttcMain_DocumentTextChanged);
+            this.sttcMain.DragDrop += new System.Windows.Forms.DragEventHandler(this.SttcMain_DragDrop);
+            this.sttcMain.DragEnter += new System.Windows.Forms.DragEventHandler(this.SttcMain_DragEnterOrOver);
+            this.sttcMain.DragOver += new System.Windows.Forms.DragEventHandler(this.SttcMain_DragEnterOrOver);
             // 
             // pnDock
             // 

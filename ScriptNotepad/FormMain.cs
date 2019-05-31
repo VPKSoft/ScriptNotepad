@@ -3122,5 +3122,27 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
+
+        private void SttcMain_DragEnterOrOver(object sender, DragEventArgs e)
+        {
+            e.Effect = 
+                e.Data.GetDataPresent(DataFormats.FileDrop) ? 
+                    DragDropEffects.Copy : DragDropEffects.None;
+        }
+
+        private void SttcMain_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] dropFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string filePath in dropFiles)
+                {
+                    if (File.Exists(filePath))
+                    {
+                        OpenDocument(filePath, FormSettings.Settings.DefaultEncoding);
+                    }
+                }
+            }
+        }
     }
 }

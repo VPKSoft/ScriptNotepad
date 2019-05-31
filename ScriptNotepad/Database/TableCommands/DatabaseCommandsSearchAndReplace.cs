@@ -74,7 +74,7 @@ namespace ScriptNotepad.Database.TableCommands
                     $"{DateToDBString(DateTime.Now)},",
                     $"{DatabaseCommandsGeneral.GenSessionNameIDCondition(searchAndReplace.SESSIONNAME)}",
                     $"WHERE NOT EXISTS(SELECT * FROM {tableName} WHERE",
-                    $"TYPE = {searchAndReplace.TYPE} AND {FieldNameByTableName(tableName)} = {QS(searchAndReplace.SEARCH_OR_REPLACE_TEXT)});");
+                    $"TYPE = {searchAndReplace.TYPE} AND {FieldNameByTableName(tableName)} = {QS(searchAndReplace.SEARCH_OR_REPLACE_TEXT)} AND SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(searchAndReplace.SESSIONNAME)});");
 
             return sql;
         }

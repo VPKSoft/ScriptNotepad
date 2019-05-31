@@ -1296,8 +1296,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // indicate the count value to the user..
             SetStatus(results.Count > 0 ? Color.RoyalBlue : Color.Red,
-                DBLangEngine.GetMessage("msgSearchFoundCount",
-                    "Found: {0}|A message describing a count of search or replace results", results.Count));
+                DBLangEngine.GetMessage("msgSearchFoundCountFiles",
+                    "Found: {0} in {1} files|A message describing a count of search or replace results in multiple files",
+                    results.Count, results.Select(f => f.fileName).Distinct().Count()));
         }
 
         // A users wishes to replace all occurrences within all the opened documents..
@@ -1422,8 +1423,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     CurrentDocument.scintilla.Text = result?.newContents;
                 }
 
+                int count = result?.count ?? 0;
+
                 // set the count value of replaced occurrences on the status strip..
-                SetStatus(Color.ForestGreen,DBLangEngine.GetMessage("msgSearchReplaceCount",
+                SetStatus(count > 0 ? Color.ForestGreen : Color.Red, DBLangEngine.GetMessage("msgSearchReplaceCount",
                     "Replaced: {0}|A message describing a count of occurrences replaced", result?.count));
             }
         }
@@ -1556,14 +1559,18 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     }
                 });
             
-            // create the FormSearchResultTree class instance..
-            var tree = new FormSearchResultTree();
+            // no need to display an empty tree view; so the comparison..
+            if (results.Count > 0)
+            {
+                // create the FormSearchResultTree class instance..
+                var tree = new FormSearchResultTree();
 
-            // display the tree..
-            tree.Show();
+                // display the tree..
+                tree.Show();
 
-            // set the search results for the FormSearchResultTree class instance..
-            tree.SearchResults = results;
+                // set the search results for the FormSearchResultTree class instance..
+                tree.SearchResults = results;
+            }
 
             // set the Scintilla free (!)..
             using (contents)
@@ -1571,7 +1578,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 Controls.Remove(contents);
             }
 
-            // TODO::Continue from here..
+            // indicate the count value to the user..
+            SetStatus(results.Count > 0 ? Color.RoyalBlue : Color.Red,
+                DBLangEngine.GetMessage("msgSearchFoundCountFiles",
+                    "Found: {0} in {1} files|A message describing a count of search or replace results in multiple files",
+                    results.Count, results.Select(f => f.fileName).Distinct().Count()));
         }
 
         // replaces a text occurrences in multiple files on the file system..
@@ -1656,9 +1667,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
 
             // indicate the replacement count..
-            ssLbStatus.Text = DBLangEngine.GetMessage("msgReplacementsMadeFilesAmount",
-                "Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.",
-                replaceCount, filesAffected);
+            SetStatus(replaceCount > 0 ? Color.ForestGreen : Color.Red,
+                ssLbStatus.Text = DBLangEngine.GetMessage("msgReplacementsMadeFilesAmount",
+                    "Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.",
+                    replaceCount, filesAffected));
         }
 
         // set the folder via the Ookii.Dialogs.WinForms.VistaFolderBrowserDialog class..

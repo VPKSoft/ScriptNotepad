@@ -1564,6 +1564,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Found: {0} in {1} files|A message describing a count of search or replace results in multiple files.
+        /// </summary>
+        internal static string msgSearchFoundCountFiles {
+            get {
+                return ResourceManager.GetString("msgSearchFoundCountFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find: not found.|A message (in a status strip label) describing that the search text wasn&apos;t found with the search and replace dialog.
         /// </summary>
         internal static string msgSearchNotFound {
