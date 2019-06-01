@@ -274,6 +274,9 @@ namespace ScriptNotepad
             // create a menu for open forms within the application..
             WinFormsFormMenuBuilder = new WinFormsFormMenuBuilder(mnuWindow);
 
+            // create a menu for the open tabs..
+            TabMenuBuilder = new TabMenuBuilder(mnuTab, sttcMain);
+
             // set the value whether to use individual zoom for the open document(s)..
             sttcMain.ZoomSynchronization = !FormSettings.Settings.EditorIndividualZoom;
 
@@ -689,6 +692,12 @@ namespace ScriptNotepad
             using (WinFormsFormMenuBuilder)
             {
                 WinFormsFormMenuBuilder = null;
+            }
+
+            // dispose of the tab menu..
+            using (TabMenuBuilder)
+            {
+                TabMenuBuilder = null;
             }
 
             // dispose of the loaded plug-in..
@@ -2835,6 +2844,11 @@ namespace ScriptNotepad
         /// Gets or sets menu builder used to build the menu of the <see cref="Application"/>'s open forms.
         /// </summary>
         private WinFormsFormMenuBuilder WinFormsFormMenuBuilder { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tab menu builder for the <see cref="ScintillaTabbedTextControl"/>.
+        /// </summary>
+        private TabMenuBuilder TabMenuBuilder { get; set; }
 
         /// <summary>
         /// Gets or sets the programming language helper class <see cref="ProgrammingLanguageHelper"/>.

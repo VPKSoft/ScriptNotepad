@@ -156,6 +156,7 @@
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
+            this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -1204,6 +1205,7 @@
             this.mnuTools,
             this.mnuPlugins,
             this.mnuWindow,
+            this.mnuTab,
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -1221,6 +1223,12 @@
             // 
             this.tmAutoSave.Interval = 300000;
             this.tmAutoSave.Tick += new System.EventHandler(this.TmAutoSave_Tick);
+            // 
+            // mnuTab
+            // 
+            this.mnuTab.Name = "mnuTab";
+            this.mnuTab.Size = new System.Drawing.Size(38, 20);
+            this.mnuTab.Text = "Tab";
             // 
             // FormMain
             // 
@@ -1381,6 +1389,7 @@
         private System.Windows.Forms.ToolStripStatusLabel sslbZoom;
         private System.Windows.Forms.ToolStripStatusLabel sslbZoomPercentage;
         private System.Windows.Forms.Timer tmAutoSave;
+        private System.Windows.Forms.ToolStripMenuItem mnuTab;
     }
 }
 

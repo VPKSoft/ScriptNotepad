@@ -26,11 +26,11 @@
 * Done? [N/A  ] [2019/05/30] Fix to software to remember user assigned lexer for a file.
 * Done? [SOME ] [2019/05/30] Tidy up the search box and add notifications to it.
 * Done? [N/A  ] [2019/05/30] Add a mouse reset to the document zoom.
-* Done? [N/A  ] [2019/05/30] Make a menu for the tabs.
 * Done? [YES  ] [2019/05/31] Add drag & drop support for files.
 * Done? [N/A  ] [2019/05/31] Add correct titles to open and to save file dialogs.
 * Done? [YES  ] [2019/05/31] The ScintillaDiff control now synchronizes with the side-by-side view so it's updated.
 * Done? [YES  ] [2019/05/31] The VPKSoft.ScintillaSpellCheck library now shows the menu even if no suggestions are available, so it's updated.
 * Done? [YES  ] [2019/05/31] Add document auto-save and make it a setting.
-* Done? [N/A  ] [2019/05/31] Add auto-indentation to the script editor.
+* Done? [KINDA] [2019/05/31] Add auto-indentation to the script editor.
 * Done? [N/A  ] [2019/05/31] Scripts to menu? Or not?.
+* Done? [YES  ] [2019/06/01] Make a menu for the tabs.
