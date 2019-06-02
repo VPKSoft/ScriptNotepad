@@ -123,11 +123,11 @@
     <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.5\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.1\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.2\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.SearchText, Version=1.0.1.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.SearchText.1.0.1.3\lib\net47\VPKSoft.SearchText.dll</HintPath>
+    <Reference Include="VPKSoft.SearchText, Version=1.0.1.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.SearchText.1.0.1.5\lib\net47\VPKSoft.SearchText.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
@@ -486,6 +486,7 @@
     <None Include="Resources\book_previous.png" />
     <None Include="Resources\book_next.png" />
     <None Include="Resources\swap_view.png" />
+    <None Include="Resources\mark_words.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

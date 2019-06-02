@@ -24,19 +24,19 @@ SOFTWARE.
 */
 #endregion
 
+using Ookii.Dialogs.WinForms;
 using ScintillaNET;
+using ScriptNotepad.Database.TableMethods;
+using ScriptNotepad.Database.Tables;
+using ScriptNotepad.Settings;
+using ScriptNotepad.UtilityClasses.IO;
+using ScriptNotepad.UtilityClasses.Keyboard;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Ookii.Dialogs.WinForms;
-using ScriptNotepad.Database.TableMethods;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.Settings;
-using ScriptNotepad.UtilityClasses.IO;
-using ScriptNotepad.UtilityClasses.Keyboard;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.SearchText;
@@ -114,6 +114,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // get the path(s) used in the search and/or replace in files..
             PathHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.Path, FormSettings.Settings.FileSearchHistoriesLimit);
+
+            // set the user assigned color for the mark..
+            btMarkColor.BackColor = FormSettings.Settings.MarkSearchReplaceColor;
         }
         #endregion
 
@@ -237,13 +240,16 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             get => selectionChangedFromMainForm;
             set
             {
-                cbInSelection.Enabled = value;
+                cbInSelection2.Enabled = value;
+                cbInSelection4.Enabled = value;
                 selectionChangedFromMainForm = value;
 
-                if (!SelectionChangedFromMainForm)
+                if (!selectionChangedFromMainForm)
                 {
-                    cbInSelection.Enabled = false;
-                    cbInSelection.Checked = false;
+                    cbInSelection2.Enabled = false;
+                    cbInSelection2.Checked = false;
+                    cbInSelection4.Enabled = false;
+                    cbInSelection4.Checked = false;
                 }
             }
         }
@@ -313,6 +319,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Shows the form with the mark tab page opened.
+        /// </summary>
+        public static void ShowMarkMatches()
+        {
+            Instance.Show();
+            Instance.PreviousVisible = true;
+            Instance.tcMain.SelectTab(3);
+            Instance.cmbFind4.Focus();
+        }
+
+        /// <summary>
         /// Creates an instance of the dialog for localization.
         /// </summary>
         // ReSharper disable once ObjectCreationAsStatement
@@ -337,6 +354,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             cmbFind2.Items.AddRange(searchHistory.ToArray());
             // ReSharper disable once CoVariantArrayConversion
             cmbFind3.Items.AddRange(searchHistory.ToArray());
+            // ReSharper disable once CoVariantArrayConversion
+            cmbFind4.Items.AddRange(searchHistory.ToArray());
         }
 
         /// <summary>
@@ -406,6 +425,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 else if (tcMain.SelectedTab.Equals(tabFindInFiles))
                 {
                     cmbFind3.Focus();
+                }
+                else if (tcMain.SelectedTab.Equals(tabMarkMatches))
+                {
+                    cmbFind4.Focus();
                 }
             }
             else if (Visible && !shouldShow)
@@ -500,7 +523,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 // based on the currently active tab, return the correct value..
                 if (rbNormal.Checked && tcMain.SelectedTab.Equals(tabFind) ||
                     rbNormal2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
-                    rbNormal3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
+                    rbNormal3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles) ||
+                    rbNormal4.Checked && tcMain.SelectedTab.Equals(tabMarkMatches))
                 {
                     return TextSearcherEnums.SearchType.Normal;
                 }
@@ -508,7 +532,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 // based on the currently active tab, return the correct value..
                 if (rbExtented.Checked && tcMain.SelectedTab.Equals(tabFind) ||
                     rbExtented2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
-                    rbExtented3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
+                    rbExtented3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles) ||
+                    rbExtented4.Checked && tcMain.SelectedTab.Equals(tabMarkMatches))
                 {
                     return TextSearcherEnums.SearchType.Extended;
                 }
@@ -516,7 +541,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 // based on the currently active tab, return the correct value..
                 if (rbRegEx.Checked && tcMain.SelectedTab.Equals(tabFind) ||
                     rbRegEx2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
-                    rbRegEx3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
+                    rbRegEx3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles) ||
+                    rbRegEx4.Checked && tcMain.SelectedTab.Equals(tabMarkMatches))
                 {
                     return TextSearcherEnums.SearchType.RegularExpression;
                 }
@@ -524,7 +550,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 // based on the currently active tab, return the correct value..
                 if (rbSimpleExtended.Checked && tcMain.SelectedTab.Equals(tabFind) ||
                     rbSimpleExtended2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
-                    rbSimpleExtended3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles))
+                    rbSimpleExtended3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles) ||
+                    rbSimpleExtended4.Checked && tcMain.SelectedTab.Equals(tabMarkMatches))
                 {
                     return TextSearcherEnums.SearchType.SimpleExtended;
                 }
@@ -554,6 +581,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 if (tcMain.SelectedTab.Equals(tabFindInFiles))
                 {
                     return cmbFind3.Text;
+                }
+
+                if (tcMain.SelectedTab.Equals(tabMarkMatches))
+                {
+                    return cmbFind4.Text;
                 }
 
                 return string.Empty;
@@ -626,6 +658,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return ((cmbFind3.Text != string.Empty && !replacing) ||
                        (cmbReplace3.Text != string.Empty && replacing)) &&
                        cmbFilters3.Text.Trim() != string.Empty && cmbDirectory3.Text != string.Empty;
+            }
+
+            if (tcMain.SelectedTab.Equals(tabMarkMatches))
+            {
+                return cmbFind4.Text != string.Empty;
             }
 
             return false;
@@ -777,6 +814,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                         cbMatchCaseChecked = cbMatchCase3.Checked;
                         cbMatchWholeWordChecked = cbMatchWholeWord3.Checked;
                     }
+                    else if (tcMain.SelectedTab.Equals(tabMarkMatches))
+                    {
+                        cmbFindString = cmbFind4.Text;
+                        cbWrapAroundChecked = false; // no wrap-around with marks..
+                        cbMatchCaseChecked = cbMatchCase4.Checked;
+                        cbMatchWholeWordChecked = cbMatchWholeWord4.Checked;
+                    }
 
                     // create the search and replace algorithm..
                     SearchReplaceDocuments =
@@ -807,7 +851,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             Invoke(new MethodInvoker(delegate
             {
                 // get a value if only the selection is required to be used as text for the algorithm..
-                bool selection = cbInSelection.Checked && tcMain.SelectedTab.Equals(tabReplace);
+                bool selection = 
+                    cbInSelection4.Checked && tcMain.SelectedTab.Equals(tabMarkMatches) ||
+                    cbInSelection2.Checked && tcMain.SelectedTab.Equals(tabReplace);
 
                 if (scintilla.scintilla != null)
                 {
@@ -873,6 +919,275 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 SetStatus(Color.Red,
                     DBLangEngine.GetMessage("msgSearchNotFound",
                         "Find: not found.|A message (in a status strip label) describing that the search text wasn't found with the search and replace dialog"));
+            }
+        }
+
+        /// <summary>
+        /// Searches all the found files for a match.
+        /// </summary>
+        private void FindAllInFiles()
+        {
+            SaveSearchText(); // save the used search text to the database..
+            SaveReplaceText(); // save the used replace text to the database..
+            SaveFilters(); // save the used file extension filter to the database..
+            SavePaths(); // save the path used in the search into the database..
+
+            // make a list suitable for the FormSearchResultTree class instance..            
+            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                isFileOpen)> results =
+                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
+                    isFileOpen)>();
+
+            // create a new instance of the DirectoryCrawler class by user given "arguments"..
+            DirectoryCrawler crawler = new DirectoryCrawler(cmbDirectory3.Text, DirectoryCrawler.SearchTypeMatch.Regex,
+                cmbFilters3.Text, cbInSubFolders.Checked);
+
+            // create a invisible scintilla control for the process..
+            Scintilla contents = new Scintilla {Visible = false};
+
+            // invocations to the control can't be made if the control has no handle..
+            Controls.Add(contents);
+
+            // ReSharper disable once ObjectCreationAsStatement
+
+            // initialize a new FormDialogSearchReplaceProgressFiles dialog form with the
+            // DirectoryCrawler class instance as parameter and a delegate for the
+            // FormDialogSearchReplaceProgressFiles.RequestNextAction..
+            new FormDialogSearchReplaceProgressFiles(crawler,
+                // no name for this delegate..
+                (o, args) =>
+                {
+                    // check the settings for a maximum search file size..
+                    if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)
+                    {
+                        // .. and if exceeded, skip the file..
+                        args.SkipFile = true;
+                    }
+                    else // ..otherwise do continue..
+                    {
+                        // invoke the Scintilla to get new contents of the new file..
+                        contents.Invoke(new MethodInvoker(delegate
+                        {
+                            // just read all the text in the file and set it to the Scintilla..
+                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
+
+                            // by not doing this the memory consumption might get HIGH..
+                            contents.EmptyUndoBuffer();
+
+                            // create a new search algorithm for the file and it's contents..
+                            CreateSingleSearchReplaceAlgorithm((contents, args.FileName));
+                        }));
+
+                        // set the new TextSearcherAndReplacer class instance to the event's argument..
+                        args.SearchAndReplacer = SearchReplaceDocuments;
+                        
+                        // set the action to run for the file in the FormDialogSearchReplaceProgressFiles class instance..
+                        args.Action = () =>
+                        {
+                            results.AddRange(ToTreeResult(SearchReplaceDocuments?.FindAll(100), contents,
+                                args.FileName, false));
+                        };
+                    }
+                });
+            
+            // no need to display an empty tree view; so the comparison..
+            if (results.Count > 0)
+            {
+                // create the FormSearchResultTree class instance..
+                var tree = new FormSearchResultTree();
+
+                // display the tree..
+                tree.Show();
+
+                // set the search results for the FormSearchResultTree class instance..
+                tree.SearchResults = results;
+            }
+
+            // set the Scintilla free (!)..
+            using (contents)
+            {
+                Controls.Remove(contents);
+            }
+
+            // indicate the count value to the user..
+            SetStatus(results.Count > 0 ? Color.RoyalBlue : Color.Red,
+                DBLangEngine.GetMessage("msgSearchFoundCountFiles",
+                    "Found: {0} in {1} files|A message describing a count of search or replace results in multiple files",
+                    results.Count, results.Select(f => f.fileName).Distinct().Count()));
+        }
+
+        /// <summary>
+        /// Searches all the found files for a match and replaces the matches with the given replace text.
+        /// </summary>
+        private void ReplaceAllInFiles()
+        {
+            SaveSearchText(); // save the used search text to the database..
+            SaveReplaceText(); // save the used replace text to the database..
+            SaveFilters(); // save the used file extension filter to the database..
+            SavePaths(); // save the path used in the search into the database..
+
+            string toReplaceWith = cmbReplace3.Text;
+
+            // create a new instance of the DirectoryCrawler class by user given "arguments"..
+            DirectoryCrawler crawler = new DirectoryCrawler(cmbDirectory3.Text, DirectoryCrawler.SearchTypeMatch.Regex,
+                cmbFilters3.Text, cbInSubFolders.Checked);
+
+            // create a invisible scintilla control for the process..
+            Scintilla contents = new Scintilla {Visible = false};
+
+            // invocations to the control can't be made if the control has no handle..
+            Controls.Add(contents);
+
+            int replaceCount = 0;
+            int filesAffected = 0;
+
+            // ReSharper disable once ObjectCreationAsStatement
+
+            // initialize a new FormDialogSearchReplaceProgressFiles dialog form with the
+            // DirectoryCrawler class instance as parameter and a delegate for the
+            // FormDialogSearchReplaceProgressFiles.RequestNextAction..
+            new FormDialogSearchReplaceProgressFiles(crawler,
+                // no name for this delegate..
+                (o, args) =>
+                {
+                    // check the settings for a maximum search file size..
+                    if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)
+                    {
+                        // .. and if exceeded, skip the file..
+                        args.SkipFile = true;
+                    }
+                    else // ..otherwise do continue..
+                    {
+                        // invoke the Scintilla to get new contents of the new file..
+                        contents.Invoke(new MethodInvoker(delegate
+                        {
+                            // just read all the text in the file and set it to the Scintilla..
+                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
+
+                            // by not doing this the memory consumption might get HIGH..
+                            contents.EmptyUndoBuffer();
+
+                            // create a new search algorithm for the file and it's contents..
+                            CreateSingleSearchReplaceAlgorithm((contents, args.FileName));
+                        }));
+
+                        // set the new TextSearcherAndReplacer class instance to the event's argument..
+                        args.SearchAndReplacer = SearchReplaceDocuments;
+                        
+                        // set the action to run for the file in the FormDialogSearchReplaceProgressFiles class instance..
+                        args.Action = () =>
+                        {
+                            var replacements = SearchReplaceDocuments?.ReplaceAll(toReplaceWith, 100);
+                            if (replacements.HasValue)
+                            {
+                                if (replacements.Value.count > 0)
+                                {
+                                    File.WriteAllText(args.FileName, replacements.Value.newContents,
+                                        FormSettings.Settings.DefaultEncoding);
+                                    filesAffected++;
+
+                                    replaceCount += replacements.Value.count;
+                                }                               
+                            }
+                        };
+                    }
+                });            
+
+            // set the Scintilla free (!)..
+            using (contents)
+            {
+                Controls.Remove(contents);
+            }
+
+            // indicate the replacement count..
+            SetStatus(replaceCount > 0 ? Color.ForestGreen : Color.Red,
+                ssLbStatus.Text = DBLangEngine.GetMessage("msgReplacementsMadeFilesAmount",
+                    "Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.",
+                    replaceCount, filesAffected));
+        }
+
+        /// <summary>
+        /// Marks all occurrences of a text of the active document with user defined color.
+        /// </summary>
+        private void MarkAll()
+        {
+            SaveSearchText(); // save the used search text to the database..
+
+            // make a list suitable for the search results..            
+            List<(int position, int length, string foundString)> results =
+                new List<(int position, int length, string foundString)>();
+
+            if (cbClearPreviousMarks4.Checked)
+            {
+                ClearAllMarks();
+            }
+
+            // a necessary null check..
+            if (CurrentDocument.scintilla != null)
+            {
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormDialogSearchReplaceProgress(delegate
+                {
+                    // create a new search algorithm for the current document..
+                    Invoke(new MethodInvoker(delegate { CreateSingleSearchReplaceAlgorithm(CurrentDocument); }));
+
+                    // search for all the matches in the current document..
+                    if (SearchReplaceDocuments != null)
+                    {
+                        results.AddRange(SearchReplaceDocuments?.FindAll(100).ToList());
+
+                        // reset the search algorithm..
+                        SearchReplaceDocuments?.ResetSearch();
+                    }
+
+                }, SearchReplaceDocuments);
+
+                if (results.Count > 0)
+                {
+                    int num = 25;
+
+                    // clear the previous marks if requested..
+                    if (cbClearPreviousMarks4.Checked)
+                    {
+                        // Remove all uses of our indicator
+                        CurrentDocument.scintilla.IndicatorCurrent = num;
+                        CurrentDocument.scintilla.IndicatorClearRange(0, CurrentDocument.scintilla.TextLength);
+                    }
+
+                    // Update indicator appearance
+                    CurrentDocument.scintilla.Indicators[num].Style = IndicatorStyle.StraightBox;
+                    CurrentDocument.scintilla.Indicators[num].Under = true;
+                    CurrentDocument.scintilla.Indicators[num].ForeColor = FormSettings.Settings.MarkSearchReplaceColor;
+                    CurrentDocument.scintilla.Indicators[num].OutlineAlpha = 255;
+                    CurrentDocument.scintilla.Indicators[num].Alpha = 255;
+                    CurrentDocument.scintilla.IndicatorCurrent = num;
+
+
+                    foreach (var result in results)
+                    {
+                        // Mark the search results with the current indicator
+                        CurrentDocument.scintilla.IndicatorFillRange(
+                            cbInSelection4.Checked
+                                ? CurrentDocument.scintilla.SelectionStart + result.position
+                                : result.position, result.length);
+                    }
+                }
+                // indicate the count value to the user..
+                SetStatus(results.Count > 0 ? Color.RoyalBlue : Color.Red,
+                    DBLangEngine.GetMessage("msgSearchFoundCount",
+                        "Found: {0}|A message describing a count of search or replace results", results.Count));
+            }
+        }
+
+        /// <summary>
+        /// Clears all marks marked with the <see cref="MarkAll"/> method.
+        /// </summary>
+        private void ClearAllMarks()
+        {
+            if (CurrentDocument.scintilla != null)
+            {
+                CurrentDocument.scintilla.IndicatorCurrent = 25;
+                CurrentDocument.scintilla.IndicatorClearRange(0, CurrentDocument.scintilla.TextLength);
             }
         }
 
@@ -1007,6 +1322,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         #endregion
 
         #region PrivateEvents
+        // the user wants to change the color of the mark tab page..
+        private void BtMarkColor_Click(object sender, EventArgs e)
+        {
+            if (cdColors.ShowDialog() == DialogResult.OK)
+            {
+                Button button = (Button) sender;
+                button.BackColor = cdColors.Color;
+
+                // save the user assigned color..
+                FormSettings.Settings.MarkSearchReplaceColor = cdColors.Color;
+            }
+        }
+
         // occurs when the application is activated..
         private void FormSearchAndReplace_ApplicationDeactivated(object sender, EventArgs e)
         {
@@ -1104,6 +1432,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             btFindAllInFiles.Enabled = ValidSearchAndReplace(false);
             btReplaceAllInFiles.Enabled = ValidSearchAndReplace(true);
+
+            btMarkAll.Enabled = ValidSearchAndReplace(false);
         }
 
         // a user wishes to count all the matching strings of the currently active document..
@@ -1152,7 +1482,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 cmbFind3.Focus();
             }
-
+            else if (tcMain.SelectedTab.Equals(tabMarkMatches))
+            {
+                cmbFind4.Focus();
+            }
             // set the navigation control states to enabled/disabled depending on the search condition..
             AppendValidation();
         }
@@ -1189,6 +1522,16 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         {
             // ..so lets obey..
             Close();
+        }
+
+        private void BtMarkAll_Click(object sender, EventArgs e)
+        {
+            MarkAll();
+        }
+
+        private void BtnClearAllMarks_Click(object sender, EventArgs e)
+        {
+            ClearAllMarks();
         }
 
         // A users wishes to find all occurrences within the active document..
@@ -1370,7 +1713,10 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             SaveReplaceText(); // save the used replace text to the database..
 
             // ..so do replace the selection gotten via call to Forward() or Backward() method..
-            CurrentDocument.scintilla?.ReplaceSelection(cmbReplace.Text);
+            if (CurrentDocument.scintilla != null && CurrentDocument.scintilla.SelectedText.Length > 0)
+            {
+                CurrentDocument.scintilla?.ReplaceSelection(cmbReplace.Text);
+            }
 
             // a necessary null check..
             if (CurrentDocument.scintilla != null)
@@ -1411,7 +1757,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             if (result.HasValue)
             {
                 // get a value if only the selection is required to be used as text for the algorithm..
-                bool selection = cbInSelection.Checked && tcMain.SelectedTab.Equals(tabReplace);
+                bool selection = cbInSelection2.Checked && tcMain.SelectedTab.Equals(tabReplace);
 
                 // set the new contents for the current document..
                 if (selection)
@@ -1466,7 +1812,15 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 _tbOpacity = tbOpacity3;
                 _cbTransparency = cbTransparency3;
             }
-
+            else if (sender.Equals(cbTransparency4) || 
+                     sender.Equals(rbTransparencyAlways4) || 
+                     sender.Equals(rbTransparencyOnLosingFocus4) || 
+                     sender.Equals(tbOpacity4))
+            {
+                _rbTransparencyAlways = rbTransparencyAlways4;
+                _tbOpacity = tbOpacity4;
+                _cbTransparency = cbTransparency4;
+            }
                 
             if (_cbTransparency.Checked)
             {
@@ -1496,181 +1850,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // searches for a text occurrences in multiple files on the file system..
         private void BtFindAllInFiles_Click(object sender, EventArgs e)
         {
-            SaveSearchText(); // save the used search text to the database..
-            SaveReplaceText(); // save the used replace text to the database..
-            SaveFilters(); // save the used file extension filter to the database..
-            SavePaths(); // save the path used in the search into the database..
-
-            // make a list suitable for the FormSearchResultTree class instance..            
-            List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
-                isFileOpen)> results =
-                new List<(string fileName, int lineNumber, int startLocation, int length, string lineContents, bool
-                    isFileOpen)>();
-
-            // create a new instance of the DirectoryCrawler class by user given "arguments"..
-            DirectoryCrawler crawler = new DirectoryCrawler(cmbDirectory3.Text, DirectoryCrawler.SearchTypeMatch.Regex,
-                cmbFilters3.Text, cbInSubFolders.Checked);
-
-            // create a invisible scintilla control for the process..
-            Scintilla contents = new Scintilla {Visible = false};
-
-            // invocations to the control can't be made if the control has no handle..
-            Controls.Add(contents);
-
-            // ReSharper disable once ObjectCreationAsStatement
-
-            // initialize a new FormDialogSearchReplaceProgressFiles dialog form with the
-            // DirectoryCrawler class instance as parameter and a delegate for the
-            // FormDialogSearchReplaceProgressFiles.RequestNextAction..
-            new FormDialogSearchReplaceProgressFiles(crawler,
-                // no name for this delegate..
-                (o, args) =>
-                {
-                    // check the settings for a maximum search file size..
-                    if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)
-                    {
-                        // .. and if exceeded, skip the file..
-                        args.SkipFile = true;
-                    }
-                    else // ..otherwise do continue..
-                    {
-                        // invoke the Scintilla to get new contents of the new file..
-                        contents.Invoke(new MethodInvoker(delegate
-                        {
-                            // just read all the text in the file and set it to the Scintilla..
-                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
-
-                            // by not doing this the memory consumption might get HIGH..
-                            contents.EmptyUndoBuffer();
-
-                            // create a new search algorithm for the file and it's contents..
-                            CreateSingleSearchReplaceAlgorithm((contents, args.FileName));
-                        }));
-
-                        // set the new TextSearcherAndReplacer class instance to the event's argument..
-                        args.SearchAndReplacer = SearchReplaceDocuments;
-                        
-                        // set the action to run for the file in the FormDialogSearchReplaceProgressFiles class instance..
-                        args.Action = () =>
-                        {
-                            results.AddRange(ToTreeResult(SearchReplaceDocuments?.FindAll(100), contents,
-                                args.FileName, false));
-                        };
-                    }
-                });
-            
-            // no need to display an empty tree view; so the comparison..
-            if (results.Count > 0)
-            {
-                // create the FormSearchResultTree class instance..
-                var tree = new FormSearchResultTree();
-
-                // display the tree..
-                tree.Show();
-
-                // set the search results for the FormSearchResultTree class instance..
-                tree.SearchResults = results;
-            }
-
-            // set the Scintilla free (!)..
-            using (contents)
-            {
-                Controls.Remove(contents);
-            }
-
-            // indicate the count value to the user..
-            SetStatus(results.Count > 0 ? Color.RoyalBlue : Color.Red,
-                DBLangEngine.GetMessage("msgSearchFoundCountFiles",
-                    "Found: {0} in {1} files|A message describing a count of search or replace results in multiple files",
-                    results.Count, results.Select(f => f.fileName).Distinct().Count()));
+            FindAllInFiles();
         }
 
         // replaces a text occurrences in multiple files on the file system..
         private void BtReplaceAllInFiles_Click(object sender, EventArgs e)
         {
-            SaveSearchText(); // save the used search text to the database..
-            SaveReplaceText(); // save the used replace text to the database..
-            SaveFilters(); // save the used file extension filter to the database..
-            SavePaths(); // save the path used in the search into the database..
-
-            string toReplaceWith = cmbReplace3.Text;
-
-            // create a new instance of the DirectoryCrawler class by user given "arguments"..
-            DirectoryCrawler crawler = new DirectoryCrawler(cmbDirectory3.Text, DirectoryCrawler.SearchTypeMatch.Regex,
-                cmbFilters3.Text, cbInSubFolders.Checked);
-
-            // create a invisible scintilla control for the process..
-            Scintilla contents = new Scintilla {Visible = false};
-
-            // invocations to the control can't be made if the control has no handle..
-            Controls.Add(contents);
-
-            int replaceCount = 0;
-            int filesAffected = 0;
-
-            // ReSharper disable once ObjectCreationAsStatement
-
-            // initialize a new FormDialogSearchReplaceProgressFiles dialog form with the
-            // DirectoryCrawler class instance as parameter and a delegate for the
-            // FormDialogSearchReplaceProgressFiles.RequestNextAction..
-            new FormDialogSearchReplaceProgressFiles(crawler,
-                // no name for this delegate..
-                (o, args) =>
-                {
-                    // check the settings for a maximum search file size..
-                    if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)
-                    {
-                        // .. and if exceeded, skip the file..
-                        args.SkipFile = true;
-                    }
-                    else // ..otherwise do continue..
-                    {
-                        // invoke the Scintilla to get new contents of the new file..
-                        contents.Invoke(new MethodInvoker(delegate
-                        {
-                            // just read all the text in the file and set it to the Scintilla..
-                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
-
-                            // by not doing this the memory consumption might get HIGH..
-                            contents.EmptyUndoBuffer();
-
-                            // create a new search algorithm for the file and it's contents..
-                            CreateSingleSearchReplaceAlgorithm((contents, args.FileName));
-                        }));
-
-                        // set the new TextSearcherAndReplacer class instance to the event's argument..
-                        args.SearchAndReplacer = SearchReplaceDocuments;
-                        
-                        // set the action to run for the file in the FormDialogSearchReplaceProgressFiles class instance..
-                        args.Action = () =>
-                        {
-                            var replacements = SearchReplaceDocuments?.ReplaceAll(toReplaceWith, 100);
-                            if (replacements.HasValue)
-                            {
-                                if (replacements.Value.count > 0)
-                                {
-                                    File.WriteAllText(args.FileName, replacements.Value.newContents,
-                                        FormSettings.Settings.DefaultEncoding);
-                                    filesAffected++;
-
-                                    replaceCount += replacements.Value.count;
-                                }                               
-                            }
-                        };
-                    }
-                });            
-
-            // set the Scintilla free (!)..
-            using (contents)
-            {
-                Controls.Remove(contents);
-            }
-
-            // indicate the replacement count..
-            SetStatus(replaceCount > 0 ? Color.ForestGreen : Color.Red,
-                ssLbStatus.Text = DBLangEngine.GetMessage("msgReplacementsMadeFilesAmount",
-                    "Replaced {0} occurrences in {1} files.|A message indicating and amount of replacements made to files in the files system and how many files were affected.",
-                    replaceCount, filesAffected));
+            ReplaceAllInFiles();
         }
 
         // set the folder via the Ookii.Dialogs.WinForms.VistaFolderBrowserDialog class..
@@ -1737,6 +1923,40 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     {
                         // the return key was pressed with the Control key down, so search backwards..
                         Backward();
+                    }
+
+                    // flag the event as handled..
+                    e.Handled = true;
+                }
+                // if the find (and replace) in files tab is active..
+                else if (tcMain.SelectedTab.Equals(tabReplace))
+                {
+                    if (btFindAllInFiles.Enabled && e.NoModifierKeysDown())
+                    {
+                        // the return key was pressed with no modifiers, so find all in files..
+                        FindAllInFiles();
+                    }
+                    else if (btReplaceAllInFiles.Enabled && e.OnlyControl())
+                    {
+                        // the return key was pressed with the Control key down, replace all in files..
+                        ReplaceAllInFiles();
+                    }
+
+                    // flag the event as handled..
+                    e.Handled = true;
+                }
+                // if the mark tab is active..
+                else if (tcMain.SelectedTab.Equals(tabMarkMatches))
+                {
+                    if (btMarkAll.Enabled && e.NoModifierKeysDown())
+                    {
+                        // the return key was pressed with no modifiers, so mark the search result of the active document..
+                        MarkAll();
+                    }
+                    else if (btnClearAllMarks.Enabled && e.OnlyControl())
+                    {
+                        // the return key was pressed with the Control key down, replace all in files..
+                        ClearAllMarks();
                     }
 
                     // flag the event as handled..

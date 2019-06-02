@@ -285,8 +285,15 @@ namespace ScriptNotepad.PluginHandling
 
         private void btInstallPlugin_Click(object sender, EventArgs e)
         {
+            odDLL.Title = DBLangEngine.GetMessage("msgDialogSelectPlugin",
+                "Select a plugin to install|A title for an open file dialog to indicate user that the user is selecting a plugin dll to be installed");
+
+            odDLL.InitialDirectory = FormSettings.Settings.FileLocationOpenPlugin;
+
             if (odDLL.ShowDialog() == DialogResult.OK)
             {
+                FormSettings.Settings.FileLocationOpenPlugin = Path.GetDirectoryName(odDLL.FileName);
+
                 if (TestFileIsAssembly.IsAssembly(odDLL.FileName))
                 {
                     try

@@ -278,6 +278,13 @@ namespace ScriptNotepad.Settings
         public Color Mark5Color { get; set; } = Color.FromArgb(0, 128, 0);
 
         /// <summary>
+        /// Gets or sets the color of the mark used in the search and replace dialog.
+        /// </summary>
+        [Setting("color/markSearchReplace", typeof(Color))]
+        public Color MarkSearchReplaceColor { get; set; } = Color.DeepPink;
+
+
+        /// <summary>
         /// Gets the color of the mark.
         /// </summary>
         /// <param name="index">The index of the mark style (0-4).</param>
@@ -521,6 +528,54 @@ namespace ScriptNotepad.Settings
                 conflib["language/culture"] = culture.Name;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the initial directory for a save as dialog.
+        /// </summary>
+        [Setting("fileDialog/locationSaveAs", typeof(string))]
+        public string FileLocationSaveAs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog on the main form.
+        /// </summary>
+        [Setting("fileDialog/locationOpen", typeof(string))]
+        public string FileLocationOpen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog on the main form with encoding.
+        /// </summary>
+        [Setting("fileDialog/locationOpenWithEncoding", typeof(string))]
+        public string FileLocationOpenWithEncoding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open the first file for the diff form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenDiff1", typeof(string))]
+        public string FileLocationOpenDiff1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open the second file for the diff form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenDiff2", typeof(string))]
+        public string FileLocationOpenDiff2 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to install a plugin from the plugin management dialog.
+        /// </summary>
+        [Setting("fileDialog/locationOpenPlugin", typeof(string))]
+        public string FileLocationOpenPlugin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open a Hunspell dictionary file from the settings form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenDictionary", typeof(string))]
+        public string FileLocationOpenDictionary { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open a Hunspell affix file from the settings form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenAffix", typeof(string))]
+        public string FileLocationOpenAffix { get; set; }
         #endregion
 
         /// <summary>

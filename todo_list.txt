@@ -7,9 +7,8 @@
 * Done? [YES  ] [2019/05/13] Add the Notepad++ style definition files to the installer.
 * Done? [YES  ] [2019/05/16] Fix weird bug for the main form not accepting all the AltGr+(character) combinations.
 * Done? [SOME ] [2019/05/13] Add LibreOffice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
-* Done? [N/A  ] [2019/05/03] Mark with the search and replace dialog.
 * Done? [SOME ] [2019/05/22] Save document's settings to the database.
-* Done? [N/A  ] [2019/05/03] Save document's marked positions to the database.
+* Done? [DON'T] [2019/05/03] Save document's marked positions to the database.
 * Done? [N/A  ] [2019/05/14] Make the directory crawler to end the thread safe (DirectoryCrawler.Canceled)...
 * Done? [N/A  ] [2019/05/14] Make the VPKSoft.SearchText library thread safe (SearchText.Canceled)...
 * Done? [YES  ] [2019/05/18] Set the default directory for the LibreOffice's dictionaries to 
@@ -23,9 +22,7 @@
 * Done? [DON'T] [2019/05/30] Add lexer(s) to the diff view.
 * Done? [SOME ] [2019/05/30] Make the zoom value of the Scintilla a visible and adjustable element to the main form GUI.
 * Done? [YES  ] [2019/05/30] Notify the ScintillaTabbedTextControl of the zoom change.
-* Done? [N/A  ] [2019/05/30] Fix to software to remember user assigned lexer for a file.
 * Done? [SOME ] [2019/05/30] Tidy up the search box and add notifications to it.
-* Done? [N/A  ] [2019/05/30] Add a mouse reset to the document zoom.
 * Done? [YES  ] [2019/05/31] Add drag & drop support for files.
 * Done? [N/A  ] [2019/05/31] Add correct titles to open and to save file dialogs.
 * Done? [YES  ] [2019/05/31] The ScintillaDiff control now synchronizes with the side-by-side view so it's updated.
@@ -34,3 +31,8 @@
 * Done? [KINDA] [2019/05/31] Add auto-indentation to the script editor.
 * Done? [N/A  ] [2019/05/31] Scripts to menu? Or not?.
 * Done? [YES  ] [2019/06/01] Make a menu for the tabs.
+* Done? [YES  ] [2019/06/02] Fix to software to remember user assigned lexer for a file.
+* Done? [N/A  ] [2019/06/02] Make the program to remember the open file dialog paths based on the context.
+* Done? [N/A  ] [2019/06/02] Bracket matching for the Scintilla?
+* Done? [KINDA] [2019/06/02] Add a mouse reset to the document zoom. (click the zoom label on the status strip)
+* Done? [YES  ] [2019/06/02] Mark with the search and replace dialog.

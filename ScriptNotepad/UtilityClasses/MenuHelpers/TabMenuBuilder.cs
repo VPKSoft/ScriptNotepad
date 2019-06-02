@@ -77,7 +77,7 @@ namespace ScriptNotepad.UtilityClasses.MenuHelpers
         /// <summary>
         /// Creates the menu of the open forms within the <see cref="tabbedTextControl"/>.
         /// </summary>
-        private void CreateMenuOpenTabs()
+        internal void CreateMenuOpenTabs()
         {
             // clear the previously created menu..
             ClearPreviousMenu();
@@ -96,6 +96,8 @@ namespace ScriptNotepad.UtilityClasses.MenuHelpers
                 // ad the item to the main menu item's DropDownItems collection..
                 mainItem.DropDownItems.Add(item);
             }
+
+            mainItem.Enabled = tabbedTextControl.DocumentsCount > 0;
         }
 
 

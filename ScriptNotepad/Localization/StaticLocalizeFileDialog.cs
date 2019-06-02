@@ -35,6 +35,27 @@ namespace ScriptNotepad.Localization
     public static class StaticLocalizeFileDialog
     {
         /// <summary>
+        /// Localizes a given file dialog and adds the localized Hunspell dictionary file filter to it's Filter property.
+        /// </summary>
+        /// <param name="dialog">The file dialog to localize.</param>
+        public static void InitOpenHunspellDictionaryDialog(FileDialog dialog)
+        {
+            dialog.Filter = string.Empty;
+            dialog.Filter += DBLangEngine.GetStatMessage("msgFileDic", "Hunspell dictionary file|*.dic|A text in a file dialog filter to indicate a Hunspell dictionary file");
+        }
+
+        /// <summary>
+        /// Localizes a given file dialog and adds the localized Hunspell dictionary file filter to it's Filter property.
+        /// </summary>
+        /// <param name="dialog">The file dialog to localize.</param>
+        public static void InitOpenHunspellAffixFileDialog(FileDialog dialog)
+        {
+            dialog.Filter = string.Empty;
+            dialog.Filter += DBLangEngine.GetStatMessage("msgFileAffix", "Hunspell affix file |*.aff|A text in a file dialog filter to indicate a Hunspell affix file");
+        }
+
+
+        /// <summary>
         /// Localizes a given file dialog and adds the localized lexer file types to it's Filter property.
         /// </summary>
         /// <param name="dialog">The file dialog to localize.</param>

@@ -36,6 +36,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ScintillaNET;
+using ScriptNotepad.Localization;
 using ScriptNotepad.Localization.Hunspell;
 using ScriptNotepad.Settings.XmlNotepadPlusMarks;
 using ScriptNotepad.UtilityClasses.GraphicUtils;
@@ -107,6 +108,10 @@ namespace ScriptNotepad.Settings
             // so make a way to bypass this weirdness..
             cmbSimulateKeyboard.Items.Add(DBLangEngine.GetMessage("msgAltGrFinnish",
                 "Finnish AltGr simulation (@, £, $)|A message describing that the AltGr and some key would simulate a keypress for an active Scintilla control."));
+
+            // localize the dialog filters..
+            StaticLocalizeFileDialog.InitOpenHunspellDictionaryDialog(odDictionaryFile);
+            StaticLocalizeFileDialog.InitOpenHunspellAffixFileDialog(odAffixFile);
         }
 
         private class FontFamilyHolder
@@ -615,16 +620,28 @@ namespace ScriptNotepad.Settings
 
         private void BtHunspellDictionary_Click(object sender, EventArgs e)
         {
+            odDictionaryFile.InitialDirectory = Settings.FileLocationOpenDictionary;
+
+            odDictionaryFile.Title = DBLangEngine.GetMessage("msgDialogSelectDicFile",
+                "Select a dictionary file|A title for an open file dialog to indicate user that the user is selecting a dictionary file for the spell checking");
+
             if (odDictionaryFile.ShowDialog() == DialogResult.OK)
             {
+                Settings.FileLocationOpenDictionary = Path.GetDirectoryName(odDictionaryFile.FileName);
                 tbHunspellDictionary.Text = odDictionaryFile.FileName;
             }
         }
 
         private void BtHunspellAffixFile_Click(object sender, EventArgs e)
         {
+            odAffixFile.InitialDirectory = Settings.FileLocationOpenAffix;
+
+            odAffixFile.Title = DBLangEngine.GetMessage("msgDialogSelectAffixFile",
+                "Select an affix file|A title for an open file dialog to indicate user that the user is selecting a Hunspell affix file for the spell checking");
+
             if (odAffixFile.ShowDialog() == DialogResult.OK)
             {
+                Settings.FileLocationOpenAffix = Path.GetDirectoryName(odAffixFile.FileName);
                 tbHunspellAffixFile.Text = odAffixFile.FileName;
             }
         }

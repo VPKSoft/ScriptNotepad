@@ -133,6 +133,7 @@
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFindInFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuMarkText = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowWhiteSpaceAndTab = new System.Windows.Forms.ToolStripMenuItem();
@@ -155,8 +156,8 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -488,6 +489,7 @@
             this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);
             this.sttcMain.DocumentZoomChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnDocumentZoomChanged(this.SttcMain_DocumentZoomChanged);
             this.sttcMain.TabClosing += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosing(this.sttcMain_TabClosing);
+            this.sttcMain.TabClosed += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabClosed(this.SttcMain_TabClosed);
             this.sttcMain.CaretPositionChanged += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnCaretPositionChanged(this.sttcMain_SelectionCaretChanged);
             this.sttcMain.DocumentMouseDown += new System.Windows.Forms.MouseEventHandler(this.sttcMain_DocumentMouseDown);
             this.sttcMain.DocumentMouseUp += new System.Windows.Forms.MouseEventHandler(this.sttcMain_DocumentMouseUp);
@@ -993,7 +995,8 @@
             this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFind,
             this.mnuReplace,
-            this.mnuFindInFiles});
+            this.mnuFindInFiles,
+            this.mnuMarkText});
             this.mnuSearch.Name = "mnuSearch";
             this.mnuSearch.Size = new System.Drawing.Size(54, 20);
             this.mnuSearch.Text = "Search";
@@ -1025,6 +1028,16 @@
             this.mnuFindInFiles.Size = new System.Drawing.Size(215, 22);
             this.mnuFindInFiles.Text = "Find in files...";
             this.mnuFindInFiles.Click += new System.EventHandler(this.MnuFindInFiles_Click);
+            // 
+            // mnuMarkText
+            // 
+            this.mnuMarkText.Image = global::ScriptNotepad.Properties.Resources.mark_words;
+            this.mnuMarkText.Name = "mnuMarkText";
+            this.mnuMarkText.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.M)));
+            this.mnuMarkText.Size = new System.Drawing.Size(215, 22);
+            this.mnuMarkText.Text = "Mark...";
+            this.mnuMarkText.Click += new System.EventHandler(this.MnuMarkText_Click);
             // 
             // mnuView
             // 
@@ -1219,16 +1232,16 @@
             this.mnuWindow.Size = new System.Drawing.Size(63, 20);
             this.mnuWindow.Text = "Window";
             // 
-            // tmAutoSave
-            // 
-            this.tmAutoSave.Interval = 300000;
-            this.tmAutoSave.Tick += new System.EventHandler(this.TmAutoSave_Tick);
-            // 
             // mnuTab
             // 
             this.mnuTab.Name = "mnuTab";
             this.mnuTab.Size = new System.Drawing.Size(38, 20);
             this.mnuTab.Text = "Tab";
+            // 
+            // tmAutoSave
+            // 
+            this.tmAutoSave.Interval = 300000;
+            this.tmAutoSave.Tick += new System.EventHandler(this.TmAutoSave_Tick);
             // 
             // FormMain
             // 
@@ -1390,6 +1403,7 @@
         private System.Windows.Forms.ToolStripStatusLabel sslbZoomPercentage;
         private System.Windows.Forms.Timer tmAutoSave;
         private System.Windows.Forms.ToolStripMenuItem mnuTab;
+        private System.Windows.Forms.ToolStripMenuItem mnuMarkText;
     }
 }
 

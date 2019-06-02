@@ -41,17 +41,22 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace.Misc
         /// <param name="num">The indicator number for the <paramref name="scintilla"/>.Indicators 0-7 could be in use by a lexer so use a higher value.</param>
         /// <param name="text">The text to highlight.</param>
         /// <param name="color">The color to use for the highlight.</param>
+        /// <param name="clearPreviousMarks">A flag indicating whether the previous markings marked with the <paramref name="num"/> should be cleared.</param>
         /// <param name="alpha">The transparency value of the indicator.</param>
         /// <param name="outlineAlpha">The transparency value of the indicator outline.</param>
         /// <note>(C): https://github.com/jacobslusser/ScintillaNET/wiki/Find-and-Highlight-Words</note>
-        public static void HighlightWord(Scintilla scintilla, int num, string text, Color color, byte alpha = 255, byte outlineAlpha = 255)
+        public static void HighlightWords(Scintilla scintilla, int num, string text, Color color, bool clearPreviousMarks = true, byte alpha = 255, byte outlineAlpha = 255)
         {
             if (string.IsNullOrEmpty(text))
                 return;
 
-            // Remove all uses of our indicator
-            scintilla.IndicatorCurrent = num;
-            scintilla.IndicatorClearRange(0, scintilla.TextLength);
+            // clear the previous marks if requested..
+            if (clearPreviousMarks)
+            {
+                // Remove all uses of our indicator
+                scintilla.IndicatorCurrent = num;
+                scintilla.IndicatorClearRange(0, scintilla.TextLength);
+            }
 
             // Update indicator appearance
             scintilla.Indicators[num].Style = IndicatorStyle.StraightBox;

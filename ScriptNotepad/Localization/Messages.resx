@@ -768,4 +768,28 @@
   <data name="msgSearchFoundCountFiles" xml:space="preserve">
     <value>Found: {0} in {1} files|A message describing a count of search or replace results in multiple files</value>
   </data>
+  <data name="msgDialogOpenFile" xml:space="preserve">
+    <value>Open|A title for an open file dialog to indicate that a is user selecting a file to be opened</value>
+  </data>
+  <data name="msgDialogOpenFileWithEncoding" xml:space="preserve">
+    <value>Open with encoding|A title for an open file dialog to indicate that a is user selecting a file to be opened with pre-selected encoding</value>
+  </data>
+  <data name="msgDialogSaveAs" xml:space="preserve">
+    <value>Save as|A title for a save file dialog to indicate user that a file is being saved as with a new file name</value>
+  </data>
+  <data name="msgDialogSelectAffixFile" xml:space="preserve">
+    <value>Select an affix file (spelling)|A title for an open file dialog to indicate user that the user is selecting a Hunspell affix file for the spell checking</value>
+  </data>
+  <data name="msgDialogSelectDicFile" xml:space="preserve">
+    <value>Select a dictionary file (spelling)|A title for an open file dialog to indicate user that the user is selecting a dictionary file for the spell checking</value>
+  </data>
+  <data name="msgDialogSelectPlugin" xml:space="preserve">
+    <value>Select a plugin to install|A title for an open file dialog to indicate user that the user is selecting a plugin dll to be installed</value>
+  </data>
+  <data name="msgFileAffix" xml:space="preserve">
+    <value>Hunspell affix file |*.aff|A text in a file dialog filter to indicate a Hunspell affix file</value>
+  </data>
+  <data name="msgFileDic" xml:space="preserve">
+    <value>Hunspell dictionary file|*.dic|A text in a file dialog filter to indicate a Hunspell dictionary file</value>
+  </data>
 </root>

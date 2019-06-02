@@ -718,6 +718,60 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open|A title for an open file dialog to indicate that a is user selecting a file to be opened.
+        /// </summary>
+        internal static string msgDialogOpenFile {
+            get {
+                return ResourceManager.GetString("msgDialogOpenFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open with encoding|A title for an open file dialog to indicate that a is user selecting a file to be opened with pre-selected encoding.
+        /// </summary>
+        internal static string msgDialogOpenFileWithEncoding {
+            get {
+                return ResourceManager.GetString("msgDialogOpenFileWithEncoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save as|A title for a save file dialog to indicate user that a file is being saved as with a new file name.
+        /// </summary>
+        internal static string msgDialogSaveAs {
+            get {
+                return ResourceManager.GetString("msgDialogSaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an affix file (spelling)|A title for an open file dialog to indicate user that the user is selecting a Hunspell affix file for the spell checking.
+        /// </summary>
+        internal static string msgDialogSelectAffixFile {
+            get {
+                return ResourceManager.GetString("msgDialogSelectAffixFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a dictionary file (spelling)|A title for an open file dialog to indicate user that the user is selecting a dictionary file for the spell checking.
+        /// </summary>
+        internal static string msgDialogSelectDicFile {
+            get {
+                return ResourceManager.GetString("msgDialogSelectDicFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a plugin to install|A title for an open file dialog to indicate user that the user is selecting a plugin dll to be installed.
+        /// </summary>
+        internal static string msgDialogSelectPlugin {
+            get {
+                return ResourceManager.GetString("msgDialogSelectPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diff file|*.diff;*.patch|A text in a file dialog indicating Diff files.
         /// </summary>
         internal static string msgDiffFile {
@@ -781,11 +835,29 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hunspell affix file |*.aff|A text in a file dialog filter to indicate a Hunspell affix file.
+        /// </summary>
+        internal static string msgFileAffix {
+            get {
+                return ResourceManager.GetString("msgFileAffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded.
         /// </summary>
         internal static string msgFileArbitraryFileChange {
             get {
                 return ResourceManager.GetString("msgFileArbitraryFileChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hunspell dictionary file|*.dic|A text in a file dialog filter to indicate a Hunspell dictionary file.
+        /// </summary>
+        internal static string msgFileDic {
+            get {
+                return ResourceManager.GetString("msgFileDic", resourceCulture);
             }
         }
         

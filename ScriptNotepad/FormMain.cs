@@ -1547,9 +1547,16 @@ namespace ScriptNotepad
                     // display a save file dialog..
                     else 
                     {
+                        sdAnyFile.Title = DBLangEngine.GetMessage("msgDialogSaveAs",
+                            "Save as|A title for a save file dialog to indicate user that a file is being saved as with a new file name");
+
+                        sdAnyFile.InitialDirectory = FormSettings.Settings.FileLocationSaveAs;
+
                         sdAnyFile.FileName = fileSave.FILENAME_FULL;
                         if (sdAnyFile.ShowDialog() == DialogResult.OK)
                         {
+                            FormSettings.Settings.FileLocationSaveAs = Path.GetDirectoryName(sdAnyFile.FileName);
+
                             fileSave.FILESYS_MODIFIED = DateTime.Now;
 
                             // write the new contents of a file to the existing file overriding it's contents..
@@ -2194,6 +2201,12 @@ namespace ScriptNotepad
             FormSearchAndReplace.ShowFindInFiles();
         }
 
+        // a user wanted to find and mark words of the current document..
+        private void MnuMarkText_Click(object sender, EventArgs e)
+        {
+            FormSearchAndReplace.ShowMarkMatches();
+        }
+
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // get the list of plug-in database entries..
@@ -2332,9 +2345,15 @@ namespace ScriptNotepad
         // a user wanted to open a file via the main menu..
         private void mnuOpen_Click(object sender, EventArgs e)
         {
+            odAnyFile.Title = DBLangEngine.GetMessage("msgDialogOpenFile",
+                "Open|A title for an open file dialog to indicate that a is user selecting a file to be opened");
+
+            odAnyFile.InitialDirectory = FormSettings.Settings.FileLocationOpen;
+
             // if the file dialog was accepted (i.e. OK) then open the file to the view..
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
+                FormSettings.Settings.FileLocationOpen = odAnyFile.InitialDirectory;
                 OpenDocument(odAnyFile.FileName, DefaultEncoding);
             }
         }
@@ -2342,13 +2361,19 @@ namespace ScriptNotepad
         // a user wanted to open a file with encoding via the main menu..
         private void mnuOpenWithEncoding_Click(object sender, EventArgs e)
         {
+            odAnyFile.Title = DBLangEngine.GetMessage("msgDialogOpenFileWithEncoding",
+                "Open with encoding|A title for an open file dialog to indicate that a is user selecting a file to be opened with pre-selected encoding");
+
             // ask the encoding first from the user..
             Encoding encoding = FormDialogQueryEncoding.Execute();
             if (encoding != null)
             {
+                odAnyFile.InitialDirectory = FormSettings.Settings.FileLocationOpenWithEncoding;
+
                 // if the file dialog was accepted (i.e. OK) then open the file to the view..
                 if (odAnyFile.ShowDialog() == DialogResult.OK)
                 {
+                    FormSettings.Settings.FileLocationOpenWithEncoding = Path.GetDirectoryName(odAnyFile.FileName);
                     OpenDocument(odAnyFile.FileName, encoding);
                 }
             }
@@ -2426,6 +2451,9 @@ namespace ScriptNotepad
                 // set the application title to indicate no active document..
                 SetEmptyApplicationTitle();
             }
+
+            // re-create the tab menu..
+            TabMenuBuilder.CreateMenuOpenTabs();
         }
 
         // a user activated a tab (document) so display it's file name..
@@ -2440,10 +2468,20 @@ namespace ScriptNotepad
 
             StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
 
+            // re-create the tab menu..
+            TabMenuBuilder?.CreateMenuOpenTabs();
+
             // check the programming language menu item with the current lexer..
             ProgrammingLanguageHelper.CheckLanguage(e.ScintillaTabbedDocument.LexerType);
 
             UpdateUndoRedoIndicators();
+        }
+
+        // a tab was closed for various reasons..
+        private void SttcMain_TabClosed(object sender, TabClosedEventArgs e)
+        {
+            // re-create the tab menu..
+            TabMenuBuilder?.CreateMenuOpenTabs();
         }
 
         // a user wanted to see an about dialog of the software..
@@ -2460,6 +2498,10 @@ namespace ScriptNotepad
             if (ActiveForm != null && (e.ScintillaTabbedDocument.SelectionLength > 0 && ActiveForm.Equals(this)))
             {
                 FormSearchAndReplace.Instance.SelectionChangedFromMainForm = true;
+            }
+            else
+            {
+                FormSearchAndReplace.Instance.SelectionChangedFromMainForm = false;
             }
 
             if (e.ScintillaTabbedDocument.Scintilla.SelectionEnd == e.ScintillaTabbedDocument.Scintilla.SelectionStart)
@@ -2700,7 +2742,7 @@ namespace ScriptNotepad
             var scintilla = (Scintilla)sender;
             // Indicators 0-7 could be in use by a lexer
             // so we'll use indicator 8 to highlight words.
-            Highlight.HighlightWord(scintilla, 8, scintilla.SelectedText, FormSettings.Settings.SmartHighlight);
+            Highlight.HighlightWords(scintilla, 8, scintilla.SelectedText, FormSettings.Settings.SmartHighlight);
         }
 
         // a user wishes to mark all occurrences of the selected text with a style (1..5)..
@@ -2710,7 +2752,7 @@ namespace ScriptNotepad
             {
                 int styleNum = int.Parse(((ToolStripMenuItem) sender).Tag.ToString());
 
-                Highlight.HighlightWord(sttcMain.CurrentDocument.Scintilla, styleNum,
+                Highlight.HighlightWords(sttcMain.CurrentDocument.Scintilla, styleNum,
                     sttcMain.CurrentDocument.Scintilla.SelectedText, FormSettings.Settings.GetMarkColor(styleNum - 9));
             }
         }
@@ -3091,16 +3133,19 @@ namespace ScriptNotepad
         // a user wants to compare two unopened files..
         private void MnuDiffFiles_Click(object sender, EventArgs e)
         {
-            odAnyFile.Title = DBLangEngine.GetMessage("msgSelectFileDiff1",
-                "Select the first file to diff|A title for an open file dialog to indicate user selecting the first file to find differences with a second file");
-
             try
             {
                 string contentsOne;
                 string contentsTwo;
 
+                odAnyFile.InitialDirectory = FormSettings.Settings.FileLocationOpenDiff1;
+
+                odAnyFile.Title = DBLangEngine.GetMessage("msgSelectFileDiff1",
+                    "Select the first file to diff|A title for an open file dialog to indicate user selecting the first file to find differences with a second file");
+
                 if (odAnyFile.ShowDialog() == DialogResult.OK)
                 {
+                    FormSettings.Settings.FileLocationOpenDiff1 = Path.GetDirectoryName(odAnyFile.FileName);
                     contentsOne = File.ReadAllText(odAnyFile.FileName);
                 }
                 else
@@ -3108,11 +3153,14 @@ namespace ScriptNotepad
                     return;
                 }
 
+                odAnyFile.InitialDirectory = FormSettings.Settings.FileLocationOpenDiff2;
+
                 odAnyFile.Title = DBLangEngine.GetMessage("msgSelectFileDiff2",
                     "Select the second file to diff|A title for an open file dialog to indicate user selecting the second file to find differences with a first file");
 
                 if (odAnyFile.ShowDialog() == DialogResult.OK)
                 {
+                    FormSettings.Settings.FileLocationOpenDiff2 = Path.GetDirectoryName(odAnyFile.FileName);
                     contentsTwo = File.ReadAllText(odAnyFile.FileName);
                 }
                 else
