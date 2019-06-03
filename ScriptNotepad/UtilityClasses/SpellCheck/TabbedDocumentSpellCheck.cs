@@ -103,6 +103,20 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                 {
                     // log the exception..
                     ExceptionLogAction?.Invoke(ex);
+
+                    try
+                    {
+                        ExceptionLogger.LogMessage($"Spell check state: '{FormSettings.Settings.EditorUseSpellChecking}'.");
+                        ExceptionLogger.LogMessage(
+                            $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellDictionaryFile)}): '{FormSettings.Settings.EditorHunspellDictionaryFile}'.");
+                        ExceptionLogger.LogMessage(
+                            $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellAffixFile)}): '{FormSettings.Settings.EditorHunspellAffixFile}'.");
+                        ExceptionLogger.LogMessage($"Document Tag0: '{document.Tag0}'.");
+                    }
+                    catch (Exception ex2)
+                    {
+                        ExceptionLogger.LogError(ex2);
+                    }
                 }
             }
             else

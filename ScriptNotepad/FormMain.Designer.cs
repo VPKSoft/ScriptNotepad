@@ -1260,8 +1260,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
-            this.ResizeBegin += new System.EventHandler(this.FormMain_ResizeBegin);
-            this.ResizeEnd += new System.EventHandler(this.FormMain_ResizeEnd);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyUp);
             this.Resize += new System.EventHandler(this.FormMain_Resize);

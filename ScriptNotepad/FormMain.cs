@@ -2727,16 +2727,6 @@ namespace ScriptNotepad
             FormSearchAndReplace.Instance.ToggleStayTop(false);            
         }
 
-        private void FormMain_ResizeBegin(object sender, EventArgs e)
-        {
-            SuspendLayout();
-        }
-
-        private void FormMain_ResizeEnd(object sender, EventArgs e)
-        {
-            ResumeLayout();
-        }
-
         private void SttcMain_DocumentMouseDoubleClick(object sender, MouseEventArgs e)
         {
             var scintilla = (Scintilla)sender;

@@ -32,7 +32,7 @@
 * Done? [N/A  ] [2019/05/31] Scripts to menu? Or not?.
 * Done? [YES  ] [2019/06/01] Make a menu for the tabs.
 * Done? [YES  ] [2019/06/02] Fix to software to remember user assigned lexer for a file.
-* Done? [N/A  ] [2019/06/02] Make the program to remember the open file dialog paths based on the context.
+* Done? [YES  ] [2019/06/02] Make the program to remember the open file dialog paths based on the context.
 * Done? [N/A  ] [2019/06/02] Bracket matching for the Scintilla?
 * Done? [KINDA] [2019/06/02] Add a mouse reset to the document zoom. (click the zoom label on the status strip)
 * Done? [YES  ] [2019/06/02] Mark with the search and replace dialog.
