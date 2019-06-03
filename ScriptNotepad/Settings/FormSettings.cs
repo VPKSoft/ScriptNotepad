@@ -526,19 +526,26 @@ namespace ScriptNotepad.Settings
 
         private void btCommonSelectFolder_Click(object sender, EventArgs e)
         {
-            var dialog = new VistaFolderBrowserDialog();
+            var dialog = new VistaFolderBrowserDialog {UseDescriptionForTitle = true};
+
             var button = (Button) sender;
             TextBox textBox = default;
             if (button.Tag.ToString() == "tbPluginFolder")
             {
+                dialog.Description = DBLangEngine.GetMessage("msgDirectoryDialogPlugin",
+                    "Select the plugin folder|A message describing that the user should select a plugin folder from a browse folder dialog");
                 textBox = tbPluginFolder;
             }
             else if (button.Tag.ToString() == "tbDictionaryPath")
             {
+                dialog.Description = DBLangEngine.GetMessage("msgDirectoryDialogDictionary",
+                    "Select the dictionary folder|A message describing that the user should select a folder where the Hunspell dictionaries reside");
                 textBox = tbDictionaryPath;
             }
             else if (button.Tag.ToString() == "tbNotepadPlusPlusThemePath")
             {
+                dialog.Description = DBLangEngine.GetMessage("msgDirectoryDialogNotepadPlusPlusThemes",
+                    "Select a theme folder|A message describing that the user should select a folder where the Notepad++ theme files");
                 textBox = tbNotepadPlusPlusThemePath;
             }
 

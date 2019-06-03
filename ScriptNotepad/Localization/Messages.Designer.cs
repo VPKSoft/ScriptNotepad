@@ -781,6 +781,42 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the dictionary folder|A message describing that the user should select a folder where the Hunspell dictionaries reside.
+        /// </summary>
+        internal static string msgDirectoryDialogDictionary {
+            get {
+                return ResourceManager.GetString("msgDirectoryDialogDictionary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a folder to search from|A message describing that the user should select a folder where search files from.
+        /// </summary>
+        internal static string msgDirectoryDialogFindInFiles {
+            get {
+                return ResourceManager.GetString("msgDirectoryDialogFindInFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a theme folder|A message describing that the user should select a folder where the Notepad++ theme files.
+        /// </summary>
+        internal static string msgDirectoryDialogNotepadPlusPlusThemes {
+            get {
+                return ResourceManager.GetString("msgDirectoryDialogNotepadPlusPlusThemes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the plugin folder|A message describing that the user should select a plugin folder from a browse folder dialog.
+        /// </summary>
+        internal static string msgDirectoryDialogPlugin {
+            get {
+                return ResourceManager.GetString("msgDirectoryDialogPlugin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to length: {0}  lines: {1}, pos: {2}|As in the ScintillaNET document size in lines and in characters and the current location in characters.
         /// </summary>
         internal static string msgDocSizeLines {

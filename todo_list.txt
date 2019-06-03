@@ -24,7 +24,7 @@
 * Done? [YES  ] [2019/05/30] Notify the ScintillaTabbedTextControl of the zoom change.
 * Done? [SOME ] [2019/05/30] Tidy up the search box and add notifications to it.
 * Done? [YES  ] [2019/05/31] Add drag & drop support for files.
-* Done? [N/A  ] [2019/05/31] Add correct titles to open and to save file dialogs.
+* Done? [YES  ] [2019/05/31] Add correct titles to open and to save file dialogs.
 * Done? [YES  ] [2019/05/31] The ScintillaDiff control now synchronizes with the side-by-side view so it's updated.
 * Done? [YES  ] [2019/05/31] The VPKSoft.ScintillaSpellCheck library now shows the menu even if no suggestions are available, so it's updated.
 * Done? [YES  ] [2019/05/31] Add document auto-save and make it a setting.

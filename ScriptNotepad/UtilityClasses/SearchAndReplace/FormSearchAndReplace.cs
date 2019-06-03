@@ -1862,7 +1862,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // set the folder via the Ookii.Dialogs.WinForms.VistaFolderBrowserDialog class..
         private void BtSelectFolder_Click(object sender, EventArgs e)
         {
-            var dialog = new VistaFolderBrowserDialog();
+            var dialog = new VistaFolderBrowserDialog
+            {
+                Description = DBLangEngine.GetMessage("msgDirectoryDialogFindInFiles",
+                    "Select a folder to search from|A message describing that the user should select a folder where search files from"),
+                UseDescriptionForTitle = true,
+            };
 
             if (Directory.Exists(cmbDirectory3.Text))
             {
