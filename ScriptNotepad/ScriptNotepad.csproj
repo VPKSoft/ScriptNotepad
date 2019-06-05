@@ -117,14 +117,14 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.5\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.6\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.5\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.2\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.3\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.SearchText, Version=1.0.1.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.SearchText.1.0.1.5\lib\net47\VPKSoft.SearchText.dll</HintPath>

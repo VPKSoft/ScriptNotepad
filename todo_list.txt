@@ -36,3 +36,4 @@
 * Done? [N/A  ] [2019/06/02] Bracket matching for the Scintilla?
 * Done? [KINDA] [2019/06/02] Add a mouse reset to the document zoom. (click the zoom label on the status strip)
 * Done? [YES  ] [2019/06/02] Mark with the search and replace dialog.
+* Done? [N/A  ] [2019/06/04] Add RTL (right-to-left) editing possibility.
