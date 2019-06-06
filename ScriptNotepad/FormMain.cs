@@ -58,8 +58,10 @@ using ScriptNotepad.Database.TableMethods;
 using System.Linq;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
+using ScriptNotepad.Localization.Forms;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
+using ScriptNotepad.UtilityClasses.Encodings;
 using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using ScriptNotepad.UtilityClasses.Keyboard;
 using ScriptNotepad.UtilityClasses.MenuHelpers;
@@ -283,6 +285,9 @@ namespace ScriptNotepad
             // this flag can suspend some events from taking place before
             // the constructor has finished..
             ConstructorFinished = true;
+
+            // set the default encoding of the DetectEncoding class..
+            DetectEncoding.FallBackEncoding = FormSettings.Settings.DefaultEncoding;
 
             // set the state of the auto-save..
             tmAutoSave.Interval =
@@ -1376,7 +1381,7 @@ namespace ScriptNotepad
                 if (File.Exists(args[i]))
                 {
                     // add the file to the document control..
-                    OpenDocument(args[i], DefaultEncoding);
+                    OpenDocument(args[i], DefaultEncoding, false, false);
                 }
             }
         }
@@ -1430,12 +1435,21 @@ namespace ScriptNotepad
         /// <param name="fileName">Name of the file to load into the view.</param>
         /// <param name="encoding">The encoding to be used to open the file.</param>
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
+        /// <param name="encodingOverridden">The given encoding should be used while opening the file.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private void OpenDocument(string fileName, Encoding encoding, bool reloadContents = false)
+        private void OpenDocument(string fileName, Encoding encoding, bool reloadContents, bool encodingOverridden)
         {
             // check the file's existence first..
             if (File.Exists(fileName))
             {
+                if (FormSettings.Settings.AutoDetectEncoding && !encodingOverridden)
+                {
+                    using (FileStream fileStream = File.OpenRead(fileName))
+                    {
+                        encoding = DetectEncoding.FromStream(fileStream);
+                    }
+                }
+
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
                 bool addSuccess = sttcMain.AddDocument(fileName, -1, encoding);
@@ -1459,6 +1473,7 @@ namespace ScriptNotepad
                         {
                             sttcMain.LastAddedDocument.Tag = fileSave;
                             sttcMain.LastAddedDocument.ID = (int)fileSave.ID;
+                            fileSave.ENCODING = encoding;
 
                             // set the saved position of the document's caret..
                             if (fileSave.CURRENT_POSITION > 0 && fileSave.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
@@ -1647,7 +1662,7 @@ namespace ScriptNotepad
                 {
                     if (File.Exists(filePath))
                     {
-                        OpenDocument(filePath, FormSettings.Settings.DefaultEncoding);
+                        OpenDocument(filePath, FormSettings.Settings.DefaultEncoding, false, false);
                     }
                 }
             }
@@ -1860,7 +1875,7 @@ namespace ScriptNotepad
             }
             else if (!e.SearchResult.isFileOpen)
             {              
-                OpenDocument(e.SearchResult.fileName, DefaultEncoding);
+                OpenDocument(e.SearchResult.fileName, DefaultEncoding, false, false);
                 var scintilla = sttcMain.LastAddedDocument?.Scintilla;
                 if (scintilla != null)
                 {
@@ -1981,7 +1996,7 @@ namespace ScriptNotepad
             // else open the file from the file system..
             else if (e.RecentFile != null)
             {
-                OpenDocument(e.RecentFile.FILENAME_FULL, e.RecentFile.ENCODING);
+                OpenDocument(e.RecentFile.FILENAME_FULL, e.RecentFile.ENCODING, false, false);
             }
             // in this case the menu item should contain all the recent files belonging to a session..
             else if (e.RecentFiles != null)
@@ -1997,7 +2012,7 @@ namespace ScriptNotepad
                     // else open the file from the file system..
                     else
                     {
-                        OpenDocument(recentFile.FILENAME_FULL, recentFile.ENCODING);
+                        OpenDocument(recentFile.FILENAME_FULL, recentFile.ENCODING, false, false);
                     }
                 }
             }
@@ -2167,7 +2182,7 @@ namespace ScriptNotepad
         // via the IPC (no multiple instance allowed)..
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, DefaultEncoding); }));
+            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, DefaultEncoding, false, false); }));
         }
 
         // a user wanted to create a new file..
@@ -2354,7 +2369,7 @@ namespace ScriptNotepad
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
                 FormSettings.Settings.FileLocationOpen = odAnyFile.InitialDirectory;
-                OpenDocument(odAnyFile.FileName, DefaultEncoding);
+                OpenDocument(odAnyFile.FileName, DefaultEncoding, false, false);
             }
         }
 
@@ -2374,7 +2389,7 @@ namespace ScriptNotepad
                 if (odAnyFile.ShowDialog() == DialogResult.OK)
                 {
                     FormSettings.Settings.FileLocationOpenWithEncoding = Path.GetDirectoryName(odAnyFile.FileName);
-                    OpenDocument(odAnyFile.FileName, encoding);
+                    OpenDocument(odAnyFile.FileName, encoding, false, true);
                 }
             }
         }

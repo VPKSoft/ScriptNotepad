@@ -155,7 +155,10 @@ namespace ScriptNotepad.Settings
             // select the encoding from the settings..
             CharacterSetComboBuilder.SelectItemByEncoding(Settings.DefaultEncoding, false);
 
-            // set the amount of document file names to keep in history..
+            // get the value whether to use auto-detection on a file encoding on opening a new file..
+            cbEncodingAutoDetect.Checked = Settings.AutoDetectEncoding;
+
+            // get the amount of document file names to keep in history..
             nudHistoryDocuments.Value = Settings.HistoryListAmount;
 
             // get the amount of documents contents to be kept after a document has been closed..
@@ -281,6 +284,9 @@ namespace ScriptNotepad.Settings
         {
             // save the default encoding..
             Settings.DefaultEncoding = SelectedEncoding;
+
+            // save the value whether to use auto-detection on a file encoding on opening a new file..
+            Settings.AutoDetectEncoding = cbEncodingAutoDetect.Checked;
 
             // save the amount of history documents to keep..
             Settings.HistoryListAmount = (int)nudHistoryDocuments.Value;

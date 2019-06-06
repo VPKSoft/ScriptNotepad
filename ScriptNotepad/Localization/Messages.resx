@@ -804,4 +804,13 @@
   <data name="msgDirectoryDialogPlugin" xml:space="preserve">
     <value>Select the plugin folder|A message describing that the user should select a plugin folder from a browse folder dialog</value>
   </data>
+  <data name="msgProgrammingCss" xml:space="preserve">
+    <value>Cascading Style Sheets (CSS)|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingJava" xml:space="preserve">
+    <value>Java programming language|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
+  <data name="msgProgrammingJavaScript" xml:space="preserve">
+    <value>JavaScript programming language|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
 </root>

@@ -280,6 +280,15 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                 (LexerType.Text,
                     DBLangEngine.GetStatMessage("msgProgrammingText2",
                         "Text document (plain)|A programming, markup, setting, script or other file and/or language/text")),
+                (LexerType.Java,
+                    DBLangEngine.GetStatMessage("msgProgrammingJava",
+                        "Java programming language|A programming, markup, setting, script or other file and/or language/text")),
+                (LexerType.JavaScript,
+                    DBLangEngine.GetStatMessage("msgProgrammingJavaScript",
+                        "JavaScript programming language|A programming, markup, setting, script or other file and/or language/text")),
+                (LexerType.Css,
+                    DBLangEngine.GetStatMessage("msgProgrammingCss",
+                        "Cascading Style Sheets (CSS)|A programming, markup, setting, script or other file and/or language/text")),
             });
     }
 }

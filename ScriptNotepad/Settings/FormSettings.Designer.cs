@@ -49,13 +49,10 @@
             this.lbDocumentContentHistory = new System.Windows.Forms.Label();
             this.nudHistoryDocuments = new System.Windows.Forms.NumericUpDown();
             this.lbHistoryDocuments = new System.Windows.Forms.Label();
-            this.gpDefaultEncoding = new System.Windows.Forms.GroupBox();
-            this.btUTF8 = new System.Windows.Forms.PictureBox();
-            this.btSystemDefaultEncoding = new System.Windows.Forms.PictureBox();
-            this.cmbCharacterSet = new System.Windows.Forms.ComboBox();
-            this.cmbEncoding = new System.Windows.Forms.ComboBox();
-            this.lbCharacterSet = new System.Windows.Forms.Label();
-            this.lbEncoding = new System.Windows.Forms.Label();
+            this.tpgAdditionalSettings = new System.Windows.Forms.TabPage();
+            this.tbNoteAutoSave = new System.Windows.Forms.TextBox();
+            this.nudAutoSaveInterval = new System.Windows.Forms.NumericUpDown();
+            this.cbUseAutoSave = new System.Windows.Forms.CheckBox();
             this.tabEditorSettings = new System.Windows.Forms.TabPage();
             this.gbZoomSetting = new System.Windows.Forms.GroupBox();
             this.cbSaveDocumentZoom = new System.Windows.Forms.CheckBox();
@@ -126,10 +123,15 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
-            this.tpgAdditionalSettings = new System.Windows.Forms.TabPage();
-            this.cbUseAutoSave = new System.Windows.Forms.CheckBox();
-            this.nudAutoSaveInterval = new System.Windows.Forms.NumericUpDown();
-            this.tbNoteAutoSave = new System.Windows.Forms.TextBox();
+            this.tabEncoding = new System.Windows.Forms.TabPage();
+            this.cbEncodingAutoDetect = new System.Windows.Forms.CheckBox();
+            this.gpDefaultEncoding = new System.Windows.Forms.GroupBox();
+            this.btUTF8 = new System.Windows.Forms.PictureBox();
+            this.btSystemDefaultEncoding = new System.Windows.Forms.PictureBox();
+            this.cmbCharacterSet = new System.Windows.Forms.ComboBox();
+            this.cmbEncoding = new System.Windows.Forms.ComboBox();
+            this.lbCharacterSet = new System.Windows.Forms.Label();
+            this.lbEncoding = new System.Windows.Forms.Label();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -137,9 +139,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).BeginInit();
-            this.gpDefaultEncoding.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
+            this.tpgAdditionalSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).BeginInit();
             this.tabEditorSettings.SuspendLayout();
             this.gbZoomSetting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudTabWidth)).BeginInit();
@@ -152,8 +153,10 @@
             this.tpgColorSettings.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
-            this.tpgAdditionalSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).BeginInit();
+            this.tabEncoding.SuspendLayout();
+            this.gpDefaultEncoding.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -163,6 +166,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpgGeneralSettings);
             this.tcMain.Controls.Add(this.tpgAdditionalSettings);
+            this.tcMain.Controls.Add(this.tabEncoding);
             this.tcMain.Controls.Add(this.tabEditorSettings);
             this.tcMain.Controls.Add(this.tabEditorFont);
             this.tcMain.Controls.Add(this.tpgColorSettings);
@@ -192,7 +196,6 @@
             this.tpgGeneralSettings.Controls.Add(this.lbDocumentContentHistory);
             this.tpgGeneralSettings.Controls.Add(this.nudHistoryDocuments);
             this.tpgGeneralSettings.Controls.Add(this.lbHistoryDocuments);
-            this.tpgGeneralSettings.Controls.Add(this.gpDefaultEncoding);
             this.tpgGeneralSettings.Location = new System.Drawing.Point(4, 22);
             this.tpgGeneralSettings.Name = "tpgGeneralSettings";
             this.tpgGeneralSettings.Padding = new System.Windows.Forms.Padding(3);
@@ -204,7 +207,7 @@
             // cbCategorizeProgrammingLanguages
             // 
             this.cbCategorizeProgrammingLanguages.AutoSize = true;
-            this.cbCategorizeProgrammingLanguages.Location = new System.Drawing.Point(6, 317);
+            this.cbCategorizeProgrammingLanguages.Location = new System.Drawing.Point(6, 225);
             this.cbCategorizeProgrammingLanguages.Name = "cbCategorizeProgrammingLanguages";
             this.cbCategorizeProgrammingLanguages.Size = new System.Drawing.Size(434, 17);
             this.cbCategorizeProgrammingLanguages.TabIndex = 38;
@@ -215,7 +218,7 @@
             // nudHistoryAmount
             // 
             this.nudHistoryAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudHistoryAmount.Location = new System.Drawing.Point(461, 290);
+            this.nudHistoryAmount.Location = new System.Drawing.Point(461, 198);
             this.nudHistoryAmount.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -238,7 +241,7 @@
             // lbHistoryAmount
             // 
             this.lbHistoryAmount.AutoSize = true;
-            this.lbHistoryAmount.Location = new System.Drawing.Point(3, 292);
+            this.lbHistoryAmount.Location = new System.Drawing.Point(3, 200);
             this.lbHistoryAmount.Name = "lbHistoryAmount";
             this.lbHistoryAmount.Size = new System.Drawing.Size(211, 13);
             this.lbHistoryAmount.TabIndex = 36;
@@ -247,7 +250,7 @@
             // nudMaximumSearchFileSize
             // 
             this.nudMaximumSearchFileSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 264);
+            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 172);
             this.nudMaximumSearchFileSize.Maximum = new decimal(new int[] {
             1999,
             0,
@@ -270,7 +273,7 @@
             // lbMaximumSearchFileSize
             // 
             this.lbMaximumSearchFileSize.AutoSize = true;
-            this.lbMaximumSearchFileSize.Location = new System.Drawing.Point(3, 266);
+            this.lbMaximumSearchFileSize.Location = new System.Drawing.Point(3, 174);
             this.lbMaximumSearchFileSize.Name = "lbMaximumSearchFileSize";
             this.lbMaximumSearchFileSize.Size = new System.Drawing.Size(194, 13);
             this.lbMaximumSearchFileSize.TabIndex = 33;
@@ -279,7 +282,7 @@
             // cbDockSearchTree
             // 
             this.cbDockSearchTree.AutoSize = true;
-            this.cbDockSearchTree.Location = new System.Drawing.Point(6, 240);
+            this.cbDockSearchTree.Location = new System.Drawing.Point(6, 148);
             this.cbDockSearchTree.Name = "cbDockSearchTree";
             this.cbDockSearchTree.Size = new System.Drawing.Size(126, 17);
             this.cbDockSearchTree.TabIndex = 32;
@@ -290,7 +293,7 @@
             // 
             this.pbDefaultFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbDefaultFolder.Image = global::ScriptNotepad.Properties.Resources.default_image;
-            this.pbDefaultFolder.Location = new System.Drawing.Point(494, 214);
+            this.pbDefaultFolder.Location = new System.Drawing.Point(494, 122);
             this.pbDefaultFolder.Name = "pbDefaultFolder";
             this.pbDefaultFolder.Size = new System.Drawing.Size(21, 21);
             this.pbDefaultFolder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -302,7 +305,7 @@
             // btSelectPluginFolder
             // 
             this.btSelectPluginFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSelectPluginFolder.Location = new System.Drawing.Point(520, 214);
+            this.btSelectPluginFolder.Location = new System.Drawing.Point(520, 122);
             this.btSelectPluginFolder.Name = "btSelectPluginFolder";
             this.btSelectPluginFolder.Size = new System.Drawing.Size(31, 20);
             this.btSelectPluginFolder.TabIndex = 30;
@@ -315,7 +318,7 @@
             // 
             this.tbPluginFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPluginFolder.Location = new System.Drawing.Point(6, 214);
+            this.tbPluginFolder.Location = new System.Drawing.Point(6, 122);
             this.tbPluginFolder.Name = "tbPluginFolder";
             this.tbPluginFolder.Size = new System.Drawing.Size(482, 20);
             this.tbPluginFolder.TabIndex = 29;
@@ -325,7 +328,7 @@
             // 
             this.lbPluginFolder.AutoSize = true;
             this.lbPluginFolder.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbPluginFolder.Location = new System.Drawing.Point(3, 198);
+            this.lbPluginFolder.Location = new System.Drawing.Point(3, 106);
             this.lbPluginFolder.Name = "lbPluginFolder";
             this.lbPluginFolder.Size = new System.Drawing.Size(164, 13);
             this.lbPluginFolder.TabIndex = 28;
@@ -337,7 +340,7 @@
             // 
             this.lbSelectLanguageDescription.AutoSize = true;
             this.lbSelectLanguageDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.lbSelectLanguageDescription.Location = new System.Drawing.Point(3, 162);
+            this.lbSelectLanguageDescription.Location = new System.Drawing.Point(3, 70);
             this.lbSelectLanguageDescription.Margin = new System.Windows.Forms.Padding(17, 15, 17, 15);
             this.lbSelectLanguageDescription.Name = "lbSelectLanguageDescription";
             this.lbSelectLanguageDescription.Size = new System.Drawing.Size(156, 13);
@@ -352,7 +355,7 @@
             this.cmbSelectLanguageValue.DisplayMember = "DisplayName";
             this.cmbSelectLanguageValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSelectLanguageValue.FormattingEnabled = true;
-            this.cmbSelectLanguageValue.Location = new System.Drawing.Point(225, 159);
+            this.cmbSelectLanguageValue.Location = new System.Drawing.Point(225, 67);
             this.cmbSelectLanguageValue.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
             this.cmbSelectLanguageValue.Name = "cmbSelectLanguageValue";
             this.cmbSelectLanguageValue.Size = new System.Drawing.Size(326, 21);
@@ -364,7 +367,7 @@
             this.cbDocumentContentHistory.AutoSize = true;
             this.cbDocumentContentHistory.Checked = true;
             this.cbDocumentContentHistory.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDocumentContentHistory.Location = new System.Drawing.Point(440, 126);
+            this.cbDocumentContentHistory.Location = new System.Drawing.Point(440, 34);
             this.cbDocumentContentHistory.Name = "cbDocumentContentHistory";
             this.cbDocumentContentHistory.Size = new System.Drawing.Size(15, 14);
             this.cbDocumentContentHistory.TabIndex = 13;
@@ -374,7 +377,7 @@
             // nudDocumentContentHistory
             // 
             this.nudDocumentContentHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudDocumentContentHistory.Location = new System.Drawing.Point(461, 124);
+            this.nudDocumentContentHistory.Location = new System.Drawing.Point(461, 32);
             this.nudDocumentContentHistory.Maximum = new decimal(new int[] {
             999,
             0,
@@ -392,7 +395,7 @@
             // lbDocumentContentHistory
             // 
             this.lbDocumentContentHistory.AutoSize = true;
-            this.lbDocumentContentHistory.Location = new System.Drawing.Point(3, 126);
+            this.lbDocumentContentHistory.Location = new System.Drawing.Point(3, 34);
             this.lbDocumentContentHistory.Name = "lbDocumentContentHistory";
             this.lbDocumentContentHistory.Size = new System.Drawing.Size(289, 13);
             this.lbDocumentContentHistory.TabIndex = 11;
@@ -401,7 +404,7 @@
             // nudHistoryDocuments
             // 
             this.nudHistoryDocuments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudHistoryDocuments.Location = new System.Drawing.Point(461, 98);
+            this.nudHistoryDocuments.Location = new System.Drawing.Point(461, 6);
             this.nudHistoryDocuments.Maximum = new decimal(new int[] {
             30,
             0,
@@ -424,94 +427,73 @@
             // lbHistoryDocuments
             // 
             this.lbHistoryDocuments.AutoSize = true;
-            this.lbHistoryDocuments.Location = new System.Drawing.Point(3, 100);
+            this.lbHistoryDocuments.Location = new System.Drawing.Point(3, 8);
             this.lbHistoryDocuments.Name = "lbHistoryDocuments";
             this.lbHistoryDocuments.Size = new System.Drawing.Size(232, 13);
             this.lbHistoryDocuments.TabIndex = 9;
             this.lbHistoryDocuments.Text = "How many documents to keep in the file history:";
             // 
-            // gpDefaultEncoding
+            // tpgAdditionalSettings
             // 
-            this.gpDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tpgAdditionalSettings.Controls.Add(this.tbNoteAutoSave);
+            this.tpgAdditionalSettings.Controls.Add(this.nudAutoSaveInterval);
+            this.tpgAdditionalSettings.Controls.Add(this.cbUseAutoSave);
+            this.tpgAdditionalSettings.Location = new System.Drawing.Point(4, 22);
+            this.tpgAdditionalSettings.Name = "tpgAdditionalSettings";
+            this.tpgAdditionalSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpgAdditionalSettings.Size = new System.Drawing.Size(557, 371);
+            this.tpgAdditionalSettings.TabIndex = 5;
+            this.tpgAdditionalSettings.Text = "Additional";
+            this.tpgAdditionalSettings.UseVisualStyleBackColor = true;
+            // 
+            // tbNoteAutoSave
+            // 
+            this.tbNoteAutoSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gpDefaultEncoding.Controls.Add(this.btUTF8);
-            this.gpDefaultEncoding.Controls.Add(this.btSystemDefaultEncoding);
-            this.gpDefaultEncoding.Controls.Add(this.cmbCharacterSet);
-            this.gpDefaultEncoding.Controls.Add(this.cmbEncoding);
-            this.gpDefaultEncoding.Controls.Add(this.lbCharacterSet);
-            this.gpDefaultEncoding.Controls.Add(this.lbEncoding);
-            this.gpDefaultEncoding.Location = new System.Drawing.Point(6, 6);
-            this.gpDefaultEncoding.Name = "gpDefaultEncoding";
-            this.gpDefaultEncoding.Size = new System.Drawing.Size(545, 86);
-            this.gpDefaultEncoding.TabIndex = 8;
-            this.gpDefaultEncoding.TabStop = false;
-            this.gpDefaultEncoding.Text = "Default encoding";
+            this.tbNoteAutoSave.BackColor = System.Drawing.Color.White;
+            this.tbNoteAutoSave.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbNoteAutoSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNoteAutoSave.ForeColor = System.Drawing.Color.DarkCyan;
+            this.tbNoteAutoSave.Location = new System.Drawing.Point(6, 30);
+            this.tbNoteAutoSave.Multiline = true;
+            this.tbNoteAutoSave.Name = "tbNoteAutoSave";
+            this.tbNoteAutoSave.ReadOnly = true;
+            this.tbNoteAutoSave.Size = new System.Drawing.Size(545, 30);
+            this.tbNoteAutoSave.TabIndex = 3;
+            this.tbNoteAutoSave.TabStop = false;
+            this.tbNoteAutoSave.Text = "NOTE: The auto-save doesn\'t use the file system.";
             // 
-            // btUTF8
+            // nudAutoSaveInterval
             // 
-            this.btUTF8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btUTF8.Image = global::ScriptNotepad.Properties.Resources.unicode;
-            this.btUTF8.Location = new System.Drawing.Point(513, 49);
-            this.btUTF8.Name = "btUTF8";
-            this.btUTF8.Size = new System.Drawing.Size(21, 21);
-            this.btUTF8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.btUTF8.TabIndex = 10;
-            this.btUTF8.TabStop = false;
-            this.ttMain.SetToolTip(this.btUTF8, "Set to unicode (UTF8)");
-            this.btUTF8.Click += new System.EventHandler(this.btDefaultEncodings_Click);
+            this.nudAutoSaveInterval.Location = new System.Drawing.Point(486, 6);
+            this.nudAutoSaveInterval.Maximum = new decimal(new int[] {
+            1440,
+            0,
+            0,
+            0});
+            this.nudAutoSaveInterval.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudAutoSaveInterval.Name = "nudAutoSaveInterval";
+            this.nudAutoSaveInterval.Size = new System.Drawing.Size(65, 20);
+            this.nudAutoSaveInterval.TabIndex = 1;
+            this.nudAutoSaveInterval.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
-            // btSystemDefaultEncoding
+            // cbUseAutoSave
             // 
-            this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources.default_image;
-            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(513, 22);
-            this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
-            this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);
-            this.btSystemDefaultEncoding.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.btSystemDefaultEncoding.TabIndex = 9;
-            this.btSystemDefaultEncoding.TabStop = false;
-            this.ttMain.SetToolTip(this.btSystemDefaultEncoding, "Set to system default");
-            this.btSystemDefaultEncoding.Click += new System.EventHandler(this.btDefaultEncodings_Click);
-            // 
-            // cmbCharacterSet
-            // 
-            this.cmbCharacterSet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbCharacterSet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCharacterSet.FormattingEnabled = true;
-            this.cmbCharacterSet.Location = new System.Drawing.Point(147, 22);
-            this.cmbCharacterSet.Name = "cmbCharacterSet";
-            this.cmbCharacterSet.Size = new System.Drawing.Size(360, 21);
-            this.cmbCharacterSet.TabIndex = 5;
-            // 
-            // cmbEncoding
-            // 
-            this.cmbEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEncoding.FormattingEnabled = true;
-            this.cmbEncoding.Location = new System.Drawing.Point(147, 49);
-            this.cmbEncoding.Name = "cmbEncoding";
-            this.cmbEncoding.Size = new System.Drawing.Size(360, 21);
-            this.cmbEncoding.TabIndex = 7;
-            // 
-            // lbCharacterSet
-            // 
-            this.lbCharacterSet.AutoSize = true;
-            this.lbCharacterSet.Location = new System.Drawing.Point(6, 25);
-            this.lbCharacterSet.Name = "lbCharacterSet";
-            this.lbCharacterSet.Size = new System.Drawing.Size(73, 13);
-            this.lbCharacterSet.TabIndex = 4;
-            this.lbCharacterSet.Text = "Character set:";
-            // 
-            // lbEncoding
-            // 
-            this.lbEncoding.AutoSize = true;
-            this.lbEncoding.Location = new System.Drawing.Point(6, 52);
-            this.lbEncoding.Name = "lbEncoding";
-            this.lbEncoding.Size = new System.Drawing.Size(55, 13);
-            this.lbEncoding.TabIndex = 6;
-            this.lbEncoding.Text = "Encoding:";
+            this.cbUseAutoSave.AutoSize = true;
+            this.cbUseAutoSave.Location = new System.Drawing.Point(6, 7);
+            this.cbUseAutoSave.Name = "cbUseAutoSave";
+            this.cbUseAutoSave.Size = new System.Drawing.Size(170, 17);
+            this.cbUseAutoSave.TabIndex = 0;
+            this.cbUseAutoSave.Text = "Auto-save (interval in minutes):";
+            this.cbUseAutoSave.UseVisualStyleBackColor = true;
             // 
             // tabEditorSettings
             // 
@@ -1280,67 +1262,109 @@
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
-            // tpgAdditionalSettings
+            // tabEncoding
             // 
-            this.tpgAdditionalSettings.Controls.Add(this.tbNoteAutoSave);
-            this.tpgAdditionalSettings.Controls.Add(this.nudAutoSaveInterval);
-            this.tpgAdditionalSettings.Controls.Add(this.cbUseAutoSave);
-            this.tpgAdditionalSettings.Location = new System.Drawing.Point(4, 22);
-            this.tpgAdditionalSettings.Name = "tpgAdditionalSettings";
-            this.tpgAdditionalSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpgAdditionalSettings.Size = new System.Drawing.Size(557, 371);
-            this.tpgAdditionalSettings.TabIndex = 5;
-            this.tpgAdditionalSettings.Text = "Additional";
-            this.tpgAdditionalSettings.UseVisualStyleBackColor = true;
+            this.tabEncoding.Controls.Add(this.cbEncodingAutoDetect);
+            this.tabEncoding.Controls.Add(this.gpDefaultEncoding);
+            this.tabEncoding.Location = new System.Drawing.Point(4, 22);
+            this.tabEncoding.Name = "tabEncoding";
+            this.tabEncoding.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEncoding.Size = new System.Drawing.Size(557, 371);
+            this.tabEncoding.TabIndex = 6;
+            this.tabEncoding.Text = "Encoding";
+            this.tabEncoding.UseVisualStyleBackColor = true;
             // 
-            // cbUseAutoSave
+            // cbEncodingAutoDetect
             // 
-            this.cbUseAutoSave.AutoSize = true;
-            this.cbUseAutoSave.Location = new System.Drawing.Point(6, 7);
-            this.cbUseAutoSave.Name = "cbUseAutoSave";
-            this.cbUseAutoSave.Size = new System.Drawing.Size(170, 17);
-            this.cbUseAutoSave.TabIndex = 0;
-            this.cbUseAutoSave.Text = "Auto-save (interval in minutes):";
-            this.cbUseAutoSave.UseVisualStyleBackColor = true;
+            this.cbEncodingAutoDetect.AutoSize = true;
+            this.cbEncodingAutoDetect.Location = new System.Drawing.Point(6, 95);
+            this.cbEncodingAutoDetect.Name = "cbEncodingAutoDetect";
+            this.cbEncodingAutoDetect.Size = new System.Drawing.Size(311, 17);
+            this.cbEncodingAutoDetect.TabIndex = 43;
+            this.cbEncodingAutoDetect.Text = "Auto-detect encoding (the default will be used as a fall back)";
+            this.cbEncodingAutoDetect.UseVisualStyleBackColor = true;
             // 
-            // nudAutoSaveInterval
+            // gpDefaultEncoding
             // 
-            this.nudAutoSaveInterval.Location = new System.Drawing.Point(486, 6);
-            this.nudAutoSaveInterval.Maximum = new decimal(new int[] {
-            1440,
-            0,
-            0,
-            0});
-            this.nudAutoSaveInterval.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudAutoSaveInterval.Name = "nudAutoSaveInterval";
-            this.nudAutoSaveInterval.Size = new System.Drawing.Size(65, 20);
-            this.nudAutoSaveInterval.TabIndex = 1;
-            this.nudAutoSaveInterval.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // tbNoteAutoSave
-            // 
-            this.tbNoteAutoSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.gpDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbNoteAutoSave.BackColor = System.Drawing.Color.White;
-            this.tbNoteAutoSave.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbNoteAutoSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNoteAutoSave.ForeColor = System.Drawing.Color.DarkCyan;
-            this.tbNoteAutoSave.Location = new System.Drawing.Point(6, 30);
-            this.tbNoteAutoSave.Multiline = true;
-            this.tbNoteAutoSave.Name = "tbNoteAutoSave";
-            this.tbNoteAutoSave.ReadOnly = true;
-            this.tbNoteAutoSave.Size = new System.Drawing.Size(545, 30);
-            this.tbNoteAutoSave.TabIndex = 3;
-            this.tbNoteAutoSave.TabStop = false;
-            this.tbNoteAutoSave.Text = "NOTE: The auto-save doesn\'t use the file system.";
+            this.gpDefaultEncoding.Controls.Add(this.btUTF8);
+            this.gpDefaultEncoding.Controls.Add(this.btSystemDefaultEncoding);
+            this.gpDefaultEncoding.Controls.Add(this.cmbCharacterSet);
+            this.gpDefaultEncoding.Controls.Add(this.cmbEncoding);
+            this.gpDefaultEncoding.Controls.Add(this.lbCharacterSet);
+            this.gpDefaultEncoding.Controls.Add(this.lbEncoding);
+            this.gpDefaultEncoding.Location = new System.Drawing.Point(6, 6);
+            this.gpDefaultEncoding.Name = "gpDefaultEncoding";
+            this.gpDefaultEncoding.Size = new System.Drawing.Size(545, 81);
+            this.gpDefaultEncoding.TabIndex = 42;
+            this.gpDefaultEncoding.TabStop = false;
+            this.gpDefaultEncoding.Text = "Default encoding";
+            // 
+            // btUTF8
+            // 
+            this.btUTF8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUTF8.Image = global::ScriptNotepad.Properties.Resources.unicode;
+            this.btUTF8.Location = new System.Drawing.Point(513, 49);
+            this.btUTF8.Name = "btUTF8";
+            this.btUTF8.Size = new System.Drawing.Size(21, 21);
+            this.btUTF8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btUTF8.TabIndex = 10;
+            this.btUTF8.TabStop = false;
+            this.ttMain.SetToolTip(this.btUTF8, "Set to unicode (UTF8)");
+            // 
+            // btSystemDefaultEncoding
+            // 
+            this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources.default_image;
+            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(513, 22);
+            this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
+            this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);
+            this.btSystemDefaultEncoding.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btSystemDefaultEncoding.TabIndex = 9;
+            this.btSystemDefaultEncoding.TabStop = false;
+            this.ttMain.SetToolTip(this.btSystemDefaultEncoding, "Set to system default");
+            this.btSystemDefaultEncoding.Click += new System.EventHandler(this.btDefaultEncodings_Click);
+            // 
+            // cmbCharacterSet
+            // 
+            this.cmbCharacterSet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbCharacterSet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCharacterSet.FormattingEnabled = true;
+            this.cmbCharacterSet.Location = new System.Drawing.Point(147, 22);
+            this.cmbCharacterSet.Name = "cmbCharacterSet";
+            this.cmbCharacterSet.Size = new System.Drawing.Size(360, 21);
+            this.cmbCharacterSet.TabIndex = 5;
+            // 
+            // cmbEncoding
+            // 
+            this.cmbEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbEncoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEncoding.FormattingEnabled = true;
+            this.cmbEncoding.Location = new System.Drawing.Point(147, 49);
+            this.cmbEncoding.Name = "cmbEncoding";
+            this.cmbEncoding.Size = new System.Drawing.Size(360, 21);
+            this.cmbEncoding.TabIndex = 7;
+            // 
+            // lbCharacterSet
+            // 
+            this.lbCharacterSet.AutoSize = true;
+            this.lbCharacterSet.Location = new System.Drawing.Point(6, 25);
+            this.lbCharacterSet.Name = "lbCharacterSet";
+            this.lbCharacterSet.Size = new System.Drawing.Size(73, 13);
+            this.lbCharacterSet.TabIndex = 4;
+            this.lbCharacterSet.Text = "Character set:";
+            // 
+            // lbEncoding
+            // 
+            this.lbEncoding.AutoSize = true;
+            this.lbEncoding.Location = new System.Drawing.Point(6, 52);
+            this.lbEncoding.Name = "lbEncoding";
+            this.lbEncoding.Size = new System.Drawing.Size(55, 13);
+            this.lbEncoding.TabIndex = 6;
+            this.lbEncoding.Text = "Encoding:";
             // 
             // FormSettings
             // 
@@ -1369,10 +1393,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).EndInit();
-            this.gpDefaultEncoding.ResumeLayout(false);
-            this.gpDefaultEncoding.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
+            this.tpgAdditionalSettings.ResumeLayout(false);
+            this.tpgAdditionalSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).EndInit();
             this.tabEditorSettings.ResumeLayout(false);
             this.tabEditorSettings.PerformLayout();
             this.gbZoomSetting.ResumeLayout(false);
@@ -1391,9 +1414,12 @@
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
-            this.tpgAdditionalSettings.ResumeLayout(false);
-            this.tpgAdditionalSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).EndInit();
+            this.tabEncoding.ResumeLayout(false);
+            this.tabEncoding.PerformLayout();
+            this.gpDefaultEncoding.ResumeLayout(false);
+            this.gpDefaultEncoding.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1402,16 +1428,9 @@
 
         private System.Windows.Forms.TabControl tcMain;
         private System.Windows.Forms.TabPage tpgGeneralSettings;
-        private System.Windows.Forms.GroupBox gpDefaultEncoding;
-        private System.Windows.Forms.ComboBox cmbCharacterSet;
-        private System.Windows.Forms.ComboBox cmbEncoding;
-        private System.Windows.Forms.Label lbCharacterSet;
-        private System.Windows.Forms.Label lbEncoding;
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Button btOK;
         private System.Windows.Forms.ToolTip ttMain;
-        private System.Windows.Forms.PictureBox btUTF8;
-        private System.Windows.Forms.PictureBox btSystemDefaultEncoding;
         private System.Windows.Forms.NumericUpDown nudHistoryDocuments;
         private System.Windows.Forms.Label lbHistoryDocuments;
         private System.Windows.Forms.CheckBox cbDocumentContentHistory;
@@ -1500,5 +1519,14 @@
         private System.Windows.Forms.NumericUpDown nudAutoSaveInterval;
         private System.Windows.Forms.CheckBox cbUseAutoSave;
         private System.Windows.Forms.TextBox tbNoteAutoSave;
+        private System.Windows.Forms.TabPage tabEncoding;
+        private System.Windows.Forms.CheckBox cbEncodingAutoDetect;
+        private System.Windows.Forms.GroupBox gpDefaultEncoding;
+        private System.Windows.Forms.PictureBox btUTF8;
+        private System.Windows.Forms.PictureBox btSystemDefaultEncoding;
+        private System.Windows.Forms.ComboBox cmbCharacterSet;
+        private System.Windows.Forms.ComboBox cmbEncoding;
+        private System.Windows.Forms.Label lbCharacterSet;
+        private System.Windows.Forms.Label lbEncoding;
     }
 }

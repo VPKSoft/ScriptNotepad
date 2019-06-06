@@ -1,4 +1,4 @@
-﻿namespace ScriptNotepad
+﻿namespace ScriptNotepad.Localization.Forms
 {
     partial class FormLocalizationHelper
     {

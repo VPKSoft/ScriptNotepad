@@ -223,6 +223,12 @@ namespace ScriptNotepad.Settings
         public Encoding DefaultEncoding { get; set; } = Encoding.UTF8;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the software should try to auto-detect the encoding of a file.
+        /// </summary>
+        [Setting("main/autoDetectEncoding", typeof(bool))]
+        public bool AutoDetectEncoding { get; set; } = true;
+
+        /// <summary>
         /// The amount of files to be saved to a document history.
         /// </summary>
         [Setting("gui/history", typeof(int))]

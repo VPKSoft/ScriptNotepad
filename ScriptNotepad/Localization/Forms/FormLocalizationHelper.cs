@@ -24,19 +24,10 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using VPKSoft.LangLib;
 
-namespace ScriptNotepad
+namespace ScriptNotepad.Localization.Forms
 {
     /// <summary>
     /// A helper form to localize some other class properties, etc.

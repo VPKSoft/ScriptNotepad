@@ -1420,6 +1420,15 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cascading Style Sheets (CSS)|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingCss {
+            get {
+                return ResourceManager.GetString("msgProgrammingCss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTML (Hypertext Markup Language)|A programming, markup, setting, script or other file and/or language/text.
         /// </summary>
         internal static string msgProgrammingHtml {
@@ -1443,6 +1452,24 @@ namespace ScriptNotepad.Localization {
         internal static string msgProgrammingIni2 {
             get {
                 return ResourceManager.GetString("msgProgrammingIni2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Java programming language|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingJava {
+            get {
+                return ResourceManager.GetString("msgProgrammingJava", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JavaScript programming language|A programming, markup, setting, script or other file and/or language/text.
+        /// </summary>
+        internal static string msgProgrammingJavaScript {
+            get {
+                return ResourceManager.GetString("msgProgrammingJavaScript", resourceCulture);
             }
         }
         
