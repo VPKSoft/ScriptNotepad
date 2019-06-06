@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using Ookii.Dialogs.WinForms;
-using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using System;
 using System.Collections.Generic;
@@ -39,6 +38,7 @@ using ScintillaNET;
 using ScriptNotepad.Localization;
 using ScriptNotepad.Localization.Hunspell;
 using ScriptNotepad.Settings.XmlNotepadPlusMarks;
+using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using ScriptNotepad.UtilityClasses.GraphicUtils;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;

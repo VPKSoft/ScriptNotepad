@@ -24,12 +24,12 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses.Common;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ScriptNotepad.UtilityClasses.Common;
 
-namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
+namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
 {
     /// <summary>
     /// A class to help to build a menu for known character sets (<see cref="EncodingCharacterSet"/>).

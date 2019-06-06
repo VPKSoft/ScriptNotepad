@@ -25,13 +25,10 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
+namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
 {
     /// <summary>
     /// A class to be used with combo boxes for listing character sets and their encodings.

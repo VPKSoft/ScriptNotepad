@@ -24,11 +24,10 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScriptNotepad.UtilityClasses.Encoding.CharacterSets
+namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
 {
     /// <summary>
     /// An enumeration containing different categories for different encodings.

@@ -24,9 +24,9 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 using System.Text;
 using System.Windows.Forms;
+using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.DialogForms

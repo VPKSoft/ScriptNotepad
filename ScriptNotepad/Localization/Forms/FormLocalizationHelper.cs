@@ -33,8 +33,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using VPKSoft.LangLib;
-using ScriptNotepad.UtilityClasses.Encoding.CharacterSets;
 
 namespace ScriptNotepad
 {

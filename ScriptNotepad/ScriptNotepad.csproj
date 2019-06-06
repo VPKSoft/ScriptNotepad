@@ -197,6 +197,9 @@
     <Compile Include="UtilityClasses\Common\StatusStripComboItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UtilityClasses\Encodings\DetectEncoding.cs" />
+    <Compile Include="UtilityClasses\Encodings\EncodingExceptionEventArgs.cs" />
+    <Compile Include="UtilityClasses\Encodings\TryMakeEncoding.cs" />
     <Compile Include="UtilityClasses\GraphicUtils\FontFamilyHelpers.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
@@ -305,9 +308,9 @@
     <Compile Include="UtilityClasses\Common\DataToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetComboBuilder.cs" />
-    <Compile Include="UtilityClasses\Encoding\CharacterSets\CharacterSetMenuBuilder.cs" />
-    <Compile Include="UtilityClasses\Encoding\CharacterSets\EncodingCharacterSet.cs" />
+    <Compile Include="UtilityClasses\Encodings\CharacterSets\CharacterSetComboBuilder.cs" />
+    <Compile Include="UtilityClasses\Encodings\CharacterSets\CharacterSetMenuBuilder.cs" />
+    <Compile Include="UtilityClasses\Encodings\CharacterSets\EncodingCharacterSet.cs" />
     <Compile Include="UtilityClasses\ErrorHandling\ErrorHandlingBase.cs" />
     <Compile Include="UtilityClasses\ErrorHandling\ExceptionDelegate.cs" />
     <Compile Include="UtilityClasses\ErrorHandling\ExceptionEventArgs.cs" />
