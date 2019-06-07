@@ -30,7 +30,6 @@ using System.Text;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
-using System.Windows.Media.Effects;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 using VPKSoft.LangLib;
