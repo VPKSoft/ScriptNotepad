@@ -101,7 +101,7 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
             this.tsbNextDiff.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbNextDiff.Name = "tsbNextDiff";
             this.tsbNextDiff.Size = new System.Drawing.Size(23, 22);
-            this.tsbNextDiff.Text = "Next difference";
+            this.tsbNextDiff.Text = "Advance difference";
             this.tsbNextDiff.Click += new System.EventHandler(this.TsbNextDiff_Click);
             // 
             // toolStripSeparator1

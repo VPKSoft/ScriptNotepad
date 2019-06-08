@@ -75,7 +75,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             ttMain.SetToolTip(pnNextResult,
                 DBLangEngine.GetMessage("msgNextResult",
-                    "Next result|A tool-tip message describing that the button would go to the next search result"));
+                    "Advance result|A tool-tip message describing that the button would go to the next search result"));
             
             ttMain.SetToolTip(pnClose,
                 DBLangEngine.GetMessage("msgButtonClose",

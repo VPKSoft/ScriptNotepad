@@ -150,14 +150,15 @@ namespace ScriptNotepad.Database.TableCommands
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         public static string GenInsertFileSentence(DBFILE_SAVE fileSave)
         {
-            string existsCondition =
+            string existsCondition = 
                 string.Join(Environment.NewLine,
                 $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = {QS(fileSave.FILENAME_FULL)} AND",
                 $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(fileSave.SESSIONNAME)})");
+            
 
             if (fileSave.ID != -1)
             {
-                existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ID = {fileSave.ID});";
+                existsCondition = $"WHERE NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ID = {fileSave.ID})";
             }
             
             string sql =

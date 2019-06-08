@@ -40,5 +40,10 @@
 * Done? [YES  ] [2019/06/05] Add the new lexers to the menu.
 * Done? [YES  ] [2019/06/05] Make the encoding to save correctly.
 * Done? [SOME ] [2019/06/06] Make it possible to set the default encoding to automatic detection.
-* Done? [N/A  ] [2019/06/06] Fix the file history drop-down if file count exceeds the maximum history amount setting.
+* Done? [YES  ] [2019/06/08] Fix the file history drop-down if file count exceeds the maximum history amount setting.
 * Done? [N/A  ] [2019/06/06] Make reset settings to default a possibility.
+* Done? [YES  ] [2019/06/08] Fixed one file belonging to multiple sessions.
+* Done? [YES  ] [2019/06/08] Fixed diff to the right or to the left comparing invalid documents.
+* Done? [YES  ] [2019/06/08] Fixed one file belonging to multiple sessions.
+* Done? [YES  ] [2019/06/08] Fixed the spell indicator for an opened file.
+* Done? [YES  ] [2019/06/08] Made the F3/Shift+F3 to work with the search.

@@ -117,31 +117,31 @@
             this.pnLabelHolder04 = new System.Windows.Forms.Panel();
             this.lbFind3 = new System.Windows.Forms.Label();
             this.cmbFind3 = new System.Windows.Forms.ComboBox();
-            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.tabMarkMatches = new System.Windows.Forms.TabPage();
-            this.pnLabelHolder08 = new System.Windows.Forms.Panel();
-            this.lbFind4 = new System.Windows.Forms.Label();
-            this.cmbFind4 = new System.Windows.Forms.ComboBox();
-            this.cbClearPreviousMarks4 = new System.Windows.Forms.CheckBox();
-            this.cbMatchCase4 = new System.Windows.Forms.CheckBox();
-            this.cbMatchWholeWord4 = new System.Windows.Forms.CheckBox();
-            this.gpSearchMode4 = new System.Windows.Forms.GroupBox();
-            this.rbSimpleExtended4 = new System.Windows.Forms.RadioButton();
-            this.rbRegEx4 = new System.Windows.Forms.RadioButton();
-            this.rbExtented4 = new System.Windows.Forms.RadioButton();
-            this.rbNormal4 = new System.Windows.Forms.RadioButton();
+            this.pnLabelHolder09 = new System.Windows.Forms.Panel();
+            this.lbMarkColor = new System.Windows.Forms.Label();
+            this.btMarkColor = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnClearAllMarks = new System.Windows.Forms.Button();
+            this.btMarkAll = new System.Windows.Forms.Button();
+            this.cbInSelection4 = new System.Windows.Forms.CheckBox();
             this.cbTransparency4 = new System.Windows.Forms.CheckBox();
             this.gpTransparency4 = new System.Windows.Forms.GroupBox();
             this.tbOpacity4 = new System.Windows.Forms.TrackBar();
             this.rbTransparencyAlways4 = new System.Windows.Forms.RadioButton();
             this.rbTransparencyOnLosingFocus4 = new System.Windows.Forms.RadioButton();
-            this.cbInSelection4 = new System.Windows.Forms.CheckBox();
-            this.btMarkAll = new System.Windows.Forms.Button();
-            this.btnClearAllMarks = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btMarkColor = new System.Windows.Forms.Button();
-            this.pnLabelHolder09 = new System.Windows.Forms.Panel();
-            this.lbMarkColor = new System.Windows.Forms.Label();
+            this.gpSearchMode4 = new System.Windows.Forms.GroupBox();
+            this.rbSimpleExtended4 = new System.Windows.Forms.RadioButton();
+            this.rbRegEx4 = new System.Windows.Forms.RadioButton();
+            this.rbExtented4 = new System.Windows.Forms.RadioButton();
+            this.rbNormal4 = new System.Windows.Forms.RadioButton();
+            this.cbMatchCase4 = new System.Windows.Forms.CheckBox();
+            this.cbMatchWholeWord4 = new System.Windows.Forms.CheckBox();
+            this.cbClearPreviousMarks4 = new System.Windows.Forms.CheckBox();
+            this.pnLabelHolder08 = new System.Windows.Forms.Panel();
+            this.lbFind4 = new System.Windows.Forms.Label();
+            this.cmbFind4 = new System.Windows.Forms.ComboBox();
+            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
             this.cdColors = new System.Windows.Forms.ColorDialog();
             this.ssMain.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -166,11 +166,11 @@
             this.pnLabelHolder05.SuspendLayout();
             this.pnLabelHolder04.SuspendLayout();
             this.tabMarkMatches.SuspendLayout();
-            this.pnLabelHolder08.SuspendLayout();
-            this.gpSearchMode4.SuspendLayout();
+            this.pnLabelHolder09.SuspendLayout();
             this.gpTransparency4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbOpacity4)).BeginInit();
-            this.pnLabelHolder09.SuspendLayout();
+            this.gpSearchMode4.SuspendLayout();
+            this.pnLabelHolder08.SuspendLayout();
             this.SuspendLayout();
             // 
             // ssMain
@@ -363,6 +363,8 @@
             // cbWrapAround
             // 
             this.cbWrapAround.AutoSize = true;
+            this.cbWrapAround.Checked = true;
+            this.cbWrapAround.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbWrapAround.Location = new System.Drawing.Point(8, 127);
             this.cbWrapAround.Name = "cbWrapAround";
             this.cbWrapAround.Size = new System.Drawing.Size(88, 17);
@@ -681,6 +683,8 @@
             // cbWrapAround2
             // 
             this.cbWrapAround2.AutoSize = true;
+            this.cbWrapAround2.Checked = true;
+            this.cbWrapAround2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbWrapAround2.Location = new System.Drawing.Point(8, 127);
             this.cbWrapAround2.Name = "cbWrapAround2";
             this.cbWrapAround2.Size = new System.Drawing.Size(88, 17);
@@ -1247,133 +1251,78 @@
             this.tabMarkMatches.Text = "Mark";
             this.tabMarkMatches.UseVisualStyleBackColor = true;
             // 
-            // pnLabelHolder08
+            // pnLabelHolder09
             // 
-            this.pnLabelHolder08.Controls.Add(this.lbFind4);
-            this.pnLabelHolder08.Location = new System.Drawing.Point(5, 6);
-            this.pnLabelHolder08.Margin = new System.Windows.Forms.Padding(0);
-            this.pnLabelHolder08.Name = "pnLabelHolder08";
-            this.pnLabelHolder08.Size = new System.Drawing.Size(99, 21);
-            this.pnLabelHolder08.TabIndex = 4;
+            this.pnLabelHolder09.Controls.Add(this.lbMarkColor);
+            this.pnLabelHolder09.Location = new System.Drawing.Point(259, 81);
+            this.pnLabelHolder09.Margin = new System.Windows.Forms.Padding(0);
+            this.pnLabelHolder09.Name = "pnLabelHolder09";
+            this.pnLabelHolder09.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder09.TabIndex = 39;
             // 
-            // lbFind4
+            // lbMarkColor
             // 
-            this.lbFind4.AutoEllipsis = true;
-            this.lbFind4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbFind4.Location = new System.Drawing.Point(0, 0);
-            this.lbFind4.Name = "lbFind4";
-            this.lbFind4.Size = new System.Drawing.Size(99, 21);
-            this.lbFind4.TabIndex = 0;
-            this.lbFind4.Text = "Find:";
-            this.lbFind4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lbMarkColor.AutoEllipsis = true;
+            this.lbMarkColor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbMarkColor.Location = new System.Drawing.Point(0, 0);
+            this.lbMarkColor.Name = "lbMarkColor";
+            this.lbMarkColor.Size = new System.Drawing.Size(99, 21);
+            this.lbMarkColor.TabIndex = 0;
+            this.lbMarkColor.Text = "Mark color:";
+            this.lbMarkColor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // cmbFind4
+            // btMarkColor
             // 
-            this.cmbFind4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbFind4.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbFind4.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbFind4.FormattingEnabled = true;
-            this.cmbFind4.Location = new System.Drawing.Point(107, 6);
-            this.cmbFind4.Name = "cmbFind4";
-            this.cmbFind4.Size = new System.Drawing.Size(251, 21);
-            this.cmbFind4.TabIndex = 3;
-            this.cmbFind4.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            this.cmbFind4.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.btMarkColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMarkColor.Location = new System.Drawing.Point(364, 81);
+            this.btMarkColor.Name = "btMarkColor";
+            this.btMarkColor.Size = new System.Drawing.Size(156, 21);
+            this.btMarkColor.TabIndex = 38;
+            this.btMarkColor.UseVisualStyleBackColor = true;
+            this.btMarkColor.Click += new System.EventHandler(this.BtMarkColor_Click);
             // 
-            // cbClearPreviousMarks4
+            // button1
             // 
-            this.cbClearPreviousMarks4.AutoSize = true;
-            this.cbClearPreviousMarks4.Location = new System.Drawing.Point(8, 58);
-            this.cbClearPreviousMarks4.Name = "cbClearPreviousMarks4";
-            this.cbClearPreviousMarks4.Size = new System.Drawing.Size(124, 17);
-            this.cbClearPreviousMarks4.TabIndex = 5;
-            this.cbClearPreviousMarks4.Text = "Clear previous marks";
-            this.cbClearPreviousMarks4.UseVisualStyleBackColor = true;
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(366, 148);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(156, 21);
+            this.button1.TabIndex = 37;
+            this.button1.Text = "Close";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.BtClose_Click);
             // 
-            // cbMatchCase4
+            // btnClearAllMarks
             // 
-            this.cbMatchCase4.AutoSize = true;
-            this.cbMatchCase4.Location = new System.Drawing.Point(8, 104);
-            this.cbMatchCase4.Name = "cbMatchCase4";
-            this.cbMatchCase4.Size = new System.Drawing.Size(82, 17);
-            this.cbMatchCase4.TabIndex = 13;
-            this.cbMatchCase4.Text = "Match case";
-            this.cbMatchCase4.UseVisualStyleBackColor = true;
-            this.cbMatchCase4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.btnClearAllMarks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearAllMarks.Location = new System.Drawing.Point(364, 33);
+            this.btnClearAllMarks.Name = "btnClearAllMarks";
+            this.btnClearAllMarks.Size = new System.Drawing.Size(156, 21);
+            this.btnClearAllMarks.TabIndex = 36;
+            this.btnClearAllMarks.Text = "Clear all marks";
+            this.btnClearAllMarks.UseVisualStyleBackColor = true;
+            this.btnClearAllMarks.Click += new System.EventHandler(this.BtnClearAllMarks_Click);
             // 
-            // cbMatchWholeWord4
+            // btMarkAll
             // 
-            this.cbMatchWholeWord4.AutoSize = true;
-            this.cbMatchWholeWord4.Location = new System.Drawing.Point(8, 81);
-            this.cbMatchWholeWord4.Name = "cbMatchWholeWord4";
-            this.cbMatchWholeWord4.Size = new System.Drawing.Size(135, 17);
-            this.cbMatchWholeWord4.TabIndex = 12;
-            this.cbMatchWholeWord4.Text = "Match whole word only";
-            this.cbMatchWholeWord4.UseVisualStyleBackColor = true;
-            this.cbMatchWholeWord4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.btMarkAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btMarkAll.Location = new System.Drawing.Point(364, 6);
+            this.btMarkAll.Name = "btMarkAll";
+            this.btMarkAll.Size = new System.Drawing.Size(156, 21);
+            this.btMarkAll.TabIndex = 35;
+            this.btMarkAll.Text = "Mark all";
+            this.btMarkAll.UseVisualStyleBackColor = true;
+            this.btMarkAll.Click += new System.EventHandler(this.BtMarkAll_Click);
             // 
-            // gpSearchMode4
+            // cbInSelection4
             // 
-            this.gpSearchMode4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.gpSearchMode4.Controls.Add(this.rbSimpleExtended4);
-            this.gpSearchMode4.Controls.Add(this.rbRegEx4);
-            this.gpSearchMode4.Controls.Add(this.rbExtented4);
-            this.gpSearchMode4.Controls.Add(this.rbNormal4);
-            this.gpSearchMode4.Location = new System.Drawing.Point(8, 160);
-            this.gpSearchMode4.Name = "gpSearchMode4";
-            this.gpSearchMode4.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.gpSearchMode4.Size = new System.Drawing.Size(258, 106);
-            this.gpSearchMode4.TabIndex = 15;
-            this.gpSearchMode4.TabStop = false;
-            this.gpSearchMode4.Text = "Search mode";
-            // 
-            // rbSimpleExtended4
-            // 
-            this.rbSimpleExtended4.AutoSize = true;
-            this.rbSimpleExtended4.Location = new System.Drawing.Point(6, 85);
-            this.rbSimpleExtended4.Name = "rbSimpleExtended4";
-            this.rbSimpleExtended4.Size = new System.Drawing.Size(155, 17);
-            this.rbSimpleExtended4.TabIndex = 3;
-            this.rbSimpleExtended4.Text = "Simple extended (#, %, *, ?)";
-            this.ttMain.SetToolTip(this.rbSimpleExtended4, "? = one character, * = multiple characters, # = digit, % = single digit");
-            this.rbSimpleExtended4.UseVisualStyleBackColor = true;
-            this.rbSimpleExtended4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // rbRegEx4
-            // 
-            this.rbRegEx4.AutoSize = true;
-            this.rbRegEx4.Location = new System.Drawing.Point(6, 62);
-            this.rbRegEx4.Name = "rbRegEx4";
-            this.rbRegEx4.Size = new System.Drawing.Size(115, 17);
-            this.rbRegEx4.TabIndex = 2;
-            this.rbRegEx4.Text = "Regular expression";
-            this.rbRegEx4.UseVisualStyleBackColor = true;
-            this.rbRegEx4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // rbExtented4
-            // 
-            this.rbExtented4.AutoSize = true;
-            this.rbExtented4.Location = new System.Drawing.Point(6, 39);
-            this.rbExtented4.Name = "rbExtented4";
-            this.rbExtented4.Size = new System.Drawing.Size(154, 17);
-            this.rbExtented4.TabIndex = 1;
-            this.rbExtented4.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
-            this.rbExtented4.UseVisualStyleBackColor = true;
-            this.rbExtented4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
-            // 
-            // rbNormal4
-            // 
-            this.rbNormal4.AutoSize = true;
-            this.rbNormal4.Checked = true;
-            this.rbNormal4.Location = new System.Drawing.Point(6, 16);
-            this.rbNormal4.Name = "rbNormal4";
-            this.rbNormal4.Size = new System.Drawing.Size(58, 17);
-            this.rbNormal4.TabIndex = 0;
-            this.rbNormal4.TabStop = true;
-            this.rbNormal4.Text = "Normal";
-            this.rbNormal4.UseVisualStyleBackColor = true;
-            this.rbNormal4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.cbInSelection4.AutoSize = true;
+            this.cbInSelection4.Location = new System.Drawing.Point(244, 36);
+            this.cbInSelection4.Name = "cbInSelection4";
+            this.cbInSelection4.Size = new System.Drawing.Size(80, 17);
+            this.cbInSelection4.TabIndex = 25;
+            this.cbInSelection4.Text = "In selection";
+            this.cbInSelection4.UseVisualStyleBackColor = true;
             // 
             // cbTransparency4
             // 
@@ -1438,78 +1387,133 @@
             this.rbTransparencyOnLosingFocus4.UseVisualStyleBackColor = true;
             this.rbTransparencyOnLosingFocus4.CheckedChanged += new System.EventHandler(this.TransparencySettings_Changed);
             // 
-            // cbInSelection4
+            // gpSearchMode4
             // 
-            this.cbInSelection4.AutoSize = true;
-            this.cbInSelection4.Location = new System.Drawing.Point(244, 36);
-            this.cbInSelection4.Name = "cbInSelection4";
-            this.cbInSelection4.Size = new System.Drawing.Size(80, 17);
-            this.cbInSelection4.TabIndex = 25;
-            this.cbInSelection4.Text = "In selection";
-            this.cbInSelection4.UseVisualStyleBackColor = true;
+            this.gpSearchMode4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gpSearchMode4.Controls.Add(this.rbSimpleExtended4);
+            this.gpSearchMode4.Controls.Add(this.rbRegEx4);
+            this.gpSearchMode4.Controls.Add(this.rbExtented4);
+            this.gpSearchMode4.Controls.Add(this.rbNormal4);
+            this.gpSearchMode4.Location = new System.Drawing.Point(8, 160);
+            this.gpSearchMode4.Name = "gpSearchMode4";
+            this.gpSearchMode4.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.gpSearchMode4.Size = new System.Drawing.Size(258, 106);
+            this.gpSearchMode4.TabIndex = 15;
+            this.gpSearchMode4.TabStop = false;
+            this.gpSearchMode4.Text = "Search mode";
             // 
-            // btMarkAll
+            // rbSimpleExtended4
             // 
-            this.btMarkAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkAll.Location = new System.Drawing.Point(364, 6);
-            this.btMarkAll.Name = "btMarkAll";
-            this.btMarkAll.Size = new System.Drawing.Size(156, 21);
-            this.btMarkAll.TabIndex = 35;
-            this.btMarkAll.Text = "Mark all";
-            this.btMarkAll.UseVisualStyleBackColor = true;
-            this.btMarkAll.Click += new System.EventHandler(this.BtMarkAll_Click);
+            this.rbSimpleExtended4.AutoSize = true;
+            this.rbSimpleExtended4.Location = new System.Drawing.Point(6, 85);
+            this.rbSimpleExtended4.Name = "rbSimpleExtended4";
+            this.rbSimpleExtended4.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended4.TabIndex = 3;
+            this.rbSimpleExtended4.Text = "Simple extended (#, %, *, ?)";
+            this.ttMain.SetToolTip(this.rbSimpleExtended4, "? = one character, * = multiple characters, # = digit, % = single digit");
+            this.rbSimpleExtended4.UseVisualStyleBackColor = true;
+            this.rbSimpleExtended4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
-            // btnClearAllMarks
+            // rbRegEx4
             // 
-            this.btnClearAllMarks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClearAllMarks.Location = new System.Drawing.Point(364, 33);
-            this.btnClearAllMarks.Name = "btnClearAllMarks";
-            this.btnClearAllMarks.Size = new System.Drawing.Size(156, 21);
-            this.btnClearAllMarks.TabIndex = 36;
-            this.btnClearAllMarks.Text = "Clear all marks";
-            this.btnClearAllMarks.UseVisualStyleBackColor = true;
-            this.btnClearAllMarks.Click += new System.EventHandler(this.BtnClearAllMarks_Click);
+            this.rbRegEx4.AutoSize = true;
+            this.rbRegEx4.Location = new System.Drawing.Point(6, 62);
+            this.rbRegEx4.Name = "rbRegEx4";
+            this.rbRegEx4.Size = new System.Drawing.Size(115, 17);
+            this.rbRegEx4.TabIndex = 2;
+            this.rbRegEx4.Text = "Regular expression";
+            this.rbRegEx4.UseVisualStyleBackColor = true;
+            this.rbRegEx4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
-            // button1
+            // rbExtented4
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(366, 148);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(156, 21);
-            this.button1.TabIndex = 37;
-            this.button1.Text = "Close";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.BtClose_Click);
+            this.rbExtented4.AutoSize = true;
+            this.rbExtented4.Location = new System.Drawing.Point(6, 39);
+            this.rbExtented4.Name = "rbExtented4";
+            this.rbExtented4.Size = new System.Drawing.Size(154, 17);
+            this.rbExtented4.TabIndex = 1;
+            this.rbExtented4.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
+            this.rbExtented4.UseVisualStyleBackColor = true;
+            this.rbExtented4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
-            // btMarkColor
+            // rbNormal4
             // 
-            this.btMarkColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkColor.Location = new System.Drawing.Point(364, 81);
-            this.btMarkColor.Name = "btMarkColor";
-            this.btMarkColor.Size = new System.Drawing.Size(156, 21);
-            this.btMarkColor.TabIndex = 38;
-            this.btMarkColor.UseVisualStyleBackColor = true;
-            this.btMarkColor.Click += new System.EventHandler(this.BtMarkColor_Click);
+            this.rbNormal4.AutoSize = true;
+            this.rbNormal4.Checked = true;
+            this.rbNormal4.Location = new System.Drawing.Point(6, 16);
+            this.rbNormal4.Name = "rbNormal4";
+            this.rbNormal4.Size = new System.Drawing.Size(58, 17);
+            this.rbNormal4.TabIndex = 0;
+            this.rbNormal4.TabStop = true;
+            this.rbNormal4.Text = "Normal";
+            this.rbNormal4.UseVisualStyleBackColor = true;
+            this.rbNormal4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
-            // pnLabelHolder09
+            // cbMatchCase4
             // 
-            this.pnLabelHolder09.Controls.Add(this.lbMarkColor);
-            this.pnLabelHolder09.Location = new System.Drawing.Point(259, 81);
-            this.pnLabelHolder09.Margin = new System.Windows.Forms.Padding(0);
-            this.pnLabelHolder09.Name = "pnLabelHolder09";
-            this.pnLabelHolder09.Size = new System.Drawing.Size(99, 21);
-            this.pnLabelHolder09.TabIndex = 39;
+            this.cbMatchCase4.AutoSize = true;
+            this.cbMatchCase4.Location = new System.Drawing.Point(8, 104);
+            this.cbMatchCase4.Name = "cbMatchCase4";
+            this.cbMatchCase4.Size = new System.Drawing.Size(82, 17);
+            this.cbMatchCase4.TabIndex = 13;
+            this.cbMatchCase4.Text = "Match case";
+            this.cbMatchCase4.UseVisualStyleBackColor = true;
+            this.cbMatchCase4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
-            // lbMarkColor
+            // cbMatchWholeWord4
             // 
-            this.lbMarkColor.AutoEllipsis = true;
-            this.lbMarkColor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbMarkColor.Location = new System.Drawing.Point(0, 0);
-            this.lbMarkColor.Name = "lbMarkColor";
-            this.lbMarkColor.Size = new System.Drawing.Size(99, 21);
-            this.lbMarkColor.TabIndex = 0;
-            this.lbMarkColor.Text = "Mark color:";
-            this.lbMarkColor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbMatchWholeWord4.AutoSize = true;
+            this.cbMatchWholeWord4.Location = new System.Drawing.Point(8, 81);
+            this.cbMatchWholeWord4.Name = "cbMatchWholeWord4";
+            this.cbMatchWholeWord4.Size = new System.Drawing.Size(135, 17);
+            this.cbMatchWholeWord4.TabIndex = 12;
+            this.cbMatchWholeWord4.Text = "Match whole word only";
+            this.cbMatchWholeWord4.UseVisualStyleBackColor = true;
+            this.cbMatchWholeWord4.CheckedChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            // 
+            // cbClearPreviousMarks4
+            // 
+            this.cbClearPreviousMarks4.AutoSize = true;
+            this.cbClearPreviousMarks4.Location = new System.Drawing.Point(8, 58);
+            this.cbClearPreviousMarks4.Name = "cbClearPreviousMarks4";
+            this.cbClearPreviousMarks4.Size = new System.Drawing.Size(124, 17);
+            this.cbClearPreviousMarks4.TabIndex = 5;
+            this.cbClearPreviousMarks4.Text = "Clear previous marks";
+            this.cbClearPreviousMarks4.UseVisualStyleBackColor = true;
+            // 
+            // pnLabelHolder08
+            // 
+            this.pnLabelHolder08.Controls.Add(this.lbFind4);
+            this.pnLabelHolder08.Location = new System.Drawing.Point(5, 6);
+            this.pnLabelHolder08.Margin = new System.Windows.Forms.Padding(0);
+            this.pnLabelHolder08.Name = "pnLabelHolder08";
+            this.pnLabelHolder08.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder08.TabIndex = 4;
+            // 
+            // lbFind4
+            // 
+            this.lbFind4.AutoEllipsis = true;
+            this.lbFind4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbFind4.Location = new System.Drawing.Point(0, 0);
+            this.lbFind4.Name = "lbFind4";
+            this.lbFind4.Size = new System.Drawing.Size(99, 21);
+            this.lbFind4.TabIndex = 0;
+            this.lbFind4.Text = "Find:";
+            this.lbFind4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cmbFind4
+            // 
+            this.cmbFind4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFind4.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbFind4.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbFind4.FormattingEnabled = true;
+            this.cmbFind4.Location = new System.Drawing.Point(107, 6);
+            this.cmbFind4.Name = "cmbFind4";
+            this.cmbFind4.Size = new System.Drawing.Size(251, 21);
+            this.cmbFind4.TabIndex = 3;
+            this.cmbFind4.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
+            this.cmbFind4.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             // 
             // cdColors
             // 
@@ -1572,13 +1576,13 @@
             this.pnLabelHolder04.ResumeLayout(false);
             this.tabMarkMatches.ResumeLayout(false);
             this.tabMarkMatches.PerformLayout();
-            this.pnLabelHolder08.ResumeLayout(false);
-            this.gpSearchMode4.ResumeLayout(false);
-            this.gpSearchMode4.PerformLayout();
+            this.pnLabelHolder09.ResumeLayout(false);
             this.gpTransparency4.ResumeLayout(false);
             this.gpTransparency4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbOpacity4)).EndInit();
-            this.pnLabelHolder09.ResumeLayout(false);
+            this.gpSearchMode4.ResumeLayout(false);
+            this.gpSearchMode4.PerformLayout();
+            this.pnLabelHolder08.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

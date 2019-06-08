@@ -96,7 +96,7 @@
             this.pnNextResult.Name = "pnNextResult";
             this.pnNextResult.Size = new System.Drawing.Size(8, 8);
             this.pnNextResult.TabIndex = 3;
-            this.ttMain.SetToolTip(this.pnNextResult, "Next result");
+            this.ttMain.SetToolTip(this.pnNextResult, "Advance result");
             this.pnNextResult.Click += new System.EventHandler(this.TinyButton_Click);
             // 
             // pnPreviousResult

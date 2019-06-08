@@ -40,6 +40,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// Gets the ID of the latest recent file insert from the database.
         /// </summary>
         /// <returns>A generated SQL sentence.</returns>
+        // ReSharper disable once InconsistentNaming
         public static string GenLatestDBRecentFileIDSentence()
         {
             string sql =
@@ -86,7 +87,8 @@ namespace ScriptNotepad.Database.TableCommands
                 $"FROM",
                 $"RECENT_FILES",
                 $"WHERE",
-                $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}",
+                $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)} AND",
+                $"NOT EXISTS(SELECT * FROM DBFILE_SAVE WHERE ISHISTORY = 0 AND SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)} AND FILENAME_FULL = RECENT_FILES.FILENAME_FULL)",
                 $"ORDER BY CLOSED_DATETIME;");
 
             return sql;
@@ -97,12 +99,13 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="ids">A list of ID numbers to generate a SQL sentence to delete <see cref="RECENT_FILES"/> entries from the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        // ReSharper disable once InconsistentNaming
         public static string GenDeleteDBFileHistoryIDList(List<long> ids)
         {
-            string deleteIDList = string.Join(", ", ids);
+            string deleteIdList = string.Join(", ", ids);
             string sql =
                 string.Join(Environment.NewLine,
-                $"DELETE FROM RECENT_FILES WHERE ID IN({deleteIDList});");
+                $"DELETE FROM RECENT_FILES WHERE ID IN({deleteIdList});");
 
             return sql;
         }
@@ -135,6 +138,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="recentFile">A RECENT_FILES class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        // ReSharper disable once InconsistentNaming
         public static string GetExistingDBRecentFileIDSentence(RECENT_FILES recentFile)
         {
             string sql =

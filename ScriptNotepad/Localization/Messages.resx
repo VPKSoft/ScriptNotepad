@@ -592,7 +592,7 @@
     <value>Close|A message describing a tool-tip for a button which would close something</value>
   </data>
   <data name="msgNextResult" xml:space="preserve">
-    <value>Next result|A tool-tip message describing that the button would go to the next search result</value>
+    <value>Advance result|A tool-tip message describing that the button would go to the next search result</value>
   </data>
   <data name="msgPreviousResult" xml:space="preserve">
     <value>Previous result|A tool-tip message describing that the button would go to the previous search result</value>

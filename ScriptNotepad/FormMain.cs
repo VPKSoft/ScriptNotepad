@@ -1356,6 +1356,9 @@ namespace ScriptNotepad
 
                     // ReSharper disable once ObjectCreationAsStatement
                     new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
+
+                    // set the misc indicators..
+                    SetDocumentMiscIndicators(sttcMain.LastAddedDocument);
                 }
                 sttcMain.ActivateDocument(file.FILENAME_FULL);
 
@@ -1467,7 +1470,9 @@ namespace ScriptNotepad
 
                         if (sttcMain.LastAddedDocument.Tag == null && fileSave == null)
                         {
-                            sttcMain.LastAddedDocument.Tag = DatabaseFileSave.AddOrUpdateFile(sttcMain.LastAddedDocument, DatabaseHistoryFlag.DontCare, CurrentSession, encoding);
+                            sttcMain.LastAddedDocument.Tag = DatabaseFileSave.AddOrUpdateFile(
+                                sttcMain.LastAddedDocument, DatabaseHistoryFlag.DontCare, CurrentSession,
+                                CurrentSessionID, encoding);
                         }
                         else if (fileSave != null)
                         {
@@ -1490,6 +1495,10 @@ namespace ScriptNotepad
                         // get a DBFILE_SAVE class instance from the document's tag..
                         fileSave = (DBFILE_SAVE)sttcMain.LastAddedDocument.Tag;
 
+                        // set the session ID number..
+                        fileSave.SESSIONID = CurrentSessionID;
+
+                        // not history at least anymore..
                         fileSave.ISHISTORY = false;
 
                         // ..update the database with the document..
@@ -1519,6 +1528,9 @@ namespace ScriptNotepad
 
                         // the file load can't add an undo option the Scintilla..
                         sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
+
+                        // set the misc indicators..
+                        SetDocumentMiscIndicators(sttcMain.LastAddedDocument);
 
                         // set the zoom value..
                         sttcMain.LastAddedDocument.ZoomPercentage = fileSave.EDITOR_ZOOM;
@@ -2115,7 +2127,20 @@ namespace ScriptNotepad
                 }
                 return;
             }
-            
+
+            if (e.KeyCode == Keys.F3)
+            {
+                if (e.OnlyShift() || e.NoModifierKeysDown())
+                {
+                    // find the next result if available..
+                    FormSearchAndReplace.Instance.Advance(!e.OnlyShift());
+
+                    // this is handled..
+                    e.Handled = true;
+                    return;
+                }
+            }
+
             if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
             {
                 // set the flag to suspend the selection update to avoid excess CPU load..
@@ -3100,26 +3125,12 @@ namespace ScriptNotepad
             // validate the index..
             if (idx != -1)
             {
-                // do a backward loop and try to find the right-most or the left-most document
-                // compared to the current one..
-                for (int i = sttcMain.DocumentsCount - 1; i >= 0; i--)
+                // just a simple plus/minus calculation..
+                idx = right ? idx + 1 : idx - 1;
+
+                if (idx > 0 && idx < sttcMain.DocumentsCount)
                 {
-                    // validate the right flag..
-                    if ((!right && i > idx) || (right && i < idx))
-                    {
-                        // ..if this isn't a match then do continue..
-                        continue;
-                    }
-
-                    // the index is the active document..
-                    if (idx == i)
-                    {
-                        // ..so skip the document..
-                        continue;
-                    }
-
-                    // a value was found, so do return it..
-                    return sttcMain.Documents[i];
+                    return sttcMain.Documents[idx];
                 }
             }
 

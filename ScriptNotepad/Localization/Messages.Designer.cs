@@ -1258,7 +1258,7 @@ namespace ScriptNotepad.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next result|A tool-tip message describing that the button would go to the next search result.
+        ///   Looks up a localized string similar to Advance result|A tool-tip message describing that the button would go to the next search result.
         /// </summary>
         internal static string msgNextResult {
             get {

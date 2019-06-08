@@ -338,6 +338,31 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
         #region PublicMethods        
         /// <summary>
+        /// Advances the search to the next or to the previous result if available and the form is visible and there are some search conditions.
+        /// </summary>
+        public void Advance(bool forward)
+        {
+            // the form is not visible, so do return..
+            if (!Visible)
+            {
+                return;
+            }
+
+            if (tcMain.TabIndex == 0 || tcMain.TabIndex == 1)
+            {
+                if (forward)
+                {
+                    Forward();
+                }
+                else
+                {
+                    Backward();
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Re-lists the search history combo boxes contents.
         /// </summary>
         public void ReListSearchHistory()
@@ -1888,6 +1913,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
         private void FormSearchAndReplace_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.F3)
+            {
+                if (e.OnlyShift() || e.NoModifierKeysDown())
+                {
+                    // find the next result if available..
+                    Advance(!e.OnlyShift());
+
+                    // this is handled..
+                    e.Handled = true;
+                    return;
+                }
+            }
+
             // escape key was pressed, so the dialog can be closed..
             if (e.KeyCode == Keys.Escape && e.NoModifierKeysDown())
             {
