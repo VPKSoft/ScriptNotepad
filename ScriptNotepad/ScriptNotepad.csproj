@@ -199,6 +199,7 @@
     </Compile>
     <Compile Include="UtilityClasses\Encodings\DetectEncoding.cs" />
     <Compile Include="UtilityClasses\Encodings\EncodingExceptionEventArgs.cs" />
+    <Compile Include="UtilityClasses\Encodings\FileEncoding.cs" />
     <Compile Include="UtilityClasses\Encodings\TryMakeEncoding.cs" />
     <Compile Include="UtilityClasses\GraphicUtils\FontFamilyHelpers.cs" />
     <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
@@ -389,7 +390,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <LastGenOutput>Messages1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="PluginHandling\FormPluginManage.resx">
       <DependentUpon>FormPluginManage.cs</DependentUpon>

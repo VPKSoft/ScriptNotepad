@@ -142,7 +142,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
             {
                 try
                 {
-                    encoding = new UTF8Encoding(false, true);
+                    encoding = new UTF8Encoding(true, true);
                     return encoding.GetString(stream.ToArray());
                 }
                 catch (Exception ex)
@@ -164,7 +164,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                 bytes.InsertRange(0, Utf8Bom);
 
                 // try the UTF8 encoding with the BOM..
-                encoding = new UTF8Encoding(true, true);
+                encoding = new UTF8Encoding(false, true);
                 noBom = true;
                 return encoding.GetString(bytes.ToArray());
             }

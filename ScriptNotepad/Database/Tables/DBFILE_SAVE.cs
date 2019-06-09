@@ -225,7 +225,7 @@ namespace ScriptNotepad.Database.Tables
                 if (encoding is UTF8Encoding)
                 {
                     unicodeBom = value;
-                    encoding = new UTF8Encoding(!value, true);
+                    encoding = new UTF8Encoding(value, true);
                     return;
                 }
 
@@ -260,15 +260,14 @@ namespace ScriptNotepad.Database.Tables
                 if (encoding is UnicodeEncoding)
                 {
                     unicodeBom = value;
-                    encoding = new UnicodeEncoding(value,value, true);
+                    encoding = new UnicodeEncoding(value,UNICODE_BOM, true);
                     return;
                 }
 
                 if (encoding is UTF32Encoding)
                 {
                     unicodeBom = value;
-                    encoding = new UTF32Encoding(value,value, true);
-                    return;
+                    encoding = new UTF32Encoding(value,UNICODE_BOM, true);
                 }
             }
         }

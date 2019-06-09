@@ -813,4 +813,16 @@
   <data name="msgProgrammingJavaScript" xml:space="preserve">
     <value>JavaScript programming language|A programming, markup, setting, script or other file and/or language/text</value>
   </data>
+  <data name="msgUnicodeBigEndianShort" xml:space="preserve">
+    <value>BE|A short message describing that an unicode encoding is in a big endian format</value>
+  </data>
+  <data name="msgUnicodeBomShort" xml:space="preserve">
+    <value>BOM|A short message describing that an unicode encoding contains a BOM (byte-order-mark)</value>
+  </data>
+  <data name="msgUnicodeLittleEndianShort" xml:space="preserve">
+    <value>LE|A short message describing that an unicode encoding is in a little endian format</value>
+  </data>
+  <data name="msgUnicodeNoBomShort" xml:space="preserve">
+    <value>NO-BOM|A short message describing that an unicode encoding doesn't contain a BOM (byte-order-mark)</value>
+  </data>
 </root>

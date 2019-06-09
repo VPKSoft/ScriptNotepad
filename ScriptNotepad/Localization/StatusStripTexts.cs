@@ -24,10 +24,12 @@ SOFTWARE.
 */
 #endregion
 
+using System.Text;
 using ScriptNotepad.Database.Tables;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaTabbedTextControl;
+using static ScriptNotepad.UtilityClasses.Encodings.DetectEncoding;
 
 namespace ScriptNotepad.Localization
 {
@@ -226,6 +228,32 @@ namespace ScriptNotepad.Localization
                 LabelEncoding.Text =
                     DBLangEngine.GetStatMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
                     fileSave.ENCODING.EncodingName;
+
+                // special handling for unicode..
+                if (fileSave.ENCODING.CodePage == Encoding.UTF8.CodePage ||
+                    fileSave.ENCODING.CodePage == Encoding.Unicode.CodePage ||
+                    fileSave.ENCODING.CodePage == Encoding.UTF32.CodePage)
+                {
+                    LabelEncoding.Text += @": ";
+
+                    LabelEncoding.Text += fileSave.UNICODE_BOM
+                        ? DBLangEngine.GetStatMessage("msgUnicodeBomShort",
+                            "BOM|A short message describing that an unicode encoding contains a BOM (byte-order-mark)")
+                        : DBLangEngine.GetStatMessage("msgUnicodeNoBomShort",
+                            "NO-BOM|A short message describing that an unicode encoding doesn't contain a BOM (byte-order-mark)");
+
+                    // UTF8 has only one byte order so skip the UTF8..
+                    if (fileSave.ENCODING.CodePage != Encoding.UTF8.CodePage)
+                    {
+                        LabelEncoding.Text += @"|";
+
+                        LabelEncoding.Text += fileSave.UNICODE_BIGENDIAN
+                            ? DBLangEngine.GetStatMessage("msgUnicodeBigEndianShort",
+                                "BE|A short message describing that an unicode encoding is in a big endian format")
+                            : DBLangEngine.GetStatMessage("msgUnicodeLittleEndianShort",
+                                "LE|A short message describing that an unicode encoding is in a little endian format");
+                    }
+                }
 
                 LabelSessionName.Text =
                     DBLangEngine.GetStatMessage("msgSessionName", "Session: {0}|A message describing a session name with the name as a parameter", sessionName);

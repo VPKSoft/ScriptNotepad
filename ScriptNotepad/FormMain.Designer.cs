@@ -247,6 +247,7 @@
             this.tsbReloadFromDisk.Name = "tsbReloadFromDisk";
             this.tsbReloadFromDisk.Size = new System.Drawing.Size(23, 22);
             this.tsbReloadFromDisk.Text = "Reload from disk";
+            this.tsbReloadFromDisk.Click += new System.EventHandler(this.MnuReloadFromDisk_Click);
             // 
             // toolStripSeparator3
             // 

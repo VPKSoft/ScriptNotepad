@@ -235,7 +235,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
 
             if (ByteMatch(bytes, Utf8Bom))
             {
-                return new UTF8Encoding(false, true);
+                return new UTF8Encoding(true, true);
             }
 
             if (ByteMatch(bytes, Utf16BigEndianBom))
