@@ -34,8 +34,10 @@ using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
 using System.Globalization;
 using System.IO;
+using System.Windows.Forms;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
+using TabDrawMode = ScintillaNET.TabDrawMode;
 
 namespace ScriptNotepad.Settings
 {
@@ -137,6 +139,10 @@ namespace ScriptNotepad.Settings
                         }
                         else
                         {
+                            if (currentValue == null)
+                            {
+                                continue;
+                            }
                             propertyInfos[i].SetValue(this, Convert.ChangeType(conflib[settingAttribute.SettingName, currentValue.ToString()], settingAttribute.SettingType));                        
                         }
                     }
@@ -227,6 +233,12 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("main/autoDetectEncoding", typeof(bool))]
         public bool AutoDetectEncoding { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the software should try to detect a no-BOM unicode files.
+        /// </summary>
+        [Setting("main/detectNoBom", typeof(bool))]
+        public bool DetectNoBom { get; set; } = false;
 
         /// <summary>
         /// The amount of files to be saved to a document history.

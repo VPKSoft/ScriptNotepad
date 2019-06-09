@@ -127,6 +127,33 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         }
 
         /// <summary>
+        /// Determines whether the specified byte array is a byte-order-mark (BOM).
+        /// </summary>
+        /// <param name="bom">The byte array to check for a BOM.</param>
+        /// <returns><c>true</c> if the specified byte array has a byte-order-mark (BOM); otherwise, <c>false</c>.</returns>
+        public static bool HasBom(byte[] bom)
+        {
+            List<byte> bomBytes = new List<byte>(bom);
+            return ByteMatch(Utf8Bom.ToArray(), bomBytes) ||
+                   ByteMatch(Utf16BigEndianBom.ToArray(), bomBytes) ||
+                   ByteMatch(Utf16LittleEndianBom.ToArray(), bomBytes) ||
+                   ByteMatch(Utf32BigEndianBom.ToArray(), bomBytes) ||
+                   ByteMatch(Utf32LittleEndianBom.ToArray(), bomBytes);
+        }
+
+        /// <summary>
+        /// Determines whether the specified byte array is a big-endian byte-order-mark (BOM).
+        /// </summary>
+        /// <param name="bom">The byte array to check for a byte order.</param>
+        /// <returns><c>true</c> if the specified byte array is a big-endian byte-order-mark (BOM); otherwise, <c>false</c>.</returns>
+        public static bool IsBigEndian(byte[] bom)
+        {
+            List<byte> bomBytes = new List<byte>(bom);
+            return ByteMatch(Utf16BigEndianBom.ToArray(), bomBytes) ||
+                   ByteMatch(Utf32BigEndianBom.ToArray(), bomBytes);
+        }
+
+        /// <summary>
         /// Gets the encoding comparison bytes (the first five bytes of the stream).
         /// </summary>
         /// <param name="stream">The stream get the bytes from.</param>

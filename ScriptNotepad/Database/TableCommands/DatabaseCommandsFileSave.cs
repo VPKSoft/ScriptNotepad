@@ -132,13 +132,53 @@ namespace ScriptNotepad.Database.TableCommands
                 $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
                 $"{DatabaseCommandsGeneral.GenSessionNameNameCondition(sessionName)} AS SESSIONNAME,",
                 $"FILESYS_SAVED, ENCODING, CURRENT_POSITION, ",
-                $"USESPELL_CHECK, EDITOR_ZOOM",
+                $"USESPELL_CHECK, EDITOR_ZOOM, UNICODE_BOM, UNICODE_BIGENDIAN",
                 $"FROM DBFILE_SAVE",
                 $"WHERE",
                 $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)}",
                 fileNameCondition,
                 GetHistorySelectCondition(databaseHistoryFlag, "AND"),
                 $"ORDER BY VISIBILITY_ORDER;");
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to detect whether a document exists in the DBFILE_SAVE table in the database.
+        /// </summary>
+        /// <param name="sessionName">Name of the session with the saved file belongs to.</param>
+        /// <param name="fileNameFull">A full file name of the file to check for.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenIfExistsInDatabase(string sessionName, string fileNameFull)
+        {
+
+            string sql =
+                string.Join(Environment.NewLine,
+                    $"SELECT ID",
+                    $"FROM DBFILE_SAVE",
+                    $"WHERE",
+                    $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)} AND",
+                    $"FILENAME_FULL = {QS(fileNameFull)}");
+                    
+            return sql;
+        }
+
+        /// <summary>
+        /// Generates a SQL sentence to get encoding for a file from the DBFILE_SAVE table in the database.
+        /// </summary>
+        /// <param name="sessionName">Name of the session with the saved file belongs to.</param>
+        /// <param name="fileNameFull">A full file name of the file.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GetEncodingFromDatabase(string sessionName, string fileNameFull)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                    $"SELECT", 
+                    $"ENCODING, UNICODE_BOM, UNICODE_BIGENDIAN",
+                    $"FROM DBFILE_SAVE",
+                    $"WHERE",
+                    $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)} AND",
+                    $"FILENAME_FULL = {QS(fileNameFull)};");
 
             return sql;
         }
@@ -165,7 +205,7 @@ namespace ScriptNotepad.Database.TableCommands
                 string.Join(Environment.NewLine,
                 $"INSERT INTO DBFILE_SAVE (EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH, FILESYS_MODIFIED, ",
                 $"FILESYS_SAVED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS, VISIBILITY_ORDER, ISACTIVE, ISHISTORY, SESSIONID, ", 
-                $"ENCODING, CURRENT_POSITION, USESPELL_CHECK, EDITOR_ZOOM) ",
+                $"ENCODING, CURRENT_POSITION, USESPELL_CHECK, EDITOR_ZOOM, UNICODE_BOM, UNICODE_BIGENDIAN) ",
                 $"SELECT {BS(fileSave.EXISTS_INFILESYS)},",
                 $"{QS(fileSave.FILENAME_FULL)},",
                 $"{QS(fileSave.FILENAME)},",
@@ -181,7 +221,9 @@ namespace ScriptNotepad.Database.TableCommands
                 $"{QS(fileSave.ENCODING.WebName)},",
                 $"{fileSave.CURRENT_POSITION},",
                 $"{BS(fileSave.USESPELL_CHECK)},",
-                $"{fileSave.EDITOR_ZOOM}",
+                $"{fileSave.EDITOR_ZOOM},",
+                $"{BS(fileSave.UNICODE_BOM)},",
+                $"{BS(fileSave.UNICODE_BIGENDIAN)}",
                 existsCondition,
                 $";");
 
@@ -216,7 +258,9 @@ namespace ScriptNotepad.Database.TableCommands
                     $"LEXER_CODE = {(int)fileSave.LEXER_CODE},",
                     $"VISIBILITY_ORDER = {fileSave.VISIBILITY_ORDER},",
                     $"ISACTIVE = {BS(fileSave.ISACTIVE)},",
-                    $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM}",
+                    $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM},",
+                    $"UNICODE_BOM = {BS(fileSave.UNICODE_BOM)},",
+                    $"UNICODE_BIGENDIAN = {BS(fileSave.UNICODE_BIGENDIAN)}",
                     $"WHERE ID = {fileSave.ID};");
 
             return sql;
@@ -252,7 +296,9 @@ namespace ScriptNotepad.Database.TableCommands
                 $"CURRENT_POSITION = {fileSave.CURRENT_POSITION},",
                 $"ENCODING = {QS(fileSave.ENCODING.WebName)},",
                 $"USESPELL_CHECK = {BS(fileSave.USESPELL_CHECK)},",
-                $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM}",
+                $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM},",
+                $"UNICODE_BOM = {BS(fileSave.UNICODE_BOM)},",
+                $"UNICODE_BIGENDIAN = {BS(fileSave.UNICODE_BIGENDIAN)}",
                 $"WHERE ID = {fileSave.ID};");
 
             return sql;

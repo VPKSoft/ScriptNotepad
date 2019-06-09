@@ -26,6 +26,7 @@ SOFTWARE.
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
 {

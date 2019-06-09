@@ -34,6 +34,7 @@ using ScriptNotepad.UtilityClasses.ErrorHandling;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 using VPKSoft.LangLib;
 using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
+using static ScriptNotepad.UtilityClasses.Encodings.DetectEncoding;
 
 namespace ScriptNotepad.Database.Tables
 {
@@ -176,10 +177,23 @@ namespace ScriptNotepad.Database.Tables
         /// </summary>
         public bool ISHISTORY { get; set; }
 
+        // a field for the ENCODING property..
+        private Encoding encoding = Encoding.UTF8;
+
         /// <summary>
         /// Gets or sets the encoding of the file save.
         /// </summary>
-        public Encoding ENCODING { get; set; }
+        public Encoding ENCODING
+        {
+            get => encoding;
+
+            set
+            {
+                UNICODE_BOM = HasBom(value.GetPreamble());
+                UNICODE_BIGENDIAN = IsBigEndian(value.GetPreamble());
+                encoding = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the current position (cursor / caret) of the file.
@@ -195,6 +209,69 @@ namespace ScriptNotepad.Database.Tables
         /// Gets or sets the editor zoom value in percentage.
         /// </summary>
         public int EDITOR_ZOOM { get; set; } = 100;
+
+        private bool unicodeBom;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether in case of unicode encoding the file contents contains a byte-order-mark (BOM).
+        /// </summary>
+        public bool UNICODE_BOM
+        {
+            get => unicodeBom;
+            set
+            {
+                unicodeBom = false;
+
+                if (encoding is UTF8Encoding)
+                {
+                    unicodeBom = value;
+                    encoding = new UTF8Encoding(!value, true);
+                    return;
+                }
+
+                if (encoding is UnicodeEncoding)
+                {
+                    unicodeBom = value;
+                    encoding = new UnicodeEncoding(UNICODE_BIGENDIAN,value, true);
+                    return;
+                }
+
+                if (encoding is UTF32Encoding)
+                {
+                    unicodeBom = value;
+                    encoding = new UTF32Encoding(UNICODE_BIGENDIAN,value, true);
+                    return;
+                }
+            }
+        }
+
+        private bool unicodeBigEndian;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether in case of unicode encoding the byte order is big-endian.
+        /// </summary>
+        public bool UNICODE_BIGENDIAN 
+        { 
+            get => unicodeBigEndian;
+            set
+            {
+                unicodeBigEndian = false;
+
+                if (encoding is UnicodeEncoding)
+                {
+                    unicodeBom = value;
+                    encoding = new UnicodeEncoding(value,value, true);
+                    return;
+                }
+
+                if (encoding is UTF32Encoding)
+                {
+                    unicodeBom = value;
+                    encoding = new UTF32Encoding(value,value, true);
+                    return;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the previous encodings of the file save for undo possibility.

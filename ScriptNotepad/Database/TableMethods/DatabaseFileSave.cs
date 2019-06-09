@@ -246,6 +246,66 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
+        /// Validates if a snapshot of a file exists in the DBFILE_SAVE database table.
+        /// </summary>
+        /// <param name="sessionName">Name of the session to which the file is supposed to belong to.</param>
+        /// <param name="fileNameFull">The full file name of the file.</param>
+        /// <returns><c>true</c> if a file snapshot exists in the database, <c>false</c> otherwise.</returns>
+        public static bool FileExistsInDatabase(string sessionName, string fileNameFull)
+        {
+            return GetScalar<long>(DatabaseCommandsFileSave.GenIfExistsInDatabase(sessionName, fileNameFull)) !=
+                   default;
+        }
+
+        /// <summary>
+        /// Gets the encoding for a file snapshot from the database.
+        /// </summary>
+        /// <param name="sessionName">Name of the session to which the file is supposed to belong to.</param>
+        /// <param name="fileNameFull">The full file name of the file.</param>
+        /// <returns>An <see cref="Encoding"/> class instance if the operation was successful; otherwise null.</returns>
+        public static Encoding GetEncodingFromDatabase(string sessionName, string fileNameFull)
+        {
+            try
+            {
+                Encoding fileSaveEncoding = null;
+                using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GetEncodingFromDatabase(sessionName, fileNameFull), Connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        // ENCODING = 0, UNICODE_BOM = 1, UNICODE_BIGENDIAN = 2
+                        if (reader.Read())
+                        {
+                            fileSaveEncoding = Encoding.GetEncoding(reader.GetString(0));
+
+                            // unicode (UTFxxx) is a special encoding (because of BOM, etc)..
+                            if (fileSaveEncoding.CodePage == Encoding.UTF8.CodePage)
+                            {
+                                fileSaveEncoding = new UTF8Encoding(reader.GetInt32(1) == 1);
+                            }
+                            else if (fileSaveEncoding.CodePage == Encoding.Unicode.CodePage)
+                            {
+                                fileSaveEncoding = new UnicodeEncoding(reader.GetInt32(2) == 1, reader.GetInt32(1) == 0);
+                            }
+                            else if (fileSaveEncoding.CodePage == Encoding.UTF32.CodePage)
+                            {
+                                fileSaveEncoding = new UTF32Encoding(reader.GetInt32(2) == 1, reader.GetInt32(1) == 0);
+                            }
+                        }
+                    }
+                }
+
+                return fileSaveEncoding;
+            }
+            catch (Exception ex)
+            {
+                // log the exception if the action has a value..
+                ExceptionLogAction?.Invoke(ex);
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Updates the miscellaneous flags of a given <see cref="DBFILE_SAVE"/> class instance.
         /// </summary>
         /// <param name="fileSave">An instance to a <see cref="DBFILE_SAVE"/> class.</param>
@@ -269,9 +329,23 @@ namespace ScriptNotepad.Database.TableMethods
                 // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
                 // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13,
                 // FILESYS_SAVED: 14, ENCODING: 15, CURRENT_POSITION = 16, USESPELL_CHECK = 17,
-                // EDITOR_ZOOM = 18
+                // EDITOR_ZOOM = 18, UNICODE_BOM = 19, UNICODE_BIGENDIAN, 20
 
                 Encoding fileSaveEncoding = Encoding.GetEncoding(reader.GetString(15));
+
+                // unicode (UTFxxx) is a special encoding (because of BOM, etc)..
+                if (fileSaveEncoding.CodePage == Encoding.UTF8.CodePage)
+                {
+                    fileSaveEncoding = new UTF8Encoding(reader.GetInt32(19) == 1);
+                }
+                else if (fileSaveEncoding.CodePage == Encoding.Unicode.CodePage)
+                {
+                    fileSaveEncoding = new UnicodeEncoding(reader.GetInt32(20) == 1, reader.GetInt32(19) == 1);
+                }
+                else if (fileSaveEncoding.CodePage == Encoding.UTF32.CodePage)
+                {
+                    fileSaveEncoding = new UTF32Encoding(reader.GetInt32(20) == 1, reader.GetInt32(19) == 1);
+                }
 
                 return
                     new DBFILE_SAVE()
@@ -295,6 +369,8 @@ namespace ScriptNotepad.Database.TableMethods
                         CURRENT_POSITION = reader.GetInt32(16),
                         USESPELL_CHECK = reader.GetInt32(17) == 1,
                         EDITOR_ZOOM = getZoom ? reader.GetInt32(18) : 100,
+                        UNICODE_BOM = reader.GetInt32(19) == 1,
+                        UNICODE_BIGENDIAN = reader.GetInt32(20) == 1,
                     };
             }
             catch (Exception ex)

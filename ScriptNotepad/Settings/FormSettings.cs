@@ -272,6 +272,9 @@ namespace ScriptNotepad.Settings
             cbUseCodeIndentation.Checked = Settings.EditorUseCodeIndentation;
             nudTabWidth.Value = Settings.EditorTabWidth;
 
+            // get the no-BOM detection value..
+            cbDetectNoBomUnicode.Checked = Settings.DetectNoBom;
+
             // get the auto-save settings..
             cbUseAutoSave.Checked = Settings.ProgramAutoSave;
             nudAutoSaveInterval.Value = Settings.ProgramAutoSaveInterval;
@@ -403,6 +406,9 @@ namespace ScriptNotepad.Settings
             // set the code indentation and editor tab width values..
             Settings.EditorUseCodeIndentation = cbUseCodeIndentation.Checked;
             Settings.EditorTabWidth = (int)nudTabWidth.Value;
+
+            // set the no-BOM detection value..
+            Settings.DetectNoBom = cbDetectNoBomUnicode.Checked;
 
             // set the auto-save settings..
             Settings.ProgramAutoSave = cbUseAutoSave.Checked;

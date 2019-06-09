@@ -74,6 +74,7 @@ using ScriptNotepad.UtilityClasses.SpellCheck;
 using ScriptNotepad.UtilityClasses.TextManipulationUtils;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
+using static ScriptNotepad.UtilityClasses.Encodings.TryMakeEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 #endregion
 
@@ -1445,12 +1446,33 @@ namespace ScriptNotepad
             // check the file's existence first..
             if (File.Exists(fileName))
             {
-                if (FormSettings.Settings.AutoDetectEncoding && !encodingOverridden)
+                // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
+                bool existsInDatabase = DatabaseFileSave.FileExistsInDatabase(CurrentSession, fileName);
+
+                if (FormSettings.Settings.AutoDetectEncoding && !encodingOverridden && (!existsInDatabase || reloadContents))
                 {
                     using (FileStream fileStream = File.OpenRead(fileName))
                     {
                         encoding = DetectEncoding.FromStream(fileStream);
                     }
+                }
+
+                bool noBom = false;
+                bool bigEndian = false;
+
+                if (FormSettings.Settings.DetectNoBom && (!existsInDatabase || reloadContents))
+                {
+                    string contents = TryEncodings(fileName, out var detectedEncoding, out bigEndian, out noBom);
+
+                    if (contents != null)
+                    {
+                        encoding = detectedEncoding;
+                    }
+                }
+
+                if (existsInDatabase)
+                {
+                    encoding = DatabaseFileSave.GetEncodingFromDatabase(CurrentSession, fileName);
                 }
 
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
@@ -1480,6 +1502,12 @@ namespace ScriptNotepad
                             sttcMain.LastAddedDocument.ID = (int)fileSave.ID;
                             fileSave.ENCODING = encoding;
 
+                            if (!existsInDatabase || reloadContents)
+                            {
+                                fileSave.UNICODE_BOM = !noBom;
+                                fileSave.UNICODE_BIGENDIAN = bigEndian;
+                            }
+
                             // set the saved position of the document's caret..
                             if (fileSave.CURRENT_POSITION > 0 && fileSave.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
                             {
@@ -1494,6 +1522,12 @@ namespace ScriptNotepad
 
                         // get a DBFILE_SAVE class instance from the document's tag..
                         fileSave = (DBFILE_SAVE)sttcMain.LastAddedDocument.Tag;
+
+                        if (!existsInDatabase || reloadContents)
+                        {
+                            fileSave.UNICODE_BOM = !noBom;
+                            fileSave.UNICODE_BIGENDIAN = bigEndian;
+                        }
 
                         // set the session ID number..
                         fileSave.SESSIONID = CurrentSessionID;
