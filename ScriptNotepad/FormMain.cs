@@ -74,7 +74,6 @@ using ScriptNotepad.UtilityClasses.SpellCheck;
 using ScriptNotepad.UtilityClasses.TextManipulationUtils;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
-using static ScriptNotepad.UtilityClasses.Encodings.TryMakeEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 #endregion
@@ -2840,7 +2839,7 @@ namespace ScriptNotepad
                     // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
                     fileSave.ENCODING =
                         GetFileEncoding(CurrentSession, sttcMain.CurrentDocument.FileName, fileSave.ENCODING, true,
-                            false, out var noBom, out var bigEndian, out var existsInDatabase);
+                            false, out var noBom, out var bigEndian, out _);
 
                     // the user answered yes..
                     sttcMain.SuspendTextChangedEvents =
