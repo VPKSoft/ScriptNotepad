@@ -34,7 +34,6 @@ using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
 using System.Globalization;
 using System.IO;
-using System.Windows.Forms;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using TabDrawMode = ScintillaNET.TabDrawMode;
@@ -301,6 +300,23 @@ namespace ScriptNotepad.Settings
         [Setting("color/markSearchReplace", typeof(Color))]
         public Color MarkSearchReplaceColor { get; set; } = Color.DeepPink;
 
+        /// <summary>
+        /// Gets or sets the foreground color of brace highlighting.
+        /// </summary>
+        [Setting("color/braceHighlightForeground", typeof(Color))]
+        public Color BraceHighlightForegroundColor { get; set; } = Color.BlueViolet;
+
+        /// <summary>
+        /// Gets or sets the background color of brace highlighting.
+        /// </summary>
+        [Setting("color/braceHighlightBackground", typeof(Color))]
+        public Color BraceHighlightBackgroundColor { get; set; } = Color.LightGray;
+
+        /// <summary>
+        /// Gets or sets the foreground color of a bad brace.
+        /// </summary>
+        [Setting("color/braceHighlightForegroundBad", typeof(Color))]
+        public Color BraceBadHighlightForegroundColor { get; set; } = Color.Red;
 
         /// <summary>
         /// Gets the color of the mark.
@@ -349,6 +365,31 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("editor/simulateAltGrKey", typeof(bool))]
         public bool SimulateAltGrKey { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should highlight braces.
+        /// </summary>
+        [Setting("editor/highlightBraces", typeof(bool))]
+        public bool HighlightBraces { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should use italic font style when highlighting braces.
+        /// </summary>
+        [Setting("editor/highlightBracesItalic", typeof(bool))]
+        public bool HighlightBracesItalic { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should use bold font style when highlighting braces.
+        /// </summary>
+        [Setting("editor/highlightBracesBold", typeof(bool))]
+        public bool HighlightBracesBold { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor should use RTL (Right-to-left) script with the <see cref="Scintilla"/> controls.
+        /// </summary>
+        [Setting("editor/useRTL", typeof(bool))]
+        // ReSharper disable once InconsistentNaming
+        public bool EditorUseRTL { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the index of the type of simulation of an AltGr+Key press for the active editor <see cref="Scintilla"/>.
@@ -552,6 +593,13 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("fileDialog/locationSaveAs", typeof(string))]
         public string FileLocationSaveAs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for a save as HTML dialog.
+        /// </summary>
+        [Setting("fileDialog/locationSaveAsHTML", typeof(string))]
+        // ReSharper disable once InconsistentNaming
+        public string FileLocationSaveAsHTML { get; set; }
 
         /// <summary>
         /// Gets or sets the initial directory for an open file dialog on the main form.

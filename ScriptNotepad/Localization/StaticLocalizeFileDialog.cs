@@ -54,6 +54,15 @@ namespace ScriptNotepad.Localization
             dialog.Filter += DBLangEngine.GetStatMessage("msgFileAffix", "Hunspell affix file |*.aff|A text in a file dialog filter to indicate a Hunspell affix file");
         }
 
+        /// <summary>
+        /// Localizes a given file dialog with a HTML filter.
+        /// </summary>
+        /// <param name="dialog">The file dialog to localize.</param>
+        // ReSharper disable once InconsistentNaming
+        public static void InitHTMLFileDialog(FileDialog dialog)
+        {
+            dialog.Filter = DBLangEngine.GetStatMessage("msgHyperTextMarkupLanguageFileHTML", "Hyper Text Markup Language file|*.html|A text in a file dialog indicating Hyper Text Markup Language files (HTML only)");
+        }
 
         /// <summary>
         /// Localizes a given file dialog and adds the localized lexer file types to it's Filter property.

@@ -158,6 +158,13 @@
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
+            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuExportAsHTML = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuExportAsHTMLToNewDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.sdHTML = new System.Windows.Forms.SaveFileDialog();
+            this.mnuHTMLToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHTMLToFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHTMLToFileExecute = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -806,7 +813,9 @@
             this.toolStripMenuItem8,
             this.mnuWrapDocumentTo,
             this.toolStripMenuItem9,
-            this.mnuSortLines});
+            this.mnuSortLines,
+            this.toolStripMenuItem12,
+            this.mnuExportAsHTML});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -815,7 +824,7 @@
             // 
             this.mnuRunScript.Image = ((System.Drawing.Image)(resources.GetObject("mnuRunScript.Image")));
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(183, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(235, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -823,14 +832,14 @@
             // 
             this.mnuCharSets.Image = ((System.Drawing.Image)(resources.GetObject("mnuCharSets.Image")));
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(183, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(235, 22);
             this.mnuCharSets.Text = "Change encoding";
             this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(232, 6);
             // 
             // mnuStyle
             // 
@@ -850,7 +859,7 @@
             this.mnuClearStyle5});
             this.mnuStyle.Image = global::ScriptNotepad.Properties.Resources.style;
             this.mnuStyle.Name = "mnuStyle";
-            this.mnuStyle.Size = new System.Drawing.Size(183, 22);
+            this.mnuStyle.Size = new System.Drawing.Size(235, 22);
             this.mnuStyle.Text = "Style";
             // 
             // mnuClearAllStyles
@@ -968,26 +977,26 @@
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 6);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(232, 6);
             // 
             // mnuWrapDocumentTo
             // 
             this.mnuWrapDocumentTo.Image = global::ScriptNotepad.Properties.Resources.word_wrapped;
             this.mnuWrapDocumentTo.Name = "mnuWrapDocumentTo";
-            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(183, 22);
+            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(235, 22);
             this.mnuWrapDocumentTo.Text = "Wrap document to...";
             this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 6);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(232, 6);
             // 
             // mnuSortLines
             // 
             this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
             this.mnuSortLines.Name = "mnuSortLines";
-            this.mnuSortLines.Size = new System.Drawing.Size(183, 22);
+            this.mnuSortLines.Size = new System.Drawing.Size(235, 22);
             this.mnuSortLines.Text = "Sort lines...";
             this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
             // 
@@ -1244,6 +1253,54 @@
             this.tmAutoSave.Interval = 300000;
             this.tmAutoSave.Tick += new System.EventHandler(this.TmAutoSave_Tick);
             // 
+            // toolStripMenuItem12
+            // 
+            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(232, 6);
+            // 
+            // mnuExportAsHTML
+            // 
+            this.mnuExportAsHTML.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuExportAsHTMLToNewDocument,
+            this.mnuHTMLToClipboard,
+            this.mnuHTMLToFile,
+            this.mnuHTMLToFileExecute});
+            this.mnuExportAsHTML.Name = "mnuExportAsHTML";
+            this.mnuExportAsHTML.Size = new System.Drawing.Size(235, 22);
+            this.mnuExportAsHTML.Text = "Export text formatted as HTML";
+            // 
+            // mnuExportAsHTMLToNewDocument
+            // 
+            this.mnuExportAsHTMLToNewDocument.Name = "mnuExportAsHTMLToNewDocument";
+            this.mnuExportAsHTMLToNewDocument.Size = new System.Drawing.Size(264, 22);
+            this.mnuExportAsHTMLToNewDocument.Text = "To a new document";
+            this.mnuExportAsHTMLToNewDocument.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            // 
+            // sdHTML
+            // 
+            this.sdHTML.Filter = "Hyper Text Markup Language file|*.html";
+            // 
+            // mnuHTMLToClipboard
+            // 
+            this.mnuHTMLToClipboard.Name = "mnuHTMLToClipboard";
+            this.mnuHTMLToClipboard.Size = new System.Drawing.Size(264, 22);
+            this.mnuHTMLToClipboard.Text = "To clipboard";
+            this.mnuHTMLToClipboard.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            // 
+            // mnuHTMLToFile
+            // 
+            this.mnuHTMLToFile.Name = "mnuHTMLToFile";
+            this.mnuHTMLToFile.Size = new System.Drawing.Size(264, 22);
+            this.mnuHTMLToFile.Text = "To file";
+            this.mnuHTMLToFile.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            // 
+            // mnuHTMLToFileExecute
+            // 
+            this.mnuHTMLToFileExecute.Name = "mnuHTMLToFileExecute";
+            this.mnuHTMLToFileExecute.Size = new System.Drawing.Size(264, 22);
+            this.mnuHTMLToFileExecute.Text = "To file and open with a web browser";
+            this.mnuHTMLToFileExecute.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1403,6 +1460,13 @@
         private System.Windows.Forms.Timer tmAutoSave;
         private System.Windows.Forms.ToolStripMenuItem mnuTab;
         private System.Windows.Forms.ToolStripMenuItem mnuMarkText;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem12;
+        private System.Windows.Forms.ToolStripMenuItem mnuExportAsHTML;
+        private System.Windows.Forms.ToolStripMenuItem mnuExportAsHTMLToNewDocument;
+        private System.Windows.Forms.SaveFileDialog sdHTML;
+        private System.Windows.Forms.ToolStripMenuItem mnuHTMLToClipboard;
+        private System.Windows.Forms.ToolStripMenuItem mnuHTMLToFile;
+        private System.Windows.Forms.ToolStripMenuItem mnuHTMLToFileExecute;
     }
 }
 

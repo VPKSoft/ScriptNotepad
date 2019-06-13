@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.cbUseRTL = new System.Windows.Forms.CheckBox();
             this.cbCategorizeProgrammingLanguages = new System.Windows.Forms.CheckBox();
             this.nudHistoryAmount = new System.Windows.Forms.NumericUpDown();
             this.lbHistoryAmount = new System.Windows.Forms.Label();
@@ -54,6 +55,7 @@
             this.nudAutoSaveInterval = new System.Windows.Forms.NumericUpDown();
             this.cbUseAutoSave = new System.Windows.Forms.CheckBox();
             this.tabEncoding = new System.Windows.Forms.TabPage();
+            this.cbDetectNoBomUnicode = new System.Windows.Forms.CheckBox();
             this.cbEncodingAutoDetect = new System.Windows.Forms.CheckBox();
             this.gpDefaultEncoding = new System.Windows.Forms.GroupBox();
             this.btUTF8 = new System.Windows.Forms.PictureBox();
@@ -108,6 +110,13 @@
             this.lbMarkStyle1Color = new System.Windows.Forms.Label();
             this.btSmartHighlightColor = new System.Windows.Forms.Button();
             this.lbSmartHighlightColor = new System.Windows.Forms.Label();
+            this.tabAdditionalColors = new System.Windows.Forms.TabPage();
+            this.btBadBraceColor = new System.Windows.Forms.Button();
+            this.lbBadBraceColor = new System.Windows.Forms.Label();
+            this.btBraceHighlightBackgroundColor = new System.Windows.Forms.Button();
+            this.lbBraceHighlightBackgroundColor = new System.Windows.Forms.Label();
+            this.btBraceHighlightForegroundColor = new System.Windows.Forms.Button();
+            this.lbBraceHighlightForegroundColor = new System.Windows.Forms.Label();
             this.tabSpellCheck = new System.Windows.Forms.TabPage();
             this.cmbInstalledDictionaries = new System.Windows.Forms.ComboBox();
             this.lbInstalledDictionaries = new System.Windows.Forms.Label();
@@ -132,7 +141,12 @@
             this.odDictionaryFile = new System.Windows.Forms.OpenFileDialog();
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
-            this.cbDetectNoBomUnicode = new System.Windows.Forms.CheckBox();
+            this.tbRestartNote = new System.Windows.Forms.TextBox();
+            this.cbUseBraceMatching = new System.Windows.Forms.CheckBox();
+            this.gbUseBraceMatching = new System.Windows.Forms.GroupBox();
+            this.gbBraceFontStyle = new System.Windows.Forms.GroupBox();
+            this.rbBraceStyleBold = new System.Windows.Forms.RadioButton();
+            this.rbBraceStyleItalic = new System.Windows.Forms.RadioButton();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -156,8 +170,11 @@
             this.tabEditorFont.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
             this.tpgColorSettings.SuspendLayout();
+            this.tabAdditionalColors.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
+            this.gbUseBraceMatching.SuspendLayout();
+            this.gbBraceFontStyle.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -171,15 +188,17 @@
             this.tcMain.Controls.Add(this.tabEditorSettings);
             this.tcMain.Controls.Add(this.tabEditorFont);
             this.tcMain.Controls.Add(this.tpgColorSettings);
+            this.tcMain.Controls.Add(this.tabAdditionalColors);
             this.tcMain.Controls.Add(this.tabSpellCheck);
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(565, 397);
+            this.tcMain.Size = new System.Drawing.Size(668, 397);
             this.tcMain.TabIndex = 0;
             // 
             // tpgGeneralSettings
             // 
+            this.tpgGeneralSettings.Controls.Add(this.cbUseRTL);
             this.tpgGeneralSettings.Controls.Add(this.cbCategorizeProgrammingLanguages);
             this.tpgGeneralSettings.Controls.Add(this.nudHistoryAmount);
             this.tpgGeneralSettings.Controls.Add(this.lbHistoryAmount);
@@ -200,10 +219,21 @@
             this.tpgGeneralSettings.Location = new System.Drawing.Point(4, 22);
             this.tpgGeneralSettings.Name = "tpgGeneralSettings";
             this.tpgGeneralSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpgGeneralSettings.Size = new System.Drawing.Size(557, 371);
+            this.tpgGeneralSettings.Size = new System.Drawing.Size(615, 371);
             this.tpgGeneralSettings.TabIndex = 0;
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbUseRTL
+            // 
+            this.cbUseRTL.AutoSize = true;
+            this.cbUseRTL.Location = new System.Drawing.Point(6, 251);
+            this.cbUseRTL.Name = "cbUseRTL";
+            this.cbUseRTL.Size = new System.Drawing.Size(200, 17);
+            this.cbUseRTL.TabIndex = 39;
+            this.cbUseRTL.Text = "Use RTL (Right-to-left) text alignment";
+            this.cbUseRTL.UseVisualStyleBackColor = true;
+            this.cbUseRTL.Visible = false;
             // 
             // cbCategorizeProgrammingLanguages
             // 
@@ -219,7 +249,7 @@
             // nudHistoryAmount
             // 
             this.nudHistoryAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudHistoryAmount.Location = new System.Drawing.Point(461, 198);
+            this.nudHistoryAmount.Location = new System.Drawing.Point(519, 198);
             this.nudHistoryAmount.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -251,7 +281,7 @@
             // nudMaximumSearchFileSize
             // 
             this.nudMaximumSearchFileSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(461, 172);
+            this.nudMaximumSearchFileSize.Location = new System.Drawing.Point(519, 172);
             this.nudMaximumSearchFileSize.Maximum = new decimal(new int[] {
             1999,
             0,
@@ -294,7 +324,7 @@
             // 
             this.pbDefaultFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbDefaultFolder.Image = global::ScriptNotepad.Properties.Resources.default_image;
-            this.pbDefaultFolder.Location = new System.Drawing.Point(494, 122);
+            this.pbDefaultFolder.Location = new System.Drawing.Point(552, 122);
             this.pbDefaultFolder.Name = "pbDefaultFolder";
             this.pbDefaultFolder.Size = new System.Drawing.Size(21, 21);
             this.pbDefaultFolder.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -306,7 +336,7 @@
             // btSelectPluginFolder
             // 
             this.btSelectPluginFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSelectPluginFolder.Location = new System.Drawing.Point(520, 122);
+            this.btSelectPluginFolder.Location = new System.Drawing.Point(578, 122);
             this.btSelectPluginFolder.Name = "btSelectPluginFolder";
             this.btSelectPluginFolder.Size = new System.Drawing.Size(31, 20);
             this.btSelectPluginFolder.TabIndex = 30;
@@ -321,7 +351,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbPluginFolder.Location = new System.Drawing.Point(6, 122);
             this.tbPluginFolder.Name = "tbPluginFolder";
-            this.tbPluginFolder.Size = new System.Drawing.Size(482, 20);
+            this.tbPluginFolder.Size = new System.Drawing.Size(540, 20);
             this.tbPluginFolder.TabIndex = 29;
             this.tbPluginFolder.TextChanged += new System.EventHandler(this.tbPluginFolder_TextChanged);
             // 
@@ -359,7 +389,7 @@
             this.cmbSelectLanguageValue.Location = new System.Drawing.Point(225, 67);
             this.cmbSelectLanguageValue.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
             this.cmbSelectLanguageValue.Name = "cmbSelectLanguageValue";
-            this.cmbSelectLanguageValue.Size = new System.Drawing.Size(326, 21);
+            this.cmbSelectLanguageValue.Size = new System.Drawing.Size(384, 21);
             this.cmbSelectLanguageValue.TabIndex = 27;
             // 
             // cbDocumentContentHistory
@@ -368,7 +398,7 @@
             this.cbDocumentContentHistory.AutoSize = true;
             this.cbDocumentContentHistory.Checked = true;
             this.cbDocumentContentHistory.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDocumentContentHistory.Location = new System.Drawing.Point(440, 34);
+            this.cbDocumentContentHistory.Location = new System.Drawing.Point(498, 34);
             this.cbDocumentContentHistory.Name = "cbDocumentContentHistory";
             this.cbDocumentContentHistory.Size = new System.Drawing.Size(15, 14);
             this.cbDocumentContentHistory.TabIndex = 13;
@@ -378,7 +408,7 @@
             // nudDocumentContentHistory
             // 
             this.nudDocumentContentHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudDocumentContentHistory.Location = new System.Drawing.Point(461, 32);
+            this.nudDocumentContentHistory.Location = new System.Drawing.Point(519, 32);
             this.nudDocumentContentHistory.Maximum = new decimal(new int[] {
             999,
             0,
@@ -405,7 +435,7 @@
             // nudHistoryDocuments
             // 
             this.nudHistoryDocuments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudHistoryDocuments.Location = new System.Drawing.Point(461, 6);
+            this.nudHistoryDocuments.Location = new System.Drawing.Point(519, 6);
             this.nudHistoryDocuments.Maximum = new decimal(new int[] {
             30,
             0,
@@ -442,7 +472,7 @@
             this.tpgAdditionalSettings.Location = new System.Drawing.Point(4, 22);
             this.tpgAdditionalSettings.Name = "tpgAdditionalSettings";
             this.tpgAdditionalSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpgAdditionalSettings.Size = new System.Drawing.Size(557, 371);
+            this.tpgAdditionalSettings.Size = new System.Drawing.Size(615, 371);
             this.tpgAdditionalSettings.TabIndex = 5;
             this.tpgAdditionalSettings.Text = "Additional";
             this.tpgAdditionalSettings.UseVisualStyleBackColor = true;
@@ -459,14 +489,15 @@
             this.tbNoteAutoSave.Multiline = true;
             this.tbNoteAutoSave.Name = "tbNoteAutoSave";
             this.tbNoteAutoSave.ReadOnly = true;
-            this.tbNoteAutoSave.Size = new System.Drawing.Size(545, 30);
+            this.tbNoteAutoSave.Size = new System.Drawing.Size(603, 30);
             this.tbNoteAutoSave.TabIndex = 3;
             this.tbNoteAutoSave.TabStop = false;
             this.tbNoteAutoSave.Text = "NOTE: The auto-save doesn\'t use the file system.";
             // 
             // nudAutoSaveInterval
             // 
-            this.nudAutoSaveInterval.Location = new System.Drawing.Point(486, 6);
+            this.nudAutoSaveInterval.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudAutoSaveInterval.Location = new System.Drawing.Point(544, 6);
             this.nudAutoSaveInterval.Maximum = new decimal(new int[] {
             1440,
             0,
@@ -504,10 +535,20 @@
             this.tabEncoding.Location = new System.Drawing.Point(4, 22);
             this.tabEncoding.Name = "tabEncoding";
             this.tabEncoding.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEncoding.Size = new System.Drawing.Size(557, 371);
+            this.tabEncoding.Size = new System.Drawing.Size(615, 371);
             this.tabEncoding.TabIndex = 6;
             this.tabEncoding.Text = "Encoding";
             this.tabEncoding.UseVisualStyleBackColor = true;
+            // 
+            // cbDetectNoBomUnicode
+            // 
+            this.cbDetectNoBomUnicode.AutoSize = true;
+            this.cbDetectNoBomUnicode.Location = new System.Drawing.Point(6, 121);
+            this.cbDetectNoBomUnicode.Name = "cbDetectNoBomUnicode";
+            this.cbDetectNoBomUnicode.Size = new System.Drawing.Size(307, 17);
+            this.cbDetectNoBomUnicode.TabIndex = 44;
+            this.cbDetectNoBomUnicode.Text = "Try to detect unicode files without a BOM (Byte Order Mark)";
+            this.cbDetectNoBomUnicode.UseVisualStyleBackColor = true;
             // 
             // cbEncodingAutoDetect
             // 
@@ -531,7 +572,7 @@
             this.gpDefaultEncoding.Controls.Add(this.lbEncoding);
             this.gpDefaultEncoding.Location = new System.Drawing.Point(6, 6);
             this.gpDefaultEncoding.Name = "gpDefaultEncoding";
-            this.gpDefaultEncoding.Size = new System.Drawing.Size(545, 81);
+            this.gpDefaultEncoding.Size = new System.Drawing.Size(603, 81);
             this.gpDefaultEncoding.TabIndex = 42;
             this.gpDefaultEncoding.TabStop = false;
             this.gpDefaultEncoding.Text = "Default encoding";
@@ -540,7 +581,7 @@
             // 
             this.btUTF8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btUTF8.Image = global::ScriptNotepad.Properties.Resources.unicode;
-            this.btUTF8.Location = new System.Drawing.Point(513, 49);
+            this.btUTF8.Location = new System.Drawing.Point(571, 49);
             this.btUTF8.Name = "btUTF8";
             this.btUTF8.Size = new System.Drawing.Size(21, 21);
             this.btUTF8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -552,7 +593,7 @@
             // 
             this.btSystemDefaultEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btSystemDefaultEncoding.Image = global::ScriptNotepad.Properties.Resources.default_image;
-            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(513, 22);
+            this.btSystemDefaultEncoding.Location = new System.Drawing.Point(571, 22);
             this.btSystemDefaultEncoding.Name = "btSystemDefaultEncoding";
             this.btSystemDefaultEncoding.Size = new System.Drawing.Size(21, 21);
             this.btSystemDefaultEncoding.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -569,7 +610,7 @@
             this.cmbCharacterSet.FormattingEnabled = true;
             this.cmbCharacterSet.Location = new System.Drawing.Point(147, 22);
             this.cmbCharacterSet.Name = "cmbCharacterSet";
-            this.cmbCharacterSet.Size = new System.Drawing.Size(360, 21);
+            this.cmbCharacterSet.Size = new System.Drawing.Size(418, 21);
             this.cmbCharacterSet.TabIndex = 5;
             // 
             // cmbEncoding
@@ -580,7 +621,7 @@
             this.cmbEncoding.FormattingEnabled = true;
             this.cmbEncoding.Location = new System.Drawing.Point(147, 49);
             this.cmbEncoding.Name = "cmbEncoding";
-            this.cmbEncoding.Size = new System.Drawing.Size(360, 21);
+            this.cmbEncoding.Size = new System.Drawing.Size(418, 21);
             this.cmbEncoding.TabIndex = 7;
             // 
             // lbCharacterSet
@@ -617,7 +658,7 @@
             this.tabEditorSettings.Location = new System.Drawing.Point(4, 22);
             this.tabEditorSettings.Name = "tabEditorSettings";
             this.tabEditorSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEditorSettings.Size = new System.Drawing.Size(557, 371);
+            this.tabEditorSettings.Size = new System.Drawing.Size(615, 371);
             this.tabEditorSettings.TabIndex = 2;
             this.tabEditorSettings.Text = "Editor";
             this.tabEditorSettings.UseVisualStyleBackColor = true;
@@ -630,7 +671,7 @@
             this.gbZoomSetting.Controls.Add(this.cbIndividualZoom);
             this.gbZoomSetting.Location = new System.Drawing.Point(6, 238);
             this.gbZoomSetting.Name = "gbZoomSetting";
-            this.gbZoomSetting.Size = new System.Drawing.Size(545, 70);
+            this.gbZoomSetting.Size = new System.Drawing.Size(603, 70);
             this.gbZoomSetting.TabIndex = 12;
             this.gbZoomSetting.TabStop = false;
             this.gbZoomSetting.Text = "Zoom settings";
@@ -667,7 +708,7 @@
             // nudTabWidth
             // 
             this.nudTabWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudTabWidth.Location = new System.Drawing.Point(461, 212);
+            this.nudTabWidth.Location = new System.Drawing.Point(519, 212);
             this.nudTabWidth.Maximum = new decimal(new int[] {
             50,
             0,
@@ -705,7 +746,7 @@
             this.cmbSimulateKeyboard.FormattingEnabled = true;
             this.cmbSimulateKeyboard.Location = new System.Drawing.Point(6, 185);
             this.cmbSimulateKeyboard.Name = "cmbSimulateKeyboard";
-            this.cmbSimulateKeyboard.Size = new System.Drawing.Size(545, 21);
+            this.cmbSimulateKeyboard.Size = new System.Drawing.Size(603, 21);
             this.cmbSimulateKeyboard.TabIndex = 8;
             // 
             // cbSimulateKeyboard
@@ -731,7 +772,7 @@
             // nudWhiteSpaceSize
             // 
             this.nudWhiteSpaceSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudWhiteSpaceSize.Location = new System.Drawing.Point(461, 107);
+            this.nudWhiteSpaceSize.Location = new System.Drawing.Point(519, 107);
             this.nudWhiteSpaceSize.Maximum = new decimal(new int[] {
             10,
             0,
@@ -836,7 +877,7 @@
             this.tabEditorFont.Location = new System.Drawing.Point(4, 22);
             this.tabEditorFont.Name = "tabEditorFont";
             this.tabEditorFont.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEditorFont.Size = new System.Drawing.Size(557, 371);
+            this.tabEditorFont.Size = new System.Drawing.Size(562, 371);
             this.tabEditorFont.TabIndex = 4;
             this.tabEditorFont.Text = "Editor font";
             this.tabEditorFont.UseVisualStyleBackColor = true;
@@ -858,14 +899,14 @@
             this.scintilla.Location = new System.Drawing.Point(6, 100);
             this.scintilla.Name = "scintilla";
             this.scintilla.ScrollWidth = 2421;
-            this.scintilla.Size = new System.Drawing.Size(545, 265);
+            this.scintilla.Size = new System.Drawing.Size(552, 265);
             this.scintilla.TabIndex = 17;
             this.scintilla.Text = resources.GetString("scintilla.Text");
             // 
             // nudFontSize
             // 
             this.nudFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudFontSize.Location = new System.Drawing.Point(461, 33);
+            this.nudFontSize.Location = new System.Drawing.Point(468, 33);
             this.nudFontSize.Minimum = new decimal(new int[] {
             1,
             0,
@@ -899,7 +940,7 @@
             this.cmbFont.FormattingEnabled = true;
             this.cmbFont.Location = new System.Drawing.Point(190, 6);
             this.cmbFont.Name = "cmbFont";
-            this.cmbFont.Size = new System.Drawing.Size(361, 21);
+            this.cmbFont.Size = new System.Drawing.Size(368, 21);
             this.cmbFont.TabIndex = 14;
             this.cmbFont.SelectedIndexChanged += new System.EventHandler(this.CmbFont_SelectedIndexChanged);
             // 
@@ -937,7 +978,7 @@
             this.tpgColorSettings.Location = new System.Drawing.Point(4, 22);
             this.tpgColorSettings.Name = "tpgColorSettings";
             this.tpgColorSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpgColorSettings.Size = new System.Drawing.Size(557, 371);
+            this.tpgColorSettings.Size = new System.Drawing.Size(562, 371);
             this.tpgColorSettings.TabIndex = 1;
             this.tpgColorSettings.Text = "Colors & themes";
             this.tpgColorSettings.UseVisualStyleBackColor = true;
@@ -962,14 +1003,14 @@
             this.cmbNotepadPlusPlusTheme.Location = new System.Drawing.Point(9, 302);
             this.cmbNotepadPlusPlusTheme.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
             this.cmbNotepadPlusPlusTheme.Name = "cmbNotepadPlusPlusTheme";
-            this.cmbNotepadPlusPlusTheme.Size = new System.Drawing.Size(542, 21);
+            this.cmbNotepadPlusPlusTheme.Size = new System.Drawing.Size(547, 21);
             this.cmbNotepadPlusPlusTheme.TabIndex = 47;
             this.cmbNotepadPlusPlusTheme.SelectedIndexChanged += new System.EventHandler(this.CmbNotepadPlusPlusTheme_SelectedIndexChanged);
             // 
             // btNotepadPlusPlusThemePath
             // 
             this.btNotepadPlusPlusThemePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btNotepadPlusPlusThemePath.Location = new System.Drawing.Point(520, 238);
+            this.btNotepadPlusPlusThemePath.Location = new System.Drawing.Point(525, 238);
             this.btNotepadPlusPlusThemePath.Name = "btNotepadPlusPlusThemePath";
             this.btNotepadPlusPlusThemePath.Size = new System.Drawing.Size(31, 20);
             this.btNotepadPlusPlusThemePath.TabIndex = 45;
@@ -984,7 +1025,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbNotepadPlusPlusThemePath.Location = new System.Drawing.Point(9, 238);
             this.tbNotepadPlusPlusThemePath.Name = "tbNotepadPlusPlusThemePath";
-            this.tbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(505, 20);
+            this.tbNotepadPlusPlusThemePath.Size = new System.Drawing.Size(510, 20);
             this.tbNotepadPlusPlusThemePath.TabIndex = 44;
             // 
             // lbNotepadPlusPlusThemePath
@@ -1009,7 +1050,7 @@
             // btCurrentLineBackgroundColor
             // 
             this.btCurrentLineBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCurrentLineBackgroundColor.Location = new System.Drawing.Point(363, 180);
+            this.btCurrentLineBackgroundColor.Location = new System.Drawing.Point(368, 180);
             this.btCurrentLineBackgroundColor.Name = "btCurrentLineBackgroundColor";
             this.btCurrentLineBackgroundColor.Size = new System.Drawing.Size(188, 23);
             this.btCurrentLineBackgroundColor.TabIndex = 13;
@@ -1027,7 +1068,7 @@
             // btMarkStyle5Color
             // 
             this.btMarkStyle5Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkStyle5Color.Location = new System.Drawing.Point(363, 151);
+            this.btMarkStyle5Color.Location = new System.Drawing.Point(368, 151);
             this.btMarkStyle5Color.Name = "btMarkStyle5Color";
             this.btMarkStyle5Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle5Color.TabIndex = 11;
@@ -1046,7 +1087,7 @@
             // btMarkStyle4Color
             // 
             this.btMarkStyle4Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkStyle4Color.Location = new System.Drawing.Point(363, 122);
+            this.btMarkStyle4Color.Location = new System.Drawing.Point(368, 122);
             this.btMarkStyle4Color.Name = "btMarkStyle4Color";
             this.btMarkStyle4Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle4Color.TabIndex = 9;
@@ -1065,7 +1106,7 @@
             // btMarkStyle3Color
             // 
             this.btMarkStyle3Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkStyle3Color.Location = new System.Drawing.Point(363, 93);
+            this.btMarkStyle3Color.Location = new System.Drawing.Point(368, 93);
             this.btMarkStyle3Color.Name = "btMarkStyle3Color";
             this.btMarkStyle3Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle3Color.TabIndex = 7;
@@ -1084,7 +1125,7 @@
             // btMarkStyle2Color
             // 
             this.btMarkStyle2Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkStyle2Color.Location = new System.Drawing.Point(363, 64);
+            this.btMarkStyle2Color.Location = new System.Drawing.Point(368, 64);
             this.btMarkStyle2Color.Name = "btMarkStyle2Color";
             this.btMarkStyle2Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle2Color.TabIndex = 5;
@@ -1103,7 +1144,7 @@
             // btMarkStyle1Color
             // 
             this.btMarkStyle1Color.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkStyle1Color.Location = new System.Drawing.Point(363, 35);
+            this.btMarkStyle1Color.Location = new System.Drawing.Point(368, 35);
             this.btMarkStyle1Color.Name = "btMarkStyle1Color";
             this.btMarkStyle1Color.Size = new System.Drawing.Size(188, 23);
             this.btMarkStyle1Color.TabIndex = 3;
@@ -1122,7 +1163,7 @@
             // btSmartHighlightColor
             // 
             this.btSmartHighlightColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSmartHighlightColor.Location = new System.Drawing.Point(363, 6);
+            this.btSmartHighlightColor.Location = new System.Drawing.Point(368, 6);
             this.btSmartHighlightColor.Name = "btSmartHighlightColor";
             this.btSmartHighlightColor.Size = new System.Drawing.Size(188, 23);
             this.btSmartHighlightColor.TabIndex = 1;
@@ -1137,6 +1178,75 @@
             this.lbSmartHighlightColor.Size = new System.Drawing.Size(105, 13);
             this.lbSmartHighlightColor.TabIndex = 0;
             this.lbSmartHighlightColor.Text = "Smart highlight color:";
+            // 
+            // tabAdditionalColors
+            // 
+            this.tabAdditionalColors.Controls.Add(this.cbUseBraceMatching);
+            this.tabAdditionalColors.Controls.Add(this.gbUseBraceMatching);
+            this.tabAdditionalColors.Location = new System.Drawing.Point(4, 22);
+            this.tabAdditionalColors.Name = "tabAdditionalColors";
+            this.tabAdditionalColors.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAdditionalColors.Size = new System.Drawing.Size(660, 371);
+            this.tabAdditionalColors.TabIndex = 7;
+            this.tabAdditionalColors.Text = "Additional colors and styles";
+            this.tabAdditionalColors.UseVisualStyleBackColor = true;
+            // 
+            // btBadBraceColor
+            // 
+            this.btBadBraceColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btBadBraceColor.Location = new System.Drawing.Point(451, 69);
+            this.btBadBraceColor.Name = "btBadBraceColor";
+            this.btBadBraceColor.Size = new System.Drawing.Size(188, 23);
+            this.btBadBraceColor.TabIndex = 7;
+            this.btBadBraceColor.UseVisualStyleBackColor = true;
+            this.btBadBraceColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // lbBadBraceColor
+            // 
+            this.lbBadBraceColor.AutoSize = true;
+            this.lbBadBraceColor.Location = new System.Drawing.Point(6, 74);
+            this.lbBadBraceColor.Name = "lbBadBraceColor";
+            this.lbBadBraceColor.Size = new System.Drawing.Size(85, 13);
+            this.lbBadBraceColor.TabIndex = 6;
+            this.lbBadBraceColor.Text = "Bad brace color:";
+            // 
+            // btBraceHighlightBackgroundColor
+            // 
+            this.btBraceHighlightBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btBraceHighlightBackgroundColor.Location = new System.Drawing.Point(451, 40);
+            this.btBraceHighlightBackgroundColor.Name = "btBraceHighlightBackgroundColor";
+            this.btBraceHighlightBackgroundColor.Size = new System.Drawing.Size(188, 23);
+            this.btBraceHighlightBackgroundColor.TabIndex = 5;
+            this.btBraceHighlightBackgroundColor.UseVisualStyleBackColor = true;
+            this.btBraceHighlightBackgroundColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // lbBraceHighlightBackgroundColor
+            // 
+            this.lbBraceHighlightBackgroundColor.AutoSize = true;
+            this.lbBraceHighlightBackgroundColor.Location = new System.Drawing.Point(6, 45);
+            this.lbBraceHighlightBackgroundColor.Name = "lbBraceHighlightBackgroundColor";
+            this.lbBraceHighlightBackgroundColor.Size = new System.Drawing.Size(166, 13);
+            this.lbBraceHighlightBackgroundColor.TabIndex = 4;
+            this.lbBraceHighlightBackgroundColor.Text = "Brace highlight background color:";
+            // 
+            // btBraceHighlightForegroundColor
+            // 
+            this.btBraceHighlightForegroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btBraceHighlightForegroundColor.Location = new System.Drawing.Point(451, 11);
+            this.btBraceHighlightForegroundColor.Name = "btBraceHighlightForegroundColor";
+            this.btBraceHighlightForegroundColor.Size = new System.Drawing.Size(188, 23);
+            this.btBraceHighlightForegroundColor.TabIndex = 3;
+            this.btBraceHighlightForegroundColor.UseVisualStyleBackColor = true;
+            this.btBraceHighlightForegroundColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // lbBraceHighlightForegroundColor
+            // 
+            this.lbBraceHighlightForegroundColor.AutoSize = true;
+            this.lbBraceHighlightForegroundColor.Location = new System.Drawing.Point(6, 16);
+            this.lbBraceHighlightForegroundColor.Name = "lbBraceHighlightForegroundColor";
+            this.lbBraceHighlightForegroundColor.Size = new System.Drawing.Size(160, 13);
+            this.lbBraceHighlightForegroundColor.TabIndex = 2;
+            this.lbBraceHighlightForegroundColor.Text = "Brace highlight foreground color:";
             // 
             // tabSpellCheck
             // 
@@ -1159,7 +1269,7 @@
             this.tabSpellCheck.Location = new System.Drawing.Point(4, 22);
             this.tabSpellCheck.Name = "tabSpellCheck";
             this.tabSpellCheck.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSpellCheck.Size = new System.Drawing.Size(557, 371);
+            this.tabSpellCheck.Size = new System.Drawing.Size(562, 371);
             this.tabSpellCheck.TabIndex = 3;
             this.tabSpellCheck.Text = "Spell checking";
             this.tabSpellCheck.UseVisualStyleBackColor = true;
@@ -1175,7 +1285,7 @@
             this.cmbInstalledDictionaries.Location = new System.Drawing.Point(9, 276);
             this.cmbInstalledDictionaries.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
             this.cmbInstalledDictionaries.Name = "cmbInstalledDictionaries";
-            this.cmbInstalledDictionaries.Size = new System.Drawing.Size(542, 21);
+            this.cmbInstalledDictionaries.Size = new System.Drawing.Size(547, 21);
             this.cmbInstalledDictionaries.TabIndex = 44;
             this.cmbInstalledDictionaries.SelectedIndexChanged += new System.EventHandler(this.CmbInstalledDictionaries_SelectedIndexChanged);
             // 
@@ -1191,7 +1301,7 @@
             // btDictionaryPath
             // 
             this.btDictionaryPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btDictionaryPath.Location = new System.Drawing.Point(520, 217);
+            this.btDictionaryPath.Location = new System.Drawing.Point(525, 217);
             this.btDictionaryPath.Name = "btDictionaryPath";
             this.btDictionaryPath.Size = new System.Drawing.Size(31, 20);
             this.btDictionaryPath.TabIndex = 42;
@@ -1206,7 +1316,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbDictionaryPath.Location = new System.Drawing.Point(9, 217);
             this.tbDictionaryPath.Name = "tbDictionaryPath";
-            this.tbDictionaryPath.Size = new System.Drawing.Size(505, 20);
+            this.tbDictionaryPath.Size = new System.Drawing.Size(510, 20);
             this.tbDictionaryPath.TabIndex = 41;
             // 
             // lbDictionaryPath
@@ -1230,7 +1340,7 @@
             // nudEditorSpellRecheckInactivity
             // 
             this.nudEditorSpellRecheckInactivity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudEditorSpellRecheckInactivity.Location = new System.Drawing.Point(461, 165);
+            this.nudEditorSpellRecheckInactivity.Location = new System.Drawing.Point(466, 165);
             this.nudEditorSpellRecheckInactivity.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -1248,7 +1358,7 @@
             // btSpellCheckMarkColor
             // 
             this.btSpellCheckMarkColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSpellCheckMarkColor.Location = new System.Drawing.Point(363, 136);
+            this.btSpellCheckMarkColor.Location = new System.Drawing.Point(368, 136);
             this.btSpellCheckMarkColor.Name = "btSpellCheckMarkColor";
             this.btSpellCheckMarkColor.Size = new System.Drawing.Size(188, 23);
             this.btSpellCheckMarkColor.TabIndex = 36;
@@ -1267,7 +1377,7 @@
             // btHunspellAffixFile
             // 
             this.btHunspellAffixFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btHunspellAffixFile.Location = new System.Drawing.Point(520, 110);
+            this.btHunspellAffixFile.Location = new System.Drawing.Point(525, 110);
             this.btHunspellAffixFile.Name = "btHunspellAffixFile";
             this.btHunspellAffixFile.Size = new System.Drawing.Size(31, 20);
             this.btHunspellAffixFile.TabIndex = 34;
@@ -1281,7 +1391,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbHunspellAffixFile.Location = new System.Drawing.Point(9, 110);
             this.tbHunspellAffixFile.Name = "tbHunspellAffixFile";
-            this.tbHunspellAffixFile.Size = new System.Drawing.Size(505, 20);
+            this.tbHunspellAffixFile.Size = new System.Drawing.Size(510, 20);
             this.tbHunspellAffixFile.TabIndex = 33;
             // 
             // lbHunspellAffixFile
@@ -1296,7 +1406,7 @@
             // btHunspellDictionary
             // 
             this.btHunspellDictionary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btHunspellDictionary.Location = new System.Drawing.Point(520, 58);
+            this.btHunspellDictionary.Location = new System.Drawing.Point(525, 58);
             this.btHunspellDictionary.Name = "btHunspellDictionary";
             this.btHunspellDictionary.Size = new System.Drawing.Size(31, 20);
             this.btHunspellDictionary.TabIndex = 31;
@@ -1310,7 +1420,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbHunspellDictionary.Location = new System.Drawing.Point(9, 58);
             this.tbHunspellDictionary.Name = "tbHunspellDictionary";
-            this.tbHunspellDictionary.Size = new System.Drawing.Size(505, 20);
+            this.tbHunspellDictionary.Size = new System.Drawing.Size(510, 20);
             this.tbHunspellDictionary.TabIndex = 4;
             // 
             // lbHunspellDictionary
@@ -1337,7 +1447,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(502, 415);
+            this.btCancel.Location = new System.Drawing.Point(605, 415);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 7;
@@ -1368,15 +1478,88 @@
             // 
             this.odAffixFile.Filter = "Hunspell affix dictionary description file|*.aff";
             // 
-            // cbDetectNoBomUnicode
+            // tbRestartNote
             // 
-            this.cbDetectNoBomUnicode.AutoSize = true;
-            this.cbDetectNoBomUnicode.Location = new System.Drawing.Point(6, 121);
-            this.cbDetectNoBomUnicode.Name = "cbDetectNoBomUnicode";
-            this.cbDetectNoBomUnicode.Size = new System.Drawing.Size(307, 17);
-            this.cbDetectNoBomUnicode.TabIndex = 44;
-            this.cbDetectNoBomUnicode.Text = "Try to detect unicode files without a BOM (Byte Order Mark)";
-            this.cbDetectNoBomUnicode.UseVisualStyleBackColor = true;
+            this.tbRestartNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbRestartNote.BackColor = System.Drawing.Color.White;
+            this.tbRestartNote.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbRestartNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbRestartNote.ForeColor = System.Drawing.Color.DarkCyan;
+            this.tbRestartNote.Location = new System.Drawing.Point(93, 415);
+            this.tbRestartNote.Multiline = true;
+            this.tbRestartNote.Name = "tbRestartNote";
+            this.tbRestartNote.ReadOnly = true;
+            this.tbRestartNote.Size = new System.Drawing.Size(506, 23);
+            this.tbRestartNote.TabIndex = 8;
+            this.tbRestartNote.TabStop = false;
+            this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
+            // 
+            // cbUseBraceMatching
+            // 
+            this.cbUseBraceMatching.AutoSize = true;
+            this.cbUseBraceMatching.Checked = true;
+            this.cbUseBraceMatching.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbUseBraceMatching.Location = new System.Drawing.Point(3, 6);
+            this.cbUseBraceMatching.Name = "cbUseBraceMatching";
+            this.cbUseBraceMatching.Size = new System.Drawing.Size(121, 17);
+            this.cbUseBraceMatching.TabIndex = 16;
+            this.cbUseBraceMatching.Text = "Use brace matching";
+            this.cbUseBraceMatching.UseVisualStyleBackColor = true;
+            // 
+            // gbUseBraceMatching
+            // 
+            this.gbUseBraceMatching.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbUseBraceMatching.Controls.Add(this.gbBraceFontStyle);
+            this.gbUseBraceMatching.Controls.Add(this.lbBraceHighlightForegroundColor);
+            this.gbUseBraceMatching.Controls.Add(this.btBraceHighlightForegroundColor);
+            this.gbUseBraceMatching.Controls.Add(this.btBadBraceColor);
+            this.gbUseBraceMatching.Controls.Add(this.lbBraceHighlightBackgroundColor);
+            this.gbUseBraceMatching.Controls.Add(this.lbBadBraceColor);
+            this.gbUseBraceMatching.Controls.Add(this.btBraceHighlightBackgroundColor);
+            this.gbUseBraceMatching.Location = new System.Drawing.Point(9, 7);
+            this.gbUseBraceMatching.Name = "gbUseBraceMatching";
+            this.gbUseBraceMatching.Size = new System.Drawing.Size(645, 156);
+            this.gbUseBraceMatching.TabIndex = 15;
+            this.gbUseBraceMatching.TabStop = false;
+            // 
+            // gbBraceFontStyle
+            // 
+            this.gbBraceFontStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbBraceFontStyle.Controls.Add(this.rbBraceStyleItalic);
+            this.gbBraceFontStyle.Controls.Add(this.rbBraceStyleBold);
+            this.gbBraceFontStyle.Location = new System.Drawing.Point(9, 98);
+            this.gbBraceFontStyle.Name = "gbBraceFontStyle";
+            this.gbBraceFontStyle.Size = new System.Drawing.Size(630, 52);
+            this.gbBraceFontStyle.TabIndex = 8;
+            this.gbBraceFontStyle.TabStop = false;
+            this.gbBraceFontStyle.Text = "Font style";
+            // 
+            // rbBraceStyleBold
+            // 
+            this.rbBraceStyleBold.AutoSize = true;
+            this.rbBraceStyleBold.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbBraceStyleBold.Location = new System.Drawing.Point(6, 19);
+            this.rbBraceStyleBold.Name = "rbBraceStyleBold";
+            this.rbBraceStyleBold.Size = new System.Drawing.Size(46, 17);
+            this.rbBraceStyleBold.TabIndex = 0;
+            this.rbBraceStyleBold.TabStop = true;
+            this.rbBraceStyleBold.Text = "Bold";
+            this.rbBraceStyleBold.UseVisualStyleBackColor = true;
+            this.rbBraceStyleBold.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
+            // 
+            // rbBraceStyleItalic
+            // 
+            this.rbBraceStyleItalic.AutoSize = true;
+            this.rbBraceStyleItalic.Location = new System.Drawing.Point(237, 19);
+            this.rbBraceStyleItalic.Name = "rbBraceStyleItalic";
+            this.rbBraceStyleItalic.Size = new System.Drawing.Size(47, 17);
+            this.rbBraceStyleItalic.TabIndex = 1;
+            this.rbBraceStyleItalic.TabStop = true;
+            this.rbBraceStyleItalic.Text = "Italic";
+            this.rbBraceStyleItalic.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -1384,7 +1567,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(589, 450);
+            this.ClientSize = new System.Drawing.Size(692, 450);
+            this.Controls.Add(this.tbRestartNote);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.tcMain);
@@ -1429,10 +1613,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).EndInit();
             this.tpgColorSettings.ResumeLayout(false);
             this.tpgColorSettings.PerformLayout();
+            this.tabAdditionalColors.ResumeLayout(false);
+            this.tabAdditionalColors.PerformLayout();
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
+            this.gbUseBraceMatching.ResumeLayout(false);
+            this.gbUseBraceMatching.PerformLayout();
+            this.gbBraceFontStyle.ResumeLayout(false);
+            this.gbBraceFontStyle.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1541,5 +1732,19 @@
         private System.Windows.Forms.Label lbCharacterSet;
         private System.Windows.Forms.Label lbEncoding;
         private System.Windows.Forms.CheckBox cbDetectNoBomUnicode;
+        private System.Windows.Forms.CheckBox cbUseRTL;
+        private System.Windows.Forms.TabPage tabAdditionalColors;
+        private System.Windows.Forms.Button btBadBraceColor;
+        private System.Windows.Forms.Label lbBadBraceColor;
+        private System.Windows.Forms.Button btBraceHighlightBackgroundColor;
+        private System.Windows.Forms.Label lbBraceHighlightBackgroundColor;
+        private System.Windows.Forms.Button btBraceHighlightForegroundColor;
+        private System.Windows.Forms.Label lbBraceHighlightForegroundColor;
+        private System.Windows.Forms.TextBox tbRestartNote;
+        private System.Windows.Forms.CheckBox cbUseBraceMatching;
+        private System.Windows.Forms.GroupBox gbUseBraceMatching;
+        private System.Windows.Forms.GroupBox gbBraceFontStyle;
+        private System.Windows.Forms.RadioButton rbBraceStyleBold;
+        private System.Windows.Forms.RadioButton rbBraceStyleItalic;
     }
 }

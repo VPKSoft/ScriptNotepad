@@ -33,13 +33,12 @@
 * Done? [YES  ] [2019/06/01] Make a menu for the tabs.
 * Done? [YES  ] [2019/06/02] Fix to software to remember user assigned lexer for a file.
 * Done? [YES  ] [2019/06/02] Make the program to remember the open file dialog paths based on the context.
-* Done? [N/A  ] [2019/06/02] Bracket matching for the Scintilla?
 * Done? [KINDA] [2019/06/02] Add a mouse reset to the document zoom. (click the zoom label on the status strip)
 * Done? [YES  ] [2019/06/02] Mark with the search and replace dialog.
-* Done? [N/A  ] [2019/06/04] Add RTL (right-to-left) editing possibility.
+* Done? [KINDA] [2019/06/04] Add RTL (right-to-left) editing possibility.
 * Done? [YES  ] [2019/06/05] Add the new lexers to the menu.
 * Done? [YES  ] [2019/06/05] Make the encoding to save correctly.
-* Done? [SOME ] [2019/06/06] Make it possible to set the default encoding to automatic detection.
+* Done? [YES  ] [2019/06/06] Make it possible to set the default encoding to automatic detection.
 * Done? [YES  ] [2019/06/08] Fix the file history drop-down if file count exceeds the maximum history amount setting.
 * Done? [N/A  ] [2019/06/06] Make reset settings to default a possibility.
 * Done? [YES  ] [2019/06/08] Fixed one file belonging to multiple sessions.
@@ -47,3 +46,7 @@
 * Done? [YES  ] [2019/06/08] Fixed one file belonging to multiple sessions.
 * Done? [YES  ] [2019/06/08] Fixed the spell indicator for an opened file.
 * Done? [YES  ] [2019/06/08] Made the F3/Shift+F3 to work with the search.
+* Done? [YES  ] [2019/06/12] Add a possibility to copy or export styled text (lexer) into a HTML document.
+* Done? [YES  ] [2019/06/12] Bracket matching for the Scintilla? Added brace highlight possibility for the Scintilla controls.
+* Done? [DON'T] [2019/06/13] Suspend layout on changing the session.
+* Done? [N/A  ] [2019/06/13] Save As --> Detect the lexer.

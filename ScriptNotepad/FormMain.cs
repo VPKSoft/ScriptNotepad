@@ -68,6 +68,7 @@ using ScriptNotepad.UtilityClasses.MenuHelpers;
 using ScriptNotepad.UtilityClasses.MiscForms;
 using ScriptNotepad.UtilityClasses.ProgrammingLanguages;
 using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
+using ScriptNotepad.UtilityClasses.ScintillaUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
 using ScriptNotepad.UtilityClasses.SpellCheck;
@@ -152,6 +153,9 @@ namespace ScriptNotepad
             // localize the save file dialog..
             StaticLocalizeFileDialog.InitFileDialog(sdAnyFile);
 
+            // localize the save HTML dialog..
+            StaticLocalizeFileDialog.InitHTMLFileDialog(sdHTML);
+
             // localize the open and save file dialog titles..
             sdAnyFile.Title = DBLangEngine.GetMessage("msgSaveFileAs", "Save As|A title for a save file as dialog");
             odAnyFile.Title = DBLangEngine.GetMessage("msgOpenFile", "Open|A title for a open file dialog");
@@ -198,6 +202,13 @@ namespace ScriptNotepad
                 FormSettings.Settings.CategorizeStartCharacterProgrammingLanguage);
 
             ProgrammingLanguageHelper.LanguageMenuClick += ProgrammingLanguageHelper_LanguageMenuClick;
+
+            // get the brace highlight colors from the settings..
+            sttcMain.UseBraceHighlight = FormSettings.Settings.HighlightBraces;
+            sttcMain.ColorBraceHighlightForeground = FormSettings.Settings.BraceHighlightForegroundColor;
+            sttcMain.ColorBraceHighlightBackground = FormSettings.Settings.BraceHighlightBackgroundColor;
+            sttcMain.ColorBraceHighlightBad = FormSettings.Settings.BraceBadHighlightForegroundColor;
+            // END::get the brace highlight colors from the settings..
 
             // load the recent documents which were saved during the program close..
             LoadDocumentsFromDatabase(CurrentSession);
@@ -460,6 +471,48 @@ namespace ScriptNotepad
                 catch (Exception ex)
                 {
                     ExceptionLogger.LogError(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Runs an action to the last added if one exists.
+        /// </summary>
+        /// <param name="action">The action to run.</param>
+        public void LastAddedDocumentAction(Action<ScintillaTabbedDocument> action)
+        {
+            if (sttcMain.LastAddedDocument != null)
+            {
+                try
+                {
+                    action(sttcMain.LastAddedDocument);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionLogger.LogError(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Runs an action to the current document's <see cref="DBFILE_SAVE"/> class instance stored in the Tag property.
+        /// </summary>
+        /// <param name="action">The action to run.</param>
+        public void CurrentFileSaveAction(Action<DBFILE_SAVE> action)
+        {
+            if (sttcMain.CurrentDocument != null && sttcMain.CurrentDocument.Tag != null)
+            {
+                if (sttcMain.CurrentDocument.Tag is DBFILE_SAVE fileSave)
+                {
+                    try
+                    {
+                        action(fileSave);
+                        sttcMain.CurrentDocument.Tag = fileSave;
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionLogger.LogError(ex);
+                    }
                 }
             }
         }
@@ -1259,6 +1312,9 @@ namespace ScriptNotepad
                     // enabled the caret line background color..
                     SetCaretLineColor();
 
+                    // set the brace matching if enabled..
+                    SetStyleBraceMatch.SetStyle(sttcMain.LastAddedDocument.Scintilla);
+
                     // set the context menu strip for the file tab..
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
 
@@ -1267,7 +1323,8 @@ namespace ScriptNotepad
 
                     // set the zoom value..
                     sttcMain.LastAddedDocument.ZoomPercentage = file.EDITOR_ZOOM;
-                }                
+                }            
+
                 UpdateDocumentSaveIndicators();
             }
 
@@ -1350,6 +1407,9 @@ namespace ScriptNotepad
                     // enabled the caret line background color..
                     SetCaretLineColor();
 
+                    // set the brace matching if enabled..
+                    SetStyleBraceMatch.SetStyle(sttcMain.LastAddedDocument.Scintilla);
+
                     sttcMain.LastAddedDocument.Tag = file;
 
                     // the file load can't add an undo option the Scintilla..
@@ -1429,6 +1489,9 @@ namespace ScriptNotepad
 
                     // append possible style and spell checking for the document..
                     AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);
+
+                    // set the brace matching if enabled..
+                    SetStyleBraceMatch.SetStyle(sttcMain.LastAddedDocument.Scintilla);
                 }
             }
         }
@@ -1540,6 +1603,9 @@ namespace ScriptNotepad
 
                         // set the misc indicators..
                         SetDocumentMiscIndicators(sttcMain.LastAddedDocument);
+
+                        // set the brace matching if enabled..
+                        SetStyleBraceMatch.SetStyle(sttcMain.LastAddedDocument.Scintilla);
 
                         // set the zoom value..
                         sttcMain.LastAddedDocument.ZoomPercentage = fileSave.EDITOR_ZOOM;
@@ -1660,6 +1726,77 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // the user wishes to either save or to add a new document of the
+        // current document formatted as HTML..
+        private void MnuExportAsHTMLToNewDocument_Click(object sender, EventArgs e)
+        {
+            string html;
+            CurrentScintillaAction(scintilla =>
+            {
+                // get the HTML from either the selection or from the whole document
+                // depending if text is selected..
+                if (scintilla.SelectedText.Length > 0)
+                {
+                    // ..no selection..
+                    html = scintilla.GetTextRangeAsHtml(scintilla.SelectionStart,
+                        scintilla.SelectionEnd - scintilla.SelectionStart);
+                }
+                else
+                {
+                    // ..get the selected text as HTML..
+                    html = scintilla.GetTextRangeAsHtml(0, scintilla.TextLength);
+                }
+                
+                // the user wants to save the HTML directly into a HTML file..
+                if (sender.Equals(mnuHTMLToFile) || sender.Equals(mnuHTMLToFileExecute))
+                {
+                    sdHTML.InitialDirectory = FormSettings.Settings.FileLocationSaveAsHTML;
+                    if (sdHTML.ShowDialog() == DialogResult.OK)
+                    {
+                        FormSettings.Settings.FileLocationSaveAsHTML = Path.GetDirectoryName(sdHTML.FileName);
+                        File.WriteAllText(sdHTML.FileName, html, Encoding.UTF8);
+                    }
+
+                    // the user wants to display the saved HTML file in a web browser..
+                    if (sender.Equals(mnuHTMLToFileExecute))
+                    {
+                        Process.Start(sdHTML.FileName);
+                    }
+
+                    return;
+                }
+                
+                // the user wants the HTML to clipboard..
+                if (sender.Equals(mnuHTMLToClipboard))
+                {
+                    // save the HTML to the clipboard..
+                    ClipboardTextHelper.ClipboardSetText(html);
+                    return;
+                }
+
+                // the user wants the HTML to a new tab..
+                NewDocument();
+
+                LastAddedDocumentAction(document =>
+                {
+                    // set the recently added document contents..
+                    document.Scintilla.Text = html;
+
+                    // as the contents os HTML, do set the lexer correctly..
+                    document.LexerType = LexerEnumerations.LexerType.HTML;
+                });
+            });
+        }
+
+        // the auto-save timer..
+        private void TmAutoSave_Tick(object sender, EventArgs e)
+        {
+            tmAutoSave.Enabled = false;
+            // save the current session's documents to the database..
+            SaveDocumentsToDatabase(CurrentSession);
+            tmAutoSave.Enabled = true;
+        }
+
         // a user is dragging a file over the ScintillaTabbedControl instance..
         private void SttcMain_DragEnterOrOver(object sender, DragEventArgs e)
         {
@@ -3145,7 +3282,7 @@ namespace ScriptNotepad
                 // just a simple plus/minus calculation..
                 idx = right ? idx + 1 : idx - 1;
 
-                if (idx > 0 && idx < sttcMain.DocumentsCount)
+                if (idx >= 0 && idx < sttcMain.DocumentsCount)
                 {
                     return sttcMain.Documents[idx];
                 }
@@ -3271,13 +3408,5 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
-
-        private void TmAutoSave_Tick(object sender, EventArgs e)
-        {
-            tmAutoSave.Enabled = false;
-            // save the current session's documents to the database..
-            SaveDocumentsToDatabase(CurrentSession);
-            tmAutoSave.Enabled = true;
-        }
     }
 }

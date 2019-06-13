@@ -237,6 +237,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         /// <param name="stream">The stream to try to convert to.</param>
         /// <param name="encoding">The encoding successfully used with the stream data.</param>
         /// <param name="bigEndian"><c>true</c> to use the big endian byte order (most significant byte first); <c>false</c> to use the little endian byte order (least significant byte first).</param>
+        /// <param name="noBom">A value indicating whether the detected unicode file contains a byte-order-mark.</param>
         /// <returns>A string converted into the UTF32 encoding if successful; otherwise null.</returns>
         public static string TryUtf32Encoding(MemoryStream stream, bool bigEndian, out Encoding encoding, out bool noBom)
         {

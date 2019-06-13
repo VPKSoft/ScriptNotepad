@@ -1491,26 +1491,68 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                     "Found: {0}|A message describing a count of search or replace results", count));
         }
 
+        // get the previous tab index
+        private int previousTabIndex = 0;
+
+        /// <summary>
+        /// Gets the previous search text used on the different tab compared to the current one.
+        /// </summary>
+        private string PreviousSearchText
+        {
+            get
+            {
+                switch (previousTabIndex)
+                {
+                    case 0: return cmbFind.Text;
+                    case 1: return cmbFind2.Text;
+                    case 2: return cmbFind3.Text;
+                    case 3: return cmbFind4.Text;
+                }
+
+                return string.Empty;
+            }
+        }
+
         // indicate the current search or replace function => active tab..
         private void TcMain_TabIndexChanged(object sender, EventArgs e)
         {
             Text = tcMain.SelectedTab.Text;
             if (tcMain.SelectedTab.Equals(tabFind))
             {
+                if (previousTabIndex != tcMain.SelectedIndex)
+                {
+                    cmbFind.Text = PreviousSearchText;
+                }
                 cmbFind.Focus();
             } 
             else if (tcMain.SelectedTab.Equals(tabReplace))
             {
+                if (previousTabIndex != tcMain.SelectedIndex)
+                {
+                    cmbFind2.Text = PreviousSearchText;
+                }
                 cmbFind2.Focus();
             }
             else if (tcMain.SelectedTab.Equals(tabFindInFiles))
             {
+                if (previousTabIndex != tcMain.SelectedIndex)
+                {
+                    cmbFind3.Text = PreviousSearchText;
+                }
                 cmbFind3.Focus();
             }
             else if (tcMain.SelectedTab.Equals(tabMarkMatches))
             {
+                if (previousTabIndex != tcMain.SelectedIndex)
+                {
+                    cmbFind4.Text = PreviousSearchText;
+                }
                 cmbFind4.Focus();
             }
+
+            // save the tab index..
+            previousTabIndex = tcMain.SelectedIndex;
+
             // set the navigation control states to enabled/disabled depending on the search condition..
             AppendValidation();
         }

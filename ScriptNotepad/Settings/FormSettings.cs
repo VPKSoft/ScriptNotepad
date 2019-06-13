@@ -187,6 +187,13 @@ namespace ScriptNotepad.Settings
             btMarkStyle4Color.BackColor = Settings.Mark4Color;
             btMarkStyle5Color.BackColor = Settings.Mark5Color;
             btCurrentLineBackgroundColor.BackColor = Settings.CurrentLineBackground;
+
+            btBraceHighlightForegroundColor.BackColor = Settings.BraceHighlightForegroundColor;
+            btBraceHighlightBackgroundColor.BackColor = Settings.BraceHighlightBackgroundColor;
+            btBadBraceColor.BackColor = Settings.BraceBadHighlightForegroundColor;
+            cbUseBraceMatching.Checked = Settings.HighlightBraces;
+            rbBraceStyleItalic.Checked = Settings.HighlightBracesItalic;
+            rbBraceStyleBold.Checked = Settings.HighlightBracesBold;
             // END: get the color values..
 
             // get the value of file's maximum size in megabytes (MB) to include in the file search..
@@ -320,6 +327,13 @@ namespace ScriptNotepad.Settings
             Settings.Mark4Color = btMarkStyle4Color.BackColor;
             Settings.Mark5Color = btMarkStyle5Color.BackColor;
             Settings.CurrentLineBackground = btCurrentLineBackgroundColor.BackColor;
+
+            Settings.BraceHighlightForegroundColor = btBraceHighlightForegroundColor.BackColor;
+            Settings.BraceHighlightBackgroundColor = btBraceHighlightBackgroundColor.BackColor;
+            Settings.BraceBadHighlightForegroundColor = btBadBraceColor.BackColor;
+            Settings.HighlightBraces = cbUseBraceMatching.Checked;
+            Settings.HighlightBracesItalic = rbBraceStyleItalic.Checked;
+            Settings.HighlightBracesBold = rbBraceStyleBold.Checked;
             // END: save the color values..
 
             // set the value of file's maximum size in megabytes (MB) to include in the file search..
@@ -719,6 +733,11 @@ namespace ScriptNotepad.Settings
                     btCurrentLineBackgroundColor.BackColor = colors.CurrentLineBackground;
                 }
             }
+        }
+
+        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

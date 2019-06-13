@@ -209,6 +209,7 @@
             this.tcMain.SelectedIndex = 0;
             this.tcMain.Size = new System.Drawing.Size(536, 298);
             this.tcMain.TabIndex = 1;
+            this.tcMain.SelectedIndexChanged += new System.EventHandler(this.TcMain_TabIndexChanged);
             this.tcMain.TabIndexChanged += new System.EventHandler(this.TcMain_TabIndexChanged);
             // 
             // tabFind
