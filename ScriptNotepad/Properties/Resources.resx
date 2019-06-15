@@ -118,193 +118,202 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="close_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\close_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Erase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Erase.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="new_document" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\New document.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="file_patterns_abaqus" xml:space="preserve">
-    <value>.inp .dat .msg</value>
-  </data>
-  <data name="education-languages" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\education-languages.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="up_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\up_down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Redo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="arrow_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\arrow_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="History" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\History.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="save_all_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\save_all_plus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="filter_abaqus" xml:space="preserve">
-    <value>ABAQUS input (inp)|file_patterns_abaqus|</value>
-  </data>
-  <data name="Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="preferences_plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\preferences-plugin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="folder_database" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\folder-database.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="database-go" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\database-go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="word_wrapped" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\word_wrapped.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Find" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Find.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="printer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="plugin_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plugin-delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="book_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\book_previous.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Script" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Script.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="diff_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\diff_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="discard_changes" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\discard_changes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="plugin_go" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plugin-go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="textfield_rename" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\textfield-rename.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="astonished" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\astonished.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="mark_words" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\mark_words.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sort_alphabet" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sort_alphabet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Down_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Down_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="paragraph" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\paragraph.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="reload_disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\reload_disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="folder_page" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\folder-page.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="word_wrap2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\word_wrap2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Up" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="style" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\style.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="book_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\book_next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="tab_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tab_arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="split_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\split_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="zoom_in" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_in.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="zoom_out" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoom_out.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SaveAs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SaveAs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="session_properties" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\session-properties.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="paragraph" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\paragraph.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="arrow_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\arrow_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Find" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Find.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="unicode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\unicode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="word_wrap2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\word_wrap2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SaveWithDialog" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SaveWithDialog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="reload_disk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\reload_disk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="default_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Script" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Script.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="open_unknown_encoding" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\open_unknown_encoding.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="zoom_in" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zoom_in.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="plugin_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plugin-error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Redo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plugin_go" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plugin-go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tab_strikethrough" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tab_strikethrough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="spell_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\spell_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="textfield_rename" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\textfield-rename.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="swap_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\swap_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="zoom_out" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zoom_out.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="About" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\About.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="find_replace" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\find_replace.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="plugin_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plugin-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="word_wrap" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\word_wrap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="astonished" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\astonished.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="folder-find" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\folder-find.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="edit-cut-red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\edit-cut-red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrow_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="database-go" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\database-go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveWithDialog" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SaveWithDialog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="split_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\split_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="swap_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\swap_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plugin_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plugin-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="discard_changes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\discard_changes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tab_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tab_arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plugin_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plugin-error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="book_previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\book_previous.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="preferences" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\preferences.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CSharp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CSharp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="diff_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\diff_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="up_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up_down.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="save_all" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\save_all.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="filter_abaqus" xml:space="preserve">
+    <value>ABAQUS input (inp)|file_patterns_abaqus|</value>
+  </data>
+  <data name="folder_database" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder-database.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mark_words" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mark_words.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="find_replace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\find_replace.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="education-languages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\education-languages.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Down_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Down_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="book_next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\book_next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="default_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\default.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="preferences_plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\preferences-plugin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="open_unknown_encoding" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\open_unknown_encoding.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="word_wrapped" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\word_wrapped.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrow_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Erase" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Erase.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="file_patterns_abaqus" xml:space="preserve">
+    <value>.inp .dat .msg</value>
+  </data>
+  <data name="About" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\About.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="word_wrap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\word_wrap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="print_preview" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\print_preview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="plugin_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plugin-delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="History" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\History.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CSharp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CSharp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="folder_page" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\folder-page.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spell_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\spell_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="save_all_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\save_all_plus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="printer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="unicode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\unicode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sort_alphabet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sort_alphabet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="session_properties" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\session-properties.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="style" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\style.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="close_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\close_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="new_document" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\New document.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Paste.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

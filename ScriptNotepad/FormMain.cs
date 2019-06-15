@@ -30,7 +30,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -377,7 +376,7 @@ namespace ScriptNotepad
                 }
             });
 
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         /// <summary>
@@ -395,7 +394,7 @@ namespace ScriptNotepad
                     }
                 }
             );
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         /// <summary>
@@ -581,7 +580,7 @@ namespace ScriptNotepad
                     sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
                 }
             }
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         /// <summary>
@@ -590,7 +589,7 @@ namespace ScriptNotepad
         /// <param name="scintilla">A <see cref="Scintilla"/> class instance from which the context menu strip called the redo method.</param>
         private void RedoFromExternal(Scintilla scintilla)
         {
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         /// <summary>
@@ -1143,7 +1142,7 @@ namespace ScriptNotepad
                 DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
                 document.FileTabButton.IsSaved = fileSave.EXISTS_INFILESYS && IsFileChanged(fileSave);
             }
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         /// <summary>
@@ -1159,18 +1158,27 @@ namespace ScriptNotepad
         }
 
         /// <summary>
-        /// Updates the undo and redo indicator buttons and menu items.
+        /// Updates the tool bar buttons and the menu items enabled states.
         /// </summary>
-        private void UpdateUndoRedoIndicators()
+        private void UpdateToolbarButtonsAndMenuItems()
         {
-            if (sttcMain.CurrentDocument != null)
+            // get the active tab's Scintilla document
+            CurrentScintillaAction(scintilla =>
             {
-                // get the active tab's Scintilla document
-                Scintilla scintilla = sttcMain.CurrentDocument.Scintilla;
-
                 tsbUndo.Enabled = scintilla.CanUndo;
                 tsbRedo.Enabled = scintilla.CanRedo;
-            }
+
+                mnuUndo.Enabled = scintilla.CanUndo;
+                mnuRedo.Enabled = scintilla.CanRedo;
+
+                tsbCopy.Enabled = scintilla.SelectedText.Length > 0;
+                tsbPaste.Enabled = scintilla.CanPaste;
+                tsbCut.Enabled = scintilla.SelectedText.Length > 0;
+
+                mnuCopy.Enabled = scintilla.SelectedText.Length > 0;
+                mnuCut.Enabled = scintilla.SelectedText.Length > 0;
+                mnuPaste.Enabled = scintilla.CanPaste;
+            });
         }
         #endregion
 
@@ -1365,7 +1373,7 @@ namespace ScriptNotepad
                 sttcMain.ActivateDocument(activeDocument);
             }
 
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         /// <summary>
@@ -1455,7 +1463,7 @@ namespace ScriptNotepad
                 }
                 sttcMain.ActivateDocument(file.FILENAME_FULL);
 
-                UpdateUndoRedoIndicators();
+                UpdateToolbarButtonsAndMenuItems();
 
                 // re-create a menu for recent files..
                 RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
@@ -1777,6 +1785,28 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // copy, paste and cut handler for the tool/menu strip..
+        private void TsbCopyPasteCut_Click(object sender, EventArgs e)
+        {
+            CurrentScintillaAction(scintilla =>
+            {
+                if (sender.Equals(tsbCut) || sender.Equals(mnuCut))
+                {
+                    scintilla.Cut();
+                }
+
+                if (sender.Equals(tsbCopy) || sender.Equals(mnuCopy))
+                {
+                    scintilla.Copy();
+                }
+
+                if (sender.Equals(tsbPaste) || sender.Equals(mnuPaste))
+                {
+                    scintilla.Paste();
+                }
+            });
+        }
+
         // printing (print)..
         private void TsbPrint_Click(object sender, EventArgs e)
         {
@@ -2432,7 +2462,7 @@ namespace ScriptNotepad
                     }
                 });
 
-                UpdateUndoRedoIndicators();
+                UpdateToolbarButtonsAndMenuItems();
             }
         }
 
@@ -2760,7 +2790,7 @@ namespace ScriptNotepad
             // check the programming language menu item with the current lexer..
             ProgrammingLanguageHelper.CheckLanguage(e.ScintillaTabbedDocument.LexerType);
 
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         // a tab was closed for various reasons..
@@ -2799,6 +2829,8 @@ namespace ScriptNotepad
             {
                 StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
             }
+
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         // a user wanted to save all documents..
@@ -2823,7 +2855,7 @@ namespace ScriptNotepad
                 TextChangedViaEncodingChange = false;
             }
 
-            UpdateUndoRedoIndicators();
+            UpdateToolbarButtonsAndMenuItems();
         }
 
         // a user wishes to do some scripting (!)..
@@ -3096,7 +3128,7 @@ namespace ScriptNotepad
 
                     sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
 
-                    UpdateUndoRedoIndicators();
+                    UpdateToolbarButtonsAndMenuItems();
                 }
             }
         }

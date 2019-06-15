@@ -496,6 +496,9 @@
     <None Include="Resources\printer.png" />
     <None Include="Resources\zoom_in.png" />
     <None Include="Resources\zoom_out.png" />
+    <None Include="Resources\edit-cut-red.png" />
+    <None Include="Resources\Copy.png" />
+    <None Include="Resources\Paste.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

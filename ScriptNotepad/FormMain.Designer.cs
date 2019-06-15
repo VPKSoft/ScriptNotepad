@@ -56,6 +56,10 @@
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbPrint = new System.Windows.Forms.ToolStripButton();
             this.tsbPrintPreview = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbCut = new System.Windows.Forms.ToolStripButton();
+            this.tsbCopy = new System.Windows.Forms.ToolStripButton();
+            this.tsbPaste = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
@@ -172,6 +176,13 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
+            this.mnuUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRedo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripSeparator();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -227,7 +238,11 @@
             this.tsbZoomOut,
             this.toolStripSeparator6,
             this.tsbPrint,
-            this.tsbPrintPreview});
+            this.tsbPrintPreview,
+            this.toolStripSeparator7,
+            this.tsbCut,
+            this.tsbCopy,
+            this.tsbPaste});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(945, 25);
@@ -404,6 +419,41 @@
             this.tsbPrintPreview.Size = new System.Drawing.Size(23, 22);
             this.tsbPrintPreview.Text = "Print preview";
             this.tsbPrintPreview.Click += new System.EventHandler(this.TsbPrintPreview_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbCut
+            // 
+            this.tsbCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCut.Image = global::ScriptNotepad.Properties.Resources.edit_cut_red;
+            this.tsbCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCut.Name = "tsbCut";
+            this.tsbCut.Size = new System.Drawing.Size(23, 22);
+            this.tsbCut.Text = "Cut";
+            this.tsbCut.Click += new System.EventHandler(this.TsbCopyPasteCut_Click);
+            // 
+            // tsbCopy
+            // 
+            this.tsbCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCopy.Image = global::ScriptNotepad.Properties.Resources.Copy;
+            this.tsbCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCopy.Name = "tsbCopy";
+            this.tsbCopy.Size = new System.Drawing.Size(23, 22);
+            this.tsbCopy.Text = "Copy";
+            this.tsbCopy.Click += new System.EventHandler(this.TsbCopyPasteCut_Click);
+            // 
+            // tsbPaste
+            // 
+            this.tsbPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPaste.Image = global::ScriptNotepad.Properties.Resources.Paste;
+            this.tsbPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbPaste.Name = "tsbPaste";
+            this.tsbPaste.Size = new System.Drawing.Size(23, 22);
+            this.tsbPaste.Text = "Paste";
+            this.tsbPaste.Click += new System.EventHandler(this.TsbCopyPasteCut_Click);
             // 
             // ssMain
             // 
@@ -873,6 +923,13 @@
             // mnuEdit
             // 
             this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuUndo,
+            this.mnuRedo,
+            this.toolStripMenuItem13,
+            this.mnuCut,
+            this.mnuCopy,
+            this.mnuPaste,
+            this.toolStripMenuItem14,
             this.mnuRunScript,
             this.mnuCharSets,
             this.toolStripMenuItem6,
@@ -1372,6 +1429,61 @@
             // 
             this.pdPrint.UseEXDialog = true;
             // 
+            // mnuUndo
+            // 
+            this.mnuUndo.Image = global::ScriptNotepad.Properties.Resources.Undo;
+            this.mnuUndo.Name = "mnuUndo";
+            this.mnuUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.mnuUndo.Size = new System.Drawing.Size(236, 22);
+            this.mnuUndo.Text = "Undo";
+            this.mnuUndo.Click += new System.EventHandler(this.tsbUndo_Click);
+            // 
+            // mnuRedo
+            // 
+            this.mnuRedo.Image = global::ScriptNotepad.Properties.Resources.Redo;
+            this.mnuRedo.Name = "mnuRedo";
+            this.mnuRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.mnuRedo.Size = new System.Drawing.Size(236, 22);
+            this.mnuRedo.Text = "Redo";
+            this.mnuRedo.Click += new System.EventHandler(this.tsbRedo_Click);
+            // 
+            // toolStripMenuItem13
+            // 
+            this.toolStripMenuItem13.Name = "toolStripMenuItem13";
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(233, 6);
+            // 
+            // mnuCut
+            // 
+            this.mnuCut.Image = global::ScriptNotepad.Properties.Resources.edit_cut_red;
+            this.mnuCut.Name = "mnuCut";
+            this.mnuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.mnuCut.Size = new System.Drawing.Size(236, 22);
+            this.mnuCut.Text = "Cut";
+            this.mnuCut.Click += new System.EventHandler(this.TsbCopyPasteCut_Click);
+            // 
+            // mnuCopy
+            // 
+            this.mnuCopy.Image = global::ScriptNotepad.Properties.Resources.Copy;
+            this.mnuCopy.Name = "mnuCopy";
+            this.mnuCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.mnuCopy.Size = new System.Drawing.Size(236, 22);
+            this.mnuCopy.Text = "Copy";
+            this.mnuCopy.Click += new System.EventHandler(this.TsbCopyPasteCut_Click);
+            // 
+            // mnuPaste
+            // 
+            this.mnuPaste.Image = global::ScriptNotepad.Properties.Resources.Paste;
+            this.mnuPaste.Name = "mnuPaste";
+            this.mnuPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.mnuPaste.Size = new System.Drawing.Size(236, 22);
+            this.mnuPaste.Text = "Paste";
+            this.mnuPaste.Click += new System.EventHandler(this.TsbCopyPasteCut_Click);
+            // 
+            // toolStripMenuItem14
+            // 
+            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(233, 6);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1545,6 +1657,17 @@
         private System.Windows.Forms.ToolStripButton tsbPrint;
         private System.Windows.Forms.ToolStripButton tsbPrintPreview;
         private System.Windows.Forms.PrintDialog pdPrint;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripButton tsbCut;
+        private System.Windows.Forms.ToolStripButton tsbCopy;
+        private System.Windows.Forms.ToolStripButton tsbPaste;
+        private System.Windows.Forms.ToolStripMenuItem mnuUndo;
+        private System.Windows.Forms.ToolStripMenuItem mnuRedo;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem13;
+        private System.Windows.Forms.ToolStripMenuItem mnuCut;
+        private System.Windows.Forms.ToolStripMenuItem mnuCopy;
+        private System.Windows.Forms.ToolStripMenuItem mnuPaste;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem14;
     }
 }
 
