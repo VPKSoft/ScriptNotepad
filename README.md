@@ -14,6 +14,7 @@ A tabbed notepad/text/code software with scripting support (C#) to manipulate a 
 * Session support; you may create a session for etc. one for common files, one for SQL files and so on..
 * Currently supported locales: en-US, fi-FI
 * Support for plug-ins as .NET assemblies. A sample plugin is included (a modifed ROT-13 algorithm - suprise!).
+* A difference (diff) viewer both side-byside and as a list.
 
 _The main window_
 ![image](https://user-images.githubusercontent.com/40712699/59549758-fcacd000-8f6a-11e9-9cd7-d55514d91936.png)
