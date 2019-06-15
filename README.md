@@ -26,3 +26,6 @@ _A script window with a script template_
 
 ## TODO
 * A lot ;-)
+
+## Download
+[From the releases](https://github.com/VPKSoft/ScriptNotepad/releases)
