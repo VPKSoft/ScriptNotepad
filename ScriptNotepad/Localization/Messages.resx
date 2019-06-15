@@ -825,4 +825,10 @@
   <data name="msgUnicodeNoBomShort" xml:space="preserve">
     <value>NO-BOM|A short message describing that an unicode encoding doesn't contain a BOM (byte-order-mark)</value>
   </data>
+  <data name="msgErrorOpeningFile" xml:space="preserve">
+    <value>Error opening file '{0}' with message: '{1}'.|Some kind of error occurred while opening a file.</value>
+  </data>
+  <data name="msgContextCopy" xml:space="preserve">
+    <value>Copy|A message for a context menu to describe a copy action</value>
+  </data>
 </root>

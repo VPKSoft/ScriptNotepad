@@ -1538,12 +1538,28 @@ namespace ScriptNotepad
         /// <returns>True if the operation was successful; otherwise false.</returns>
         private void OpenDocument(string fileName, Encoding encoding, bool reloadContents, bool encodingOverridden)
         {
-            // check the file's existence first..
             if (File.Exists(fileName))
             {
-                // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
-                encoding = GetFileEncoding(CurrentSession, fileName, encoding, reloadContents, encodingOverridden, out var noBom,
-                    out var bigEndian, out var existsInDatabase);
+                bool noBom;
+                bool bigEndian;
+                bool existsInDatabase;
+                try
+                {
+                    // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
+                    encoding = GetFileEncoding(CurrentSession, fileName, encoding, reloadContents, encodingOverridden,
+                        out noBom,
+                        out bigEndian, out existsInDatabase);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        DBLangEngine.GetMessage("msgErrorOpeningFile", "Error opening file '{0}' with message: '{1}'.|Some kind of error occurred while opening a file.",
+                            fileName, ex.GetBaseException().Message),
+                        DBLangEngine.GetMessage("msgError",
+                            "Error|A message describing that some kind of error occurred."), MessageBoxButtons.OK,
+                        MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    return;
+                }
 
                 // a false would happen if the document (file) can not be accessed or required permissions to access a file
                 // would be missing (also a bug might occur)..
@@ -1641,6 +1657,9 @@ namespace ScriptNotepad
 
                         // set the zoom value..
                         sttcMain.LastAddedDocument.ZoomPercentage = fileSave.EDITOR_ZOOM;
+
+                        // check the programming language menu item with the current lexer..
+                        ProgrammingLanguageHelper.CheckLanguage(sttcMain.LastAddedDocument.LexerType);
                     }
                 }
             }
@@ -1856,7 +1875,12 @@ namespace ScriptNotepad
                     // as the contents os HTML, do set the lexer correctly..
                     document.LexerType = LexerEnumerations.LexerType.HTML;
 
+                    LastAddedFileSaveAction(fileSave => { fileSave.LEXER_CODE = LexerEnumerations.LexerType.HTML; });
+
                     LastAddedFileSaveAction(fileSave => { DatabaseFileSave.UpdateMiscFlags(fileSave); });
+
+                    // check the programming language menu item with the current lexer..
+                    ProgrammingLanguageHelper.CheckLanguage(document.LexerType);
                 });
             });
         }

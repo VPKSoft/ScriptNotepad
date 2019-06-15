@@ -181,11 +181,6 @@
     </Compile>
     <Compile Include="Localization\Hunspell\HunspellData.cs" />
     <Compile Include="Localization\Hunspell\HunspellDictionaryCrawler.cs" />
-    <Compile Include="Localization\Messages1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -78,7 +78,13 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
         public static string TextRedo { get; set; } = "Redo";
 
         /// <summary>
-        /// Gets or sets the text for cot tool strip menu item for localization.
+        /// Gets or sets the text for copy tool strip menu item for localization.
+        /// </summary>
+        public static string TextCopy { get; set; } = "Copy";
+
+
+        /// <summary>
+        /// Gets or sets the text for cut tool strip menu item for localization.
         /// </summary>
         public static string TextCut { get; set; } = "Cut";
 
@@ -122,6 +128,9 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
 
             TextCut = DBLangEngine.GetStatMessage("msgContextCut",
                 "Cut|A message for a context menu to describe a cut action");
+
+            TextCopy = DBLangEngine.GetStatMessage("msgContextCopy",
+                "Copy|A message for a context menu to describe a copy action");
 
             TextPaste = DBLangEngine.GetStatMessage("msgContextPaste",
                 "Paste|A message for a context menu to describe a paste action");
@@ -174,6 +183,11 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
 
             // create a tool strip separator..
             contextMenu.Items.Add(new ToolStripSeparator());
+
+            // create a copy ToolStripMenuItem..
+            contextMenu.Items.Add(new ToolStripMenuItem(TextCopy, null,
+                    (sender, e) => ((ToolStripTagItem) ((ToolStripItem) sender).Tag).Scintilla.Copy())
+                {Tag = new ToolStripTagItem {FunctionId = 7, Scintilla = scintilla}});
 
             // create a cut ToolStripMenuItem..
             contextMenu.Items.Add(new ToolStripMenuItem(TextCut, null,
@@ -371,6 +385,9 @@ namespace ScriptNotepad.UtilityClasses.ScintillaNETUtils
                             contextMenu.Items[i].Enabled = Regex.IsMatch(
                                 tagItem.Scintilla.GetWordFromPosition(tagItem.Scintilla.CurrentPosition),
                                 "^[A-Fa-f0-9]*$"); break;
+
+                        // if the Scintilla instance has text selected then the copy item is enabled..
+                        case 7: contextMenu.Items[i].Enabled = tagItem.Scintilla.SelectedText.Length > 0; break;
                     }
                 }
             }
