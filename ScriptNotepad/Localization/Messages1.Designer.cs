@@ -22,14 +22,14 @@ namespace ScriptNotepad.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class Messages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Messages() {
         }
         
         /// <summary>
@@ -2019,6 +2019,42 @@ namespace ScriptNotepad.Localization {
         internal static string msgToolCommandLanguageFile {
             get {
                 return ResourceManager.GetString("msgToolCommandLanguageFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BE|A short message describing that an unicode encoding is in a big endian format.
+        /// </summary>
+        internal static string msgUnicodeBigEndianShort {
+            get {
+                return ResourceManager.GetString("msgUnicodeBigEndianShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BOM|A short message describing that an unicode encoding contains a BOM (byte-order-mark).
+        /// </summary>
+        internal static string msgUnicodeBomShort {
+            get {
+                return ResourceManager.GetString("msgUnicodeBomShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LE|A short message describing that an unicode encoding is in a little endian format.
+        /// </summary>
+        internal static string msgUnicodeLittleEndianShort {
+            get {
+                return ResourceManager.GetString("msgUnicodeLittleEndianShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NO-BOM|A short message describing that an unicode encoding doesn&apos;t contain a BOM (byte-order-mark).
+        /// </summary>
+        internal static string msgUnicodeNoBomShort {
+            get {
+                return ResourceManager.GetString("msgUnicodeNoBomShort", resourceCulture);
             }
         }
         

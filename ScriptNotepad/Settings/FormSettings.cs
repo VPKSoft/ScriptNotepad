@@ -285,6 +285,9 @@ namespace ScriptNotepad.Settings
             // get the auto-save settings..
             cbUseAutoSave.Checked = Settings.ProgramAutoSave;
             nudAutoSaveInterval.Value = Settings.ProgramAutoSaveInterval;
+
+            // get the tread locale value..
+            cbSetThreadLocale.Checked = Settings.LocalizeThread;
         }
 
         /// <summary>
@@ -427,6 +430,9 @@ namespace ScriptNotepad.Settings
             // set the auto-save settings..
             Settings.ProgramAutoSave = cbUseAutoSave.Checked;
             Settings.ProgramAutoSaveInterval = (int)nudAutoSaveInterval.Value;
+
+            // set the tread locale value..
+            Settings.LocalizeThread = cbSetThreadLocale.Checked;
         }
         #endregion
 

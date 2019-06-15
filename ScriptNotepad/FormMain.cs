@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -56,6 +57,7 @@ using ScriptNotepad.PluginHandling;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Database.TableMethods;
 using System.Linq;
+using System.Threading;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.Localization;
 using ScriptNotepad.Localization.Forms;
@@ -190,6 +192,13 @@ namespace ScriptNotepad
             // get the font size and family from the settings..
             FontFamilyName = FormSettings.Settings.EditorFontName;
             FontSize = FormSettings.Settings.EditorFontSize; 
+
+            // localize the thread if set in the settings..
+            if (FormSettings.Settings.LocalizeThread)
+            {
+                Thread.CurrentThread.CurrentCulture = DBLangEngine.UseCulture;
+                Thread.CurrentThread.CurrentUICulture = DBLangEngine.UseCulture;
+            }
 
             // get the session ID number from the database..
             CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
@@ -508,6 +517,29 @@ namespace ScriptNotepad
                     {
                         action(fileSave);
                         sttcMain.CurrentDocument.Tag = fileSave;
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionLogger.LogError(ex);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Runs an action to the last added document's <see cref="DBFILE_SAVE"/> class instance stored in the Tag property.
+        /// </summary>
+        /// <param name="action">The action to run.</param>
+        public void LastAddedFileSaveAction(Action<DBFILE_SAVE> action)
+        {
+            if (sttcMain.LastAddedDocument != null && sttcMain.LastAddedDocument.Tag != null)
+            {
+                if (sttcMain.LastAddedDocument.Tag is DBFILE_SAVE fileSave)
+                {
+                    try
+                    {
+                        action(fileSave);
+                        sttcMain.LastAddedDocument.Tag = fileSave;
                     }
                     catch (Exception ex)
                     {
@@ -1726,6 +1758,45 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // printing (print)..
+        private void TsbPrint_Click(object sender, EventArgs e)
+        {
+            CurrentScintillaAction(scintilla =>
+            {
+                if (pdPrint.ShowDialog() == DialogResult.OK)
+                {
+                    var print = new ScintillaPrinting.PrintDocument(scintilla)
+                    {
+                        PrinterSettings = pdPrint.PrinterSettings
+                    };
+                    print.Print();
+                }
+            });
+        }
+
+        // printing (preview)..
+        private void TsbPrintPreview_Click(object sender, EventArgs e)
+        {
+            CurrentScintillaAction(scintilla =>
+            {
+                var print = new ScintillaPrinting.Printing(scintilla);
+                print.PrintPreview(this);
+            });
+        }
+
+        // the user wants to change the document's zoom value..
+        private void ZoomInOut_Click(object sender, EventArgs e)
+        {
+            if (sender.Equals(tsbZoomIn))
+            {
+                sttcMain.CurrentDocument.ZoomPercentage += 10;
+            }
+            else if (sender.Equals(tsbZoomOut))
+            {
+                sttcMain.CurrentDocument.ZoomPercentage -= 10;
+            }
+        }
+
         // the user wishes to either save or to add a new document of the
         // current document formatted as HTML..
         private void MnuExportAsHTMLToNewDocument_Click(object sender, EventArgs e)
@@ -1784,6 +1855,8 @@ namespace ScriptNotepad
 
                     // as the contents os HTML, do set the lexer correctly..
                     document.LexerType = LexerEnumerations.LexerType.HTML;
+
+                    LastAddedFileSaveAction(fileSave => { DatabaseFileSave.UpdateMiscFlags(fileSave); });
                 });
             });
         }
@@ -2139,6 +2212,9 @@ namespace ScriptNotepad
         // the user is either logging of from the system or is shutting down the system..
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            // log the session ending..
+            ExceptionLogger.LogMessage("The Windows session is ending --> save with no questions asked.");
+
             // end the without any user interaction/dialog..
             EndSession(true);
         }

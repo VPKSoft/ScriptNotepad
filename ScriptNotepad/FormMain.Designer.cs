@@ -50,6 +50,12 @@
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbSpellCheck = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbZoomIn = new System.Windows.Forms.ToolStripButton();
+            this.tsbZoomOut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbPrint = new System.Windows.Forms.ToolStripButton();
+            this.tsbPrintPreview = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.ssLbLineColumn = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslLineCol = new System.Windows.Forms.ToolStripStatusLabel();
@@ -129,6 +135,12 @@
             this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuExportAsHTML = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuExportAsHTMLToNewDocument = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHTMLToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHTMLToFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHTMLToFileExecute = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -158,13 +170,8 @@
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
-            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuExportAsHTML = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuExportAsHTMLToNewDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
-            this.mnuHTMLToClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuHTMLToFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuHTMLToFileExecute = new System.Windows.Forms.ToolStripMenuItem();
+            this.pdPrint = new System.Windows.Forms.PrintDialog();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -214,7 +221,13 @@
             this.tsbUndo,
             this.tsbRedo,
             this.toolStripSeparator4,
-            this.tsbSpellCheck});
+            this.tsbSpellCheck,
+            this.toolStripSeparator5,
+            this.tsbZoomIn,
+            this.tsbZoomOut,
+            this.toolStripSeparator6,
+            this.tsbPrint,
+            this.tsbPrintPreview});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(945, 25);
@@ -342,6 +355,56 @@
             this.tsbSpellCheck.Text = "Spell checking enabled";
             this.tsbSpellCheck.Click += new System.EventHandler(this.TsbSpellCheck_Click);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbZoomIn
+            // 
+            this.tsbZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbZoomIn.Image = global::ScriptNotepad.Properties.Resources.zoom_in;
+            this.tsbZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbZoomIn.Name = "tsbZoomIn";
+            this.tsbZoomIn.Size = new System.Drawing.Size(23, 22);
+            this.tsbZoomIn.Text = "toolStripButton1";
+            this.tsbZoomIn.Click += new System.EventHandler(this.ZoomInOut_Click);
+            // 
+            // tsbZoomOut
+            // 
+            this.tsbZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbZoomOut.Image = global::ScriptNotepad.Properties.Resources.zoom_out;
+            this.tsbZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbZoomOut.Name = "tsbZoomOut";
+            this.tsbZoomOut.Size = new System.Drawing.Size(23, 22);
+            this.tsbZoomOut.Text = "toolStripButton1";
+            this.tsbZoomOut.Click += new System.EventHandler(this.ZoomInOut_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbPrint
+            // 
+            this.tsbPrint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPrint.Image = global::ScriptNotepad.Properties.Resources.printer;
+            this.tsbPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbPrint.Name = "tsbPrint";
+            this.tsbPrint.Size = new System.Drawing.Size(23, 22);
+            this.tsbPrint.Text = "Print...";
+            this.tsbPrint.Click += new System.EventHandler(this.TsbPrint_Click);
+            // 
+            // tsbPrintPreview
+            // 
+            this.tsbPrintPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPrintPreview.Image = global::ScriptNotepad.Properties.Resources.print_preview;
+            this.tsbPrintPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbPrintPreview.Name = "tsbPrintPreview";
+            this.tsbPrintPreview.Size = new System.Drawing.Size(23, 22);
+            this.tsbPrintPreview.Text = "Print preview";
+            this.tsbPrintPreview.Click += new System.EventHandler(this.TsbPrintPreview_Click);
+            // 
             // ssMain
             // 
             this.tlpMain.SetColumnSpan(this.ssMain, 5);
@@ -425,7 +488,7 @@
             // ssLbEncoding
             // 
             this.ssLbEncoding.Name = "ssLbEncoding";
-            this.ssLbEncoding.Size = new System.Drawing.Size(34, 15);
+            this.ssLbEncoding.Size = new System.Drawing.Size(33, 15);
             this.ssLbEncoding.Text = "UTF8";
             // 
             // ssLbSpace5
@@ -477,6 +540,9 @@
             this.sttcMain.AllowDrop = true;
             this.sttcMain.ChangedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.ChangedImage")));
             this.sttcMain.CloseButtonImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.CloseButtonImage")));
+            this.sttcMain.ColorBraceHighlightBackground = System.Drawing.Color.LightGray;
+            this.sttcMain.ColorBraceHighlightBad = System.Drawing.Color.Red;
+            this.sttcMain.ColorBraceHighlightForeground = System.Drawing.Color.BlueViolet;
             this.tlpMain.SetColumnSpan(this.sttcMain, 5);
             this.sttcMain.CurrentZoomPercentage = 100;
             this.sttcMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -491,6 +557,7 @@
             this.sttcMain.SuspendTextChangedEvents = false;
             this.sttcMain.TabIndex = 4;
             this.sttcMain.TabWidth = 4;
+            this.sttcMain.UseBraceHighlight = false;
             this.sttcMain.UseCodeIndenting = false;
             this.sttcMain.ZoomPercentageAll = 100;
             this.sttcMain.ZoomSynchronization = false;
@@ -824,7 +891,7 @@
             // 
             this.mnuRunScript.Image = ((System.Drawing.Image)(resources.GetObject("mnuRunScript.Image")));
             this.mnuRunScript.Name = "mnuRunScript";
-            this.mnuRunScript.Size = new System.Drawing.Size(235, 22);
+            this.mnuRunScript.Size = new System.Drawing.Size(236, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
             // 
@@ -832,14 +899,14 @@
             // 
             this.mnuCharSets.Image = ((System.Drawing.Image)(resources.GetObject("mnuCharSets.Image")));
             this.mnuCharSets.Name = "mnuCharSets";
-            this.mnuCharSets.Size = new System.Drawing.Size(235, 22);
+            this.mnuCharSets.Size = new System.Drawing.Size(236, 22);
             this.mnuCharSets.Text = "Change encoding";
             this.mnuCharSets.Click += new System.EventHandler(this.mnuCharSets_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(232, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(233, 6);
             // 
             // mnuStyle
             // 
@@ -859,7 +926,7 @@
             this.mnuClearStyle5});
             this.mnuStyle.Image = global::ScriptNotepad.Properties.Resources.style;
             this.mnuStyle.Name = "mnuStyle";
-            this.mnuStyle.Size = new System.Drawing.Size(235, 22);
+            this.mnuStyle.Size = new System.Drawing.Size(236, 22);
             this.mnuStyle.Text = "Style";
             // 
             // mnuClearAllStyles
@@ -977,28 +1044,72 @@
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(232, 6);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(233, 6);
             // 
             // mnuWrapDocumentTo
             // 
             this.mnuWrapDocumentTo.Image = global::ScriptNotepad.Properties.Resources.word_wrapped;
             this.mnuWrapDocumentTo.Name = "mnuWrapDocumentTo";
-            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(235, 22);
+            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(236, 22);
             this.mnuWrapDocumentTo.Text = "Wrap document to...";
             this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(232, 6);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(233, 6);
             // 
             // mnuSortLines
             // 
             this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
             this.mnuSortLines.Name = "mnuSortLines";
-            this.mnuSortLines.Size = new System.Drawing.Size(235, 22);
+            this.mnuSortLines.Size = new System.Drawing.Size(236, 22);
             this.mnuSortLines.Text = "Sort lines...";
             this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
+            // 
+            // toolStripMenuItem12
+            // 
+            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(233, 6);
+            // 
+            // mnuExportAsHTML
+            // 
+            this.mnuExportAsHTML.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuExportAsHTMLToNewDocument,
+            this.mnuHTMLToClipboard,
+            this.mnuHTMLToFile,
+            this.mnuHTMLToFileExecute});
+            this.mnuExportAsHTML.Name = "mnuExportAsHTML";
+            this.mnuExportAsHTML.Size = new System.Drawing.Size(236, 22);
+            this.mnuExportAsHTML.Text = "Export text formatted as HTML";
+            // 
+            // mnuExportAsHTMLToNewDocument
+            // 
+            this.mnuExportAsHTMLToNewDocument.Name = "mnuExportAsHTMLToNewDocument";
+            this.mnuExportAsHTMLToNewDocument.Size = new System.Drawing.Size(263, 22);
+            this.mnuExportAsHTMLToNewDocument.Text = "To a new document";
+            this.mnuExportAsHTMLToNewDocument.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            // 
+            // mnuHTMLToClipboard
+            // 
+            this.mnuHTMLToClipboard.Name = "mnuHTMLToClipboard";
+            this.mnuHTMLToClipboard.Size = new System.Drawing.Size(263, 22);
+            this.mnuHTMLToClipboard.Text = "To clipboard";
+            this.mnuHTMLToClipboard.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            // 
+            // mnuHTMLToFile
+            // 
+            this.mnuHTMLToFile.Name = "mnuHTMLToFile";
+            this.mnuHTMLToFile.Size = new System.Drawing.Size(263, 22);
+            this.mnuHTMLToFile.Text = "To file";
+            this.mnuHTMLToFile.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            // 
+            // mnuHTMLToFileExecute
+            // 
+            this.mnuHTMLToFileExecute.Name = "mnuHTMLToFileExecute";
+            this.mnuHTMLToFileExecute.Size = new System.Drawing.Size(263, 22);
+            this.mnuHTMLToFileExecute.Text = "To file and open with a web browser";
+            this.mnuHTMLToFileExecute.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
             // 
             // mnuSearch
             // 
@@ -1129,7 +1240,7 @@
             this.toolStripMenuItem11,
             this.mnuDiffFiles});
             this.mnuTools.Name = "mnuTools";
-            this.mnuTools.Size = new System.Drawing.Size(47, 20);
+            this.mnuTools.Size = new System.Drawing.Size(46, 20);
             this.mnuTools.Text = "Tools";
             // 
             // mnuManageScriptSnippets
@@ -1245,7 +1356,7 @@
             // mnuTab
             // 
             this.mnuTab.Name = "mnuTab";
-            this.mnuTab.Size = new System.Drawing.Size(38, 20);
+            this.mnuTab.Size = new System.Drawing.Size(37, 20);
             this.mnuTab.Text = "Tab";
             // 
             // tmAutoSave
@@ -1253,53 +1364,13 @@
             this.tmAutoSave.Interval = 300000;
             this.tmAutoSave.Tick += new System.EventHandler(this.TmAutoSave_Tick);
             // 
-            // toolStripMenuItem12
-            // 
-            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
-            this.toolStripMenuItem12.Size = new System.Drawing.Size(232, 6);
-            // 
-            // mnuExportAsHTML
-            // 
-            this.mnuExportAsHTML.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuExportAsHTMLToNewDocument,
-            this.mnuHTMLToClipboard,
-            this.mnuHTMLToFile,
-            this.mnuHTMLToFileExecute});
-            this.mnuExportAsHTML.Name = "mnuExportAsHTML";
-            this.mnuExportAsHTML.Size = new System.Drawing.Size(235, 22);
-            this.mnuExportAsHTML.Text = "Export text formatted as HTML";
-            // 
-            // mnuExportAsHTMLToNewDocument
-            // 
-            this.mnuExportAsHTMLToNewDocument.Name = "mnuExportAsHTMLToNewDocument";
-            this.mnuExportAsHTMLToNewDocument.Size = new System.Drawing.Size(264, 22);
-            this.mnuExportAsHTMLToNewDocument.Text = "To a new document";
-            this.mnuExportAsHTMLToNewDocument.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
-            // 
             // sdHTML
             // 
             this.sdHTML.Filter = "Hyper Text Markup Language file|*.html";
             // 
-            // mnuHTMLToClipboard
+            // pdPrint
             // 
-            this.mnuHTMLToClipboard.Name = "mnuHTMLToClipboard";
-            this.mnuHTMLToClipboard.Size = new System.Drawing.Size(264, 22);
-            this.mnuHTMLToClipboard.Text = "To clipboard";
-            this.mnuHTMLToClipboard.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
-            // 
-            // mnuHTMLToFile
-            // 
-            this.mnuHTMLToFile.Name = "mnuHTMLToFile";
-            this.mnuHTMLToFile.Size = new System.Drawing.Size(264, 22);
-            this.mnuHTMLToFile.Text = "To file";
-            this.mnuHTMLToFile.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
-            // 
-            // mnuHTMLToFileExecute
-            // 
-            this.mnuHTMLToFileExecute.Name = "mnuHTMLToFileExecute";
-            this.mnuHTMLToFileExecute.Size = new System.Drawing.Size(264, 22);
-            this.mnuHTMLToFileExecute.Text = "To file and open with a web browser";
-            this.mnuHTMLToFileExecute.Click += new System.EventHandler(this.MnuExportAsHTMLToNewDocument_Click);
+            this.pdPrint.UseEXDialog = true;
             // 
             // FormMain
             // 
@@ -1467,6 +1538,13 @@
         private System.Windows.Forms.ToolStripMenuItem mnuHTMLToClipboard;
         private System.Windows.Forms.ToolStripMenuItem mnuHTMLToFile;
         private System.Windows.Forms.ToolStripMenuItem mnuHTMLToFileExecute;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton tsbZoomIn;
+        private System.Windows.Forms.ToolStripButton tsbZoomOut;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripButton tsbPrint;
+        private System.Windows.Forms.ToolStripButton tsbPrintPreview;
+        private System.Windows.Forms.PrintDialog pdPrint;
     }
 }
 

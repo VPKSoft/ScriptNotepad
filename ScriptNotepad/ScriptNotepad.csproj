@@ -181,6 +181,11 @@
     </Compile>
     <Compile Include="Localization\Hunspell\HunspellData.cs" />
     <Compile Include="Localization\Hunspell\HunspellDictionaryCrawler.cs" />
+    <Compile Include="Localization\Messages1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -492,6 +497,10 @@
     <None Include="Resources\book_next.png" />
     <None Include="Resources\swap_view.png" />
     <None Include="Resources\mark_words.png" />
+    <None Include="Resources\print_preview.png" />
+    <None Include="Resources\printer.png" />
+    <None Include="Resources\zoom_in.png" />
+    <None Include="Resources\zoom_out.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

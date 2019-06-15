@@ -228,6 +228,13 @@ namespace ScriptNotepad.Settings
         public Encoding DefaultEncoding { get; set; } = Encoding.UTF8;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the thread locale should be set matching to the localization value.
+        /// </summary>
+        [Setting("main/localizeThread", typeof(bool))]
+        public bool LocalizeThread { get; set; } = false;
+
+
+        /// <summary>
         /// Gets or sets a value indicating whether the software should try to auto-detect the encoding of a file.
         /// </summary>
         [Setting("main/autoDetectEncoding", typeof(bool))]
