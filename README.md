@@ -12,6 +12,7 @@ A tabbed notepad/text/code software with scripting support (C#) to manipulate a 
 * Possibility to export a code file to HTML.
 * Small size (installer: 4MB).
 * Session support; you may create a session for etc. one for common files, one for SQL files and so on..
+* Currently supported locales: en-US, fi-FI
 
 _The main window_
 ![image](https://user-images.githubusercontent.com/40712699/59549758-fcacd000-8f6a-11e9-9cd7-d55514d91936.png)
