@@ -23,6 +23,7 @@ _A script window with a script template_
 * [JetBrains](http://www.jetbrains.com) for their open source license(s).
 
 ![JetBrains](http://www.vpksoft.net/site/External/JetBrains/jetbrains.svg)
+* Many others; will be updated...
 
 ## TODO
 * A lot ;-)
