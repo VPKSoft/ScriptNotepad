@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpgGeneralSettings = new System.Windows.Forms.TabPage();
+            this.cbSetThreadLocale = new System.Windows.Forms.CheckBox();
             this.cbUseRTL = new System.Windows.Forms.CheckBox();
             this.cbCategorizeProgrammingLanguages = new System.Windows.Forms.CheckBox();
             this.nudHistoryAmount = new System.Windows.Forms.NumericUpDown();
@@ -46,6 +47,7 @@
             this.lbSelectLanguageDescription = new System.Windows.Forms.Label();
             this.cmbSelectLanguageValue = new System.Windows.Forms.ComboBox();
             this.cbDocumentContentHistory = new System.Windows.Forms.CheckBox();
+            this.nudDocumentContentHistory = new System.Windows.Forms.NumericUpDown();
             this.lbDocumentContentHistory = new System.Windows.Forms.Label();
             this.nudHistoryDocuments = new System.Windows.Forms.NumericUpDown();
             this.lbHistoryDocuments = new System.Windows.Forms.Label();
@@ -138,6 +140,24 @@
             this.tbHunspellDictionary = new System.Windows.Forms.TextBox();
             this.lbHunspellDictionary = new System.Windows.Forms.Label();
             this.cbSpellCheckInUse = new System.Windows.Forms.CheckBox();
+            this.tabDateAndTime = new System.Windows.Forms.TabPage();
+            this.cbDateTimeUseInvarianCulture = new System.Windows.Forms.CheckBox();
+            this.lbDateTimeFormatDescriptionValue = new System.Windows.Forms.Label();
+            this.lbDateTimeFormatDescription = new System.Windows.Forms.Label();
+            this.gbDate = new System.Windows.Forms.GroupBox();
+            this.lbDateTimeFormat6 = new System.Windows.Forms.Label();
+            this.tbDateTimeFormat6 = new System.Windows.Forms.TextBox();
+            this.lbDateTimeFormat5 = new System.Windows.Forms.Label();
+            this.tbDateTimeFormat5 = new System.Windows.Forms.TextBox();
+            this.lbDateTimeFormat4 = new System.Windows.Forms.Label();
+            this.tbDateTimeFormat4 = new System.Windows.Forms.TextBox();
+            this.lbDateTimeFormat3 = new System.Windows.Forms.Label();
+            this.tbDateTimeFormat3 = new System.Windows.Forms.TextBox();
+            this.lbDateTimeFormat2 = new System.Windows.Forms.Label();
+            this.tbDateTimeFormat2 = new System.Windows.Forms.TextBox();
+            this.lbDateTimeFormat1 = new System.Windows.Forms.Label();
+            this.tbDateTimeFormat1 = new System.Windows.Forms.TextBox();
+            this.lbDateStyle = new System.Windows.Forms.Label();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
@@ -146,13 +166,14 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.cbSetThreadLocale = new System.Windows.Forms.CheckBox();
-            this.nudDocumentContentHistory = new System.Windows.Forms.NumericUpDown();
+            this.lbDateTimeInstructionLink = new System.Windows.Forms.Label();
+            this.btDateTimeDefaults = new System.Windows.Forms.Button();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).BeginInit();
             this.tpgAdditionalSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).BeginInit();
@@ -175,7 +196,8 @@
             this.gbBraceFontStyle.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
+            this.tabDateAndTime.SuspendLayout();
+            this.gbDate.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -191,6 +213,7 @@
             this.tcMain.Controls.Add(this.tpgColorSettings);
             this.tcMain.Controls.Add(this.tabAdditionalColors);
             this.tcMain.Controls.Add(this.tabSpellCheck);
+            this.tcMain.Controls.Add(this.tabDateAndTime);
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -225,6 +248,16 @@
             this.tpgGeneralSettings.TabIndex = 0;
             this.tpgGeneralSettings.Text = "General";
             this.tpgGeneralSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbSetThreadLocale
+            // 
+            this.cbSetThreadLocale.AutoSize = true;
+            this.cbSetThreadLocale.Location = new System.Drawing.Point(6, 104);
+            this.cbSetThreadLocale.Name = "cbSetThreadLocale";
+            this.cbSetThreadLocale.Size = new System.Drawing.Size(233, 17);
+            this.cbSetThreadLocale.TabIndex = 9;
+            this.cbSetThreadLocale.Text = "Set the thread locale to match the language";
+            this.cbSetThreadLocale.UseVisualStyleBackColor = true;
             // 
             // cbUseRTL
             // 
@@ -406,6 +439,24 @@
             this.cbDocumentContentHistory.TabIndex = 13;
             this.cbDocumentContentHistory.UseVisualStyleBackColor = true;
             this.cbDocumentContentHistory.CheckedChanged += new System.EventHandler(this.cbDocumentContentHistory_CheckedChanged);
+            // 
+            // nudDocumentContentHistory
+            // 
+            this.nudDocumentContentHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudDocumentContentHistory.Location = new System.Drawing.Point(564, 32);
+            this.nudDocumentContentHistory.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudDocumentContentHistory.Name = "nudDocumentContentHistory";
+            this.nudDocumentContentHistory.Size = new System.Drawing.Size(90, 20);
+            this.nudDocumentContentHistory.TabIndex = 12;
+            this.nudDocumentContentHistory.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             // 
             // lbDocumentContentHistory
             // 
@@ -1239,7 +1290,6 @@
             this.rbBraceStyleBold.TabStop = true;
             this.rbBraceStyleBold.Text = "Bold";
             this.rbBraceStyleBold.UseVisualStyleBackColor = true;
-            this.rbBraceStyleBold.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
             // 
             // lbBraceHighlightForegroundColor
             // 
@@ -1493,6 +1543,206 @@
             this.cbSpellCheckInUse.UseVisualStyleBackColor = true;
             this.cbSpellCheckInUse.Click += new System.EventHandler(this.CbSpellCheckInUse_Click);
             // 
+            // tabDateAndTime
+            // 
+            this.tabDateAndTime.Controls.Add(this.btDateTimeDefaults);
+            this.tabDateAndTime.Controls.Add(this.lbDateTimeInstructionLink);
+            this.tabDateAndTime.Controls.Add(this.cbDateTimeUseInvarianCulture);
+            this.tabDateAndTime.Controls.Add(this.lbDateTimeFormatDescriptionValue);
+            this.tabDateAndTime.Controls.Add(this.lbDateTimeFormatDescription);
+            this.tabDateAndTime.Controls.Add(this.gbDate);
+            this.tabDateAndTime.Location = new System.Drawing.Point(4, 22);
+            this.tabDateAndTime.Name = "tabDateAndTime";
+            this.tabDateAndTime.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDateAndTime.Size = new System.Drawing.Size(660, 371);
+            this.tabDateAndTime.TabIndex = 8;
+            this.tabDateAndTime.Text = "Date and time";
+            this.tabDateAndTime.UseVisualStyleBackColor = true;
+            // 
+            // cbDateTimeUseInvarianCulture
+            // 
+            this.cbDateTimeUseInvarianCulture.AutoSize = true;
+            this.cbDateTimeUseInvarianCulture.Location = new System.Drawing.Point(9, 250);
+            this.cbDateTimeUseInvarianCulture.Name = "cbDateTimeUseInvarianCulture";
+            this.cbDateTimeUseInvarianCulture.Size = new System.Drawing.Size(310, 17);
+            this.cbDateTimeUseInvarianCulture.TabIndex = 3;
+            this.cbDateTimeUseInvarianCulture.Text = "Use invariant culture (will affect the date and time formatting)";
+            this.cbDateTimeUseInvarianCulture.UseVisualStyleBackColor = true;
+            this.cbDateTimeUseInvarianCulture.CheckedChanged += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.cbDateTimeUseInvarianCulture.Click += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.cbDateTimeUseInvarianCulture.Enter += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            // 
+            // lbDateTimeFormatDescriptionValue
+            // 
+            this.lbDateTimeFormatDescriptionValue.AutoSize = true;
+            this.lbDateTimeFormatDescriptionValue.Location = new System.Drawing.Point(12, 234);
+            this.lbDateTimeFormatDescriptionValue.Name = "lbDateTimeFormatDescriptionValue";
+            this.lbDateTimeFormatDescriptionValue.Size = new System.Drawing.Size(49, 13);
+            this.lbDateTimeFormatDescriptionValue.TabIndex = 2;
+            this.lbDateTimeFormatDescriptionValue.Text = "00:00:00";
+            // 
+            // lbDateTimeFormatDescription
+            // 
+            this.lbDateTimeFormatDescription.AutoSize = true;
+            this.lbDateTimeFormatDescription.Location = new System.Drawing.Point(6, 211);
+            this.lbDateTimeFormatDescription.Name = "lbDateTimeFormatDescription";
+            this.lbDateTimeFormatDescription.Size = new System.Drawing.Size(58, 13);
+            this.lbDateTimeFormatDescription.TabIndex = 1;
+            this.lbDateTimeFormatDescription.Text = "Looks like:";
+            // 
+            // gbDate
+            // 
+            this.gbDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbDate.Controls.Add(this.lbDateTimeFormat6);
+            this.gbDate.Controls.Add(this.tbDateTimeFormat6);
+            this.gbDate.Controls.Add(this.lbDateTimeFormat5);
+            this.gbDate.Controls.Add(this.tbDateTimeFormat5);
+            this.gbDate.Controls.Add(this.lbDateTimeFormat4);
+            this.gbDate.Controls.Add(this.tbDateTimeFormat4);
+            this.gbDate.Controls.Add(this.lbDateTimeFormat3);
+            this.gbDate.Controls.Add(this.tbDateTimeFormat3);
+            this.gbDate.Controls.Add(this.lbDateTimeFormat2);
+            this.gbDate.Controls.Add(this.tbDateTimeFormat2);
+            this.gbDate.Controls.Add(this.lbDateTimeFormat1);
+            this.gbDate.Controls.Add(this.tbDateTimeFormat1);
+            this.gbDate.Controls.Add(this.lbDateStyle);
+            this.gbDate.Location = new System.Drawing.Point(6, 6);
+            this.gbDate.Name = "gbDate";
+            this.gbDate.Size = new System.Drawing.Size(648, 202);
+            this.gbDate.TabIndex = 0;
+            this.gbDate.TabStop = false;
+            this.gbDate.Text = "Date and/or time formats";
+            // 
+            // lbDateTimeFormat6
+            // 
+            this.lbDateTimeFormat6.AutoSize = true;
+            this.lbDateTimeFormat6.Location = new System.Drawing.Point(6, 172);
+            this.lbDateTimeFormat6.Name = "lbDateTimeFormat6";
+            this.lbDateTimeFormat6.Size = new System.Drawing.Size(131, 13);
+            this.lbDateTimeFormat6.TabIndex = 16;
+            this.lbDateTimeFormat6.Text = "Date and/or time format 6:";
+            // 
+            // tbDateTimeFormat6
+            // 
+            this.tbDateTimeFormat6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDateTimeFormat6.Location = new System.Drawing.Point(337, 169);
+            this.tbDateTimeFormat6.Name = "tbDateTimeFormat6";
+            this.tbDateTimeFormat6.Size = new System.Drawing.Size(305, 20);
+            this.tbDateTimeFormat6.TabIndex = 15;
+            this.tbDateTimeFormat6.TextChanged += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.tbDateTimeFormat6.Enter += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            // 
+            // lbDateTimeFormat5
+            // 
+            this.lbDateTimeFormat5.AutoSize = true;
+            this.lbDateTimeFormat5.Location = new System.Drawing.Point(6, 146);
+            this.lbDateTimeFormat5.Name = "lbDateTimeFormat5";
+            this.lbDateTimeFormat5.Size = new System.Drawing.Size(131, 13);
+            this.lbDateTimeFormat5.TabIndex = 14;
+            this.lbDateTimeFormat5.Text = "Date and/or time format 5:";
+            // 
+            // tbDateTimeFormat5
+            // 
+            this.tbDateTimeFormat5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDateTimeFormat5.Location = new System.Drawing.Point(337, 143);
+            this.tbDateTimeFormat5.Name = "tbDateTimeFormat5";
+            this.tbDateTimeFormat5.Size = new System.Drawing.Size(305, 20);
+            this.tbDateTimeFormat5.TabIndex = 13;
+            this.tbDateTimeFormat5.TextChanged += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.tbDateTimeFormat5.Enter += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            // 
+            // lbDateTimeFormat4
+            // 
+            this.lbDateTimeFormat4.AutoSize = true;
+            this.lbDateTimeFormat4.Location = new System.Drawing.Point(6, 120);
+            this.lbDateTimeFormat4.Name = "lbDateTimeFormat4";
+            this.lbDateTimeFormat4.Size = new System.Drawing.Size(131, 13);
+            this.lbDateTimeFormat4.TabIndex = 12;
+            this.lbDateTimeFormat4.Text = "Date and/or time format 4:";
+            // 
+            // tbDateTimeFormat4
+            // 
+            this.tbDateTimeFormat4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDateTimeFormat4.Location = new System.Drawing.Point(337, 117);
+            this.tbDateTimeFormat4.Name = "tbDateTimeFormat4";
+            this.tbDateTimeFormat4.Size = new System.Drawing.Size(305, 20);
+            this.tbDateTimeFormat4.TabIndex = 11;
+            this.tbDateTimeFormat4.TextChanged += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.tbDateTimeFormat4.Enter += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            // 
+            // lbDateTimeFormat3
+            // 
+            this.lbDateTimeFormat3.AutoSize = true;
+            this.lbDateTimeFormat3.Location = new System.Drawing.Point(6, 94);
+            this.lbDateTimeFormat3.Name = "lbDateTimeFormat3";
+            this.lbDateTimeFormat3.Size = new System.Drawing.Size(131, 13);
+            this.lbDateTimeFormat3.TabIndex = 10;
+            this.lbDateTimeFormat3.Text = "Date and/or time format 3:";
+            // 
+            // tbDateTimeFormat3
+            // 
+            this.tbDateTimeFormat3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDateTimeFormat3.Location = new System.Drawing.Point(337, 91);
+            this.tbDateTimeFormat3.Name = "tbDateTimeFormat3";
+            this.tbDateTimeFormat3.Size = new System.Drawing.Size(305, 20);
+            this.tbDateTimeFormat3.TabIndex = 9;
+            this.tbDateTimeFormat3.TextChanged += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.tbDateTimeFormat3.Enter += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            // 
+            // lbDateTimeFormat2
+            // 
+            this.lbDateTimeFormat2.AutoSize = true;
+            this.lbDateTimeFormat2.Location = new System.Drawing.Point(6, 68);
+            this.lbDateTimeFormat2.Name = "lbDateTimeFormat2";
+            this.lbDateTimeFormat2.Size = new System.Drawing.Size(131, 13);
+            this.lbDateTimeFormat2.TabIndex = 8;
+            this.lbDateTimeFormat2.Text = "Date and/or time format 2:";
+            // 
+            // tbDateTimeFormat2
+            // 
+            this.tbDateTimeFormat2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDateTimeFormat2.Location = new System.Drawing.Point(337, 65);
+            this.tbDateTimeFormat2.Name = "tbDateTimeFormat2";
+            this.tbDateTimeFormat2.Size = new System.Drawing.Size(305, 20);
+            this.tbDateTimeFormat2.TabIndex = 7;
+            this.tbDateTimeFormat2.TextChanged += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.tbDateTimeFormat2.Enter += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            // 
+            // lbDateTimeFormat1
+            // 
+            this.lbDateTimeFormat1.AutoSize = true;
+            this.lbDateTimeFormat1.Location = new System.Drawing.Point(6, 42);
+            this.lbDateTimeFormat1.Name = "lbDateTimeFormat1";
+            this.lbDateTimeFormat1.Size = new System.Drawing.Size(131, 13);
+            this.lbDateTimeFormat1.TabIndex = 6;
+            this.lbDateTimeFormat1.Text = "Date and/or time format 1:";
+            // 
+            // tbDateTimeFormat1
+            // 
+            this.tbDateTimeFormat1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbDateTimeFormat1.Location = new System.Drawing.Point(337, 39);
+            this.tbDateTimeFormat1.Name = "tbDateTimeFormat1";
+            this.tbDateTimeFormat1.Size = new System.Drawing.Size(305, 20);
+            this.tbDateTimeFormat1.TabIndex = 1;
+            this.tbDateTimeFormat1.TextChanged += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            this.tbDateTimeFormat1.Enter += new System.EventHandler(this.TbDateTimeFormat1_TextChanged);
+            // 
+            // lbDateStyle
+            // 
+            this.lbDateStyle.AutoSize = true;
+            this.lbDateStyle.Location = new System.Drawing.Point(6, 16);
+            this.lbDateStyle.Name = "lbDateStyle";
+            this.lbDateStyle.Size = new System.Drawing.Size(68, 13);
+            this.lbDateStyle.TabIndex = 0;
+            this.lbDateStyle.Text = "Styles 1 to 6:";
+            // 
             // btCancel
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1545,33 +1795,31 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
-            // cbSetThreadLocale
+            // lbDateTimeInstructionLink
             // 
-            this.cbSetThreadLocale.AutoSize = true;
-            this.cbSetThreadLocale.Location = new System.Drawing.Point(6, 104);
-            this.cbSetThreadLocale.Name = "cbSetThreadLocale";
-            this.cbSetThreadLocale.Size = new System.Drawing.Size(233, 17);
-            this.cbSetThreadLocale.TabIndex = 9;
-            this.cbSetThreadLocale.Text = "Set the thread locale to match the language";
-            this.cbSetThreadLocale.UseVisualStyleBackColor = true;
+            this.lbDateTimeInstructionLink.AutoSize = true;
+            this.lbDateTimeInstructionLink.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbDateTimeInstructionLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbDateTimeInstructionLink.ForeColor = System.Drawing.Color.Navy;
+            this.lbDateTimeInstructionLink.Location = new System.Drawing.Point(6, 270);
+            this.lbDateTimeInstructionLink.Name = "lbDateTimeInstructionLink";
+            this.lbDateTimeInstructionLink.Size = new System.Drawing.Size(357, 13);
+            this.lbDateTimeInstructionLink.TabIndex = 4;
+            this.lbDateTimeInstructionLink.Tag = "https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-" +
+    "format-strings";
+            this.lbDateTimeInstructionLink.Text = "A link to a Microsoft web site describing the date and time format specifiers";
+            this.lbDateTimeInstructionLink.Click += new System.EventHandler(this.LbDateTimeInstructionLink_Click);
             // 
-            // nudDocumentContentHistory
+            // btDateTimeDefaults
             // 
-            this.nudDocumentContentHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudDocumentContentHistory.Location = new System.Drawing.Point(564, 32);
-            this.nudDocumentContentHistory.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nudDocumentContentHistory.Name = "nudDocumentContentHistory";
-            this.nudDocumentContentHistory.Size = new System.Drawing.Size(90, 20);
-            this.nudDocumentContentHistory.TabIndex = 12;
-            this.nudDocumentContentHistory.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
+            this.btDateTimeDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btDateTimeDefaults.Location = new System.Drawing.Point(6, 342);
+            this.btDateTimeDefaults.Name = "btDateTimeDefaults";
+            this.btDateTimeDefaults.Size = new System.Drawing.Size(134, 23);
+            this.btDateTimeDefaults.TabIndex = 5;
+            this.btDateTimeDefaults.Text = "Defaults";
+            this.btDateTimeDefaults.UseVisualStyleBackColor = true;
+            this.btDateTimeDefaults.Click += new System.EventHandler(this.BtDateTimeDefaults_Click);
             // 
             // FormSettings
             // 
@@ -1599,6 +1847,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaximumSearchFileSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).EndInit();
             this.tpgAdditionalSettings.ResumeLayout(false);
             this.tpgAdditionalSettings.PerformLayout();
@@ -1633,7 +1882,10 @@
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
+            this.tabDateAndTime.ResumeLayout(false);
+            this.tabDateAndTime.PerformLayout();
+            this.gbDate.ResumeLayout(false);
+            this.gbDate.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1759,5 +2011,25 @@
         private System.Windows.Forms.RadioButton rbBraceStyleItalic;
         private System.Windows.Forms.CheckBox cbSetThreadLocale;
         private System.Windows.Forms.NumericUpDown nudDocumentContentHistory;
+        private System.Windows.Forms.TabPage tabDateAndTime;
+        private System.Windows.Forms.GroupBox gbDate;
+        private System.Windows.Forms.TextBox tbDateTimeFormat1;
+        private System.Windows.Forms.Label lbDateStyle;
+        private System.Windows.Forms.Label lbDateTimeFormat1;
+        private System.Windows.Forms.CheckBox cbDateTimeUseInvarianCulture;
+        private System.Windows.Forms.Label lbDateTimeFormatDescriptionValue;
+        private System.Windows.Forms.Label lbDateTimeFormatDescription;
+        private System.Windows.Forms.Label lbDateTimeFormat6;
+        private System.Windows.Forms.TextBox tbDateTimeFormat6;
+        private System.Windows.Forms.Label lbDateTimeFormat5;
+        private System.Windows.Forms.TextBox tbDateTimeFormat5;
+        private System.Windows.Forms.Label lbDateTimeFormat4;
+        private System.Windows.Forms.TextBox tbDateTimeFormat4;
+        private System.Windows.Forms.Label lbDateTimeFormat3;
+        private System.Windows.Forms.TextBox tbDateTimeFormat3;
+        private System.Windows.Forms.Label lbDateTimeFormat2;
+        private System.Windows.Forms.TextBox tbDateTimeFormat2;
+        private System.Windows.Forms.Label lbDateTimeInstructionLink;
+        private System.Windows.Forms.Button btDateTimeDefaults;
     }
 }

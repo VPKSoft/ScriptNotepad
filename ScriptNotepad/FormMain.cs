@@ -25,59 +25,59 @@ SOFTWARE.
 #endregion
 
 #region Usings
-using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Text;
-using System.Windows.Forms;
-using VPKSoft.LangLib;
-using VPKSoft.IPC;
 using Microsoft.Win32;
-using VPKSoft.PosLib;
-using VPKSoft.ErrorLogger;
-using VPKSoft.ScintillaTabbedTextControl;
-using ScriptNotepad.UtilityClasses.StreamHelpers;
-using ScriptNotepad.DialogForms;
-using static ScriptNotepad.Database.DatabaseEnumerations;
-using ScriptNotepad.Database.UtilityClasses;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
-using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
-using ScriptNotepad.IOPermission;
-using ScriptNotepad.UtilityClasses.SessionHelpers;
-using ScriptNotepad.UtilityClasses.Clipboard;
-using ScriptNotepad.UtilityClasses.Process;
-using System.Reflection;
-using ScriptNotepadPluginBase.PluginTemplateInterface;
-using ScriptNotepadPluginBase.EventArgClasses;
-using ScriptNotepad.PluginHandling;
-using ScriptNotepad.Database.Tables;
+using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
 using ScriptNotepad.Database.TableMethods;
-using System.Linq;
-using System.Threading;
-using ScriptNotepad.UtilityClasses.Session;
+using ScriptNotepad.Database.Tables;
+using ScriptNotepad.Database.UtilityClasses;
+using ScriptNotepad.DialogForms;
+using ScriptNotepad.IOPermission;
 using ScriptNotepad.Localization;
 using ScriptNotepad.Localization.Forms;
+using ScriptNotepad.PluginHandling;
 using ScriptNotepad.Settings;
+using ScriptNotepad.UtilityClasses.Clipboard;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Encodings;
 using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
+using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.UtilityClasses.Keyboard;
 using ScriptNotepad.UtilityClasses.MenuHelpers;
 using ScriptNotepad.UtilityClasses.MiscForms;
+using ScriptNotepad.UtilityClasses.Process;
 using ScriptNotepad.UtilityClasses.ProgrammingLanguages;
 using ScriptNotepad.UtilityClasses.ScintillaNETUtils;
 using ScriptNotepad.UtilityClasses.ScintillaUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
+using ScriptNotepad.UtilityClasses.Session;
+using ScriptNotepad.UtilityClasses.SessionHelpers;
 using ScriptNotepad.UtilityClasses.SpellCheck;
+using ScriptNotepad.UtilityClasses.StreamHelpers;
 using ScriptNotepad.UtilityClasses.TextManipulationUtils;
+using ScriptNotepadPluginBase.EventArgClasses;
+using ScriptNotepadPluginBase.PluginTemplateInterface;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using VPKSoft.ErrorLogger;
+using VPKSoft.IPC;
+using VPKSoft.LangLib;
+using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
-using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
+using VPKSoft.ScintillaTabbedTextControl;
+using static ScriptNotepad.Database.DatabaseEnumerations;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
+using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 #endregion
 
 namespace ScriptNotepad

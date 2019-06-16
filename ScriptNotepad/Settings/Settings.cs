@@ -649,6 +649,49 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("fileDialog/locationOpenAffix", typeof(string))]
         public string FileLocationOpenAffix { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 1.
+        /// </summary>
+        [Setting("dateTime/date1", typeof(string))]
+        public string DateFormat1 { get; set; } = "yyyy'/'MM'/'dd"; // default to american..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 2.
+        /// </summary>
+        [Setting("dateTime/date2", typeof(string))]
+        public string DateFormat2 { get; set; } = "dd'.'MM'.'yyyy"; // default to european..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 3.
+        /// </summary>
+        [Setting("dateTime/date3", typeof(string))]
+        public string DateFormat3 { get; set; } = "yyyy'/'MM'/'dd hh'.'mm tt"; // default to american..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 4.
+        /// </summary>
+        [Setting("dateTime/date4", typeof(string))]
+        public string DateFormat4 { get; set; } = "dd'.'MM'.'yyyy HH':'mm':'ss"; // default to european..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 5.
+        /// </summary>
+        [Setting("dateTime/date5", typeof(string))]
+        public string DateFormat5 { get; set; } = "hh'.'mm tt"; // default to american..
+
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 6.
+        /// </summary>
+        [Setting("dateTime/date6", typeof(string))]
+        public string DateFormat6 { get; set; } = "HH':'mm':'ss"; // default to european..
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use invariant culture formatting date and time via the edit menu.
+        /// </summary>
+        [Setting("dateTime/invarianCulture", typeof(bool))]
+        public bool DateFormatUseInvariantCulture { get; set; } = false; // default to not use..
         #endregion
 
         /// <summary>

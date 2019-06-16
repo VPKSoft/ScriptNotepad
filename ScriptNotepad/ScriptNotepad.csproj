@@ -179,6 +179,9 @@
     <Compile Include="DialogForms\FormDialogQueryNumber.Designer.cs">
       <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventHandlerDelegation\FormMainHandlers.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Localization\Hunspell\HunspellData.cs" />
     <Compile Include="Localization\Hunspell\HunspellDictionaryCrawler.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

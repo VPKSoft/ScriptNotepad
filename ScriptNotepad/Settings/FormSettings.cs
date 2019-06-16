@@ -28,6 +28,7 @@ using Ookii.Dialogs.WinForms;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -288,6 +289,17 @@ namespace ScriptNotepad.Settings
 
             // get the tread locale value..
             cbSetThreadLocale.Checked = Settings.LocalizeThread;
+
+            #region DateTime
+            // get the date and time formats..
+            tbDateTimeFormat1.Text = Settings.DateFormat1;
+            tbDateTimeFormat2.Text = Settings.DateFormat2;
+            tbDateTimeFormat3.Text = Settings.DateFormat3;
+            tbDateTimeFormat4.Text = Settings.DateFormat4;
+            tbDateTimeFormat5.Text = Settings.DateFormat5;
+            tbDateTimeFormat6.Text = Settings.DateFormat6;
+            cbDateTimeUseInvarianCulture.Checked = Settings.DateFormatUseInvariantCulture;
+            #endregion
         }
 
         /// <summary>
@@ -433,6 +445,17 @@ namespace ScriptNotepad.Settings
 
             // set the tread locale value..
             Settings.LocalizeThread = cbSetThreadLocale.Checked;
+
+            #region DateTime
+            // set the date and time formats..
+            Settings.DateFormat1 = tbDateTimeFormat1.Text;
+            Settings.DateFormat2 = tbDateTimeFormat2.Text;
+            Settings.DateFormat3 = tbDateTimeFormat3.Text;
+            Settings.DateFormat4 = tbDateTimeFormat4.Text;
+            Settings.DateFormat5 = tbDateTimeFormat5.Text;
+            Settings.DateFormat6 = tbDateTimeFormat6.Text;
+            Settings.DateFormatUseInvariantCulture = cbDateTimeUseInvarianCulture.Checked;
+            #endregion
         }
         #endregion
 
@@ -741,9 +764,77 @@ namespace ScriptNotepad.Settings
             }
         }
 
-        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
-        {
+        private string lastFocusedDateTime = string.Empty;
 
+        private void TbDateTimeFormat1_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textBox = null;
+            try
+            {
+                if (sender is TextBox)
+                {
+                    textBox = (TextBox) sender;
+                    lastFocusedDateTime = textBox.Text;
+
+                    lbDateTimeFormatDescriptionValue.Text = DateTime.Now.ToString(lastFocusedDateTime,
+                        // we need to ensure that an overridden thread locale will not affect the non-invariant culture setting..
+                        cbDateTimeUseInvarianCulture.Checked
+                            ? CultureInfo.InvariantCulture
+                            : CultureInfo.InstalledUICulture);
+                }
+                else if (sender is CheckBox)
+                {
+                    lbDateTimeFormatDescriptionValue.Text = DateTime.Now.ToString(lastFocusedDateTime,
+                        // we need to ensure that an overridden thread locale will not affect the non-invariant culture setting..
+                        cbDateTimeUseInvarianCulture.Checked
+                            ? CultureInfo.InvariantCulture
+                            : CultureInfo.InstalledUICulture);
+                }
+
+                if (textBox != null)
+                {
+                    textBox.BackColor = SystemColors.Window;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (textBox != null)
+                {
+                    textBox.BackColor = Color.Red;
+                }
+
+                lbDateTimeFormatDescriptionValue.Text = DBLangEngine.GetMessage(
+                    "msgDateTimeInvalidFormat", 
+                    "Invalid date and/or time format|The user has issued an non-valid formatted date and/or time formatting string.");
+
+                ExceptionLogger.LogError(ex);
+            }
+        }
+
+        // try to open a web browser for further instructions of how to specify a time and/or date..
+        private void LbDateTimeInstructionLink_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(
+                    "https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings");
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex);
+            }
+        }
+
+        // the user wants to reset the date and/or time format strings to default values..
+        private void BtDateTimeDefaults_Click(object sender, EventArgs e)
+        {
+            tbDateTimeFormat1.Text = @"yyyy'/'MM'/'dd"; // default to american..
+            tbDateTimeFormat2.Text = @"dd'.'MM'.'yyyy"; // default to european..
+            tbDateTimeFormat3.Text = @"yyyy'/'MM'/'dd hh'.'mm tt"; // default to american..
+            tbDateTimeFormat4.Text = @"dd'.'MM'.'yyyy HH':'mm':'ss"; // default to european..
+            tbDateTimeFormat5.Text = @"hh'.'mm tt"; // default to american..
+            tbDateTimeFormat6.Text = @"HH':'mm':'ss"; // default to european..
         }
     }
 }

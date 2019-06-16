@@ -831,4 +831,10 @@
   <data name="msgContextCopy" xml:space="preserve">
     <value>Copy|A message for a context menu to describe a copy action</value>
   </data>
+  <data name="msgDateTimeMenuItemText" xml:space="preserve">
+    <value>Insert date and time type {0}: '{1}'|A message describing a text to insert a date and/or time to a Scintilla instance via a menu strip item.</value>
+  </data>
+  <data name="msgDateTimeInvalidFormat" xml:space="preserve">
+    <value>Invalid date and/or time format|The user has issued an non-valid formatted date and/or time formatting string.</value>
+  </data>
 </root>

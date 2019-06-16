@@ -50,4 +50,5 @@
 * Done? [YES  ] [2019/06/12] Bracket matching for the Scintilla? Added brace highlight possibility for the Scintilla controls.
 * Done? [DON'T] [2019/06/13] Suspend layout on changing the session.
 * Done? [N/A  ] [2019/06/13] Save As --> Detect the lexer.
-* Done? [N/A  ] [2019/06/14] Set the thread locale for the ScintillaNetPrinting.
+* Done? [DON'T] [2019/06/15] Set the thread locale for the ScintillaNetPrinting. --> Thread locale to the whole software.
+* Done? [N/A  ] [2019/06/15] Add insert time and/or date via context menu.
