@@ -101,6 +101,8 @@ namespace ScriptNotepad
                 new FormPickAColor();
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormFileDiffView();
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormDialogQueryJumpLocation();
 
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..

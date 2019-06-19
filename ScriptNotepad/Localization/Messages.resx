@@ -837,4 +837,7 @@
   <data name="msgDateTimeInvalidFormat" xml:space="preserve">
     <value>Invalid date and/or time format|The user has issued an non-valid formatted date and/or time formatting string.</value>
   </data>
+  <data name="msgEnterALineNumber" xml:space="preserve">
+    <value>Enter a line number ({0} - {1}):|A message for a label describing an input control to select a line number</value>
+  </data>
 </root>

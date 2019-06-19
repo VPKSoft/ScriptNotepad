@@ -3192,7 +3192,7 @@ namespace ScriptNotepad
         private bool suspendSelectionUpdate;
         #endregion
 
-        #region PrivateProperties        
+        #region PrivateProperties                
         /// <summary>
         /// Gets or sets a value indicating whether constructor of this form has finished.
         /// </summary>

@@ -158,6 +158,8 @@
             this.mnuInsertDateAndTime2 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuInsertDateAndTime3 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuInsertDateAndTime4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuInsertDateAndTime5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuInsertDateAndTime6 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -189,8 +191,8 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
-            this.mnuInsertDateAndTime5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuInsertDateAndTime6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripSeparator();
+            this.gotoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -948,7 +950,9 @@
             this.mnuSortLines,
             this.toolStripMenuItem12,
             this.mnuExportAsHTML,
-            this.mnuDateAndTime});
+            this.mnuDateAndTime,
+            this.toolStripMenuItem15,
+            this.gotoToolStripMenuItem});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -1250,14 +1254,16 @@
             this.mnuInsertDateAndTime5,
             this.mnuInsertDateAndTime6});
             this.mnuInsertDateAndTime.Name = "mnuInsertDateAndTime";
-            this.mnuInsertDateAndTime.Size = new System.Drawing.Size(180, 22);
+            this.mnuInsertDateAndTime.Size = new System.Drawing.Size(148, 22);
             this.mnuInsertDateAndTime.Text = "Date and time";
             this.mnuInsertDateAndTime.DropDownOpening += new System.EventHandler(this.MnuInsertDateAndTime_DropDownOpening);
             // 
             // mnuInsertDateAndTime1
             // 
             this.mnuInsertDateAndTime1.Name = "mnuInsertDateAndTime1";
-            this.mnuInsertDateAndTime1.Size = new System.Drawing.Size(214, 22);
+            this.mnuInsertDateAndTime1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D1)));
+            this.mnuInsertDateAndTime1.Size = new System.Drawing.Size(286, 22);
             this.mnuInsertDateAndTime1.Tag = "0";
             this.mnuInsertDateAndTime1.Text = "Insert date and time type 1";
             this.mnuInsertDateAndTime1.Click += new System.EventHandler(this.MnuDate1_Click);
@@ -1265,7 +1271,9 @@
             // mnuInsertDateAndTime2
             // 
             this.mnuInsertDateAndTime2.Name = "mnuInsertDateAndTime2";
-            this.mnuInsertDateAndTime2.Size = new System.Drawing.Size(214, 22);
+            this.mnuInsertDateAndTime2.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D2)));
+            this.mnuInsertDateAndTime2.Size = new System.Drawing.Size(286, 22);
             this.mnuInsertDateAndTime2.Tag = "1";
             this.mnuInsertDateAndTime2.Text = "Insert date and time type 2";
             this.mnuInsertDateAndTime2.Click += new System.EventHandler(this.MnuDate1_Click);
@@ -1273,7 +1281,9 @@
             // mnuInsertDateAndTime3
             // 
             this.mnuInsertDateAndTime3.Name = "mnuInsertDateAndTime3";
-            this.mnuInsertDateAndTime3.Size = new System.Drawing.Size(214, 22);
+            this.mnuInsertDateAndTime3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D3)));
+            this.mnuInsertDateAndTime3.Size = new System.Drawing.Size(286, 22);
             this.mnuInsertDateAndTime3.Tag = "2";
             this.mnuInsertDateAndTime3.Text = "Insert date and time type 3";
             this.mnuInsertDateAndTime3.Click += new System.EventHandler(this.MnuDate1_Click);
@@ -1281,10 +1291,32 @@
             // mnuInsertDateAndTime4
             // 
             this.mnuInsertDateAndTime4.Name = "mnuInsertDateAndTime4";
-            this.mnuInsertDateAndTime4.Size = new System.Drawing.Size(214, 22);
+            this.mnuInsertDateAndTime4.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D4)));
+            this.mnuInsertDateAndTime4.Size = new System.Drawing.Size(286, 22);
             this.mnuInsertDateAndTime4.Tag = "3";
             this.mnuInsertDateAndTime4.Text = "Insert date and time type 4";
             this.mnuInsertDateAndTime4.Click += new System.EventHandler(this.MnuDate1_Click);
+            // 
+            // mnuInsertDateAndTime5
+            // 
+            this.mnuInsertDateAndTime5.Name = "mnuInsertDateAndTime5";
+            this.mnuInsertDateAndTime5.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D5)));
+            this.mnuInsertDateAndTime5.Size = new System.Drawing.Size(286, 22);
+            this.mnuInsertDateAndTime5.Tag = "4";
+            this.mnuInsertDateAndTime5.Text = "Insert date and time type 5";
+            this.mnuInsertDateAndTime5.Click += new System.EventHandler(this.MnuDate1_Click);
+            // 
+            // mnuInsertDateAndTime6
+            // 
+            this.mnuInsertDateAndTime6.Name = "mnuInsertDateAndTime6";
+            this.mnuInsertDateAndTime6.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D6)));
+            this.mnuInsertDateAndTime6.Size = new System.Drawing.Size(286, 22);
+            this.mnuInsertDateAndTime6.Tag = "5";
+            this.mnuInsertDateAndTime6.Text = "Insert date and time type 6";
+            this.mnuInsertDateAndTime6.Click += new System.EventHandler(this.MnuDate1_Click);
             // 
             // mnuSearch
             // 
@@ -1547,20 +1579,18 @@
             // 
             this.pdPrint.UseEXDialog = true;
             // 
-            // mnuInsertDateAndTime5
+            // toolStripMenuItem15
             // 
-            this.mnuInsertDateAndTime5.Name = "mnuInsertDateAndTime5";
-            this.mnuInsertDateAndTime5.Size = new System.Drawing.Size(214, 22);
-            this.mnuInsertDateAndTime5.Tag = "4";
-            this.mnuInsertDateAndTime5.Text = "Insert date and time type 5";
-            this.mnuInsertDateAndTime5.Click += new System.EventHandler(this.MnuDate1_Click);
+            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(233, 6);
             // 
-            // mnuInsertDateAndTime6
+            // gotoToolStripMenuItem
             // 
-            this.mnuInsertDateAndTime6.Name = "mnuInsertDateAndTime6";
-            this.mnuInsertDateAndTime6.Size = new System.Drawing.Size(214, 22);
-            this.mnuInsertDateAndTime6.Tag = "5";
-            this.mnuInsertDateAndTime6.Text = "Insert date and time type 6";
+            this.gotoToolStripMenuItem.Name = "gotoToolStripMenuItem";
+            this.gotoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.gotoToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.gotoToolStripMenuItem.Text = "Goto...";
+            this.gotoToolStripMenuItem.Click += new System.EventHandler(this.GotoToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -1754,6 +1784,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuInsertDateAndTime4;
         private System.Windows.Forms.ToolStripMenuItem mnuInsertDateAndTime5;
         private System.Windows.Forms.ToolStripMenuItem mnuInsertDateAndTime6;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem15;
+        private System.Windows.Forms.ToolStripMenuItem gotoToolStripMenuItem;
     }
 }
 
