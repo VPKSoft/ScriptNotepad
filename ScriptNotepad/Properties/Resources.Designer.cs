@@ -341,6 +341,16 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap open_no_bom {
+            get {
+                object obj = ResourceManager.GetObject("open_no_bom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap open_unknown_encoding {
             get {
                 object obj = ResourceManager.GetObject("open_unknown_encoding", resourceCulture);

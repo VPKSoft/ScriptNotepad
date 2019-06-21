@@ -512,6 +512,7 @@
     <None Include="Resources\edit-cut-red.png" />
     <None Include="Resources\Copy.png" />
     <None Include="Resources\Paste.png" />
+    <None Include="Resources\open_no_bom.png" />
     <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />

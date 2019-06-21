@@ -52,8 +52,8 @@ namespace ScriptNotepad.UtilityClasses.ScintillaUtils
                 return;
             }
 
-            scintilla.Styles[Style.BraceLight].ForeColor = FormSettings.Settings.BraceBadHighlightForegroundColor;
-            scintilla.Styles[Style.BraceLight].BackColor = FormSettings.Settings.BraceHighlightForegroundColor;
+            scintilla.Styles[Style.BraceLight].ForeColor = FormSettings.Settings.BraceHighlightForegroundColor;
+            scintilla.Styles[Style.BraceLight].BackColor = FormSettings.Settings.BraceHighlightBackgroundColor;
             scintilla.Styles[Style.BraceBad].BackColor = FormSettings.Settings.BraceBadHighlightForegroundColor;
 
             scintilla.Styles[Style.BraceLight].Italic = FormSettings.Settings.HighlightBracesItalic;

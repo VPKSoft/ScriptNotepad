@@ -1374,6 +1374,9 @@ namespace ScriptNotepad
             }
 
             UpdateToolbarButtonsAndMenuItems();
+
+            // check if any files were changed in the file system..
+            CheckFileSysChanges();
         }
 
         /// <summary>
@@ -1543,8 +1546,10 @@ namespace ScriptNotepad
         /// <param name="encoding">The encoding to be used to open the file.</param>
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
         /// <param name="encodingOverridden">The given encoding should be used while opening the file.</param>
+        /// <param name="overrideDetectBom">if set to <c>true</c> the setting value whether to detect unicode file with no byte-order-mark (BOM) is overridden.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private void OpenDocument(string fileName, Encoding encoding, bool reloadContents, bool encodingOverridden)
+        private void OpenDocument(string fileName, Encoding encoding, bool reloadContents, bool encodingOverridden,
+            bool overrideDetectBom = false)
         {
             if (File.Exists(fileName))
             {
@@ -1554,7 +1559,8 @@ namespace ScriptNotepad
                 try
                 {
                     // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
-                    encoding = GetFileEncoding(CurrentSession, fileName, encoding, reloadContents, encodingOverridden,
+                    encoding = GetFileEncoding(CurrentSession, fileName, encoding, reloadContents, encodingOverridden, 
+                        overrideDetectBom,
                         out noBom,
                         out bigEndian, out existsInDatabase);
                 }
@@ -1744,6 +1750,10 @@ namespace ScriptNotepad
                             fileSave.FILESYS_MODIFIED = new FileInfo(fileSave.FILENAME_FULL).LastWriteTime;
                             fileSave.FILESYS_SAVED = fileSave.FILESYS_MODIFIED;
                             fileSave.DB_MODIFIED = fileSave.FILESYS_MODIFIED;
+
+                            // update document misc data, i.e. the assigned lexer to the database..
+                            DatabaseFileSave.UpdateMiscFlags(fileSave);
+
                             document.Tag = fileSave;
                         }
                         else
@@ -2670,7 +2680,14 @@ namespace ScriptNotepad
             if (odAnyFile.ShowDialog() == DialogResult.OK)
             {
                 FormSettings.Settings.FileLocationOpen = odAnyFile.InitialDirectory;
-                OpenDocument(odAnyFile.FileName, DefaultEncoding, false, false);
+                if (sender.Equals(mnuOpenNoBOM))
+                {
+                    OpenDocument(odAnyFile.FileName, DefaultEncoding, true, false, true);
+                }
+                else
+                {
+                    OpenDocument(odAnyFile.FileName, DefaultEncoding, false, false);
+                }
             }
         }
 
@@ -3108,7 +3125,7 @@ namespace ScriptNotepad
                     // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
                     fileSave.ENCODING =
                         GetFileEncoding(CurrentSession, sttcMain.CurrentDocument.FileName, fileSave.ENCODING, true,
-                            false, out var noBom, out var bigEndian, out _);
+                            false, false, out var noBom, out var bigEndian, out _);
 
                     // the user answered yes..
                     sttcMain.SuspendTextChangedEvents =

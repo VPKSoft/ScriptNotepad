@@ -105,6 +105,7 @@
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOpenWithEncoding = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOpenNoBOM = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuReloadFromDisk = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTest = new System.Windows.Forms.ToolStripMenuItem();
@@ -160,6 +161,8 @@
             this.mnuInsertDateAndTime4 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuInsertDateAndTime5 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuInsertDateAndTime6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuGoto = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -191,8 +194,6 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
-            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripSeparator();
-            this.gotoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -796,6 +797,7 @@
             this.mnuNew,
             this.mnuOpen,
             this.mnuOpenWithEncoding,
+            this.mnuOpenNoBOM,
             this.toolStripMenuItem7,
             this.mnuReloadFromDisk,
             this.mnuTest,
@@ -837,6 +839,14 @@
             this.mnuOpenWithEncoding.Size = new System.Drawing.Size(249, 22);
             this.mnuOpenWithEncoding.Text = "Open with encoding...";
             this.mnuOpenWithEncoding.Click += new System.EventHandler(this.mnuOpenWithEncoding_Click);
+            // 
+            // mnuOpenNoBOM
+            // 
+            this.mnuOpenNoBOM.Image = global::ScriptNotepad.Properties.Resources.open_no_bom;
+            this.mnuOpenNoBOM.Name = "mnuOpenNoBOM";
+            this.mnuOpenNoBOM.Size = new System.Drawing.Size(249, 22);
+            this.mnuOpenNoBOM.Text = "Open no-BOM Unicode file...";
+            this.mnuOpenNoBOM.Click += new System.EventHandler(this.mnuOpen_Click);
             // 
             // toolStripMenuItem7
             // 
@@ -952,7 +962,7 @@
             this.mnuExportAsHTML,
             this.mnuDateAndTime,
             this.toolStripMenuItem15,
-            this.gotoToolStripMenuItem});
+            this.mnuGoto});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -1318,6 +1328,19 @@
             this.mnuInsertDateAndTime6.Text = "Insert date and time type 6";
             this.mnuInsertDateAndTime6.Click += new System.EventHandler(this.MnuDate1_Click);
             // 
+            // toolStripMenuItem15
+            // 
+            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(233, 6);
+            // 
+            // mnuGoto
+            // 
+            this.mnuGoto.Name = "mnuGoto";
+            this.mnuGoto.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.mnuGoto.Size = new System.Drawing.Size(236, 22);
+            this.mnuGoto.Text = "Goto...";
+            this.mnuGoto.Click += new System.EventHandler(this.GotoToolStripMenuItem_Click);
+            // 
             // mnuSearch
             // 
             this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1579,19 +1602,6 @@
             // 
             this.pdPrint.UseEXDialog = true;
             // 
-            // toolStripMenuItem15
-            // 
-            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(233, 6);
-            // 
-            // gotoToolStripMenuItem
-            // 
-            this.gotoToolStripMenuItem.Name = "gotoToolStripMenuItem";
-            this.gotoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.gotoToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.gotoToolStripMenuItem.Text = "Goto...";
-            this.gotoToolStripMenuItem.Click += new System.EventHandler(this.GotoToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1785,7 +1795,8 @@
         private System.Windows.Forms.ToolStripMenuItem mnuInsertDateAndTime5;
         private System.Windows.Forms.ToolStripMenuItem mnuInsertDateAndTime6;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem15;
-        private System.Windows.Forms.ToolStripMenuItem gotoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuGoto;
+        private System.Windows.Forms.ToolStripMenuItem mnuOpenNoBOM;
     }
 }
 

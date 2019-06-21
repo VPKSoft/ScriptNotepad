@@ -39,6 +39,7 @@ using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
+using VPKSoft.ScintillaTabbedTextControl;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
@@ -130,6 +131,9 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
 
             // set the lexer as C#..
             ScintillaLexers.CreateLexer(scintilla, LexerType.Cs);
+
+            // highlight the braces..
+            SetBraceHighlights();
 
             // track the instances of this form so the changes can be delegated to each other..
             formScriptInstances.Add(this);
@@ -459,20 +463,6 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         public event OnScintillaRequired ScintillaRequired = null;
         #endregion
 
-        private void Scintilla_CharAdded(object sender, CharAddedEventArgs e)
-        {
-            var scintilla = (Scintilla) sender;
-
-            //The '}' char.
-            if (e.Char == '}') {
-                int curLine = scintilla.LineFromPosition(scintilla.CurrentPosition);
-		
-                if (scintilla.Lines[curLine].Text.Trim() == "}") { //Check whether the bracket is the only thing on the line.. For cases like "if() { }".
-                    SetIndent(scintilla, curLine, GetIndent(scintilla, curLine) - FormSettings.Settings.EditorTabWidth);
-                }
-            }
-        }
-
         #region "CodeIndent Handlers"
         // This (C): https://gist.github.com/Ahmad45123/f2910192987a73a52ab4
         // ReSharper disable once InconsistentNaming
@@ -487,7 +477,21 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         {
             return (scintilla.DirectMessage(SCI_GETLINEINDENTATION, new IntPtr(line), IntPtr.Zero).ToInt32());
         }
-        #endregion
+
+        private void Scintilla_CharAdded(object sender, CharAddedEventArgs e)
+        {
+            var scintilla = (Scintilla) sender;
+
+            //The '}' char.
+            if (e.Char == '}') {
+                int curLine = scintilla.LineFromPosition(scintilla.CurrentPosition);
+		
+                if (scintilla.Lines[curLine].Text.Trim() == "}") { //Check whether the bracket is the only thing on the line.. For cases like "if() { }".
+                    SetIndent(scintilla, curLine, GetIndent(scintilla, curLine) - FormSettings.Settings.EditorTabWidth);
+                }
+            }
+        }
+
 
         private void Scintilla_InsertCheck(object sender, InsertCheckEventArgs e)
         {
@@ -506,5 +510,89 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 }
             }
         }
+        #endregion
+
+        #region BraceHighLight
+        // (C): https://github.com/jacobslusser/ScintillaNET/wiki/Brace-Matching
+        private static bool IsBrace(int c)
+        {
+            switch (c)
+            {
+                case '(':
+                case ')':
+                case '[':
+                case ']':
+                case '{':
+                case '}':
+                case '<':
+                case '>':
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Sets the brace highlight colors for a <see cref="Scintilla"/> instance.
+        /// </summary>
+        private void SetBraceHighlights()
+        {
+            // not in the settings, so do return..
+            if (!FormSettings.Settings.HighlightBraces)
+            {
+                return;
+            }
+
+            scintilla.Styles[Style.BraceLight].ForeColor = FormSettings.Settings.BraceHighlightForegroundColor;
+            scintilla.Styles[Style.BraceLight].BackColor = FormSettings.Settings.BraceHighlightBackgroundColor;
+            scintilla.Styles[Style.BraceBad].BackColor = FormSettings.Settings.BraceBadHighlightForegroundColor;
+
+            scintilla.Styles[Style.BraceLight].Italic = FormSettings.Settings.HighlightBracesItalic;
+            scintilla.Styles[Style.BraceLight].Bold = FormSettings.Settings.HighlightBracesBold;
+        }
+
+        private int lastCaretPos = -1;
+
+        private void Scintilla_UpdateUI(object sender, UpdateUIEventArgs e)
+        {
+            // (C): https://github.com/jacobslusser/ScintillaNET/wiki/Brace-Matching
+            // Has the caret changed position?
+            var caretPos = scintilla.CurrentPosition;
+            if (lastCaretPos != caretPos)
+            {
+                lastCaretPos = caretPos;
+                var bracePos1 = -1;
+
+                // Is there a brace to the left or right?
+                if (caretPos > 0 && IsBrace(scintilla.GetCharAt(caretPos - 1)))
+                {
+                    bracePos1 = (caretPos - 1);
+                }
+                else if (IsBrace(scintilla.GetCharAt(caretPos)))
+                {
+                    bracePos1 = caretPos;
+                }
+
+                if (bracePos1 >= 0)
+                {
+                    // Find the matching brace
+                    var bracePos2 = scintilla.BraceMatch(bracePos1);
+                    if (bracePos2 == Scintilla.InvalidPosition)
+                    {
+                        scintilla.BraceBadLight(bracePos1);
+                    }
+                    else
+                    {
+                        scintilla.BraceHighlight(bracePos1, bracePos2);
+                    }
+                }
+                else
+                {
+                    // Turn off brace matching
+                    scintilla.BraceHighlight(Scintilla.InvalidPosition, Scintilla.InvalidPosition);
+                }
+            }
+        }
+        #endregion
     }
 }

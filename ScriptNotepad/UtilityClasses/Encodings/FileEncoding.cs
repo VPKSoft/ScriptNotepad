@@ -45,12 +45,13 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         /// <param name="encoding">The default encoding for the file.</param>
         /// <param name="reloadContents">if set to <c>true</c> the file contents should be reloaded from the file system.</param>
         /// <param name="encodingOverridden">if set to <c>true</c> the encoding should be reassigned.</param>
+        /// <param name="overrideDetectBom">if set to <c>true</c> the setting value whether to detect unicode file with no byte-order-mark (BOM) is overridden.</param>
         /// <param name="noBom">A value indicating if the encoding is reconstructed and unicode is used, should the byte-order-mark be excluded from encoding.</param>
         /// <param name="bigEndian">A value indicating whether to use big-endian or little-endian byte order with unicode encoding.</param>
         /// <param name="existsInDatabase">A value indicating whether a snapshot of the file exists in the database.</param>
         /// <returns>Encoding.</returns>
         public static Encoding GetFileEncoding(string sessionName, string fileName, Encoding encoding, bool reloadContents,
-            bool encodingOverridden, out bool noBom, out bool bigEndian, out bool existsInDatabase)
+            bool encodingOverridden, bool overrideDetectBom, out bool noBom, out bool bigEndian, out bool existsInDatabase)
         {
             // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
             existsInDatabase = DatabaseFileSave.FileExistsInDatabase(sessionName, fileName);
@@ -66,7 +67,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
             noBom = false;
             bigEndian = false;
 
-            if (FormSettings.Settings.DetectNoBom && !encodingOverridden && (!existsInDatabase || reloadContents))
+            if ((FormSettings.Settings.DetectNoBom || overrideDetectBom) && !encodingOverridden && (!existsInDatabase || reloadContents))
             {
                 string contents = TryEncodings(fileName, out var detectedEncoding, out bigEndian, out noBom);
 
