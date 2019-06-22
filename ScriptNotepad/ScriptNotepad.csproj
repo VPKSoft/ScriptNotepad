@@ -120,8 +120,8 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.6\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.6\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.7\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.5\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>

@@ -211,6 +211,11 @@ namespace ScriptNotepad.Database
 
                     var value = command.ExecuteScalar();
 
+                    if (value == null)
+                    {
+                        return default;
+                    }
+
                     return (T)value;
                 }
             }
