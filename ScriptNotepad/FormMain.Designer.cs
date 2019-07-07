@@ -191,6 +191,10 @@
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNavigation = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuNextTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuPreviousTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripSeparator();
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
@@ -1570,6 +1574,7 @@
             this.mnuPlugins,
             this.mnuWindow,
             this.mnuTab,
+            this.mnuNavigation,
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
@@ -1588,6 +1593,42 @@
             this.mnuTab.Name = "mnuTab";
             this.mnuTab.Size = new System.Drawing.Size(37, 20);
             this.mnuTab.Text = "Tab";
+            // 
+            // mnuNavigation
+            // 
+            this.mnuNavigation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuNextTab,
+            this.mnuPreviousTab,
+            this.toolStripMenuItem16});
+            this.mnuNavigation.Name = "mnuNavigation";
+            this.mnuNavigation.Size = new System.Drawing.Size(77, 20);
+            this.mnuNavigation.Text = "Navigation";
+            this.mnuNavigation.DropDownOpening += new System.EventHandler(this.MnuNavigation_DropDownOpening);
+            // 
+            // mnuNextTab
+            // 
+            this.mnuNextTab.Image = global::ScriptNotepad.Properties.Resources.Play;
+            this.mnuNextTab.Name = "mnuNextTab";
+            this.mnuNextTab.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.mnuNextTab.Size = new System.Drawing.Size(211, 22);
+            this.mnuNextTab.Text = "Next tab";
+            this.mnuNextTab.Click += new System.EventHandler(this.MnuNextPrevious_Click);
+            // 
+            // mnuPreviousTab
+            // 
+            this.mnuPreviousTab.Image = global::ScriptNotepad.Properties.Resources.Playback;
+            this.mnuPreviousTab.Name = "mnuPreviousTab";
+            this.mnuPreviousTab.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.T)));
+            this.mnuPreviousTab.Size = new System.Drawing.Size(211, 22);
+            this.mnuPreviousTab.Text = "Previous tab";
+            this.mnuPreviousTab.Click += new System.EventHandler(this.MnuNextPrevious_Click);
+            // 
+            // toolStripMenuItem16
+            // 
+            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(208, 6);
+            this.toolStripMenuItem16.Visible = false;
             // 
             // tmAutoSave
             // 
@@ -1797,6 +1838,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem15;
         private System.Windows.Forms.ToolStripMenuItem mnuGoto;
         private System.Windows.Forms.ToolStripMenuItem mnuOpenNoBOM;
+        private System.Windows.Forms.ToolStripMenuItem mnuNavigation;
+        private System.Windows.Forms.ToolStripMenuItem mnuNextTab;
+        private System.Windows.Forms.ToolStripMenuItem mnuPreviousTab;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem16;
     }
 }
 

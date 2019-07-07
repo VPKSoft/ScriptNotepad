@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="open_no_bom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\open_no_bom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Paste.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -193,8 +196,8 @@
   <data name="swap_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\swap_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="plugin_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plugin-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="session_properties" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\session-properties.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="discard_changes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\discard_changes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -265,6 +268,9 @@
   <data name="zoom_in" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\zoom_in.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="plugin_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plugin-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="file_patterns_abaqus" xml:space="preserve">
     <value>.inp .dat .msg</value>
   </data>
@@ -304,9 +310,6 @@
   <data name="sort_alphabet" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sort_alphabet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="session_properties" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\session-properties.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="style" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\style.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -316,7 +319,7 @@
   <data name="new_document" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\New document.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="open_no_bom" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\open_no_bom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Playback" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Playback.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

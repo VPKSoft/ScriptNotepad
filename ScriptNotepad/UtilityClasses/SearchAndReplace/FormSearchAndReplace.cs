@@ -796,6 +796,51 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
         }
 
+        /// <summary>
+        /// Updates the search contents in case the user has manipulated the active document contents.
+        /// </summary>
+        /// <param name="newContents">The new contents.</param>
+        /// <param name="fileName">Name of the file in the active tab.</param>
+        internal void UpdateSearchContents(string newContents, string fileName)
+        {
+            // the search form must be visible..
+            if (Visible)
+            {
+                // only create the algorithm if the the passed scintilla actually contains a ScintillaNET control..
+                if (newContents != null)
+                {
+                    // get the default controls for the search algorithm..
+                    string  cmbFindString = null;
+
+                    // get the controls matching the active tab..
+                    if (tcMain.SelectedTab.Equals(tabFind))
+                    {
+                        cmbFindString = cmbFind.Text;
+                    }
+                    if (tcMain.SelectedTab.Equals(tabReplace))
+                    {
+                        cmbFindString = cmbFind2.Text;
+                    }
+
+                    // validate that there is a search algorithm and it's for the current document..
+                    if (SearchReplaceDocuments != null && SearchReplaceDocuments.FileName == fileName &&
+                        SearchReplaceDocuments.OriginalSearchString == cmbFindString)
+                    {
+                        // save the previous search position..
+                        var previousPos = SearchReplaceDocuments.SearchStart; 
+
+                        // set the new contents..
+                        SearchReplaceDocuments.SearchText = newContents;
+
+                        // set the search position back to the search algorithm if the value is still valid..
+                        if (previousPos < newContents.Length)
+                        {
+                            SearchReplaceDocuments.SearchStart = previousPos;
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Creates the single search and/or replace algorithm for a given contents and file name.
@@ -871,8 +916,14 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// Creates the single search and/or replace algorithm for a given <see cref="Scintilla"/> document.
         /// </summary>
         /// <param name="scintilla">The scintilla and its file name to create the search algorithm from.</param>
-        private void CreateSingleSearchReplaceAlgorithm((Scintilla scintilla, string fileName) scintilla)
+        internal void CreateSingleSearchReplaceAlgorithm((Scintilla scintilla, string fileName) scintilla)
         {
+            // no need for an exception..
+            if (!IsHandleCreated)
+            {
+                return;
+            }
+
             Invoke(new MethodInvoker(delegate
             {
                 // get a value if only the selection is required to be used as text for the algorithm..
@@ -1458,6 +1509,11 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             btFindAllInFiles.Enabled = ValidSearchAndReplace(false);
             btReplaceAllInFiles.Enabled = ValidSearchAndReplace(true);
 
+            // indicate an invalid filter..
+            cmbFilters3.BackColor = DirectoryCrawler.ValidateExtensionRegexp(cmbFilters3.Text)
+                ? SystemColors.Window
+                : Color.Red;
+
             btMarkAll.Enabled = ValidSearchAndReplace(false);
         }
 
@@ -1492,7 +1548,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         // get the previous tab index
-        private int previousTabIndex = 0;
+        private int previousTabIndex;
 
         /// <summary>
         /// Gets the previous search text used on the different tab compared to the current one.

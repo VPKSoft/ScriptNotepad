@@ -116,13 +116,68 @@ namespace ScriptNotepad.UtilityClasses.IO
                     extensions[i].
                         Replace("*.", "").
                         Replace(".", "");
-            }
-                        
 
+                // the '*' character requires special handling; otherwise an exception would occur..
+                if (extensions[i] == "*")
+                {
+                    extensions[i] = "." + extensions[i];
+                }
+            }
+            
             // create a compiled regular expression of the given parameters
             // and return it.. hint: '\.(cs|txt|xml)$'
-            return new Regex(@"\.(" + string.Join("|", extensions) + ")$",
-                RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            try
+            {
+                return new Regex(@"\.(" + string.Join("|", extensions) + ")$",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+
+                // return a regexp matching all file endings..
+                return new Regex(@"\\.*", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            }
+        }
+
+        /// <summary>
+        /// Checks if a compiled regular expression from a given list of file extensions is valid.
+        /// </summary>
+        /// <param name="extensions">The file extensions to be used with the check.</param>
+        /// <returns>True if the created regular expression is valid; otherwise false.</returns>
+        public static bool ValidateExtensionRegexp(params string[] extensions)
+        {
+            // remove the useless '*.' and '.' character combinations from the given parameters..
+            for (int i = 0; i < extensions.Length; i++)
+            {
+                extensions[i] = 
+                    extensions[i].
+                        Replace("*.", "").
+                        Replace(".", "");
+
+                // the '*' character requires special handling; otherwise an exception would occur..
+                if (extensions[i] == "*")
+                {
+                    extensions[i] = "." + extensions[i];
+                }
+            }
+            
+            // create a compiled regular expression of the given parameters
+            // and return it.. hint: '\.(cs|txt|xml)$'
+            try
+            {
+                // ReSharper disable once ObjectCreationAsStatement
+                new Regex(@"\.(" + string.Join("|", extensions) + ")$",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+                return false;
+            }
         }
 
         /// <summary>
@@ -176,10 +231,8 @@ namespace ScriptNotepad.UtilityClasses.IO
             {
                 return GetDirectories(Path, Recursion);
             }
-            else
-            {
-                return GetFiles(Path, Recursion);
-            }
+
+            return GetFiles(Path, Recursion);
         }
 
         /// <summary>

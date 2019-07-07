@@ -105,9 +105,6 @@
     <Reference Include="VPKSof.ConfLib, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSof.ConfLib.1.0.0.7\lib\net461\VPKSof.ConfLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.About, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.About.1.0.0.5\lib\net45\VPKSoft.About.dll</HintPath>
-    </Reference>
     <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.5\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
     </Reference>
@@ -123,17 +120,17 @@
     <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.7\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.5\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.4.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.4.6\lib\net45\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.SearchText, Version=1.0.1.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.SearchText.1.0.1.5\lib\net47\VPKSoft.SearchText.dll</HintPath>
+    <Reference Include="VPKSoft.SearchText, Version=1.0.1.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.SearchText.1.0.1.6\lib\net47\VPKSoft.SearchText.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.3.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.7\lib\net45\VPKSoft.Utils.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.VersionCheck, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.VersionCheck.1.0.0.1\lib\net45\VPKSoft.VersionCheck.dll</HintPath>
+    <Reference Include="VPKSoft.VersionCheck, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.VersionCheck.1.0.0.5\lib\net45\VPKSoft.VersionCheck.dll</HintPath>
     </Reference>
     <Reference Include="WeCantSpell.Hunspell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WeCantSpell.Hunspell.3.0.1\lib\net45\WeCantSpell.Hunspell.dll</HintPath>
@@ -478,6 +475,7 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Playback.png" />
     <None Include="Resources\textfield-rename.png" />
     <None Include="Resources\session-properties.png" />
     <None Include="Resources\education-languages.png" />
@@ -513,7 +511,6 @@
     <None Include="Resources\Copy.png" />
     <None Include="Resources\Paste.png" />
     <None Include="Resources\open_no_bom.png" />
-    <Content Include="VPKSoft.ico" />
     <None Include="Resources\plugin-go.png" />
     <None Include="Resources\Delete.png" />
     <None Include="Resources\up_down.png" />
@@ -560,10 +557,10 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.5.0.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.5.0.6\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props'))" />
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.5.1.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.5.1.1\build\Fody.targets'))" />
   </Target>
-  <Import Project="..\packages\Fody.5.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.6\build\Fody.targets')" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\packages\Fody.5.1.1\build\Fody.targets" Condition="Exists('..\packages\Fody.5.1.1\build\Fody.targets')" />
 </Project>

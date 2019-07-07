@@ -6,7 +6,7 @@
 * Done? [YES  ] [2019/05/13] Add a helper function to extract colors from mark-up (i.e. #AB0FFE) to (A)RGB.
 * Done? [YES  ] [2019/05/13] Add the Notepad++ style definition files to the installer.
 * Done? [YES  ] [2019/05/16] Fix weird bug for the main form not accepting all the AltGr+(character) combinations.
-* Done? [SOME ] [2019/05/13] Add LibreOffice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
+* Done? [SOME ] [2019/05/13] Add Lfice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
 * Done? [SOME ] [2019/05/22] Save document's settings to the database.
 * Done? [DON'T] [2019/05/03] Save document's marked positions to the database.
 * Done? [N/A  ] [2019/05/14] Make the directory crawler to end the thread safe (DirectoryCrawler.Canceled)...
@@ -48,7 +48,16 @@
 * Done? [YES  ] [2019/06/08] Made the F3/Shift+F3 to work with the search.
 * Done? [YES  ] [2019/06/12] Add a possibility to copy or export styled text (lexer) into a HTML document.
 * Done? [YES  ] [2019/06/12] Bracket matching for the Scintilla? Added brace highlight possibility for the Scintilla controls.
-* Done? [DON'T] [2019/06/13] Suspend layout on changing the session.
-* Done? [N/A  ] [2019/06/13] Save As --> Detect the lexer.
-* Done? [DON'T] [2019/06/15] Set the thread locale for the ScintillaNetPrinting. --> Thread locale to the whole software.
-* Done? [N/A  ] [2019/06/15] Add insert time and/or date via context menu.
+* Done? [DON'T] [2019/06/13] Suspend layout on changing the session; NO SPEED AFFECT.
+* Done? [YES  ] [2019/06/13] Save As --> Detect the lexer.
+* Done? [KINDA] [2019/06/15] Set the thread locale for the ScintillaNetPrinting. --> Thread locale to the whole software.
+* Done? [YES  ] [2019/06/15] Add insert time and/or date via context menu.
+* Done? [YES  ] [2019/07/02] Fix the search algorithm to work after editing a file (offset).
+* Done? [YES  ] [2019/07/02] Add a shortcut key to toggle between tabs.
+* Done? [N/A  ] [2019/07/02] Add a shortcut key to toggle between sessions.
+* Done? [N/A  ] [2019/07/03] Add possibility to move a tab into a different session.
+* Done? [N/A  ] [2019/07/03] Add string start / end matching.
+* Done? [YES  ] [2019/07/07] FIX: Find in files with *.* crashes the software.
+* Done? [YES  ] [2019/07/07] Activate the software on shell context menu open file request.
+* Done? [N/A  ] [2019/07/07] Add hyphen matching.
+* Done? [SOME ] [2019/07/07] Add version check. Missing the automatic version.

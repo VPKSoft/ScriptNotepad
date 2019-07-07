@@ -65,6 +65,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -273,7 +274,7 @@ namespace ScriptNotepad
             FormSettings.CreateDefaultPluginDirectory();
 
             // localize the about "box"..
-            VPKSoft.About.FormAbout.OverrideCultureString = FormSettings.Settings.Culture.Name;
+            VPKSoft.VersionCheck.FormAbout.OverrideCultureString = FormSettings.Settings.Culture.Name;
 
             // initialize the plug-in assemblies..
             InitializePlugins();
@@ -2371,69 +2372,6 @@ namespace ScriptNotepad
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void FormMain_KeyDown(object sender, KeyEventArgs e)
-        {
-            // a user wishes to navigate within the FormSearchResultTree..
-            if (e.OnlyAlt() && e.KeyCodeIn(Keys.Left, Keys.Right, Keys.X))
-            {
-                // validate that there is an instance of the FormSearchResultTree which is visible..
-                if (FormSearchResultTree.PreviousInstance != null && FormSearchResultTree.PreviousInstance.Visible)
-                {
-                    // Alt+Left navigates to the previous tree node within the form..
-                    if (e.KeyCode == Keys.Left) 
-                    {
-                        FormSearchResultTree.PreviousInstance.PreviousOccurrence();
-                    }
-                    // Alt+Right navigates to the next tree node within the form..
-                    else if (e.KeyCode == Keys.Right)
-                    {
-                        FormSearchResultTree.PreviousInstance.NextOccurrence();
-                    }
-                    // Alt+X closes the FormSearchResultTree instance..
-                    else
-                    {
-                        FormSearchResultTree.PreviousInstance.CloseTree();
-                    }
-
-                    // this is handled..
-                    e.Handled = true;
-                }
-                return;
-            }
-
-            // a user pressed the insert key a of a keyboard, which indicates toggling for
-            // insert / override mode for the Scintilla control..
-            if (e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
-            {
-                // only if a document exists..
-                if (sttcMain.CurrentDocument != null)
-                {
-                    // ..set the insert / override text for the status strip..
-                    StatusStripTexts.SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
-                }
-                return;
-            }
-
-            if (e.KeyCode == Keys.F3)
-            {
-                if (e.OnlyShift() || e.NoModifierKeysDown())
-                {
-                    // find the next result if available..
-                    FormSearchAndReplace.Instance.Advance(!e.OnlyShift());
-
-                    // this is handled..
-                    e.Handled = true;
-                    return;
-                }
-            }
-
-            if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
-            {
-                // set the flag to suspend the selection update to avoid excess CPU load..
-                suspendSelectionUpdate = true;
-            }
-        }
-
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
@@ -2493,7 +2431,14 @@ namespace ScriptNotepad
         // via the IPC (no multiple instance allowed)..
         private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            Invoke(new MethodInvoker(delegate { OpenDocument(e.Message, DefaultEncoding, false, false); }));
+            Invoke(new MethodInvoker(delegate
+            {
+                OpenDocument(e.Message, DefaultEncoding, false, false);
+                // the user probably will like the program to show up, if the software activates
+                // it self from a windows shell call to open a file..
+                BringToFront();
+                Activate();
+            }));
         }
 
         // a user wanted to create a new file..
@@ -2807,6 +2752,13 @@ namespace ScriptNotepad
             // check the programming language menu item with the current lexer..
             ProgrammingLanguageHelper.CheckLanguage(e.ScintillaTabbedDocument.LexerType);
 
+            // the search must be re-set..
+            CurrentDocumentAction(document =>
+            {
+                FormSearchAndReplace.Instance.CreateSingleSearchReplaceAlgorithm(
+                    (document.Scintilla, document.FileName));
+            });
+            
             UpdateToolbarButtonsAndMenuItems();
         }
 
@@ -2821,7 +2773,9 @@ namespace ScriptNotepad
         private void mnuAbout_Click(object sender, EventArgs e)
         {
             // ReSharper disable once ObjectCreationAsStatement
-            new VPKSoft.About.FormAbout(this, "MIT", "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE");
+            new VPKSoft.VersionCheck.FormAbout(this, "MIT",
+                "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE",
+                "https://www.vpksoft.net/versions/version.php");
         }
 
         // this is the event listener for the ScintillaTabbedDocument's selection and caret position change events..
@@ -2871,6 +2825,10 @@ namespace ScriptNotepad
                 fileSave.PreviousEncodings.Clear();
                 TextChangedViaEncodingChange = false;
             }
+
+            // update the search if the user manually modified the contents of the document..
+            FormSearchAndReplace.Instance.UpdateSearchContents(e.ScintillaTabbedDocument.Scintilla.Text,
+                e.ScintillaTabbedDocument.FileName);
 
             UpdateToolbarButtonsAndMenuItems();
         }
