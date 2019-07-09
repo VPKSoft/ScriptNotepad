@@ -545,6 +545,12 @@ namespace ScriptNotepad.Settings
         public bool DefaultSessionLocalized { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the software should check for updates upon startup.
+        /// </summary>
+        [Setting("misc/updateAutoCheck", typeof(bool))]
+        public bool UpdateAutoCheck { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether to use auto-save with a specified <see cref="ProgramAutoSaveInterval"/>.
         /// </summary>
         [Setting("program/autoSave", typeof(bool))]

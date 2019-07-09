@@ -65,7 +65,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -76,6 +75,7 @@ using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
 using VPKSoft.ScintillaTabbedTextControl;
+using VPKSoft.VersionCheck;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
@@ -274,7 +274,7 @@ namespace ScriptNotepad
             FormSettings.CreateDefaultPluginDirectory();
 
             // localize the about "box"..
-            VPKSoft.VersionCheck.FormAbout.OverrideCultureString = FormSettings.Settings.Culture.Name;
+            FormAbout.OverrideCultureString = FormSettings.Settings.Culture.Name;
 
             // initialize the plug-in assemblies..
             InitializePlugins();
@@ -317,7 +317,33 @@ namespace ScriptNotepad
         }
         #endregion
 
-        #region HelperMethods        
+        #region HelperMethods                
+        /// <summary>
+        /// Checks for new version of the application.
+        /// </summary>
+        private void CheckForNewVersion()
+        {
+            // no going to the internet if the user doesn't allow it..
+            if (FormSettings.Settings.UpdateAutoCheck)
+            {
+                VersionCheck.CheckUri = "https://www.vpksoft.net/versions/version.php";
+                var assembly = Assembly.GetEntryAssembly();
+                var version = VersionCheck.GetVersion(assembly);
+                if (version.IsLargerVersion(assembly))
+                {
+                    if (MessageBox.Show(DBLangEngine.GetMessage("msgQueryDownloadNewVersion",
+                                "A new version is available to download. Download now?|A message describing that a new version of the software is available to download and the user is asked whether to download it now."),
+                            DBLangEngine.GetMessage("msgQueryNewVersionTitle",
+                                "New version is available|A dialog title informing a user of a new version download possibility"),
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) ==
+                        DialogResult.Yes)
+                    {
+                        VersionCheck.DownloadFile(version.DownloadLink, Path.GetTempPath());
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Sets the state of the spell checker.
         /// </summary>
@@ -2603,6 +2629,9 @@ namespace ScriptNotepad
             // ..so open the files given as arguments for the program..
             OpenArgumentFiles();
 
+            // check for a new version from the internet..
+            CheckForNewVersion();
+
             FormFirstShown = true;
         }
 
@@ -2773,7 +2802,7 @@ namespace ScriptNotepad
         private void mnuAbout_Click(object sender, EventArgs e)
         {
             // ReSharper disable once ObjectCreationAsStatement
-            new VPKSoft.VersionCheck.FormAbout(this, "MIT",
+            new FormAbout(this, "MIT",
                 "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE",
                 "https://www.vpksoft.net/versions/version.php");
         }

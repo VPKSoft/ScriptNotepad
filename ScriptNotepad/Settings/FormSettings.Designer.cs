@@ -52,6 +52,7 @@
             this.nudHistoryDocuments = new System.Windows.Forms.NumericUpDown();
             this.lbHistoryDocuments = new System.Windows.Forms.Label();
             this.tpgAdditionalSettings = new System.Windows.Forms.TabPage();
+            this.cbUpdateAutoCheck = new System.Windows.Forms.CheckBox();
             this.tbNoteAutoSave = new System.Windows.Forms.TextBox();
             this.nudAutoSaveInterval = new System.Windows.Forms.NumericUpDown();
             this.cbUseAutoSave = new System.Windows.Forms.CheckBox();
@@ -141,6 +142,8 @@
             this.lbHunspellDictionary = new System.Windows.Forms.Label();
             this.cbSpellCheckInUse = new System.Windows.Forms.CheckBox();
             this.tabDateAndTime = new System.Windows.Forms.TabPage();
+            this.btDateTimeDefaults = new System.Windows.Forms.Button();
+            this.lbDateTimeInstructionLink = new System.Windows.Forms.Label();
             this.cbDateTimeUseInvarianCulture = new System.Windows.Forms.CheckBox();
             this.lbDateTimeFormatDescriptionValue = new System.Windows.Forms.Label();
             this.lbDateTimeFormatDescription = new System.Windows.Forms.Label();
@@ -166,8 +169,6 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.lbDateTimeInstructionLink = new System.Windows.Forms.Label();
-            this.btDateTimeDefaults = new System.Windows.Forms.Button();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -501,6 +502,7 @@
             // 
             // tpgAdditionalSettings
             // 
+            this.tpgAdditionalSettings.Controls.Add(this.cbUpdateAutoCheck);
             this.tpgAdditionalSettings.Controls.Add(this.tbNoteAutoSave);
             this.tpgAdditionalSettings.Controls.Add(this.nudAutoSaveInterval);
             this.tpgAdditionalSettings.Controls.Add(this.cbUseAutoSave);
@@ -511,6 +513,16 @@
             this.tpgAdditionalSettings.TabIndex = 5;
             this.tpgAdditionalSettings.Text = "Additional";
             this.tpgAdditionalSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbUpdateAutoCheck
+            // 
+            this.cbUpdateAutoCheck.AutoSize = true;
+            this.cbUpdateAutoCheck.Location = new System.Drawing.Point(6, 59);
+            this.cbUpdateAutoCheck.Name = "cbUpdateAutoCheck";
+            this.cbUpdateAutoCheck.Size = new System.Drawing.Size(204, 17);
+            this.cbUpdateAutoCheck.TabIndex = 4;
+            this.cbUpdateAutoCheck.Text = "Check for updates upon program start";
+            this.cbUpdateAutoCheck.UseVisualStyleBackColor = true;
             // 
             // tbNoteAutoSave
             // 
@@ -1559,6 +1571,32 @@
             this.tabDateAndTime.Text = "Date and time";
             this.tabDateAndTime.UseVisualStyleBackColor = true;
             // 
+            // btDateTimeDefaults
+            // 
+            this.btDateTimeDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btDateTimeDefaults.Location = new System.Drawing.Point(6, 342);
+            this.btDateTimeDefaults.Name = "btDateTimeDefaults";
+            this.btDateTimeDefaults.Size = new System.Drawing.Size(134, 23);
+            this.btDateTimeDefaults.TabIndex = 5;
+            this.btDateTimeDefaults.Text = "Defaults";
+            this.btDateTimeDefaults.UseVisualStyleBackColor = true;
+            this.btDateTimeDefaults.Click += new System.EventHandler(this.BtDateTimeDefaults_Click);
+            // 
+            // lbDateTimeInstructionLink
+            // 
+            this.lbDateTimeInstructionLink.AutoSize = true;
+            this.lbDateTimeInstructionLink.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbDateTimeInstructionLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbDateTimeInstructionLink.ForeColor = System.Drawing.Color.Navy;
+            this.lbDateTimeInstructionLink.Location = new System.Drawing.Point(6, 270);
+            this.lbDateTimeInstructionLink.Name = "lbDateTimeInstructionLink";
+            this.lbDateTimeInstructionLink.Size = new System.Drawing.Size(357, 13);
+            this.lbDateTimeInstructionLink.TabIndex = 4;
+            this.lbDateTimeInstructionLink.Tag = "https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-" +
+    "format-strings";
+            this.lbDateTimeInstructionLink.Text = "A link to a Microsoft web site describing the date and time format specifiers";
+            this.lbDateTimeInstructionLink.Click += new System.EventHandler(this.LbDateTimeInstructionLink_Click);
+            // 
             // cbDateTimeUseInvarianCulture
             // 
             this.cbDateTimeUseInvarianCulture.AutoSize = true;
@@ -1795,32 +1833,6 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
-            // lbDateTimeInstructionLink
-            // 
-            this.lbDateTimeInstructionLink.AutoSize = true;
-            this.lbDateTimeInstructionLink.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbDateTimeInstructionLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbDateTimeInstructionLink.ForeColor = System.Drawing.Color.Navy;
-            this.lbDateTimeInstructionLink.Location = new System.Drawing.Point(6, 270);
-            this.lbDateTimeInstructionLink.Name = "lbDateTimeInstructionLink";
-            this.lbDateTimeInstructionLink.Size = new System.Drawing.Size(357, 13);
-            this.lbDateTimeInstructionLink.TabIndex = 4;
-            this.lbDateTimeInstructionLink.Tag = "https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-" +
-    "format-strings";
-            this.lbDateTimeInstructionLink.Text = "A link to a Microsoft web site describing the date and time format specifiers";
-            this.lbDateTimeInstructionLink.Click += new System.EventHandler(this.LbDateTimeInstructionLink_Click);
-            // 
-            // btDateTimeDefaults
-            // 
-            this.btDateTimeDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btDateTimeDefaults.Location = new System.Drawing.Point(6, 342);
-            this.btDateTimeDefaults.Name = "btDateTimeDefaults";
-            this.btDateTimeDefaults.Size = new System.Drawing.Size(134, 23);
-            this.btDateTimeDefaults.TabIndex = 5;
-            this.btDateTimeDefaults.Text = "Defaults";
-            this.btDateTimeDefaults.UseVisualStyleBackColor = true;
-            this.btDateTimeDefaults.Click += new System.EventHandler(this.BtDateTimeDefaults_Click);
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -2031,5 +2043,6 @@
         private System.Windows.Forms.TextBox tbDateTimeFormat2;
         private System.Windows.Forms.Label lbDateTimeInstructionLink;
         private System.Windows.Forms.Button btDateTimeDefaults;
+        private System.Windows.Forms.CheckBox cbUpdateAutoCheck;
     }
 }

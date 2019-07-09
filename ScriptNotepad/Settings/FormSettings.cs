@@ -290,6 +290,9 @@ namespace ScriptNotepad.Settings
             // get the tread locale value..
             cbSetThreadLocale.Checked = Settings.LocalizeThread;
 
+            // get the value whether to check for a new application version upon startup..
+            cbUpdateAutoCheck.Checked = Settings.UpdateAutoCheck;
+
             #region DateTime
             // get the date and time formats..
             tbDateTimeFormat1.Text = Settings.DateFormat1;
@@ -445,6 +448,9 @@ namespace ScriptNotepad.Settings
 
             // set the tread locale value..
             Settings.LocalizeThread = cbSetThreadLocale.Checked;
+
+            // set the value whether to check for a new application version upon startup..
+            Settings.UpdateAutoCheck = cbUpdateAutoCheck.Checked;
 
             #region DateTime
             // set the date and time formats..

@@ -60,4 +60,5 @@
 * Done? [YES  ] [2019/07/07] FIX: Find in files with *.* crashes the software.
 * Done? [YES  ] [2019/07/07] Activate the software on shell context menu open file request.
 * Done? [N/A  ] [2019/07/07] Add hyphen matching.
-* Done? [SOME ] [2019/07/07] Add version check. Missing the automatic version.
+* Done? [YES  ] [2019/07/09] Add version check. Missing the automatic version.
+* Done? [N/A  ] [2019/07/09] Make the encoding detection more versatile.
