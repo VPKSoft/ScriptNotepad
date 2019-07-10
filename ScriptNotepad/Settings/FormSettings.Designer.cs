@@ -169,6 +169,11 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
+            this.cbNoUnicodeLE = new System.Windows.Forms.CheckBox();
+            this.cbNoUTF32LE = new System.Windows.Forms.CheckBox();
+            this.cbNoUnicodeBE = new System.Windows.Forms.CheckBox();
+            this.cbNoUTF32BE = new System.Windows.Forms.CheckBox();
+            this.gpSkipEncodings = new System.Windows.Forms.GroupBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -199,6 +204,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
             this.tabDateAndTime.SuspendLayout();
             this.gbDate.SuspendLayout();
+            this.gpSkipEncodings.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -576,6 +582,7 @@
             // 
             // tabEncoding
             // 
+            this.tabEncoding.Controls.Add(this.gpSkipEncodings);
             this.tabEncoding.Controls.Add(this.cbDetectNoBomUnicode);
             this.tabEncoding.Controls.Add(this.cbEncodingAutoDetect);
             this.tabEncoding.Controls.Add(this.gpDefaultEncoding);
@@ -596,6 +603,7 @@
             this.cbDetectNoBomUnicode.TabIndex = 44;
             this.cbDetectNoBomUnicode.Text = "Try to detect unicode files without a BOM (Byte Order Mark)";
             this.cbDetectNoBomUnicode.UseVisualStyleBackColor = true;
+            this.cbDetectNoBomUnicode.CheckedChanged += new System.EventHandler(this.CbDetectNoBomUnicode_CheckedChanged);
             // 
             // cbEncodingAutoDetect
             // 
@@ -1833,6 +1841,58 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
+            // cbNoUnicodeLE
+            // 
+            this.cbNoUnicodeLE.AutoSize = true;
+            this.cbNoUnicodeLE.Location = new System.Drawing.Point(6, 19);
+            this.cbNoUnicodeLE.Name = "cbNoUnicodeLE";
+            this.cbNoUnicodeLE.Size = new System.Drawing.Size(105, 17);
+            this.cbNoUnicodeLE.TabIndex = 45;
+            this.cbNoUnicodeLE.Text = "No Unicode (LE)";
+            this.cbNoUnicodeLE.UseVisualStyleBackColor = true;
+            // 
+            // cbNoUTF32LE
+            // 
+            this.cbNoUTF32LE.AutoSize = true;
+            this.cbNoUTF32LE.Location = new System.Drawing.Point(6, 42);
+            this.cbNoUTF32LE.Name = "cbNoUTF32LE";
+            this.cbNoUTF32LE.Size = new System.Drawing.Size(98, 17);
+            this.cbNoUTF32LE.TabIndex = 46;
+            this.cbNoUTF32LE.Text = "No UTF32 (LE)";
+            this.cbNoUTF32LE.UseVisualStyleBackColor = true;
+            // 
+            // cbNoUnicodeBE
+            // 
+            this.cbNoUnicodeBE.AutoSize = true;
+            this.cbNoUnicodeBE.Location = new System.Drawing.Point(213, 19);
+            this.cbNoUnicodeBE.Name = "cbNoUnicodeBE";
+            this.cbNoUnicodeBE.Size = new System.Drawing.Size(106, 17);
+            this.cbNoUnicodeBE.TabIndex = 47;
+            this.cbNoUnicodeBE.Text = "No Unicode (BE)";
+            this.cbNoUnicodeBE.UseVisualStyleBackColor = true;
+            // 
+            // cbNoUTF32BE
+            // 
+            this.cbNoUTF32BE.AutoSize = true;
+            this.cbNoUTF32BE.Location = new System.Drawing.Point(213, 42);
+            this.cbNoUTF32BE.Name = "cbNoUTF32BE";
+            this.cbNoUTF32BE.Size = new System.Drawing.Size(99, 17);
+            this.cbNoUTF32BE.TabIndex = 48;
+            this.cbNoUTF32BE.Text = "No UTF32 (BE)";
+            this.cbNoUTF32BE.UseVisualStyleBackColor = true;
+            // 
+            // gpSkipEncodings
+            // 
+            this.gpSkipEncodings.Controls.Add(this.cbNoUnicodeLE);
+            this.gpSkipEncodings.Controls.Add(this.cbNoUTF32BE);
+            this.gpSkipEncodings.Controls.Add(this.cbNoUTF32LE);
+            this.gpSkipEncodings.Controls.Add(this.cbNoUnicodeBE);
+            this.gpSkipEncodings.Location = new System.Drawing.Point(15, 144);
+            this.gpSkipEncodings.Name = "gpSkipEncodings";
+            this.gpSkipEncodings.Size = new System.Drawing.Size(400, 76);
+            this.gpSkipEncodings.TabIndex = 49;
+            this.gpSkipEncodings.TabStop = false;
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -1898,6 +1958,8 @@
             this.tabDateAndTime.PerformLayout();
             this.gbDate.ResumeLayout(false);
             this.gbDate.PerformLayout();
+            this.gpSkipEncodings.ResumeLayout(false);
+            this.gpSkipEncodings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2044,5 +2106,10 @@
         private System.Windows.Forms.Label lbDateTimeInstructionLink;
         private System.Windows.Forms.Button btDateTimeDefaults;
         private System.Windows.Forms.CheckBox cbUpdateAutoCheck;
+        private System.Windows.Forms.GroupBox gpSkipEncodings;
+        private System.Windows.Forms.CheckBox cbNoUnicodeLE;
+        private System.Windows.Forms.CheckBox cbNoUTF32BE;
+        private System.Windows.Forms.CheckBox cbNoUTF32LE;
+        private System.Windows.Forms.CheckBox cbNoUnicodeBE;
     }
 }

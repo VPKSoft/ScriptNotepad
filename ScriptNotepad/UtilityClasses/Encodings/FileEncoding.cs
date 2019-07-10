@@ -82,6 +82,11 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                 encoding = DatabaseFileSave.GetEncodingFromDatabase(sessionName, fileName);
             }
 
+            if (encoding == null)
+            {
+                encoding = FormSettings.Settings.DefaultEncoding;
+            }
+
             return encoding;
         }
     }

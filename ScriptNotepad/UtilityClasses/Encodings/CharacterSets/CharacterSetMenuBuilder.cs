@@ -54,10 +54,10 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
             foreach (var item in charSets)
             {
                 // create a "dummy" menu to contain the actual encodings for the character set..
-                ToolStripMenuItem menuItem = new ToolStripMenuItem(encodingCharacterSet.GetCharacterSetName(item));
+                ToolStripMenuItem menuItem =
+                    new ToolStripMenuItem(encodingCharacterSet.GetCharacterSetName(item)) {Tag = item};
 
                 // set the tag to contain the character set enumeration value..
-                menuItem.Tag = item;
 
                 // get the encodings for the character set..
                 var encodings = encodingCharacterSet[item];
@@ -66,13 +66,14 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
                 foreach (var encoding in encodings)
                 {
                     // create a menu item for the encoding..
-                    DataToolStripMenuItem menuItemEncoding = new DataToolStripMenuItem(encoding.EncodingName);
+                    DataToolStripMenuItem menuItemEncoding = new DataToolStripMenuItem(encoding.EncodingName)
+                    {
+                        Tag = encoding, Data = data
+                    };
 
                     // set the Tag property to contain the encoding..
-                    menuItemEncoding.Tag = encoding;
 
                     // set the user given additional data for the menu item..
-                    menuItemEncoding.Data = data;
 
                     // subscribe the click event..
                     menuItemEncoding.Click += MenuItemEncoding_Click;
@@ -102,10 +103,10 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
                 }
 
                 // cast the object as ToolStripMenuItem..
-                var charserMenuItem = (ToolStripMenuItem)item;
+                var charsetMenuItem = (ToolStripMenuItem)item;
 
                 // loop through the character set menu item's drop down items..
-                foreach (var encodingItem in charserMenuItem.DropDownItems)
+                foreach (var encodingItem in charsetMenuItem.DropDownItems)
                 {
                     // only accept types of DataToolStripMenuItem..
                     if (encodingItem.GetType() != typeof(DataToolStripMenuItem))
@@ -124,10 +125,10 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
                 }
 
                 // clear the drop down menu item..
-                charserMenuItem.DropDownItems.Clear();
+                charsetMenuItem.DropDownItems.Clear();
 
                 // add the menu item to the list of ToolStripMenuItems to disposed of..
-                disposeList.Add(charserMenuItem);
+                disposeList.Add(charsetMenuItem);
             }
 
             // clear the drop down items from the parent menu item..
@@ -172,7 +173,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         /// <summary>
         /// Occurs when an encoding menu item was clicked.
         /// </summary>
-        public static event OnEncodingMenuClicked EncodingMenuClicked = null;
+        public static event OnEncodingMenuClicked EncodingMenuClicked;
     }
 
     /// <summary>

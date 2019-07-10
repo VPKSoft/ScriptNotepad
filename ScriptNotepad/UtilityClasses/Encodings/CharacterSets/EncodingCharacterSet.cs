@@ -234,12 +234,12 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         /// <summary>
         /// An internal list of character sets and their encodings.
         /// </summary>
-        private List<KeyValuePair<List<int>, CharacterSets>> internalList = new List<KeyValuePair<List<int>, CharacterSets>>();
+        private readonly List<KeyValuePair<List<int>, CharacterSets>> internalList = new List<KeyValuePair<List<int>, CharacterSets>>();
 
         /// <summary>
         /// An internal list of character set names with their corresponding <see cref="CharacterSets"/> enumeration pairs.
         /// </summary>
-        private static List<KeyValuePair<CharacterSets, string>> internalEnumDescriptionPairs = new List<KeyValuePair<CharacterSets, string>>();
+        private static readonly List<KeyValuePair<CharacterSets, string>> InternalEnumDescriptionPairs = new List<KeyValuePair<CharacterSets, string>>();
 
         /// <summary>
         /// Constructs the internal lists for to be used with this class.
@@ -248,48 +248,48 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         {
             #region CharacterSetList
             internalList.Clear();
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 708, 720, 864, 1256, 10004, 20420, 28596, 57010 }.ToList(), CharacterSets.Arabic));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 775, 1257, 28594 }.ToList(), CharacterSets.Baltic));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 37, 863, 1140 }.ToList(), CharacterSets.Canada));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 855, 866, 1251, 10007, 20866, 20880, 21025, 21866, 28595 }.ToList(), CharacterSets.Cyrillic));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 852, 1250, 10029, 28592 }.ToList(), CharacterSets.CentralEuropean));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 936, 950, 10002, 10008, 20000, 20002, 20936, 50227, 51936, 52936, 54936 }.ToList(), CharacterSets.Chinese));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1142, 20277 }.ToList(), CharacterSets.DenmarkNorway));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1143, 20278 }.ToList(), CharacterSets.FinlandSweden));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1147, 20297 }.ToList(), CharacterSets.France));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1141, 20106, 20273 }.ToList(), CharacterSets.German));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 737, 869, 875, 1253, 10006, 20423, 28597 }.ToList(), CharacterSets.Greek));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 862, 1255, 10005, 20424, 28598, 38598 }.ToList(), CharacterSets.Hebrew));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 861, 1149, 10079, 20871 }.ToList(), CharacterSets.Icelandic));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1144, 20280 }.ToList(), CharacterSets.Italy));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 932, 10001, 20290, 20932, 50220, 50221, 50222, 51932 }.ToList(), CharacterSets.Japanese));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 949, 1361, 10003, 20833, 20949, 50225, 51949 }.ToList(), CharacterSets.Korean));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 858, 870, 1026, 1047, 20924, 28593, 28605 }.ToList(), CharacterSets.Latin));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 500, 860, 865, 1146, 1148, 10010, 10017, 10082, 20127, 20261, 20269, 20285, 29001 }.ToList(), CharacterSets.Miscellaneous));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1142, 20108, 20277 }.ToList(), CharacterSets.Norwegian));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 850, 1252, 10000, 20105, 28591 }.ToList(), CharacterSets.WesternEuropean));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1145, 20284 }.ToList(), CharacterSets.Spain));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1143, 20107, 20278 }.ToList(), CharacterSets.Swedish));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 20001, 20003, 20004, 20005 }.ToList(), CharacterSets.Taiwan));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 874, 10021, 20838 }.ToList(), CharacterSets.Thai));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 857, 1026, 1254, 10081, 20905, 28599 }.ToList(), CharacterSets.Turkish));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 437, 1200, 1201, 12000, 12001, 65000, 65001 }.ToList(), CharacterSets.Unicode));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57006 }.ToList(), CharacterSets.Assamese));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57003 }.ToList(), CharacterSets.Bengali));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57002 }.ToList(), CharacterSets.Devanagari));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 28603 }.ToList(), CharacterSets.Estonian));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57008 }.ToList(), CharacterSets.Kannada));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57009 }.ToList(), CharacterSets.Malayalam));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57007 }.ToList(), CharacterSets.Oriya));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57011 }.ToList(), CharacterSets.Punjabi));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57004 }.ToList(), CharacterSets.Tamil));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57005 }.ToList(), CharacterSets.Telugu));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 1258 }.ToList(), CharacterSets.Vietnamese));
-            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new int[] { 57006, 57003, 57002, 28603, 57008, 57009, 57007, 57011, 57004, 57005, 1258 }.ToList(), CharacterSets.SingleCharacterSets));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 708, 720, 864, 1256, 10004, 20420, 28596, 57010 }.ToList(), CharacterSets.Arabic));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 775, 1257, 28594 }.ToList(), CharacterSets.Baltic));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 37, 863, 1140 }.ToList(), CharacterSets.Canada));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 855, 866, 1251, 10007, 20866, 20880, 21025, 21866, 28595 }.ToList(), CharacterSets.Cyrillic));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 852, 1250, 10029, 28592 }.ToList(), CharacterSets.CentralEuropean));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 936, 950, 10002, 10008, 20000, 20002, 20936, 50227, 51936, 52936, 54936 }.ToList(), CharacterSets.Chinese));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1142, 20277 }.ToList(), CharacterSets.DenmarkNorway));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1143, 20278 }.ToList(), CharacterSets.FinlandSweden));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1147, 20297 }.ToList(), CharacterSets.France));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1141, 20106, 20273 }.ToList(), CharacterSets.German));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 737, 869, 875, 1253, 10006, 20423, 28597 }.ToList(), CharacterSets.Greek));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 862, 1255, 10005, 20424, 28598, 38598 }.ToList(), CharacterSets.Hebrew));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 861, 1149, 10079, 20871 }.ToList(), CharacterSets.Icelandic));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1144, 20280 }.ToList(), CharacterSets.Italy));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 932, 10001, 20290, 20932, 50220, 50221, 50222, 51932 }.ToList(), CharacterSets.Japanese));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 949, 1361, 10003, 20833, 20949, 50225, 51949 }.ToList(), CharacterSets.Korean));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 858, 870, 1026, 1047, 20924, 28593, 28605 }.ToList(), CharacterSets.Latin));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 500, 860, 865, 1146, 1148, 10010, 10017, 10082, 20127, 20261, 20269, 20285, 29001 }.ToList(), CharacterSets.Miscellaneous));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1142, 20108, 20277 }.ToList(), CharacterSets.Norwegian));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 850, 1252, 10000, 20105, 28591 }.ToList(), CharacterSets.WesternEuropean));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1145, 20284 }.ToList(), CharacterSets.Spain));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1143, 20107, 20278 }.ToList(), CharacterSets.Swedish));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 20001, 20003, 20004, 20005 }.ToList(), CharacterSets.Taiwan));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 874, 10021, 20838 }.ToList(), CharacterSets.Thai));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 857, 1026, 1254, 10081, 20905, 28599 }.ToList(), CharacterSets.Turkish));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 437, 1200, 1201, 12000, 12001, 65000, 65001 }.ToList(), CharacterSets.Unicode));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57006 }.ToList(), CharacterSets.Assamese));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57003 }.ToList(), CharacterSets.Bengali));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57002 }.ToList(), CharacterSets.Devanagari));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 28603 }.ToList(), CharacterSets.Estonian));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57008 }.ToList(), CharacterSets.Kannada));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57009 }.ToList(), CharacterSets.Malayalam));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57007 }.ToList(), CharacterSets.Oriya));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57011 }.ToList(), CharacterSets.Punjabi));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57004 }.ToList(), CharacterSets.Tamil));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57005 }.ToList(), CharacterSets.Telugu));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 1258 }.ToList(), CharacterSets.Vietnamese));
+            internalList.Add(new KeyValuePair<List<int>, CharacterSets>(new[] { 57006, 57003, 57002, 28603, 57008, 57009, 57007, 57011, 57004, 57005, 1258 }.ToList(), CharacterSets.SingleCharacterSets));
             #endregion
 
             // the static list will be created with a constructor..
-            if (internalEnumDescriptionPairs.Count == 0)
+            if (InternalEnumDescriptionPairs.Count == 0)
             {
                 ConstructInternalCharacterSetEnumNamePairs();
             }
@@ -301,45 +301,45 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         private static void ConstructInternalCharacterSetEnumNamePairs()
         {
             #region CharacterSetEnumNamePairs
-            internalEnumDescriptionPairs.Clear();
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Arabic, "Arabic"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Baltic, "Baltic"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Canada, "Canada"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Cyrillic, "Cyrillic"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.CentralEuropean, "Central European"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Chinese, "Chinese"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.DenmarkNorway, "Denmark-Norway"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.FinlandSweden, "Finland-Sweden"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.France, "France"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.German, "German"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Greek, "Greek"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Hebrew, "Hebrew"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Icelandic, "Icelandic"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Italy, "Italy"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Japanese, "Japanese"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Korean, "Korean"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Latin, "Latin"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Miscellaneous, "Miscellaneous"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Norwegian, "Norwegian"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.WesternEuropean, "Western European"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Spain, "Spain"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Swedish, "Swedish"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Taiwan, "Taiwan"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Thai, "Thai"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Turkish, "Turkish"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Unicode, "Unicode"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Assamese, "Assamese"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Bengali, "Bengali"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Devanagari, "Devanagari"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Estonian, "Estonian"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Kannada, "Kannada"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Malayalam, "Malayalam"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Oriya, "Oriya"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Punjabi, "Punjabi"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Tamil, "Tamil"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Telugu, "Telugu"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Vietnamese, "Vietnamese"));
-            internalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.SingleCharacterSets, "Single Character Sets"));
+            InternalEnumDescriptionPairs.Clear();
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Arabic, "Arabic"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Baltic, "Baltic"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Canada, "Canada"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Cyrillic, "Cyrillic"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.CentralEuropean, "Central European"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Chinese, "Chinese"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.DenmarkNorway, "Denmark-Norway"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.FinlandSweden, "Finland-Sweden"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.France, "France"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.German, "German"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Greek, "Greek"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Hebrew, "Hebrew"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Icelandic, "Icelandic"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Italy, "Italy"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Japanese, "Japanese"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Korean, "Korean"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Latin, "Latin"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Miscellaneous, "Miscellaneous"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Norwegian, "Norwegian"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.WesternEuropean, "Western European"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Spain, "Spain"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Swedish, "Swedish"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Taiwan, "Taiwan"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Thai, "Thai"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Turkish, "Turkish"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Unicode, "Unicode"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Assamese, "Assamese"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Bengali, "Bengali"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Devanagari, "Devanagari"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Estonian, "Estonian"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Kannada, "Kannada"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Malayalam, "Malayalam"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Oriya, "Oriya"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Punjabi, "Punjabi"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Tamil, "Tamil"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Telugu, "Telugu"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.Vietnamese, "Vietnamese"));
+            InternalEnumDescriptionPairs.Add(new KeyValuePair<CharacterSets, string>(CharacterSets.SingleCharacterSets, "Single Character Sets"));
             #endregion
         }
 
@@ -375,7 +375,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         /// <param name="encoding">The encoding to be used to get the character sets the encoding belongs to.</param>
         /// <param name="singleCodePageResults">A flag indicating if character sets containing only single encoding should be returned.</param>
         /// <returns>A collection of CharacterSets enumeration based on the given parameters.</returns>
-        public IEnumerable<CharacterSets> GetCharacterSetsForEncoding(System.Text.Encoding encoding, bool singleCodePageResults)
+        public IEnumerable<CharacterSets> GetCharacterSetsForEncoding(Encoding encoding, bool singleCodePageResults)
         {
             foreach (var item in internalList)
             {
@@ -401,9 +401,9 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         /// Gets a collection of encodings not yet covered by this class.
         /// </summary>
         /// <returns>A collection of <see cref="Encoding"/> class instance.</returns>
-        public IEnumerable<System.Text.Encoding> GetMissingEncodings()
+        public IEnumerable<Encoding> GetMissingEncodings()
         {
-            var encodings = System.Text.Encoding.GetEncodings();
+            var encodings = Encoding.GetEncodings();
             List<int> allEncodings = new List<int>();
             foreach (var item in internalList)
             {
@@ -414,7 +414,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
             {
                 if (!allEncodings.Contains(encodingInfo.CodePage))
                 {
-                    yield return System.Text.Encoding.GetEncoding(encodingInfo.CodePage);
+                    yield return Encoding.GetEncoding(encodingInfo.CodePage);
                 }
             }
         }
@@ -426,8 +426,8 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         /// <returns>A name for a given CharacterSets enumeration.</returns>
         public string GetCharacterSetName(CharacterSets characterSets)
         {
-            int idx = internalEnumDescriptionPairs.FindIndex(f => f.Key == characterSets);
-            return idx != -1 ? internalEnumDescriptionPairs[idx].Value : string.Empty;
+            int idx = InternalEnumDescriptionPairs.FindIndex(f => f.Key == characterSets);
+            return idx != -1 ? InternalEnumDescriptionPairs[idx].Value : string.Empty;
         }
 
         /// <summary>
@@ -441,10 +441,10 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
             {
                 return;
             }
-            int idx = internalEnumDescriptionPairs.FindIndex(f => f.Key == characterSets);
+            int idx = InternalEnumDescriptionPairs.FindIndex(f => f.Key == characterSets);
             if (idx != -1)
             {
-                internalEnumDescriptionPairs[idx] = new KeyValuePair<CharacterSets, string>(characterSets, name);
+                InternalEnumDescriptionPairs[idx] = new KeyValuePair<CharacterSets, string>(characterSets, name);
             }
         }
 
@@ -453,7 +453,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         /// </summary>
         /// <param name="characterSets">An enumeration value indicating which character set's encodings to get.</param>
         /// <returns>A collection of <see cref="Encoding"/> class instances for the given character set enumeration.</returns>
-        public IEnumerable<System.Text.Encoding> this[CharacterSets characterSets]
+        public IEnumerable<Encoding> this[CharacterSets characterSets]
         {
             get
             {
@@ -462,7 +462,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
                 {
                     foreach (int encodingNum in internalList[idx].Key)
                     {
-                        yield return System.Text.Encoding.GetEncoding(encodingNum);
+                        yield return Encoding.GetEncoding(encodingNum);
                     }
                 }
             }

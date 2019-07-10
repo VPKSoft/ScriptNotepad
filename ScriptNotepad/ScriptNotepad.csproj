@@ -203,6 +203,7 @@
     <Compile Include="UtilityClasses\Common\StatusStripComboItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UtilityClasses\Encodings\CharacterSets\UnicodeEncodingHelper.cs" />
     <Compile Include="UtilityClasses\Encodings\DetectEncoding.cs" />
     <Compile Include="UtilityClasses\Encodings\EncodingExceptionEventArgs.cs" />
     <Compile Include="UtilityClasses\Encodings\FileEncoding.cs" />

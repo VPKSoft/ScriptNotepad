@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using ScriptNotepad.Settings;
 using static ScriptNotepad.UtilityClasses.Encodings.DetectEncoding;
 
 namespace ScriptNotepad.UtilityClasses.Encodings
@@ -190,8 +191,10 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         {
             noBom = false;
 
-            if (!bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf16LittleEndianBom) ||
-                bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf16BigEndianBom))
+            if (!FormSettings.Settings.SkipUnicodeDetectLE && !bigEndian &&
+                ByteMatch(GetEncodingComparisonBytes(stream), Utf16LittleEndianBom) ||
+                !FormSettings.Settings.SkipUnicodeDetectBE && bigEndian &&
+                ByteMatch(GetEncodingComparisonBytes(stream), Utf16BigEndianBom))
             {
                 try
                 {
@@ -206,6 +209,15 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                     encoding = null;
                     return null;
                 }
+            }
+
+            // the user doesn't want this detection..
+            if (FormSettings.Settings.SkipUnicodeDetectLE && !bigEndian ||
+                FormSettings.Settings.SkipUnicodeDetectBE && bigEndian)
+            {
+                // so just return..
+                encoding = null;
+                return null;
             }
 
             try // there is no BOM..
@@ -243,8 +255,8 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         {
             noBom = false;
 
-            if (!bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32LittleEndianBom) ||
-                bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32BigEndianBom))
+            if (!FormSettings.Settings.SkipUtf32LE && !bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32LittleEndianBom) ||
+                !FormSettings.Settings.SkipUtf32BE && bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32BigEndianBom))
             {
                 try
                 {
@@ -259,6 +271,15 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                     encoding = null;
                     return null;
                 }
+            }
+
+            // the user doesn't want this detection..
+            if (FormSettings.Settings.SkipUtf32LE && !bigEndian ||
+                FormSettings.Settings.SkipUtf32BE && bigEndian)
+            {
+                // ..so just return..
+                encoding = null;
+                return null;
             }
 
             try // there is no BOM..

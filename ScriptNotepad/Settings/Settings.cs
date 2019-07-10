@@ -247,6 +247,34 @@ namespace ScriptNotepad.Settings
         public bool DetectNoBom { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the software should skip trying to detect little-endian Unicode encoding if the <see cref="DetectNoBom"/> is enabled.
+        /// </summary>
+        [Setting("main/skipUnicodeLE", typeof(bool))]
+        // ReSharper disable once InconsistentNaming
+        public bool SkipUnicodeDetectLE { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the software should skip trying to detect big-endian Unicode encoding if the <see cref="DetectNoBom"/> is enabled.
+        /// </summary>
+        [Setting("main/skipUnicodeBE", typeof(bool))]
+        // ReSharper disable once InconsistentNaming
+        public bool SkipUnicodeDetectBE { get; set; } = false;
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the software should skip trying to detect little-endian UTF32 encoding if the <see cref="DetectNoBom"/> is enabled.
+        /// </summary>
+        [Setting("main/skipUtf32LE", typeof(bool))]
+        // ReSharper disable once InconsistentNaming
+        public bool SkipUtf32LE { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the software should skip trying to detect big-endian UTF32 encoding if the <see cref="DetectNoBom"/> is enabled.
+        /// </summary>
+        [Setting("main/skipUtf32BE", typeof(bool))]
+        // ReSharper disable once InconsistentNaming
+        public bool SkipUtf32BE { get; set; } = false;
+
+        /// <summary>
         /// The amount of files to be saved to a document history.
         /// </summary>
         [Setting("gui/history", typeof(int))]

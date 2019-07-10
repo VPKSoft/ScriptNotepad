@@ -6,7 +6,7 @@
 * Done? [YES  ] [2019/05/13] Add a helper function to extract colors from mark-up (i.e. #AB0FFE) to (A)RGB.
 * Done? [YES  ] [2019/05/13] Add the Notepad++ style definition files to the installer.
 * Done? [YES  ] [2019/05/16] Fix weird bug for the main form not accepting all the AltGr+(character) combinations.
-* Done? [SOME ] [2019/05/13] Add Lfice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
+* Done? [SOME ] [2019/05/13] Add LibreOffice's dictionary and affix files to the installer. (Added en-US and en-GB; all will make the amount of data too large).
 * Done? [SOME ] [2019/05/22] Save document's settings to the database.
 * Done? [DON'T] [2019/05/03] Save document's marked positions to the database.
 * Done? [N/A  ] [2019/05/14] Make the directory crawler to end the thread safe (DirectoryCrawler.Canceled)...
@@ -56,9 +56,11 @@
 * Done? [YES  ] [2019/07/02] Add a shortcut key to toggle between tabs.
 * Done? [N/A  ] [2019/07/02] Add a shortcut key to toggle between sessions.
 * Done? [N/A  ] [2019/07/03] Add possibility to move a tab into a different session.
-* Done? [N/A  ] [2019/07/03] Add string start / end matching.
+* Done? [N/A  ] [2019/07/09] Add string start / end matching. (==Add hyphen matching.)
 * Done? [YES  ] [2019/07/07] FIX: Find in files with *.* crashes the software.
 * Done? [YES  ] [2019/07/07] Activate the software on shell context menu open file request.
-* Done? [N/A  ] [2019/07/07] Add hyphen matching.
 * Done? [YES  ] [2019/07/09] Add version check. Missing the automatic version.
-* Done? [N/A  ] [2019/07/09] Make the encoding detection more versatile.
+* Done? [YES  ] [2019/07/10] Make the encoding detection more versatile.
+* Done? [N/A  ] [2019/07/10] Add no-BOM Unicode to the encoding selection (UTF8, Unicode and UTF32).
+* Done? [N/A  ] [2019/07/10] Improve the no-BOM UTF8 detection.
+* Done? [N/A  ] [2019/07/10] Add algorithm to ignore binary files.

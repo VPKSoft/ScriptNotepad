@@ -293,6 +293,12 @@ namespace ScriptNotepad.Settings
             // get the value whether to check for a new application version upon startup..
             cbUpdateAutoCheck.Checked = Settings.UpdateAutoCheck;
 
+            // get the Unicode detection skip values..
+            cbNoUnicodeLE.Checked = Settings.SkipUnicodeDetectLE;
+            cbNoUnicodeBE.Checked = Settings.SkipUnicodeDetectBE;
+            cbNoUTF32LE.Checked = Settings.SkipUtf32LE;
+            cbNoUTF32BE.Checked = Settings.SkipUtf32BE;
+
             #region DateTime
             // get the date and time formats..
             tbDateTimeFormat1.Text = Settings.DateFormat1;
@@ -451,6 +457,12 @@ namespace ScriptNotepad.Settings
 
             // set the value whether to check for a new application version upon startup..
             Settings.UpdateAutoCheck = cbUpdateAutoCheck.Checked;
+
+            // set the Unicode detection skip values..
+            Settings.SkipUnicodeDetectLE = cbNoUnicodeLE.Checked;
+            Settings.SkipUnicodeDetectBE = cbNoUnicodeBE.Checked;
+            Settings.SkipUtf32LE = cbNoUTF32LE.Checked;
+            Settings.SkipUtf32BE = cbNoUTF32BE.Checked;
 
             #region DateTime
             // set the date and time formats..
@@ -841,6 +853,12 @@ namespace ScriptNotepad.Settings
             tbDateTimeFormat4.Text = @"dd'.'MM'.'yyyy HH':'mm':'ss"; // default to european..
             tbDateTimeFormat5.Text = @"hh'.'mm tt"; // default to american..
             tbDateTimeFormat6.Text = @"HH':'mm':'ss"; // default to european..
+        }
+
+        // the setting of the Unicode detection has changed..
+        private void CbDetectNoBomUnicode_CheckedChanged(object sender, EventArgs e)
+        {
+            gpSkipEncodings.Enabled = cbDetectNoBomUnicode.Checked;
         }
     }
 }
