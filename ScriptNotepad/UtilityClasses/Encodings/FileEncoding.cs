@@ -77,17 +77,12 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                 }
             }
 
-            if (existsInDatabase && !reloadContents && !encodingOverridden)
+            if (existsInDatabase && !reloadContents && !encodingOverridden && !File.Exists(fileName))
             {
                 encoding = DatabaseFileSave.GetEncodingFromDatabase(sessionName, fileName);
             }
 
-            if (encoding == null)
-            {
-                encoding = FormSettings.Settings.DefaultEncoding;
-            }
-
-            return encoding;
+            return encoding ?? (encoding = FormSettings.Settings.DefaultEncoding);
         }
     }
 }

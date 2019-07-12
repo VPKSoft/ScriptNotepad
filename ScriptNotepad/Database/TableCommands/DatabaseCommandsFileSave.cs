@@ -178,7 +178,6 @@ namespace ScriptNotepad.Database.TableCommands
                     $"FROM DBFILE_SAVE",
                     $"WHERE",
                     $"SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(sessionName)} AND",
-                    $"ISHISTORY = 0 AND", // the user might have changed mind about a file encoding..
                     $"FILENAME_FULL = {QS(fileNameFull)};");
 
             return sql;
