@@ -1045,7 +1045,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                         contents.Invoke(new MethodInvoker(delegate
                         {
                             // just read all the text in the file and set it to the Scintilla..
-                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
+                            contents.Text = File.ReadAllText(args.FileName);
 
                             // by not doing this the memory consumption might get HIGH..
                             contents.EmptyUndoBuffer();
@@ -1138,7 +1138,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                         contents.Invoke(new MethodInvoker(delegate
                         {
                             // just read all the text in the file and set it to the Scintilla..
-                            contents.Text = File.ReadAllText(args.FileName, FormSettings.Settings.DefaultEncoding);
+                            contents.Text = File.ReadAllText(args.FileName);
 
                             // by not doing this the memory consumption might get HIGH..
                             contents.EmptyUndoBuffer();
@@ -1158,8 +1158,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                             {
                                 if (replacements.Value.count > 0)
                                 {
-                                    File.WriteAllText(args.FileName, replacements.Value.newContents,
-                                        FormSettings.Settings.DefaultEncoding);
+                                    File.WriteAllText(args.FileName, replacements.Value.newContents);
                                     filesAffected++;
 
                                     replaceCount += replacements.Value.count;

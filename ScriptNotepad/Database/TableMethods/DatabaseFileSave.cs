@@ -33,6 +33,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Text;
+using ScriptNotepad.UtilityClasses.Encodings;
 using VPKSoft.ScintillaTabbedTextControl;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
@@ -275,7 +276,7 @@ namespace ScriptNotepad.Database.TableMethods
                         // ENCODING = 0, UNICODE_BOM = 1, UNICODE_BIGENDIAN = 2
                         if (reader.Read())
                         {
-                            fileSaveEncoding = Encoding.GetEncoding(reader.GetString(0));
+                            fileSaveEncoding = EncodingData.EncodingFromString(reader.GetString(0));
 
                             // unicode (UTFxxx) is a special encoding (because of BOM, etc)..
                             if (fileSaveEncoding.CodePage == Encoding.UTF8.CodePage)
@@ -329,23 +330,9 @@ namespace ScriptNotepad.Database.TableMethods
                 // FILESYS_MODIFIED: 5, DB_MODIFIED: 6, LEXER_CODE: 7, FILE_CONTENTS: 8,
                 // VISIBILITY_ORDER: 9, SESSIONID: 10, ISACTIVE: 11, ISHISTORY: 12, SESSIONNAME: 13,
                 // FILESYS_SAVED: 14, ENCODING: 15, CURRENT_POSITION = 16, USESPELL_CHECK = 17,
-                // EDITOR_ZOOM = 18, UNICODE_BOM = 19, UNICODE_BIGENDIAN, 20
+                // EDITOR_ZOOM = 18
 
-                Encoding fileSaveEncoding = Encoding.GetEncoding(reader.GetString(15));
-
-                // unicode (UTFxxx) is a special encoding (because of BOM, etc)..
-                if (fileSaveEncoding.CodePage == Encoding.UTF8.CodePage)
-                {
-                    fileSaveEncoding = new UTF8Encoding(reader.GetInt32(19) == 1);
-                }
-                else if (fileSaveEncoding.CodePage == Encoding.Unicode.CodePage)
-                {
-                    fileSaveEncoding = new UnicodeEncoding(reader.GetInt32(20) == 1, reader.GetInt32(19) == 1);
-                }
-                else if (fileSaveEncoding.CodePage == Encoding.UTF32.CodePage)
-                {
-                    fileSaveEncoding = new UTF32Encoding(reader.GetInt32(20) == 1, reader.GetInt32(19) == 1);
-                }
+                Encoding fileSaveEncoding = EncodingData.EncodingFromString(reader.GetString(15));
 
                 return
                     new DBFILE_SAVE()
@@ -365,12 +352,10 @@ namespace ScriptNotepad.Database.TableMethods
                         ISHISTORY = reader.GetInt32(12) == 1,
                         SESSIONNAME = reader.GetString(13),
                         FILESYS_SAVED = DateFromDBString(reader.GetString(14)),
-                        ENCODING = Encoding.GetEncoding(reader.GetString(15)),
+                        ENCODING = EncodingData.EncodingFromString(reader.GetString(15)),
                         CURRENT_POSITION = reader.GetInt32(16),
                         USESPELL_CHECK = reader.GetInt32(17) == 1,
                         EDITOR_ZOOM = getZoom ? reader.GetInt32(18) : 100,
-                        UNICODE_BOM = reader.GetInt32(19) == 1,
-                        UNICODE_BIGENDIAN = reader.GetInt32(20) == 1,
                     };
             }
             catch (Exception ex)

@@ -308,7 +308,7 @@ namespace ScriptNotepad
             ConstructorFinished = true;
 
             // set the default encoding of the DetectEncoding class..
-            DetectEncoding.FallBackEncoding = FormSettings.Settings.DefaultEncoding;
+            DetectEncoding.FallBackEncoding = Encoding.Default;
 
             // set the state of the auto-save..
             tmAutoSave.Interval =
@@ -1537,7 +1537,7 @@ namespace ScriptNotepad
                 if (File.Exists(args[i]))
                 {
                     // add the file to the document control..
-                    OpenDocument(args[i], DefaultEncoding, false, false);
+                    OpenDocument(args[i], DefaultEncodings, false, false);
                 }
             }
         }
@@ -1596,22 +1596,50 @@ namespace ScriptNotepad
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
         /// <param name="encodingOverridden">The given encoding should be used while opening the file.</param>
         /// <param name="overrideDetectBom">if set to <c>true</c> the setting value whether to detect unicode file with no byte-order-mark (BOM) is overridden.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        private void OpenDocument(string fileName, Encoding encoding, bool reloadContents, bool encodingOverridden,
+        private void OpenDocument(string fileName,
+            Encoding encoding,
+            bool reloadContents, bool encodingOverridden,
             bool overrideDetectBom = false)
         {
+            var encodingList =
+                new List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>();
+
+            encodingList.Add((encoding.WebName, encoding, false, false));
+
+            OpenDocument(fileName, encodingList, reloadContents, encodingOverridden, overrideDetectBom);
+        }
+
+
+        /// <summary>
+        /// Opens the document with a given file name into the view.
+        /// </summary>
+        /// <param name="fileName">Name of the file to load into the view.</param>
+        /// <param name="encodings">The encodings to be used to try to open the file.</param>
+        /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
+        /// <param name="encodingOverridden">The given encoding should be used while opening the file.</param>
+        /// <param name="overrideDetectBom">if set to <c>true</c> the setting value whether to detect unicode file with no byte-order-mark (BOM) is overridden.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        private void OpenDocument(string fileName, List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)> encodings, bool reloadContents, bool encodingOverridden,
+            bool overrideDetectBom = false)
+        {
+            Encoding encoding = null;
             if (File.Exists(fileName))
             {
-                bool noBom;
-                bool bigEndian;
-                bool existsInDatabase;
                 try
                 {
-                    // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
-                    encoding = GetFileEncoding(CurrentSession, fileName, encoding, reloadContents, encodingOverridden, 
-                        overrideDetectBom,
-                        out noBom,
-                        out bigEndian, out existsInDatabase);
+                    foreach (var encodingData in encodings)
+                    {
+                        // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
+                        encoding = GetFileEncoding(CurrentSession, fileName, encodingData.encoding, reloadContents, encodingOverridden, 
+                            overrideDetectBom,
+                            out _,
+                            out _, out _);
+
+                        if (encoding != null)
+                        {
+                            break;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1651,12 +1679,6 @@ namespace ScriptNotepad
                             sttcMain.LastAddedDocument.ID = (int)fileSave.ID;
                             fileSave.ENCODING = encoding;
 
-                            if (!(existsInDatabase || reloadContents) && !encodingOverridden)
-                            {
-                                fileSave.UNICODE_BOM = !noBom;
-                                fileSave.UNICODE_BIGENDIAN = bigEndian;
-                            }
-
                             // set the saved position of the document's caret..
                             if (fileSave.CURRENT_POSITION > 0 && fileSave.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
                             {
@@ -1671,12 +1693,6 @@ namespace ScriptNotepad
 
                         // get a DBFILE_SAVE class instance from the document's tag..
                         fileSave = (DBFILE_SAVE)sttcMain.LastAddedDocument.Tag;
-
-                        if ((!existsInDatabase || reloadContents) && !encodingOverridden)
-                        {
-                            fileSave.UNICODE_BOM = !noBom;
-                            fileSave.UNICODE_BIGENDIAN = bigEndian;
-                        }
 
                         // set the session ID number..
                         fileSave.SESSIONID = CurrentSessionID;
@@ -2006,7 +2022,7 @@ namespace ScriptNotepad
                 {
                     if (File.Exists(filePath))
                     {
-                        OpenDocument(filePath, FormSettings.Settings.DefaultEncoding, false, false);
+                        OpenDocument(filePath, DefaultEncodings, false, false);
                     }
                 }
             }
@@ -2219,7 +2235,7 @@ namespace ScriptNotepad
             }
             else if (!e.SearchResult.isFileOpen)
             {              
-                OpenDocument(e.SearchResult.fileName, DefaultEncoding, false, false);
+                OpenDocument(e.SearchResult.fileName, DefaultEncodings, false, false);
                 var scintilla = sttcMain.LastAddedDocument?.Scintilla;
                 if (scintilla != null)
                 {
@@ -2481,7 +2497,7 @@ namespace ScriptNotepad
         {
             Invoke(new MethodInvoker(delegate
             {
-                OpenDocument(e.Message, DefaultEncoding, false, false);
+                OpenDocument(e.Message, DefaultEncodings, false, false);
                 // the user probably will like the program to show up, if the software activates
                 // it self from a windows shell call to open a file..
                 BringToFront();
@@ -2556,7 +2572,8 @@ namespace ScriptNotepad
         /// A common method to change or convert the encoding of the active document.
         /// </summary>
         /// <param name="encoding">The encoding to change or convert into.</param>
-        internal void ChangeDocumentEncoding(Encoding encoding)
+        /// <param name="unicodeFailInvalidCharacters">In case of Unicode (UTF8, Unicode or UTF32) whether to fail on invalid characters.</param>
+        internal void ChangeDocumentEncoding(Encoding encoding, bool unicodeFailInvalidCharacters)
         {
             if (encoding != null)
             {
@@ -2612,7 +2629,9 @@ namespace ScriptNotepad
         // an event when user clicks the change encoding main menu..
         private void mnuCharSets_Click(object sender, EventArgs e)
         {
-            ChangeDocumentEncoding(FormDialogQueryEncoding.Execute());
+            var encoding = FormDialogQueryEncoding.Execute(out _,
+                out bool unicodeFailInvalidCharacters);
+            ChangeDocumentEncoding(encoding, unicodeFailInvalidCharacters);
         }
 
         // an event which is fired if an encoding menu item is clicked..
@@ -2621,7 +2640,7 @@ namespace ScriptNotepad
             // a user requested to change the encoding of the file..
             if (e.Data != null && e.Data.ToString() == "convert_encoding")
             {
-                ChangeDocumentEncoding(e.Encoding);
+                ChangeDocumentEncoding(e.Encoding, true);
             }
         }
 
@@ -2678,11 +2697,11 @@ namespace ScriptNotepad
                 FormSettings.Settings.FileLocationOpen = odAnyFile.InitialDirectory;
                 if (sender.Equals(mnuOpenNoBOM))
                 {
-                    OpenDocument(odAnyFile.FileName, DefaultEncoding, true, false, true);
+                    OpenDocument(odAnyFile.FileName, DefaultEncodings, true, false, true);
                 }
                 else
                 {
-                    OpenDocument(odAnyFile.FileName, DefaultEncoding, false, false);
+                    OpenDocument(odAnyFile.FileName, DefaultEncodings, false, false);
                 }
             }
         }
@@ -2694,7 +2713,7 @@ namespace ScriptNotepad
                 "Open with encoding|A title for an open file dialog to indicate that a is user selecting a file to be opened with pre-selected encoding");
 
             // ask the encoding first from the user..
-            Encoding encoding = FormDialogQueryEncoding.Execute();
+            Encoding encoding = FormDialogQueryEncoding.Execute(out _, out _);
             if (encoding != null)
             {
                 odAnyFile.InitialDirectory = FormSettings.Settings.FileLocationOpenWithEncoding;
@@ -3134,14 +3153,11 @@ namespace ScriptNotepad
                     // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
                     fileSave.ENCODING =
                         GetFileEncoding(CurrentSession, sttcMain.CurrentDocument.FileName, fileSave.ENCODING, true,
-                            false, false, out var noBom, out var bigEndian, out _);
+                            false, false, out _, out _, out _);
 
                     // the user answered yes..
                     sttcMain.SuspendTextChangedEvents =
                         true; // suspend the changed events on the ScintillaTabbedTextControl..
-
-                    fileSave.UNICODE_BOM = !noBom;
-                    fileSave.UNICODE_BIGENDIAN = bigEndian;
 
                     fileSave.ReloadFromDisk(sttcMain.CurrentDocument); // reload the file..
                     sttcMain.SuspendTextChangedEvents =
@@ -3284,7 +3300,8 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets the default encoding to be used with the files within this software.
         /// </summary>
-        private Encoding DefaultEncoding => FormSettings.Settings.DefaultEncoding;
+        private List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>
+            DefaultEncodings => FormSettings.Settings.GetEncodingList();
 
         /// <summary>
         /// The amount of files to be saved to a document history.

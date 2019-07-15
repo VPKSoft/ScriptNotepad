@@ -205,7 +205,9 @@
     </Compile>
     <Compile Include="UtilityClasses\Encodings\CharacterSets\UnicodeEncodingHelper.cs" />
     <Compile Include="UtilityClasses\Encodings\DetectEncoding.cs" />
+    <Compile Include="UtilityClasses\Encodings\EncodingData.cs" />
     <Compile Include="UtilityClasses\Encodings\EncodingExceptionEventArgs.cs" />
+    <Compile Include="UtilityClasses\Encodings\EncodingHelpers.cs" />
     <Compile Include="UtilityClasses\Encodings\FileEncoding.cs" />
     <Compile Include="UtilityClasses\Encodings\TryMakeEncoding.cs" />
     <Compile Include="UtilityClasses\GraphicUtils\FontFamilyHelpers.cs" />
@@ -476,6 +478,9 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\arrow-down-2.png" />
+    <None Include="Resources\arrow-up-2.png" />
+    <None Include="Resources\list-add-5.png" />
     <None Include="Resources\Playback.png" />
     <None Include="Resources\textfield-rename.png" />
     <None Include="Resources\session-properties.png" />

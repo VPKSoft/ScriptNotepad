@@ -398,28 +398,6 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         }
 
         /// <summary>
-        /// Gets a collection of encodings not yet covered by this class.
-        /// </summary>
-        /// <returns>A collection of <see cref="Encoding"/> class instance.</returns>
-        public IEnumerable<Encoding> GetMissingEncodings()
-        {
-            var encodings = Encoding.GetEncodings();
-            List<int> allEncodings = new List<int>();
-            foreach (var item in internalList)
-            {
-                allEncodings.AddRange(item.Key);
-            }
-
-            foreach (var encodingInfo in encodings)
-            {
-                if (!allEncodings.Contains(encodingInfo.CodePage))
-                {
-                    yield return Encoding.GetEncoding(encodingInfo.CodePage);
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets the name of the character set.
         /// </summary>
         /// <param name="characterSets">The CharacterSets enumeration value.</param>

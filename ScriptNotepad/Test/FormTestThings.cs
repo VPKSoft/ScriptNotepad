@@ -39,6 +39,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScriptNotepad.Localization.Hunspell;
+using ScriptNotepad.Settings;
 
 namespace ScriptNotepad.Test
 {
@@ -58,7 +59,7 @@ namespace ScriptNotepad.Test
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
+            //MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
 
 //            Printing printer = new Printing(sttcMain.Documents[0].Scintilla);
 //            printer.PrintPreview();
@@ -95,7 +96,10 @@ namespace ScriptNotepad.Test
 
         private void Button6_Click(object sender, EventArgs e)
         {
-            FormDialogQueryNumber.Execute<int>(0, 0, 100, "Test", "Give a test value:");
+            /*
+            MessageBox.Show(
+                FormSettings.Settings.FromDataGrid(((FormSettings) Application.OpenForms[1]).dgvEncodings).ToString());
+                */
         }
 
         private void Button7_Click(object sender, EventArgs e)

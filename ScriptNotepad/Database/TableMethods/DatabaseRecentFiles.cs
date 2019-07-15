@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
+using ScriptNotepad.UtilityClasses.Encodings;
 
 namespace ScriptNotepad.Database.TableMethods
 {
@@ -101,7 +102,7 @@ namespace ScriptNotepad.Database.TableMethods
                                 REFERENCEID = reader.IsDBNull(6) ? null : (long?)reader.GetInt64(6),
                                 SESSIONNAME = reader.GetString(7),
                                 EXISTSINDB = reader.GetInt32(8) == 1,
-                                ENCODING = Encoding.GetEncoding(reader.GetString(9)),
+                                ENCODING = EncodingData.EncodingFromString(reader.GetString(9)),
                             };
 
                         // the file must exist somewhere..

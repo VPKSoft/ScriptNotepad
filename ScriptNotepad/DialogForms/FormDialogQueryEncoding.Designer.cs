@@ -39,9 +39,11 @@
             this.btUTF8 = new System.Windows.Forms.PictureBox();
             this.btSystemDefaultEncoding = new System.Windows.Forms.PictureBox();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
+            this.pbClearFilterText = new System.Windows.Forms.PictureBox();
             this.lbFilterEncodings = new System.Windows.Forms.Label();
             this.tbFilterEncodings = new System.Windows.Forms.TextBox();
-            this.pbClearFilterText = new System.Windows.Forms.PictureBox();
+            this.cbUseUnicodeBOM = new System.Windows.Forms.CheckBox();
+            this.cbUnicodeFailInvalidCharacters = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClearFilterText)).BeginInit();
@@ -93,7 +95,7 @@
             // 
             this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btOK.Location = new System.Drawing.Point(12, 90);
+            this.btOK.Location = new System.Drawing.Point(12, 114);
             this.btOK.Name = "btOK";
             this.btOK.Size = new System.Drawing.Size(75, 23);
             this.btOK.TabIndex = 4;
@@ -104,7 +106,7 @@
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(374, 90);
+            this.btCancel.Location = new System.Drawing.Point(374, 114);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 5;
@@ -137,10 +139,23 @@
             this.ttMain.SetToolTip(this.btSystemDefaultEncoding, "Set to system default");
             this.btSystemDefaultEncoding.Click += new System.EventHandler(this.btDefaultEncodings_Click);
             // 
+            // pbClearFilterText
+            // 
+            this.pbClearFilterText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbClearFilterText.Image = global::ScriptNotepad.Properties.Resources.Erase;
+            this.pbClearFilterText.Location = new System.Drawing.Point(428, 83);
+            this.pbClearFilterText.Name = "pbClearFilterText";
+            this.pbClearFilterText.Size = new System.Drawing.Size(21, 21);
+            this.pbClearFilterText.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbClearFilterText.TabIndex = 15;
+            this.pbClearFilterText.TabStop = false;
+            this.ttMain.SetToolTip(this.pbClearFilterText, "Clear filter text");
+            this.pbClearFilterText.Click += new System.EventHandler(this.pbClearFilterText_Click);
+            // 
             // lbFilterEncodings
             // 
             this.lbFilterEncodings.AutoSize = true;
-            this.lbFilterEncodings.Location = new System.Drawing.Point(12, 65);
+            this.lbFilterEncodings.Location = new System.Drawing.Point(12, 88);
             this.lbFilterEncodings.Name = "lbFilterEncodings";
             this.lbFilterEncodings.Size = new System.Drawing.Size(84, 13);
             this.lbFilterEncodings.TabIndex = 13;
@@ -150,23 +165,30 @@
             // 
             this.tbFilterEncodings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbFilterEncodings.Location = new System.Drawing.Point(153, 60);
+            this.tbFilterEncodings.Location = new System.Drawing.Point(153, 83);
             this.tbFilterEncodings.Name = "tbFilterEncodings";
             this.tbFilterEncodings.Size = new System.Drawing.Size(269, 20);
             this.tbFilterEncodings.TabIndex = 14;
             // 
-            // pbClearFilterText
+            // cbUseUnicodeBOM
             // 
-            this.pbClearFilterText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbClearFilterText.Image = global::ScriptNotepad.Properties.Resources.Erase;
-            this.pbClearFilterText.Location = new System.Drawing.Point(428, 60);
-            this.pbClearFilterText.Name = "pbClearFilterText";
-            this.pbClearFilterText.Size = new System.Drawing.Size(21, 21);
-            this.pbClearFilterText.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pbClearFilterText.TabIndex = 15;
-            this.pbClearFilterText.TabStop = false;
-            this.ttMain.SetToolTip(this.pbClearFilterText, "Clear filter text");
-            this.pbClearFilterText.Click += new System.EventHandler(this.pbClearFilterText_Click);
+            this.cbUseUnicodeBOM.AutoSize = true;
+            this.cbUseUnicodeBOM.Location = new System.Drawing.Point(15, 60);
+            this.cbUseUnicodeBOM.Name = "cbUseUnicodeBOM";
+            this.cbUseUnicodeBOM.Size = new System.Drawing.Size(115, 17);
+            this.cbUseUnicodeBOM.TabIndex = 16;
+            this.cbUseUnicodeBOM.Text = "Use Unicode BOM";
+            this.cbUseUnicodeBOM.UseVisualStyleBackColor = true;
+            // 
+            // cbUnicodeFailInvalidCharacters
+            // 
+            this.cbUnicodeFailInvalidCharacters.AutoSize = true;
+            this.cbUnicodeFailInvalidCharacters.Location = new System.Drawing.Point(153, 60);
+            this.cbUnicodeFailInvalidCharacters.Name = "cbUnicodeFailInvalidCharacters";
+            this.cbUnicodeFailInvalidCharacters.Size = new System.Drawing.Size(181, 17);
+            this.cbUnicodeFailInvalidCharacters.TabIndex = 17;
+            this.cbUnicodeFailInvalidCharacters.Text = "Fail on invalid Unicode character";
+            this.cbUnicodeFailInvalidCharacters.UseVisualStyleBackColor = true;
             // 
             // FormDialogQueryEncoding
             // 
@@ -174,7 +196,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(461, 125);
+            this.ClientSize = new System.Drawing.Size(461, 149);
+            this.Controls.Add(this.cbUnicodeFailInvalidCharacters);
+            this.Controls.Add(this.cbUseUnicodeBOM);
             this.Controls.Add(this.pbClearFilterText);
             this.Controls.Add(this.tbFilterEncodings);
             this.Controls.Add(this.lbFilterEncodings);
@@ -218,5 +242,7 @@
         private System.Windows.Forms.Label lbFilterEncodings;
         private System.Windows.Forms.TextBox tbFilterEncodings;
         private System.Windows.Forms.PictureBox pbClearFilterText;
+        private System.Windows.Forms.CheckBox cbUseUnicodeBOM;
+        private System.Windows.Forms.CheckBox cbUnicodeFailInvalidCharacters;
     }
 }

@@ -24,9 +24,9 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using System.Text;
 using System.Windows.Forms;
-using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.DialogForms
@@ -61,7 +61,7 @@ namespace ScriptNotepad.DialogForms
             Encoding = CharacterSetComboBuilder.CurrentEncoding;
 
             // subscribe the encoding selected event..
-            CharacterSetComboBuilder.EncodingSelected += CaracterSetComboBuilder_EncodingSelected;
+            CharacterSetComboBuilder.EncodingSelected += CharacterSetComboBuilder_EncodingSelected;
 
             // translate the tool tips..
             ttMain.SetToolTip(btUTF8,
@@ -75,8 +75,10 @@ namespace ScriptNotepad.DialogForms
         /// <summary>
         /// Displays a new instance of this dialog.
         /// </summary>
+        /// <param name="unicodeBom">In case of Unicode (UTF8, Unicode or UTF32) whether to use the Unicode byte order mark.</param>
+        /// <param name="unicodeFailInvalidCharacters">In case of Unicode (UTF8, Unicode or UTF32) whether to fail on invalid characters.</param>
         /// <returns>An <see cref="Encoding"/> if the user accepted the dialog; otherwise null.</returns>
-        public static Encoding Execute()
+        public static Encoding Execute(out bool unicodeBom, out bool unicodeFailInvalidCharacters)
         {
             // create a new instance of this dialog..
             FormDialogQueryEncoding form = new FormDialogQueryEncoding();
@@ -84,18 +86,43 @@ namespace ScriptNotepad.DialogForms
             // show the dialog and if the dialog result was OK..
             if (form.ShowDialog() == DialogResult.OK)
             {
+                unicodeBom = form.cbUseUnicodeBOM.Checked && form.cbUseUnicodeBOM.Enabled;
+                unicodeFailInvalidCharacters = form.cbUnicodeFailInvalidCharacters.Checked && form.cbUnicodeFailInvalidCharacters.Enabled;
+
+                if (unicodeBom || unicodeFailInvalidCharacters)
+                {
+                    if (form.Encoding is UTF8Encoding)
+                    {
+                        return new UTF8Encoding(unicodeBom, unicodeFailInvalidCharacters);
+                    }
+
+                    if (form.Encoding is UnicodeEncoding)
+                    {
+                        return new UnicodeEncoding(form.Encoding.CodePage == 1201, unicodeBom,
+                            unicodeFailInvalidCharacters);
+                    }
+
+                    if (form.Encoding is UTF32Encoding)
+                    {
+                        return new UTF32Encoding(form.Encoding.CodePage == 12001, unicodeBom,
+                            unicodeFailInvalidCharacters);
+                    }
+                }
+
                 // ..so return the encoding..
                 return form.Encoding;
             }
             else // the user didn't accept the dialog..
             {
                 // .. so return null..
+                unicodeBom = false;
+                unicodeFailInvalidCharacters = false;
                 return null;
             }
         }
 
         // this event is fired when the encoding is changed from the corresponding combo box..
-        private void CaracterSetComboBuilder_EncodingSelected(object sender, OnEncodingSelectedEventArgs e)
+        private void CharacterSetComboBuilder_EncodingSelected(object sender, OnEncodingSelectedEventArgs e)
         {
             // save the changed value..
             Encoding = e.Encoding;
@@ -128,7 +155,7 @@ namespace ScriptNotepad.DialogForms
             using (CharacterSetComboBuilder)
             {
                 // unsubscribe the encoding selected event..
-                CharacterSetComboBuilder.EncodingSelected -= CaracterSetComboBuilder_EncodingSelected;
+                CharacterSetComboBuilder.EncodingSelected -= CharacterSetComboBuilder_EncodingSelected;
             }
         }
 
@@ -145,7 +172,24 @@ namespace ScriptNotepad.DialogForms
 
         private void cmbCharacterSet_SelectedIndexChanged(object sender, System.EventArgs e)
         {
+            cbUseUnicodeBOM.Enabled = false;
+            cbUnicodeFailInvalidCharacters.Enabled = false;
+
             tbFilterEncodings.Focus();
+            ComboBox combo = (ComboBox) sender;
+            if (combo.SelectedItem != null)
+            {
+                var item = (CharacterSetComboItem) combo.SelectedItem;
+                if (item.Encoding.CodePage == 65001 || // UTF8..
+                    item.Encoding.CodePage == 1200 || // Unicode Little Endian..
+                    item.Encoding.CodePage == 1201 || // Unicode Big Endian..
+                    item.Encoding.CodePage == 12000 || // UTF32 Little Endian..
+                    item.Encoding.CodePage == 12001) // UTF32 Big Endian..
+                {
+                    cbUseUnicodeBOM.Enabled = true;
+                    cbUnicodeFailInvalidCharacters.Enabled = true;
+                }
+            }
         }
 
         private void pbClearFilterText_Click(object sender, System.EventArgs e)

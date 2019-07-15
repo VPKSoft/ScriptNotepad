@@ -25,6 +25,7 @@ SOFTWARE.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
@@ -34,6 +35,7 @@ using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
 using System.Globalization;
 using System.IO;
+using System.Windows.Forms;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using TabDrawMode = ScintillaNET.TabDrawMode;
@@ -98,7 +100,10 @@ namespace ScriptNotepad.Settings
                 SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
 
                 // set the default encoding value..
+#pragma warning disable 618
+// the deprecated property is still in for backwards compatibility - so disable the warning..
                 DefaultEncoding = Encoding.GetEncoding(conflib[settingAttribute.SettingName, DefaultEncoding.WebName]);
+#pragma warning restore 618
                 #endregion
 
                 // get all public instance properties of this class..
@@ -224,6 +229,7 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// Gets or sets the default encoding to be used with the files within this software.
         /// </summary>
+        [Obsolete("DefaultEncoding is deprecated, the EncodingList property replaces this property.")]
         [Setting("main/encoding", typeof(Encoding))]
         public Encoding DefaultEncoding { get; set; } = Encoding.UTF8;
 
@@ -273,6 +279,145 @@ namespace ScriptNotepad.Settings
         [Setting("main/skipUtf32BE", typeof(bool))]
         // ReSharper disable once InconsistentNaming
         public bool SkipUtf32BE { get; set; } = false;
+
+        // a field to hold the EncodingList property value..
+        private string encodingList = string.Empty;
+
+        /// <summary>
+        /// Gets or sets an ordered encoding list for the software to try in the order.
+        /// </summary>
+        [Setting("main/encodingList", typeof(string))]
+        public string EncodingList
+        {
+            // the list type is Encoding1.WebName;FailOnErrorInCaseOfUnicode;BOMInCaseOfUnicode|Encoding2.WebName;FailOnErrorInCaseOfUnicode;BOMInCaseOfUnicode|...
+            get
+            {
+                // if empty; create a list of one item..
+                if (encodingList == string.Empty)
+                {
+// the deprecated property is still in for backwards compatibility - so disable the warning..
+#pragma warning disable 618
+                    encodingList =
+                        new UTF8Encoding().WebName + ';' + true + ';' + true + '|' +
+                        new UTF8Encoding().WebName + ';' + true + ';' + false + '|' +
+                        (DefaultEncoding.WebName == new UTF8Encoding().WebName
+                            ? Encoding.Default.WebName
+                            : DefaultEncoding.WebName) + ';' + false + ';' + false + '|';
+#pragma warning restore 618
+                }
+
+                return encodingList;
+            } 
+            set => encodingList = value;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="EncodingList"/> property value as a value tuple.
+        /// </summary>
+        /// <returns>A value tuple containing the encodings from the <see cref="EncodingList"/> property.</returns>
+        public List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>
+            GetEncodingList()
+        {
+            // create a return value..
+            List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)> result =
+                new List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>();
+
+            string[] encodings = EncodingList.Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var encoding in encodings)
+            {
+                var enc = Encoding.GetEncoding(encoding.Split(';')[0]);
+
+                // UTF7..
+                if (enc.CodePage == 65000)
+                {
+                    enc = new UTF7Encoding(bool.Parse(encoding.Split(';')[1]));
+                }
+
+                // UTF8..
+                if (enc.CodePage == 65001)
+                {
+                    enc = new UTF8Encoding(bool.Parse(encoding.Split(';')[2]), 
+                        bool.Parse(encoding.Split(';')[1]));
+                }
+
+                // Unicode, little/big endian..
+                if (enc.CodePage == 1200 || enc.CodePage == 1201)
+                {
+                    enc = new UnicodeEncoding(enc.CodePage == 1201, bool.Parse(encoding.Split(';')[2]),
+                        bool.Parse(encoding.Split(';')[1]));
+                }
+
+                // UTF32, little/big endian..
+                if (enc.CodePage == 12000 || enc.CodePage == 12001)
+                {
+                    enc = new UTF32Encoding(enc.CodePage == 12001, bool.Parse(encoding.Split(';')[2]),
+                        bool.Parse(encoding.Split(';')[1]));
+                }
+
+                // add the encoding to the return value..
+                result.Add((encodingName: enc.EncodingName, encoding: enc,
+                    unicodeFailOnInvalidChar: bool.Parse(encoding.Split(';')[1]),
+                    unicodeBOM: bool.Parse(encoding.Split(';')[2])));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets an encoding data from a given parameters to be used for the <see cref="FormSettings"/> form.
+        /// </summary>
+        /// <param name="objects">An array of objects to cast into a value tuple.</param>
+        /// <returns>A value tuple containing the encoding information.</returns>
+        public (string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)
+            EncodingsFromObjects(params object[] objects)
+        {
+            // create a return value..
+            (string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM) result = (
+                (string) objects[1], (Encoding) objects[0], (bool) objects[2],
+                (bool) objects[3]);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Generates a list of value tuples containing encoding data from a given <see cref="DataGridView"/>.
+        /// </summary>
+        /// <param name="dataGridView"></param>
+        /// <returns>A list of value tuples containing the encoding information.</returns>
+        public List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>
+            EncodingsFromDataGrid(DataGridView dataGridView)
+        {
+            // create a return value..
+            List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)> result =
+                new List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>();
+
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                result.Add((EncodingsFromObjects(row.Cells[1].Value, row.Cells[0].Value, row.Cells[2].Value,
+                    row.Cells[3].Value)));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets an encoding list formatted as a string from a given value tuple list.
+        /// </summary>
+        /// <param name="encodings">A value tuple list containing the data for the encodings.</param>
+        /// <returns>A formatted string suitable to be assigned to the <see cref="EncodingList"/> property value.</returns>
+        public string EncodingStringFromDefinitionList(
+                    List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)> encodings)
+        {
+            // the list type is Encoding1.WebName;FailOnErrorInCaseOfUnicode;BOMInCaseOfUnicode|Encoding2.WebName;FailOnErrorInCaseOfUnicode;BOMInCaseOfUnicode|...
+            string result = string.Empty;
+            foreach (var encoding in encodings)
+            {
+                result +=
+                    encoding.encodingName + ';' + encoding.unicodeFailOnInvalidChar + ';' + encoding.unicodeBOM + '|';
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// The amount of files to be saved to a document history.

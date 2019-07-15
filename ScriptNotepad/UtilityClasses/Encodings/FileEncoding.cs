@@ -24,10 +24,12 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using System.IO;
 using System.Text;
 using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Settings;
+using VPKSoft.ErrorLogger;
 using static ScriptNotepad.UtilityClasses.Encodings.TryMakeEncoding;
 
 namespace ScriptNotepad.UtilityClasses.Encodings
@@ -53,36 +55,58 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         public static Encoding GetFileEncoding(string sessionName, string fileName, Encoding encoding, bool reloadContents,
             bool encodingOverridden, bool overrideDetectBom, out bool noBom, out bool bigEndian, out bool existsInDatabase)
         {
-            // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
-            existsInDatabase = DatabaseFileSave.FileExistsInDatabase(sessionName, fileName);
-
-            if (FormSettings.Settings.AutoDetectEncoding && !encodingOverridden && (!existsInDatabase || reloadContents))
+            try
             {
-                using (FileStream fileStream = File.OpenRead(fileName))
+                // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
+                existsInDatabase = DatabaseFileSave.FileExistsInDatabase(sessionName, fileName);
+
+                noBom = false;
+                bigEndian = false;
+
+                if (FormSettings.Settings.AutoDetectEncoding && !encodingOverridden &&
+                    (!existsInDatabase || reloadContents))
                 {
-                    encoding = DetectEncoding.FromStream(fileStream);
+                    using (FileStream fileStream = File.OpenRead(fileName))
+                    {
+                        encoding = DetectEncoding.FromStream(fileStream);
+                        return encoding;
+                    }
+                }
+
+                if ((FormSettings.Settings.DetectNoBom || overrideDetectBom) && !encodingOverridden &&
+                    (!existsInDatabase || reloadContents))
+                {
+                    string contents = TryEncodings(fileName, out var detectedEncoding, out bigEndian, out noBom);
+
+                    if (contents != null)
+                    {
+                        encoding = detectedEncoding;
+                        return encoding;
+                    }
+                }
+
+                if (existsInDatabase && !reloadContents && !encodingOverridden && !File.Exists(fileName))
+                {
+                    encoding = DatabaseFileSave.GetEncodingFromDatabase(sessionName, fileName);
+                    return encoding;
+                }
+
+                // the last check..
+                if (File.Exists(fileName))
+                {
+                    File.ReadAllText(fileName, encoding);
                 }
             }
-
-            noBom = false;
-            bigEndian = false;
-
-            if ((FormSettings.Settings.DetectNoBom || overrideDetectBom) && !encodingOverridden && (!existsInDatabase || reloadContents))
+            catch (Exception ex)
             {
-                string contents = TryEncodings(fileName, out var detectedEncoding, out bigEndian, out noBom);
-
-                if (contents != null)
-                {
-                    encoding = detectedEncoding;
-                }
+                ExceptionLogger.LogError(ex);
+                existsInDatabase = false;
+                noBom = false;
+                bigEndian = false;
+                encoding = null;
             }
 
-            if (existsInDatabase && !reloadContents && !encodingOverridden && !File.Exists(fileName))
-            {
-                encoding = DatabaseFileSave.GetEncodingFromDatabase(sessionName, fileName);
-            }
-
-            return encoding ?? (encoding = FormSettings.Settings.DefaultEncoding);
+            return encoding;
         }
     }
 }

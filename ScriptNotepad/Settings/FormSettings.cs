@@ -154,7 +154,7 @@ namespace ScriptNotepad.Settings
         private void LoadSettings()
         {
             // select the encoding from the settings..
-            CharacterSetComboBuilder.SelectItemByEncoding(Settings.DefaultEncoding, false);
+            CharacterSetComboBuilder.SelectItemByEncoding(Encoding.Default, false);
 
             // get the value whether to use auto-detection on a file encoding on opening a new file..
             cbEncodingAutoDetect.Checked = Settings.AutoDetectEncoding;
@@ -299,6 +299,15 @@ namespace ScriptNotepad.Settings
             cbNoUTF32LE.Checked = Settings.SkipUtf32LE;
             cbNoUTF32BE.Checked = Settings.SkipUtf32BE;
 
+            // the default encoding setting is deprecated and hidden..
+            var encodings = Settings.GetEncodingList();
+
+            foreach (var encoding in encodings)
+            {
+                dgvEncodings.Rows.Add(encoding.encoding, encoding.encodingName, encoding.unicodeBOM,
+                    encoding.unicodeFailOnInvalidChar);
+            }
+
             #region DateTime
             // get the date and time formats..
             tbDateTimeFormat1.Text = Settings.DateFormat1;
@@ -316,9 +325,6 @@ namespace ScriptNotepad.Settings
         /// </summary>
         private void SaveSettings()
         {
-            // save the default encoding..
-            Settings.DefaultEncoding = SelectedEncoding;
-
             // save the value whether to use auto-detection on a file encoding on opening a new file..
             Settings.AutoDetectEncoding = cbEncodingAutoDetect.Checked;
 
@@ -463,6 +469,12 @@ namespace ScriptNotepad.Settings
             Settings.SkipUnicodeDetectBE = cbNoUnicodeBE.Checked;
             Settings.SkipUtf32LE = cbNoUTF32LE.Checked;
             Settings.SkipUtf32BE = cbNoUTF32BE.Checked;
+
+            // the default encoding setting is deprecated and hidden..
+            var encodings = Settings.EncodingsFromDataGrid(dgvEncodings);
+
+            Settings.EncodingList = 
+                Settings.EncodingStringFromDefinitionList(encodings);
 
             #region DateTime
             // set the date and time formats..
@@ -859,6 +871,14 @@ namespace ScriptNotepad.Settings
         private void CbDetectNoBomUnicode_CheckedChanged(object sender, EventArgs e)
         {
             gpSkipEncodings.Enabled = cbDetectNoBomUnicode.Checked;
+        }
+
+        private void TsbEncodingList_Click(object sender, EventArgs e)
+        {
+            if (sender.Equals(tsbAddEncoding))
+            {
+
+            }
         }
     }
 }

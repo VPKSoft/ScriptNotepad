@@ -57,6 +57,23 @@
             this.nudAutoSaveInterval = new System.Windows.Forms.NumericUpDown();
             this.cbUseAutoSave = new System.Windows.Forms.CheckBox();
             this.tabEncoding = new System.Windows.Forms.TabPage();
+            this.tlpEncoding = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tsbAddEncoding = new System.Windows.Forms.ToolStripButton();
+            this.tsbDeleteEncoding = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbEncodingMoveUp = new System.Windows.Forms.ToolStripButton();
+            this.tsbEncodingMoveDown = new System.Windows.Forms.ToolStripButton();
+            this.dgvEncodings = new System.Windows.Forms.DataGridView();
+            this._colEncoding = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEncodingName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colUnicodeBOM = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colUnicodeFailInvalidChar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.gpSkipEncodings = new System.Windows.Forms.GroupBox();
+            this.cbNoUnicodeLE = new System.Windows.Forms.CheckBox();
+            this.cbNoUTF32BE = new System.Windows.Forms.CheckBox();
+            this.cbNoUTF32LE = new System.Windows.Forms.CheckBox();
+            this.cbNoUnicodeBE = new System.Windows.Forms.CheckBox();
             this.cbDetectNoBomUnicode = new System.Windows.Forms.CheckBox();
             this.cbEncodingAutoDetect = new System.Windows.Forms.CheckBox();
             this.gpDefaultEncoding = new System.Windows.Forms.GroupBox();
@@ -169,11 +186,6 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.cbNoUnicodeLE = new System.Windows.Forms.CheckBox();
-            this.cbNoUTF32LE = new System.Windows.Forms.CheckBox();
-            this.cbNoUnicodeBE = new System.Windows.Forms.CheckBox();
-            this.cbNoUTF32BE = new System.Windows.Forms.CheckBox();
-            this.gpSkipEncodings = new System.Windows.Forms.GroupBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -184,6 +196,10 @@
             this.tpgAdditionalSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).BeginInit();
             this.tabEncoding.SuspendLayout();
+            this.tlpEncoding.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEncodings)).BeginInit();
+            this.gpSkipEncodings.SuspendLayout();
             this.gpDefaultEncoding.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btSystemDefaultEncoding)).BeginInit();
@@ -204,7 +220,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
             this.tabDateAndTime.SuspendLayout();
             this.gbDate.SuspendLayout();
-            this.gpSkipEncodings.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -582,6 +597,7 @@
             // 
             // tabEncoding
             // 
+            this.tabEncoding.Controls.Add(this.tlpEncoding);
             this.tabEncoding.Controls.Add(this.gpSkipEncodings);
             this.tabEncoding.Controls.Add(this.cbDetectNoBomUnicode);
             this.tabEncoding.Controls.Add(this.cbEncodingAutoDetect);
@@ -594,10 +610,185 @@
             this.tabEncoding.Text = "Encoding";
             this.tabEncoding.UseVisualStyleBackColor = true;
             // 
+            // tlpEncoding
+            // 
+            this.tlpEncoding.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpEncoding.ColumnCount = 2;
+            this.tlpEncoding.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpEncoding.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpEncoding.Controls.Add(this.toolStrip1, 1, 0);
+            this.tlpEncoding.Controls.Add(this.dgvEncodings, 0, 0);
+            this.tlpEncoding.Location = new System.Drawing.Point(6, 6);
+            this.tlpEncoding.Name = "tlpEncoding";
+            this.tlpEncoding.RowCount = 1;
+            this.tlpEncoding.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpEncoding.Size = new System.Drawing.Size(648, 228);
+            this.tlpEncoding.TabIndex = 51;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbAddEncoding,
+            this.tsbDeleteEncoding,
+            this.toolStripSeparator1,
+            this.tsbEncodingMoveUp,
+            this.tsbEncodingMoveDown});
+            this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
+            this.toolStrip1.Location = new System.Drawing.Point(616, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(32, 228);
+            this.toolStrip1.TabIndex = 51;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // tsbAddEncoding
+            // 
+            this.tsbAddEncoding.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbAddEncoding.Image = global::ScriptNotepad.Properties.Resources.list_add_5;
+            this.tsbAddEncoding.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAddEncoding.Name = "tsbAddEncoding";
+            this.tsbAddEncoding.Size = new System.Drawing.Size(30, 20);
+            this.tsbAddEncoding.Text = "Add encoding";
+            this.tsbAddEncoding.Click += new System.EventHandler(this.TsbEncodingList_Click);
+            // 
+            // tsbDeleteEncoding
+            // 
+            this.tsbDeleteEncoding.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDeleteEncoding.Image = global::ScriptNotepad.Properties.Resources.Erase;
+            this.tsbDeleteEncoding.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDeleteEncoding.Name = "tsbDeleteEncoding";
+            this.tsbDeleteEncoding.Size = new System.Drawing.Size(30, 20);
+            this.tsbDeleteEncoding.Text = "Delete encoding";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(30, 6);
+            // 
+            // tsbEncodingMoveUp
+            // 
+            this.tsbEncodingMoveUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbEncodingMoveUp.Image = global::ScriptNotepad.Properties.Resources.arrow_up_2;
+            this.tsbEncodingMoveUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbEncodingMoveUp.Name = "tsbEncodingMoveUp";
+            this.tsbEncodingMoveUp.Size = new System.Drawing.Size(30, 20);
+            this.tsbEncodingMoveUp.Text = "Move up";
+            // 
+            // tsbEncodingMoveDown
+            // 
+            this.tsbEncodingMoveDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbEncodingMoveDown.Image = ((System.Drawing.Image)(resources.GetObject("tsbEncodingMoveDown.Image")));
+            this.tsbEncodingMoveDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbEncodingMoveDown.Name = "tsbEncodingMoveDown";
+            this.tsbEncodingMoveDown.Size = new System.Drawing.Size(30, 20);
+            this.tsbEncodingMoveDown.Text = "Move down";
+            // 
+            // dgvEncodings
+            // 
+            this.dgvEncodings.AllowUserToAddRows = false;
+            this.dgvEncodings.AllowUserToDeleteRows = false;
+            this.dgvEncodings.AllowUserToResizeRows = false;
+            this.dgvEncodings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvEncodings.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dgvEncodings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvEncodings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._colEncoding,
+            this.colEncodingName,
+            this.colUnicodeBOM,
+            this.colUnicodeFailInvalidChar});
+            this.dgvEncodings.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dgvEncodings.Location = new System.Drawing.Point(3, 3);
+            this.dgvEncodings.Name = "dgvEncodings";
+            this.dgvEncodings.RowHeadersVisible = false;
+            this.dgvEncodings.ShowEditingIcon = false;
+            this.dgvEncodings.Size = new System.Drawing.Size(610, 222);
+            this.dgvEncodings.TabIndex = 50;
+            // 
+            // _colEncoding
+            // 
+            this._colEncoding.HeaderText = "EncodingValue (Invisible)";
+            this._colEncoding.Name = "_colEncoding";
+            this._colEncoding.Visible = false;
+            // 
+            // colEncodingName
+            // 
+            this.colEncodingName.HeaderText = "Encoding";
+            this.colEncodingName.Name = "colEncodingName";
+            this.colEncodingName.Width = 250;
+            // 
+            // colUnicodeBOM
+            // 
+            this.colUnicodeBOM.HeaderText = "Unicode BOM";
+            this.colUnicodeBOM.Name = "colUnicodeBOM";
+            // 
+            // colUnicodeFailInvalidChar
+            // 
+            this.colUnicodeFailInvalidChar.HeaderText = "Fail on invalid character (Unicode)";
+            this.colUnicodeFailInvalidChar.Name = "colUnicodeFailInvalidChar";
+            this.colUnicodeFailInvalidChar.Width = 200;
+            // 
+            // gpSkipEncodings
+            // 
+            this.gpSkipEncodings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gpSkipEncodings.Controls.Add(this.cbNoUnicodeLE);
+            this.gpSkipEncodings.Controls.Add(this.cbNoUTF32BE);
+            this.gpSkipEncodings.Controls.Add(this.cbNoUTF32LE);
+            this.gpSkipEncodings.Controls.Add(this.cbNoUnicodeBE);
+            this.gpSkipEncodings.Location = new System.Drawing.Point(15, 289);
+            this.gpSkipEncodings.Name = "gpSkipEncodings";
+            this.gpSkipEncodings.Size = new System.Drawing.Size(400, 76);
+            this.gpSkipEncodings.TabIndex = 49;
+            this.gpSkipEncodings.TabStop = false;
+            // 
+            // cbNoUnicodeLE
+            // 
+            this.cbNoUnicodeLE.AutoSize = true;
+            this.cbNoUnicodeLE.Location = new System.Drawing.Point(6, 19);
+            this.cbNoUnicodeLE.Name = "cbNoUnicodeLE";
+            this.cbNoUnicodeLE.Size = new System.Drawing.Size(105, 17);
+            this.cbNoUnicodeLE.TabIndex = 45;
+            this.cbNoUnicodeLE.Text = "No Unicode (LE)";
+            this.cbNoUnicodeLE.UseVisualStyleBackColor = true;
+            // 
+            // cbNoUTF32BE
+            // 
+            this.cbNoUTF32BE.AutoSize = true;
+            this.cbNoUTF32BE.Location = new System.Drawing.Point(213, 42);
+            this.cbNoUTF32BE.Name = "cbNoUTF32BE";
+            this.cbNoUTF32BE.Size = new System.Drawing.Size(99, 17);
+            this.cbNoUTF32BE.TabIndex = 48;
+            this.cbNoUTF32BE.Text = "No UTF32 (BE)";
+            this.cbNoUTF32BE.UseVisualStyleBackColor = true;
+            // 
+            // cbNoUTF32LE
+            // 
+            this.cbNoUTF32LE.AutoSize = true;
+            this.cbNoUTF32LE.Location = new System.Drawing.Point(6, 42);
+            this.cbNoUTF32LE.Name = "cbNoUTF32LE";
+            this.cbNoUTF32LE.Size = new System.Drawing.Size(98, 17);
+            this.cbNoUTF32LE.TabIndex = 46;
+            this.cbNoUTF32LE.Text = "No UTF32 (LE)";
+            this.cbNoUTF32LE.UseVisualStyleBackColor = true;
+            // 
+            // cbNoUnicodeBE
+            // 
+            this.cbNoUnicodeBE.AutoSize = true;
+            this.cbNoUnicodeBE.Location = new System.Drawing.Point(213, 19);
+            this.cbNoUnicodeBE.Name = "cbNoUnicodeBE";
+            this.cbNoUnicodeBE.Size = new System.Drawing.Size(106, 17);
+            this.cbNoUnicodeBE.TabIndex = 47;
+            this.cbNoUnicodeBE.Text = "No Unicode (BE)";
+            this.cbNoUnicodeBE.UseVisualStyleBackColor = true;
+            // 
             // cbDetectNoBomUnicode
             // 
+            this.cbDetectNoBomUnicode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbDetectNoBomUnicode.AutoSize = true;
-            this.cbDetectNoBomUnicode.Location = new System.Drawing.Point(6, 121);
+            this.cbDetectNoBomUnicode.Location = new System.Drawing.Point(6, 266);
             this.cbDetectNoBomUnicode.Name = "cbDetectNoBomUnicode";
             this.cbDetectNoBomUnicode.Size = new System.Drawing.Size(307, 17);
             this.cbDetectNoBomUnicode.TabIndex = 44;
@@ -607,8 +798,9 @@
             // 
             // cbEncodingAutoDetect
             // 
+            this.cbEncodingAutoDetect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbEncodingAutoDetect.AutoSize = true;
-            this.cbEncodingAutoDetect.Location = new System.Drawing.Point(6, 95);
+            this.cbEncodingAutoDetect.Location = new System.Drawing.Point(6, 240);
             this.cbEncodingAutoDetect.Name = "cbEncodingAutoDetect";
             this.cbEncodingAutoDetect.Size = new System.Drawing.Size(311, 17);
             this.cbEncodingAutoDetect.TabIndex = 43;
@@ -625,7 +817,7 @@
             this.gpDefaultEncoding.Controls.Add(this.cmbEncoding);
             this.gpDefaultEncoding.Controls.Add(this.lbCharacterSet);
             this.gpDefaultEncoding.Controls.Add(this.lbEncoding);
-            this.gpDefaultEncoding.Location = new System.Drawing.Point(6, 6);
+            this.gpDefaultEncoding.Location = new System.Drawing.Point(6, 27);
             this.gpDefaultEncoding.Name = "gpDefaultEncoding";
             this.gpDefaultEncoding.Size = new System.Drawing.Size(648, 81);
             this.gpDefaultEncoding.TabIndex = 42;
@@ -1841,58 +2033,6 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
-            // cbNoUnicodeLE
-            // 
-            this.cbNoUnicodeLE.AutoSize = true;
-            this.cbNoUnicodeLE.Location = new System.Drawing.Point(6, 19);
-            this.cbNoUnicodeLE.Name = "cbNoUnicodeLE";
-            this.cbNoUnicodeLE.Size = new System.Drawing.Size(105, 17);
-            this.cbNoUnicodeLE.TabIndex = 45;
-            this.cbNoUnicodeLE.Text = "No Unicode (LE)";
-            this.cbNoUnicodeLE.UseVisualStyleBackColor = true;
-            // 
-            // cbNoUTF32LE
-            // 
-            this.cbNoUTF32LE.AutoSize = true;
-            this.cbNoUTF32LE.Location = new System.Drawing.Point(6, 42);
-            this.cbNoUTF32LE.Name = "cbNoUTF32LE";
-            this.cbNoUTF32LE.Size = new System.Drawing.Size(98, 17);
-            this.cbNoUTF32LE.TabIndex = 46;
-            this.cbNoUTF32LE.Text = "No UTF32 (LE)";
-            this.cbNoUTF32LE.UseVisualStyleBackColor = true;
-            // 
-            // cbNoUnicodeBE
-            // 
-            this.cbNoUnicodeBE.AutoSize = true;
-            this.cbNoUnicodeBE.Location = new System.Drawing.Point(213, 19);
-            this.cbNoUnicodeBE.Name = "cbNoUnicodeBE";
-            this.cbNoUnicodeBE.Size = new System.Drawing.Size(106, 17);
-            this.cbNoUnicodeBE.TabIndex = 47;
-            this.cbNoUnicodeBE.Text = "No Unicode (BE)";
-            this.cbNoUnicodeBE.UseVisualStyleBackColor = true;
-            // 
-            // cbNoUTF32BE
-            // 
-            this.cbNoUTF32BE.AutoSize = true;
-            this.cbNoUTF32BE.Location = new System.Drawing.Point(213, 42);
-            this.cbNoUTF32BE.Name = "cbNoUTF32BE";
-            this.cbNoUTF32BE.Size = new System.Drawing.Size(99, 17);
-            this.cbNoUTF32BE.TabIndex = 48;
-            this.cbNoUTF32BE.Text = "No UTF32 (BE)";
-            this.cbNoUTF32BE.UseVisualStyleBackColor = true;
-            // 
-            // gpSkipEncodings
-            // 
-            this.gpSkipEncodings.Controls.Add(this.cbNoUnicodeLE);
-            this.gpSkipEncodings.Controls.Add(this.cbNoUTF32BE);
-            this.gpSkipEncodings.Controls.Add(this.cbNoUTF32LE);
-            this.gpSkipEncodings.Controls.Add(this.cbNoUnicodeBE);
-            this.gpSkipEncodings.Location = new System.Drawing.Point(15, 144);
-            this.gpSkipEncodings.Name = "gpSkipEncodings";
-            this.gpSkipEncodings.Size = new System.Drawing.Size(400, 76);
-            this.gpSkipEncodings.TabIndex = 49;
-            this.gpSkipEncodings.TabStop = false;
-            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -1926,6 +2066,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).EndInit();
             this.tabEncoding.ResumeLayout(false);
             this.tabEncoding.PerformLayout();
+            this.tlpEncoding.ResumeLayout(false);
+            this.tlpEncoding.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEncodings)).EndInit();
+            this.gpSkipEncodings.ResumeLayout(false);
+            this.gpSkipEncodings.PerformLayout();
             this.gpDefaultEncoding.ResumeLayout(false);
             this.gpDefaultEncoding.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btUTF8)).EndInit();
@@ -1958,8 +2105,6 @@
             this.tabDateAndTime.PerformLayout();
             this.gbDate.ResumeLayout(false);
             this.gbDate.PerformLayout();
-            this.gpSkipEncodings.ResumeLayout(false);
-            this.gpSkipEncodings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2111,5 +2256,17 @@
         private System.Windows.Forms.CheckBox cbNoUTF32BE;
         private System.Windows.Forms.CheckBox cbNoUTF32LE;
         private System.Windows.Forms.CheckBox cbNoUnicodeBE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _colEncoding;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEncodingName;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colUnicodeBOM;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colUnicodeFailInvalidChar;
+        private System.Windows.Forms.TableLayoutPanel tlpEncoding;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton tsbAddEncoding;
+        private System.Windows.Forms.ToolStripButton tsbDeleteEncoding;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton tsbEncodingMoveUp;
+        private System.Windows.Forms.ToolStripButton tsbEncodingMoveDown;
+        internal System.Windows.Forms.DataGridView dgvEncodings;
     }
 }

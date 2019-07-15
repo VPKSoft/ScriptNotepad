@@ -73,6 +73,16 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_down_2 {
+            get {
+                object obj = ResourceManager.GetObject("arrow-down-2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arrow_left {
             get {
                 object obj = ResourceManager.GetObject("arrow_left", resourceCulture);
@@ -86,6 +96,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap arrow_right {
             get {
                 object obj = ResourceManager.GetObject("arrow_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_up_2 {
+            get {
+                object obj = ResourceManager.GetObject("arrow-up-2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -314,6 +334,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap History {
             get {
                 object obj = ResourceManager.GetObject("History", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap list_add_5 {
+            get {
+                object obj = ResourceManager.GetObject("list-add-5", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

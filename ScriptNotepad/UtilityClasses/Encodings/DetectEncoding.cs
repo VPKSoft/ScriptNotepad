@@ -172,7 +172,6 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         /// <summary>
         /// Gets or sets the fall back encoding if no other encodings are detected.
         /// </summary>
-//        public static Encoding FallBackEncoding { get; set; } = Encoding.GetEncoding(28591); // ISO-8859-1
         public static Encoding FallBackEncoding { get; set; } = Encoding.Default;
 
         /// <summary>

@@ -28,6 +28,7 @@ using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Database.UtilityClasses;
 using System;
 using System.Collections.Generic;
+using ScriptNotepad.UtilityClasses.Encodings;
 
 namespace ScriptNotepad.Database.TableCommands
 {
@@ -126,7 +127,7 @@ namespace ScriptNotepad.Database.TableCommands
                 $"{QS(recentFile.FILEPATH)},",
                 $"{DateToDBString(recentFile.CLOSED_DATETIME)},",
                 $"{DatabaseCommandsGeneral.GenSessionNameIDCondition(recentFile.SESSIONNAME)},",
-                $"{QS(recentFile.ENCODING.WebName)},",
+                $"{QS(EncodingData.EncodingToString(recentFile.ENCODING))},",
                 $"{(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
                 $"WHERE NOT EXISTS(SELECT * FROM RECENT_FILES WHERE FILENAME_FULL = {QS(recentFile.FILENAME_FULL)} AND SESSIONID = {DatabaseCommandsGeneral.GenSessionNameIDCondition(recentFile.SESSIONNAME)});");
 
@@ -168,7 +169,7 @@ namespace ScriptNotepad.Database.TableCommands
                 $"FILEPATH = {QS(recentFile.FILEPATH)},",
                 $"CLOSED_DATETIME = {DateToDBString(recentFile.CLOSED_DATETIME)},",
                 $"SESSIONID = {recentFile.SESSIONID},",
-                $"ENCODING = {QS(recentFile.ENCODING.WebName)},",
+                $"ENCODING = {QS(EncodingData.EncodingToString(recentFile.ENCODING))},",
                 $"REFERENCEID = {(recentFile.REFERENCEID == null ? "NULL" : recentFile.REFERENCEID.ToString())}",
                 $"WHERE ID = {recentFile.ID};");
 

@@ -27,6 +27,7 @@ SOFTWARE.
 using System.Text;
 using ScriptNotepad.Database.Tables;
 using System.Windows.Forms;
+using ScriptNotepad.UtilityClasses.Encodings;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaTabbedTextControl;
 using static ScriptNotepad.UtilityClasses.Encodings.DetectEncoding;
@@ -236,7 +237,7 @@ namespace ScriptNotepad.Localization
                 {
                     LabelEncoding.Text += @": ";
 
-                    LabelEncoding.Text += fileSave.UNICODE_BOM
+                    LabelEncoding.Text += fileSave.ENCODING.EmitsBom()
                         ? DBLangEngine.GetStatMessage("msgUnicodeBomShort",
                             "BOM|A short message describing that an unicode encoding contains a BOM (byte-order-mark)")
                         : DBLangEngine.GetStatMessage("msgUnicodeNoBomShort",
@@ -247,7 +248,7 @@ namespace ScriptNotepad.Localization
                     {
                         LabelEncoding.Text += @"|";
 
-                        LabelEncoding.Text += fileSave.UNICODE_BIGENDIAN
+                        LabelEncoding.Text += fileSave.ENCODING.IsBigEndian()
                             ? DBLangEngine.GetStatMessage("msgUnicodeBigEndianShort",
                                 "BE|A short message describing that an unicode encoding is in a big endian format")
                             : DBLangEngine.GetStatMessage("msgUnicodeLittleEndianShort",
