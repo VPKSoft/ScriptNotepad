@@ -342,12 +342,12 @@ namespace ScriptNotepad
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) ==
                             DialogResult.Yes)
                         {
-                            string TempPath = Path.GetTempPath();
-                            if (VersionCheck.DownloadFile(version.DownloadLink, TempPath))
+                            string tempPath = Path.GetTempPath();
+                            if (VersionCheck.DownloadFile(version.DownloadLink, tempPath))
                             {
                                 try
                                 {
-                                    Process.Start(Path.Combine(TempPath, Path.GetFileName(new Uri(version.DownloadLink).LocalPath)));
+                                    Process.Start(Path.Combine(tempPath, Path.GetFileName(new Uri(version.DownloadLink).LocalPath)));
                                 }
                                 catch (Exception ex)
                                 {

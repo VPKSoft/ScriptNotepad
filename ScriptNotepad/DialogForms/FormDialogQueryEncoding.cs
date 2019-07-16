@@ -176,18 +176,23 @@ namespace ScriptNotepad.DialogForms
             cbUnicodeFailInvalidCharacters.Enabled = false;
 
             tbFilterEncodings.Focus();
-            ComboBox combo = (ComboBox) sender;
-            if (combo.SelectedItem != null)
+
+            // the lower combo box on the dialog..
+            if (sender.Equals(cmbEncoding))
             {
-                var item = (CharacterSetComboItem) combo.SelectedItem;
-                if (item.Encoding.CodePage == 65001 || // UTF8..
-                    item.Encoding.CodePage == 1200 || // Unicode Little Endian..
-                    item.Encoding.CodePage == 1201 || // Unicode Big Endian..
-                    item.Encoding.CodePage == 12000 || // UTF32 Little Endian..
-                    item.Encoding.CodePage == 12001) // UTF32 Big Endian..
+                ComboBox combo = (ComboBox) sender;
+                if (combo.SelectedItem != null)
                 {
-                    cbUseUnicodeBOM.Enabled = true;
-                    cbUnicodeFailInvalidCharacters.Enabled = true;
+                    var item = (CharacterSetComboItem) combo.SelectedItem;
+                    if (item.Encoding.CodePage == 65001 || // UTF8..
+                        item.Encoding.CodePage == 1200 || // Unicode Little Endian..
+                        item.Encoding.CodePage == 1201 || // Unicode Big Endian..
+                        item.Encoding.CodePage == 12000 || // UTF32 Little Endian..
+                        item.Encoding.CodePage == 12001) // UTF32 Big Endian..
+                    {
+                        cbUseUnicodeBOM.Enabled = true;
+                        cbUnicodeFailInvalidCharacters.Enabled = true;
+                    }
                 }
             }
         }

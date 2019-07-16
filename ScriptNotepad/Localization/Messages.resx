@@ -846,4 +846,10 @@
   <data name="msgQueryNewVersionTitle" xml:space="preserve">
     <value>New version is available|A dialog title informing a user of a new version download possibility</value>
   </data>
+  <data name="msgEncodingAllVolatile" xml:space="preserve">
+    <value>All the listed encodings will throw an exception upon an invalid byte. This leads to the software instability; fix the issue before continuing.|A message describing all the listed encodings in the settings form grid will throw an exception in case of an invalid byte leading to software instability; the user needs to fix this.</value>
+  </data>
+  <data name="msgEncodingRequireOne" xml:space="preserve">
+    <value>At least one configured encoding is required.|A message in a label indicating to the user that at least one encoding must be selected from the settings.</value>
+  </data>
 </root>

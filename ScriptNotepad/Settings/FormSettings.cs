@@ -34,8 +34,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using ScintillaNET;
+using ScriptNotepad.DialogForms;
 using ScriptNotepad.Localization;
 using ScriptNotepad.Localization.Hunspell;
 using ScriptNotepad.Settings.XmlNotepadPlusMarks;
@@ -283,6 +285,8 @@ namespace ScriptNotepad.Settings
             // get the no-BOM detection value..
             cbDetectNoBomUnicode.Checked = Settings.DetectNoBom;
 
+            gpSkipEncodings.Enabled = Settings.DetectNoBom;
+
             // get the auto-save settings..
             cbUseAutoSave.Checked = Settings.ProgramAutoSave;
             nudAutoSaveInterval.Value = Settings.ProgramAutoSaveInterval;
@@ -498,7 +502,6 @@ namespace ScriptNotepad.Settings
         private void CharacterSetComboBuilder_EncodingSelected(object sender, OnEncodingSelectedEventArgs e)
         {
             // save the changed value..
-            SelectedEncoding = e.Encoding;
         }
 
         /// <summary>
@@ -547,11 +550,6 @@ namespace ScriptNotepad.Settings
             scintilla.IndentationGuides = Settings.EditorIndentGuideOn ? IndentView.Real : IndentView.None;
         }
 
-        /// <summary>
-        /// Gets or sets the encoding a user selected from the dialog.
-        /// </summary>
-        private Encoding SelectedEncoding { get; set; }
-
         private void FormSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             using (CharacterSetComboBuilder)
@@ -570,6 +568,9 @@ namespace ScriptNotepad.Settings
             cmbInstalledDictionaries.Items.AddRange(HunspellDictionaryCrawler
                 .CrawlDirectory(Settings.EditorHunspellDictionaryPath).OrderBy(f => f.ToString().ToLowerInvariant())
                 .ToArray());
+
+            // set the states of the tool strip with the encoding settings grid..
+            ValidateEncodingToolStrip();
         }
 
         private void btDefaultEncodings_Click(object sender, EventArgs e)
@@ -873,11 +874,154 @@ namespace ScriptNotepad.Settings
             gpSkipEncodings.Enabled = cbDetectNoBomUnicode.Checked;
         }
 
+        /// <summary>
+        /// Validates the encoding tool strip buttons enabled states.
+        /// </summary>
+        private void ValidateEncodingToolStrip()
+        {
+            // if there is no selection and a selection is possible, select something..
+            if (dgvEncodings.RowCount > 0 && dgvEncodings.CurrentRow == null)
+            {
+                dgvEncodings.Rows[0].Cells[colEncodingName.Index].Selected = true;
+            }
+
+            // set the states of the buttons..
+            tsbEncodingMoveUp.Enabled = 
+                dgvEncodings.CurrentRow != null && dgvEncodings.CurrentRow.Index > 0;
+
+            tsbEncodingMoveDown.Enabled = 
+                dgvEncodings.CurrentRow != null && dgvEncodings.CurrentRow.Index + 1 < dgvEncodings.RowCount;
+
+            tsbDeleteEncoding.Enabled = dgvEncodings.CurrentRow != null;
+            // END: set the states of the buttons..
+
+            // validate the input on the data grid view..
+            ValidateUserEncodingsSettings();
+        }
+
+        // handle the tools strip button clicks with the encoding grid..
         private void TsbEncodingList_Click(object sender, EventArgs e)
         {
             if (sender.Equals(tsbAddEncoding))
             {
+                Encoding encoding;
+                if ((encoding = FormDialogQueryEncoding.Execute(out bool unicodeBom,
+                        out bool unicodeFailInvalidCharacters)) != null) 
+                {
+                    dgvEncodings.Rows.Add(encoding, encoding.EncodingName, unicodeBom,
+                        unicodeFailInvalidCharacters);
+                }
+            }
+            else if (sender.Equals(tsbDeleteEncoding))
+            {
+                if (dgvEncodings.CurrentRow != null)
+                {
+                    dgvEncodings.Rows.Remove(dgvEncodings.CurrentRow);
+                }
+            }
+            else if (sender.Equals(tsbDefault))
+            {
+                // the default encoding setting is deprecated and hidden..
+                var encodings = Settings.GetEncodingList(Settings.DefaultEncodingList);
 
+                dgvEncodings.Rows.Clear();
+
+                foreach (var encoding in encodings)
+                {
+                    dgvEncodings.Rows.Add(encoding.encoding, encoding.encodingName, encoding.unicodeBOM,
+                        encoding.unicodeFailOnInvalidChar);
+                }
+            }
+            else if (sender.Equals(tsbEncodingMoveUp) || sender.Equals(tsbEncodingMoveDown))
+            {
+                if (dgvEncodings.CurrentRow != null)
+                {
+                    if (dgvEncodings.CurrentRow.Index > 0 && sender.Equals(tsbEncodingMoveUp) ||
+                        dgvEncodings.CurrentRow.Index + 1 < dgvEncodings.RowCount && sender.Equals(tsbEncodingMoveDown)
+                    )
+                    {
+                        int index1 = dgvEncodings.CurrentRow.Index + (sender.Equals(tsbEncodingMoveUp) ? -1 : 1);
+                        int index2 = dgvEncodings.CurrentRow.Index;
+
+                        int colIndex = dgvEncodings.CurrentCell?.ColumnIndex ?? 1;
+
+                        foreach (DataGridViewColumn column in dgvEncodings.Columns)
+                        {
+                            object tmp = dgvEncodings.Rows[index1].Cells[column.Index].Value;
+                            dgvEncodings.Rows[index1].Cells[column.Index].Value =
+                                dgvEncodings.Rows[index2].Cells[column.Index].Value;
+                            dgvEncodings.Rows[index2].Cells[column.Index].Value = tmp;
+                        }
+
+                        dgvEncodings.ClearSelection();
+
+                        dgvEncodings.Rows[index1].Cells[colIndex].Selected = true;
+                    }
+                }
+            }
+
+            // set the states of the tool strip with the encoding settings grid..
+            ValidateEncodingToolStrip();
+        }
+
+        private void DgvEncodings_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            // set the states of the tool strip with the encoding settings grid..
+            ValidateEncodingToolStrip();
+        }
+
+        private void DgvEncodings_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            // set the states of the tool strip with the encoding settings grid..
+            ValidateEncodingToolStrip();
+        }
+
+        /// <summary>
+        /// Validates the user given encoding settings.
+        /// </summary>
+        private void ValidateUserEncodingsSettings()
+        {
+            // first assume no error..
+            tbAlertEncoding.Text = string.Empty;
+            pbAlertEncoding.Image = null;
+            btOK.Enabled = true;
+
+            // check the row count --> zero is the first error..
+            if (dgvEncodings.RowCount == 0)
+            {
+                pbAlertEncoding.Image = SystemIcons.Warning.ToBitmap();
+                tbAlertEncoding.Text = DBLangEngine.GetMessage("msgEncodingRequireOne",
+                    "At least one configured encoding is required.|A message in a label indicating to the user that at least one encoding must be selected from the settings.");
+                btOK.Enabled = false;
+                return; // no need to continue as the input errors are not cumulative..
+            }
+
+            // create a list of unicode encodings as code pages..
+            List<int> unicodeCodePages = new List<int>(new int[] {65001, 1200, 1201, 12000, 12001});
+
+            // create a variable to detect the second error of the encodings (all Unicode and all throwing exceptions)..
+            bool allUnicodeThrowException = true;
+
+            // loop through the rows in the data grid view..
+            foreach (DataGridViewRow row in dgvEncodings.Rows)
+            {
+                // get the encoding..
+                var encoding = (Encoding) row.Cells[_colEncoding.Index].Value;
+
+                // get the throw an exception upon invalid bytes value..
+                var throwInvalidBytes = (bool) row.Cells[colUnicodeFailInvalidChar.Index].Value;
+
+                // append to the variable..
+                allUnicodeThrowException &= throwInvalidBytes & unicodeCodePages.Contains(encoding.CodePage);
+            }
+
+            // if the variable is still true, warn the user and disable the OK button..
+            if (allUnicodeThrowException)
+            {
+                pbAlertEncoding.Image = SystemIcons.Warning.ToBitmap();
+                tbAlertEncoding.Text = DBLangEngine.GetMessage("msgEncodingAllVolatile",
+                    "All the listed encodings will throw an exception upon an invalid byte. This leads to the software instability; fix the issue before continuing.|A message describing all the listed encodings in the settings form grid will throw an exception in case of an invalid byte leading to software instability; the user needs to fix this.");
+                btOK.Enabled = false;
             }
         }
     }

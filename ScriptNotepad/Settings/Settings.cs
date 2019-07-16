@@ -312,17 +312,36 @@ namespace ScriptNotepad.Settings
         }
 
         /// <summary>
+        /// Gets the default encoding list for the settings form grid.
+        /// </summary>
+        public static string DefaultEncodingList =>
+            new UTF8Encoding().WebName + ';' + true + ';' + true + '|' +
+            new UTF8Encoding().WebName + ';' + true + ';' + false + '|' +
+            Encoding.Default.WebName + ';' + false + ';' + false + '|';
+
+        /// <summary>
         /// Gets the <see cref="EncodingList"/> property value as a value tuple.
         /// </summary>
         /// <returns>A value tuple containing the encodings from the <see cref="EncodingList"/> property.</returns>
         public List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>
             GetEncodingList()
         {
+            return GetEncodingList(EncodingList);
+        }
+
+        /// <summary>
+        /// Gets the given string value as a value tuple containing encodings.
+        /// </summary>
+        /// <param name="encodingList">A string containing a delimited list of encodings.</param>
+        /// <returns>A value tuple containing the encodings from the <paramref name="encodingList"/> value.</returns>
+        public static List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>
+            GetEncodingList(string encodingList)
+        {
             // create a return value..
             List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)> result =
                 new List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>();
 
-            string[] encodings = EncodingList.Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] encodings = encodingList.Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries);
             foreach (var encoding in encodings)
             {
                 var enc = Encoding.GetEncoding(encoding.Split(';')[0]);
@@ -393,7 +412,7 @@ namespace ScriptNotepad.Settings
 
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
-                result.Add((EncodingsFromObjects(row.Cells[1].Value, row.Cells[0].Value, row.Cells[2].Value,
+                result.Add((EncodingsFromObjects(row.Cells[0].Value, ((Encoding)row.Cells[0].Value).WebName, row.Cells[2].Value,
                     row.Cells[3].Value)));
             }
 

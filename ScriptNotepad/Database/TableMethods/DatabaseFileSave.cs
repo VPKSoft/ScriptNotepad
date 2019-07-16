@@ -101,13 +101,12 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
-        /// <param name="sessionID">An identifier for the session to which the document should be saved to.</param>
+        /// <param name="sessionId">An identifier for the session to which the document should be saved to.</param>
         /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <param name="encoding">An encoding for the document.</param>
-        /// <param name="ID">An unique identifier for the file.</param>
+        /// <param name="id">An unique identifier for the file.</param>
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
-        // ReSharper disable once InconsistentNaming
-        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, long sessionID, Encoding encoding, int ID = -1)
+        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, long sessionId, Encoding encoding, int id = -1)
         {
             try
             {
@@ -126,7 +125,7 @@ namespace ScriptNotepad.Database.TableMethods
                     FILE_CONTENTS = document.Scintilla.Text,
                     VISIBILITY_ORDER = (int)document.FileTabButton.Tag,
                     SESSIONNAME = sessionName,
-                    SESSIONID = sessionID,
+                    SESSIONID = sessionId,
                     ISACTIVE = document.FileTabButton.IsActive,
                     ENCODING = encoding,
                     ISHISTORY = databaseHistoryFlag == DatabaseHistoryFlag.IsHistory, // in a database sense only the value if IsHistory is true..
@@ -160,15 +159,14 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
         /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
-        /// <param name="sessionID">An identifier for the session to which the document should be saved to.</param>
+        /// <param name="sessionId">An identifier for the session to which the document should be saved to.</param>
         /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <param name="encoding">An encoding for the document.</param>
-        /// <param name="ID">An unique identifier for the file.</param>
+        /// <param name="id">An unique identifier for the file.</param>
         /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
-        // ReSharper disable once InconsistentNaming
-        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, long sessionID, Encoding encoding, int ID = -1)
+        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, long sessionId, Encoding encoding, int id = -1)
         {
-            return UpdateFile(AddFile(document, databaseHistoryFlag, sessionName, sessionID, encoding, ID), document.Scintilla.CurrentPosition);
+            return UpdateFile(AddFile(document, databaseHistoryFlag, sessionName, sessionId, encoding, id), document.Scintilla.CurrentPosition);
         }
 
         /// <summary>
