@@ -412,8 +412,8 @@ namespace ScriptNotepad.Settings
 
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
-                result.Add((EncodingsFromObjects(row.Cells[0].Value, ((Encoding)row.Cells[0].Value).WebName, row.Cells[2].Value,
-                    row.Cells[3].Value)));
+                result.Add((EncodingsFromObjects(row.Cells[0].Value, ((Encoding) row.Cells[0].Value).WebName,
+                    row.Cells[3].Value, row.Cells[2].Value)));
             }
 
             return result;

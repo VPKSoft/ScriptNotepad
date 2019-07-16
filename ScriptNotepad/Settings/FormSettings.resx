@@ -120,28 +120,6 @@
   <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>571, 17</value>
   </metadata>
-  <metadata name="ttMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>571, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsbEncodingMoveDown.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAH+SURBVDhPzY9RSFNxFMbPdaIMLUvFgl4qhRZImaWpqfSg
-        ydRmkKXF3FUWRhAFxWbg23AqJFKCLUhFJiIJlUgvRjGNuTtRyFk0FmXl5nLL1HJyjbV9XeEPhWD56O/x
-        /L7vcA5tDaKO3Rfi0k1i7BGTGHGoc5ZyHmYz9YfSUQWV2D9Glr0SZWenRO7COwczRIqyPgxaP6NfcKOm
-        dQKUZh6jnIFtTBMVTsZwSqvloO4TFIZl7NYHIKvxgFmi+OMd0y9sbqwh/Agh7dII6OiTRqaJTr6sy7j2
-        BlV9IShagHi9CNK455iVSG47k6zsh8sbgEMEjJbviFUOLVPRSDqdtqUknBufV3cHcLhVKt8KguO9awvU
-        rM040Nl+vt4O11IYXS7g1O0ZUIFlLKJYGM4zenHCBCTWA5G130BqTy9r/UW2OYnLfPy6+ZEbQ9I3lwfD
-        2KV9i528E7n3wthjAKKvroCqPB9I60thrXXkD6gSVMPBnvEVNFiBrLs/kdq0in1GQH4jCOLnpNN9Gpbe
-        gLznbVk6J7qmQih4AOxtALbXhUHaBan8xcxS/6DcJqdCu4Pv+Iqbz4AYPSC7Ip1e7X1P/OIOlvoPpRO5
-        0RXOxetPV5F55xeo0i9Stb+Y2U2icjbv1/mQalgCXfS3E4FjZpOUz8ipclbgNPOTVLsQx6ZbDqLfm+gA
-        0VX0ybYAAAAASUVORK5CYII=
-</value>
-  </data>
   <metadata name="_colEncoding.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -154,6 +132,25 @@
   <metadata name="colUnicodeFailInvalidChar.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="ttMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tsbEncodingMoveDown.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIASURBVDhPzY9dSJNxFMbP6yQZqyyNCrqpFFpgOPswNY0u
+        tJjZjLDUmHuVhRFEQbEpeDdcCYWU4ApSiUVIQiXSRUUyjbl3opBTaUwszX3klqnl5DXm9vQKfyiCykt/
+        l+f3PIdzaG2w7uB9ITHDIq5XWcS4fa1+ynmSzdQvivqUdNI5EV/8TpSdcYlc+ZiLGSJlcTu67J/QIXhR
+        1TgIUln7KadzA9NEBUMKTm237TVMQmlawHZjGLIqH5glSjrc8rHb4cUKwvcoVBd6QQee32Ca6NjbmkNX
+        RlHRHoXyNpBkFEE67zSzEilNp1PUHfAEwnCJgNn2DQr1ywU60bufTjlSk88OzGgfhpHeKJVrI+D4wMoC
+        LWsz9rQ2n6tzwjMfQ5sHOH5rCpRv648rFHryzAEcuQdsqQPiq7+CtL7HrPUb2datXOazkYanXrySvrnY
+        FcM2/Xts5t3ItcSwwwQkXF4EVfg+kD6Yylp/cLRTk6zpiTwaWES9Hci6+wNpN5ewywzIr0VA/LR0elDH
+        0n8h701TlsGNtuEo8h8AO+uBjTUxkH5WKn+2stQ/KHHIqcDp4lu+4PprQGEEZJek0yv948TPbWKp/1A0
+        mJtQ6p67+mIJmXeWQaUhkSpDhcyuEo27YbchiDTTPOh8qJkIHDOrpGRKTmV+gdPNDFH1bCKbrjmIfgJ7
+        2wDGl2FWDgAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="scintilla.Text" xml:space="preserve">
     <value>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
@@ -174,18 +171,6 @@ Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deseru
   </metadata>
   <metadata name="fdEditorFont.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>452, 17</value>
-  </metadata>
-  <metadata name="_colEncoding.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="colEncodingName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="colUnicodeBOM.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="colUnicodeFailInvalidChar.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

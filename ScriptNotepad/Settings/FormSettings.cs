@@ -1024,5 +1024,11 @@ namespace ScriptNotepad.Settings
                 btOK.Enabled = false;
             }
         }
+
+        private void DgvEncodings_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // set the states of the tool strip with the encoding settings grid..
+            ValidateEncodingToolStrip();
+        }
     }
 }
