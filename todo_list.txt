@@ -56,11 +56,11 @@
 * Done? [YES  ] [2019/07/02] Add a shortcut key to toggle between tabs.
 * Done? [N/A  ] [2019/07/02] Add a shortcut key to toggle between sessions.
 * Done? [N/A  ] [2019/07/03] Add possibility to move a tab into a different session.
-* Done? [N/A  ] [2019/07/09] Add string start / end matching. (==Add hyphen matching.)
+* Done? [DON'T] [2019/07/16] Add string start / end matching. (==Add apostrophe matching.) --> Too difficult!
 * Done? [YES  ] [2019/07/07] FIX: Find in files with *.* crashes the software.
 * Done? [YES  ] [2019/07/07] Activate the software on shell context menu open file request.
 * Done? [YES  ] [2019/07/09] Add version check. Missing the automatic version.
 * Done? [YES  ] [2019/07/10] Make the encoding detection more versatile.
-* Done? [N/A  ] [2019/07/10] Add no-BOM Unicode to the encoding selection (UTF8, Unicode and UTF32).
-* Done? [N/A  ] [2019/07/10] Improve the no-BOM UTF8 detection.
+* Done? [YES  ] [2019/07/14] Add no-BOM Unicode to the encoding selection (UTF8, Unicode and UTF32).
+* Done? [DON'T] [2019/07/14] Improve the no-BOM UTF8 detection --> Nothing to improve I guess.
 * Done? [N/A  ] [2019/07/10] Add algorithm to ignore binary files.
