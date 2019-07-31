@@ -318,6 +318,7 @@ namespace ScriptNotepad
         #endregion
 
         #region HelperMethods                
+
         /// <summary>
         /// Checks for new version of the application.
         /// </summary>
@@ -326,43 +327,8 @@ namespace ScriptNotepad
             // no going to the internet if the user doesn't allow it..
             if (FormSettings.Settings.UpdateAutoCheck)
             {
-                try
-                {
-                    VersionCheck.CheckUri = "https://www.vpksoft.net/versions/version.php";
-                    var assembly = Assembly.GetEntryAssembly();
-                    var version = VersionCheck.GetVersion(assembly);
-
-                    // null validation before usage..
-                    if (version != null && version.IsLargerVersion(assembly))
-                    {
-                        if (MessageBox.Show(DBLangEngine.GetMessage("msgQueryDownloadNewVersion",
-                                    "A new version is available to download. Download now?|A message describing that a new version of the software is available to download and the user is asked whether to download it now."),
-                                DBLangEngine.GetMessage("msgQueryNewVersionTitle",
-                                    "New version is available|A dialog title informing a user of a new version download possibility"),
-                                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) ==
-                            DialogResult.Yes)
-                        {
-                            string tempPath = Path.GetTempPath();
-                            if (VersionCheck.DownloadFile(version.DownloadLink, tempPath))
-                            {
-                                try
-                                {
-                                    Process.Start(Path.Combine(tempPath, Path.GetFileName(new Uri(version.DownloadLink).LocalPath)));
-                                }
-                                catch (Exception ex)
-                                {
-                                    // log the exception..
-                                    ExceptionLogger.LogError(ex);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // log the exception..
-                    ExceptionLogger.LogError(ex);
-                }
+                FormCheckVersion.CheckForNewVersion("https://www.vpksoft.net/versions/version.php",
+                    Assembly.GetEntryAssembly(), FormSettings.Settings.Culture.Name);
             }
         }
 

@@ -693,6 +693,14 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             return false;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the match case is checked.
+        /// </summary>
+        /// <value><c>true</c> if the match case is checked; otherwise, <c>false</c>.</value>
+        private bool MatchCaseSet =>
+            cbMatchCase.Checked && tcMain.SelectedTab.Equals(tabFind) ||
+            cbMatchCase2.Checked && tcMain.SelectedTab.Equals(tabReplace) ||
+            cbMatchCase3.Checked && tcMain.SelectedTab.Equals(tabFindInFiles);
 
         /// <summary>
         /// Saves the search text(s) to the database.
@@ -707,7 +715,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             var inserted = DatabaseSearchAndReplace.AddOrUpdateSearchAndReplace(
                 new SEARCH_AND_REPLACE_HISTORY
                 {
-                    SEARCH_OR_REPLACE_TEXT = SearchText, CASE_SENSITIVE = cbMatchCase.Checked, TYPE = (int) SearchType
+                    SEARCH_OR_REPLACE_TEXT = SearchText, CASE_SENSITIVE = MatchCaseSet, TYPE = (int) SearchType
                 },
                 FormSettings.Settings.CurrentSession, "SEARCH_HISTORY");
 
@@ -783,7 +791,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             var inserted = DatabaseSearchAndReplace.AddOrUpdateSearchAndReplace(
                 new SEARCH_AND_REPLACE_HISTORY
                 {
-                    SEARCH_OR_REPLACE_TEXT = ReplaceText, CASE_SENSITIVE = cbMatchCase.Checked, TYPE = (int) SearchType
+                    SEARCH_OR_REPLACE_TEXT = ReplaceText, CASE_SENSITIVE = MatchCaseSet, TYPE = (int) SearchType
                 },
                 FormSettings.Settings.CurrentSession, "REPLACE_HISTORY");
 
