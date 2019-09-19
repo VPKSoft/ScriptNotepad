@@ -109,12 +109,12 @@ namespace ScriptNotepad
 
             if (Utils.ShouldLocalize() != null)
             {
-                DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
                 return; // After localization don't do anything more..
             }
 
             // initialize the language/localization database..
-            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
             // subscribe to the session ended event to save the documents without asking stupid questions..
             SystemEvents.SessionEnded += SystemEvents_SessionEnded;
@@ -3549,5 +3549,10 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
+
+        private void MnuFindTab_Click(object sender, EventArgs e)
+        {
+            FormDialogSelectFileTab.ShowDialog(sttcMain);
+        }
     }
 }

@@ -66,12 +66,12 @@ namespace ScriptNotepad.Settings
 
             if (Utils.ShouldLocalize() != null)
             {
-                DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
                 return; // After localization don't do anything more..
             }
 
             // initialize the language/localization database..
-            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
             // create a new instance of the CharacterSetComboBuilder class..
             CharacterSetComboBuilder = new CharacterSetComboBuilder(cmbCharacterSet, cmbEncoding, false, "encoding");

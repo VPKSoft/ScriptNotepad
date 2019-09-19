@@ -103,6 +103,8 @@ namespace ScriptNotepad
                 new FormFileDiffView();
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogQueryJumpLocation();
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormDialogSelectFileTab();
 
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
                 ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..

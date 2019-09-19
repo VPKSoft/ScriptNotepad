@@ -195,6 +195,7 @@
             this.mnuNextTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPreviousTab = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuFindTab = new System.Windows.Forms.ToolStripMenuItem();
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
@@ -1599,7 +1600,8 @@
             this.mnuNavigation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuNextTab,
             this.mnuPreviousTab,
-            this.toolStripMenuItem16});
+            this.toolStripMenuItem16,
+            this.mnuFindTab});
             this.mnuNavigation.Name = "mnuNavigation";
             this.mnuNavigation.Size = new System.Drawing.Size(77, 20);
             this.mnuNavigation.Text = "Navigation";
@@ -1629,6 +1631,15 @@
             this.toolStripMenuItem16.Name = "toolStripMenuItem16";
             this.toolStripMenuItem16.Size = new System.Drawing.Size(208, 6);
             this.toolStripMenuItem16.Visible = false;
+            // 
+            // mnuFindTab
+            // 
+            this.mnuFindTab.Image = global::ScriptNotepad.Properties.Resources.find_tab;
+            this.mnuFindTab.Name = "mnuFindTab";
+            this.mnuFindTab.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.mnuFindTab.Size = new System.Drawing.Size(211, 22);
+            this.mnuFindTab.Text = "Find tab";
+            this.mnuFindTab.Click += new System.EventHandler(this.MnuFindTab_Click);
             // 
             // tmAutoSave
             // 
@@ -1842,6 +1853,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuNextTab;
         private System.Windows.Forms.ToolStripMenuItem mnuPreviousTab;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem16;
+        private System.Windows.Forms.ToolStripMenuItem mnuFindTab;
     }
 }
 

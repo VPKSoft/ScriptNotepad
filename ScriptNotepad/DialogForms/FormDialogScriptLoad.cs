@@ -67,12 +67,12 @@ namespace ScriptNotepad.DialogForms
 
             if (Utils.ShouldLocalize() != null)
             {
-                DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
                 return; // After localization don't do anything more..
             }
 
             // initialize the language/localization database..
-            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
             // get the code snippets in the database..
             codeSnippets = DatabaseCodeSnippets.GetCodeSnippets();

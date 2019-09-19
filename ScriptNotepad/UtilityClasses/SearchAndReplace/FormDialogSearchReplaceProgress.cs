@@ -62,7 +62,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
 
             // initialize the language/localization database..
-            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
             textSearcher.SearchProgress += SearchOpenDocuments_SearchProgress;
             TextSearcher = textSearcher;
@@ -94,7 +94,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             if (Utils.ShouldLocalize() != null)
             {
-                DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
                 return false; // After localization don't do anything more..
             }
 

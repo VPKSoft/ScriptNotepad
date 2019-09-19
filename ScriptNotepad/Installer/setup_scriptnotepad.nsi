@@ -27,7 +27,7 @@ Name "ScriptNotepad"
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 1.0.0.5
+!define VERSION 1.0.0.6
 !define COMPANY VPKSoft
 !define URL http://www.vpksoft.net
 
@@ -44,6 +44,7 @@ Name "ScriptNotepad"
 !define MUI_LANGDLL_REGISTRY_ROOT HKLM
 !define MUI_LANGDLL_REGISTRY_KEY ${REGKEY}
 !define MUI_LANGDLL_REGISTRY_VALUENAME InstallerLanguage
+!define MUI_FINISHPAGE_RUN "$INSTDIR\ScriptNotepad.exe" # The check box for a query whether to run the installed software..
 BrandingText "ScriptNotepad"
 
 !include 'LogicLib.nsh'
@@ -78,12 +79,12 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE Finnish
 
 # Installer attributes
-OutFile setup_scriptnotepad_1_0_0_5.exe
+OutFile setup_scriptnotepad_1_0_0_6.exe
 InstallDir "$PROGRAMFILES64\ScriptNotepad"
 CRCCheck on
 XPStyle on
 ShowInstDetails hide
-VIProductVersion 1.0.0.5
+VIProductVersion 1.0.0.6
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName "ScriptNotepad installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"

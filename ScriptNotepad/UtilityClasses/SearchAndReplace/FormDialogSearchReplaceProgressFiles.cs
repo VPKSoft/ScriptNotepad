@@ -52,7 +52,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             if (Utils.ShouldLocalize() != null)
             {
-                DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
             }
         }
 
@@ -90,7 +90,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             DBLangEngine.DBName = "lang.sqlite"; // Do the VPKSoft.LangLib == translation..
 
             // initialize the language/localization database..
-            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
             // subscribe the disposed event..
             Disposed += FormDialogSearchReplaceProgressFiles_Disposed;

@@ -57,12 +57,12 @@ namespace ScriptNotepad.UtilityClasses.Session
 
             if (Utils.ShouldLocalize() != null)
             {
-                DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
                 return; // After localization don't do anything more..
             }
 
             // initialize the language/localization database..
-            DBLangEngine.InitalizeLanguage("ScriptNotepad.Localization.Messages");
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
             ttMain.SetToolTip(pbDeleteSelectedSession,
                 DBLangEngine.GetMessage("msgDeleteSession", "Delete selected session|A message indicating an action to delete a session from the database"));
