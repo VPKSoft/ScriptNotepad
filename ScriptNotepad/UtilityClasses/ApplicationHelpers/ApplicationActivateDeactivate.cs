@@ -26,6 +26,7 @@ SOFTWARE.
 
 using System;
 using System.Windows.Forms;
+using VPKSoft.ErrorLogger;
 
 
 // (C)::https://www.cyotek.com/blog/how-to-be-notified-when-your-application-is-activated-and-deactivated
@@ -59,23 +60,32 @@ namespace ScriptNotepad.UtilityClasses.ApplicationHelpers
         /// <returns><c>true</c> if the <see cref="T:System.Windows.Forms.Message m"/> was handled by the method, <c>false</c> otherwise.</returns>
         public static bool WndProcApplicationActivateHelper(Form form, ref Message m)
         {
-            if (m.Msg == WM_ACTIVATEAPP)
+            try
             {
-                if (m.WParam != IntPtr.Zero)
+                if (m.Msg == WM_ACTIVATEAPP)
                 {
-                    // the application is getting activated..
-                    ApplicationActivated?.Invoke(form, new EventArgs());
-                }
-                else
-                {
-                    // the application is getting deactivated..
-                    ApplicationDeactivated?.Invoke(form, new EventArgs());
+                    if (m.WParam != IntPtr.Zero)
+                    {
+                        // the application is getting activated..
+                        ApplicationActivated?.Invoke(form, new EventArgs());
+                    }
+                    else
+                    {
+                        // the application is getting deactivated..
+                        ApplicationDeactivated?.Invoke(form, new EventArgs());
+                    }
+
+                    return true;
                 }
 
-                return true;
+                return false;
             }
-
-            return false;
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex);
+                return false;
+            }
         }
     }
 }

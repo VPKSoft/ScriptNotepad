@@ -37,6 +37,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.SearchText;
@@ -288,44 +289,116 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Shows the form with the search tab page opened.
         /// </summary>
-        public static void ShowSearch()
+        /// <param name="parentForm">A parent form for this search dialog.</param>
+        /// <param name="searchString">A text to use fill the search box with.</param>
+        public static void ShowSearch(Form parentForm, string searchString = "")
         {
-            Instance.Show();
+            if (!Instance.ShownWithParent)
+            {
+                Instance.ShownWithParent = true;
+                Instance.Show(parentForm);
+            }
+            else
+            {
+                Instance.Show();
+            }
+
             Instance.PreviousVisible = true;
             Instance.tcMain.SelectTab(0);
+
+            // set the search string if not empty..
+            if (searchString != string.Empty) 
+            {
+                Instance.cmbFind.Text = searchString;
+            }
+
             Instance.cmbFind.Focus();
         }
 
         /// <summary>
         /// Shows the form with the replace tab page opened.
         /// </summary>
-        public static void ShowReplace()
+        /// <param name="parentForm">A parent form for this search dialog.</param>
+        /// <param name="searchString">A text to use fill the search box with.</param>
+        public static void ShowReplace(Form parentForm, string searchString = "")
         {
-            Instance.Show();
+            if (!Instance.ShownWithParent)
+            {
+                Instance.ShownWithParent = true;
+                Instance.Show(parentForm);
+            }
+            else
+            {
+                Instance.Show();
+            }
+
             Instance.PreviousVisible = true;
             Instance.tcMain.SelectTab(1);
+
+            // set the search string if not empty..
+            if (searchString != string.Empty) 
+            {
+                Instance.cmbFind2.Text = searchString;
+            }
+
             Instance.cmbFind2.Focus();
         }
 
         /// <summary>
         /// Shows the form with the find (and replace) in files tab page opened.
         /// </summary>
-        public static void ShowFindInFiles()
+        /// <param name="parentForm">A parent form for this search dialog.</param>
+        /// <param name="searchString">A text to use fill the search box with.</param>
+        public static void ShowFindInFiles(Form parentForm, string searchString = "")
         {
-            Instance.Show();
+            if (!Instance.ShownWithParent)
+            {
+                Instance.ShownWithParent = true;
+                Instance.Show(parentForm);
+            }
+            else
+            {
+                Instance.Show();
+            }
+
             Instance.PreviousVisible = true;
             Instance.tcMain.SelectTab(2);
+
+            // set the search string if not empty..
+            if (searchString != string.Empty) 
+            {
+                Instance.cmbFind3.Text = searchString;
+            }
+
             Instance.cmbFind3.Focus();
         }
 
         /// <summary>
         /// Shows the form with the mark tab page opened.
         /// </summary>
-        public static void ShowMarkMatches()
+        /// <param name="parentForm">A parent form for this search dialog.</param>
+        /// <param name="searchString">A text to use fill the search box with.</param>
+        public static void ShowMarkMatches(Form parentForm, string searchString = "")
         {
-            Instance.Show();
+            if (!Instance.ShownWithParent)
+            {
+                Instance.ShownWithParent = true;
+                Instance.Show(parentForm);
+            }
+            else
+            {
+                Instance.Show();
+            }
+
             Instance.PreviousVisible = true;
             Instance.tcMain.SelectTab(3);
+
+            // set the search string if not empty..
+            if (searchString != string.Empty) 
+            {
+                Instance.cmbFind4.Text = searchString;
+            }
+
             Instance.cmbFind4.Focus();
         }
 
@@ -434,11 +507,21 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// Toggles the visible state of this form.
         /// </summary>
         /// <param name="shouldShow">if set to <c>true</c> the form should be shown.</param>
-        public void ToggleVisible(bool shouldShow)
+        /// <param name="parentForm">A parent form for this search dialog.</param>
+        public void ToggleVisible(Form parentForm, bool shouldShow)
         {
             if (!Visible && shouldShow && !UserClosed && PreviousVisible)
             {
-                Show();
+                if (!Instance.ShownWithParent)
+                {
+                    Instance.ShownWithParent = true;
+                    Instance.Show(parentForm);
+                }
+                else
+                {
+                    Instance.Show();
+                }
+
                 if (tcMain.SelectedTab.Equals(tabFind))
                 {
                     cmbFind.Focus();
@@ -464,21 +547,37 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Gets a value indicating whether this form should be brought top most.
+        /// </summary>
+        /// <param name="shouldStayOnTop">If set to <c>true</c> this form should be the top-most form of the application.</param>
+        /// <returns><c>true</c> if the the form should be made top-most and activated; otherwise, <c>false</c>.</returns>
+        public bool ShouldMakeTopMost(bool shouldStayOnTop)
+        {
+            return shouldStayOnTop && !TopMost;
+        }
+
+        /// <summary>
         /// Toggles the TopMost property of this form.
         /// </summary>
         /// <param name="shouldStayOnTop">If set to <c>true</c> this form should be the top-most form of the application.</param>
-        public void ToggleStayTop(bool shouldStayOnTop)
+        /// <returns><c>true</c> if the the form was activated and brought to front; otherwise, <c>false</c>.</returns>
+        public bool ToggleStayTop(bool shouldStayOnTop)
         {
             if (!shouldStayOnTop && TopMost)
             {
                 TopMost = false;
                 SendToBack();
+                return false;
             }
-            else if (shouldStayOnTop && !TopMost)
+            
+            if (ShouldMakeTopMost(shouldStayOnTop))
             {
                 TopMost = true;
                 BringToFront();
+                return true;
             }
+
+            return false;
         }            
         #endregion
 
@@ -496,7 +595,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         public event OnRequestDocuments RequestDocuments;
         #endregion
 
-        #region PrivateAndInternalProperties
+        #region PrivateAndInternalProperties        
+        /// <summary>
+        /// Gets or sets a value indicating whether the Show() method has already called with a parent form.
+        /// </summary>
+        private bool ShownWithParent { get; set; }
+
         /// <summary>
         /// Gets or sets the value whether this form was previously closed by a user.
         /// </summary>
@@ -1326,47 +1430,57 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // suspend the change event..
             SuspendTransparencyChangeEvent = true;
 
-            // set the enabled value of the transparency setting group boxes to disabled..
-            cbTransparency.Checked = true;
-            cbTransparency2.Checked = true;
-            cbTransparency3.Checked = true;
-
-            // set the enabled value of the transparency setting group boxes to enabled..
-            gpTransparency.Enabled = true;
-            gpTransparency2.Enabled = true;
-            gpTransparency3.Enabled = true;
-
-            // transparency is disabled..
-            if (FormSettings.Settings.SearchBoxTransparency == 0) 
+            try
             {
+
                 // set the enabled value of the transparency setting group boxes to disabled..
-                cbTransparency.Checked = false;
-                cbTransparency2.Checked = false;
-                cbTransparency3.Checked = false;
+                cbTransparency.Checked = true;
+                cbTransparency2.Checked = true;
+                cbTransparency3.Checked = true;
 
-                gpTransparency.Enabled = false;
-                gpTransparency2.Enabled = false;
-                gpTransparency3.Enabled = false;
+                // set the enabled value of the transparency setting group boxes to enabled..
+                gpTransparency.Enabled = true;
+                gpTransparency2.Enabled = true;
+                gpTransparency3.Enabled = true;
 
-                // set the opacity value to 100%..
-                Opacity = 1;
+                // transparency is disabled..
+                if (FormSettings.Settings.SearchBoxTransparency == 0)
+                {
+                    // set the enabled value of the transparency setting group boxes to disabled..
+                    cbTransparency.Checked = false;
+                    cbTransparency2.Checked = false;
+                    cbTransparency3.Checked = false;
+
+                    gpTransparency.Enabled = false;
+                    gpTransparency2.Enabled = false;
+                    gpTransparency3.Enabled = false;
+
+                    // set the opacity value to 100%..
+                    Opacity = 1;
+                }
+                // transparency is enabled while active..
+                else if (FormSettings.Settings.SearchBoxTransparency == 1)
+                {
+                    rbTransparencyOnLosingFocus.Checked = true;
+                    rbTransparencyOnLosingFocus2.Checked = true;
+                    rbTransparencyOnLosingFocus3.Checked = true;
+                    // set the opacity value to based on the active property..
+                    Opacity = activated ? 1 : FormSettings.Settings.SearchBoxOpacity;
+                }
+                else if (FormSettings.Settings.SearchBoxTransparency == 2)
+                {
+                    rbTransparencyAlways.Checked = true;
+                    rbTransparencyAlways2.Checked = true;
+                    rbTransparencyAlways3.Checked = true;
+                    Opacity = FormSettings.Settings.SearchBoxOpacity;
+                }
             }
-            // transparency is enabled while active..
-            else if (FormSettings.Settings.SearchBoxTransparency == 1)
+            catch (Exception ex)
             {
-                rbTransparencyOnLosingFocus.Checked = true;
-                rbTransparencyOnLosingFocus2.Checked = true;
-                rbTransparencyOnLosingFocus3.Checked = true;
-                // set the opacity value to based on the active property..
-                Opacity = activated ? 1 : FormSettings.Settings.SearchBoxOpacity;
+                // log the exception..
+                ExceptionLogger.LogError(ex);
             }
-            else if (FormSettings.Settings.SearchBoxTransparency == 2)
-            {
-                rbTransparencyAlways.Checked = true;
-                rbTransparencyAlways2.Checked = true;
-                rbTransparencyAlways3.Checked = true;
-                Opacity = FormSettings.Settings.SearchBoxOpacity;               
-            }
+
             SuspendTransparencyChangeEvent = false;
         }
 

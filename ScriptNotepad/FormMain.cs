@@ -318,7 +318,6 @@ namespace ScriptNotepad
         #endregion
 
         #region HelperMethods                
-
         /// <summary>
         /// Checks for new version of the application.
         /// </summary>
@@ -1826,6 +1825,12 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // a user wishes to search for an open file within the tabbed documents..
+        private void MnuFindTab_Click(object sender, EventArgs e)
+        {
+            FormDialogSelectFileTab.ShowDialog(sttcMain);
+        }
+
         // copy, paste and cut handler for the tool/menu strip..
         private void TsbCopyPasteCut_Click(object sender, EventArgs e)
         {
@@ -2487,25 +2492,25 @@ namespace ScriptNotepad
         // a user wanted to find or find and replace something of the active document..
         private void mnuFind_Click(object sender, EventArgs e)
         {
-            FormSearchAndReplace.ShowSearch();
+            FormSearchAndReplace.ShowSearch(this, SearchString);
         }
 
         // a user wanted to find or find and replace something of the active document..
         private void MnuReplace_Click(object sender, EventArgs e)
         {
-            FormSearchAndReplace.ShowReplace();
+            FormSearchAndReplace.ShowReplace(this, SearchString);
         }
 
         // a user wanted to find or find and replace something in a defined set of files..
         private void MnuFindInFiles_Click(object sender, EventArgs e)
         {
-            FormSearchAndReplace.ShowFindInFiles();
+            FormSearchAndReplace.ShowFindInFiles(this, SearchString);
         }
 
         // a user wanted to find and mark words of the current document..
         private void MnuMarkText_Click(object sender, EventArgs e)
         {
-            FormSearchAndReplace.ShowMarkMatches();
+            FormSearchAndReplace.ShowMarkMatches(this, SearchString);
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -2745,8 +2750,6 @@ namespace ScriptNotepad
             // start the timer to bring the main form to the front..
             leftActivatedEvent = true;
             tmGUI.Enabled = true;
-
-            FormSearchAndReplace.Instance.ToggleStayTop(true);
         }
 
         // a tab is closing so save it into the history..
@@ -2924,10 +2927,16 @@ namespace ScriptNotepad
         private void tmGUI_Tick(object sender, EventArgs e)
         {
             tmGUI.Enabled = false;
-            if (bringToFrontQueued && leftActivatedEvent)
+            if (bringToFrontQueued && leftActivatedEvent ||
+                FormSearchAndReplace.Instance.ShouldMakeTopMost(true) && leftActivatedEvent) 
             {
                 // this event in this case leads to an endless loop..
                 Activated -= FormMain_Activated;
+
+                if (FormSearchAndReplace.Instance.ShouldMakeTopMost(true))
+                {
+                    FormSearchAndReplace.Instance.ToggleStayTop(true);
+                }
 
                 // bring the form to the front..
                 BringToFront();
@@ -2936,6 +2945,7 @@ namespace ScriptNotepad
                 // this event in this case leads to an endless loop..
                 Activated += FormMain_Activated;
             }
+
             bringToFrontQueued = false;
             leftActivatedEvent = false;
             tmGUI.Enabled = true;
@@ -3035,13 +3045,13 @@ namespace ScriptNotepad
             {
                 if (WindowState == FormWindowState.Minimized && previousWindowState != FormWindowState.Minimized)
                 {
-                    FormSearchAndReplace.Instance.ToggleVisible(false);
+                    FormSearchAndReplace.Instance.ToggleVisible(this, false);
                     previousWindowState = WindowState;
                 }
                 else if (previousWindowState != WindowState &&
                          (WindowState == FormWindowState.Maximized || WindowState == FormWindowState.Normal))
                 {
-                    FormSearchAndReplace.Instance.ToggleVisible(true);
+                    FormSearchAndReplace.Instance.ToggleVisible(this, true);
                     previousWindowState = WindowState;
                 }
             }
@@ -3201,6 +3211,40 @@ namespace ScriptNotepad
         #endregion
 
         #region PrivateProperties                
+        /// <summary>
+        /// Gets the search string in case of a active document has a selection within a one line.
+        /// </summary>
+        private string SearchString
+        {
+            get
+            {
+                try
+                {
+                    if (sttcMain.CurrentDocument != null)
+                    {
+                        var scintilla = sttcMain.CurrentDocument.Scintilla;
+                        if (scintilla.SelectedText.Length > 0)
+                        {
+                            var selectionStartLine = scintilla.LineFromPosition(scintilla.SelectionStart);
+                            var selectionEndLine = scintilla.LineFromPosition(scintilla.SelectionEnd);
+                            if (selectionStartLine == selectionEndLine)
+                            {
+                                return scintilla.SelectedText;
+                            }
+                        }
+                    }
+
+                    return string.Empty;
+                }
+                catch (Exception ex)
+                {
+                    // log the exception..
+                    ExceptionLogger.LogError(ex);
+                    return string.Empty;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether constructor of this form has finished.
         /// </summary>
@@ -3549,10 +3593,5 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
-
-        private void MnuFindTab_Click(object sender, EventArgs e)
-        {
-            FormDialogSelectFileTab.ShowDialog(sttcMain);
-        }
     }
 }

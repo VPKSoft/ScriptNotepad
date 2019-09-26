@@ -660,7 +660,7 @@
             // 
             // tmGUI
             // 
-            this.tmGUI.Interval = 500;
+            this.tmGUI.Interval = 2;
             this.tmGUI.Tick += new System.EventHandler(this.tmGUI_Tick);
             // 
             // cmsFileTab

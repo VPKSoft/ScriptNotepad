@@ -67,8 +67,8 @@
 * Done? [N/A  ] [2019/09/19] Fix: Re-appeared file keeps asking questions to reload from the file system --> suspend.
 * Done? [N/A  ] [2019/09/19] Fix: Same file locations keep appearing on the file search.
 * Done? [YES  ] [2019/09/19] Add tab search dialog.
-* Done? [N/A  ] [2019/09/19] Set selected text to the search and replace dialog.
-* Done? [N/A  ] [2019/09/19] Save as; select a valid path with the dialog.
-* Done? [N/A  ] [2019/09/19] Resolve the search/find dialog miss-behave upon the main window activation.
+* Done? [YES  ] [2019/09/26] Set selected text to the search and replace dialog.
+* Done? [YES  ] [2019/09/26] Save as; select a valid path with the dialog.
+* Done? [YES  ] [2019/09/19] Resolve the search/find dialog miss-behave upon the main window activation.
 * Done? [N/A  ] [2019/09/19] Fix the recent files list when the amount in the settings is exceeded; the value must be opened files + the value!
 * Done? [N/A  ] [2019/09/19] Make a short help for the keyboard shortcut keys.
