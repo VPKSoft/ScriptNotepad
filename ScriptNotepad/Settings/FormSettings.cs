@@ -228,9 +228,10 @@ namespace ScriptNotepad.Settings
 
             // get the spell checking properties..
             if (File.Exists(Settings.EditorHunspellDictionaryFile) && File.Exists(Settings.EditorHunspellAffixFile) &&
-                Settings.EditorUseSpellChecking)
+                (Settings.EditorUseSpellChecking || Settings.EditorUseSpellCheckingNewFiles))
             {
-                cbSpellCheckInUse.Checked = true;
+                cbSpellCheckInUse.Checked = Settings.EditorUseSpellChecking;
+                cbSpellCheckInUseNewFiles.Checked = Settings.EditorUseSpellCheckingNewFiles;
             }
 
             tbDictionaryPath.Text = Settings.EditorHunspellDictionaryPath;
@@ -405,6 +406,7 @@ namespace ScriptNotepad.Settings
 
             // set the spell checking properties..
             Settings.EditorUseSpellChecking = cbSpellCheckInUse.Checked;
+            Settings.EditorUseSpellCheckingNewFiles = cbSpellCheckInUseNewFiles.Checked;
             Settings.EditorSpellCheckColor = btSpellCheckMarkColor.BackColor;
             Settings.EditorHunspellAffixFile = tbHunspellAffixFile.Text;
             Settings.EditorHunspellDictionaryFile = tbHunspellDictionary.Text;
@@ -743,7 +745,14 @@ namespace ScriptNotepad.Settings
         {
             if (!File.Exists(tbHunspellDictionary.Text) || !File.Exists(tbHunspellAffixFile.Text))
             {
-                cbSpellCheckInUse.Checked = false;
+                if (sender.Equals(cbSpellCheckInUse))
+                {
+                    cbSpellCheckInUse.Checked = false;
+                }
+                else if (sender.Equals(cbSpellCheckInUseNewFiles))
+                {
+                    cbSpellCheckInUseNewFiles.Checked = false;
+                }
             }
         }
 

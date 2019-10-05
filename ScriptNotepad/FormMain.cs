@@ -1549,6 +1549,9 @@ namespace ScriptNotepad
 
                     // set the brace matching if enabled..
                     SetStyleBraceMatch.SetStyle(sttcMain.LastAddedDocument.Scintilla);
+
+                    // the default spell checking state..
+                    SetSpellCheckerState(FormSettings.Settings.EditorUseSpellCheckingNewFiles, false);
                 }
             }
         }
@@ -1704,6 +1707,9 @@ namespace ScriptNotepad
 
                         // check the programming language menu item with the current lexer..
                         ProgrammingLanguageHelper.CheckLanguage(sttcMain.LastAddedDocument.LexerType);
+
+                        // the default spell checking state..
+                        SetSpellCheckerState(FormSettings.Settings.EditorUseSpellChecking, false);
                     }
                 }
             }
@@ -2524,6 +2530,11 @@ namespace ScriptNotepad
                 DatabasePlugins.UpdatePlugin(entry);
             }
 
+            // disable the timers not mess with application exit..
+            tmAutoSave.Enabled = false;
+            tmGUI.Enabled = false;
+            tmSpellCheck.Enabled = false;
+
             // unsubscribe the external event handlers and dispose of the items created by other classes..
             DisposeExternal();
         }
@@ -3184,6 +3195,19 @@ namespace ScriptNotepad
                 }
             });
         }
+
+        // the edit menu is opening..
+        private void MnuEdit_DropDownOpening(object sender, EventArgs e)
+        {
+            // get the DBFILE_SAVE from the active document..
+            var fileSave = (DBFILE_SAVE) sttcMain.CurrentDocument?.Tag;
+
+            if (fileSave != null) // the second null check..
+            {
+                // enable / disable items which requires the file to exist in the file system..
+                mnuRenameNewFileMainMenu.Enabled = !fileSave.EXISTS_INFILESYS;
+            }
+        }
         #endregion
 
         #region PrivateFields        
@@ -3405,6 +3429,7 @@ namespace ScriptNotepad
                 mnuOpenContainingFolderInCmd.Enabled = File.Exists(fileSave.FILENAME_FULL);
                 mnuOpenContainingFolderInWindowsPowerShell.Enabled = File.Exists(fileSave.FILENAME_FULL);
                 mnuOpenWithAssociatedApplication.Enabled = File.Exists(fileSave.FILENAME_FULL);
+                mnuRenameNewFile.Enabled = !fileSave.EXISTS_INFILESYS;
             }
         }
 
@@ -3529,6 +3554,42 @@ namespace ScriptNotepad
             {
                 ExceptionLogger.LogError(ex);
             }
+        }
+
+        // a user wishes to rename a new file..
+        private void MnuRenameNewFile_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                var fileSave = (DBFILE_SAVE) document.Tag;
+                if (fileSave.EXISTS_INFILESYS)
+                {
+                    return;
+                }
+                string newName;
+                if ((newName = FormDialogRenameNewFile.ShowDialog(this, sttcMain)) != null)
+                {
+                    if (fileSave == null)
+                    {
+                        return;
+                    }
+
+                    // the file now has a location so update it..
+                    fileSave.FILENAME = newName;
+                    fileSave.FILENAME_FULL = newName;
+
+                    // update the document..
+                    document.FileName = newName;
+                    document.FileNameNotPath = newName;
+                    document.FileTabButton.Text = newName;
+
+                    // update the time stamp..
+                    fileSave.DB_MODIFIED = DateTime.Now;
+
+                    // update document misc data, i.e. the assigned lexer to the database..
+                    DatabaseFileSave.UpdateMiscFlags(fileSave);
+                }
+            });
         }
         #endregion
 

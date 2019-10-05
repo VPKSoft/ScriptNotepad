@@ -239,7 +239,6 @@ namespace ScriptNotepad.Settings
         [Setting("main/localizeThread", typeof(bool))]
         public bool LocalizeThread { get; set; } = false;
 
-
         /// <summary>
         /// Gets or sets a value indicating whether the software should try to auto-detect the encoding of a file.
         /// </summary>
@@ -602,6 +601,12 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("editorSpell/useSpellChecking", typeof(bool))]
         public bool EditorUseSpellChecking { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document for new files.
+        /// </summary>
+        [Setting("editorSpell/useSpellCheckingOnNew", typeof(bool))]
+        public bool EditorUseSpellCheckingNewFiles { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.

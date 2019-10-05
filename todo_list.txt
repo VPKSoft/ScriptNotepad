@@ -72,3 +72,8 @@
 * Done? [YES  ] [2019/09/19] Resolve the search/find dialog miss-behave upon the main window activation.
 * Done? [N/A  ] [2019/09/19] Fix the recent files list when the amount in the settings is exceeded; the value must be opened files + the value!
 * Done? [N/A  ] [2019/09/19] Make a short help for the keyboard shortcut keys.
+* Done? [N/A  ] [2019/10/04] No recent files --> no double menu separators.
+* Done? [YES  ] [2019/10/05] With new files the spell check button seems to work as one would expect. + Added a setting for new files.
+* Done? [YES  ] [2019/10/05] Add possibility to rename new files (not existing in the file system).
+* Done? [N/A  ] [2019/10/05] Fix the application not popping up when a file is opened via context menu.
+* Done? [YES  ] [2019/10/05] Fix: stop the timers on application close.

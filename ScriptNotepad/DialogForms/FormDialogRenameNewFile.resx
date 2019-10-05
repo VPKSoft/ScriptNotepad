@@ -117,58 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="ttMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>571, 17</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsbEncodingMoveDown.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAH/SURBVDhPzY9fSFNxFMfPdaIsK0sjg15KhRYMHGWmptGD
-        FjObBWYlc1eZKEIUFJuCb8OVUEgJqyAVmYQkVCJBFMU01u5Ewa2iscgy9ye3TC0n11jbtyv8oAgqH/08
-        ns/3eziH1gZJubeEVJVFXJ9jEROU3QEqvFvA1C/KXyjoqPNDYsWEKDvhErkzb93MECkq+jFk/4gBwYe6
-        jnGQyjpKhYMbmCYqdaVwarttt2EKCtMithkjkNX5wSxR2v6u988cPqwgfItBVT8C2vvgEtNEh5437zv3
-        GjX9MSiuAmlGEaTzzTArkdV5PEs9AG8wArcImG1fsU79aJGOjOyhY47s9JNjs9reCHI6pHJLFBwfXFmg
-        ZW3Grm5LVasT3oU4erzA4SvToBLbaEKZMFxsDuLATWBLK5DY8AWk9d9hrd8osG7l8u6/ar/nw2Ppm8ah
-        ODL0b7CZ96DoRhzbTUDy2SVQjX+S9KFs1vqDg4OadM1wtG9sCW12IP/6dygvL2OnGZBfiIL4Gen0kI6l
-        /0Lx0858gwc9L2MouQ3saAM2NsdB+jmp/MnKUv+g0iGnUqeb7/qMi0+AFCMga5JOrw28I35+E0v9h/Lx
-        ouRTnvnzD5eRd+0HqCosUm24jNlVovG0ZxpCUJoWQNVhCxE4ZlZJ5bScTgcETjfrooa5VDZdcxD9BF0p
-        ALzPPi32AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <metadata name="_colEncoding.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="colEncodingName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="colUnicodeBOM.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="colUnicodeFailInvalidChar.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="scintilla.Text" xml:space="preserve">
-    <value>Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
-Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</value>
-  </data>
-  <metadata name="cdColors.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>104, 17</value>
-  </metadata>
-  <metadata name="odDictionaryFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>203, 17</value>
-  </metadata>
-  <metadata name="odAffixFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>343, 17</value>
-  </metadata>
-  <metadata name="fdEditorFont.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>452, 17</value>
-  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAQEAAAAEAIAAoQgAAFgAAACgAAABAAAAAgAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

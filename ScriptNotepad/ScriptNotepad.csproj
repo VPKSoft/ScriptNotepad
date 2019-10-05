@@ -138,7 +138,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WPFHexaEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPFHexaEditor.1.7.5\lib\net47\WPFHexaEditor.dll</HintPath>
+      <HintPath>..\packages\WPFHexaEditor.1.9.1\lib\net47\WPFHexaEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +181,12 @@
     </Compile>
     <Compile Include="DialogForms\FormDialogQueryNumber.Designer.cs">
       <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DialogForms\FormDialogRenameNewFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogForms\FormDialogRenameNewFile.Designer.cs">
+      <DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
     </Compile>
     <Compile Include="DialogForms\FormDialogSelectFileTab.cs">
       <SubType>Form</SubType>
@@ -382,6 +388,9 @@
     <EmbeddedResource Include="DialogForms\FormDialogQueryNumber.resx">
       <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DialogForms\FormDialogRenameNewFile.resx">
+      <DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DialogForms\FormDialogSelectFileTab.resx">
       <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
     </EmbeddedResource>
@@ -488,6 +497,7 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\krename.png" />
     <None Include="Resources\find_tab.png" />
     <None Include="Resources\arrow-down-2.png" />
     <None Include="Resources\arrow-up-2.png" />

@@ -100,6 +100,8 @@
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuDiffRight = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDiffLeft = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuRenameNewFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tmSpellCheck = new System.Windows.Forms.Timer(this.components);
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -163,6 +165,8 @@
             this.mnuInsertDateAndTime6 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuGoto = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuRenameNewFileMainMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -681,9 +685,11 @@
             this.mnuCloseAllToTheRight,
             this.toolStripMenuItem10,
             this.mnuDiffRight,
-            this.mnuDiffLeft});
+            this.mnuDiffLeft,
+            this.toolStripMenuItem17,
+            this.mnuRenameNewFile});
             this.cmsFileTab.Name = "contextMenuStrip1";
-            this.cmsFileTab.Size = new System.Drawing.Size(324, 308);
+            this.cmsFileTab.Size = new System.Drawing.Size(324, 336);
             this.cmsFileTab.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileTab_Opening);
             // 
             // mnuFullFilePathToClipboard
@@ -791,6 +797,18 @@
             this.mnuDiffLeft.Size = new System.Drawing.Size(323, 22);
             this.mnuDiffLeft.Text = "Diff to the left";
             this.mnuDiffLeft.Click += new System.EventHandler(this.MnuDiffLeft_Click);
+            // 
+            // toolStripMenuItem17
+            // 
+            this.toolStripMenuItem17.Name = "toolStripMenuItem17";
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(320, 6);
+            // 
+            // mnuRenameNewFile
+            // 
+            this.mnuRenameNewFile.Name = "mnuRenameNewFile";
+            this.mnuRenameNewFile.Size = new System.Drawing.Size(323, 22);
+            this.mnuRenameNewFile.Text = "Rename new file";
+            this.mnuRenameNewFile.Click += new System.EventHandler(this.MnuRenameNewFile_Click);
             // 
             // tmSpellCheck
             // 
@@ -967,10 +985,13 @@
             this.mnuExportAsHTML,
             this.mnuDateAndTime,
             this.toolStripMenuItem15,
-            this.mnuGoto});
+            this.mnuGoto,
+            this.toolStripMenuItem18,
+            this.mnuRenameNewFileMainMenu});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
+            this.mnuEdit.DropDownOpening += new System.EventHandler(this.MnuEdit_DropDownOpening);
             // 
             // mnuUndo
             // 
@@ -1345,6 +1366,20 @@
             this.mnuGoto.Size = new System.Drawing.Size(236, 22);
             this.mnuGoto.Text = "Goto...";
             this.mnuGoto.Click += new System.EventHandler(this.GotoToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem18
+            // 
+            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
+            this.toolStripMenuItem18.Size = new System.Drawing.Size(233, 6);
+            // 
+            // mnuRenameNewFileMainMenu
+            // 
+            this.mnuRenameNewFileMainMenu.Image = global::ScriptNotepad.Properties.Resources.krename;
+            this.mnuRenameNewFileMainMenu.Name = "mnuRenameNewFileMainMenu";
+            this.mnuRenameNewFileMainMenu.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.mnuRenameNewFileMainMenu.Size = new System.Drawing.Size(236, 22);
+            this.mnuRenameNewFileMainMenu.Text = "Rename new file...";
+            this.mnuRenameNewFileMainMenu.Click += new System.EventHandler(this.MnuRenameNewFile_Click);
             // 
             // mnuSearch
             // 
@@ -1854,6 +1889,10 @@
         private System.Windows.Forms.ToolStripMenuItem mnuPreviousTab;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem16;
         private System.Windows.Forms.ToolStripMenuItem mnuFindTab;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem17;
+        private System.Windows.Forms.ToolStripMenuItem mnuRenameNewFile;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem18;
+        private System.Windows.Forms.ToolStripMenuItem mnuRenameNewFileMainMenu;
     }
 }
 

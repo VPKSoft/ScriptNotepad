@@ -190,6 +190,7 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
+            this.cbSpellCheckInUseNewFiles = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -1620,6 +1621,7 @@
             // tabSpellCheck
             // 
             this.tabSpellCheck.BackColor = System.Drawing.SystemColors.Window;
+            this.tabSpellCheck.Controls.Add(this.cbSpellCheckInUseNewFiles);
             this.tabSpellCheck.Controls.Add(this.cmbInstalledDictionaries);
             this.tabSpellCheck.Controls.Add(this.lbInstalledDictionaries);
             this.tabSpellCheck.Controls.Add(this.btDictionaryPath);
@@ -2091,6 +2093,16 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
+            // cbSpellCheckInUseNewFiles
+            // 
+            this.cbSpellCheckInUseNewFiles.AutoSize = true;
+            this.cbSpellCheckInUseNewFiles.Location = new System.Drawing.Point(247, 8);
+            this.cbSpellCheckInUseNewFiles.Name = "cbSpellCheckInUseNewFiles";
+            this.cbSpellCheckInUseNewFiles.Size = new System.Drawing.Size(175, 17);
+            this.cbSpellCheckInUseNewFiles.TabIndex = 45;
+            this.cbSpellCheckInUseNewFiles.Text = "Use spell checking on new files";
+            this.cbSpellCheckInUseNewFiles.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             this.AcceptButton = this.btOK;
@@ -2331,5 +2343,6 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colUnicodeFailInvalidChar;
         private System.Windows.Forms.PictureBox pbAlertEncoding;
         private System.Windows.Forms.TextBox tbAlertEncoding;
+        private System.Windows.Forms.CheckBox cbSpellCheckInUseNewFiles;
     }
 }
