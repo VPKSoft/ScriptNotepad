@@ -26,6 +26,7 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
@@ -36,6 +37,7 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
     /// <summary>
     /// A class to help build a programming language selection menu.
     /// </summary>
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ProgrammingLanguageHelper: IDisposable
     {
         /// <summary>
@@ -289,6 +291,9 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                 (LexerType.Css,
                     DBLangEngine.GetStatMessage("msgProgrammingCss",
                         "Cascading Style Sheets (CSS)|A programming, markup, setting, script or other file and/or language/text")),
+                (LexerType.InnoSetup,
+                    DBLangEngine.GetStatMessage("msgProgrammingInnoSetup",
+                        "InnoSetup installer script|A programming, markup, setting, script or other file and/or language/text")),
             });
     }
 }

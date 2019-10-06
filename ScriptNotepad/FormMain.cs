@@ -61,6 +61,7 @@ using ScriptNotepadPluginBase.PluginTemplateInterface;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -71,6 +72,7 @@ using System.Windows.Forms;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
 using VPKSoft.LangLib;
+using VPKSoft.MessageHelper;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
@@ -1834,7 +1836,9 @@ namespace ScriptNotepad
         // a user wishes to search for an open file within the tabbed documents..
         private void MnuFindTab_Click(object sender, EventArgs e)
         {
+            TimersEnabled = false;
             FormDialogSelectFileTab.ShowDialog(sttcMain);
+            TimersEnabled = true;
         }
 
         // copy, paste and cut handler for the tool/menu strip..
@@ -2477,6 +2481,10 @@ namespace ScriptNotepad
                 OpenDocument(e.Message, DefaultEncodings, false, false);
                 // the user probably will like the program to show up, if the software activates
                 // it self from a windows shell call to open a file..
+                if (WindowState == FormWindowState.Minimized)
+                {
+                    WindowState = previousWindowState;
+                }
                 BringToFront();
                 Activate();
             }));
@@ -3054,22 +3062,50 @@ namespace ScriptNotepad
         {
             if (FormFirstShown)
             {
-                if (WindowState == FormWindowState.Minimized && previousWindowState != FormWindowState.Minimized)
+                if (WindowState == FormWindowState.Minimized)
                 {
                     FormSearchAndReplace.Instance.ToggleVisible(this, false);
-                    previousWindowState = WindowState;
+                    //previousWindowState = WindowState;
                 }
                 else if (previousWindowState != WindowState &&
                          (WindowState == FormWindowState.Maximized || WindowState == FormWindowState.Normal))
                 {
                     FormSearchAndReplace.Instance.ToggleVisible(this, true);
-                    previousWindowState = WindowState;
+                    //previousWindowState = WindowState;
                 }
             }
             else
             {
-                previousWindowState = WindowState;
+                //previousWindowState = WindowState;
             }
+        }
+
+        /// <summary>
+        /// Processes Windows messages.
+        /// </summary>
+        /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message"/> to process.</param>
+        [SuppressMessage("ReSharper", "IdentifierTypo")]
+        protected override void WndProc(ref Message m)
+        {
+            // ReSharper disable once InconsistentNaming
+            const int WM_SYSCOMMAND = 0x0112;
+            // ReSharper disable once InconsistentNaming
+            const uint SC_MINIMIZE = 0xF020;
+            // ReSharper disable once InconsistentNaming
+            const uint SC_MAXIMIZE = 0xF030;
+            // ReSharper disable once InconsistentNaming
+            const uint SC_RESTORE = 0xF120;
+
+            if (m.Msg == WM_SYSCOMMAND)
+            {
+                if (m.WParamLoWordUnsigned() == SC_MINIMIZE ||
+                    m.WParamLoWordUnsigned() == SC_MAXIMIZE ||
+                    m.WParamLoWordUnsigned() == SC_RESTORE)
+                {
+                    previousWindowState = WindowState;
+                }
+            }
+            base.WndProc(ref m);
         }
 
         private void FormMain_Deactivate(object sender, EventArgs e)
@@ -3235,6 +3271,32 @@ namespace ScriptNotepad
         #endregion
 
         #region PrivateProperties                
+        /// <summary>
+        /// Gets or sets the value whether the timers within the program should be enabled or disabled.
+        /// </summary>
+        private bool TimersEnabled
+        {
+            // three timers..
+
+            set
+            {
+                // comparison for the three timers..
+                if ((tmAutoSave.Enabled || tmGUI.Enabled || tmSpellCheck.Enabled) && !value)
+                {
+                    tmAutoSave.Enabled = false;
+                    tmGUI.Enabled = false;
+                    tmSpellCheck.Enabled = false;
+                }
+
+                if ((!tmAutoSave.Enabled || !tmGUI.Enabled || !tmSpellCheck.Enabled) && value)
+                {
+                    tmAutoSave.Enabled = true;
+                    tmGUI.Enabled = true;
+                    tmSpellCheck.Enabled = true;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the search string in case of a active document has a selection within a one line.
         /// </summary>
@@ -3582,6 +3644,7 @@ namespace ScriptNotepad
                     document.FileName = newName;
                     document.FileNameNotPath = newName;
                     document.FileTabButton.Text = newName;
+                    sttcMain.LeftFileIndex = sttcMain.LeftFileIndex;
 
                     // update the time stamp..
                     fileSave.DB_MODIFIED = DateTime.Now;

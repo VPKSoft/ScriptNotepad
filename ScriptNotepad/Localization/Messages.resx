@@ -852,4 +852,7 @@
   <data name="msgEncodingRequireOne" xml:space="preserve">
     <value>At least one configured encoding is required.|A message in a label indicating to the user that at least one encoding must be selected from the settings.</value>
   </data>
+  <data name="msgProgrammingInnoSetup" xml:space="preserve">
+    <value>InnoSetup installer script|A programming, markup, setting, script or other file and/or language/text</value>
+  </data>
 </root>

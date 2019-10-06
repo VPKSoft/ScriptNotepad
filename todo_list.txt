@@ -75,5 +75,8 @@
 * Done? [N/A  ] [2019/10/04] No recent files --> no double menu separators.
 * Done? [YES  ] [2019/10/05] With new files the spell check button seems to work as one would expect. + Added a setting for new files.
 * Done? [YES  ] [2019/10/05] Add possibility to rename new files (not existing in the file system).
-* Done? [N/A  ] [2019/10/05] Fix the application not popping up when a file is opened via context menu.
+* Done? [YES  ] [2019/10/06] Fix the application not popping up when a file is opened via context menu.
 * Done? [YES  ] [2019/10/05] Fix: stop the timers on application close.
+* Done? [N/A  ] [2019/10/06] Add possibility to define programs to run with F5 for a file using Visual Studio styled macros.
+* Done? [N/A  ] [2019/10/06] Fix: file changed detection seems to miss-behave some times (reason?).
+* Done? [MAYBE] [2019/10/06] Fix: the software sometimes hangs with the search tab dialog (fixed by setting the timers to disabled state while the dialog is visible).
