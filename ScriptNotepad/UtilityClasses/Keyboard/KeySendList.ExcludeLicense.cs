@@ -64,6 +64,8 @@ namespace ScriptNotepad.UtilityClasses.Keyboard
             new KeyValuePair<Keys, string>(Keys.Subtract, "{SUBTRACT}"),
             new KeyValuePair<Keys, string>(Keys.Multiply, "{MULTIPLY}"),
             new KeyValuePair<Keys, string>(Keys.Divide, "{DIVIDE}"),
+            new KeyValuePair<Keys, string>(Keys.OemMinus, "-"), // Added: 19.10.19, VPKSoft..
+            new KeyValuePair<Keys, string>(Keys.OemPeriod, "."), // Added: 19.10.19, VPKSoft..
         });
 
         /// <summary>

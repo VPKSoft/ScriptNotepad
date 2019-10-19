@@ -80,3 +80,8 @@
 * Done? [N/A  ] [2019/10/06] Add possibility to define programs to run with F5 for a file using Visual Studio styled macros.
 * Done? [N/A  ] [2019/10/06] Fix: file changed detection seems to miss-behave some times (reason?).
 * Done? [MAYBE] [2019/10/06] Fix: the software sometimes hangs with the search tab dialog (fixed by setting the timers to disabled state while the dialog is visible).
+* Done? [YES  ] [2019/10/19] Fix: Open with encoding not accepting UTF-8 / Unicode BOM setting.
+* Done? [YES  ] [2019/10/19] Fix: The software gets left behind of other applications after the search dialog has been opened.
+* Done? [N/A  ] [2019/10/19] Add setting whether to use spell checking with files opened from the shell context menu. 
+* Done? [YES  ] [2019/10/19] Fix: Opened file not reacting to the search in files result selection.
+* Done? [SOME ] [2019/10/19] Add few special characters such as '-', to the text overwrite system to the find tab menu.

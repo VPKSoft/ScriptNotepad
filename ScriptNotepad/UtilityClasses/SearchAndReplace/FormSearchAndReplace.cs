@@ -97,6 +97,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // subscribe to an event which is raised upon application activation..
             ApplicationDeactivated += FormSearchAndReplace_ApplicationDeactivated;
+            ApplicationActivated += FormSearchAndReplace_ApplicationActivated;
 
             // get the search text history from the database..
             SearchHistory = DatabaseSearchAndReplace.GetSearchesAndReplaces(
@@ -122,7 +123,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         #endregion
 
         #region WndProc
-         /// <summary>Processes Windows messages.</summary>
+        /// <summary>Processes Windows messages.</summary>
         /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
         protected override void WndProc(ref Message m)
         {
@@ -566,14 +567,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             if (!shouldStayOnTop && TopMost)
             {
                 TopMost = false;
-                SendToBack();
                 return false;
             }
             
             if (ShouldMakeTopMost(shouldStayOnTop))
             {
                 TopMost = true;
-                BringToFront();
                 return true;
             }
 
@@ -1535,8 +1534,18 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         // occurs when the application is activated..
         private void FormSearchAndReplace_ApplicationDeactivated(object sender, EventArgs e)
         {
-            TopMost = false;
-            SendToBack();
+            if (Visible)
+            {
+                TopMost = false;
+            }
+        }
+
+        private void FormSearchAndReplace_ApplicationActivated(object sender, EventArgs e)
+        {
+            if (Visible)
+            {
+                TopMost = true;
+            }
         }
 
         // a user wishes to search to the backward direction..
@@ -1585,8 +1594,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 // set the value to the property..
                 PreviousVisible = Visible;
-
-
                 Hide();
             }
         }
@@ -1595,7 +1602,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         private void FormSearchAndReplace_FormClosed(object sender, FormClosedEventArgs e)
         {
             // unsubscribe from an event which is raised upon application activation..
-            ApplicationDeactivated += FormSearchAndReplace_ApplicationDeactivated;
+            ApplicationDeactivated -= FormSearchAndReplace_ApplicationDeactivated;
+            ApplicationActivated -= FormSearchAndReplace_ApplicationActivated;
         }
 
         // a new search class is constructed if the search or replace conditions have changed..
@@ -1743,10 +1751,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // set the transparency value..
             TransparencyToggle(true);
-
-            // for some reason this seems to be required..
-            TopMost = true;
-            BringToFront();
 
             // set the navigation control states to enabled/disabled depending on the search condition..
             AppendValidation();

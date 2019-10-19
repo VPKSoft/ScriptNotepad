@@ -87,38 +87,34 @@ namespace ScriptNotepad.DialogForms
             if (form.ShowDialog() == DialogResult.OK)
             {
                 unicodeBom = form.cbUseUnicodeBOM.Checked && form.cbUseUnicodeBOM.Enabled;
-                unicodeFailInvalidCharacters = form.cbUnicodeFailInvalidCharacters.Checked && form.cbUnicodeFailInvalidCharacters.Enabled;
+                unicodeFailInvalidCharacters = form.cbUnicodeFailInvalidCharacters.Checked &&
+                                               form.cbUnicodeFailInvalidCharacters.Enabled;
 
-                if (unicodeBom || unicodeFailInvalidCharacters)
+                if (form.Encoding is UTF8Encoding)
                 {
-                    if (form.Encoding is UTF8Encoding)
-                    {
-                        return new UTF8Encoding(unicodeBom, unicodeFailInvalidCharacters);
-                    }
+                    return new UTF8Encoding(unicodeBom, unicodeFailInvalidCharacters);
+                }
 
-                    if (form.Encoding is UnicodeEncoding)
-                    {
-                        return new UnicodeEncoding(form.Encoding.CodePage == 1201, unicodeBom,
-                            unicodeFailInvalidCharacters);
-                    }
+                if (form.Encoding is UnicodeEncoding)
+                {
+                    return new UnicodeEncoding(form.Encoding.CodePage == 1201, unicodeBom,
+                        unicodeFailInvalidCharacters);
+                }
 
-                    if (form.Encoding is UTF32Encoding)
-                    {
-                        return new UTF32Encoding(form.Encoding.CodePage == 12001, unicodeBom,
-                            unicodeFailInvalidCharacters);
-                    }
+                if (form.Encoding is UTF32Encoding)
+                {
+                    return new UTF32Encoding(form.Encoding.CodePage == 12001, unicodeBom,
+                        unicodeFailInvalidCharacters);
                 }
 
                 // ..so return the encoding..
                 return form.Encoding;
             }
-            else // the user didn't accept the dialog..
-            {
-                // .. so return null..
-                unicodeBom = false;
-                unicodeFailInvalidCharacters = false;
-                return null;
-            }
+
+            // .. so return null..
+            unicodeBom = false;
+            unicodeFailInvalidCharacters = false;
+            return null;
         }
 
         // this event is fired when the encoding is changed from the corresponding combo box..

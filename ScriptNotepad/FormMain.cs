@@ -78,6 +78,7 @@ using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
 using VPKSoft.ScintillaTabbedTextControl;
 using VPKSoft.VersionCheck;
+using VPKSoft.VersionCheck.Forms;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
