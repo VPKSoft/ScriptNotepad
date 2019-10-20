@@ -1702,7 +1702,6 @@
             this.Name = "FormMain";
             this.Text = "ScriptNotepad";
             this.Activated += new System.EventHandler(this.FormMain_Activated);
-            this.Deactivate += new System.EventHandler(this.FormMain_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Shown += new System.EventHandler(this.FormMain_Shown);

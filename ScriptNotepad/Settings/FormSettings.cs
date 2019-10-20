@@ -43,6 +43,7 @@ using ScriptNotepad.Localization.Hunspell;
 using ScriptNotepad.Settings.XmlNotepadPlusMarks;
 using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using ScriptNotepad.UtilityClasses.GraphicUtils;
+using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using TabDrawMode = ScintillaNET.TabDrawMode;
@@ -292,6 +293,9 @@ namespace ScriptNotepad.Settings
             cbUseAutoSave.Checked = Settings.ProgramAutoSave;
             nudAutoSaveInterval.Value = Settings.ProgramAutoSaveInterval;
 
+            // set the value whether to use auto-complete on the search box combo boxes..
+            cbSearchUseAutoComplete.Checked = Settings.AutoCompleteEnabled;
+
             // get the tread locale value..
             cbSetThreadLocale.Checked = Settings.LocalizeThread;
 
@@ -463,6 +467,10 @@ namespace ScriptNotepad.Settings
             // set the auto-save settings..
             Settings.ProgramAutoSave = cbUseAutoSave.Checked;
             Settings.ProgramAutoSaveInterval = (int)nudAutoSaveInterval.Value;
+
+            // set the value whether to use auto-complete on the search box combo boxes..
+            Settings.AutoCompleteEnabled = cbSearchUseAutoComplete.Checked;
+            FormSearchAndReplace.Instance.SetAutoCompleteState(Settings.AutoCompleteEnabled); // this setting doesn't require a application restart..
 
             // set the tread locale value..
             Settings.LocalizeThread = cbSetThreadLocale.Checked;

@@ -37,6 +37,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
@@ -110,6 +111,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 FormSettings.Settings.CurrentSession,
                 "REPLACE_HISTORY",
                 FormSettings.Settings.FileSearchHistoriesLimit);
+
+            // set the combo boxed auto-complete state..
+            SetAutoCompleteState(FormSettings.Settings.AutoCompleteEnabled);
 
             // get the filter used in the search and/or replace in files..
             FilterHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.FileExtensionList, FormSettings.Settings.FileSearchHistoriesLimit);
@@ -287,6 +291,23 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         #endregion
 
         #region PublicStaticMethods
+        /// <summary>
+        /// Sets the state of the auto-complete mode for the combo boxes on the dialog.
+        /// </summary>
+        /// <param name="enabled">if set to <c>true</c> the auto-complete should be enabled.</param>
+        public void SetAutoCompleteState(bool enabled)
+        {
+            cmbFind.AutoCompleteMode = enabled ? AutoCompleteMode.Suggest : AutoCompleteMode.None;
+            cmbFind.AutoCompleteSource = enabled ? AutoCompleteSource.ListItems : AutoCompleteSource.None;
+            cmbReplace.AutoCompleteMode = enabled ? AutoCompleteMode.Suggest : AutoCompleteMode.None;
+            cmbFind2.AutoCompleteSource = enabled ? AutoCompleteSource.ListItems : AutoCompleteSource.None;
+            cmbFind3.AutoCompleteMode = enabled ? AutoCompleteMode.Suggest : AutoCompleteMode.None;
+            cmbReplace3.AutoCompleteMode = enabled ? AutoCompleteMode.Suggest : AutoCompleteMode.None;
+            cmbFilters3.AutoCompleteMode = enabled ? AutoCompleteMode.Suggest : AutoCompleteMode.None;
+            cmbDirectory3.AutoCompleteMode = enabled ? AutoCompleteMode.Suggest : AutoCompleteMode.None;
+            cmbFind4.AutoCompleteMode = enabled ? AutoCompleteMode.Suggest : AutoCompleteMode.None;
+        }
+
         /// <summary>
         /// Shows the form with the search tab page opened.
         /// </summary>
@@ -546,38 +567,6 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 UserClosed = false;
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether this form should be brought top most.
-        /// </summary>
-        /// <param name="shouldStayOnTop">If set to <c>true</c> this form should be the top-most form of the application.</param>
-        /// <returns><c>true</c> if the the form should be made top-most and activated; otherwise, <c>false</c>.</returns>
-        public bool ShouldMakeTopMost(bool shouldStayOnTop)
-        {
-            return shouldStayOnTop && !TopMost;
-        }
-
-        /// <summary>
-        /// Toggles the TopMost property of this form.
-        /// </summary>
-        /// <param name="shouldStayOnTop">If set to <c>true</c> this form should be the top-most form of the application.</param>
-        /// <returns><c>true</c> if the the form was activated and brought to front; otherwise, <c>false</c>.</returns>
-        public bool ToggleStayTop(bool shouldStayOnTop)
-        {
-            if (!shouldStayOnTop && TopMost)
-            {
-                TopMost = false;
-                return false;
-            }
-            
-            if (ShouldMakeTopMost(shouldStayOnTop))
-            {
-                TopMost = true;
-                return true;
-            }
-
-            return false;
-        }            
         #endregion
 
         #region PublicEvents
@@ -753,7 +742,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         private bool SuspendTransparencyChangeEvent { get; set; }
         #endregion
 
-        #region PrivateMethods        
+        #region PrivateMethods   
         /// <summary>
         /// Gets ta value indicating whether the search and/or replace algorithm is correctly set.
         /// </summary>
@@ -2155,6 +2144,17 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 e.Handled = true;
                 Close();
                 return;
+            }
+
+            // the return key was pressed when a combo box was dropped down so suppress that..
+            if (e.KeyCode == Keys.Return && ActiveControl is ComboBox)
+            {
+                var comboBox = (ComboBox) ActiveControl;
+                if (comboBox.DroppedDown)
+                {
+                    e.SuppressKeyPress = true;
+                    return;
+                }
             }
 
             // use the return key to search either to forwards or to backwards direction..

@@ -718,6 +718,12 @@ namespace ScriptNotepad.Settings
         public int FileSearchHistoriesLimit { get; set; } = 25;
 
         /// <summary>
+        /// Gets or sets the value whether to use auto-complete on the search dialog combo boxes.
+        /// </summary>
+        [Setting("search/autoCompleteEnabled", typeof(bool))]
+        public bool AutoCompleteEnabled { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value of opacity of the <see cref="FormSearchAndReplace"/> form.
         /// </summary>
         [Setting("misc/searchBoxOpacity", typeof(double))]

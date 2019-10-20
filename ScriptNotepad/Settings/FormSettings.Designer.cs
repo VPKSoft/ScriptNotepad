@@ -146,6 +146,7 @@
             this.lbBadBraceColor = new System.Windows.Forms.Label();
             this.btBraceHighlightBackgroundColor = new System.Windows.Forms.Button();
             this.tabSpellCheck = new System.Windows.Forms.TabPage();
+            this.cbSpellCheckInUseNewFiles = new System.Windows.Forms.CheckBox();
             this.cmbInstalledDictionaries = new System.Windows.Forms.ComboBox();
             this.lbInstalledDictionaries = new System.Windows.Forms.Label();
             this.btDictionaryPath = new System.Windows.Forms.Button();
@@ -190,7 +191,7 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.cbSpellCheckInUseNewFiles = new System.Windows.Forms.CheckBox();
+            this.cbSearchUseAutoComplete = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -530,6 +531,7 @@
             // tpgAdditionalSettings
             // 
             this.tpgAdditionalSettings.BackColor = System.Drawing.SystemColors.Window;
+            this.tpgAdditionalSettings.Controls.Add(this.cbSearchUseAutoComplete);
             this.tpgAdditionalSettings.Controls.Add(this.cbUpdateAutoCheck);
             this.tpgAdditionalSettings.Controls.Add(this.tbNoteAutoSave);
             this.tpgAdditionalSettings.Controls.Add(this.nudAutoSaveInterval);
@@ -1645,6 +1647,16 @@
             this.tabSpellCheck.TabIndex = 3;
             this.tabSpellCheck.Text = "Spell checking";
             // 
+            // cbSpellCheckInUseNewFiles
+            // 
+            this.cbSpellCheckInUseNewFiles.AutoSize = true;
+            this.cbSpellCheckInUseNewFiles.Location = new System.Drawing.Point(247, 8);
+            this.cbSpellCheckInUseNewFiles.Name = "cbSpellCheckInUseNewFiles";
+            this.cbSpellCheckInUseNewFiles.Size = new System.Drawing.Size(175, 17);
+            this.cbSpellCheckInUseNewFiles.TabIndex = 45;
+            this.cbSpellCheckInUseNewFiles.Text = "Use spell checking on new files";
+            this.cbSpellCheckInUseNewFiles.UseVisualStyleBackColor = true;
+            // 
             // cmbInstalledDictionaries
             // 
             this.cmbInstalledDictionaries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -2093,15 +2105,15 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
-            // cbSpellCheckInUseNewFiles
+            // cbSearchUseAutoComplete
             // 
-            this.cbSpellCheckInUseNewFiles.AutoSize = true;
-            this.cbSpellCheckInUseNewFiles.Location = new System.Drawing.Point(247, 8);
-            this.cbSpellCheckInUseNewFiles.Name = "cbSpellCheckInUseNewFiles";
-            this.cbSpellCheckInUseNewFiles.Size = new System.Drawing.Size(175, 17);
-            this.cbSpellCheckInUseNewFiles.TabIndex = 45;
-            this.cbSpellCheckInUseNewFiles.Text = "Use spell checking on new files";
-            this.cbSpellCheckInUseNewFiles.UseVisualStyleBackColor = true;
+            this.cbSearchUseAutoComplete.AutoSize = true;
+            this.cbSearchUseAutoComplete.Location = new System.Drawing.Point(6, 82);
+            this.cbSearchUseAutoComplete.Name = "cbSearchUseAutoComplete";
+            this.cbSearchUseAutoComplete.Size = new System.Drawing.Size(276, 17);
+            this.cbSearchUseAutoComplete.TabIndex = 5;
+            this.cbSearchUseAutoComplete.Text = "Use auto-complete with the search box combo boxes";
+            this.cbSearchUseAutoComplete.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2344,5 +2356,6 @@
         private System.Windows.Forms.PictureBox pbAlertEncoding;
         private System.Windows.Forms.TextBox tbAlertEncoding;
         private System.Windows.Forms.CheckBox cbSpellCheckInUseNewFiles;
+        private System.Windows.Forms.CheckBox cbSearchUseAutoComplete;
     }
 }

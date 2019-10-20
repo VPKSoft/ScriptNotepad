@@ -95,6 +95,8 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 return; // After localization don't do anything more..
             }
 
+            suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
+
             // initialize the language/localization database..
             DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
@@ -115,7 +117,6 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 DBLangEngine.GetMessage("msgScriptTypeLines", "Script lines|As in the C# script type should be handling the Scintilla's contents as lines")
                 );
 
-            suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
             tsbComboScriptType.SelectedItem =
                 DBLangEngine.GetMessage("msgScriptTypeText", "Script text|As in the C# script type should be handling the Scintilla's contents as text");
 
@@ -127,13 +128,13 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             
             CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
 
-            suspendChangedEvent = false; // "resume" the event handler..
-
             // set the lexer as C#..
             ScintillaLexers.CreateLexer(scintilla, LexerType.Cs);
 
             // highlight the braces..
             SetBraceHighlights();
+
+            suspendChangedEvent = false; // "resume" the event handler..
 
             // track the instances of this form so the changes can be delegated to each other..
             formScriptInstances.Add(this);
@@ -403,30 +404,28 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 ErrorBlink(); // ..indicate an error..
                 return; // ..and return..
             }
-            else // the name was validated..
+
+            // if the currentCodeSnippet is null then create a new one..
+            if (currentCodeSnippet == null)
             {
-                // if the currentCodeSnippet is null then create a new one..
-                if (currentCodeSnippet == null)
-                {
-                    currentCodeSnippet = CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
-                }
-
-                // manipulate the currentCodeSnippet instance so it doest override reserved scripts in the database..
-                DatabaseCodeSnippets.MakeCodeSnippetValidForInsertOrUpdate(
-                    ref currentCodeSnippet,
-                    // the reserved word list..
-                    defaultNameScriptTemplateText,
-                    defaultNameScriptTemplateLines,
-                     "Simple line ending change script",
-                     "Simple replace script",
-                     "Simple XML manipulation script");
-
-                // save the script snippet into the database..
-                DatabaseCodeSnippets.AddOrUpdateCodeSnippet(currentCodeSnippet);
-
-                // enable the controls as the user chose to save the changes of the script..
-                EnableDisableControlsOnChange(true);
+                currentCodeSnippet = CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
             }
+
+            // manipulate the currentCodeSnippet instance so it doesn't override reserved scripts in the database..
+            DatabaseCodeSnippets.MakeCodeSnippetValidForInsertOrUpdate(
+                ref currentCodeSnippet,
+                // the reserved word list..
+                defaultNameScriptTemplateText,
+                defaultNameScriptTemplateLines,
+                "Simple line ending change script",
+                "Simple replace script",
+                "Simple XML manipulation script");
+
+            // save the script snippet into the database..
+            DatabaseCodeSnippets.AddOrUpdateCodeSnippet(currentCodeSnippet);
+
+            // enable the controls as the user chose to save the changes of the script..
+            EnableDisableControlsOnChange(true);
         }
 
         // a user want's to compile the script to see if it's valid..

@@ -82,6 +82,7 @@ using VPKSoft.VersionCheck.Forms;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
+using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivateDeactivate;
 #endregion
 
 namespace ScriptNotepad
@@ -317,6 +318,10 @@ namespace ScriptNotepad
             tmAutoSave.Interval =
                 (int) TimeSpan.FromMinutes(FormSettings.Settings.ProgramAutoSaveInterval).TotalMilliseconds;
             tmAutoSave.Enabled = FormSettings.Settings.ProgramAutoSave;
+
+            // subscribe to an event which is raised upon application activation..
+            ApplicationDeactivated += FormMain_ApplicationDeactivated;
+            ApplicationActivated += FormMain_ApplicationActivated;
         }
         #endregion
 
@@ -766,6 +771,10 @@ namespace ScriptNotepad
             // unsubscribe to events which will occur with the FormSearchResultTree instance docking..
             FormSearchResultTree.RequestDockMainForm -= FormSearchResultTree_RequestDockMainForm;
             FormSearchResultTree.RequestDockReleaseMainForm -= FormSearchResultTree_RequestDockReleaseMainForm;
+
+            // unsubscribe to an event which is raised upon application activation..
+            ApplicationDeactivated -= FormMain_ApplicationDeactivated;
+            ApplicationActivated -= FormMain_ApplicationActivated;
 
             // dispose of the programming language menu helper..
             using (ProgrammingLanguageHelper)
@@ -1834,6 +1843,16 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        private void FormMain_ApplicationActivated(object sender, EventArgs e)
+        {
+            FormSearchAndReplace.Instance.TopMost = true;
+        }
+
+        private void FormMain_ApplicationDeactivated(object sender, EventArgs e)
+        {
+            FormSearchAndReplace.Instance.TopMost = false;
+        }
+
         // a user wishes to search for an open file within the tabbed documents..
         private void MnuFindTab_Click(object sender, EventArgs e)
         {
@@ -2947,16 +2966,10 @@ namespace ScriptNotepad
         private void tmGUI_Tick(object sender, EventArgs e)
         {
             tmGUI.Enabled = false;
-            if (bringToFrontQueued && leftActivatedEvent ||
-                FormSearchAndReplace.Instance.ShouldMakeTopMost(true) && leftActivatedEvent) 
+            if (bringToFrontQueued && leftActivatedEvent) 
             {
                 // this event in this case leads to an endless loop..
                 Activated -= FormMain_Activated;
-
-                if (FormSearchAndReplace.Instance.ShouldMakeTopMost(true))
-                {
-                    FormSearchAndReplace.Instance.ToggleStayTop(true);
-                }
 
                 // bring the form to the front..
                 BringToFront();
@@ -3107,11 +3120,6 @@ namespace ScriptNotepad
                 }
             }
             base.WndProc(ref m);
-        }
-
-        private void FormMain_Deactivate(object sender, EventArgs e)
-        {
-            FormSearchAndReplace.Instance.ToggleStayTop(false);            
         }
 
         private void SttcMain_DocumentMouseDoubleClick(object sender, MouseEventArgs e)
