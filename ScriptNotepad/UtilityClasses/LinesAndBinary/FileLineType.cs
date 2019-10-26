@@ -188,6 +188,64 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
         public static string ULFCR_Description { get; set; } = "Unicode LF+CR";
         #endregion
 
+        #region FileLineEndingsAsString
+        /// <summary>
+        /// Gets the file line ending as a string representation.
+        /// </summary>
+        /// <param name="fileLineTypes">The <see cref="FileLineTypes"/> enumeration value.</param>
+        /// <returns>A string containing the line ending characters.</returns>
+        public static string GetFileLineEndingString(FileLineTypes fileLineTypes)
+        {
+            // a simple switch..case structure..
+            switch(fileLineTypes)
+            {
+                case FileLineTypes.CRLF:
+                    return "\r\n";
+
+                case FileLineTypes.LF:
+                    return "\n";
+
+                case FileLineTypes.CR:
+                    return "\r";
+
+                case FileLineTypes.RS:
+                    return ((char) 0x1E).ToString();
+
+                case FileLineTypes.LFCR:
+                    return "\n\r";
+
+                case FileLineTypes.NL:
+                    return ((char) 0x15).ToString();
+
+                case FileLineTypes.ATASCII:
+                    return ((char) 155).ToString();
+
+                case FileLineTypes.NEWLINE:
+                    return ((char) 0x76).ToString();
+
+                case FileLineTypes.Unknown:
+                    return Environment.NewLine;
+
+                case FileLineTypes.Mixed:
+                    return Environment.NewLine;
+
+                case FileLineTypes.UCRLF:
+                    return "\r\n";
+
+                case FileLineTypes.ULF:
+                    return "\n";
+
+                case FileLineTypes.UCR:
+                    return "\r";
+
+                case FileLineTypes.ULFCR:
+                    return "\n\r";
+
+                default: return Environment.NewLine;
+            }
+        }
+        #endregion
+
         #region EnumerationDescriptions
         /// <summary>
         /// Sets a description for a given <see cref="FileLineTypes"/> enumeration. This method is for localization purposes.

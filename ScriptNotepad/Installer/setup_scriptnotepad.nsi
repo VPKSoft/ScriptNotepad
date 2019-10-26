@@ -27,7 +27,7 @@ Name "ScriptNotepad"
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 1.0.1.1
+!define VERSION 1.0.1.2
 !define COMPANY VPKSoft
 !define URL http://www.vpksoft.net
 
@@ -44,7 +44,8 @@ Name "ScriptNotepad"
 !define MUI_LANGDLL_REGISTRY_ROOT HKLM
 !define MUI_LANGDLL_REGISTRY_KEY ${REGKEY}
 !define MUI_LANGDLL_REGISTRY_VALUENAME InstallerLanguage
-!define MUI_FINISHPAGE_RUN "$INSTDIR\ScriptNotepad.exe" # The check box for a query whether to run the installed software..
+!define MUI_FINISHPAGE_RUN # this needs to be not-defined for the MUI_FINISHPAGE_RUN_FUNCTION to work..
+!define MUI_FINISHPAGE_RUN_FUNCTION "RunAsCurrentUser" # The check box for a query whether to run the installed software as the current user after the installation..
 BrandingText "ScriptNotepad"
 
 !include 'LogicLib.nsh'
@@ -79,12 +80,12 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE Finnish
 
 # Installer attributes
-OutFile setup_scriptnotepad_1_0_1_1.exe
+OutFile setup_scriptnotepad_1_0_1_2.exe
 InstallDir "$PROGRAMFILES64\ScriptNotepad"
 CRCCheck on
 XPStyle on
 ShowInstDetails hide
-VIProductVersion 1.0.1.1
+VIProductVersion 1.0.1.2
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName "ScriptNotepad installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"
@@ -166,6 +167,12 @@ Section -post SEC0001
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
 SectionEnd
+
+# a function to execute the installed software as non-administrator.. 
+Function RunAsCurrentUser	
+	ShellExecAsUser::ShellExecAsUser "" "$INSTDIR\ScriptNotepad.exe"
+FunctionEnd
+
 
 ; !defines for use with SHChangeNotify
 !ifdef SHCNE_ASSOCCHANGED

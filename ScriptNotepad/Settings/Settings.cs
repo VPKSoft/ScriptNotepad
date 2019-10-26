@@ -603,6 +603,12 @@ namespace ScriptNotepad.Settings
         public bool EditorUseSpellChecking { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document when opening a file via the shell context menu.
+        /// </summary>
+        [Setting("editorSpell/editorUseSpellCheckingShellContext", typeof(bool))]
+        public bool EditorUseSpellCheckingShellContext { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document for new files.
         /// </summary>
         [Setting("editorSpell/useSpellCheckingOnNew", typeof(bool))]
@@ -901,7 +907,51 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("dateTime/invarianCulture", typeof(bool))]
         public bool DateFormatUseInvariantCulture { get; set; } = false; // default to not use..
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use case sensitivity with text manipulation.
+        /// </summary>
+        [Setting("text/textUpperCaseComparison", typeof(bool))]
+        public bool TextUpperCaseComparison { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the type of the text comparison to use with text manipulation.
+        /// </summary>
+        [Setting("text/textComparisonType", typeof(bool))]
+        public int TextComparisonType { get; set; } = 0; // 0 = invariant, 1 = current, 2 = ordinal..
         #endregion
+
+        /// <summary>
+        /// Gets the text current comparison type <see cref="StringComparison"/>.
+        /// </summary>
+        [DoNotNotify]
+        public StringComparison TextCurrentComparison
+        {
+            get
+            {
+                switch (TextComparisonType)
+                {
+                    case 0:
+                        return TextUpperCaseComparison
+                            ? StringComparison.InvariantCulture
+                            : StringComparison.InvariantCultureIgnoreCase;
+
+                    case 1:
+                        return TextUpperCaseComparison
+                            ? StringComparison.CurrentCulture
+                            : StringComparison.CurrentCultureIgnoreCase;
+
+                    case 2:
+                        return TextUpperCaseComparison
+                            ? StringComparison.Ordinal
+                            : StringComparison.OrdinalIgnoreCase;
+                }
+
+                return TextUpperCaseComparison
+                    ? StringComparison.InvariantCulture
+                    : StringComparison.InvariantCultureIgnoreCase;
+            }
+        }
 
         /// <summary>
         /// Creates a directory to the local application data folder for the software.

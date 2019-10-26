@@ -244,6 +244,34 @@ namespace ScriptNotepad.Database.TableCommands
         }
 
         /// <summary>
+        /// Generates a SQL sentence to rename a non-existing file within the database.
+        /// </summary>
+        /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
+        /// <param name="previousName">The previous name of the non-existing file.</param>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenRenameNewFile(DBFILE_SAVE fileSave, string previousName)
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                    $"UPDATE DBFILE_SAVE SET",
+                    $"FILENAME_FULL = {QS(fileSave.FILENAME_FULL)},",
+                    $"FILENAME = {QS(fileSave.FILENAME)},",
+                    $"DB_MODIFIED = {DateToDBString(fileSave.DB_MODIFIED)}",
+                    $"WHERE ID = {fileSave.ID};");
+
+            sql += Environment.NewLine;
+
+            sql +=
+                string.Join(Environment.NewLine,
+                    $"DELETE FROM RECENT_FILES WHERE",
+                    $"FILENAME_FULL = {QS(previousName)} AND",
+                    $"FILENAME = {QS(previousName)} AND",
+                    $"SESSIONID = {fileSave.SESSIONID};");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Generates a SQL sentence to update the miscellaneous data of the file save into the database.
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
@@ -251,8 +279,8 @@ namespace ScriptNotepad.Database.TableCommands
         public static string GenUpdateFileMiscFlags(DBFILE_SAVE fileSave)
         {
             string sql =
-                string.Join(Environment.NewLine,
-         $"UPDATE DBFILE_SAVE SET",
+                string.Join(Environment.NewLine, 
+                    $"UPDATE DBFILE_SAVE SET",
                     $"USESPELL_CHECK = {BS(fileSave.ISHISTORY)},",
                     $"LEXER_CODE = {(int)fileSave.LEXER_CODE},",
                     $"VISIBILITY_ORDER = {fileSave.VISIBILITY_ORDER},",

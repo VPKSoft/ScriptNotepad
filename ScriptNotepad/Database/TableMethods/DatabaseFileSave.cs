@@ -305,6 +305,17 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
+        /// Updates the file name of a given <see cref="DBFILE_SAVE"/> class instance which doesn't exist in the file system.
+        /// </summary>
+        /// <param name="fileSave">An instance to a <see cref="DBFILE_SAVE"/> class.</param>
+        /// <param name="previousName">The previous name of the non-existing file.</param>
+        /// <returns>True if the operation was successful; otherwise false.</returns>
+        public static bool UpdateFileName(DBFILE_SAVE fileSave, string previousName)
+        {
+            return ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenRenameNewFile(fileSave, previousName));
+        }
+
+        /// <summary>
         /// Updates the miscellaneous flags of a given <see cref="DBFILE_SAVE"/> class instance.
         /// </summary>
         /// <param name="fileSave">An instance to a <see cref="DBFILE_SAVE"/> class.</param>

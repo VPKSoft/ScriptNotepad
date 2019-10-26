@@ -146,10 +146,6 @@
             this.mnuClearStyle4 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuClearStyle5 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuExportAsHTML = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExportAsHTMLToNewDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHTMLToClipboard = new System.Windows.Forms.ToolStripMenuItem();
@@ -193,6 +189,11 @@
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.mnuText = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRemoveDuplicateLines = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCaseSensitive = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNavigation = new System.Windows.Forms.ToolStripMenuItem();
@@ -203,6 +204,7 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -978,10 +980,6 @@
             this.toolStripMenuItem6,
             this.mnuStyle,
             this.toolStripMenuItem8,
-            this.mnuWrapDocumentTo,
-            this.toolStripMenuItem9,
-            this.mnuSortLines,
-            this.toolStripMenuItem12,
             this.mnuExportAsHTML,
             this.mnuDateAndTime,
             this.toolStripMenuItem15,
@@ -991,7 +989,7 @@
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
-            this.mnuEdit.DropDownOpening += new System.EventHandler(this.MnuEdit_DropDownOpening);
+            this.mnuEdit.DropDownOpening += new System.EventHandler(this.MenuCommon_DropDownOpening);
             // 
             // mnuUndo
             // 
@@ -1052,6 +1050,8 @@
             // 
             this.mnuRunScript.Image = ((System.Drawing.Image)(resources.GetObject("mnuRunScript.Image")));
             this.mnuRunScript.Name = "mnuRunScript";
+            this.mnuRunScript.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D3)));
             this.mnuRunScript.Size = new System.Drawing.Size(236, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
@@ -1206,32 +1206,6 @@
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
             this.toolStripMenuItem8.Size = new System.Drawing.Size(233, 6);
-            // 
-            // mnuWrapDocumentTo
-            // 
-            this.mnuWrapDocumentTo.Image = global::ScriptNotepad.Properties.Resources.word_wrapped;
-            this.mnuWrapDocumentTo.Name = "mnuWrapDocumentTo";
-            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(236, 22);
-            this.mnuWrapDocumentTo.Text = "Wrap document to...";
-            this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
-            // 
-            // toolStripMenuItem9
-            // 
-            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(233, 6);
-            // 
-            // mnuSortLines
-            // 
-            this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
-            this.mnuSortLines.Name = "mnuSortLines";
-            this.mnuSortLines.Size = new System.Drawing.Size(236, 22);
-            this.mnuSortLines.Text = "Sort lines...";
-            this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
-            // 
-            // toolStripMenuItem12
-            // 
-            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
-            this.toolStripMenuItem12.Size = new System.Drawing.Size(233, 6);
             // 
             // mnuExportAsHTML
             // 
@@ -1603,6 +1577,7 @@
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFile,
             this.mnuEdit,
+            this.mnuText,
             this.mnuSearch,
             this.mnuView,
             this.mnuProgrammingLanguage,
@@ -1617,6 +1592,50 @@
             this.menuMain.Size = new System.Drawing.Size(969, 24);
             this.menuMain.TabIndex = 4;
             this.menuMain.Text = "menuStrip1";
+            // 
+            // mnuText
+            // 
+            this.mnuText.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuCaseSensitive,
+            this.toolStripMenuItem9,
+            this.mnuSortLines,
+            this.mnuRemoveDuplicateLines,
+            this.mnuWrapDocumentTo});
+            this.mnuText.Name = "mnuText";
+            this.mnuText.Size = new System.Drawing.Size(40, 20);
+            this.mnuText.Text = "Text";
+            // 
+            // mnuSortLines
+            // 
+            this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
+            this.mnuSortLines.Name = "mnuSortLines";
+            this.mnuSortLines.Size = new System.Drawing.Size(205, 22);
+            this.mnuSortLines.Text = "Sort lines...";
+            this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
+            // 
+            // mnuRemoveDuplicateLines
+            // 
+            this.mnuRemoveDuplicateLines.Image = global::ScriptNotepad.Properties.Resources.duplicate_lines;
+            this.mnuRemoveDuplicateLines.Name = "mnuRemoveDuplicateLines";
+            this.mnuRemoveDuplicateLines.Size = new System.Drawing.Size(205, 22);
+            this.mnuRemoveDuplicateLines.Text = "Remove duplicate lines...";
+            this.mnuRemoveDuplicateLines.Click += new System.EventHandler(this.mnuRemoveDuplicateLines_Click);
+            // 
+            // mnuWrapDocumentTo
+            // 
+            this.mnuWrapDocumentTo.Image = global::ScriptNotepad.Properties.Resources.word_wrapped;
+            this.mnuWrapDocumentTo.Name = "mnuWrapDocumentTo";
+            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(205, 22);
+            this.mnuWrapDocumentTo.Text = "Wrap document to...";
+            this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
+            // 
+            // mnuCaseSensitive
+            // 
+            this.mnuCaseSensitive.Image = global::ScriptNotepad.Properties.Resources.format_text_uppercase;
+            this.mnuCaseSensitive.Name = "mnuCaseSensitive";
+            this.mnuCaseSensitive.Size = new System.Drawing.Size(205, 22);
+            this.mnuCaseSensitive.Text = "Case sensitive";
+            this.mnuCaseSensitive.Click += new System.EventHandler(this.mnuCaseSensitive_Click);
             // 
             // mnuWindow
             // 
@@ -1688,6 +1707,11 @@
             // pdPrint
             // 
             this.pdPrint.UseEXDialog = true;
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(202, 6);
             // 
             // FormMain
             // 
@@ -1809,9 +1833,6 @@
         private System.Windows.Forms.ToolStripMenuItem mnuClearStyle4;
         private System.Windows.Forms.ToolStripMenuItem mnuClearStyle5;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
-        private System.Windows.Forms.ToolStripMenuItem mnuWrapDocumentTo;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
-        private System.Windows.Forms.ToolStripMenuItem mnuSortLines;
         private System.Windows.Forms.ToolStripMenuItem mnuSearch;
         private System.Windows.Forms.ToolStripMenuItem mnuFind;
         private System.Windows.Forms.ToolStripMenuItem mnuReplace;
@@ -1847,7 +1868,6 @@
         private System.Windows.Forms.Timer tmAutoSave;
         private System.Windows.Forms.ToolStripMenuItem mnuTab;
         private System.Windows.Forms.ToolStripMenuItem mnuMarkText;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem12;
         private System.Windows.Forms.ToolStripMenuItem mnuExportAsHTML;
         private System.Windows.Forms.ToolStripMenuItem mnuExportAsHTMLToNewDocument;
         private System.Windows.Forms.SaveFileDialog sdHTML;
@@ -1892,6 +1912,12 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRenameNewFile;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem18;
         private System.Windows.Forms.ToolStripMenuItem mnuRenameNewFileMainMenu;
+        private System.Windows.Forms.ToolStripMenuItem mnuText;
+        private System.Windows.Forms.ToolStripMenuItem mnuSortLines;
+        private System.Windows.Forms.ToolStripMenuItem mnuRemoveDuplicateLines;
+        private System.Windows.Forms.ToolStripMenuItem mnuWrapDocumentTo;
+        private System.Windows.Forms.ToolStripMenuItem mnuCaseSensitive;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
     }
 }
 

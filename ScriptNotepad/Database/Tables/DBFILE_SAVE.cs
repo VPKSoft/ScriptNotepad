@@ -30,11 +30,12 @@ using System.Text;
 using VPKSoft.ScintillaTabbedTextControl;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
+using System.Linq;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
+using ScriptNotepad.UtilityClasses.LinesAndBinary;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 using VPKSoft.LangLib;
 using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
-using static ScriptNotepad.UtilityClasses.Encodings.DetectEncoding;
 
 namespace ScriptNotepad.Database.Tables
 {
@@ -335,7 +336,7 @@ namespace ScriptNotepad.Database.Tables
         /// </summary>
         public bool IsChangedInEditor => EXISTS_INFILESYS && DB_MODIFIED > FILESYS_MODIFIED;
 
-        // a value indicating if the user want's to reload the changes from the file system if the file has been changed..
+        // a value indicating if the user wants to reload the changes from the file system if the file has been changed..
         private bool shouldQueryDiskReload = true;
 
         /// <summary>
@@ -370,6 +371,59 @@ namespace ScriptNotepad.Database.Tables
         /// </summary>
         private string fileEndingText = string.Empty;
 
+        // the file line types and their descriptions..
+        private IEnumerable<KeyValuePair<FileLineTypes, string>> fileLineTypesInternal;
+
+        /// <summary>
+        /// Gets the file line types and their descriptions.
+        /// </summary>
+        public IEnumerable<KeyValuePair<FileLineTypes, string>> FileLineTypes
+        {
+            get
+            {
+                if (fileLineTypesInternal == null)
+                {
+                    var fileLineTypes = ScriptNotepad.UtilityClasses.LinesAndBinary.
+                        FileLineType.GetFileLineTypes(FILE_CONTENTS,
+                            ENCODING);
+
+                    var lineTypesInternal = fileLineTypes as KeyValuePair<FileLineTypes, string>[] ??
+                                            fileLineTypes.ToArray();
+
+                    fileLineTypesInternal = lineTypesInternal;
+
+                    return lineTypesInternal;
+                }
+
+                return fileLineTypesInternal;
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the file line ending.
+        /// </summary>
+        public FileLineTypes FileLineType
+        {
+            get
+            {
+                List<KeyValuePair<FileLineTypes, string>> typesList =
+                    new List<KeyValuePair<FileLineTypes, string>>(FileLineTypes.ToArray());
+
+                if (typesList.Count == 0 ||
+                    typesList.Count == 1 && typesList[0].Key.HasFlag(Mixed)) 
+                {
+                    return CRLF;
+                }
+
+                if (typesList.Count == 1)
+                {
+                    return typesList[0].Key;
+                }
+
+                return typesList.FirstOrDefault().Key;
+            }
+        }
+
         /// <summary>
         /// Gets the text describing the file line ending type(s) of the document.
         /// </summary>
@@ -383,10 +437,7 @@ namespace ScriptNotepad.Database.Tables
                         "LE: |A short message indicating a file line ending type value(s) as a concatenated text");
 
 
-                    var fileLineTypes =
-                        ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineType.GetFileLineTypes(FILE_CONTENTS,
-                            ENCODING);
-
+                    var fileLineTypes = FileLineTypes;
 
                     string endAppend = string.Empty;
 

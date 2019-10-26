@@ -51,7 +51,15 @@
             this.lbDocumentContentHistory = new System.Windows.Forms.Label();
             this.nudHistoryDocuments = new System.Windows.Forms.NumericUpDown();
             this.lbHistoryDocuments = new System.Windows.Forms.Label();
+            this.tabText = new System.Windows.Forms.TabPage();
+            this.tbTextSettingUseNote = new System.Windows.Forms.TextBox();
+            this.gbComparisonType = new System.Windows.Forms.GroupBox();
+            this.rbTextOrdinal = new System.Windows.Forms.RadioButton();
+            this.rbTextCurrent = new System.Windows.Forms.RadioButton();
+            this.rbTextInvariant = new System.Windows.Forms.RadioButton();
+            this.cbCaseSensitive = new System.Windows.Forms.CheckBox();
             this.tpgAdditionalSettings = new System.Windows.Forms.TabPage();
+            this.cbSearchUseAutoComplete = new System.Windows.Forms.CheckBox();
             this.cbUpdateAutoCheck = new System.Windows.Forms.CheckBox();
             this.tbNoteAutoSave = new System.Windows.Forms.TextBox();
             this.nudAutoSaveInterval = new System.Windows.Forms.NumericUpDown();
@@ -191,7 +199,7 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.cbSearchUseAutoComplete = new System.Windows.Forms.CheckBox();
+            this.cbSpellCheckInShellContext = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -199,6 +207,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).BeginInit();
+            this.tabText.SuspendLayout();
+            this.gbComparisonType.SuspendLayout();
             this.tpgAdditionalSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).BeginInit();
             this.tabEncoding.SuspendLayout();
@@ -235,6 +245,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcMain.Controls.Add(this.tpgGeneralSettings);
+            this.tcMain.Controls.Add(this.tabText);
             this.tcMain.Controls.Add(this.tpgAdditionalSettings);
             this.tcMain.Controls.Add(this.tabEncoding);
             this.tcMain.Controls.Add(this.tabEditorSettings);
@@ -528,6 +539,97 @@
             this.lbHistoryDocuments.TabIndex = 9;
             this.lbHistoryDocuments.Text = "How many documents to keep in the file history:";
             // 
+            // tabText
+            // 
+            this.tabText.Controls.Add(this.tbTextSettingUseNote);
+            this.tabText.Controls.Add(this.gbComparisonType);
+            this.tabText.Controls.Add(this.cbCaseSensitive);
+            this.tabText.Location = new System.Drawing.Point(4, 22);
+            this.tabText.Name = "tabText";
+            this.tabText.Padding = new System.Windows.Forms.Padding(3);
+            this.tabText.Size = new System.Drawing.Size(660, 371);
+            this.tabText.TabIndex = 9;
+            this.tabText.Text = "Text";
+            this.tabText.UseVisualStyleBackColor = true;
+            // 
+            // tbTextSettingUseNote
+            // 
+            this.tbTextSettingUseNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbTextSettingUseNote.BackColor = System.Drawing.Color.White;
+            this.tbTextSettingUseNote.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbTextSettingUseNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbTextSettingUseNote.ForeColor = System.Drawing.Color.DarkCyan;
+            this.tbTextSettingUseNote.Location = new System.Drawing.Point(272, 7);
+            this.tbTextSettingUseNote.Multiline = true;
+            this.tbTextSettingUseNote.Name = "tbTextSettingUseNote";
+            this.tbTextSettingUseNote.ReadOnly = true;
+            this.tbTextSettingUseNote.Size = new System.Drawing.Size(371, 25);
+            this.tbTextSettingUseNote.TabIndex = 4;
+            this.tbTextSettingUseNote.TabStop = false;
+            this.tbTextSettingUseNote.Text = "NOTE: These settings affects the functions in the Text menu.";
+            // 
+            // gbComparisonType
+            // 
+            this.gbComparisonType.Controls.Add(this.rbTextOrdinal);
+            this.gbComparisonType.Controls.Add(this.rbTextCurrent);
+            this.gbComparisonType.Controls.Add(this.rbTextInvariant);
+            this.gbComparisonType.Location = new System.Drawing.Point(6, 29);
+            this.gbComparisonType.Name = "gbComparisonType";
+            this.gbComparisonType.Size = new System.Drawing.Size(328, 100);
+            this.gbComparisonType.TabIndex = 1;
+            this.gbComparisonType.TabStop = false;
+            this.gbComparisonType.Tag = "0";
+            this.gbComparisonType.Text = "Text comparison type";
+            // 
+            // rbTextOrdinal
+            // 
+            this.rbTextOrdinal.AutoSize = true;
+            this.rbTextOrdinal.Location = new System.Drawing.Point(11, 65);
+            this.rbTextOrdinal.Name = "rbTextOrdinal";
+            this.rbTextOrdinal.Size = new System.Drawing.Size(58, 17);
+            this.rbTextOrdinal.TabIndex = 2;
+            this.rbTextOrdinal.Tag = "2";
+            this.rbTextOrdinal.Text = "Ordinal";
+            this.rbTextOrdinal.UseVisualStyleBackColor = true;
+            this.rbTextOrdinal.CheckedChanged += new System.EventHandler(this.TextVariantStyle_CheckedChanged);
+            // 
+            // rbTextCurrent
+            // 
+            this.rbTextCurrent.AutoSize = true;
+            this.rbTextCurrent.Location = new System.Drawing.Point(11, 42);
+            this.rbTextCurrent.Name = "rbTextCurrent";
+            this.rbTextCurrent.Size = new System.Drawing.Size(59, 17);
+            this.rbTextCurrent.TabIndex = 1;
+            this.rbTextCurrent.Tag = "1";
+            this.rbTextCurrent.Text = "Current";
+            this.rbTextCurrent.UseVisualStyleBackColor = true;
+            this.rbTextCurrent.CheckedChanged += new System.EventHandler(this.TextVariantStyle_CheckedChanged);
+            // 
+            // rbTextInvariant
+            // 
+            this.rbTextInvariant.AutoSize = true;
+            this.rbTextInvariant.Checked = true;
+            this.rbTextInvariant.Location = new System.Drawing.Point(11, 19);
+            this.rbTextInvariant.Name = "rbTextInvariant";
+            this.rbTextInvariant.Size = new System.Drawing.Size(66, 17);
+            this.rbTextInvariant.TabIndex = 0;
+            this.rbTextInvariant.TabStop = true;
+            this.rbTextInvariant.Tag = "0";
+            this.rbTextInvariant.Text = "Invariant";
+            this.rbTextInvariant.UseVisualStyleBackColor = true;
+            this.rbTextInvariant.CheckedChanged += new System.EventHandler(this.TextVariantStyle_CheckedChanged);
+            // 
+            // cbCaseSensitive
+            // 
+            this.cbCaseSensitive.AutoSize = true;
+            this.cbCaseSensitive.Location = new System.Drawing.Point(6, 6);
+            this.cbCaseSensitive.Name = "cbCaseSensitive";
+            this.cbCaseSensitive.Size = new System.Drawing.Size(179, 17);
+            this.cbCaseSensitive.TabIndex = 0;
+            this.cbCaseSensitive.Text = "Case sensitive string comparison";
+            this.cbCaseSensitive.UseVisualStyleBackColor = true;
+            // 
             // tpgAdditionalSettings
             // 
             this.tpgAdditionalSettings.BackColor = System.Drawing.SystemColors.Window;
@@ -542,6 +644,16 @@
             this.tpgAdditionalSettings.Size = new System.Drawing.Size(660, 371);
             this.tpgAdditionalSettings.TabIndex = 5;
             this.tpgAdditionalSettings.Text = "Additional";
+            // 
+            // cbSearchUseAutoComplete
+            // 
+            this.cbSearchUseAutoComplete.AutoSize = true;
+            this.cbSearchUseAutoComplete.Location = new System.Drawing.Point(6, 82);
+            this.cbSearchUseAutoComplete.Name = "cbSearchUseAutoComplete";
+            this.cbSearchUseAutoComplete.Size = new System.Drawing.Size(276, 17);
+            this.cbSearchUseAutoComplete.TabIndex = 5;
+            this.cbSearchUseAutoComplete.Text = "Use auto-complete with the search box combo boxes";
+            this.cbSearchUseAutoComplete.UseVisualStyleBackColor = true;
             // 
             // cbUpdateAutoCheck
             // 
@@ -1623,6 +1735,7 @@
             // tabSpellCheck
             // 
             this.tabSpellCheck.BackColor = System.Drawing.SystemColors.Window;
+            this.tabSpellCheck.Controls.Add(this.cbSpellCheckInShellContext);
             this.tabSpellCheck.Controls.Add(this.cbSpellCheckInUseNewFiles);
             this.tabSpellCheck.Controls.Add(this.cmbInstalledDictionaries);
             this.tabSpellCheck.Controls.Add(this.lbInstalledDictionaries);
@@ -1665,7 +1778,7 @@
             this.cmbInstalledDictionaries.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbInstalledDictionaries.DisplayMember = "DisplayName";
             this.cmbInstalledDictionaries.FormattingEnabled = true;
-            this.cmbInstalledDictionaries.Location = new System.Drawing.Point(9, 276);
+            this.cmbInstalledDictionaries.Location = new System.Drawing.Point(6, 296);
             this.cmbInstalledDictionaries.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
             this.cmbInstalledDictionaries.Name = "cmbInstalledDictionaries";
             this.cmbInstalledDictionaries.Size = new System.Drawing.Size(645, 21);
@@ -1675,7 +1788,7 @@
             // lbInstalledDictionaries
             // 
             this.lbInstalledDictionaries.AutoSize = true;
-            this.lbInstalledDictionaries.Location = new System.Drawing.Point(6, 251);
+            this.lbInstalledDictionaries.Location = new System.Drawing.Point(3, 271);
             this.lbInstalledDictionaries.Name = "lbInstalledDictionaries";
             this.lbInstalledDictionaries.Size = new System.Drawing.Size(149, 13);
             this.lbInstalledDictionaries.TabIndex = 43;
@@ -1684,7 +1797,7 @@
             // btDictionaryPath
             // 
             this.btDictionaryPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btDictionaryPath.Location = new System.Drawing.Point(623, 217);
+            this.btDictionaryPath.Location = new System.Drawing.Point(620, 237);
             this.btDictionaryPath.Name = "btDictionaryPath";
             this.btDictionaryPath.Size = new System.Drawing.Size(31, 20);
             this.btDictionaryPath.TabIndex = 42;
@@ -1697,7 +1810,7 @@
             // 
             this.tbDictionaryPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDictionaryPath.Location = new System.Drawing.Point(9, 217);
+            this.tbDictionaryPath.Location = new System.Drawing.Point(6, 237);
             this.tbDictionaryPath.Name = "tbDictionaryPath";
             this.tbDictionaryPath.Size = new System.Drawing.Size(608, 20);
             this.tbDictionaryPath.TabIndex = 41;
@@ -1705,7 +1818,7 @@
             // lbDictionaryPath
             // 
             this.lbDictionaryPath.AutoSize = true;
-            this.lbDictionaryPath.Location = new System.Drawing.Point(6, 194);
+            this.lbDictionaryPath.Location = new System.Drawing.Point(3, 214);
             this.lbDictionaryPath.Name = "lbDictionaryPath";
             this.lbDictionaryPath.Size = new System.Drawing.Size(139, 13);
             this.lbDictionaryPath.TabIndex = 40;
@@ -1714,7 +1827,7 @@
             // lbEditorSpellRecheckInactivity
             // 
             this.lbEditorSpellRecheckInactivity.AutoSize = true;
-            this.lbEditorSpellRecheckInactivity.Location = new System.Drawing.Point(6, 167);
+            this.lbEditorSpellRecheckInactivity.Location = new System.Drawing.Point(3, 187);
             this.lbEditorSpellRecheckInactivity.Name = "lbEditorSpellRecheckInactivity";
             this.lbEditorSpellRecheckInactivity.Size = new System.Drawing.Size(358, 13);
             this.lbEditorSpellRecheckInactivity.TabIndex = 38;
@@ -1723,7 +1836,7 @@
             // nudEditorSpellRecheckInactivity
             // 
             this.nudEditorSpellRecheckInactivity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudEditorSpellRecheckInactivity.Location = new System.Drawing.Point(564, 165);
+            this.nudEditorSpellRecheckInactivity.Location = new System.Drawing.Point(561, 185);
             this.nudEditorSpellRecheckInactivity.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -1741,7 +1854,7 @@
             // btSpellCheckMarkColor
             // 
             this.btSpellCheckMarkColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSpellCheckMarkColor.Location = new System.Drawing.Point(368, 136);
+            this.btSpellCheckMarkColor.Location = new System.Drawing.Point(365, 156);
             this.btSpellCheckMarkColor.Name = "btSpellCheckMarkColor";
             this.btSpellCheckMarkColor.Size = new System.Drawing.Size(286, 23);
             this.btSpellCheckMarkColor.TabIndex = 36;
@@ -1751,7 +1864,7 @@
             // lbSpellCheckMarkColor
             // 
             this.lbSpellCheckMarkColor.AutoSize = true;
-            this.lbSpellCheckMarkColor.Location = new System.Drawing.Point(6, 141);
+            this.lbSpellCheckMarkColor.Location = new System.Drawing.Point(3, 161);
             this.lbSpellCheckMarkColor.Name = "lbSpellCheckMarkColor";
             this.lbSpellCheckMarkColor.Size = new System.Drawing.Size(118, 13);
             this.lbSpellCheckMarkColor.TabIndex = 35;
@@ -1760,7 +1873,7 @@
             // btHunspellAffixFile
             // 
             this.btHunspellAffixFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btHunspellAffixFile.Location = new System.Drawing.Point(623, 110);
+            this.btHunspellAffixFile.Location = new System.Drawing.Point(620, 130);
             this.btHunspellAffixFile.Name = "btHunspellAffixFile";
             this.btHunspellAffixFile.Size = new System.Drawing.Size(31, 20);
             this.btHunspellAffixFile.TabIndex = 34;
@@ -1772,7 +1885,7 @@
             // 
             this.tbHunspellAffixFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbHunspellAffixFile.Location = new System.Drawing.Point(9, 110);
+            this.tbHunspellAffixFile.Location = new System.Drawing.Point(6, 130);
             this.tbHunspellAffixFile.Name = "tbHunspellAffixFile";
             this.tbHunspellAffixFile.Size = new System.Drawing.Size(608, 20);
             this.tbHunspellAffixFile.TabIndex = 33;
@@ -1780,7 +1893,7 @@
             // lbHunspellAffixFile
             // 
             this.lbHunspellAffixFile.AutoSize = true;
-            this.lbHunspellAffixFile.Location = new System.Drawing.Point(6, 87);
+            this.lbHunspellAffixFile.Location = new System.Drawing.Point(3, 107);
             this.lbHunspellAffixFile.Name = "lbHunspellAffixFile";
             this.lbHunspellAffixFile.Size = new System.Drawing.Size(128, 13);
             this.lbHunspellAffixFile.TabIndex = 32;
@@ -1789,7 +1902,7 @@
             // btHunspellDictionary
             // 
             this.btHunspellDictionary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btHunspellDictionary.Location = new System.Drawing.Point(623, 57);
+            this.btHunspellDictionary.Location = new System.Drawing.Point(620, 77);
             this.btHunspellDictionary.Name = "btHunspellDictionary";
             this.btHunspellDictionary.Size = new System.Drawing.Size(31, 20);
             this.btHunspellDictionary.TabIndex = 31;
@@ -1801,7 +1914,7 @@
             // 
             this.tbHunspellDictionary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbHunspellDictionary.Location = new System.Drawing.Point(9, 58);
+            this.tbHunspellDictionary.Location = new System.Drawing.Point(6, 78);
             this.tbHunspellDictionary.Name = "tbHunspellDictionary";
             this.tbHunspellDictionary.Size = new System.Drawing.Size(608, 20);
             this.tbHunspellDictionary.TabIndex = 4;
@@ -1809,7 +1922,7 @@
             // lbHunspellDictionary
             // 
             this.lbHunspellDictionary.AutoSize = true;
-            this.lbHunspellDictionary.Location = new System.Drawing.Point(6, 35);
+            this.lbHunspellDictionary.Location = new System.Drawing.Point(3, 55);
             this.lbHunspellDictionary.Name = "lbHunspellDictionary";
             this.lbHunspellDictionary.Size = new System.Drawing.Size(154, 13);
             this.lbHunspellDictionary.TabIndex = 2;
@@ -2105,15 +2218,15 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
-            // cbSearchUseAutoComplete
+            // cbSpellCheckInShellContext
             // 
-            this.cbSearchUseAutoComplete.AutoSize = true;
-            this.cbSearchUseAutoComplete.Location = new System.Drawing.Point(6, 82);
-            this.cbSearchUseAutoComplete.Name = "cbSearchUseAutoComplete";
-            this.cbSearchUseAutoComplete.Size = new System.Drawing.Size(276, 17);
-            this.cbSearchUseAutoComplete.TabIndex = 5;
-            this.cbSearchUseAutoComplete.Text = "Use auto-complete with the search box combo boxes";
-            this.cbSearchUseAutoComplete.UseVisualStyleBackColor = true;
+            this.cbSpellCheckInShellContext.AutoSize = true;
+            this.cbSpellCheckInShellContext.Location = new System.Drawing.Point(6, 31);
+            this.cbSpellCheckInShellContext.Name = "cbSpellCheckInShellContext";
+            this.cbSpellCheckInShellContext.Size = new System.Drawing.Size(299, 17);
+            this.cbSpellCheckInShellContext.TabIndex = 46;
+            this.cbSpellCheckInShellContext.Text = "Use spell checking on files opened via shell context menu";
+            this.cbSpellCheckInShellContext.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2143,6 +2256,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbDefaultFolder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDocumentContentHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryDocuments)).EndInit();
+            this.tabText.ResumeLayout(false);
+            this.tabText.PerformLayout();
+            this.gbComparisonType.ResumeLayout(false);
+            this.gbComparisonType.PerformLayout();
             this.tpgAdditionalSettings.ResumeLayout(false);
             this.tpgAdditionalSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAutoSaveInterval)).EndInit();
@@ -2357,5 +2474,13 @@
         private System.Windows.Forms.TextBox tbAlertEncoding;
         private System.Windows.Forms.CheckBox cbSpellCheckInUseNewFiles;
         private System.Windows.Forms.CheckBox cbSearchUseAutoComplete;
+        private System.Windows.Forms.TabPage tabText;
+        private System.Windows.Forms.TextBox tbTextSettingUseNote;
+        private System.Windows.Forms.GroupBox gbComparisonType;
+        private System.Windows.Forms.RadioButton rbTextOrdinal;
+        private System.Windows.Forms.RadioButton rbTextCurrent;
+        private System.Windows.Forms.RadioButton rbTextInvariant;
+        private System.Windows.Forms.CheckBox cbCaseSensitive;
+        private System.Windows.Forms.CheckBox cbSpellCheckInShellContext;
     }
 }

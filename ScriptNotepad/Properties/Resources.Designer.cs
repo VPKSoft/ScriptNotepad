@@ -233,6 +233,16 @@ namespace ScriptNotepad.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap duplicate_lines {
+            get {
+                object obj = ResourceManager.GetObject("duplicate_lines", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap edit_cut_red {
             get {
                 object obj = ResourceManager.GetObject("edit-cut-red", resourceCulture);
@@ -334,6 +344,16 @@ namespace ScriptNotepad.Properties {
         internal static System.Drawing.Bitmap folder_page {
             get {
                 object obj = ResourceManager.GetObject("folder_page", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap format_text_uppercase {
+            get {
+                object obj = ResourceManager.GetObject("format-text-uppercase", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

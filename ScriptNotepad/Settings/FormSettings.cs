@@ -34,7 +34,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using ScintillaNET;
 using ScriptNotepad.DialogForms;
@@ -227,12 +226,14 @@ namespace ScriptNotepad.Settings
             // get the indent guide value..
             cbIndentGuideOn.Checked = Settings.EditorIndentGuideOn;
 
+            #region SpellCheck
             // get the spell checking properties..
             if (File.Exists(Settings.EditorHunspellDictionaryFile) && File.Exists(Settings.EditorHunspellAffixFile) &&
                 (Settings.EditorUseSpellChecking || Settings.EditorUseSpellCheckingNewFiles))
             {
                 cbSpellCheckInUse.Checked = Settings.EditorUseSpellChecking;
                 cbSpellCheckInUseNewFiles.Checked = Settings.EditorUseSpellCheckingNewFiles;
+                cbSpellCheckInShellContext.Checked = Settings.EditorUseSpellCheckingShellContext;
             }
 
             tbDictionaryPath.Text = Settings.EditorHunspellDictionaryPath;
@@ -241,6 +242,7 @@ namespace ScriptNotepad.Settings
             tbHunspellAffixFile.Text = Settings.EditorHunspellAffixFile;
             tbHunspellDictionary.Text = Settings.EditorHunspellDictionaryFile;
             nudEditorSpellRecheckInactivity.Value = Settings.EditorSpellCheckInactivity;
+            #endregion
 
             // get the editor font settings..
             nudFontSize.Value = Settings.EditorFontSize;
@@ -307,6 +309,17 @@ namespace ScriptNotepad.Settings
             cbNoUnicodeBE.Checked = Settings.SkipUnicodeDetectBE;
             cbNoUTF32LE.Checked = Settings.SkipUtf32LE;
             cbNoUTF32BE.Checked = Settings.SkipUtf32BE;
+
+            #region TextSettings
+            cbCaseSensitive.Checked = Settings.TextUpperCaseComparison;
+            switch (Settings.TextComparisonType)
+            {
+                case 0: rbTextInvariant.Checked = true; break;
+                case 1: rbTextCurrent.Checked = true; break;
+                case 2: rbTextOrdinal.Checked = true; break;
+                default: rbTextInvariant.Checked = true; break;
+            }
+            #endregion
 
             // the default encoding setting is deprecated and hidden..
             var encodings = Settings.GetEncodingList();
@@ -408,6 +421,7 @@ namespace ScriptNotepad.Settings
             // set the indent guide value..
             Settings.EditorIndentGuideOn = cbIndentGuideOn.Checked;
 
+            #region SpellCheck
             // set the spell checking properties..
             Settings.EditorUseSpellChecking = cbSpellCheckInUse.Checked;
             Settings.EditorUseSpellCheckingNewFiles = cbSpellCheckInUseNewFiles.Checked;
@@ -416,6 +430,8 @@ namespace ScriptNotepad.Settings
             Settings.EditorHunspellDictionaryFile = tbHunspellDictionary.Text;
             Settings.EditorSpellCheckInactivity = (int)nudEditorSpellRecheckInactivity.Value;
             Settings.EditorHunspellDictionaryPath = tbDictionaryPath.Text;
+            Settings.EditorUseSpellCheckingShellContext = cbSpellCheckInShellContext.Checked;
+            #endregion
 
             // set the editor font settings..
             Settings.EditorFontSize = (int) nudFontSize.Value;
@@ -490,6 +506,11 @@ namespace ScriptNotepad.Settings
             Settings.EncodingList = 
                 Settings.EncodingStringFromDefinitionList(encodings);
 
+            #region TextSettings
+            Settings.TextUpperCaseComparison = cbCaseSensitive.Checked;
+            Settings.TextComparisonType = Convert.ToInt32(gbComparisonType.Tag);
+            #endregion
+
             #region DateTime
             // set the date and time formats..
             Settings.DateFormat1 = tbDateTimeFormat1.Text;
@@ -506,7 +527,7 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// Gets or sets the character set combo box builder.
         /// </summary>
-        private CharacterSetComboBuilder CharacterSetComboBuilder { get; set; }
+        private CharacterSetComboBuilder CharacterSetComboBuilder { get; }
 
         // this event is fired when the encoding is changed from the corresponding combo box..
         private void CharacterSetComboBuilder_EncodingSelected(object sender, OnEncodingSelectedEventArgs e)
@@ -819,9 +840,9 @@ namespace ScriptNotepad.Settings
             TextBox textBox = null;
             try
             {
-                if (sender is TextBox)
+                if (sender is TextBox box)
                 {
-                    textBox = (TextBox) sender;
+                    textBox = box;
                     lastFocusedDateTime = textBox.Text;
 
                     lbDateTimeFormatDescriptionValue.Text = DateTime.Now.ToString(lastFocusedDateTime,
@@ -1014,7 +1035,7 @@ namespace ScriptNotepad.Settings
             }
 
             // create a list of unicode encodings as code pages..
-            List<int> unicodeCodePages = new List<int>(new int[] {65001, 1200, 1201, 12000, 12001});
+            List<int> unicodeCodePages = new List<int>(new[] {65001, 1200, 1201, 12000, 12001});
 
             // create a variable to detect the second error of the encodings (all Unicode and all throwing exceptions)..
             bool allUnicodeThrowException = true;
@@ -1046,6 +1067,12 @@ namespace ScriptNotepad.Settings
         {
             // set the states of the tool strip with the encoding settings grid..
             ValidateEncodingToolStrip();
+        }
+
+        private void TextVariantStyle_CheckedChanged(object sender, EventArgs e)
+        {
+            var radioButton = (RadioButton) sender;
+            gbComparisonType.Tag = radioButton.Tag;
         }
     }
 }

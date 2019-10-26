@@ -82,9 +82,15 @@
 * Done? [MAYBE] [2019/10/06] Fix: the software sometimes hangs with the search tab dialog (fixed by setting the timers to disabled state while the dialog is visible).
 * Done? [YES  ] [2019/10/19] Fix: Open with encoding not accepting UTF-8 / Unicode BOM setting.
 * Done? [YES  ] [2019/10/19] Fix: The software gets left behind of other applications after the search dialog has been opened.
-* Done? [N/A  ] [2019/10/19] Add setting whether to use spell checking with files opened from the shell context menu. 
 * Done? [N/A  ] [2019/10/19] Fix: Opened file not reacting to the search in files result selection.
 * Done? [SOME ] [2019/10/19] Add few special characters such as '-', to the text overwrite system to the find tab menu.
 * Done? [YES  ] [2019/10/20] Fix: The miss-behaving search box.
 * Done? [YES  ] [2019/10/20] Add setting to allow to use auto-complete with the search box.
 * Done? [YES  ] [2019/10/20] Fix: The open script button being disabled when the C# script window is opened.
+* Done? [YES  ] [2019/10/26] Fix: The installer runs the software as an administrator.
+* Done? [YES  ] [2019/10/26] Add possibility to remove duplicate lines in a text document. 
+* Done? [YES  ] [2019/10/26] Move text manipulation functions to a different menu.
+* Done? [6% ? ] [2019/10/26] Move code away from the main form...
+* Done? [YES  ] [2019/10/26] Fix: The spell check button now gets checked instead of getting enabled/disabled based on the settings.
+* Done? [YES  ] [2019/10/26] Add setting whether to use spell checking with files opened from the shell context menu. 
+* Done? [YES  ] [2019/10/26] Fix: A 'ghost' file not existing within the file system might appear after a rename of a non-existing file.

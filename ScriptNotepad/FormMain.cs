@@ -69,6 +69,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using ScriptNotepad.UtilityClasses.TextManipulation;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
 using VPKSoft.LangLib;
@@ -278,7 +279,7 @@ namespace ScriptNotepad
             FormSettings.CreateDefaultPluginDirectory();
 
             // localize the about "box"..
-            FormAbout.OverrideCultureString = FormSettings.Settings.Culture.Name;
+            VersionCheck.OverrideCultureString = FormSettings.Settings.Culture.Name;
 
             // initialize the plug-in assemblies..
             InitializePlugins();
@@ -322,6 +323,12 @@ namespace ScriptNotepad
             // subscribe to an event which is raised upon application activation..
             ApplicationDeactivated += FormMain_ApplicationDeactivated;
             ApplicationActivated += FormMain_ApplicationActivated;
+
+            // get the case-sensitivity value from the settings..
+            mnuCaseSensitive.Checked = FormSettings.Settings.TextUpperCaseComparison;
+
+            // the constructor code finalized executing..
+            runningConstructor = false;
         }
         #endregion
 
@@ -356,7 +363,7 @@ namespace ScriptNotepad
                     var spellCheck = (TabbedDocumentSpellCheck) document.Tag0;
 
                     // set the document's spell check to either enabled or disabled..
-                    spellCheck.Enabled = enabled;
+                    tsbSpellCheck.Checked = enabled;
 
                     DBFILE_SAVE fileSave = (DBFILE_SAVE) document.Tag;
                     fileSave.USESPELL_CHECK = spellCheck.Enabled;
@@ -1576,17 +1583,18 @@ namespace ScriptNotepad
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
         /// <param name="encodingOverridden">The given encoding should be used while opening the file.</param>
         /// <param name="overrideDetectBom">if set to <c>true</c> the setting value whether to detect unicode file with no byte-order-mark (BOM) is overridden.</param>
+        /// <param name="fromShellContext">A value indicating whether the file was opened from the Windows shell.</param>
         private void OpenDocument(string fileName,
             Encoding encoding,
             bool reloadContents, bool encodingOverridden,
-            bool overrideDetectBom = false)
+            bool overrideDetectBom = false, bool fromShellContext = false)
         {
             var encodingList =
                 new List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)>();
 
             encodingList.Add((encoding.WebName, encoding, false, false));
 
-            OpenDocument(fileName, encodingList, reloadContents, encodingOverridden, overrideDetectBom);
+            OpenDocument(fileName, encodingList, reloadContents, encodingOverridden, overrideDetectBom, fromShellContext);
         }
 
 
@@ -1597,10 +1605,12 @@ namespace ScriptNotepad
         /// <param name="encodings">The encodings to be used to try to open the file.</param>
         /// <param name="reloadContents">An indicator if the contents of the document should be reloaded from the file system.</param>
         /// <param name="encodingOverridden">The given encoding should be used while opening the file.</param>
+        /// <param name="fromShellContext">A value indicating whether the file was opened from the Windows shell.</param>
         /// <param name="overrideDetectBom">if set to <c>true</c> the setting value whether to detect unicode file with no byte-order-mark (BOM) is overridden.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        private void OpenDocument(string fileName, List<(string encodingName, Encoding encoding, bool unicodeFailOnInvalidChar, bool unicodeBOM)> encodings, bool reloadContents, bool encodingOverridden,
-            bool overrideDetectBom = false)
+        private void OpenDocument(string fileName, List<(string encodingName, Encoding encoding, 
+                bool unicodeFailOnInvalidChar, bool unicodeBOM)> encodings, bool reloadContents, bool encodingOverridden,
+            bool overrideDetectBom = false, bool fromShellContext = false)
         {
             Encoding encoding = null;
             if (File.Exists(fileName))
@@ -1720,8 +1730,12 @@ namespace ScriptNotepad
                         // check the programming language menu item with the current lexer..
                         ProgrammingLanguageHelper.CheckLanguage(sttcMain.LastAddedDocument.LexerType);
 
-                        // the default spell checking state..
-                        SetSpellCheckerState(FormSettings.Settings.EditorUseSpellChecking, false);
+                        // set the spell checker state based on the settings and the type of the
+                        // file open method..
+                        SetSpellCheckerState(
+                            fromShellContext
+                                ? FormSettings.Settings.EditorUseSpellCheckingShellContext
+                                : FormSettings.Settings.EditorUseSpellChecking, false);
                     }
                 }
             }
@@ -2081,57 +2095,7 @@ namespace ScriptNotepad
         {
             CurrentScintillaAction(scintilla =>
             {
-                // if text is selected, do the ordering with a bit more complex algorithm..
-                if (scintilla.SelectedText.Length > 0)
-                {
-                    // save the selection start into a variable..
-                    int selStart = scintilla.SelectionStart;
-
-                    // save the start line index of the selection into a variable..
-                    int startLine = scintilla.LineFromPosition(selStart);
-
-                    // adjust the selection start to match the actual line start of the selection..
-                    selStart = scintilla.Lines[startLine].Position;
-
-                    // save the selection end into a variable..
-                    int selEnd = scintilla.SelectionEnd;
-
-                    // save the end line index of the selection into a variable..
-                    int endLine = scintilla.LineFromPosition(selEnd);
-
-                    // adjust the selection end to match the actual line end of the selection..
-                    selEnd = scintilla.Lines[endLine].EndPosition;
-
-                    // reset the selection with the "corrected" values..
-                    scintilla.SelectionStart = selStart;
-                    scintilla.SelectionEnd = selEnd;
-
-                    // get the lines in the selection and order the lines alphabetically with LINQ..
-                    var lines = scintilla.Lines.Where(f => f.Index >= startLine && f.Index <= endLine)
-                        .OrderBy(f => f.Text.ToLowerInvariant()).Select(f => f.Text);
-
-                    // replace the modified selection with the sorted lines..
-                    scintilla.ReplaceSelection(string.Join("", lines));
-
-                    // get the "new" selection start..
-                    selStart = scintilla.Lines[startLine].Position;
-
-                    // get the "new" selection end..
-                    selEnd = scintilla.Lines[endLine].EndPosition;
-
-                    // set the "new" selection..
-                    scintilla.SelectionStart = selStart;
-                    scintilla.SelectionEnd = selEnd;
-                }
-                // somehow the whole document is easier..
-                else
-                {
-                    // just LINQ it to sorted list..
-                    var lines = scintilla.Lines.OrderBy(f => f.Text.ToLowerInvariant()).Select(f => f.Text);
-
-                    // set the text..
-                    scintilla.Text = string.Join("", lines);                    
-                }
+                SortLines.Sort(scintilla, FormSettings.Settings.TextCurrentComparison);
             });
         }
 
@@ -2498,7 +2462,8 @@ namespace ScriptNotepad
         {
             Invoke(new MethodInvoker(delegate
             {
-                OpenDocument(e.Message, DefaultEncodings, false, false);
+                OpenDocument(e.Message, DefaultEncodings, 
+                    false, false, false, true);
                 // the user probably will like the program to show up, if the software activates
                 // it self from a windows shell call to open a file..
                 if (WindowState == FormWindowState.Minimized)
@@ -3241,21 +3206,36 @@ namespace ScriptNotepad
             });
         }
 
-        // the edit menu is opening..
-        private void MnuEdit_DropDownOpening(object sender, EventArgs e)
+        // a menu within the application is opening..
+        private void MenuCommon_DropDownOpening(object sender, EventArgs e)
         {
-            // get the DBFILE_SAVE from the active document..
-            var fileSave = (DBFILE_SAVE) sttcMain.CurrentDocument?.Tag;
-
-            if (fileSave != null) // the second null check..
+            if (sender.Equals(mnuEdit)) // the edit menu is opening..
             {
-                // enable / disable items which requires the file to exist in the file system..
-                mnuRenameNewFileMainMenu.Enabled = !fileSave.EXISTS_INFILESYS;
+                // get the DBFILE_SAVE from the active document..
+                var fileSave = (DBFILE_SAVE) sttcMain.CurrentDocument?.Tag;
+
+                if (fileSave != null) // the second null check..
+                {
+                    // enable / disable items which requires the file to exist in the file system..
+                    mnuRenameNewFileMainMenu.Enabled = !fileSave.EXISTS_INFILESYS;
+                }
+            }
+
+            if (sender.Equals(mnuText)) // the text menu is opening..
+            {
+                mnuSortLines.Enabled = sttcMain.CurrentDocument != null;
+                mnuRemoveDuplicateLines.Enabled = sttcMain.CurrentDocument != null;
+                mnuWrapDocumentTo.Enabled = sttcMain.CurrentDocument != null;
             }
         }
         #endregion
 
-        #region PrivateFields        
+        #region PrivateFields                
+        /// <summary>
+        /// A flag indicating whether the the dialog is still running the code within the constructor.
+        /// </summary>
+        private readonly bool runningConstructor = true;
+
         /// <summary>
         /// An IPC client / server to transmit Windows shell file open requests to the current process.
         /// (C): VPKSoft: https://gist.github.com/VPKSoft/5d78f1c06ec51ebad34817b491fe6ac6
@@ -3637,6 +3617,9 @@ namespace ScriptNotepad
                 {
                     return;
                 }
+
+                var previousFileName = fileSave.FILENAME_FULL;
+
                 string newName;
                 if ((newName = FormDialogRenameNewFile.ShowDialog(this, sttcMain)) != null)
                 {
@@ -3659,6 +3642,7 @@ namespace ScriptNotepad
                     fileSave.DB_MODIFIED = DateTime.Now;
 
                     // update document misc data, i.e. the assigned lexer to the database..
+                    DatabaseFileSave.UpdateFileName(fileSave, previousFileName);
                     DatabaseFileSave.UpdateMiscFlags(fileSave);
                 }
             });
@@ -3726,5 +3710,34 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
+
+        private void mnuRemoveDuplicateLines_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                var fileSave = (DBFILE_SAVE) document.Tag;
+
+                DuplicateLines.RemoveDuplicateLines(document.Scintilla,
+                    FormSettings.Settings.TextCurrentComparison,
+                    fileSave.FileLineType);
+
+                if (!suspendSelectionUpdate)
+                {
+                    StatusStripTexts.SetStatusStringText(document, CurrentSession);
+                }
+            });
+        }
+
+        private void mnuCaseSensitive_Click(object sender, EventArgs e)
+        {
+            if (runningConstructor)
+            {
+                return;
+            }
+
+            var item = (ToolStripMenuItem) sender;
+            item.Checked = !item.Checked;
+            FormSettings.Settings.TextUpperCaseComparison = item.Checked;
+        }
     }
 }
