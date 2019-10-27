@@ -38,6 +38,11 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     public class SortLines: ErrorHandlingBase
     {
+        /// <summary>
+        /// A method to sort the contents of a <see cref="Scintilla"/> control.
+        /// </summary>
+        /// <param name="scintilla">The scintilla control which contents to sort.</param>
+        /// <param name="stringComparison">The type of string comparison to use with the sort.</param>
         public static void Sort(Scintilla scintilla, StringComparison stringComparison)
         {
             try

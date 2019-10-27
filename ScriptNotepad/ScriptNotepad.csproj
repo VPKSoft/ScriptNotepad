@@ -114,14 +114,14 @@
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.8\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.9\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.7\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.5\lib\net47\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.5.1\lib\net47\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.SearchText, Version=1.0.1.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.SearchText.1.0.1.6\lib\net47\VPKSoft.SearchText.dll</HintPath>
@@ -129,8 +129,8 @@
     <Reference Include="VPKSoft.Utils, Version=1.0.3.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.3.9\lib\net45\VPKSoft.Utils.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.VersionCheck, Version=1.0.1.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.VersionCheck.1.0.1.3\lib\net47\VPKSoft.VersionCheck.dll</HintPath>
+    <Reference Include="VPKSoft.VersionCheck, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.VersionCheck.1.0.1.4\lib\net47\VPKSoft.VersionCheck.dll</HintPath>
     </Reference>
     <Reference Include="WeCantSpell.Hunspell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WeCantSpell.Hunspell.3.0.1\lib\net45\WeCantSpell.Hunspell.dll</HintPath>
@@ -502,9 +502,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\download_dialog_localization.txt" />
+    <Content Include="setup_version_maintenance.exe" />
     <None Include="Resources\duplicate_lines.png" />
     <None Include="Resources\format-text-uppercase.png" />
-    <Content Include="setup_version_maintenance.exe" />
     <None Include="Resources\krename.png" />
     <None Include="Resources\find_tab.png" />
     <None Include="Resources\arrow-down-2.png" />

@@ -63,6 +63,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -279,6 +280,10 @@ namespace ScriptNotepad
             FormSettings.CreateDefaultPluginDirectory();
 
             // localize the about "box"..
+            VersionCheck.AboutDialogDisplayDownloadDialog = true; // I want to make it fancy..
+            VersionCheck.OverrideCultureString = FormSettings.Settings.Culture.Name; // I want it localized..
+            VersionCheck.CacheUpdateHistory = true; // if the user wishes to refer to some change in the history of the software..
+
             VersionCheck.OverrideCultureString = FormSettings.Settings.Culture.Name;
 
             // initialize the plug-in assemblies..
@@ -364,6 +369,7 @@ namespace ScriptNotepad
 
                     // set the document's spell check to either enabled or disabled..
                     tsbSpellCheck.Checked = enabled;
+                    spellCheck.Enabled = enabled;
 
                     DBFILE_SAVE fileSave = (DBFILE_SAVE) document.Tag;
                     fileSave.USESPELL_CHECK = spellCheck.Enabled;

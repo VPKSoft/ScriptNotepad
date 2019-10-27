@@ -124,18 +124,18 @@ namespace ScriptNotepad.DialogForms
             Encoding = e.Encoding;
         }
 
-        private Encoding _Encoding = null;
+        private Encoding encoding;
 
         /// <summary>
         /// Gets or sets the encoding a user selected from the dialog.
         /// </summary>
         private Encoding Encoding
         {
-            get => _Encoding;
+            get => encoding;
 
             set
             {
-                _Encoding = value;
+                encoding = value;
                 btOK.Enabled = value != null;
             }
         }
