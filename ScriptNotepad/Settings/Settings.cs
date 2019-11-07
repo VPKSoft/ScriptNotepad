@@ -43,35 +43,6 @@ using TabDrawMode = ScintillaNET.TabDrawMode;
 namespace ScriptNotepad.Settings
 {
     /// <summary>
-    /// An attribute class for describing a setting name and it's type (VPKSoft.ConfLib).
-    /// </summary>
-    /// <seealso cref="System.Attribute" />
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)] // target a property only..
-    public class SettingAttribute: Attribute
-    {
-        /// <summary>
-        /// Gets or sets the name of the setting (VPKSoft.ConfLib).
-        /// </summary>
-        public string SettingName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of the setting (VPKSoft.ConfLib).
-        /// </summary>
-        public Type SettingType { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingAttribute"/> class.
-        /// </summary>
-        /// <param name="settingName">Name of the setting (VPKSoft.ConfLib).</param>
-        /// <param name="type">The type of the setting (VPKSoft.ConfLib).</param>
-        public SettingAttribute(string settingName, Type type)
-        {
-            SettingName = settingName; // save the given values..
-            SettingType = type;
-        }
-    }
-
-    /// <summary>
     /// Settings for the ScriptNotepad software.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
@@ -80,6 +51,7 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// Initializes a new instance of the <see cref="Settings"/> class.
         /// </summary>
+        #region HeftyConstructor
         public Settings()
         {
             if (conflib == null) // don't initialize if already initialized..
@@ -90,21 +62,20 @@ namespace ScriptNotepad.Settings
                 }; // create a new instance of the Conflib class..
             }
 
-            #region SpecialSetting
             PropertyInfo propertyInfo = // first get the property info for the property..
                 GetType().GetProperty("DefaultEncoding", BindingFlags.Instance | BindingFlags.Public);
 
             // get the setting attribute value of the property.. 
             if (propertyInfo != null)
             {
-                SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
+                SettingAttribute settingAttribute =
+                    (SettingAttribute) propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
 
                 // set the default encoding value..
 #pragma warning disable 618
 // the deprecated property is still in for backwards compatibility - so disable the warning..
                 DefaultEncoding = Encoding.GetEncoding(conflib[settingAttribute.SettingName, DefaultEncoding.WebName]);
 #pragma warning restore 618
-                #endregion
 
                 // get all public instance properties of this class..
                 PropertyInfo[] propertyInfos = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
@@ -128,7 +99,8 @@ namespace ScriptNotepad.Settings
                     try // avoid crashes..
                     {
                         // get the SettingAttribute class instance of the property..
-                        settingAttribute = (SettingAttribute)propertyInfos[i].GetCustomAttribute(typeof(SettingAttribute));
+                        settingAttribute =
+                            (SettingAttribute) propertyInfos[i].GetCustomAttribute(typeof(SettingAttribute));
 
                         // get the default value for the property..
                         object currentValue = propertyInfos[i].GetValue(this);
@@ -139,7 +111,7 @@ namespace ScriptNotepad.Settings
                         if (settingAttribute.SettingType == typeof(Color))
                         {
                             propertyInfos[i].SetValue(this, ColorTranslator.FromHtml(
-                                conflib[settingAttribute.SettingName, ColorTranslator.ToHtml((Color)currentValue)]));
+                                conflib[settingAttribute.SettingName, ColorTranslator.ToHtml((Color) currentValue)]));
                         }
                         else
                         {
@@ -147,7 +119,10 @@ namespace ScriptNotepad.Settings
                             {
                                 continue;
                             }
-                            propertyInfos[i].SetValue(this, Convert.ChangeType(conflib[settingAttribute.SettingName, currentValue.ToString()], settingAttribute.SettingType));                        
+
+                            propertyInfos[i].SetValue(this,
+                                Convert.ChangeType(conflib[settingAttribute.SettingName, currentValue.ToString()],
+                                    settingAttribute.SettingType));
                         }
                     }
                     catch (Exception ex)
@@ -161,55 +136,9 @@ namespace ScriptNotepad.Settings
             // subscribe the event handler..
             PropertyChanged += Settings_PropertyChanged;
         }
+        #endregion
 
-        /// <summary>
-        /// Handles the PropertyChanged event of the Settings class instance.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // NOTE:: Do use this attribute, if no notification is required from a property: [DoNotNotify]
-
-            try // just try from the beginning..
-            {
-                PropertyInfo propertyInfo = // first get the property info for the property..
-                GetType().GetProperty(e.PropertyName, BindingFlags.Instance | BindingFlags.Public);
-
-                // get the property value..
-                object value = propertyInfo?.GetValue(this);
-
-                // get the setting attribute value of the property.. 
-                if (propertyInfo != null)
-                {
-                    SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
-
-                    if (value != null && settingAttribute != null)
-                    {
-                        // this is a special case, otherwise try just to use simple types..
-                        if (settingAttribute.SettingType == typeof(Encoding))
-                        {
-                            Encoding encoding = (Encoding)value;
-                            conflib[settingAttribute.SettingName] = encoding.WebName;
-                        }
-                        else if (settingAttribute.SettingType == typeof(Color))
-                        {
-                            conflib[settingAttribute.SettingName] = ColorTranslator.ToHtml((Color) value);
-                        }
-                        else // a simple type..
-                        {
-                            conflib[settingAttribute.SettingName] = value.ToString();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogger.LogError(ex);
-            }
-        }
-
+        #region Fields
         /// <summary>
         /// An instance to a Conflib class.
         /// </summary>
@@ -221,18 +150,104 @@ namespace ScriptNotepad.Settings
 #pragma warning disable CS0067 // disable the CS0067 as the PropertyChanged event is raised via the PropertyChanged.Fody class library..
         public event PropertyChangedEventHandler PropertyChanged;
 #pragma warning restore CS0067
+        #endregion
 
-        #region Settings
         // NOTE::
         // These properties must have a default value for them to work properly with the class logic!
 
+        #region GuiSettings
+        /// <summary>
+        /// The amount of files to be saved to a document history.
+        /// </summary>
+        [Setting("gui/history", typeof(int))]
+        public int HistoryListAmount { get; set; } = 20;
+        #endregion
+
+        #region ColorSettings
+        /// <summary>
+        /// Gets or sets the color of the current line background style.
+        /// </summary>
+        /// <value>The color of the current line background style.</value>
+        [Setting("color/currentLineBackground", typeof(Color))]
+        public Color CurrentLineBackground { get; set; } = Color.FromArgb(232, 232, 255);
+
+        /// <summary>
+        /// Gets or sets the color of the smart highlight style.
+        /// </summary>
+        /// <value>The color of the smart highlight style.</value>
+        [Setting("color/smartHighLight", typeof(Color))]
+        public Color SmartHighlight { get; set; } = Color.FromArgb(0, 255, 0);
+
+        /// <summary>
+        /// Gets or sets the color of the mark one style.
+        /// </summary>
+        /// <value>The color of the mark one style.</value>
+        [Setting("color/mark1", typeof(Color))]
+        public Color Mark1Color { get; set; } = Color.FromArgb(0, 255, 255);
+
+        /// <summary>
+        /// Gets or sets the color of the mark two style.
+        /// </summary>
+        /// <value>The color of the mark two style.</value>
+        [Setting("color/mark2", typeof(Color))]
+        public Color Mark2Color { get; set; } = Color.FromArgb(255, 128, 0);
+
+        /// <summary>
+        /// Gets or sets the color of the mark three style.
+        /// </summary>
+        /// <value>The color of the mark three style.</value>
+        [Setting("color/mark3", typeof(Color))]
+        public Color Mark3Color { get; set; } = Color.FromArgb(255, 255, 0);
+
+        /// <summary>
+        /// Gets or sets the color of the mark four style.
+        /// </summary>
+        /// <value>The color of the mark four style.</value>
+        [Setting("color/mark4", typeof(Color))]
+        public Color Mark4Color { get; set; } = Color.FromArgb(128, 0, 255);
+
+        /// <summary>
+        /// Gets or sets the color of the mark five style.
+        /// </summary>
+        /// <value>The color of the mark five style.</value>
+        [Setting("color/mark5", typeof(Color))]
+        public Color Mark5Color { get; set; } = Color.FromArgb(0, 128, 0);
+
+        /// <summary>
+        /// Gets or sets the color of the mark used in the search and replace dialog.
+        /// </summary>
+        [Setting("color/markSearchReplace", typeof(Color))]
+        public Color MarkSearchReplaceColor { get; set; } = Color.DeepPink;
+
+        /// <summary>
+        /// Gets or sets the foreground color of brace highlighting.
+        /// </summary>
+        [Setting("color/braceHighlightForeground", typeof(Color))]
+        public Color BraceHighlightForegroundColor { get; set; } = Color.BlueViolet;
+
+        /// <summary>
+        /// Gets or sets the background color of brace highlighting.
+        /// </summary>
+        [Setting("color/braceHighlightBackground", typeof(Color))]
+        public Color BraceHighlightBackgroundColor { get; set; } = Color.LightGray;
+
+        /// <summary>
+        /// Gets or sets the foreground color of a bad brace.
+        /// </summary>
+        [Setting("color/braceHighlightForegroundBad", typeof(Color))]
+        public Color BraceBadHighlightForegroundColor { get; set; } = Color.Red;
+        #endregion
+
+        #region DeprecatedSettings
         /// <summary>
         /// Gets or sets the default encoding to be used with the files within this software.
         /// </summary>
         [Obsolete("DefaultEncoding is deprecated, the EncodingList property replaces this property.")]
         [Setting("main/encoding", typeof(Encoding))]
         public Encoding DefaultEncoding { get; set; } = Encoding.UTF8;
+        #endregion
 
+        #region MainSettings
         /// <summary>
         /// Gets or sets a value indicating whether the thread locale should be set matching to the localization value.
         /// </summary>
@@ -309,7 +324,502 @@ namespace ScriptNotepad.Settings
             } 
             set => encodingList = value;
         }
+        #endregion
 
+        #region EditorSpell
+        /// <summary>
+        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/useSpellChecking", typeof(bool))]
+        public bool EditorUseSpellChecking { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document when opening a file via the shell context menu.
+        /// </summary>
+        [Setting("editorSpell/editorUseSpellCheckingShellContext", typeof(bool))]
+        public bool EditorUseSpellCheckingShellContext { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document for new files.
+        /// </summary>
+        [Setting("editorSpell/useSpellCheckingOnNew", typeof(bool))]
+        public bool EditorUseSpellCheckingNewFiles { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/dictionaryFile", typeof(string))]
+        public string EditorHunspellDictionaryFile { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets a value of the Hunspell affix file to be used with spell checking for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/affixFile", typeof(string))]
+        public string EditorHunspellAffixFile { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the color of the spell check mark.
+        /// </summary>
+        [Setting("editorSpell/markColor", typeof(Color))]
+        public Color EditorSpellCheckColor { get; set; } = Color.Red;
+
+        /// <summary>
+        /// Gets or sets the color of the spell check mark.
+        /// </summary>
+        [Setting("editorSpell/SpellRecheckAfterInactivity", typeof(int))]
+        public int EditorSpellCheckInactivity { get; set; } = 500; // set the default to 500 milliseconds..
+
+        /// <summary>
+        /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("editorSpell/dictionaryPath", typeof(string))]
+        public string EditorHunspellDictionaryPath { get; set; } = DefaultDirectory("Dictionaries");
+        #endregion
+
+        #region UrlDetection
+        /// <summary>
+        /// Gets or sets a value indicating whether to highlight URLs within the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editorUrls/highlightUrls", typeof(bool))]
+        public bool HighlightUrls { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to start an associated program on clicking a highlighted URL.
+        /// </summary>
+        [Setting("editorUrls/startProcessOnUrlClick", typeof(bool))]
+        public bool StartProcessOnUrlClick { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the color of the URL text.
+        /// </summary>
+        [Setting("editorUrls/textColor", typeof(Color))]
+        public Color UrlTextColor { get; set; } = Color.Blue;
+
+        /// <summary>
+        /// Gets or sets the color of the URL indicator.
+        /// </summary>
+        [Setting("editorUrls/indicatorColor", typeof(Color))]
+        public Color UrlIndicatorColor { get; set; } = Color.Blue;
+
+        /// <summary>
+        /// Gets or sets the URL indicator style.
+        /// </summary>
+        [Setting("editorUrls/indicatorStyle", typeof(int))]
+        public int UrlIndicatorStyle { get; set; } = (int) IndicatorStyle.Plain;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use a dwell tool tip on URLs.
+        /// </summary>
+        [Setting("editorUrls/useDwellToolTip", typeof(bool))]
+        public bool UrlUseDwellToolTip { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the foreground color to be used with the URL tool tips.
+        /// </summary>
+        [Setting("editorUrls/dwellToolTipForegroundColor", typeof(Color))]
+        public Color UrlDwellToolTipForegroundColor { get; set; } = SystemColors.InfoText;
+
+        /// <summary>
+        /// Gets or sets the background color to be used with the URL tool tips.
+        /// </summary>
+        [Setting("editorUrls/dwellToolTipBackgroundColor", typeof(Color))]
+        public Color UrlDwellToolTipBackgroundColor { get; set; } = SystemColors.Info;
+
+        /// <summary>
+        /// Gets or sets the foreground color to be used with the URL tool tips.
+        /// </summary>
+        [Setting("editorUrls/dwellToolTipTime", typeof(int))]
+        public int UrlDwellToolTipTime { get; set; } = 400;
+        #endregion
+
+        #region Editor
+        /// <summary>
+        /// Gets or sets the font for the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/fontName", typeof(string))]
+        // ReSharper disable once StringLiteralTypo
+        public string EditorFontName { get; set; } = @"Consolas";
+
+        /// <summary>
+        /// Gets or sets the tab width for the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/tabWidth", typeof(int))]
+        public int EditorTabWidth { get; set; } = 4;
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether to use code indentation with the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/useCodeIndentation", typeof(bool))]
+        public bool EditorUseCodeIndentation { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the zoom value of the document should be to the database.
+        /// </summary>
+        [Setting("editor/saveZoom", typeof(bool))]
+        public bool EditorSaveZoom { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the zoom value should be individual for all the open <see cref="Scintilla"/> documents.
+        /// </summary>
+        [Setting("editor/individualZoom", typeof(bool))]
+        public bool EditorIndividualZoom { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the size of the font used in the <see cref="Scintilla"/> control.
+        /// </summary>
+        [Setting("editor/fontSize", typeof(int))]
+        public int EditorFontSize { get; set; } = 10;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor should use tabs.
+        /// </summary>
+        [Setting("editor/useTabs", typeof(bool))]
+        public bool EditorUseTabs { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor <see cref="Scintilla"/> indent guide is enabled.
+        /// </summary>
+        [Setting("editor/indentGuideOn", typeof(bool))]
+        public bool EditorIndentGuideOn { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value of the tab character symbol type.
+        /// </summary>
+        [Setting("editor/tabSymbol", typeof(int))]
+        public int EditorTabSymbol { get; set; } = (int)TabDrawMode.LongArrow;
+
+        /// <summary>
+        /// Gets or sets the size of the editor white space in points.
+        /// </summary>
+        [Setting("editor/whiteSpaceSize", typeof(int))]
+        public int EditorWhiteSpaceSize { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the main window should capture some key combinations to simulate an AltGr+Key press for the active editor <see cref="Scintilla"/>.
+        /// </summary>
+        [Setting("editor/simulateAltGrKey", typeof(bool))]
+        public bool SimulateAltGrKey { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should highlight braces.
+        /// </summary>
+        [Setting("editor/highlightBraces", typeof(bool))]
+        public bool HighlightBraces { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should use italic font style when highlighting braces.
+        /// </summary>
+        [Setting("editor/highlightBracesItalic", typeof(bool))]
+        public bool HighlightBracesItalic { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should use bold font style when highlighting braces.
+        /// </summary>
+        [Setting("editor/highlightBracesBold", typeof(bool))]
+        public bool HighlightBracesBold { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the editor should use RTL (Right-to-left) script with the <see cref="Scintilla"/> controls.
+        /// </summary>
+        [Setting("editor/useRTL", typeof(bool))]
+        // ReSharper disable once InconsistentNaming
+        public bool EditorUseRTL { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the index of the type of simulation of an AltGr+Key press for the active editor <see cref="Scintilla"/>.
+        /// </summary>
+        [Setting("editor/simulateAltGrKeyIndex", typeof(int))]
+        public int SimulateAltGrKeyIndex { get; set; } = -1;
+        #endregion
+
+        #region Styles
+        /// <summary>
+        /// Gets or sets a value for the Notepad++ theme definition files for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("style/notepadPlusPlusThemePath", typeof(string))]
+        public string NotepadPlusPlusThemePath { get; set; } = DefaultDirectory("Notepad-plus-plus-themes");
+
+        /// <summary>
+        /// Gets or sets a value for the Notepad++ theme definition file name for the <see cref="Scintilla"/> document.
+        /// </summary>
+        [Setting("style/notepadPlusPlusThemeFile", typeof(string))]
+        public string NotepadPlusPlusThemeFile { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use a style definition file from the Notepad++ software.
+        /// </summary>
+        [Setting("style/useNotepadPlusPlusTheme", typeof(bool))]
+        public bool UseNotepadPlusPlusTheme { get; set; } = false;
+        #endregion
+
+        #region MiscSettings
+        /// <summary>
+        /// Gets or sets a value indicating whether search and replace dialog should be transparent.
+        /// </summary>
+        [Setting("misc/searchBoxTransparency", typeof(int))]
+        public int SearchBoxTransparency { get; set; } = 1; // 0 = false, 1 = false when inactive, 2 = always..
+
+        /// <summary>
+        /// Gets or sets a value of opacity of the <see cref="FormSearchAndReplace"/> form.
+        /// </summary>
+        [Setting("misc/searchBoxOpacity", typeof(double))]
+        public double SearchBoxOpacity { get; set; } = 0.8;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the default session name has been localized.
+        /// </summary>
+        [Setting("misc/currentSessionLocalized", typeof(bool))]
+        public bool DefaultSessionLocalized { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the software should check for updates upon startup.
+        /// </summary>
+        [Setting("misc/updateAutoCheck", typeof(bool))]
+        public bool UpdateAutoCheck { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the plug-in folder for the software.
+        /// </summary>
+        [Setting("misc/pluginFolder", typeof(string))]
+        public string PluginFolder { get; set; } = FormSettings.CreateDefaultPluginDirectory();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the search three form should be an independent form or a docked control to the main form.
+        /// </summary>
+        [Setting("misc/dockSearchTree", typeof(bool))]
+        public bool DockSearchTreeForm { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether tp categorize the programming language menu with the language name starting character.
+        /// </summary>
+        [Setting("misc/categorizeStartCharacterProgrammingLanguage", typeof(bool))]
+        public bool CategorizeStartCharacterProgrammingLanguage { get; set; } = true;
+        #endregion
+
+        #region DataSettings
+        /// <summary>
+        /// Gets or sets a value indicating whether save closed file contents to database as history.
+        /// </summary>
+        [Setting("database/historyContents", typeof(bool))]
+        public bool SaveFileHistoryContents { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the save file history contents count.
+        /// </summary>
+        [Setting("database/historyContentsCount", typeof(int))]
+        public int SaveFileHistoryContentsCount { get; set; } = 100;
+
+        /// <summary>
+        /// Gets or sets the current session (for the documents).
+        /// </summary>
+        [Setting("database/currentSession", typeof(string))]
+        public string CurrentSession { get; set; } = "Default";
+        #endregion
+
+        #region SearchSettings
+        /// <summary>
+        /// Gets or sets the file's maximum size in megabytes (MB) to include in the file search.
+        /// </summary>
+        /// <value>The file search maximum size mb.</value>
+        [Setting("search/fileSysFileMaxSizeMB", typeof(long))]
+        public long FileSearchMaxSizeMb { get; set; } = 100;
+
+        /// <summary>
+        /// Gets or sets the limit count of the history texts (filters, search texts, replace texts and directories) to be saved and retrieved to the <see cref="FormSearchAndReplace"/> form.
+        /// </summary>
+        [Setting("search/commonHistoryLimit", typeof(int))]
+        public int FileSearchHistoriesLimit { get; set; } = 25;
+
+        /// <summary>
+        /// Gets or sets the value whether to use auto-complete on the search dialog combo boxes.
+        /// </summary>
+        [Setting("search/autoCompleteEnabled", typeof(bool))]
+        public bool AutoCompleteEnabled { get; set; } = true;
+        #endregion
+
+        #region ProgramSettings
+        /// <summary>
+        /// Gets or sets a value indicating whether to use auto-save with a specified <see cref="ProgramAutoSaveInterval"/>.
+        /// </summary>
+        [Setting("program/autoSave", typeof(bool))]
+        public bool ProgramAutoSave { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the program's automatic save interval in minutes.
+        /// </summary>
+        /// <value>The program automatic save interval.</value>
+        [Setting("program/autoSaveInterval", typeof(int))]
+        public int ProgramAutoSaveInterval { get; set; } = 5;
+
+        // the current language (Culture) to be used with the software..
+        // ReSharper disable once InconsistentNaming
+        private static CultureInfo culture;
+
+        /// <summary>
+        /// Gets or sets the current language (Culture) to be used with the software's localization.
+        /// </summary>
+        [DoNotNotify]
+        public CultureInfo Culture
+        {
+            get =>
+                culture ?? new CultureInfo(conflib["language/culture", "en-US"]);
+
+            set
+            {
+                culture = value;
+                conflib["language/culture"] = culture.Name;
+            }
+        }
+        #endregion
+
+        #region SaveOpenDialogSettings
+        /// <summary>
+        /// Gets or sets the initial directory for a save as dialog.
+        /// </summary>
+        [Setting("fileDialog/locationSaveAs", typeof(string))]
+        public string FileLocationSaveAs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for a save as HTML dialog.
+        /// </summary>
+        [Setting("fileDialog/locationSaveAsHTML", typeof(string))]
+        // ReSharper disable once InconsistentNaming
+        public string FileLocationSaveAsHTML { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog on the main form.
+        /// </summary>
+        [Setting("fileDialog/locationOpen", typeof(string))]
+        public string FileLocationOpen { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog on the main form with encoding.
+        /// </summary>
+        [Setting("fileDialog/locationOpenWithEncoding", typeof(string))]
+        public string FileLocationOpenWithEncoding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open the first file for the diff form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenDiff1", typeof(string))]
+        public string FileLocationOpenDiff1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open the second file for the diff form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenDiff2", typeof(string))]
+        public string FileLocationOpenDiff2 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to install a plugin from the plugin management dialog.
+        /// </summary>
+        [Setting("fileDialog/locationOpenPlugin", typeof(string))]
+        public string FileLocationOpenPlugin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open a Hunspell dictionary file from the settings form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenDictionary", typeof(string))]
+        public string FileLocationOpenDictionary { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial directory for an open file dialog to open a Hunspell affix file from the settings form.
+        /// </summary>
+        [Setting("fileDialog/locationOpenAffix", typeof(string))]
+        public string FileLocationOpenAffix { get; set; }
+        #endregion
+
+        #region DateTimeSettings
+        /// <summary>
+        /// Gets or sets the date and/or time format 1.
+        /// </summary>
+        [Setting("dateTime/date1", typeof(string))]
+        public string DateFormat1 { get; set; } = "yyyy'/'MM'/'dd"; // default to american..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 2.
+        /// </summary>
+        [Setting("dateTime/date2", typeof(string))]
+        public string DateFormat2 { get; set; } = "dd'.'MM'.'yyyy"; // default to european..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 3.
+        /// </summary>
+        [Setting("dateTime/date3", typeof(string))]
+        public string DateFormat3 { get; set; } = "yyyy'/'MM'/'dd hh'.'mm tt"; // default to american..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 4.
+        /// </summary>
+        [Setting("dateTime/date4", typeof(string))]
+        public string DateFormat4 { get; set; } = "dd'.'MM'.'yyyy HH':'mm':'ss"; // default to european..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 5.
+        /// </summary>
+        [Setting("dateTime/date5", typeof(string))]
+        public string DateFormat5 { get; set; } = "hh'.'mm tt"; // default to american..
+
+        /// <summary>
+        /// Gets or sets the date and/or time format 6.
+        /// </summary>
+        [Setting("dateTime/date6", typeof(string))]
+        public string DateFormat6 { get; set; } = "HH':'mm':'ss"; // default to european..
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use invariant culture formatting date and time via the edit menu.
+        /// </summary>
+        [Setting("dateTime/invarianCulture", typeof(bool))]
+        public bool DateFormatUseInvariantCulture { get; set; } = false; // default to not use..
+        #endregion
+
+        #region TextSettings
+        /// <summary>
+        /// Gets or sets a value indicating whether to use case sensitivity with text manipulation.
+        /// </summary>
+        [Setting("text/textUpperCaseComparison", typeof(bool))]
+        public bool TextUpperCaseComparison { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the type of the text comparison to use with text manipulation.
+        /// </summary>
+        [Setting("text/textComparisonType", typeof(bool))]
+        public int TextComparisonType { get; set; } = 0; // 0 = invariant, 1 = current, 2 = ordinal..
+
+        /// <summary>
+        /// Gets the text current comparison type <see cref="StringComparison"/>.
+        /// </summary>
+        [DoNotNotify]
+        public StringComparison TextCurrentComparison
+        {
+            get
+            {
+                switch (TextComparisonType)
+                {
+                    case 0:
+                        return TextUpperCaseComparison
+                            ? StringComparison.InvariantCulture
+                            : StringComparison.InvariantCultureIgnoreCase;
+
+                    case 1:
+                        return TextUpperCaseComparison
+                            ? StringComparison.CurrentCulture
+                            : StringComparison.CurrentCultureIgnoreCase;
+
+                    case 2:
+                        return TextUpperCaseComparison
+                            ? StringComparison.Ordinal
+                            : StringComparison.OrdinalIgnoreCase;
+                }
+
+                return TextUpperCaseComparison
+                    ? StringComparison.InvariantCulture
+                    : StringComparison.InvariantCultureIgnoreCase;
+            }
+        }
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Gets the default encoding list for the settings form grid.
         /// </summary>
@@ -438,85 +948,6 @@ namespace ScriptNotepad.Settings
         }
 
         /// <summary>
-        /// The amount of files to be saved to a document history.
-        /// </summary>
-        [Setting("gui/history", typeof(int))]
-        public int HistoryListAmount { get; set; } = 20;
-
-        /// <summary>
-        /// Gets or sets the color of the current line background style.
-        /// </summary>
-        /// <value>The color of the current line background style.</value>
-        [Setting("color/currentLineBackground", typeof(Color))]
-        public Color CurrentLineBackground { get; set; } = Color.FromArgb(232, 232, 255);
-
-        /// <summary>
-        /// Gets or sets the color of the smart highlight style.
-        /// </summary>
-        /// <value>The color of the smart highlight style.</value>
-        [Setting("color/smartHighLight", typeof(Color))]
-        public Color SmartHighlight { get; set; } = Color.FromArgb(0, 255, 0);
-
-        /// <summary>
-        /// Gets or sets the color of the mark one style.
-        /// </summary>
-        /// <value>The color of the mark one style.</value>
-        [Setting("color/mark1", typeof(Color))]
-        public Color Mark1Color { get; set; } = Color.FromArgb(0, 255, 255);
-
-        /// <summary>
-        /// Gets or sets the color of the mark two style.
-        /// </summary>
-        /// <value>The color of the mark two style.</value>
-        [Setting("color/mark2", typeof(Color))]
-        public Color Mark2Color { get; set; } = Color.FromArgb(255, 128, 0);
-
-        /// <summary>
-        /// Gets or sets the color of the mark three style.
-        /// </summary>
-        /// <value>The color of the mark three style.</value>
-        [Setting("color/mark3", typeof(Color))]
-        public Color Mark3Color { get; set; } = Color.FromArgb(255, 255, 0);
-
-        /// <summary>
-        /// Gets or sets the color of the mark four style.
-        /// </summary>
-        /// <value>The color of the mark four style.</value>
-        [Setting("color/mark4", typeof(Color))]
-        public Color Mark4Color { get; set; } = Color.FromArgb(128, 0, 255);
-
-        /// <summary>
-        /// Gets or sets the color of the mark five style.
-        /// </summary>
-        /// <value>The color of the mark five style.</value>
-        [Setting("color/mark5", typeof(Color))]
-        public Color Mark5Color { get; set; } = Color.FromArgb(0, 128, 0);
-
-        /// <summary>
-        /// Gets or sets the color of the mark used in the search and replace dialog.
-        /// </summary>
-        [Setting("color/markSearchReplace", typeof(Color))]
-        public Color MarkSearchReplaceColor { get; set; } = Color.DeepPink;
-
-        /// <summary>
-        /// Gets or sets the foreground color of brace highlighting.
-        /// </summary>
-        [Setting("color/braceHighlightForeground", typeof(Color))]
-        public Color BraceHighlightForegroundColor { get; set; } = Color.BlueViolet;
-
-        /// <summary>
-        /// Gets or sets the background color of brace highlighting.
-        /// </summary>
-        [Setting("color/braceHighlightBackground", typeof(Color))]
-        public Color BraceHighlightBackgroundColor { get; set; } = Color.LightGray;
-
-        /// <summary>
-        /// Gets or sets the foreground color of a bad brace.
-        /// </summary>
-        [Setting("color/braceHighlightForegroundBad", typeof(Color))]
-        public Color BraceBadHighlightForegroundColor { get; set; } = Color.Red;
-
-        /// <summary>
         /// Gets the color of the mark.
         /// </summary>
         /// <param name="index">The index of the mark style (0-4).</param>
@@ -535,421 +966,50 @@ namespace ScriptNotepad.Settings
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the editor should use tabs.
+        /// Handles the PropertyChanged event of the Settings class instance.
         /// </summary>
-        [Setting("editor/useTabs", typeof(bool))]
-        public bool EditorUseTabs { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the editor <see cref="Scintilla"/> indent guide is enabled.
-        /// </summary>
-        [Setting("editor/indentGuideOn", typeof(bool))]
-        public bool EditorIndentGuideOn { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value of the tab character symbol type.
-        /// </summary>
-        [Setting("editor/tabSymbol", typeof(int))]
-        public int EditorTabSymbol { get; set; } = (int)TabDrawMode.LongArrow;
-
-        /// <summary>
-        /// Gets or sets the size of the editor white space in points.
-        /// </summary>
-        [Setting("editor/whiteSpaceSize", typeof(int))]
-        public int EditorWhiteSpaceSize { get; set; } = 1;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the main window should capture some key combinations to simulate an AltGr+Key press for the active editor <see cref="Scintilla"/>.
-        /// </summary>
-        [Setting("editor/simulateAltGrKey", typeof(bool))]
-        public bool SimulateAltGrKey { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should highlight braces.
-        /// </summary>
-        [Setting("editor/highlightBraces", typeof(bool))]
-        public bool HighlightBraces { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should use italic font style when highlighting braces.
-        /// </summary>
-        [Setting("editor/highlightBracesItalic", typeof(bool))]
-        public bool HighlightBracesItalic { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the editor (<see cref="Scintilla"/>) should use bold font style when highlighting braces.
-        /// </summary>
-        [Setting("editor/highlightBracesBold", typeof(bool))]
-        public bool HighlightBracesBold { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the editor should use RTL (Right-to-left) script with the <see cref="Scintilla"/> controls.
-        /// </summary>
-        [Setting("editor/useRTL", typeof(bool))]
-        // ReSharper disable once InconsistentNaming
-        public bool EditorUseRTL { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets the index of the type of simulation of an AltGr+Key press for the active editor <see cref="Scintilla"/>.
-        /// </summary>
-        /// <value>The index of the simulate alt gr key.</value>
-        [Setting("editor/simulateAltGrKeyIndex", typeof(int))]
-        public int SimulateAltGrKeyIndex { get; set; } = -1;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document.
-        /// </summary>
-        [Setting("editorSpell/useSpellChecking", typeof(bool))]
-        public bool EditorUseSpellChecking { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document when opening a file via the shell context menu.
-        /// </summary>
-        [Setting("editorSpell/editorUseSpellCheckingShellContext", typeof(bool))]
-        public bool EditorUseSpellCheckingShellContext { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the spell checking is enabled for the <see cref="Scintilla"/> document for new files.
-        /// </summary>
-        [Setting("editorSpell/useSpellCheckingOnNew", typeof(bool))]
-        public bool EditorUseSpellCheckingNewFiles { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.
-        /// </summary>
-        [Setting("editorSpell/dictionaryFile", typeof(string))]
-        public string EditorHunspellDictionaryFile { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets a value of the Hunspell affix file to be used with spell checking for the <see cref="Scintilla"/> document.
-        /// </summary>
-        [Setting("editorSpell/affixFile", typeof(string))]
-        public string EditorHunspellAffixFile { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the color of the spell check mark.
-        /// </summary>
-        [Setting("editorSpell/markColor", typeof(Color))]
-        public Color EditorSpellCheckColor { get; set; } = Color.Red;
-
-        /// <summary>
-        /// Gets or sets the color of the spell check mark.
-        /// </summary>
-        [Setting("editorSpell/SpellRecheckAfterInactivity", typeof(int))]
-        public int EditorSpellCheckInactivity { get; set; } = 500; // set the default to 500 milliseconds..
-
-        /// <summary>
-        /// Gets or sets the font for the <see cref="Scintilla"/> control.
-        /// </summary>
-        [Setting("editor/fontName", typeof(string))]
-        public string EditorFontName { get; set; } = "Consolas";
-
-        /// <summary>
-        /// Gets or sets the tab width for the <see cref="Scintilla"/> control.
-        /// </summary>
-        [Setting("editor/tabWidth", typeof(int))]
-        public int EditorTabWidth { get; set; } = 4;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use code indentation with the <see cref="Scintilla"/> control.
-        /// </summary>
-        [Setting("editor/useCodeIndentation", typeof(bool))]
-        public bool EditorUseCodeIndentation { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the zoom value of the document should be to the database.
-        /// </summary>
-        [Setting("editor/saveZoom", typeof(bool))]
-        public bool EditorSaveZoom { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the zoom value should be individual for all the open <see cref="Scintilla"/> documents.
-        /// </summary>
-        [Setting("editor/individualZoom", typeof(bool))]
-        public bool EditorIndividualZoom { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value of the Hunspell dictionary file to be used with spell checking for the <see cref="Scintilla"/> document.
-        /// </summary>
-        [Setting("editorSpell/dictionaryPath", typeof(string))]
-        public string EditorHunspellDictionaryPath { get; set; } = DefaultDirectory("Dictionaries");
-
-        /// <summary>
-        /// Gets or sets a value for the Notepad++ theme definition files for the <see cref="Scintilla"/> document.
-        /// </summary>
-        [Setting("style/notepadPlusPlusThemePath", typeof(string))]
-        public string NotepadPlusPlusThemePath { get; set; } = DefaultDirectory("Notepad-plus-plus-themes");
-
-        /// <summary>
-        /// Gets or sets a value for the Notepad++ theme definition file name for the <see cref="Scintilla"/> document.
-        /// </summary>
-        [Setting("style/notepadPlusPlusThemeFile", typeof(string))]
-        public string NotepadPlusPlusThemeFile { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use a style definition file from the Notepad++ software.
-        /// </summary>
-        [Setting("style/useNotepadPlusPlusTheme", typeof(bool))]
-        public bool UseNotepadPlusPlusTheme { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets the size of the font used in the <see cref="Scintilla"/> control.
-        /// </summary>
-        [Setting("editor/fontSize", typeof(int))]
-        public int EditorFontSize { get; set; } = 10;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether save closed file contents to database as history.
-        /// </summary>
-        [Setting("database/historyContents", typeof(bool))]
-        public bool SaveFileHistoryContents { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether search and replace dialog should be transparent.
-        /// </summary>
-        [Setting("misc/searchBoxTransparency", typeof(int))]
-        public int SearchBoxTransparency { get; set; } = 1; // 0 = false, 1 = false when inactive, 2 = always..
-
-        /// <summary>
-        /// Gets or sets the file's maximum size in megabytes (MB) to include in the file search.
-        /// </summary>
-        /// <value>The file search maximum size mb.</value>
-        [Setting("search/fileSysFileMaxSizeMB", typeof(long))]
-        public long FileSearchMaxSizeMb { get; set; } = 100;
-
-        /// <summary>
-        /// Gets or sets the limit count of the history texts (filters, search texts, replace texts and directories) to be saved and retrieved to the <see cref="FormSearchAndReplace"/> form.
-        /// </summary>
-        [Setting("search/commonHistoryLimit", typeof(int))]
-        public int FileSearchHistoriesLimit { get; set; } = 25;
-
-        /// <summary>
-        /// Gets or sets the value whether to use auto-complete on the search dialog combo boxes.
-        /// </summary>
-        [Setting("search/autoCompleteEnabled", typeof(bool))]
-        public bool AutoCompleteEnabled { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value of opacity of the <see cref="FormSearchAndReplace"/> form.
-        /// </summary>
-        [Setting("misc/searchBoxOpacity", typeof(double))]
-        public double SearchBoxOpacity { get; set; } = 0.8;
-
-        /// <summary>
-        /// Gets or sets the save file history contents count.
-        /// </summary>
-        [Setting("database/historyContentsCount", typeof(int))]
-        public int SaveFileHistoryContentsCount { get; set; } = 100;
-
-        /// <summary>
-        /// Gets or sets the current session (for the documents).
-        /// </summary>
-        [Setting("database/currentSession", typeof(string))]
-        public string CurrentSession { get; set; } = "Default";
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the default session name has been localized.
-        /// </summary>
-        [Setting("misc/currentSessionLocalized", typeof(bool))]
-        public bool DefaultSessionLocalized { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the software should check for updates upon startup.
-        /// </summary>
-        [Setting("misc/updateAutoCheck", typeof(bool))]
-        public bool UpdateAutoCheck { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use auto-save with a specified <see cref="ProgramAutoSaveInterval"/>.
-        /// </summary>
-        [Setting("program/autoSave", typeof(bool))]
-        public bool ProgramAutoSave { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the program's automatic save interval in minutes.
-        /// </summary>
-        /// <value>The program automatic save interval.</value>
-        [Setting("program/autoSaveInterval", typeof(int))]
-        public int ProgramAutoSaveInterval { get; set; } = 5;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether tp categorize the programming language menu with the language name starting character.
-        /// </summary>
-        [Setting("misc/categorizeStartCharacterProgrammingLanguage", typeof(bool))]
-        public bool CategorizeStartCharacterProgrammingLanguage { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the plug-in folder for the software.
-        /// </summary>
-        [Setting("misc/pluginFolder", typeof(string))]
-        public string PluginFolder { get; set; } = FormSettings.CreateDefaultPluginDirectory();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the search three form should be an independent form or a docked control to the main form.
-        /// </summary>
-        [Setting("misc/dockSearchTree", typeof(bool))]
-        public bool DockSearchTreeForm { get; set; } = true;
-
-        // the current language (Culture) to be used with the software..
-        // ReSharper disable once InconsistentNaming
-        private static CultureInfo culture;
-
-        /// <summary>
-        /// Gets or sets the current language (Culture) to be used with the software's localization.
-        /// </summary>
-        [DoNotNotify]
-        public CultureInfo Culture
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            get =>
-                culture ?? new CultureInfo(conflib["language/culture", "en-US"]);
+            // NOTE:: Do use this attribute, if no notification is required from a property: [DoNotNotify]
 
-            set
+            try // just try from the beginning..
             {
-                culture = value;
-                conflib["language/culture"] = culture.Name;
-            }
-        }
+                PropertyInfo propertyInfo = // first get the property info for the property..
+                GetType().GetProperty(e.PropertyName, BindingFlags.Instance | BindingFlags.Public);
 
-        /// <summary>
-        /// Gets or sets the initial directory for a save as dialog.
-        /// </summary>
-        [Setting("fileDialog/locationSaveAs", typeof(string))]
-        public string FileLocationSaveAs { get; set; }
+                // get the property value..
+                object value = propertyInfo?.GetValue(this);
 
-        /// <summary>
-        /// Gets or sets the initial directory for a save as HTML dialog.
-        /// </summary>
-        [Setting("fileDialog/locationSaveAsHTML", typeof(string))]
-        // ReSharper disable once InconsistentNaming
-        public string FileLocationSaveAsHTML { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial directory for an open file dialog on the main form.
-        /// </summary>
-        [Setting("fileDialog/locationOpen", typeof(string))]
-        public string FileLocationOpen { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial directory for an open file dialog on the main form with encoding.
-        /// </summary>
-        [Setting("fileDialog/locationOpenWithEncoding", typeof(string))]
-        public string FileLocationOpenWithEncoding { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial directory for an open file dialog to open the first file for the diff form.
-        /// </summary>
-        [Setting("fileDialog/locationOpenDiff1", typeof(string))]
-        public string FileLocationOpenDiff1 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial directory for an open file dialog to open the second file for the diff form.
-        /// </summary>
-        [Setting("fileDialog/locationOpenDiff2", typeof(string))]
-        public string FileLocationOpenDiff2 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial directory for an open file dialog to install a plugin from the plugin management dialog.
-        /// </summary>
-        [Setting("fileDialog/locationOpenPlugin", typeof(string))]
-        public string FileLocationOpenPlugin { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial directory for an open file dialog to open a Hunspell dictionary file from the settings form.
-        /// </summary>
-        [Setting("fileDialog/locationOpenDictionary", typeof(string))]
-        public string FileLocationOpenDictionary { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial directory for an open file dialog to open a Hunspell affix file from the settings form.
-        /// </summary>
-        [Setting("fileDialog/locationOpenAffix", typeof(string))]
-        public string FileLocationOpenAffix { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date and/or time format 1.
-        /// </summary>
-        [Setting("dateTime/date1", typeof(string))]
-        public string DateFormat1 { get; set; } = "yyyy'/'MM'/'dd"; // default to american..
-
-        /// <summary>
-        /// Gets or sets the date and/or time format 2.
-        /// </summary>
-        [Setting("dateTime/date2", typeof(string))]
-        public string DateFormat2 { get; set; } = "dd'.'MM'.'yyyy"; // default to european..
-
-        /// <summary>
-        /// Gets or sets the date and/or time format 3.
-        /// </summary>
-        [Setting("dateTime/date3", typeof(string))]
-        public string DateFormat3 { get; set; } = "yyyy'/'MM'/'dd hh'.'mm tt"; // default to american..
-
-        /// <summary>
-        /// Gets or sets the date and/or time format 4.
-        /// </summary>
-        [Setting("dateTime/date4", typeof(string))]
-        public string DateFormat4 { get; set; } = "dd'.'MM'.'yyyy HH':'mm':'ss"; // default to european..
-
-        /// <summary>
-        /// Gets or sets the date and/or time format 5.
-        /// </summary>
-        [Setting("dateTime/date5", typeof(string))]
-        public string DateFormat5 { get; set; } = "hh'.'mm tt"; // default to american..
-
-
-        /// <summary>
-        /// Gets or sets the date and/or time format 6.
-        /// </summary>
-        [Setting("dateTime/date6", typeof(string))]
-        public string DateFormat6 { get; set; } = "HH':'mm':'ss"; // default to european..
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use invariant culture formatting date and time via the edit menu.
-        /// </summary>
-        [Setting("dateTime/invarianCulture", typeof(bool))]
-        public bool DateFormatUseInvariantCulture { get; set; } = false; // default to not use..
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use case sensitivity with text manipulation.
-        /// </summary>
-        [Setting("text/textUpperCaseComparison", typeof(bool))]
-        public bool TextUpperCaseComparison { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets the type of the text comparison to use with text manipulation.
-        /// </summary>
-        [Setting("text/textComparisonType", typeof(bool))]
-        public int TextComparisonType { get; set; } = 0; // 0 = invariant, 1 = current, 2 = ordinal..
-        #endregion
-
-        /// <summary>
-        /// Gets the text current comparison type <see cref="StringComparison"/>.
-        /// </summary>
-        [DoNotNotify]
-        public StringComparison TextCurrentComparison
-        {
-            get
-            {
-                switch (TextComparisonType)
+                // get the setting attribute value of the property.. 
+                if (propertyInfo != null)
                 {
-                    case 0:
-                        return TextUpperCaseComparison
-                            ? StringComparison.InvariantCulture
-                            : StringComparison.InvariantCultureIgnoreCase;
+                    SettingAttribute settingAttribute = (SettingAttribute)propertyInfo.GetCustomAttribute(typeof(SettingAttribute));
 
-                    case 1:
-                        return TextUpperCaseComparison
-                            ? StringComparison.CurrentCulture
-                            : StringComparison.CurrentCultureIgnoreCase;
-
-                    case 2:
-                        return TextUpperCaseComparison
-                            ? StringComparison.Ordinal
-                            : StringComparison.OrdinalIgnoreCase;
+                    if (value != null && settingAttribute != null)
+                    {
+                        // this is a special case, otherwise try just to use simple types..
+                        if (settingAttribute.SettingType == typeof(Encoding))
+                        {
+                            Encoding encoding = (Encoding)value;
+                            conflib[settingAttribute.SettingName] = encoding.WebName;
+                        }
+                        else if (settingAttribute.SettingType == typeof(Color))
+                        {
+                            conflib[settingAttribute.SettingName] = ColorTranslator.ToHtml((Color) value);
+                        }
+                        else // a simple type..
+                        {
+                            conflib[settingAttribute.SettingName] = value.ToString();
+                        }
+                    }
                 }
-
-                return TextUpperCaseComparison
-                    ? StringComparison.InvariantCulture
-                    : StringComparison.InvariantCultureIgnoreCase;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex);
             }
         }
 
@@ -969,7 +1029,8 @@ namespace ScriptNotepad.Settings
                 try
                 {
                     // create the folder..
-                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory));
+                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(),
+                        defaultDirectory));
                 }
                 catch (Exception ex) // a failure so do log it..
                 {
@@ -977,6 +1038,7 @@ namespace ScriptNotepad.Settings
                     return string.Empty;
                 }
             }
+
             return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory);
         }
 
@@ -991,5 +1053,36 @@ namespace ScriptNotepad.Settings
             // close the conflib class instance..
             conflib?.Close();
         }
+        #endregion
     }
+
+    /// <summary>
+    /// An attribute class for describing a setting name and it's type (VPKSoft.ConfLib).
+    /// </summary>
+    /// <seealso cref="System.Attribute" />
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)] // target a property only..
+    public class SettingAttribute: Attribute
+    {
+        /// <summary>
+        /// Gets or sets the name of the setting (VPKSoft.ConfLib).
+        /// </summary>
+        public string SettingName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the setting (VPKSoft.ConfLib).
+        /// </summary>
+        public Type SettingType { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingAttribute"/> class.
+        /// </summary>
+        /// <param name="settingName">Name of the setting (VPKSoft.ConfLib).</param>
+        /// <param name="type">The type of the setting (VPKSoft.ConfLib).</param>
+        public SettingAttribute(string settingName, Type type)
+        {
+            SettingName = settingName; // save the given values..
+            SettingType = type;
+        }
+    }
+
 }

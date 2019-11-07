@@ -190,10 +190,11 @@
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.mnuText = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCaseSensitive = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRemoveDuplicateLines = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuCaseSensitive = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNavigation = new System.Windows.Forms.ToolStripMenuItem();
@@ -204,7 +205,6 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
-            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -1605,6 +1605,19 @@
             this.mnuText.Size = new System.Drawing.Size(40, 20);
             this.mnuText.Text = "Text";
             // 
+            // mnuCaseSensitive
+            // 
+            this.mnuCaseSensitive.Image = global::ScriptNotepad.Properties.Resources.format_text_uppercase;
+            this.mnuCaseSensitive.Name = "mnuCaseSensitive";
+            this.mnuCaseSensitive.Size = new System.Drawing.Size(205, 22);
+            this.mnuCaseSensitive.Text = "Case sensitive";
+            this.mnuCaseSensitive.Click += new System.EventHandler(this.mnuCaseSensitive_Click);
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(202, 6);
+            // 
             // mnuSortLines
             // 
             this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
@@ -1628,14 +1641,6 @@
             this.mnuWrapDocumentTo.Size = new System.Drawing.Size(205, 22);
             this.mnuWrapDocumentTo.Text = "Wrap document to...";
             this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
-            // 
-            // mnuCaseSensitive
-            // 
-            this.mnuCaseSensitive.Image = global::ScriptNotepad.Properties.Resources.format_text_uppercase;
-            this.mnuCaseSensitive.Name = "mnuCaseSensitive";
-            this.mnuCaseSensitive.Size = new System.Drawing.Size(205, 22);
-            this.mnuCaseSensitive.Text = "Case sensitive";
-            this.mnuCaseSensitive.Click += new System.EventHandler(this.mnuCaseSensitive_Click);
             // 
             // mnuWindow
             // 
@@ -1707,11 +1712,6 @@
             // pdPrint
             // 
             this.pdPrint.UseEXDialog = true;
-            // 
-            // toolStripMenuItem9
-            // 
-            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(202, 6);
             // 
             // FormMain
             // 

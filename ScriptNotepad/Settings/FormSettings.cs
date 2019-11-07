@@ -45,7 +45,9 @@ using ScriptNotepad.UtilityClasses.GraphicUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
+using VPKSoft.ScintillaUrlDetect;
 using TabDrawMode = ScintillaNET.TabDrawMode;
+using static VPKSoft.LangLib.DBLangEngine;
 
 namespace ScriptNotepad.Settings
 {
@@ -72,6 +74,9 @@ namespace ScriptNotepad.Settings
 
             // initialize the language/localization database..
             DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
+
+            // this combo box won't be localized..
+            cmbUrlIndicatorStyle.DataSource =  Enum.GetValues(typeof(IndicatorStyle));
 
             // create a new instance of the CharacterSetComboBuilder class..
             CharacterSetComboBuilder = new CharacterSetComboBuilder(cmbCharacterSet, cmbEncoding, false, "encoding");
@@ -115,7 +120,12 @@ namespace ScriptNotepad.Settings
             // localize the dialog filters..
             StaticLocalizeFileDialog.InitOpenHunspellDictionaryDialog(odDictionaryFile);
             StaticLocalizeFileDialog.InitOpenHunspellAffixFileDialog(odAffixFile);
+
+            // create the URL styling class for the Scintilla text box..
+            scintillaUrlDetect = new ScintillaUrlDetect(scintillaUrlStyle);
         }
+
+        private ScintillaUrlDetect scintillaUrlDetect;
 
         private class FontFamilyHolder
         {
@@ -137,12 +147,24 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// Displays the FormSettings dialog and saves the settings if the user selected OK.
         /// </summary>
+        /// <param name="restart">A value indicating whether the user decided to restart the software for the changes to take affect.</param>
         /// <returns>True if the user selected to save the settings; otherwise false.</returns>
-        public static bool Execute()
+        public static bool Execute(out bool restart)
         {
             FormSettings formSettings = new FormSettings();
-            if (formSettings.ShowDialog() == DialogResult.OK)
+            var dialogResult = formSettings.ShowDialog();
+
+
+            restart = false;
+
+            if (dialogResult == DialogResult.OK || dialogResult == DialogResult.Yes)
             {
+                restart = MessageBox.Show(
+                              DBLangEngine.GetStatMessage("msgRestartSettingsToAffect",
+                                  "Restart the application for the changes to take affect?|A message querying the user whether to restart the software saving the changed settings."),
+                              DBLangEngine.GetStatMessage("msgQuestion", "Question|A title for a message box asking a question."), MessageBoxButtons.YesNo,
+                              MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes;
+
                 formSettings.SaveSettings();
                 return true;
             }
@@ -330,6 +352,18 @@ namespace ScriptNotepad.Settings
                     encoding.unicodeFailOnInvalidChar);
             }
 
+            #region UrlStyle
+            cbHighlightUrls.Checked = Settings.HighlightUrls;
+            cbStartProcessOnUrlClick.Checked = Settings.StartProcessOnUrlClick;
+            btUrlTextColor.BackColor = Settings.UrlTextColor;
+            btUrlIndicatorColor.BackColor = Settings.UrlIndicatorColor;
+            cmbUrlIndicatorStyle.SelectedItem = (IndicatorStyle)Settings.UrlIndicatorStyle;
+            cbUseDwellToolTip.Checked = Settings.UrlUseDwellToolTip;
+            nudDwellToolTipDelay.Value = Settings.UrlDwellToolTipTime;
+            btDwellToolTipForegroundColor.BackColor = Settings.UrlDwellToolTipForegroundColor;
+            btDwellToolTipBackgroundColor.BackColor = Settings.UrlDwellToolTipBackgroundColor;
+            #endregion
+
             #region DateTime
             // get the date and time formats..
             tbDateTimeFormat1.Text = Settings.DateFormat1;
@@ -506,6 +540,18 @@ namespace ScriptNotepad.Settings
             Settings.EncodingList = 
                 Settings.EncodingStringFromDefinitionList(encodings);
 
+            #region UrlStyle
+            Settings.HighlightUrls = cbHighlightUrls.Checked;
+            Settings.StartProcessOnUrlClick = cbStartProcessOnUrlClick.Checked;
+            Settings.UrlTextColor = btUrlTextColor.BackColor;
+            Settings.UrlIndicatorColor = btUrlIndicatorColor.BackColor;
+            Settings.UrlIndicatorStyle = (int)cmbUrlIndicatorStyle.SelectedItem;
+            Settings.UrlUseDwellToolTip = cbUseDwellToolTip.Checked;
+            Settings.UrlDwellToolTipTime = (int)nudDwellToolTipDelay.Value;
+            Settings.UrlDwellToolTipForegroundColor = btDwellToolTipForegroundColor.BackColor;
+            Settings.UrlDwellToolTipBackgroundColor = btDwellToolTipBackgroundColor.BackColor;
+            #endregion
+
             #region TextSettings
             Settings.TextUpperCaseComparison = cbCaseSensitive.Checked;
             Settings.TextComparisonType = Convert.ToInt32(gbComparisonType.Tag);
@@ -588,6 +634,15 @@ namespace ScriptNotepad.Settings
                 // unsubscribe the encoding selected event..
                 CharacterSetComboBuilder.EncodingSelected -= CharacterSetComboBuilder_EncodingSelected;
             }
+
+            // dispose this, otherwise the application dead-locks upon closing..
+            if (scintillaUrlDetect != null)
+            {
+                using (scintillaUrlDetect)
+                {
+                    scintillaUrlDetect = null;
+                }
+            }
         }
 
         private void FormSettings_Shown(object sender, EventArgs e)
@@ -602,6 +657,9 @@ namespace ScriptNotepad.Settings
 
             // set the states of the tool strip with the encoding settings grid..
             ValidateEncodingToolStrip();
+
+            // re-style the Scintilla URL styling text box with loaded settings..
+            ReStyleUrlScintillaBox();
         }
 
         private void btDefaultEncodings_Click(object sender, EventArgs e)
@@ -704,6 +762,12 @@ namespace ScriptNotepad.Settings
             {
                 Button button = (Button) sender;
                 button.BackColor = cdColors.Color;
+
+                if (button.Equals(btUrlTextColor) || button.Equals(btUrlIndicatorColor) ||
+                    button.Equals(btDwellToolTipForegroundColor) || button.Equals(btDwellToolTipBackgroundColor))
+                {
+                    ReStyleUrlScintillaBox(); // the button is one of the color buttons for the URL detection library..
+                }
             }
         }
 
@@ -1073,6 +1137,73 @@ namespace ScriptNotepad.Settings
         {
             var radioButton = (RadioButton) sender;
             gbComparisonType.Tag = radioButton.Tag;
+        }
+
+        // reset the URL detection settings to defaults..
+        private void btUrlDetectDefaults_Click(object sender, EventArgs e)
+        {
+            cbHighlightUrls.Checked = true;
+            cbStartProcessOnUrlClick.Checked = true;
+            btUrlTextColor.BackColor = Color.Blue;
+            btUrlIndicatorColor.BackColor = Color.Blue;
+            cmbUrlIndicatorStyle.SelectedItem = IndicatorStyle.Plain;
+            cbUseDwellToolTip.Checked = true;
+            nudDwellToolTipDelay.Value = 400;
+            btDwellToolTipForegroundColor.BackColor = SystemColors.InfoText;
+            btDwellToolTipBackgroundColor.BackColor = SystemColors.Info;
+            ReStyleUrlScintillaBox(); // apply the style to the sample Scintilla control..
+        }
+
+        private void ReStyleUrlScintillaBox()
+        {
+            if (!cbHighlightUrls.Checked)
+            {
+                using (scintillaUrlDetect)
+                {
+                    scintillaUrlDetect = null;
+                    return;
+                }
+            }
+
+            if (scintillaUrlDetect == null)
+            {
+                scintillaUrlDetect = new ScintillaUrlDetect(scintillaUrlStyle);
+            }
+
+            scintillaUrlDetect.ScintillaUrlIndicatorColor = btUrlIndicatorColor.BackColor;
+            scintillaUrlDetect.ScintillaUrlTextIndicatorColor = btUrlTextColor.BackColor;
+            scintillaUrlDetect.ScintillaUrlIndicatorStyle = (IndicatorStyle) cmbUrlIndicatorStyle.SelectedItem;
+            ScintillaUrlDetect.DwellToolTipTime = (int) nudDwellToolTipDelay.Value;
+            scintillaUrlDetect.DwellToolTipForegroundColor = btDwellToolTipForegroundColor.BackColor;
+            scintillaUrlDetect.DwellToolTipBackgroundColor = btDwellToolTipBackgroundColor.BackColor;
+            scintillaUrlDetect.UseDwellToolTip = cbUseDwellToolTip.Checked;
+            ScintillaUrlDetect.AllowProcessStartOnUrlClick = cbStartProcessOnUrlClick.Checked;
+        }
+
+        /// <summary>
+        /// Sets the URL styling settings for a <see cref="ScintillaUrlDetect"/> class instance. Also static properties are set.
+        /// </summary>
+        /// <param name="scintillaUrlDetect">An instance to a <see cref="ScintillaUrlDetect"/> class.</param>
+        internal static void SetUrlDetectStyling(ScintillaUrlDetect scintillaUrlDetect)
+        {
+            if (scintillaUrlDetect == null || !Settings.HighlightUrls)
+            {
+                return;
+            }
+
+            scintillaUrlDetect.ScintillaUrlIndicatorColor = Settings.UrlIndicatorColor;
+            scintillaUrlDetect.ScintillaUrlTextIndicatorColor = Settings.UrlTextColor;
+            scintillaUrlDetect.ScintillaUrlIndicatorStyle = (IndicatorStyle) Settings.UrlIndicatorStyle;
+            ScintillaUrlDetect.DwellToolTipTime = Settings.UrlDwellToolTipTime;
+            scintillaUrlDetect.DwellToolTipForegroundColor = Settings.UrlDwellToolTipForegroundColor;
+            scintillaUrlDetect.DwellToolTipBackgroundColor = Settings.UrlDwellToolTipBackgroundColor;
+            scintillaUrlDetect.UseDwellToolTip = Settings.UrlUseDwellToolTip;
+            ScintillaUrlDetect.AllowProcessStartOnUrlClick = Settings.StartProcessOnUrlClick;
+        }
+
+        private void urlStyling_Changed(object sender, EventArgs e)
+        {
+            ReStyleUrlScintillaBox();
         }
     }
 }

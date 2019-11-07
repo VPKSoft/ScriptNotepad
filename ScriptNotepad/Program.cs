@@ -162,9 +162,14 @@ namespace ScriptNotepad
             ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
             ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
 
-            if (RestartElevated && File.Exists(ElevateFile))
+            if (RestartElevated && File.Exists(ElevateFile) && !Restart)
             {
                 ApplicationProcess.RunApplicationProcess(true, ElevateFile);
+            }
+
+            if (Restart)
+            {
+                ApplicationProcess.RunApplicationProcess(false, string.Empty);
             }
         }
 
@@ -188,6 +193,11 @@ namespace ScriptNotepad
 
             // This is the end..
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to restart the software upon closing it.
+        /// </summary>
+        internal static bool Restart { get; set; } = false;
 
         #region InternalProperties        
         /// <summary>

@@ -855,4 +855,16 @@
   <data name="msgProgrammingInnoSetup" xml:space="preserve">
     <value>InnoSetup installer script|A programming, markup, setting, script or other file and/or language/text</value>
   </data>
+  <data name="msgQuestion" xml:space="preserve">
+    <value>Question|A title for a message box asking a question.</value>
+  </data>
+  <data name="msgRestartSettingsToAffect" xml:space="preserve">
+    <value>Restart the application for the changes to take affect?|A message querying the user whether to restart the software saving the changed settings.</value>
+  </data>
+  <data name="msgUrlDetectToolTipOpenHyperlink" xml:space="preserve">
+    <value>Use CTRL + Click to follow the link: {0}|A message for the URL detect library tool tip to open a hyperlink.</value>
+  </data>
+  <data name="msgUrlDetectToolTipOpenMailToLink" xml:space="preserve">
+    <value>Use CTRL + Click to sent email to: {0}|A message for the URL detect library tool tip to open a email program for a mailto link.</value>
+  </data>
 </root>

@@ -154,6 +154,7 @@
             this.lbBadBraceColor = new System.Windows.Forms.Label();
             this.btBraceHighlightBackgroundColor = new System.Windows.Forms.Button();
             this.tabSpellCheck = new System.Windows.Forms.TabPage();
+            this.cbSpellCheckInShellContext = new System.Windows.Forms.CheckBox();
             this.cbSpellCheckInUseNewFiles = new System.Windows.Forms.CheckBox();
             this.cmbInstalledDictionaries = new System.Windows.Forms.ComboBox();
             this.lbInstalledDictionaries = new System.Windows.Forms.Label();
@@ -191,6 +192,23 @@
             this.lbDateTimeFormat1 = new System.Windows.Forms.Label();
             this.tbDateTimeFormat1 = new System.Windows.Forms.TextBox();
             this.lbDateStyle = new System.Windows.Forms.Label();
+            this.tabUrls = new System.Windows.Forms.TabPage();
+            this.btUrlDetectDefaults = new System.Windows.Forms.Button();
+            this.lbDwellToolTipBackgroundColor = new System.Windows.Forms.Label();
+            this.btDwellToolTipBackgroundColor = new System.Windows.Forms.Button();
+            this.lbDwellToolTipForegroundColor = new System.Windows.Forms.Label();
+            this.nudDwellToolTipDelay = new System.Windows.Forms.NumericUpDown();
+            this.btDwellToolTipForegroundColor = new System.Windows.Forms.Button();
+            this.cbUseDwellToolTip = new System.Windows.Forms.CheckBox();
+            this.lbUrlIndicatorStyle = new System.Windows.Forms.Label();
+            this.cmbUrlIndicatorStyle = new System.Windows.Forms.ComboBox();
+            this.lbUrlIndicatorColor = new System.Windows.Forms.Label();
+            this.btUrlIndicatorColor = new System.Windows.Forms.Button();
+            this.lbUrlTextColor = new System.Windows.Forms.Label();
+            this.btUrlTextColor = new System.Windows.Forms.Button();
+            this.scintillaUrlStyle = new ScintillaNET.Scintilla();
+            this.cbStartProcessOnUrlClick = new System.Windows.Forms.CheckBox();
+            this.cbHighlightUrls = new System.Windows.Forms.CheckBox();
             this.btCancel = new System.Windows.Forms.Button();
             this.btOK = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
@@ -199,7 +217,6 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.cbSpellCheckInShellContext = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -237,6 +254,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
             this.tabDateAndTime.SuspendLayout();
             this.gbDate.SuspendLayout();
+            this.tabUrls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).BeginInit();
             this.SuspendLayout();
             // 
             // tcMain
@@ -254,6 +273,7 @@
             this.tcMain.Controls.Add(this.tabAdditionalColors);
             this.tcMain.Controls.Add(this.tabSpellCheck);
             this.tcMain.Controls.Add(this.tabDateAndTime);
+            this.tcMain.Controls.Add(this.tabUrls);
             this.tcMain.Location = new System.Drawing.Point(12, 12);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
@@ -1760,6 +1780,16 @@
             this.tabSpellCheck.TabIndex = 3;
             this.tabSpellCheck.Text = "Spell checking";
             // 
+            // cbSpellCheckInShellContext
+            // 
+            this.cbSpellCheckInShellContext.AutoSize = true;
+            this.cbSpellCheckInShellContext.Location = new System.Drawing.Point(6, 31);
+            this.cbSpellCheckInShellContext.Name = "cbSpellCheckInShellContext";
+            this.cbSpellCheckInShellContext.Size = new System.Drawing.Size(299, 17);
+            this.cbSpellCheckInShellContext.TabIndex = 46;
+            this.cbSpellCheckInShellContext.Text = "Use spell checking on files opened via shell context menu";
+            this.cbSpellCheckInShellContext.UseVisualStyleBackColor = true;
+            // 
             // cbSpellCheckInUseNewFiles
             // 
             this.cbSpellCheckInUseNewFiles.AutoSize = true;
@@ -2165,6 +2195,208 @@
             this.lbDateStyle.TabIndex = 0;
             this.lbDateStyle.Text = "Styles 1 to 6:";
             // 
+            // tabUrls
+            // 
+            this.tabUrls.Controls.Add(this.btUrlDetectDefaults);
+            this.tabUrls.Controls.Add(this.lbDwellToolTipBackgroundColor);
+            this.tabUrls.Controls.Add(this.btDwellToolTipBackgroundColor);
+            this.tabUrls.Controls.Add(this.lbDwellToolTipForegroundColor);
+            this.tabUrls.Controls.Add(this.nudDwellToolTipDelay);
+            this.tabUrls.Controls.Add(this.btDwellToolTipForegroundColor);
+            this.tabUrls.Controls.Add(this.cbUseDwellToolTip);
+            this.tabUrls.Controls.Add(this.lbUrlIndicatorStyle);
+            this.tabUrls.Controls.Add(this.cmbUrlIndicatorStyle);
+            this.tabUrls.Controls.Add(this.lbUrlIndicatorColor);
+            this.tabUrls.Controls.Add(this.btUrlIndicatorColor);
+            this.tabUrls.Controls.Add(this.lbUrlTextColor);
+            this.tabUrls.Controls.Add(this.btUrlTextColor);
+            this.tabUrls.Controls.Add(this.scintillaUrlStyle);
+            this.tabUrls.Controls.Add(this.cbStartProcessOnUrlClick);
+            this.tabUrls.Controls.Add(this.cbHighlightUrls);
+            this.tabUrls.Location = new System.Drawing.Point(4, 22);
+            this.tabUrls.Name = "tabUrls";
+            this.tabUrls.Padding = new System.Windows.Forms.Padding(3);
+            this.tabUrls.Size = new System.Drawing.Size(660, 371);
+            this.tabUrls.TabIndex = 10;
+            this.tabUrls.Text = "URL detection";
+            this.tabUrls.UseVisualStyleBackColor = true;
+            // 
+            // btUrlDetectDefaults
+            // 
+            this.btUrlDetectDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUrlDetectDefaults.Location = new System.Drawing.Point(508, 233);
+            this.btUrlDetectDefaults.Name = "btUrlDetectDefaults";
+            this.btUrlDetectDefaults.Size = new System.Drawing.Size(146, 23);
+            this.btUrlDetectDefaults.TabIndex = 62;
+            this.btUrlDetectDefaults.Text = "Defaults";
+            this.btUrlDetectDefaults.UseVisualStyleBackColor = true;
+            this.btUrlDetectDefaults.Click += new System.EventHandler(this.btUrlDetectDefaults_Click);
+            // 
+            // lbDwellToolTipBackgroundColor
+            // 
+            this.lbDwellToolTipBackgroundColor.AutoSize = true;
+            this.lbDwellToolTipBackgroundColor.Location = new System.Drawing.Point(3, 209);
+            this.lbDwellToolTipBackgroundColor.Name = "lbDwellToolTipBackgroundColor";
+            this.lbDwellToolTipBackgroundColor.Size = new System.Drawing.Size(150, 13);
+            this.lbDwellToolTipBackgroundColor.TabIndex = 60;
+            this.lbDwellToolTipBackgroundColor.Text = "Dwell tool tip foreground color:";
+            // 
+            // btDwellToolTipBackgroundColor
+            // 
+            this.btDwellToolTipBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDwellToolTipBackgroundColor.Location = new System.Drawing.Point(466, 204);
+            this.btDwellToolTipBackgroundColor.Name = "btDwellToolTipBackgroundColor";
+            this.btDwellToolTipBackgroundColor.Size = new System.Drawing.Size(188, 23);
+            this.btDwellToolTipBackgroundColor.TabIndex = 59;
+            this.btDwellToolTipBackgroundColor.UseVisualStyleBackColor = true;
+            this.btDwellToolTipBackgroundColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // lbDwellToolTipForegroundColor
+            // 
+            this.lbDwellToolTipForegroundColor.AutoSize = true;
+            this.lbDwellToolTipForegroundColor.Location = new System.Drawing.Point(3, 180);
+            this.lbDwellToolTipForegroundColor.Name = "lbDwellToolTipForegroundColor";
+            this.lbDwellToolTipForegroundColor.Size = new System.Drawing.Size(150, 13);
+            this.lbDwellToolTipForegroundColor.TabIndex = 58;
+            this.lbDwellToolTipForegroundColor.Text = "Dwell tool tip foreground color:";
+            // 
+            // nudDwellToolTipDelay
+            // 
+            this.nudDwellToolTipDelay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudDwellToolTipDelay.Location = new System.Drawing.Point(552, 149);
+            this.nudDwellToolTipDelay.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nudDwellToolTipDelay.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudDwellToolTipDelay.Name = "nudDwellToolTipDelay";
+            this.nudDwellToolTipDelay.Size = new System.Drawing.Size(102, 20);
+            this.nudDwellToolTipDelay.TabIndex = 57;
+            this.nudDwellToolTipDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudDwellToolTipDelay.Value = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
+            this.nudDwellToolTipDelay.ValueChanged += new System.EventHandler(this.urlStyling_Changed);
+            // 
+            // btDwellToolTipForegroundColor
+            // 
+            this.btDwellToolTipForegroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btDwellToolTipForegroundColor.Location = new System.Drawing.Point(466, 175);
+            this.btDwellToolTipForegroundColor.Name = "btDwellToolTipForegroundColor";
+            this.btDwellToolTipForegroundColor.Size = new System.Drawing.Size(188, 23);
+            this.btDwellToolTipForegroundColor.TabIndex = 55;
+            this.btDwellToolTipForegroundColor.UseVisualStyleBackColor = true;
+            this.btDwellToolTipForegroundColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // cbUseDwellToolTip
+            // 
+            this.cbUseDwellToolTip.AutoSize = true;
+            this.cbUseDwellToolTip.Location = new System.Drawing.Point(6, 150);
+            this.cbUseDwellToolTip.Name = "cbUseDwellToolTip";
+            this.cbUseDwellToolTip.Size = new System.Drawing.Size(234, 17);
+            this.cbUseDwellToolTip.TabIndex = 54;
+            this.cbUseDwellToolTip.Text = "Use mouse dwell tool tip on URLs after (ms):";
+            this.cbUseDwellToolTip.UseVisualStyleBackColor = true;
+            this.cbUseDwellToolTip.CheckedChanged += new System.EventHandler(this.urlStyling_Changed);
+            // 
+            // lbUrlIndicatorStyle
+            // 
+            this.lbUrlIndicatorStyle.AutoSize = true;
+            this.lbUrlIndicatorStyle.Location = new System.Drawing.Point(3, 125);
+            this.lbUrlIndicatorStyle.Name = "lbUrlIndicatorStyle";
+            this.lbUrlIndicatorStyle.Size = new System.Drawing.Size(99, 13);
+            this.lbUrlIndicatorStyle.TabIndex = 53;
+            this.lbUrlIndicatorStyle.Text = "URL indicator style:";
+            // 
+            // cmbUrlIndicatorStyle
+            // 
+            this.cmbUrlIndicatorStyle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbUrlIndicatorStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUrlIndicatorStyle.FormattingEnabled = true;
+            this.cmbUrlIndicatorStyle.Location = new System.Drawing.Point(318, 122);
+            this.cmbUrlIndicatorStyle.Name = "cmbUrlIndicatorStyle";
+            this.cmbUrlIndicatorStyle.Size = new System.Drawing.Size(336, 21);
+            this.cmbUrlIndicatorStyle.TabIndex = 52;
+            this.cmbUrlIndicatorStyle.SelectedIndexChanged += new System.EventHandler(this.urlStyling_Changed);
+            // 
+            // lbUrlIndicatorColor
+            // 
+            this.lbUrlIndicatorColor.AutoSize = true;
+            this.lbUrlIndicatorColor.Location = new System.Drawing.Point(3, 98);
+            this.lbUrlIndicatorColor.Name = "lbUrlIndicatorColor";
+            this.lbUrlIndicatorColor.Size = new System.Drawing.Size(101, 13);
+            this.lbUrlIndicatorColor.TabIndex = 51;
+            this.lbUrlIndicatorColor.Text = "URL indicator color:";
+            // 
+            // btUrlIndicatorColor
+            // 
+            this.btUrlIndicatorColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUrlIndicatorColor.Location = new System.Drawing.Point(466, 93);
+            this.btUrlIndicatorColor.Name = "btUrlIndicatorColor";
+            this.btUrlIndicatorColor.Size = new System.Drawing.Size(188, 23);
+            this.btUrlIndicatorColor.TabIndex = 50;
+            this.btUrlIndicatorColor.UseVisualStyleBackColor = true;
+            this.btUrlIndicatorColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // lbUrlTextColor
+            // 
+            this.lbUrlTextColor.AutoSize = true;
+            this.lbUrlTextColor.Location = new System.Drawing.Point(3, 69);
+            this.lbUrlTextColor.Name = "lbUrlTextColor";
+            this.lbUrlTextColor.Size = new System.Drawing.Size(78, 13);
+            this.lbUrlTextColor.TabIndex = 49;
+            this.lbUrlTextColor.Text = "URL text color:";
+            // 
+            // btUrlTextColor
+            // 
+            this.btUrlTextColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUrlTextColor.Location = new System.Drawing.Point(466, 64);
+            this.btUrlTextColor.Name = "btUrlTextColor";
+            this.btUrlTextColor.Size = new System.Drawing.Size(188, 23);
+            this.btUrlTextColor.TabIndex = 48;
+            this.btUrlTextColor.UseVisualStyleBackColor = true;
+            this.btUrlTextColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // scintillaUrlStyle
+            // 
+            this.scintillaUrlStyle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scintillaUrlStyle.Location = new System.Drawing.Point(9, 265);
+            this.scintillaUrlStyle.Name = "scintillaUrlStyle";
+            this.scintillaUrlStyle.Size = new System.Drawing.Size(645, 100);
+            this.scintillaUrlStyle.TabIndex = 47;
+            this.scintillaUrlStyle.Text = "https://www.vpksoft.net\r\nmailto:vpksoft@vpksoft.net";
+            // 
+            // cbStartProcessOnUrlClick
+            // 
+            this.cbStartProcessOnUrlClick.AutoSize = true;
+            this.cbStartProcessOnUrlClick.Location = new System.Drawing.Point(6, 37);
+            this.cbStartProcessOnUrlClick.Name = "cbStartProcessOnUrlClick";
+            this.cbStartProcessOnUrlClick.Size = new System.Drawing.Size(242, 17);
+            this.cbStartProcessOnUrlClick.TabIndex = 46;
+            this.cbStartProcessOnUrlClick.Text = "Start associated program on CTRL+URL click";
+            this.cbStartProcessOnUrlClick.UseVisualStyleBackColor = true;
+            this.cbStartProcessOnUrlClick.CheckedChanged += new System.EventHandler(this.urlStyling_Changed);
+            // 
+            // cbHighlightUrls
+            // 
+            this.cbHighlightUrls.AutoSize = true;
+            this.cbHighlightUrls.Location = new System.Drawing.Point(6, 8);
+            this.cbHighlightUrls.Name = "cbHighlightUrls";
+            this.cbHighlightUrls.Size = new System.Drawing.Size(159, 17);
+            this.cbHighlightUrls.TabIndex = 41;
+            this.cbHighlightUrls.Text = "Highlight URLs on the editor";
+            this.cbHighlightUrls.UseVisualStyleBackColor = true;
+            this.cbHighlightUrls.CheckedChanged += new System.EventHandler(this.urlStyling_Changed);
+            // 
             // btCancel
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -2217,16 +2449,6 @@
             this.tbRestartNote.TabIndex = 8;
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
-            // 
-            // cbSpellCheckInShellContext
-            // 
-            this.cbSpellCheckInShellContext.AutoSize = true;
-            this.cbSpellCheckInShellContext.Location = new System.Drawing.Point(6, 31);
-            this.cbSpellCheckInShellContext.Name = "cbSpellCheckInShellContext";
-            this.cbSpellCheckInShellContext.Size = new System.Drawing.Size(299, 17);
-            this.cbSpellCheckInShellContext.TabIndex = 46;
-            this.cbSpellCheckInShellContext.Text = "Use spell checking on files opened via shell context menu";
-            this.cbSpellCheckInShellContext.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2305,6 +2527,9 @@
             this.tabDateAndTime.PerformLayout();
             this.gbDate.ResumeLayout(false);
             this.gbDate.PerformLayout();
+            this.tabUrls.ResumeLayout(false);
+            this.tabUrls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2330,7 +2555,6 @@
         private System.Windows.Forms.CheckBox cbDockSearchTree;
         private System.Windows.Forms.TabPage tpgColorSettings;
         private System.Windows.Forms.Button btSmartHighlightColor;
-        private System.Windows.Forms.Label lbSmartHighlightColor;
         private System.Windows.Forms.ColorDialog cdColors;
         private System.Windows.Forms.Button btMarkStyle5Color;
         private System.Windows.Forms.Label lbMarkStyle5Color;
@@ -2482,5 +2706,23 @@
         private System.Windows.Forms.RadioButton rbTextInvariant;
         private System.Windows.Forms.CheckBox cbCaseSensitive;
         private System.Windows.Forms.CheckBox cbSpellCheckInShellContext;
+        private System.Windows.Forms.TabPage tabUrls;
+        private System.Windows.Forms.CheckBox cbStartProcessOnUrlClick;
+        private System.Windows.Forms.CheckBox cbHighlightUrls;
+        private ScintillaNET.Scintilla scintillaUrlStyle;
+        private System.Windows.Forms.Label lbSmartHighlightColor;
+        private System.Windows.Forms.Label lbUrlTextColor;
+        private System.Windows.Forms.Button btUrlTextColor;
+        private System.Windows.Forms.Label lbUrlIndicatorColor;
+        private System.Windows.Forms.Button btUrlIndicatorColor;
+        private System.Windows.Forms.Label lbUrlIndicatorStyle;
+        private System.Windows.Forms.ComboBox cmbUrlIndicatorStyle;
+        private System.Windows.Forms.NumericUpDown nudDwellToolTipDelay;
+        private System.Windows.Forms.Button btDwellToolTipForegroundColor;
+        private System.Windows.Forms.CheckBox cbUseDwellToolTip;
+        private System.Windows.Forms.Label lbDwellToolTipForegroundColor;
+        private System.Windows.Forms.Label lbDwellToolTipBackgroundColor;
+        private System.Windows.Forms.Button btDwellToolTipBackgroundColor;
+        private System.Windows.Forms.Button btUrlDetectDefaults;
     }
 }

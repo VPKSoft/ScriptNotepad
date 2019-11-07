@@ -40,7 +40,6 @@ using ScriptNotepad.UtilityClasses.Clipboard;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.Encodings;
 using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.UtilityClasses.Keyboard;
 using ScriptNotepad.UtilityClasses.MenuHelpers;
@@ -79,12 +78,15 @@ using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
 using VPKSoft.ScintillaTabbedTextControl;
+using VPKSoft.ScintillaUrlDetect;
 using VPKSoft.VersionCheck;
 using VPKSoft.VersionCheck.Forms;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivateDeactivate;
+using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase;
+
 #endregion
 
 namespace ScriptNotepad
@@ -164,9 +166,19 @@ namespace ScriptNotepad
             // localize the save HTML dialog..
             StaticLocalizeFileDialog.InitHTMLFileDialog(sdHTML);
 
+            // use the same timer as with the spell check plug-in..
+            ScintillaUrlDetect.UseThreadsOnUrlStyling = true;
+
             // localize the open and save file dialog titles..
             sdAnyFile.Title = DBLangEngine.GetMessage("msgSaveFileAs", "Save As|A title for a save file as dialog");
             odAnyFile.Title = DBLangEngine.GetMessage("msgOpenFile", "Open|A title for a open file dialog");
+
+            // localize the dwell tool tips on used by the ScintillaUrlDetect class library..
+            ScintillaUrlDetect.DwellToolTipTextUrl = DBLangEngine.GetMessage("msgUrlDetectToolTipOpenHyperlink",
+                "Use CTRL + Click to follow the link: {0}|A message for the URL detect library tool tip to open a hyperlink.");
+
+            ScintillaUrlDetect.DwellToolTipTextMailTo = DBLangEngine.GetMessage("msgUrlDetectToolTipOpenMailToLink",
+                "Use CTRL + Click to sent email to: {0}|A message for the URL detect library tool tip to open a email program for a mailto link.");
 
             // initialize the helper class for the status strip's labels..
             StatusStripTexts.InitLabels(ssLbLineColumn, ssLbLinesColumnSelection, ssLbLDocLinesSize, 
@@ -445,7 +457,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Disposes the spell checkers attached to the document tabs.
         /// </summary>
-        private void DisposeSpellCheckers()
+        private void DisposeSpellCheckerAndUrlHighlight()
         {
             for (int i = 0; i < sttcMain.DocumentsCount; i++)
             {
@@ -459,6 +471,18 @@ namespace ScriptNotepad
                     using (spellCheck)
                     {
                         sttcMain.Documents[i].Tag0 = null;
+                    }
+                }
+
+                // validate that the ScintillaTabbedDocument instance has an URL highlighter attached to it..
+                if (sttcMain.Documents[i] != null && sttcMain.Documents[i].Tag1 != null &&
+                    sttcMain.Documents[i].Tag1.GetType() == typeof(ScintillaUrlDetect))
+                {
+                    var urlDetect = (ScintillaUrlDetect) sttcMain.Documents[i].Tag1;
+
+                    using (urlDetect)
+                    {
+                        sttcMain.Documents[i].Tag1 = null;
                     }
                 }
             }
@@ -941,7 +965,7 @@ namespace ScriptNotepad
             }
 
             // dispose of the spell checkers attached to the documents..
-            DisposeSpellCheckers();
+            DisposeSpellCheckerAndUrlHighlight();
 
             // unsubscribe the event handlers from the context menus..
             DisposeContextMenus();
@@ -967,7 +991,7 @@ namespace ScriptNotepad
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
             // dispose of the spell checkers attached to the documents..
-            DisposeSpellCheckers();
+            DisposeSpellCheckerAndUrlHighlight();
 
             // unsubscribe the event handlers from the context menus..
             DisposeContextMenus();
@@ -1148,6 +1172,18 @@ namespace ScriptNotepad
                     using (spellCheck)
                     {
                         sttcMain.Documents[docIndex].Tag0 = null;
+                    }
+                }
+
+                // URL highlighter disposal..
+                if (sttcMain.Documents[docIndex].Tag1 != null && sttcMain.Documents[docIndex].Tag1.GetType() == typeof(ScintillaUrlDetect))
+                {
+                    // dispose of the URL highlighter..
+                    var urlCheck = (ScintillaUrlDetect)sttcMain.Documents[docIndex].Tag1;
+
+                    using (urlCheck)
+                    {
+                        sttcMain.Documents[docIndex].Tag1 = null;
                     }
                 }
 
@@ -1439,6 +1475,16 @@ namespace ScriptNotepad
 
             // check the programming language menu item with the current lexer..
             ProgrammingLanguageHelper.CheckLanguage(document.LexerType);
+
+            // set the URL detection if enabled..
+            if (FormSettings.Settings.HighlightUrls)
+            {
+                var urlDetect = new ScintillaUrlDetect(document.Scintilla);
+                FormSettings.SetUrlDetectStyling(urlDetect);
+
+                urlDetect.AppendIndicatorClear(31);
+                document.Tag1 = urlDetect;
+            }
         }
 
         /// <summary>
@@ -2357,7 +2403,15 @@ namespace ScriptNotepad
         private void mnuSettings_Click(object sender, EventArgs e)
         {
             // ..so display the settings dialog..
-            FormSettings.Execute();
+            if (FormSettings.Execute(out var restart))
+            {
+                // if the user chose to restart the application for the changes to take affect..
+                if (restart)
+                {
+                    Program.Restart = true;
+                    Close();
+                }
+            }
         }
 
         /// <summary>Processes a command key.</summary>
@@ -3234,6 +3288,37 @@ namespace ScriptNotepad
                 mnuWrapDocumentTo.Enabled = sttcMain.CurrentDocument != null;
             }
         }
+
+        // removes duplicate lines from a Scintilla control..
+        private void mnuRemoveDuplicateLines_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                var fileSave = (DBFILE_SAVE) document.Tag;
+
+                DuplicateLines.RemoveDuplicateLines(document.Scintilla,
+                    FormSettings.Settings.TextCurrentComparison,
+                    fileSave.FileLineType);
+
+                if (!suspendSelectionUpdate)
+                {
+                    StatusStripTexts.SetStatusStringText(document, CurrentSession);
+                }
+            });
+        }
+
+        // set the value indicating whether Text menu functions should be case-sensitive..
+        private void mnuCaseSensitive_Click(object sender, EventArgs e)
+        {
+            if (runningConstructor)
+            {
+                return;
+            }
+
+            var item = (ToolStripMenuItem) sender;
+            item.Checked = !item.Checked;
+            FormSettings.Settings.TextUpperCaseComparison = item.Checked;
+        }
         #endregion
 
         #region PrivateFields                
@@ -3716,34 +3801,5 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
-
-        private void mnuRemoveDuplicateLines_Click(object sender, EventArgs e)
-        {
-            CurrentDocumentAction(document =>
-            {
-                var fileSave = (DBFILE_SAVE) document.Tag;
-
-                DuplicateLines.RemoveDuplicateLines(document.Scintilla,
-                    FormSettings.Settings.TextCurrentComparison,
-                    fileSave.FileLineType);
-
-                if (!suspendSelectionUpdate)
-                {
-                    StatusStripTexts.SetStatusStringText(document, CurrentSession);
-                }
-            });
-        }
-
-        private void mnuCaseSensitive_Click(object sender, EventArgs e)
-        {
-            if (runningConstructor)
-            {
-                return;
-            }
-
-            var item = (ToolStripMenuItem) sender;
-            item.Checked = !item.Checked;
-            FormSettings.Settings.TextUpperCaseComparison = item.Checked;
-        }
     }
 }
