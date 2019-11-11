@@ -102,6 +102,11 @@ namespace ScriptNotepad.Settings
                         settingAttribute =
                             (SettingAttribute) propertyInfos[i].GetCustomAttribute(typeof(SettingAttribute));
 
+                        if (settingAttribute == null) // no null values..
+                        {
+                            continue;
+                        }
+
                         // get the default value for the property..
                         object currentValue = propertyInfos[i].GetValue(this);
 
@@ -430,6 +435,18 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("editorUrls/dwellToolTipTime", typeof(int))]
         public int UrlDwellToolTipTime { get; set; } = 400;
+
+        /// <summary>
+        /// Gets or sets the URL maximum length before the use of an ellipsis to shorten it.
+        /// </summary>
+        [Setting("editorUrls/autoEllipsisMaxLength", typeof(int))]
+        public int UrlMaxLengthBeforeEllipsis { get; set; } = 60;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use automatic ellipsis on long URLs.
+        /// </summary>
+        [Setting("editorUrls/useAutoEllipsis", typeof(bool))]
+        public bool UrlUseAutoEllipsis { get; set; } = true;
         #endregion
 
         #region Editor
@@ -783,7 +800,7 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// Gets or sets the type of the text comparison to use with text manipulation.
         /// </summary>
-        [Setting("text/textComparisonType", typeof(bool))]
+        [Setting("text/textComparisonType", typeof(int))]
         public int TextComparisonType { get; set; } = 0; // 0 = invariant, 1 = current, 2 = ordinal..
 
         /// <summary>

@@ -166,7 +166,12 @@ namespace ScriptNotepad
             // localize the save HTML dialog..
             StaticLocalizeFileDialog.InitHTMLFileDialog(sdHTML);
 
-            // use the same timer as with the spell check plug-in..
+            // set the value whether to use auto-ellipsis on long URLs with the ScintillaUrlDetect..
+            ScintillaUrlDetect.AutoEllipsisUrlLength = FormSettings.Settings.UrlUseAutoEllipsis
+                ? FormSettings.Settings.UrlMaxLengthBeforeEllipsis
+                : -1;
+
+            // set the URL styling to use threads..
             ScintillaUrlDetect.UseThreadsOnUrlStyling = true;
 
             // localize the open and save file dialog titles..

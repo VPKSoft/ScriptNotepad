@@ -217,6 +217,9 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
+            this.cbURLUseAutoEllipsis = new System.Windows.Forms.CheckBox();
+            this.nudURLUseAutoEllipsis = new System.Windows.Forms.NumericUpDown();
+            this.tlpUrlColors = new System.Windows.Forms.TableLayoutPanel();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -256,6 +259,8 @@
             this.gbDate.SuspendLayout();
             this.tabUrls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).BeginInit();
+            this.tlpUrlColors.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -2197,6 +2202,9 @@
             // 
             // tabUrls
             // 
+            this.tabUrls.Controls.Add(this.tlpUrlColors);
+            this.tabUrls.Controls.Add(this.nudURLUseAutoEllipsis);
+            this.tabUrls.Controls.Add(this.cbURLUseAutoEllipsis);
             this.tabUrls.Controls.Add(this.btUrlDetectDefaults);
             this.tabUrls.Controls.Add(this.lbDwellToolTipBackgroundColor);
             this.tabUrls.Controls.Add(this.btDwellToolTipBackgroundColor);
@@ -2206,10 +2214,6 @@
             this.tabUrls.Controls.Add(this.cbUseDwellToolTip);
             this.tabUrls.Controls.Add(this.lbUrlIndicatorStyle);
             this.tabUrls.Controls.Add(this.cmbUrlIndicatorStyle);
-            this.tabUrls.Controls.Add(this.lbUrlIndicatorColor);
-            this.tabUrls.Controls.Add(this.btUrlIndicatorColor);
-            this.tabUrls.Controls.Add(this.lbUrlTextColor);
-            this.tabUrls.Controls.Add(this.btUrlTextColor);
             this.tabUrls.Controls.Add(this.scintillaUrlStyle);
             this.tabUrls.Controls.Add(this.cbStartProcessOnUrlClick);
             this.tabUrls.Controls.Add(this.cbHighlightUrls);
@@ -2224,7 +2228,7 @@
             // btUrlDetectDefaults
             // 
             this.btUrlDetectDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btUrlDetectDefaults.Location = new System.Drawing.Point(508, 233);
+            this.btUrlDetectDefaults.Location = new System.Drawing.Point(508, 235);
             this.btUrlDetectDefaults.Name = "btUrlDetectDefaults";
             this.btUrlDetectDefaults.Size = new System.Drawing.Size(146, 23);
             this.btUrlDetectDefaults.TabIndex = 62;
@@ -2235,7 +2239,7 @@
             // lbDwellToolTipBackgroundColor
             // 
             this.lbDwellToolTipBackgroundColor.AutoSize = true;
-            this.lbDwellToolTipBackgroundColor.Location = new System.Drawing.Point(3, 209);
+            this.lbDwellToolTipBackgroundColor.Location = new System.Drawing.Point(3, 185);
             this.lbDwellToolTipBackgroundColor.Name = "lbDwellToolTipBackgroundColor";
             this.lbDwellToolTipBackgroundColor.Size = new System.Drawing.Size(150, 13);
             this.lbDwellToolTipBackgroundColor.TabIndex = 60;
@@ -2244,7 +2248,7 @@
             // btDwellToolTipBackgroundColor
             // 
             this.btDwellToolTipBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btDwellToolTipBackgroundColor.Location = new System.Drawing.Point(466, 204);
+            this.btDwellToolTipBackgroundColor.Location = new System.Drawing.Point(466, 180);
             this.btDwellToolTipBackgroundColor.Name = "btDwellToolTipBackgroundColor";
             this.btDwellToolTipBackgroundColor.Size = new System.Drawing.Size(188, 23);
             this.btDwellToolTipBackgroundColor.TabIndex = 59;
@@ -2254,7 +2258,7 @@
             // lbDwellToolTipForegroundColor
             // 
             this.lbDwellToolTipForegroundColor.AutoSize = true;
-            this.lbDwellToolTipForegroundColor.Location = new System.Drawing.Point(3, 180);
+            this.lbDwellToolTipForegroundColor.Location = new System.Drawing.Point(3, 156);
             this.lbDwellToolTipForegroundColor.Name = "lbDwellToolTipForegroundColor";
             this.lbDwellToolTipForegroundColor.Size = new System.Drawing.Size(150, 13);
             this.lbDwellToolTipForegroundColor.TabIndex = 58;
@@ -2263,7 +2267,7 @@
             // nudDwellToolTipDelay
             // 
             this.nudDwellToolTipDelay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudDwellToolTipDelay.Location = new System.Drawing.Point(552, 149);
+            this.nudDwellToolTipDelay.Location = new System.Drawing.Point(552, 125);
             this.nudDwellToolTipDelay.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -2288,7 +2292,7 @@
             // btDwellToolTipForegroundColor
             // 
             this.btDwellToolTipForegroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btDwellToolTipForegroundColor.Location = new System.Drawing.Point(466, 175);
+            this.btDwellToolTipForegroundColor.Location = new System.Drawing.Point(466, 151);
             this.btDwellToolTipForegroundColor.Name = "btDwellToolTipForegroundColor";
             this.btDwellToolTipForegroundColor.Size = new System.Drawing.Size(188, 23);
             this.btDwellToolTipForegroundColor.TabIndex = 55;
@@ -2298,7 +2302,7 @@
             // cbUseDwellToolTip
             // 
             this.cbUseDwellToolTip.AutoSize = true;
-            this.cbUseDwellToolTip.Location = new System.Drawing.Point(6, 150);
+            this.cbUseDwellToolTip.Location = new System.Drawing.Point(6, 126);
             this.cbUseDwellToolTip.Name = "cbUseDwellToolTip";
             this.cbUseDwellToolTip.Size = new System.Drawing.Size(234, 17);
             this.cbUseDwellToolTip.TabIndex = 54;
@@ -2309,7 +2313,7 @@
             // lbUrlIndicatorStyle
             // 
             this.lbUrlIndicatorStyle.AutoSize = true;
-            this.lbUrlIndicatorStyle.Location = new System.Drawing.Point(3, 125);
+            this.lbUrlIndicatorStyle.Location = new System.Drawing.Point(3, 101);
             this.lbUrlIndicatorStyle.Name = "lbUrlIndicatorStyle";
             this.lbUrlIndicatorStyle.Size = new System.Drawing.Size(99, 13);
             this.lbUrlIndicatorStyle.TabIndex = 53;
@@ -2320,7 +2324,7 @@
             this.cmbUrlIndicatorStyle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbUrlIndicatorStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbUrlIndicatorStyle.FormattingEnabled = true;
-            this.cmbUrlIndicatorStyle.Location = new System.Drawing.Point(318, 122);
+            this.cmbUrlIndicatorStyle.Location = new System.Drawing.Point(318, 98);
             this.cmbUrlIndicatorStyle.Name = "cmbUrlIndicatorStyle";
             this.cmbUrlIndicatorStyle.Size = new System.Drawing.Size(336, 21);
             this.cmbUrlIndicatorStyle.TabIndex = 52;
@@ -2329,7 +2333,7 @@
             // lbUrlIndicatorColor
             // 
             this.lbUrlIndicatorColor.AutoSize = true;
-            this.lbUrlIndicatorColor.Location = new System.Drawing.Point(3, 98);
+            this.lbUrlIndicatorColor.Location = new System.Drawing.Point(330, 0);
             this.lbUrlIndicatorColor.Name = "lbUrlIndicatorColor";
             this.lbUrlIndicatorColor.Size = new System.Drawing.Size(101, 13);
             this.lbUrlIndicatorColor.TabIndex = 51;
@@ -2338,9 +2342,10 @@
             // btUrlIndicatorColor
             // 
             this.btUrlIndicatorColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btUrlIndicatorColor.Location = new System.Drawing.Point(466, 93);
+            this.btUrlIndicatorColor.Location = new System.Drawing.Point(543, 0);
+            this.btUrlIndicatorColor.Margin = new System.Windows.Forms.Padding(0);
             this.btUrlIndicatorColor.Name = "btUrlIndicatorColor";
-            this.btUrlIndicatorColor.Size = new System.Drawing.Size(188, 23);
+            this.btUrlIndicatorColor.Size = new System.Drawing.Size(111, 23);
             this.btUrlIndicatorColor.TabIndex = 50;
             this.btUrlIndicatorColor.UseVisualStyleBackColor = true;
             this.btUrlIndicatorColor.Click += new System.EventHandler(this.ColorButton_Click);
@@ -2348,7 +2353,7 @@
             // lbUrlTextColor
             // 
             this.lbUrlTextColor.AutoSize = true;
-            this.lbUrlTextColor.Location = new System.Drawing.Point(3, 69);
+            this.lbUrlTextColor.Location = new System.Drawing.Point(3, 0);
             this.lbUrlTextColor.Name = "lbUrlTextColor";
             this.lbUrlTextColor.Size = new System.Drawing.Size(78, 13);
             this.lbUrlTextColor.TabIndex = 49;
@@ -2357,9 +2362,10 @@
             // btUrlTextColor
             // 
             this.btUrlTextColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btUrlTextColor.Location = new System.Drawing.Point(466, 64);
+            this.btUrlTextColor.Location = new System.Drawing.Point(216, 0);
+            this.btUrlTextColor.Margin = new System.Windows.Forms.Padding(0);
             this.btUrlTextColor.Name = "btUrlTextColor";
-            this.btUrlTextColor.Size = new System.Drawing.Size(188, 23);
+            this.btUrlTextColor.Size = new System.Drawing.Size(111, 23);
             this.btUrlTextColor.TabIndex = 48;
             this.btUrlTextColor.UseVisualStyleBackColor = true;
             this.btUrlTextColor.Click += new System.EventHandler(this.ColorButton_Click);
@@ -2369,9 +2375,9 @@
             this.scintillaUrlStyle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scintillaUrlStyle.Location = new System.Drawing.Point(9, 265);
+            this.scintillaUrlStyle.Location = new System.Drawing.Point(9, 264);
             this.scintillaUrlStyle.Name = "scintillaUrlStyle";
-            this.scintillaUrlStyle.Size = new System.Drawing.Size(645, 100);
+            this.scintillaUrlStyle.Size = new System.Drawing.Size(645, 101);
             this.scintillaUrlStyle.TabIndex = 47;
             this.scintillaUrlStyle.Text = "https://www.vpksoft.net\r\nmailto:vpksoft@vpksoft.net";
             // 
@@ -2449,6 +2455,56 @@
             this.tbRestartNote.TabIndex = 8;
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
+            // 
+            // cbURLUseAutoEllipsis
+            // 
+            this.cbURLUseAutoEllipsis.AutoSize = true;
+            this.cbURLUseAutoEllipsis.Location = new System.Drawing.Point(6, 210);
+            this.cbURLUseAutoEllipsis.Name = "cbURLUseAutoEllipsis";
+            this.cbURLUseAutoEllipsis.Size = new System.Drawing.Size(283, 17);
+            this.cbURLUseAutoEllipsis.TabIndex = 63;
+            this.cbURLUseAutoEllipsis.Text = "Use auto-ellipsis (...) an URLs longer than (characters):";
+            this.cbURLUseAutoEllipsis.UseVisualStyleBackColor = true;
+            // 
+            // nudURLUseAutoEllipsis
+            // 
+            this.nudURLUseAutoEllipsis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudURLUseAutoEllipsis.Location = new System.Drawing.Point(552, 209);
+            this.nudURLUseAutoEllipsis.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.nudURLUseAutoEllipsis.Name = "nudURLUseAutoEllipsis";
+            this.nudURLUseAutoEllipsis.Size = new System.Drawing.Size(102, 20);
+            this.nudURLUseAutoEllipsis.TabIndex = 64;
+            this.nudURLUseAutoEllipsis.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudURLUseAutoEllipsis.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
+            // tlpUrlColors
+            // 
+            this.tlpUrlColors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpUrlColors.ColumnCount = 4;
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpUrlColors.Controls.Add(this.lbUrlTextColor, 0, 0);
+            this.tlpUrlColors.Controls.Add(this.btUrlTextColor, 1, 0);
+            this.tlpUrlColors.Controls.Add(this.lbUrlIndicatorColor, 2, 0);
+            this.tlpUrlColors.Controls.Add(this.btUrlIndicatorColor, 3, 0);
+            this.tlpUrlColors.Location = new System.Drawing.Point(0, 66);
+            this.tlpUrlColors.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpUrlColors.Name = "tlpUrlColors";
+            this.tlpUrlColors.RowCount = 1;
+            this.tlpUrlColors.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpUrlColors.Size = new System.Drawing.Size(654, 29);
+            this.tlpUrlColors.TabIndex = 65;
             // 
             // FormSettings
             // 
@@ -2530,6 +2586,9 @@
             this.tabUrls.ResumeLayout(false);
             this.tabUrls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).EndInit();
+            this.tlpUrlColors.ResumeLayout(false);
+            this.tlpUrlColors.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2724,5 +2783,8 @@
         private System.Windows.Forms.Label lbDwellToolTipBackgroundColor;
         private System.Windows.Forms.Button btDwellToolTipBackgroundColor;
         private System.Windows.Forms.Button btUrlDetectDefaults;
+        private System.Windows.Forms.NumericUpDown nudURLUseAutoEllipsis;
+        private System.Windows.Forms.CheckBox cbURLUseAutoEllipsis;
+        private System.Windows.Forms.TableLayoutPanel tlpUrlColors;
     }
 }

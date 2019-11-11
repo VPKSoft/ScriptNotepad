@@ -362,6 +362,8 @@ namespace ScriptNotepad.Settings
             nudDwellToolTipDelay.Value = Settings.UrlDwellToolTipTime;
             btDwellToolTipForegroundColor.BackColor = Settings.UrlDwellToolTipForegroundColor;
             btDwellToolTipBackgroundColor.BackColor = Settings.UrlDwellToolTipBackgroundColor;
+            nudURLUseAutoEllipsis.Value = Settings.UrlMaxLengthBeforeEllipsis;
+            cbURLUseAutoEllipsis.Checked = Settings.UrlUseAutoEllipsis;
             #endregion
 
             #region DateTime
@@ -550,6 +552,8 @@ namespace ScriptNotepad.Settings
             Settings.UrlDwellToolTipTime = (int)nudDwellToolTipDelay.Value;
             Settings.UrlDwellToolTipForegroundColor = btDwellToolTipForegroundColor.BackColor;
             Settings.UrlDwellToolTipBackgroundColor = btDwellToolTipBackgroundColor.BackColor;
+            Settings.UrlMaxLengthBeforeEllipsis = (int)nudURLUseAutoEllipsis.Value;
+            Settings.UrlUseAutoEllipsis = cbURLUseAutoEllipsis.Checked;
             #endregion
 
             #region TextSettings
@@ -1151,6 +1155,8 @@ namespace ScriptNotepad.Settings
             nudDwellToolTipDelay.Value = 400;
             btDwellToolTipForegroundColor.BackColor = SystemColors.InfoText;
             btDwellToolTipBackgroundColor.BackColor = SystemColors.Info;
+            cbURLUseAutoEllipsis.Checked = true;
+            nudURLUseAutoEllipsis.Value = 68;
             ReStyleUrlScintillaBox(); // apply the style to the sample Scintilla control..
         }
 
