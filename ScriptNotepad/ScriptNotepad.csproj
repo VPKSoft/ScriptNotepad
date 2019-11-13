@@ -507,6 +507,8 @@
     </Content>
     <Content Include="Images\vpksoft_logo.png" />
     <Content Include="Resources\download_dialog_localization.txt" />
+    <None Include="Resources\jump_first.png" />
+    <None Include="Resources\jump_last.png" />
     <Content Include="setup_version_maintenance.exe" />
     <None Include="Resources\duplicate_lines.png" />
     <None Include="Resources\format-text-uppercase.png" />

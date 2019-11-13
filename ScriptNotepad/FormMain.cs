@@ -62,7 +62,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -3323,6 +3322,16 @@ namespace ScriptNotepad
             var item = (ToolStripMenuItem) sender;
             item.Checked = !item.Checked;
             FormSettings.Settings.TextUpperCaseComparison = item.Checked;
+        }
+
+        // a user wants to jump to the last or to the first tab..
+        private void mnuFirstLastTab_Click(object sender, EventArgs e)
+        {
+            if (sttcMain.DocumentsCount > 0)
+            {
+                var leftIndex = sender.Equals(mnuLastTab) ? sttcMain.DocumentsCount - 1 : 0;
+                sttcMain.LeftFileIndex = leftIndex;
+            }
         }
         #endregion
 

@@ -201,6 +201,9 @@
             this.mnuNextTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPreviousTab = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuFirstTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuLastTab = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFindTab = new System.Windows.Forms.ToolStripMenuItem();
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
@@ -1660,6 +1663,9 @@
             this.mnuNextTab,
             this.mnuPreviousTab,
             this.toolStripMenuItem16,
+            this.mnuFirstTab,
+            this.mnuLastTab,
+            this.toolStripMenuItem12,
             this.mnuFindTab});
             this.mnuNavigation.Name = "mnuNavigation";
             this.mnuNavigation.Size = new System.Drawing.Size(77, 20);
@@ -1690,6 +1696,30 @@
             this.toolStripMenuItem16.Name = "toolStripMenuItem16";
             this.toolStripMenuItem16.Size = new System.Drawing.Size(208, 6);
             this.toolStripMenuItem16.Visible = false;
+            // 
+            // mnuFirstTab
+            // 
+            this.mnuFirstTab.Image = global::ScriptNotepad.Properties.Resources.jump_first;
+            this.mnuFirstTab.Name = "mnuFirstTab";
+            this.mnuFirstTab.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.B)));
+            this.mnuFirstTab.Size = new System.Drawing.Size(211, 22);
+            this.mnuFirstTab.Text = "To first tab";
+            this.mnuFirstTab.Click += new System.EventHandler(this.mnuFirstLastTab_Click);
+            // 
+            // mnuLastTab
+            // 
+            this.mnuLastTab.Image = ((System.Drawing.Image)(resources.GetObject("mnuLastTab.Image")));
+            this.mnuLastTab.Name = "mnuLastTab";
+            this.mnuLastTab.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.mnuLastTab.Size = new System.Drawing.Size(211, 22);
+            this.mnuLastTab.Text = "To last tab";
+            this.mnuLastTab.Click += new System.EventHandler(this.mnuFirstLastTab_Click);
+            // 
+            // toolStripMenuItem12
+            // 
+            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(208, 6);
             // 
             // mnuFindTab
             // 
@@ -1918,6 +1948,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuWrapDocumentTo;
         private System.Windows.Forms.ToolStripMenuItem mnuCaseSensitive;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;
+        private System.Windows.Forms.ToolStripMenuItem mnuFirstTab;
+        private System.Windows.Forms.ToolStripMenuItem mnuLastTab;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem12;
     }
 }
 
