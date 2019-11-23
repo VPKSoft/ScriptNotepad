@@ -68,6 +68,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using ScriptNotepad.Database.TableCommands;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
@@ -347,6 +348,8 @@ namespace ScriptNotepad
 
             // get the case-sensitivity value from the settings..
             mnuCaseSensitive.Checked = FormSettings.Settings.TextUpperCaseComparison;
+
+            // TODO::Entity Framework; code first: DatabaseFileSave.ToEntity();
 
             // the constructor code finalized executing..
             runningConstructor = false;
@@ -1027,7 +1030,7 @@ namespace ScriptNotepad
                 {
                     // query the user if one wishes to reload
                     // the changed file from the disk..
-                    if (fileSave.ShouldQueryDiskReload)
+                    if (fileSave.ShouldQueryDiskReload && !runningConstructor)
                     {
                         if (MessageBox.Show(
                             DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happen", fileSave.FILENAME_FULL),
@@ -1068,7 +1071,7 @@ namespace ScriptNotepad
                 {
                     // query the user if one wishes to keep a deleted
                     // file from the file system in the editor..
-                    if (fileSave.ShouldQueryKeepFile)
+                    if (fileSave.ShouldQueryKeepFile && !runningConstructor)
                     {
                         if (MessageBox.Show(
                             DBLangEngine.GetMessage("msgFileHasBeenDeleted", "The file '{0}' has been deleted. Keep the file in the editor?|As in the opened file has been deleted from the file system and user is asked if to keep the deleted file in the editor", fileSave.FILENAME_FULL),
@@ -1096,7 +1099,7 @@ namespace ScriptNotepad
                                 sttcMain.Documents[i].Scintilla.CurrentPosition);
                         }
                     }
-                    else if (fileSave.ShouldQueryFileReappeared)
+                    else if (fileSave.ShouldQueryFileReappeared && !runningConstructor)
                     {
                         if (MessageBox.Show(
                             DBLangEngine.GetMessage("msgFileHasReappeared", "The file '{0}' has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it's contents from the file system", fileSave.FILENAME_FULL),
@@ -2625,7 +2628,7 @@ namespace ScriptNotepad
                     {
                         // if the file has been changed in the editor, so confirm the user for a 
                         // reload from the file system..
-                        if (fileSave.IsChangedInEditor)
+                        if (fileSave.IsChangedInEditor && !runningConstructor)
                         {
                             if (MessageBox.Show(
                                 DBLangEngine.GetMessage("msgFileHasChangedInEditorAction", "The file '{0}' has been changed in the editor and a reload from the file system is required. Continue?|A file has been changed in the editor and a reload from the file system is required to complete an arbitrary action", fileSave.FILENAME_FULL),

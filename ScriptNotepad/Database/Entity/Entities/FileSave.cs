@@ -1,92 +1,97 @@
-﻿#region License
-/*
-MIT License
-
-Copyright(c) 2019 Petteri Kautonen
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-#endregion
-
-using System;
-using System.IO;
-using System.Text;
-using VPKSoft.ScintillaTabbedTextControl;
-using ScriptNotepad.UtilityClasses.StreamHelpers;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
+using System.Text;
+using ScriptNotepad.UtilityClasses.Encodings;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.LinesAndBinary;
-using static VPKSoft.ScintillaLexers.LexerEnumerations;
+using ScriptNotepad.UtilityClasses.StreamHelpers;
+using SQLite.CodeFirst;
 using VPKSoft.LangLib;
+using VPKSoft.ScintillaLexers;
+using VPKSoft.ScintillaTabbedTextControl;
 using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
 
-namespace ScriptNotepad.Database.Tables
+
+namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
-    /// Represents a file saved to the database.
+    /// A class representing a single file save entry in the database.
+    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase"/>
-    public class DBFILE_SAVE: ErrorHandlingBase
+    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+    public class FileSave: ErrorHandlingBase, IEntity
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DBFILE_SAVE"/> class.
-        /// </summary>
-        public DBFILE_SAVE()
-        {
-            ENCODING = Encoding.UTF8;                
-        }
-
         /// <summary>
         /// Gets or sets the ID number (database).
         /// </summary>
-        public long ID { get; set; } = -1;
+        public int Id { get; set; } = -1;
+
+        /// <summary>
+        /// Gets or sets a string representing the encoding of the file save.
+        /// </summary>
+        [SqlDefaultValue(DefaultValue = "'utf-8;65001;True;False;False'")]
+        public string EncodingAsString { get; set; } = "utf-8;65001;True;False;False";
+
+        /// <summary>
+        /// Gets or sets the encoding of the file save.
+        /// </summary>
+        [NotMapped]
+        public Encoding Encoding
+        {
+            get => EncodingAsString == null ? Encoding.UTF8 : EncodingData.EncodingFromString(EncodingAsString);
+            set => EncodingAsString = EncodingData.EncodingToString(value);
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the file exists in the file system.
         /// </summary>
-        public bool EXISTS_INFILESYS { get; set; } = false;
+        public bool ExistsInFileSystem { get; set; }
 
         /// <summary>
         /// Gets or sets the full file name with path.
         /// </summary>
-        public string FILENAME_FULL { get; set; }
+        [Required]
+        public string FileNameFull { get; set; }
 
         /// <summary>
         /// Gets or sets the file name without path.
         /// </summary>
-        public string FILENAME { get; set; }
+        [Required]
+        public string FileName { get; set; }
 
         /// <summary>
         /// Gets or sets the full path for the file.
         /// </summary>
-        public string FILEPATH { get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the file system.
         /// </summary>
-        public DateTime FILESYS_MODIFIED { get; set; } = DateTime.MinValue;
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
+        public DateTime FileSystemModified { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating when the file was saved to the file system by the software.
         /// </summary>
-        public DateTime FILESYS_SAVED { get; set; } = DateTime.MinValue;
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
+        public DateTime FileSystemSaved { get; set; }
+
+        /// <summary>
+        /// Resets the previous database modified property, so it can be set again.
+        /// </summary>
+        public void ResetPreviousDbModified()
+        {
+            previousDbModifiedIsSet = false;
+            previousDbModified = DateTime.MinValue;
+        }
 
         /// <summary>
         /// The field to hold a value if the <see cref="PreviousDbModified"/> property has been set once.
@@ -101,6 +106,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the value indicating when the file was previously modified in the database.
         /// </summary>
+        [NotMapped]
         public DateTime PreviousDbModified
         {
             get => previousDbModified;
@@ -116,14 +122,14 @@ namespace ScriptNotepad.Database.Tables
         }
 
         /// <summary>
-        /// A field to hold the <see cref="DB_MODIFIED"/> property value.
+        /// A field to hold the <see cref="DatabaseModified"/> property value.
         /// </summary>
         private DateTime dbModified = DateTime.MinValue;
 
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the database.
         /// </summary>
-        public DateTime DB_MODIFIED
+        public DateTime DatabaseModified
         {
             get => dbModified;
 
@@ -135,81 +141,74 @@ namespace ScriptNotepad.Database.Tables
         }
 
         /// <summary>
+        /// Restores the previous time stamp for the <see cref="DatabaseModified"/> property value.
+        /// </summary>
+        public void PopPreviousDbModified()
+        {
+            DatabaseModified = PreviousDbModified;
+        }
+
+        /// <summary>
         /// Gets or sets the lexer number with the ScintillaNET.
         /// </summary>
-        public LexerType LEXER_CODE { get; set; }
+        public LexerEnumerations.LexerType LexerType { get; set; }
 
         /// <summary>
         /// Gets or sets the file contents.
         /// </summary>
-        public string FILE_CONTENTS { get; set; }
+        //[NotMapped]
+        public byte [] FileContents { get; set; }
 
         /// <summary>
         /// Gets or sets the visibility order (in a tabbed control).
         /// </summary>
-        public int VISIBILITY_ORDER { get; set; } = -1;
+        [SqlDefaultValue(DefaultValue = "-1")] 
+        public int VisibilityOrder { get; set; } = -1;
 
         /// <summary>
         /// Gets or sets the session ID.
         /// </summary>
-        public long SESSIONID { get; set; } = 1;
+        [SqlDefaultValue(DefaultValue = "1")] 
+        public int SessionId { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the name of the session.
         /// </summary>
-        public string SESSIONNAME { get; set; } = "Default";
+        [SqlDefaultValue(DefaultValue = "'Default'")] 
+        public string SessionName { get; set; } = "Default";
 
         /// <summary>
-        /// Gets or sets a value indicating whether if the file is activated in the tab control.
+        /// Gets or sets a value indicating whether the file is activated in the tab control.
         /// </summary>
-        public bool ISACTIVE { get; set; }
+        public bool IsActive { get; set; } 
 
         /// <summary>
         /// Gets or sets a value indicating whether this entry is a history entry.
         /// </summary>
-        public bool ISHISTORY { get; set; }
-
-        // a field for the ENCODING property..
-        private Encoding encoding = Encoding.UTF8;
-
-        /// <summary>
-        /// Gets or sets the encoding of the file save.
-        /// </summary>
-        public Encoding ENCODING
-        {
-            get => encoding;
-
-            set => encoding = value;
-        }
+        public bool IsHistory { get; set; }
 
         /// <summary>
         /// Gets or sets the current position (cursor / caret) of the file.
         /// </summary>
-        public int CURRENT_POSITION { get; set; }
+        public int CurrentCaretPosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use spell check with this document.
         /// </summary>
-        public bool USESPELL_CHECK { get; set; }
+        public bool UseSpellChecking { get; set; }
 
         /// <summary>
         /// Gets or sets the editor zoom value in percentage.
         /// </summary>
-        public int EDITOR_ZOOM { get; set; } = 100;
+        [SqlDefaultValue(DefaultValue = "100")] 
+        public int EditorZoomPercentage { get; set; } = 100;
 
         /// <summary>
         /// Gets or sets the previous encodings of the file save for undo possibility.
         /// <note type="note">Redo possibility does not exist.</note>
         /// </summary>
+        [NotMapped]
         public List<Encoding> PreviousEncodings { get; set; } = new List<Encoding>();
-
-        /// <summary>
-        /// Restores the previous time stamp for the <see cref="DB_MODIFIED"/> field.
-        /// </summary>
-        public void PopPreviousDbModified()
-        {
-            DB_MODIFIED = PreviousDbModified;
-        }
 
         /// <summary>
         /// Undoes the encoding change.
@@ -223,7 +222,7 @@ namespace ScriptNotepad.Database.Tables
                 int idx = PreviousEncodings.Count - 1;
 
                 // set the previous encoding value..
-                ENCODING = PreviousEncodings[idx];
+                Encoding = PreviousEncodings[idx];
 
                 // remove the last encoding from the list..
                 PreviousEncodings.RemoveAt(idx);
@@ -240,10 +239,10 @@ namespace ScriptNotepad.Database.Tables
             try
             {
                 // can't reload what doesn't exist..
-                if (File.Exists(FILENAME_FULL))
+                if (File.Exists(FileNameFull))
                 {
                     // read the file contents from the file..
-                    using (FileStream fileStream = new FileStream(FILENAME_FULL, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (FileStream fileStream = new FileStream(FileNameFull, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
                         // create a byte buffer the contain all the bytes if the file with an assumption
                         // no one wishes to open massive binary files..
@@ -253,26 +252,26 @@ namespace ScriptNotepad.Database.Tables
                         fileStream.Read(fileContents, 0, (int)fileStream.Length);
 
                         // set the file system's modified flag..
-                        FILESYS_MODIFIED = new FileInfo(FILENAME_FULL).LastWriteTime;
-                        DB_MODIFIED = FILESYS_MODIFIED; // set the other DateTime flags to indicate the same..
-                        FILESYS_SAVED = FILESYS_MODIFIED; // set the other DateTime flags to indicate the same..
+                        FileSystemModified = new FileInfo(FileNameFull).LastWriteTime;
+                        DatabaseModified = FileSystemModified; // set the other DateTime flags to indicate the same..
+                        FileSystemSaved = FileSystemModified; // set the other DateTime flags to indicate the same..
 
                         // create a new memory stream to hold the file contents..
                         MemoryStream memoryStream = new MemoryStream(fileContents); 
 
-                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, ENCODING);
+                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, Encoding);
 
                         // a reload doesn't need to be undone..
-                        document.Scintilla.EmptyUndoBuffer(); 
+                        document.Scintilla.EmptyUndoBuffer();
 
-                        FILE_CONTENTS = document.Scintilla.Text;
+                        FileContents = memoryStream.ToArray();
 
                         // set the saved position of the document's caret..
-                        if (CURRENT_POSITION > 0 && CURRENT_POSITION < document.Scintilla.TextLength)
+                        if (CurrentCaretPosition > 0 && CurrentCaretPosition < document.Scintilla.TextLength)
                         {
-                            document.Scintilla.CurrentPosition = CURRENT_POSITION;
-                            document.Scintilla.SelectionStart = CURRENT_POSITION;
-                            document.Scintilla.SelectionEnd = CURRENT_POSITION;
+                            document.Scintilla.CurrentPosition = CurrentCaretPosition;
+                            document.Scintilla.SelectionStart = CurrentCaretPosition;
+                            document.Scintilla.SelectionEnd = CurrentCaretPosition;
                             document.Scintilla.ScrollCaret();
                         }
 
@@ -309,23 +308,20 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets a value indicating whether a software should query the user if the deleted file should be kept in the editor.
         /// </summary>
-        public bool ShouldQueryKeepFile
-        {
-            get => EXISTS_INFILESYS && !File.Exists(FILENAME_FULL);
-        }
+        [NotMapped]
+        public bool ShouldQueryKeepFile => ExistsInFileSystem && !File.Exists(FileNameFull);
 
         /// <summary>
         /// Gets a value indicating whether a software should query the user if a file reappeared in the file system should be reloaded.
         /// </summary>
-        public bool ShouldQueryFileReappeared
-        {
-            get => !EXISTS_INFILESYS && File.Exists(FILENAME_FULL);
-        }
+        [NotMapped]
+        public bool ShouldQueryFileReappeared => !ExistsInFileSystem && File.Exists(FileNameFull);
 
         /// <summary>
         /// Gets a value indicating whether the document is changed in the editor versus the file system.
         /// </summary>
-        public bool IsChangedInEditor => EXISTS_INFILESYS && DB_MODIFIED > FILESYS_MODIFIED;
+        [NotMapped]
+        public bool IsChangedInEditor => ExistsInFileSystem && DatabaseModified > FileSystemModified;
 
         // a value indicating if the user wants to reload the changes from the file system if the file has been changed..
         private bool shouldQueryDiskReload = true;
@@ -333,6 +329,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets a value indicating whether the user should be queried of to reload the changed document from the file system.
         /// </summary>
+        [NotMapped]
         public bool ShouldQueryDiskReload
         {
             get
@@ -340,10 +337,10 @@ namespace ScriptNotepad.Database.Tables
                 // note to self: "I do hate this logic with date and time!"..
 
                 // get the last time the file was written into..
-                DateTime dtUpdated = new FileInfo(FILENAME_FULL).LastWriteTime;
+                DateTime dtUpdated = new FileInfo(FileNameFull).LastWriteTime;
 
                 // get the result to be returned..
-                bool result = shouldQueryDiskReload && DateTimeLarger(dtUpdated, FILESYS_MODIFIED);// dtUpdated > FILESYS_MODIFIED;
+                bool result = shouldQueryDiskReload && DateTimeLarger(dtUpdated, FileSystemModified);// dtUpdated > FileSystemModified;
 
                 // reset this flag so the user can be annoyed again with a stupid question of reloading the file..
                 // .. after rethinking, don't do this:  _ShouldQueryDiskReload = true;
@@ -352,7 +349,7 @@ namespace ScriptNotepad.Database.Tables
                 return result;
             }
 
-            // set the flag whether the user want's to hear the
+            // set the flag whether the user wants to hear the
             // stupid question of reloading the file on the next time..
             set => shouldQueryDiskReload = value;
         }
@@ -368,6 +365,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets the file line types and their descriptions.
         /// </summary>
+        [NotMapped]
         public IEnumerable<KeyValuePair<FileLineTypes, string>> FileLineTypes
         {
             get
@@ -375,8 +373,7 @@ namespace ScriptNotepad.Database.Tables
                 if (fileLineTypesInternal == null)
                 {
                     var fileLineTypes = ScriptNotepad.UtilityClasses.LinesAndBinary.
-                        FileLineType.GetFileLineTypes(FILE_CONTENTS,
-                            ENCODING);
+                        FileLineType.GetFileLineTypes(FileContents);
 
                     var lineTypesInternal = fileLineTypes as KeyValuePair<FileLineTypes, string>[] ??
                                             fileLineTypes.ToArray();
@@ -393,6 +390,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets the type of the file line ending.
         /// </summary>
+        [NotMapped]
         public FileLineTypes FileLineType
         {
             get
@@ -418,6 +416,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets the text describing the file line ending type(s) of the document.
         /// </summary>
+        [NotMapped]
         public string FileLineEndingText
         {
             get

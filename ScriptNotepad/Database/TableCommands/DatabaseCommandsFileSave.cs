@@ -144,6 +144,21 @@ namespace ScriptNotepad.Database.TableCommands
             return sql;
         }
 
+        public static string GenDocumentSelect()
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                    $"SELECT ID, EXISTS_INFILESYS, FILENAME_FULL, FILENAME, FILEPATH,",
+                    $"FILESYS_MODIFIED, DB_MODIFIED, LEXER_CODE, FILE_CONTENTS,",
+                    $"VISIBILITY_ORDER, SESSIONID, ISACTIVE, ISHISTORY,",
+                    $"(SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = DBFILE_SAVE.SESSIONID) AS SESSIONNAME,",
+                    $"FILESYS_SAVED, ENCODING, CURRENT_POSITION, ",
+                    $"USESPELL_CHECK, EDITOR_ZOOM",
+                    $"FROM DBFILE_SAVE;");
+
+            return sql;
+        }
+
         /// <summary>
         /// Generates a SQL sentence to detect whether a document exists in the DBFILE_SAVE table in the database.
         /// </summary>

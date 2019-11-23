@@ -40,6 +40,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScriptNotepad.Localization.Hunspell;
 using ScriptNotepad.Settings;
+using ScriptNotepad.UtilityClasses.Encodings;
 
 namespace ScriptNotepad.Test
 {
@@ -96,6 +97,7 @@ namespace ScriptNotepad.Test
 
         private void Button6_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(DateTime.MinValue.ToLongDateString());
             /*
             MessageBox.Show(
                 FormSettings.Settings.FromDataGrid(((FormSettings) Application.OpenForms[1]).dgvEncodings).ToString());

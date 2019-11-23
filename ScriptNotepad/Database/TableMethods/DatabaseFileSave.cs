@@ -31,9 +31,14 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.Encodings;
+using VPKSoft.LangLib;
 using VPKSoft.ScintillaTabbedTextControl;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
@@ -323,6 +328,64 @@ namespace ScriptNotepad.Database.TableMethods
         public static bool UpdateMiscFlags(DBFILE_SAVE fileSave)
         {
             return ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenUpdateFileMiscFlags(fileSave));
+        }
+
+        /// <summary>
+        /// Converts the legacy database table <see cref="DBFILE_SAVE"/> to Entity Framework format.
+        /// </summary>
+        public static void ToEntity()
+        {
+            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+            var context = new ScriptNotepadDbContext(sqLiteConnection, false);
+
+            List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
+
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(), Connection))
+            {
+                // can't get the BLOB without this (?!)..
+                using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
+                {
+                    while (reader.Read())
+                    {
+                        var legacy = FromDataReader(reader, true);
+                        var fileSave = new FileSave
+                        {
+                            Id = (int)legacy.ID,
+                            CurrentCaretPosition = legacy.CURRENT_POSITION,
+                            DatabaseModified = legacy.DB_MODIFIED,
+                            EditorZoomPercentage = legacy.EDITOR_ZOOM,
+                            Encoding = legacy.ENCODING,
+                            FileContents =  legacy.ENCODING.GetBytes(legacy.FILE_CONTENTS),
+                            FileName = legacy.FILENAME,
+                            FileNameFull = legacy.FILENAME_FULL,
+                            FilePath = legacy.FILEPATH,
+                            SessionId = (int)legacy.SESSIONID,
+                            SessionName = legacy.SESSIONNAME,
+                            FileSystemModified = legacy.FILESYS_MODIFIED,
+                            UseSpellChecking = legacy.USESPELL_CHECK,
+                            IsActive = legacy.ISACTIVE,
+                            IsHistory = legacy.ISHISTORY,
+                            VisibilityOrder = legacy.VISIBILITY_ORDER,
+                            LexerType = legacy.LEXER_CODE,
+                            ExistsInFileSystem = legacy.EXISTS_INFILESYS,
+                        };
+                        try
+                        {
+                            context.Set<FileSave>().Add(fileSave);
+                            context.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            Debug.WriteLine(ex.Message);
+                        }
+                    }
+                }
+            }
+
         }
 
         /// <summary>
