@@ -25,17 +25,17 @@ SOFTWARE.
 #endregion
 
 using System;
-using SQLite.CodeFirst;
+using System.ComponentModel.DataAnnotations;
+using ScriptNotepad.Database.Entity.Enumerations;
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
-    /// A history class which was used in a sample from the SQLite CodeFirst sample (https://github.com/msallin/SQLiteCodeFirst/tree/master/SQLite.CodeFirst.Console).
-    /// The use of this class is unknown to me an I'll let it be that way.
-    /// Implements the <see cref="SQLite.CodeFirst.IHistory" />
+    /// A class for storing code snippets into the database.
+    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
-    /// <seealso cref="SQLite.CodeFirst.IHistory" />
-    public class CustomHistory: IHistory
+    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+    public class CodeSnippet: IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
@@ -43,18 +43,32 @@ namespace ScriptNotepad.Database.Entity.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the change (?) hash algorithm value as string.
+        /// Gets or sets the script's contents.
         /// </summary>
-        public string Hash { get; set; }
+        public string ScriptContents { get; set; }
 
         /// <summary>
-        /// Gets or sets the database context type name (SQLiteEntityFramework.SQLiteDbContext).
+        /// Gets or sets the name of the script.
         /// </summary>
-        public string Context { get; set; }
+        [Required]
+        public string ScriptName { get; set; }
 
         /// <summary>
-        /// Gets or sets the create date.
+        /// Gets or sets the date and time when the script was previously modified.
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        [Required]
+        public DateTime Modified { get; set; }
+
+        /// <summary>
+        /// Gets or sets the language type of the script snippet.
+        /// </summary>
+        [Required]
+        public CodeSnippetLanguage ScriptLanguage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the script text manipulation.
+        /// </summary>
+        [Required]
+        public ScriptSnippetType ScriptTextManipulationType  { get; set; }
     }
 }

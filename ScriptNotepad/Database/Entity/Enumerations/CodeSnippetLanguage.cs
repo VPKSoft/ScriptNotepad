@@ -24,16 +24,16 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.Database.Entity
+namespace ScriptNotepad.Database.Entity.Enumerations
 {
     /// <summary>
-    /// An interface for an entity.
+    /// An enumeration for a code snippet language.
     /// </summary>
-    interface IEntity
+    public enum CodeSnippetLanguage
     {
         /// <summary>
-        /// Gets or sets the identifier for the entity.
+        /// The C# programming language.
         /// </summary>
-        int Id { get; set; }
+        Cs,
     }
 }

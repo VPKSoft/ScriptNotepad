@@ -867,4 +867,10 @@
   <data name="msgUrlDetectToolTipOpenMailToLink" xml:space="preserve">
     <value>Use CTRL + Click to sent email to: {0}|A message for the URL detect library tool tip to open a email program for a mailto link.</value>
   </data>
+  <data name="msgEntityFrameworkError1" xml:space="preserve">
+    <value>Error converting the database to the Entity Framework Code-First at method '{0}'.|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database.</value>
+  </data>
+  <data name="msgDatabaseMigration1" xml:space="preserve">
+    <value>The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process.</value>
+  </data>
 </root>

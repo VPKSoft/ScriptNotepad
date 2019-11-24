@@ -1,4 +1,30 @@
-﻿using System;
+﻿#region License
+/*
+MIT License
+
+Copyright(c) 2019 Petteri Kautonen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,7 +54,7 @@ namespace ScriptNotepad.Database.Entity.Entities
     public class FileSave: ErrorHandlingBase, IEntity
     {
         /// <summary>
-        /// Gets or sets the ID number (database).
+        /// Gets or sets the identifier for the entity.
         /// </summary>
         public int Id { get; set; } = -1;
 
@@ -166,18 +192,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         public int VisibilityOrder { get; set; } = -1;
 
         /// <summary>
-        /// Gets or sets the session ID.
-        /// </summary>
-        [SqlDefaultValue(DefaultValue = "1")] 
-        public int SessionId { get; set; } = 1;
-
-        /// <summary>
-        /// Gets or sets the name of the session.
-        /// </summary>
-        [SqlDefaultValue(DefaultValue = "'Default'")] 
-        public string SessionName { get; set; } = "Default";
-
-        /// <summary>
         /// Gets or sets a value indicating whether the file is activated in the tab control.
         /// </summary>
         public bool IsActive { get; set; } 
@@ -230,82 +244,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         }
 
         /// <summary>
-        /// Reloads the contents of the document from the disk.
-        /// </summary>
-        /// <param name="document">A ScintillaTabbedDocument to which contents should also be updated.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public bool ReloadFromDisk(ScintillaTabbedDocument document)
-        {
-            try
-            {
-                // can't reload what doesn't exist..
-                if (File.Exists(FileNameFull))
-                {
-                    // read the file contents from the file..
-                    using (FileStream fileStream = new FileStream(FileNameFull, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        // create a byte buffer the contain all the bytes if the file with an assumption
-                        // no one wishes to open massive binary files..
-                        byte[] fileContents = new byte[fileStream.Length];
-
-                        // read the file contents to the buffer..
-                        fileStream.Read(fileContents, 0, (int)fileStream.Length);
-
-                        // set the file system's modified flag..
-                        FileSystemModified = new FileInfo(FileNameFull).LastWriteTime;
-                        DatabaseModified = FileSystemModified; // set the other DateTime flags to indicate the same..
-                        FileSystemSaved = FileSystemModified; // set the other DateTime flags to indicate the same..
-
-                        // create a new memory stream to hold the file contents..
-                        MemoryStream memoryStream = new MemoryStream(fileContents); 
-
-                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, Encoding);
-
-                        // a reload doesn't need to be undone..
-                        document.Scintilla.EmptyUndoBuffer();
-
-                        FileContents = memoryStream.ToArray();
-
-                        // set the saved position of the document's caret..
-                        if (CurrentCaretPosition > 0 && CurrentCaretPosition < document.Scintilla.TextLength)
-                        {
-                            document.Scintilla.CurrentPosition = CurrentCaretPosition;
-                            document.Scintilla.SelectionStart = CurrentCaretPosition;
-                            document.Scintilla.SelectionEnd = CurrentCaretPosition;
-                            document.Scintilla.ScrollCaret();
-                        }
-
-                    }
-                    return true; // success..
-                }
-                else
-                {
-                    return false; // the file didn't exists, so fail..
-                }
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-
-                return false; // an exception occurred, so fail..
-            }
-        }
-
-        /// <summary>
-        /// Compares two DateTime values <paramref name="dt1"/> > <paramref name="dt2"/>.
-        /// </summary>
-        /// <param name="dt1">The first DateTime to compare.</param>
-        /// <param name="dt2">The second DateTime to compare.</param>
-        /// <returns>True if the <paramref name="dt1"/> is larger than <paramref name="dt2"/> value; otherwise false.</returns>
-        public static bool DateTimeLarger(DateTime dt1, DateTime dt2)
-        {
-            string s1 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt1);
-            string s2 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt2);
-            return String.Compare(s1, s2, StringComparison.Ordinal) > 0;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether a software should query the user if the deleted file should be kept in the editor.
         /// </summary>
         [NotMapped]
@@ -334,13 +272,11 @@ namespace ScriptNotepad.Database.Entity.Entities
         {
             get
             {
-                // note to self: "I do hate this logic with date and time!"..
-
                 // get the last time the file was written into..
                 DateTime dtUpdated = new FileInfo(FileNameFull).LastWriteTime;
 
                 // get the result to be returned..
-                bool result = shouldQueryDiskReload && DateTimeLarger(dtUpdated, FileSystemModified);// dtUpdated > FileSystemModified;
+                bool result = shouldQueryDiskReload && dtUpdated > FileSystemModified;
 
                 // reset this flag so the user can be annoyed again with a stupid question of reloading the file..
                 // .. after rethinking, don't do this:  _ShouldQueryDiskReload = true;
@@ -449,5 +385,11 @@ namespace ScriptNotepad.Database.Entity.Entities
                 return fileEndingText;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the session the <see cref="FileSave"/> belongs to.
+        /// </summary>
+        [Required]
+        public Session Session { get; set; }
     }
 }

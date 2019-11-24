@@ -27,8 +27,15 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.TableCommands;
 using ScriptNotepad.Database.Tables;
+using VPKSoft.LangLib;
 
 namespace ScriptNotepad.Database.TableMethods
 {
@@ -139,6 +146,66 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
+        /// Converts the legacy database table <see cref="SEARCH_AND_REPLACE_HISTORY"/> to Entity Framework format.
+        /// </summary>
+        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
+        public static bool ToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                var searchAndReplaces = GetSearchesAndReplaces();
+                foreach (var entry in searchAndReplaces)
+                {
+
+                    var legacy = entry;
+
+                    var session = context.Sessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
+                    if (session == null && legacy.SESSIONNAME == "Default")
+                    {
+                        session = context.Sessions?.FirstOrDefault(f => f.Id == 1);
+                    }
+
+                    if (session == null)
+                    {
+                        session = new Session {SessionName = legacy.SESSIONNAME};
+                        session = context.Sessions?.Add(session);
+                        context.SaveChanges();
+                    }
+
+                    var searchAndReplaceHistoryNew = new SearchAndReplaceHistory
+                    {
+                        Id = (int) legacy.ID, Session = session, 
+                        SearchAndReplaceType = (SearchAndReplaceType)(legacy.ISREPLACE ? 1: 0), 
+                        Added = legacy.ADDED, 
+                        CaseSensitive = legacy.CASE_SENSITIVE, 
+                        SearchAndReplaceSearchType = (SearchAndReplaceSearchType)legacy.TYPE, 
+                        SearchOrReplaceText = legacy.SEARCH_OR_REPLACE_TEXT,
+                    };
+                    try
+                    {
+                        context.SearchAndReplaceHistories.Add(searchAndReplaceHistoryNew);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets the recent file list saved to the database.
         /// </summary>
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
@@ -168,6 +235,45 @@ namespace ScriptNotepad.Database.TableMethods
                                 TYPE = reader.GetInt32(3),
                                 ADDED = DateFromDBString(reader.GetString(4)),
                                 SESSIONID = reader.GetInt32(5),
+                            };
+
+                            result.Add(searchAndReplace);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all the search and replace history entries from the database.
+        /// </summary>
+        /// <returns>A collection SEARCH_AND_REPLACE_HISTORY classes.</returns>
+        public static List<SEARCH_AND_REPLACE_HISTORY> GetSearchesAndReplaces()
+        {
+            List<SEARCH_AND_REPLACE_HISTORY> result = new List<SEARCH_AND_REPLACE_HISTORY>();
+
+            string sql = DatabaseCommandsSearchAndReplace.GenSearchAndReplaceSelect();
+
+            using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
+            {
+                // loop through the result set..
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    // ID: 0, TEXTFIELD: 1, CASE_SENSITIVE: 2, TYPE: 3, ADDED: 4, SESSIONID: 5, SESSIONNAME: 6, ISREPLACE: 7
+                    while (reader.Read())
+                    {
+                        SEARCH_AND_REPLACE_HISTORY searchAndReplace =
+                            new SEARCH_AND_REPLACE_HISTORY()
+                            {
+                                ID = reader.GetInt64(0),
+                                SEARCH_OR_REPLACE_TEXT = reader.GetString(1),
+                                CASE_SENSITIVE = reader.GetInt32(2) == 1,
+                                TYPE = reader.GetInt32(3),
+                                ADDED = DateFromDBString(reader.GetString(4)),
+                                SESSIONNAME = reader.GetString(6),
+                                SESSIONID = reader.GetInt32(5),
+                                ISREPLACE = reader.GetInt32(7) == 1,
                             };
 
                             result.Add(searchAndReplace);

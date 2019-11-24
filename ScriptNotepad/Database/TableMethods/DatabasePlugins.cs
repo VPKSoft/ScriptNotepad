@@ -30,6 +30,13 @@ using ScriptNotepad.TableCommands;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
+using VPKSoft.LangLib;
 
 namespace ScriptNotepad.Database.TableMethods
 {
@@ -138,6 +145,63 @@ namespace ScriptNotepad.Database.TableMethods
                 ExceptionLogAction?.Invoke(ex);
                 return plugin;
             }
+        }
+
+        /// <summary>
+        /// Converts the legacy database table <see cref="PLUGINS"/> to Entity Framework format.
+        /// </summary>
+        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
+        public static bool ToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                   "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            var plugins = GetPlugins();
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                foreach (var plugin in plugins)
+                {
+                    var legacy = plugin;
+
+                    var pluginNew = new Plugin
+                    {
+                        Id = (int) legacy.ID, 
+                        FileName = legacy.FILENAME, 
+                        FileNameFull = legacy.FILENAME_FULL, 
+                        PluginVersion = legacy.PLUGIN_VERSION, 
+                        PluginDescription = legacy.PLUGIN_DESCTIPTION, 
+                        PluginName = legacy.PLUGIN_NAME, 
+                        FilePath = legacy.FILEPATH, 
+                        PluginUpdated = legacy.PLUGIN_UPDATED, 
+                        ApplicationCrashes = legacy.APPLICATION_CRASHES, 
+                        ExceptionCount = legacy.EXCEPTION_COUNT, 
+                        IsActive = legacy.ISACTIVE, 
+                        PendingDeletion = legacy.PENDING_DELETION, 
+                        LoadFailures = legacy.LOAD_FAILURES, 
+                        PluginInstalled = legacy.PLUGIN_INSTALLED, 
+                        Rating = legacy.RATING, 
+                        SortOrder = legacy.SORTORDER
+                    };
+                    try
+                    {
+                        context.Plugins.Add(pluginNew);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

@@ -165,10 +165,24 @@
   <ItemGroup>
     <Compile Include="Database\Entity\Context\ScriptNotepadDbContext.cs" />
     <Compile Include="Database\Entity\Context\ScriptNotepadDbInitializer.cs" />
+    <Compile Include="Database\Entity\Entities\CodeSnippet.cs" />
     <Compile Include="Database\Entity\Entities\CustomHistory.cs" />
     <Compile Include="Database\Entity\Entities\FileSave.cs" />
+    <Compile Include="Database\Entity\Entities\MiscellaneousTextData.cs" />
+    <Compile Include="Database\Entity\Entities\Plugin.cs" />
+    <Compile Include="Database\Entity\Entities\RecentFile.cs" />
+    <Compile Include="Database\Entity\Entities\SearchAndReplaceHistory.cs" />
+    <Compile Include="Database\Entity\Entities\Session.cs" />
+    <Compile Include="Database\Entity\Entities\SoftwareLicense.cs" />
+    <Compile Include="Database\Entity\Enumerations\CodeSnippetLanguage.cs" />
+    <Compile Include="Database\Entity\Enumerations\MiscellaneousTextType.cs" />
+    <Compile Include="Database\Entity\Enumerations\ScriptSnippetType.cs" />
+    <Compile Include="Database\Entity\Enumerations\SearchAndReplaceType.cs" />
+    <Compile Include="Database\Entity\Enumerations\SearchAndReplaceSearchType.cs" />
     <Compile Include="Database\Entity\IEntity.cs" />
     <Compile Include="Database\Entity\Model\ModelConfiguration.cs" />
+    <Compile Include="Database\Entity\Utility\AssemblyVersion.cs" />
+    <Compile Include="Database\Entity\Utility\DocumentReload.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsCodeSnippets.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsFileSave.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsGeneral.cs" />

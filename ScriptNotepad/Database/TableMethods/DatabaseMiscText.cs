@@ -26,12 +26,19 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.TableCommands;
 using ScriptNotepad.Database.Tables;
+using VPKSoft.LangLib;
 
 namespace ScriptNotepad.Database.TableMethods
 {
@@ -126,6 +133,79 @@ namespace ScriptNotepad.Database.TableMethods
         public static MISCTEXT_LIST AddOrUpdateMiscText(MISCTEXT_LIST miscText, string sessionName = null)
         {
             return UpdateMiscText(AddMiscText(miscText, sessionName), sessionName);
+        }
+
+        /// <summary>
+        /// Converts the legacy database table <see cref="MISCTEXT_LIST"/> to Entity Framework format.
+        /// </summary>
+        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
+        public static bool ToEntity()
+        {
+            var result = true;
+
+            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                using (SQLiteCommand command =
+                    new SQLiteCommand(DatabaseCommandsMiscText.GenSelectMiscText(), Connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var legacy = 
+                                new MISCTEXT_LIST()
+                                {
+                                    ID = reader.GetInt64(0),
+                                    TEXTVALUE = reader.GetString(1),
+                                    TYPE = (MiscTextType) reader.GetInt32(2),
+                                    ADDED = DateFromDBString(reader.GetString(3)),
+                                    SESSIONID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4), 
+                                    SESSIONNAME = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                };
+
+                            var session = context.Sessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
+                            if (session == null && legacy.SESSIONNAME == "Default")
+                            {
+                                session = context.Sessions?.FirstOrDefault(f => f.Id == 1);
+                            }
+
+                            if (session == null)
+                            {
+                                session = new Session {SessionName = legacy.SESSIONNAME};
+                                session = context.Sessions?.Add(session);
+                                context.SaveChanges();
+                            }
+
+                            var miscellaneousTextData = new MiscellaneousTextData
+                            {
+                                Id = (int) legacy.ID,
+                                TextValue = legacy.TEXTVALUE,
+                                TextType = (MiscellaneousTextType)legacy.TYPE,
+                                Session = session,
+                            };
+                            try
+                            {
+                                context.MiscellaneousTextDatas.Add(miscellaneousTextData);
+                                context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                result = false;
+                                ExceptionLogAction?.Invoke(ex);
+                                Debug.WriteLine(ex.Message);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

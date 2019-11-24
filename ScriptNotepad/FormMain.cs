@@ -68,7 +68,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using ScriptNotepad.Database.TableCommands;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
@@ -349,7 +348,18 @@ namespace ScriptNotepad
             // get the case-sensitivity value from the settings..
             mnuCaseSensitive.Checked = FormSettings.Settings.TextUpperCaseComparison;
 
-            // TODO::Entity Framework; code first: DatabaseFileSave.ToEntity();
+            // this might be a lengthy process, perhaps a some king of message should indicate that..
+            if (FormSettings.Settings.DatabaseMigrationLevel == 0)
+            {
+                MessageBox.Show(
+                    DBLangEngine.GetMessage("msgDatabaseMigration1",
+                        "The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process."),
+                    DBLangEngine.GetMessage("msgInformation", "Information|A message title describing of some kind information."),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                MigrateToEntityFramework();
+                FormSettings.Settings.DatabaseMigrationLevel = 1;
+            }
 
             // the constructor code finalized executing..
             runningConstructor = false;
@@ -357,6 +367,78 @@ namespace ScriptNotepad
         #endregion
 
         #region HelperMethods                
+
+        private void MigrateToEntityFramework()
+        {
+            string MigrateErrorMessage(string phase)
+            {
+                return DBLangEngine.GetMessage("msgEntityFrameworkError1",
+                    "Error converting the database to the Entity Framework Code-First at method '{0}'.|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database.",
+                    phase);
+            }
+
+            void DisplayError(string phase)
+            {
+                MessageBox.Show(
+                    MigrateErrorMessage(phase),
+                    DBLangEngine.GetMessage("msgError",
+                        "Error|A message describing that some kind of error occurred.", phase), MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+
+            if (FormSettings.Settings.DatabaseMigrationLevel == 0)
+            {
+                if (!DatabaseFileSave.ToEntity())
+                {
+                    DisplayError("DatabaseFileSave");
+                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                    throw new Exception(MigrateErrorMessage("DatabaseFileSave"));
+                }
+
+                if (!DatabaseMiscText.ToEntity())
+                {
+                    DisplayError("DatabaseMiscText");
+                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                    throw new Exception(MigrateErrorMessage("DatabaseMiscText"));
+                }
+
+                if (!DatabasePlugins.ToEntity())
+                {
+                    DisplayError("DatabasePlugins");
+                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                    throw new Exception(MigrateErrorMessage("DatabasePlugins"));
+                }
+
+                if (!DatabaseRecentFiles.ToEntity())
+                {
+                    DisplayError("DatabaseRecentFiles");
+                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                    throw new Exception(MigrateErrorMessage("DatabaseRecentFiles"));
+                }
+
+                if (!DatabaseCodeSnippets.ToEntity())
+                {
+                    DisplayError("DatabaseCodeSnippets");
+                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                    throw new Exception(MigrateErrorMessage("DatabaseCodeSnippets"));
+                }
+
+                if (!DatabaseCodeSnippets.ToEntity())
+                {
+                    DisplayError("DatabaseCodeSnippets");
+                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                    throw new Exception(MigrateErrorMessage("DatabaseCodeSnippets"));
+                }
+
+                if (!DatabaseSearchAndReplace.ToEntity())
+                {
+                    DisplayError("DatabaseSearchAndReplace");
+                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                    throw new Exception(MigrateErrorMessage("DatabaseSearchAndReplace"));
+                }
+            }
+        }
+
         /// <summary>
         /// Checks for new version of the application.
         /// </summary>

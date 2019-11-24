@@ -24,40 +24,23 @@ SOFTWARE.
 */
 #endregion
 
-using System.Data.Entity;
 using ScriptNotepad.Database.Entity.Entities;
 
-namespace ScriptNotepad.Database.Entity.Model
+namespace ScriptNotepad.Database.Entity.Enumerations
 {
     /// <summary>
-    /// A class to configure the Code First Entity Framework model.
+    /// An enumeration for the <see cref="MiscellaneousTextData"/> type.
     /// </summary>
-    public class ModelConfiguration
+    public enum MiscellaneousTextType
     {
         /// <summary>
-        /// Configures the specified model builder.
+        /// Indicates a path/directory in the file system.
         /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        public static void Configure(DbModelBuilder modelBuilder)
-        {
-            ConfigureSimpleEntity<FileSave>(modelBuilder);
-            ConfigureSimpleEntity<Session>(modelBuilder);
-            ConfigureSimpleEntity<Plugin>(modelBuilder);
-            ConfigureSimpleEntity<MiscellaneousTextData>(modelBuilder);
-            ConfigureSimpleEntity<RecentFile>(modelBuilder);
-            ConfigureSimpleEntity<CodeSnippet>(modelBuilder);
-            ConfigureSimpleEntity<SearchAndReplaceHistory>(modelBuilder);
-            ConfigureSimpleEntity<SoftwareLicense>(modelBuilder);
-        }
+        Path = 0,
 
         /// <summary>
-        /// Configures a simple entity.
+        /// Indicates a file extension list delimited with semicolon (;); I.e. *.txt;*.cs.
         /// </summary>
-        /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="modelBuilder">The model builder to use for the configuration.</param>
-        private static void ConfigureSimpleEntity<T>(DbModelBuilder modelBuilder) where T : class
-        {
-            modelBuilder.Entity<T>();
-        }
+        FileExtensionList = 1,
     }
 }

@@ -144,6 +144,10 @@ namespace ScriptNotepad.Database.TableCommands
             return sql;
         }
 
+        /// <summary>
+        /// Generates a SQL sentence to select all the document snapshots from the DBFILE_SAVE table in the database.
+        /// </summary>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
         public static string GenDocumentSelect()
         {
             string sql =

@@ -33,8 +33,8 @@ using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.Encodings;
@@ -333,59 +333,79 @@ namespace ScriptNotepad.Database.TableMethods
         /// <summary>
         /// Converts the legacy database table <see cref="DBFILE_SAVE"/> to Entity Framework format.
         /// </summary>
-        public static void ToEntity()
+        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
+        public static bool ToEntity()
         {
-            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;";
+            var result = true;
+            
+            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
 
             var sqLiteConnection = new SQLiteConnection(connectionString);
             sqLiteConnection.Open();
-            var context = new ScriptNotepadDbContext(sqLiteConnection, false);
 
-            List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(), Connection))
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
             {
-                // can't get the BLOB without this (?!)..
-                using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
+                using (SQLiteCommand command =
+                    new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(), Connection))
                 {
-                    while (reader.Read())
+                    // can't get the BLOB without this (?!)..
+                    using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
                     {
-                        var legacy = FromDataReader(reader, true);
-                        var fileSave = new FileSave
+                        while (reader.Read())
                         {
-                            Id = (int)legacy.ID,
-                            CurrentCaretPosition = legacy.CURRENT_POSITION,
-                            DatabaseModified = legacy.DB_MODIFIED,
-                            EditorZoomPercentage = legacy.EDITOR_ZOOM,
-                            Encoding = legacy.ENCODING,
-                            FileContents =  legacy.ENCODING.GetBytes(legacy.FILE_CONTENTS),
-                            FileName = legacy.FILENAME,
-                            FileNameFull = legacy.FILENAME_FULL,
-                            FilePath = legacy.FILEPATH,
-                            SessionId = (int)legacy.SESSIONID,
-                            SessionName = legacy.SESSIONNAME,
-                            FileSystemModified = legacy.FILESYS_MODIFIED,
-                            UseSpellChecking = legacy.USESPELL_CHECK,
-                            IsActive = legacy.ISACTIVE,
-                            IsHistory = legacy.ISHISTORY,
-                            VisibilityOrder = legacy.VISIBILITY_ORDER,
-                            LexerType = legacy.LEXER_CODE,
-                            ExistsInFileSystem = legacy.EXISTS_INFILESYS,
-                        };
-                        try
-                        {
-                            context.Set<FileSave>().Add(fileSave);
-                            context.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                            Debug.WriteLine(ex.Message);
+                            var legacy = FromDataReader(reader, true);
+
+                            var session = context.Sessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
+                            if (session == null && legacy.SESSIONNAME == "Default")
+                            {
+                                session = context.Sessions?.FirstOrDefault(f => f.Id == 1);
+                            }
+
+                            if (session == null)
+                            {
+                                session = new Session {SessionName = legacy.SESSIONNAME};
+                                session = context.Sessions?.Add(session);
+                                context.SaveChanges();
+                            }
+
+                            var fileSave = new FileSave
+                            {
+                                Id = (int) legacy.ID,
+                                CurrentCaretPosition = legacy.CURRENT_POSITION,
+                                DatabaseModified = legacy.DB_MODIFIED,
+                                EditorZoomPercentage = legacy.EDITOR_ZOOM,
+                                Encoding = legacy.ENCODING,
+                                FileContents = legacy.ENCODING.GetBytes(legacy.FILE_CONTENTS),
+                                FileName = legacy.FILENAME,
+                                FileNameFull = legacy.FILENAME_FULL,
+                                FilePath = legacy.FILEPATH,
+                                FileSystemModified = legacy.FILESYS_MODIFIED,
+                                UseSpellChecking = legacy.USESPELL_CHECK,
+                                IsActive = legacy.ISACTIVE,
+                                IsHistory = legacy.ISHISTORY,
+                                VisibilityOrder = legacy.VISIBILITY_ORDER,
+                                LexerType = legacy.LEXER_CODE,
+                                ExistsInFileSystem = legacy.EXISTS_INFILESYS,
+                                Session = session,
+                            };
+                            try
+                            {
+                                context.FileSaves.Add(fileSave);
+                                context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                result = false;
+                                ExceptionLogAction?.Invoke(ex);
+                                Debug.WriteLine(ex.Message);
+                            }
                         }
                     }
                 }
             }
 
+            return result;
         }
 
         /// <summary>

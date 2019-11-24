@@ -29,8 +29,15 @@ using ScriptNotepad.Database.Tables;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.UtilityClasses.Encodings;
+using VPKSoft.LangLib;
 
 namespace ScriptNotepad.Database.TableMethods
 {
@@ -72,6 +79,67 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
+        /// Converts the legacy database table <see cref="RECENT_FILES" /> to Entity Framework format.
+        /// </summary>
+        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
+        public static bool ToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                var recentFiles = GetRecentFiles();
+                foreach (var recentFile in recentFiles)
+                {
+
+                    var legacy = recentFile;
+
+                    var session = context.Sessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
+                    if (session == null && legacy.SESSIONNAME == "Default")
+                    {
+                        session = context.Sessions?.FirstOrDefault(f => f.Id == 1);
+                    }
+
+                    if (session == null)
+                    {
+                        session = new Session {SessionName = legacy.SESSIONNAME};
+                        session = context.Sessions?.Add(session);
+                        context.SaveChanges();
+                    }
+
+                    var recentFileNew = new RecentFile
+                    {
+                        Id = (int) legacy.ID, 
+                        FileNameFull = legacy.FILENAME_FULL, 
+                        Session = session, 
+                        Encoding = legacy.ENCODING, 
+                        FileName = legacy.FILENAME, 
+                        ClosedDateTime = legacy.CLOSED_DATETIME, 
+                        FilePath = legacy.FILEPATH,
+                    };
+                    try
+                    {
+                        context.RecentFiles.Add(recentFileNew);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
+        
+        /// <summary>
         /// Gets the recent file list saved to the database.
         /// </summary>
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
@@ -86,34 +154,58 @@ namespace ScriptNotepad.Database.TableMethods
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, 
-                    // SESSIONID: 5, REFERENCEID: 6, SESSION_NAME: 7, EXISTSINDB: 8, ENCODING = 9
-                    while (reader.Read())
-                    {
-                        RECENT_FILES recentFile =
-                            new RECENT_FILES()
-                            {
-                                ID = reader.GetInt64(0),
-                                FILENAME_FULL = reader.GetString(1),
-                                FILENAME = reader.GetString(2),
-                                FILEPATH = reader.GetString(3),
-                                CLOSED_DATETIME = DateFromDBString(reader.GetString(4)),
-                                SESSIONID = reader.GetInt32(5),
-                                REFERENCEID = reader.IsDBNull(6) ? null : (long?)reader.GetInt64(6),
-                                SESSIONNAME = reader.GetString(7),
-                                EXISTSINDB = reader.GetInt32(8) == 1,
-                                ENCODING = EncodingData.EncodingFromString(reader.GetString(9)),
-                            };
-
-                        // the file must exist somewhere..
-                        if (recentFile.EXISTSINDB || recentFile.EXISTSINFILESYS)
-                        {
-                            result.Add(recentFile);
-                        }
-                    }
+                    return FromDataReader(reader);
                 }
             }
+        }
 
+        /// <summary>
+        /// Gets the recent file list saved to the database.
+        /// </summary>
+        /// <returns>A collection RECENT_FILES classes.</returns>
+        public static IEnumerable<RECENT_FILES> GetRecentFiles()
+        {
+            List<RECENT_FILES> result = new List<RECENT_FILES>();
+
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsRecentFiles.GenHistorySelect(), Connection))
+            {
+                // loop through the result set..
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    return FromDataReader(reader);
+                }
+            }
+        }
+
+
+        private static IEnumerable<RECENT_FILES> FromDataReader(SQLiteDataReader reader)
+        {
+            List<RECENT_FILES> result = new List<RECENT_FILES>();
+            // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, 
+            // SESSIONID: 5, REFERENCEID: 6, SESSION_NAME: 7, EXISTSINDB: 8, ENCODING = 9
+            while (reader.Read())
+            {
+                RECENT_FILES recentFile =
+                    new RECENT_FILES()
+                    {
+                        ID = reader.GetInt64(0),
+                        FILENAME_FULL = reader.GetString(1),
+                        FILENAME = reader.GetString(2),
+                        FILEPATH = reader.GetString(3),
+                        CLOSED_DATETIME = DateFromDBString(reader.GetString(4)),
+                        SESSIONID = reader.GetInt32(5),
+                        REFERENCEID = reader.IsDBNull(6) ? null : (long?)reader.GetInt64(6),
+                        SESSIONNAME = reader.GetString(7),
+                        EXISTSINDB = reader.GetInt32(8) == 1,
+                        ENCODING = EncodingData.EncodingFromString(reader.GetString(9)),
+                    };
+
+                // the file must exist somewhere..
+                if (recentFile.EXISTSINDB || recentFile.EXISTSINFILESYS)
+                {
+                    result.Add(recentFile);
+                }
+            }
             return result;
         }
 

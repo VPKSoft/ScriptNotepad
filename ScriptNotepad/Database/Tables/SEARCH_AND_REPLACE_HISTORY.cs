@@ -72,6 +72,11 @@ namespace ScriptNotepad.Database.Tables
         public string SESSIONNAME { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="SEARCH_AND_REPLACE_HISTORY"/> is a replace history entry.
+        /// </summary>
+        public bool ISREPLACE { get; set; }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>

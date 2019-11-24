@@ -24,40 +24,39 @@ SOFTWARE.
 */
 #endregion
 
-using System.Data.Entity;
-using ScriptNotepad.Database.Entity.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
+using SQLite.CodeFirst;
 
-namespace ScriptNotepad.Database.Entity.Model
+namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
-    /// A class to configure the Code First Entity Framework model.
+    /// A class for storing session(s) into the database.
     /// </summary>
-    public class ModelConfiguration
+    public class Session: IEntity
     {
         /// <summary>
-        /// Configures the specified model builder.
+        /// Gets or sets the identifier for the entity.
         /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        public static void Configure(DbModelBuilder modelBuilder)
-        {
-            ConfigureSimpleEntity<FileSave>(modelBuilder);
-            ConfigureSimpleEntity<Session>(modelBuilder);
-            ConfigureSimpleEntity<Plugin>(modelBuilder);
-            ConfigureSimpleEntity<MiscellaneousTextData>(modelBuilder);
-            ConfigureSimpleEntity<RecentFile>(modelBuilder);
-            ConfigureSimpleEntity<CodeSnippet>(modelBuilder);
-            ConfigureSimpleEntity<SearchAndReplaceHistory>(modelBuilder);
-            ConfigureSimpleEntity<SoftwareLicense>(modelBuilder);
-        }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Configures a simple entity.
+        /// Gets or sets the name of a session.
         /// </summary>
-        /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="modelBuilder">The model builder to use for the configuration.</param>
-        private static void ConfigureSimpleEntity<T>(DbModelBuilder modelBuilder) where T : class
+        [Unique(OnConflictAction.Ignore)]
+        public string SessionName { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this session instance is the default session.
+        /// </summary>
+        [NotMapped]
+        public bool IsDefault => Id == 1;
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        public override string ToString()
         {
-            modelBuilder.Entity<T>();
+            return SessionName;
         }
     }
 }

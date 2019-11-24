@@ -25,17 +25,19 @@ SOFTWARE.
 #endregion
 
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using ScriptNotepad.Database.Entity.Enumerations;
 using SQLite.CodeFirst;
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
-    /// A history class which was used in a sample from the SQLite CodeFirst sample (https://github.com/msallin/SQLiteCodeFirst/tree/master/SQLite.CodeFirst.Console).
-    /// The use of this class is unknown to me an I'll let it be that way.
-    /// Implements the <see cref="SQLite.CodeFirst.IHistory" />
+    /// A class for storing miscellaneous text data into the database.
+    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
-    /// <seealso cref="SQLite.CodeFirst.IHistory" />
-    public class CustomHistory: IHistory
+    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+    public class MiscellaneousTextData: IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
@@ -43,18 +45,36 @@ namespace ScriptNotepad.Database.Entity.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the change (?) hash algorithm value as string.
+        /// Gets or sets the text value.
         /// </summary>
-        public string Hash { get; set; }
+        [Required]
+        public string TextValue { get; set; }
 
         /// <summary>
-        /// Gets or sets the database context type name (SQLiteEntityFramework.SQLiteDbContext).
+        /// Gets or sets the type of the text.
         /// </summary>
-        public string Context { get; set; }
+        public MiscellaneousTextType TextType { get; set; }
 
         /// <summary>
-        /// Gets or sets the create date.
+        /// Gets or sets the added date and time when the entry was added or updated to the database.
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [SqlDefaultValue(DefaultValue = "DATETIME('now', 'localtime')")]
+        public DateTime Added { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Gets or sets the <see cref="Session"/> this miscellaneous text data belongs to.
+        /// </summary>
+        [Required]
+        public Session Session { get; set; }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return TextValue;
+        }
     }
 }

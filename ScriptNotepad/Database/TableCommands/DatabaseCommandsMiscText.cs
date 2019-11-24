@@ -101,6 +101,22 @@ namespace ScriptNotepad.Database.TableCommands
         }
 
         /// <summary>
+        /// Generates a select sentence to select all entries from the <see cref="MISCTEXT_LIST"/> database table.
+        /// </summary>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenSelectMiscText()
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                    // ID: 0, TEXTVALUE: 1, TYPE: 2, ADDED: 3, SESSIONID: 4, SESSIONNAME: 5
+                    $"SELECT ID, TEXTVALUE, TYPE, ADDED, SESSIONID,",
+                    $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = MISCTEXT_LIST.SESSIONID), 'Default') AS SESSIONNAME",
+                    $"FROM MISCTEXT_LIST;");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Generates a select sentence to delete older entries from the <see cref="MISCTEXT_LIST"/> database table.
         /// </summary>
         /// <param name="textType">Type of the text the text entries belong to.</param>

@@ -160,6 +160,16 @@ namespace ScriptNotepad.Settings
         // NOTE::
         // These properties must have a default value for them to work properly with the class logic!
 
+        #region DatabaseState        
+        /// <summary>
+        /// Gets or sets the fancy-named database migration level; for now this is used for the Entity Framework conversion.
+        /// </summary>
+        /// <value>The migration level.</value>
+        [Setting("database/migrationLevel", typeof(int))]
+        //public int DatabaseMigrationLevel { get; set; } = 0;
+        public int DatabaseMigrationLevel { get; set; } = -1; // return an invalid value before the software is ready to branch merge..
+        #endregion
+
         #region GuiSettings
         /// <summary>
         /// The amount of files to be saved to a document history.

@@ -76,6 +76,24 @@ namespace ScriptNotepad.Database.TableCommands
         }
 
         /// <summary>
+        /// Generates a SQL sentence to select all file names saved in the RECENT_FILES table in the database.
+        /// </summary>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenHistorySelect()
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                    $"SELECT ID, FILENAME_FULL, FILENAME,",
+                    $"FILEPATH, CLOSED_DATETIME, SESSIONID, REFERENCEID,",
+                    $"(SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = RECENT_FILES.SESSIONID) AS SESSIONNAME,",
+                    $"CAST(CASE WHEN EXISTS(SELECT * FROM DBFILE_SAVE WHERE FILENAME_FULL = RECENT_FILES.FILENAME_FULL AND ISHISTORY = 1 AND SESSIONID = RECENT_FILES.SESSIONID) THEN 1 ELSE 0 END AS INTEGER) AS EXISTSINDB, ",
+                    $"ENCODING",
+                    $"FROM RECENT_FILES;");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Generates a SQL sentence to ID numbers saved in the RECENT_FILES table in the database.
         /// </summary>
         /// <param name="sessionName">A name of the session to which the history list belongs to.</param>

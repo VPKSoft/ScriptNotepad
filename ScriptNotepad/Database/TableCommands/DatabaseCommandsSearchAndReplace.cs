@@ -126,6 +126,30 @@ namespace ScriptNotepad.Database.TableCommands
         }
 
         /// <summary>
+        /// Generates a SQL sentence to select search or replace entries from the database saved in the SEARCH_HISTORY or the REPLACE_HISTORY table.
+        /// </summary>
+        /// <returns>A generated SQL sentence based on the given parameters.</returns>
+        public static string GenSearchAndReplaceSelect()
+        {
+            string sql =
+                string.Join(Environment.NewLine,
+                    // ID: 0, TEXTFIELD: 1, CASE_SENSITIVE: 2, TYPE: 3, ADDED: 4, SESSIONID: 5, SESSIONNAME: 6, TYPE: 7
+                    $"SELECT ID, {FieldNameByTableName("SEARCH_HISTORY")}, CASE_SENSITIVE, TYPE, ADDED, SESSIONID,",
+                    $"(SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = SEARCH_HISTORY.SESSIONID) AS SESSIONNAME,",
+                    $"0 AS ISREPLACE",
+                    $"FROM",
+                    $"SEARCH_HISTORY",
+                    $"UNION ALL",
+                    $"SELECT ID, {FieldNameByTableName("REPLACE_HISTORY")}, CASE_SENSITIVE, TYPE, ADDED, SESSIONID,",
+                    $"(SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = REPLACE_HISTORY.SESSIONID) AS SESSIONNAME,",
+                    $"1 AS ISREPLACE",
+                    $"FROM",
+                    $"REPLACE_HISTORY;");
+
+            return sql;
+        }
+
+        /// <summary>
         /// Gets the existing database search and/or replace identifier sentence.
         /// </summary>
         /// <param name="searchAndReplace">A SEARCH_AND_REPLACE_HISTORY class instance to be used for the SQL sentence generation.</param>
