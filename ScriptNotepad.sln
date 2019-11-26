@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptNotepad", "ScriptNotepad\ScriptNotepad.csproj", "{6B770702-6E99-439C-9679-61D048B3B876}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginTemplate", "PluginTemplate\PluginTemplate.csproj", "{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptNotepadOldDatabase", "ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj", "{FFC49136-29EC-41E0-B364-4995F9422A1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

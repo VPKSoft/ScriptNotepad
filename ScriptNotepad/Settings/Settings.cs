@@ -167,7 +167,7 @@ namespace ScriptNotepad.Settings
         /// <value>The migration level.</value>
         [Setting("database/migrationLevel", typeof(int))]
         //public int DatabaseMigrationLevel { get; set; } = 0;
-        public int DatabaseMigrationLevel { get; set; } = -1; // return an invalid value before the software is ready to branch merge..
+        public int DatabaseMigrationLevel { get; set; } = 0; // return an invalid value before the software is ready to branch merge..
         #endregion
 
         #region GuiSettings

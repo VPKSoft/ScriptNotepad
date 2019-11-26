@@ -24,10 +24,14 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.SQLite;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Model;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
+using VPKSoft.LangLib;
 
 namespace ScriptNotepad.Database.Entity.Context
 {
@@ -57,6 +61,27 @@ namespace ScriptNotepad.Database.Entity.Context
             : base(connection, contextOwnsConnection)
         {
             Configure();
+        }
+
+
+        public static ScriptNotepadDbContext InitDatabaseConnection(string connectionString)
+        {
+//            var result = true;
+
+//            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            try
+            {
+                return new ScriptNotepadDbContext(sqLiteConnection, true))
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                return null;
+            }
         }
 
         /// <summary>

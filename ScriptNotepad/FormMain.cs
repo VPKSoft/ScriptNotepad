@@ -367,7 +367,6 @@ namespace ScriptNotepad
         #endregion
 
         #region HelperMethods                
-
         private void MigrateToEntityFramework()
         {
             string MigrateErrorMessage(string phase)
