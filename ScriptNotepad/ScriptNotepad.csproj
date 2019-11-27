@@ -163,6 +163,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\DatabaseEnumerations.cs" />
     <Compile Include="Database\Entity\Context\ScriptNotepadDbContext.cs" />
     <Compile Include="Database\Entity\Context\ScriptNotepadDbInitializer.cs" />
     <Compile Include="Database\Entity\Entities\CodeSnippet.cs" />
@@ -202,7 +203,6 @@
     <Compile Include="Database\TableMethods\DatabaseSessionData.cs" />
     <Compile Include="Database\TableMethods\DatabaseSessionName.cs" />
     <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
-    <Compile Include="Database\DatabaseEnumerations.cs" />
     <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
     <Compile Include="Database\Tables\MISCTEXT_LIST.cs" />
     <Compile Include="Database\Tables\RECENT_FILES.cs" />
@@ -630,7 +630,6 @@
     <None Include="Resources\unicode.png" />
     <None Include="Resources\New document.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

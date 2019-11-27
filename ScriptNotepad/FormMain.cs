@@ -68,6 +68,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
@@ -80,11 +81,11 @@ using VPKSoft.ScintillaTabbedTextControl;
 using VPKSoft.ScintillaUrlDetect;
 using VPKSoft.VersionCheck;
 using VPKSoft.VersionCheck.Forms;
-using static ScriptNotepad.Database.DatabaseEnumerations;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivateDeactivate;
 using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase;
+using static ScriptNotepad.Database.DatabaseEnumerations;
 
 #endregion
 
@@ -133,7 +134,7 @@ namespace ScriptNotepad
             ipcServer.CreateServer("localhost", 50670);
 
             // run the script to keep the database up to date..
-            if (!ScriptRunner.RunScript(Path.Combine(DBLangEngine.DataDir, "ScriptNotepad.sqlite"),
+            if (!ScriptRunner.RunScript(Path.Combine(DBLangEngine.DataDir, "ScriptNotepad.sqlite"), // TODO::Remove after the migration..
                 Path.Combine(VPKSoft.Utils.Paths.AppInstallDir, "DatabaseScript", "script.sql_script")))
             {
                 MessageBox.Show(
@@ -155,6 +156,10 @@ namespace ScriptNotepad
 
             // initialize a connection to the SQLite database..
             Database.Database.InitConnection("Data Source=" + DBLangEngine.DataDir + "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;"); // PRAGMA synchronous=OFF;PRAGMA journal_mode=OFF
+
+            // initialize the ScriptNotepadDbContext class instance..
+            ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
+                                                       "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
 
             // localize the open file dialog..
             StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
@@ -195,7 +200,7 @@ namespace ScriptNotepad
             FormLocalizationHelper.LocalizeMisc();
 
             // localize the "Default" session name for the current culture..
-            if (!CurrentSessionLocalized)
+            if (!CurrentSessionLocalized) // TODO::Remove after the migration..
             {
                 Database.Database.LocalizeDefaultSessionName(
                     DBLangEngine.GetStatMessage("msgDefaultSessionName", "Default|A name of the default session for the documents"));

@@ -63,24 +63,62 @@ namespace ScriptNotepad.Database.Entity.Context
             Configure();
         }
 
+        /// <summary>
+        /// A static property to hold the <see cref="ScriptNotepadDbContext"/> created with the <see cref="InitializeDbContext"/> method.
+        /// </summary>
+        /// <value>The database context.</value>
+        public static ScriptNotepadDbContext DbContext { get; set; }
 
-        public static ScriptNotepadDbContext InitDatabaseConnection(string connectionString)
+        /// <summary>
+        /// Initializes the database <see cref="ScriptNotepadDbContext.DbContext"/> context.
+        /// </summary>
+        /// <param name="connectionString">The connection string to initialize the underlying SQLite database connection.</param>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool InitializeDbContext(string connectionString)
         {
-//            var result = true;
-
-//            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
-
             var sqLiteConnection = new SQLiteConnection(connectionString);
             sqLiteConnection.Open();
 
             try
             {
-                return new ScriptNotepadDbContext(sqLiteConnection, true))
+                DbContext = new ScriptNotepadDbContext(sqLiteConnection, true);
+                return true;
             }
-            catch (Exception ex)
+            catch (Exception ex) // report the exception and return false..
+            {
+                DbContext = null;
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Releases the database <see cref="ScriptNotepadDbContext.DbContext"/> context.
+        /// </summary>
+        /// <param name="save">if set to <c>true</c> a the context is requested to save the changes before disposing of the context.</param>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool ReleaseDbContext(bool save = true)
+        {
+            try
+            {
+                if (DbContext != null) // null check..
+                {
+                    using (DbContext) // dispose of the context..
+                    {
+                        if (save) // ..if set to save, then save..
+                        {
+                            DbContext.SaveChanges();
+                        }
+
+                        DbContext = null; // set to null..
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex) // report the exception and return false..
             {
                 ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return null;
+                return false;
             }
         }
 
@@ -95,7 +133,7 @@ namespace ScriptNotepad.Database.Entity.Context
 
         /// <summary>
         /// This method is called when the model for a derived context has been initialized, but
-        /// before the model has been locked down and used to initialize the context.  The default
+        /// before the model has been locked down and used to initialize the context. The default
         /// implementation of this method does nothing, but it can be overridden in a derived class
         /// such that the model can be further configured before it is locked down.
         /// </summary>
