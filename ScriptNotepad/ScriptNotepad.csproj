@@ -184,11 +184,11 @@
     <Compile Include="Database\Entity\Model\ModelConfiguration.cs" />
     <Compile Include="Database\Entity\Utility\AssemblyVersion.cs" />
     <Compile Include="Database\Entity\Utility\DocumentReload.cs" />
+    <Compile Include="Database\Entity\Utility\EntityConversion.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsCodeSnippets.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsFileSave.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsGeneral.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
-    <Compile Include="Database\TableCommands\DatabaseCommandsRecentFiles.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsPlugins.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSearchAndReplace.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSessionData.cs" />
@@ -197,7 +197,6 @@
     <Compile Include="Database\TableMethods\DatabaseCodeSnippets.cs" />
     <Compile Include="Database\TableMethods\DatabaseMiscText.cs" />
     <Compile Include="Database\TableMethods\DatabasePlugins.cs" />
-    <Compile Include="Database\TableMethods\DatabaseRecentFiles.cs" />
     <Compile Include="Database\TableMethods\DatabaseFileSave.cs" />
     <Compile Include="Database\TableMethods\DatabaseSearchAndReplace.cs" />
     <Compile Include="Database\TableMethods\DatabaseSessionData.cs" />
@@ -205,12 +204,11 @@
     <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
     <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
     <Compile Include="Database\Tables\MISCTEXT_LIST.cs" />
-    <Compile Include="Database\Tables\RECENT_FILES.cs" />
     <Compile Include="Database\Tables\PLUGINS.cs" />
     <Compile Include="Database\Tables\SEARCH_AND_REPLACE_HISTORY.cs" />
     <Compile Include="Database\Tables\SESSION_NAME.cs" />
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
-    <Compile Include="Database\UtilityClasses\RecentFilesMenuBuilder.cs" />
+    <Compile Include="UtilityClasses\MenuHelpers\RecentFilesMenuBuilder.cs" />
     <Compile Include="DialogForms\FormDialogQueryJumpLocation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -629,6 +627,12 @@
     <None Include="Resources\preferences.png" />
     <None Include="Resources\unicode.png" />
     <None Include="Resources\New document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj">
+      <Project>{ffc49136-29ec-41e0-b364-4995f9422a1d}</Project>
+      <Name>ScriptNotepadOldDatabase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -32,7 +32,7 @@ namespace ScriptNotepadOldDatabase.UtilityClasses.Encodings
     /// <summary>
     /// A class to get <see cref="Encoding"/> data as a string format and vice versa.
     /// </summary>
-    public class EncodingData
+    internal class EncodingData
     {
         /// <summary>
         /// Converts to given encoding to a semicolon-delimited string containing the web name, code page, byte order mark,
@@ -41,7 +41,7 @@ namespace ScriptNotepadOldDatabase.UtilityClasses.Encodings
         /// </summary>
         /// <param name="encoding">The encoding of which data to parse into a string.</param>
         /// <returns>A string representing the the <see cref="Encoding"/>.</returns>
-        public static string EncodingToString(Encoding encoding)
+        internal static string EncodingToString(Encoding encoding)
         {
             // avoid null reference exception..
             if (encoding == null)
@@ -125,7 +125,7 @@ namespace ScriptNotepadOldDatabase.UtilityClasses.Encodings
         /// </summary>
         /// <param name="encodingString">The string describing the <see cref="Encoding"/>. I.e: utf-32BE;True;True;True.</param>
         /// <returns>Returns the <see cref="Encoding"/> created from the given string instance.</returns>
-        public static Encoding EncodingFromString(string encodingString)
+        internal static Encoding EncodingFromString(string encodingString)
         {
             try
             {

@@ -69,6 +69,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Utility;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
@@ -194,27 +196,10 @@ namespace ScriptNotepad
                 ssLbLineEnding, ssLbEncoding, ssLbSessionName, ssLbInsertOverride, sslbZoom);
 
             // set the status strip label's to indicate that there is no active document..
-            StatusStripTexts.SetEmptyTexts(CurrentSession);
+            StatusStripTexts.SetEmptyTexts(CurrentSession.SessionName);
 
             // localize some other class properties, etc..
             FormLocalizationHelper.LocalizeMisc();
-
-            // localize the "Default" session name for the current culture..
-            if (!CurrentSessionLocalized) // TODO::Remove after the migration..
-            {
-                Database.Database.LocalizeDefaultSessionName(
-                    DBLangEngine.GetStatMessage("msgDefaultSessionName", "Default|A name of the default session for the documents"));
-
-                // set the flag to indicate that the "Default" session name was localized..
-                CurrentSessionLocalized = true;
-
-                // also set the current session to the localized value..
-                if (CurrentSession == "Default")
-                {
-                    CurrentSession =
-                        DBLangEngine.GetStatMessage("msgDefaultSessionName", "Default|A name of the default session for the documents");
-                }
-            }
 
             // get the font size and family from the settings..
             FontFamilyName = FormSettings.Settings.EditorFontName;
@@ -226,9 +211,6 @@ namespace ScriptNotepad
                 Thread.CurrentThread.CurrentCulture = DBLangEngine.UseCulture;
                 Thread.CurrentThread.CurrentUICulture = DBLangEngine.UseCulture;
             }
-
-            // get the session ID number from the database..
-            CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
 
             // localize the context menu before any of the context menus are build to the Scintilla controls..
             ScintillaContextMenu.LocalizeTexts();
@@ -247,7 +229,7 @@ namespace ScriptNotepad
             // END::get the brace highlight colors from the settings..
 
             // load the recent documents which were saved during the program close..
-            LoadDocumentsFromDatabase(CurrentSession);
+            LoadDocumentsFromDatabase(CurrentSession.SessionName);
 
             CharacterSetMenuBuilder.CreateCharacterSetMenu(mnuCharSets, false, "convert_encoding");
             CharacterSetMenuBuilder.EncodingMenuClicked += CharacterSetMenuBuilder_EncodingMenuClicked;
@@ -272,7 +254,7 @@ namespace ScriptNotepad
             Database.Database.ExceptionLogAction = ExceptionLogger.LogError;
 
             // set the current session name to the status strip..
-            StatusStripTexts.SetSessionName(CurrentSession);
+            StatusStripTexts.SetSessionName(CurrentSession.SessionName);
 
             // subscribe the RequestDocuments event of the search and replace dialog..
             FormSearchAndReplace.Instance.RequestDocuments += InstanceRequestDocuments;
@@ -413,7 +395,7 @@ namespace ScriptNotepad
                     throw new Exception(MigrateErrorMessage("DatabasePlugins"));
                 }
 
-                if (!DatabaseRecentFiles.ToEntity())
+                if (!EntityConversion.DatabaseRecentFilesToEntity())
                 {
                     DisplayError("DatabaseRecentFiles");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
@@ -833,7 +815,7 @@ namespace ScriptNotepad
                         RequestAllDocuments,
                         PluginException, menuMain, 
                         mnuPlugins, 
-                        CurrentSession, this))
+                        CurrentSession.SessionName, this))
                     {
                         pluginEntry = pluginEntry == null
                             ? PluginDatabaseEntry.FromPlugin(plugin.Assembly, pluginAssembly.Plugin, plugin.Path)
@@ -1028,15 +1010,15 @@ namespace ScriptNotepad
             }
 
             // save the current session's documents to the database..
-            SaveDocumentsToDatabase(CurrentSession);
+            SaveDocumentsToDatabase(CurrentSession.SessionName);
 
             // delete excess document contents saved in the database..
-            var cleanupContents = Database.Database.CleanupHistoryDocumentContents(CurrentSession, SaveFileHistoryContentsCount);
+            var cleanupContents = Database.Database.CleanupHistoryDocumentContents(CurrentSession.SessionName, SaveFileHistoryContentsCount);
 
             ExceptionLogger.LogMessage($"Database history contents cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
             // delete excess entries from the file history list from the database..
-            cleanupContents = Database.Database.CleanUpHistoryList(CurrentSession, HistoryListAmount);
+            // TODO::WITH LINQ: cleanupContents = Database.Database.CleanUpHistoryList(CurrentSession.SessionName, HistoryListAmount); 
 
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
@@ -1045,11 +1027,11 @@ namespace ScriptNotepad
 
             // clean the old replace replace history entries from the database..
             DatabaseSearchAndReplace.DeleteOlderEntries("REPLACE_HISTORY", FormSettings.Settings.FileSearchHistoriesLimit,
-                CurrentSession, 0, 1, 2, 3);
+                CurrentSession.SessionName, 0, 1, 2, 3);
 
             // clean the old replace search history entries from the database..
             DatabaseSearchAndReplace.DeleteOlderEntries("SEARCH_HISTORY", FormSettings.Settings.FileSearchHistoriesLimit,
-                CurrentSession, 0, 1, 2, 3);
+                CurrentSession.SessionName, 0, 1, 2, 3);
 
             // close the main form as the call came from elsewhere than the FormMain_FormClosed event..
             if (noUserInteraction)
@@ -1079,7 +1061,7 @@ namespace ScriptNotepad
             ExceptionLogger.LogMessage($"Database history contents cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
             // delete excess entries from the file history list from the database..
-            cleanupContents = Database.Database.CleanUpHistoryList(sessionName, HistoryListAmount);
+            // TODO::WITH LINQ:cleanupContents = Database.Database.CleanUpHistoryList(sessionName, HistoryListAmount);
 
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
@@ -1254,7 +1236,7 @@ namespace ScriptNotepad
                 DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[docIndex]);
 
                 // update the file history list in the database..
-                DatabaseRecentFiles.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME, fileSave.ENCODING);
+                // TODO::WITH LINQ:DatabaseRecentFiles.AddOrUpdateRecentFile(fileSave.FILENAME_FULL, fileSave.SESSIONNAME, fileSave.ENCODING);
 
                 // validate that the ScintillaTabbedDocument instance has a spell checker attached to it..
                 if (sttcMain.Documents[docIndex].Tag0 != null && sttcMain.Documents[docIndex].Tag0.GetType() == typeof(TabbedDocumentSpellCheck))
@@ -1374,8 +1356,7 @@ namespace ScriptNotepad
                     fileSave.ISACTIVE = sttcMain.Documents[i].FileTabButton.IsActive;
                     fileSave.VISIBILITY_ORDER = i;
                     DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.Documents[i]);
-                    DatabaseRecentFiles.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName,
-                        fileSave.ENCODING);
+                    // TODO::WITH LINQ:DatabaseRecentFiles.AddOrUpdateRecentFile(sttcMain.Documents[i].FileName, sessionName, fileSave.ENCODING);
                 }
                 catch (Exception ex)
                 {
@@ -1475,7 +1456,7 @@ namespace ScriptNotepad
         private void LoadDocumentsFromDatabase(string sessionName)
         {
             // set the status strip label's to indicate that there is no active document..
-            StatusStripTexts.SetEmptyTexts(CurrentSession);
+            StatusStripTexts.SetEmptyTexts(CurrentSession.SessionName);
 
             // set the application title to indicate no active document..
             SetEmptyApplicationTitle();
@@ -1581,77 +1562,6 @@ namespace ScriptNotepad
         }
 
         /// <summary>
-        /// Loads the document from the database based on a given <paramref name="recentFile"/> class instance.
-        /// </summary>
-        /// <param name="recentFile">A <see cref="RECENT_FILES"/> class instance containing the file data.</param>
-        private void LoadDocumentFromDatabase(RECENT_FILES recentFile)
-        {
-            // get the file from the database..
-            DBFILE_SAVE file = DatabaseFileSave.GetFileFromDatabase(recentFile.SESSIONNAME, recentFile.FILENAME_FULL,
-                FormSettings.Settings.EditorSaveZoom);
-
-            // only if something was gotten from the database..
-            if (file != null)
-            {
-                sttcMain.AddDocument(file.FILENAME_FULL, (int)file.ID, file.ENCODING, StreamStringHelpers.TextToMemoryStream(file.FILE_CONTENTS, file.ENCODING));
-                if (sttcMain.LastAddedDocument != null)
-                {
-                    // append additional initialization to the document..
-                    AdditionalInitializeDocument(sttcMain.LastAddedDocument);
-
-                    // set the lexer type from the saved database value..
-                    sttcMain.LastAddedDocument.LexerType = file.LEXER_CODE;
-
-                    // not history any more..
-                    file.ISHISTORY = false;
-
-                    // set the saved position of the document's caret..
-                    if (file.CURRENT_POSITION > 0 && file.CURRENT_POSITION < sttcMain.LastAddedDocument.Scintilla.TextLength)
-                    {
-                        sttcMain.LastAddedDocument.Scintilla.CurrentPosition = file.CURRENT_POSITION;
-                        sttcMain.LastAddedDocument.Scintilla.SelectionStart = file.CURRENT_POSITION;
-                        sttcMain.LastAddedDocument.Scintilla.SelectionEnd = file.CURRENT_POSITION;
-                        sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
-                    }
-
-                    sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
-
-                    // update the history flag to the database..
-                    DatabaseFileSave.UpdateFileHistoryFlag(file);
-
-                    // assign the context menu strip for the tabbed document..
-                    sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
-
-                    // set the zoom value..
-                    sttcMain.LastAddedDocument.ZoomPercentage = file.EDITOR_ZOOM;
-
-                    // enabled the caret line background color..
-                    SetCaretLineColor();
-
-                    // set the brace matching if enabled..
-                    SetStyleBraceMatch.SetStyle(sttcMain.LastAddedDocument.Scintilla);
-
-                    sttcMain.LastAddedDocument.Tag = file;
-
-                    // the file load can't add an undo option the Scintilla..
-                    sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
-
-                    // ReSharper disable once ObjectCreationAsStatement
-                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
-
-                    // set the misc indicators..
-                    SetDocumentMiscIndicators(sttcMain.LastAddedDocument);
-                }
-                sttcMain.ActivateDocument(file.FILENAME_FULL);
-
-                UpdateToolbarButtonsAndMenuItems();
-
-                // re-create a menu for recent files..
-                RecentFilesMenuBuilder.CreateRecentFilesMenu(mnuRecentFiles, CurrentSession, HistoryListAmount, true, mnuSplit2);
-            }
-        }
-
-        /// <summary>
         /// Opens files given as arguments for the software.
         /// </summary>
         private void OpenArgumentFiles()
@@ -1693,8 +1603,8 @@ namespace ScriptNotepad
                             FILENAME_FULL = sttcMain.CurrentDocument.FileName,
                             FILEPATH = string.Empty,
                             FILE_CONTENTS = "",
-                            SESSIONNAME = CurrentSession,
-                            SESSIONID = CurrentSessionID,
+                            SESSIONNAME = CurrentSession.SessionName,
+                            SESSIONID = CurrentSession.Id,
                         };
 
                     sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
@@ -1765,7 +1675,7 @@ namespace ScriptNotepad
                     foreach (var encodingData in encodings)
                     {
                         // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
-                        encoding = GetFileEncoding(CurrentSession, fileName, encodingData.encoding, reloadContents, encodingOverridden, 
+                        encoding = GetFileEncoding(CurrentSession.SessionName, fileName, encodingData.encoding, reloadContents, encodingOverridden, 
                             overrideDetectBom,
                             out _,
                             out _, out _);
@@ -1799,14 +1709,14 @@ namespace ScriptNotepad
                         AdditionalInitializeDocument(sttcMain.LastAddedDocument);
 
                         // check the database first for a DBFILE_SAVE class instance..
-                        DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession, fileName,
+                        DBFILE_SAVE fileSave = DatabaseFileSave.GetFileFromDatabase(CurrentSession.SessionName, fileName,
                             FormSettings.Settings.EditorSaveZoom);
 
                         if (sttcMain.LastAddedDocument.Tag == null && fileSave == null)
                         {
                             sttcMain.LastAddedDocument.Tag = DatabaseFileSave.AddOrUpdateFile(
-                                sttcMain.LastAddedDocument, DatabaseHistoryFlag.DontCare, CurrentSession,
-                                CurrentSessionID, encoding);
+                                sttcMain.LastAddedDocument, DatabaseHistoryFlag.DontCare, CurrentSession.SessionName,
+                                CurrentSession.Id, encoding);
                         }
                         else if (fileSave != null)
                         {
@@ -1830,7 +1740,7 @@ namespace ScriptNotepad
                         fileSave = (DBFILE_SAVE)sttcMain.LastAddedDocument.Tag;
 
                         // set the session ID number..
-                        fileSave.SESSIONID = CurrentSessionID;
+                        fileSave.SESSIONID = CurrentSession.Id;
 
                         // not history at least anymore..
                         fileSave.ISHISTORY = false;
@@ -2155,7 +2065,7 @@ namespace ScriptNotepad
         {
             tmAutoSave.Enabled = false;
             // save the current session's documents to the database..
-            SaveDocumentsToDatabase(CurrentSession);
+            SaveDocumentsToDatabase(CurrentSession.SessionName);
             tmAutoSave.Enabled = true;
         }
 
@@ -2379,36 +2289,6 @@ namespace ScriptNotepad
             // display the session management dialog..
             FormDialogSessionManage.Execute();
 
-            #region SessionRename
-            SESSION_NAME session = DatabaseSessionName.GetSessions().FirstOrDefault(f => f.SESSIONID == CurrentSessionID);
-            // if true the current session has been renamed..
-            if (session != null && CurrentSession != session.SESSIONNAME)
-            {
-                // set the current session name..
-                FormSettings.Settings.CurrentSession = session.SESSIONNAME;
-
-                // set the session name for all open documents..
-                for (int i = 0; i < sttcMain.DocumentsCount; i++)
-                {
-                    ((DBFILE_SAVE)sttcMain.Documents[i].Tag).SESSIONNAME = session.SESSIONNAME;
-                }
-
-                // re-display the current document's status strip if any documents is active..
-                if (sttcMain.CurrentDocument != null)
-                {
-                    StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession);
-                }
-                else
-                {
-                    // no documents are active so re-display status strip with empty contents..
-                    StatusStripTexts.SetEmptyTexts(CurrentSession);
-
-                    // set the application title to indicate no active document..
-                    SetEmptyApplicationTitle();
-                }
-            }
-            #endregion
-
             // re-create the current session menu..
             SessionMenuBuilder.CreateSessionMenu(mnuSession, CurrentSession);
 
@@ -2461,7 +2341,9 @@ namespace ScriptNotepad
         // a user wishes to open a recent file..
         private void RecentFilesMenuBuilder_RecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e)
         {
+            // TODO::WITH LINQ:
             // if a file snapshot exists in the database then load it..
+            /*
             if (e.RecentFile != null && e.RecentFile.EXISTSINDB)
             {
                 LoadDocumentFromDatabase(e.RecentFile);
@@ -2489,7 +2371,7 @@ namespace ScriptNotepad
                     }
                 }
             }
-
+            */
         }
 
         // a user wishes to change the settings of the software..
@@ -2560,7 +2442,7 @@ namespace ScriptNotepad
             {
                 // release the flag which suspends the selection update to avoid excess CPU load..
                 suspendSelectionUpdate = false;
-                StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession);
+                StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession.SessionName);
             }
 
             if (
@@ -2606,7 +2488,7 @@ namespace ScriptNotepad
         {
             // release the flag which suspends the selection update to avoid excess CPU load..
             suspendSelectionUpdate = false;
-            StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession);
+            StatusStripTexts.SetStatusStringText(sttcMain.CurrentDocument, CurrentSession.SessionName);
         }
 
         // this event is raised when another instance of this application receives a file name
@@ -2776,14 +2658,14 @@ namespace ScriptNotepad
         private void SessionMenuBuilder_SessionMenuClicked(object sender, SessionMenuClickEventArgs e)
         {
             // set the current session to a new value..
-            CurrentSession = e.SessionName.SESSIONNAME;
+            CurrentSession = e.Session;
         }
 
         // a user is logging of or the system is shutting down..
         private void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
         {
             // ..just no questions asked save the document snapshots into the SQLite database..
-            SaveDocumentsToDatabase(CurrentSession);
+            SaveDocumentsToDatabase(CurrentSession.SessionName);
         }
 
         /// <summary>
@@ -2920,7 +2802,7 @@ namespace ScriptNotepad
             if (sttcMain.DocumentsCount - 1 <= 0) 
             {
                 // set the status strip label's to indicate that there is no active document..
-                StatusStripTexts.SetEmptyTexts(CurrentSession);
+                StatusStripTexts.SetEmptyTexts(CurrentSession.SessionName);
 
                 // set the application title to indicate no active document..
                 SetEmptyApplicationTitle();
@@ -2940,7 +2822,7 @@ namespace ScriptNotepad
 
             StatusStripTexts.SetDocumentSizeText(e.ScintillaTabbedDocument);
 
-            StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
+            StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession.SessionName);
 
             // re-create the tab menu..
             TabMenuBuilder?.CreateMenuOpenTabs();
@@ -2994,7 +2876,7 @@ namespace ScriptNotepad
             
             if (!suspendSelectionUpdate)
             {
-                StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession);
+                StatusStripTexts.SetStatusStringText(e.ScintillaTabbedDocument, CurrentSession.SessionName);
             }
 
             UpdateToolbarButtonsAndMenuItems();
@@ -3302,7 +3184,7 @@ namespace ScriptNotepad
                 {
                     // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
                     fileSave.ENCODING =
-                        GetFileEncoding(CurrentSession, sttcMain.CurrentDocument.FileName, fileSave.ENCODING, true,
+                        GetFileEncoding(CurrentSession.SessionName, sttcMain.CurrentDocument.FileName, fileSave.ENCODING, true,
                             false, false, out _, out _, out _);
 
                     // the user answered yes..
@@ -3395,7 +3277,7 @@ namespace ScriptNotepad
 
                 if (!suspendSelectionUpdate)
                 {
-                    StatusStripTexts.SetStatusStringText(document, CurrentSession);
+                    StatusStripTexts.SetStatusStringText(document, CurrentSession.SessionName);
                 }
             });
         }
@@ -3537,28 +3419,10 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets the current session for the documents.
         /// </summary>
-        private string CurrentSession
+        private Session CurrentSession
         {
-            get => FormSettings.Settings == null ? "Default" : FormSettings.Settings.CurrentSession;
-
-            set
-            {
-                bool sessionChanged = FormSettings.Settings.CurrentSession != value;
-                string previousSession = FormSettings.Settings.CurrentSession;
-
-                FormSettings.Settings.CurrentSession = value;
-
-                if (sessionChanged)
-                {
-                    CloseSession(previousSession);
-
-                    // load the recent documents which were saved during the program close..
-                    LoadDocumentsFromDatabase(CurrentSession);
-                }
-
-                // get the session ID number from the database..
-                CurrentSessionID = Database.Database.GetSessionID(CurrentSession);
-            }
+            get => FormSettings.Settings.CurrentSessionEntity;
+            set => FormSettings.Settings.CurrentSessionEntity = value;
         }
 
         /// <summary>
@@ -3566,15 +3430,6 @@ namespace ScriptNotepad
         /// </summary>
         private List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)> Plugins { get; } =
             new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)>();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the default session name has been localized.
-        /// </summary>
-        private bool CurrentSessionLocalized
-        {
-            get => FormSettings.Settings.DefaultSessionLocalized;
-            set => FormSettings.Settings.DefaultSessionLocalized = value;
-        }
 
         /// <summary>
         /// Gets or sets the default encoding to be used with the files within this software.
@@ -3595,12 +3450,6 @@ namespace ScriptNotepad
                 // the setting value if the setting is enabled..
                 FormSettings.Settings.SaveFileHistoryContentsCount : 
                 int.MinValue;
-
-        /// <summary>
-        /// Gets or sets the ID number for the current session for the documents.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        private long CurrentSessionID { get; set; } = -1;
         #endregion
 
         #region FileContextMenu

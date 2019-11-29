@@ -24,15 +24,15 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.TableMethods;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.UtilityClasses.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.UtilityClasses.Common;
 
-namespace ScriptNotepad.Database.UtilityClasses
+namespace ScriptNotepad.UtilityClasses.MenuHelpers
 {
     /// <summary>
     /// A class for creating a recent file menu for a Windows Forms application.
@@ -48,33 +48,34 @@ namespace ScriptNotepad.Database.UtilityClasses
         /// Creates a recent files menu to a given parent menu.
         /// </summary>
         /// <param name="menuItem">The menu item to add the recent files list.</param>
-        /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
+        /// <param name="session">A name of the session to which the history documents belong to.</param>
         /// <param name="maxCount">Maximum count of recent file entries to add to the given <paramref name="menuItem"/>.</param>
         /// <param name="addMenuOpenAll">A flag indicating whether the menu should contain an item to open all recent files.</param>
         /// <param name="hideItems">A list of tool strip items to hide if there are no recent files.</param>
-        public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, string sessionName, 
+        public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, Database.Entity.Entities.Session session, 
             int maxCount, bool addMenuOpenAll, params ToolStripItem[] hideItems)
         {
             // dispose of the previous menu items..
             DisposeRecentFilesMenu(menuItem);
 
             // get the recent files from the database..
-            IEnumerable<RECENT_FILES> recentFiles = DatabaseRecentFiles.GetRecentFiles(sessionName, maxCount);
+            var recentFiles = ScriptNotepadDbContext.DbContext.RecentFiles
+                .OrderByDescending(f => f.ClosedDateTime).Where(f => f.Session.SessionName == session.SessionName).Take(maxCount);
 
             if (addMenuOpenAll)
             {
-                List<RECENT_FILES> recentFilesAll = recentFiles.ToList();
+                List<RecentFile> recentFilesAll = recentFiles.ToList();
 
                 if (recentFilesAll.Count > 1)
                 {
                     // create a menu item for all the recent files..
                     DataToolStripMenuItem menuItemRecentFile =
                         new DataToolStripMenuItem(
-                            string.IsNullOrWhiteSpace(MenuOpenAllRecentText) ?
-                            "Open all recent files..." : MenuOpenAllRecentText);
+                            string.IsNullOrWhiteSpace(MenuOpenAllRecentText)
+                                ? "Open all recent files..."
+                                : MenuOpenAllRecentText) {Data = recentFilesAll};
 
                     // set the user given additional data for the menu item..
-                    menuItemRecentFile.Data = recentFilesAll;
 
                     // subscribe the click event..
                     menuItemRecentFile.Click += MenuItemRecentFile_Click;
@@ -91,10 +92,10 @@ namespace ScriptNotepad.Database.UtilityClasses
             foreach (var recentFile in recentFiles)
             {
                 // create a menu item for the encoding..
-                DataToolStripMenuItem menuItemRecentFile = new DataToolStripMenuItem(recentFile.ToString());
+                DataToolStripMenuItem menuItemRecentFile =
+                    new DataToolStripMenuItem(recentFile.ToString()) {Data = recentFile};
 
                 // set the user given additional data for the menu item..
-                menuItemRecentFile.Data = recentFile;
 
                 // subscribe the click event..
                 menuItemRecentFile.Click += MenuItemRecentFile_Click;
@@ -132,18 +133,18 @@ namespace ScriptNotepad.Database.UtilityClasses
             }
 
             // the menu item contains a single recent file..
-            if (item.Data.GetType() == typeof(RECENT_FILES))
+            if (item.Data.GetType() == typeof(RecentFile))
             {
                 // raise the event if subscribed..
                 RecentFileMenuClicked?.Invoke(sender,                  // the recent file for the event..
-                    new RecentFilesMenuClickEventArgs() { RecentFile = (RECENT_FILES)item.Data, RecentFiles = null });
+                    new RecentFilesMenuClickEventArgs() { RecentFile = (RecentFile)item.Data, RecentFiles = null });
             }
             // the menu item contains a list of recent files..
-            else if (item.Data.GetType() == typeof(List<RECENT_FILES>))
+            else if (item.Data.GetType() == typeof(List<RecentFile>))
             {
                 // raise the event if subscribed..
                 RecentFileMenuClicked?.Invoke(sender,                        // the recent file list for the event..
-                    new RecentFilesMenuClickEventArgs() { RecentFile = null, RecentFiles = (List<RECENT_FILES>)item.Data });
+                    new RecentFilesMenuClickEventArgs() { RecentFile = null, RecentFiles = (List<RecentFile>)item.Data });
             }
         }
 
@@ -204,7 +205,7 @@ namespace ScriptNotepad.Database.UtilityClasses
         /// <summary>
         /// Occurs when a recent file menu item was clicked.
         /// </summary>
-        public static event OnRecentFileMenuClicked RecentFileMenuClicked = null;
+        public static event OnRecentFileMenuClicked RecentFileMenuClicked;
     }
 
     /// <summary>
@@ -214,13 +215,13 @@ namespace ScriptNotepad.Database.UtilityClasses
     public class RecentFilesMenuClickEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets the <see cref="RECENT_FILES"/> of the clicked recent file menu item.
+        /// Gets the <see cref="RecentFile"/> of the clicked recent file menu item.
         /// </summary>
-        public RECENT_FILES RecentFile { get; internal set; }
+        public RecentFile RecentFile { get; internal set; }
 
         /// <summary>
-        /// Gets a list of the all <see cref="RECENT_FILES"/> of the clicked recent file menu item to open all the recent files.
+        /// Gets a list of the all <see cref="RecentFile"/> of the clicked recent file menu item to open all the recent files.
         /// </summary>
-        public List<RECENT_FILES> RecentFiles { get; internal set; } = null;
+        public List<RecentFile> RecentFiles { get; internal set; }
     }
 }

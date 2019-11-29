@@ -44,7 +44,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// <summary>
         /// A localizable text for a menu item which would open all recent files.
         /// </summary>
-        public static string MenuOpenAllRecentText { get; set; } = "Open all recent files...";
+        internal static string MenuOpenAllRecentText { get; set; } = "Open all recent files...";
 
         /// <summary>
         /// Creates a recent files menu to a given parent menu.
@@ -54,7 +54,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// <param name="maxCount">Maximum count of recent file entries to add to the given <paramref name="menuItem"/>.</param>
         /// <param name="addMenuOpenAll">A flag indicating whether the menu should contain an item to open all recent files.</param>
         /// <param name="hideItems">A list of tool strip items to hide if there are no recent files.</param>
-        public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, string sessionName, 
+        internal static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, string sessionName, 
             int maxCount, bool addMenuOpenAll, params ToolStripItem[] hideItems)
         {
             // dispose of the previous menu items..
@@ -153,7 +153,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// Disposes the recent file menu constructed via the <see cref="CreateRecentFilesMenu"/> method.
         /// </summary>
         /// <param name="parent">The parent tool strip menu item.</param>
-        public static void DisposeRecentFilesMenu(ToolStripMenuItem parent)
+        internal static void DisposeRecentFilesMenu(ToolStripMenuItem parent)
         {
             List<ToolStripMenuItem> disposeList = new List<ToolStripMenuItem>();
             foreach (var item in parent.DropDownItems)
@@ -201,28 +201,28 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="RecentFilesMenuClickEventArgs"/> instance containing the event data.</param>
-        public delegate void OnRecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e);
+        internal delegate void OnRecentFileMenuClicked(object sender, RecentFilesMenuClickEventArgs e);
 
         /// <summary>
         /// Occurs when a recent file menu item was clicked.
         /// </summary>
-        public static event OnRecentFileMenuClicked RecentFileMenuClicked = null;
+        internal static event OnRecentFileMenuClicked RecentFileMenuClicked = null;
     }
 
     /// <summary>
     /// Event arguments for the RecentFileMenuClicked event.
     /// </summary>
     /// <seealso cref="System.EventArgs" />
-    public class RecentFilesMenuClickEventArgs : EventArgs
+    internal class RecentFilesMenuClickEventArgs : EventArgs
     {
         /// <summary>
         /// Gets the <see cref="RECENT_FILES"/> of the clicked recent file menu item.
         /// </summary>
-        public RECENT_FILES RecentFile { get; internal set; }
+        internal RECENT_FILES RecentFile { get; set; }
 
         /// <summary>
         /// Gets a list of the all <see cref="RECENT_FILES"/> of the clicked recent file menu item to open all the recent files.
         /// </summary>
-        public List<RECENT_FILES> RecentFiles { get; internal set; } = null;
+        internal List<RECENT_FILES> RecentFiles { get; set; } = null;
     }
 }

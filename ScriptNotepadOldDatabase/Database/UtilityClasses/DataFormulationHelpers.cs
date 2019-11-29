@@ -36,14 +36,14 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
     /// <summary>
     /// A class to help formulate certain types of data to suitable format for written SQL.
     /// </summary>
-    public class DataFormulationHelpers
+    internal class DataFormulationHelpers
     {
         /// <summary>
         /// This method stands for Quoted String. Simply double-quote the "insides" of a string and add quotes to the both sides (').
         /// </summary>
         /// <param name="str">A string to 'quote'.</param>
         /// <returns>A 'quoted' string.</returns>
-        public static string QS(string str)
+        internal static string QS(string str)
         {
             return "'" + str.Replace("'", "''") + "'"; // as simple as it can be..
         }
@@ -53,7 +53,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// </summary>
         /// <param name="boolean">A boolean value to a database-understandable format.</param>
         /// <returns>If <paramref name="boolean"/> is true then 1; otherwise 0.</returns>
-        public static string BS(bool boolean)
+        internal static string BS(bool boolean)
         {
             return boolean ? "1" : "0";
         }
@@ -64,7 +64,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <param name="value">The value to be inserted to the database..</param>
         /// <returns>System.String; if the value is null a string "NULL" is returned. If the type of the value is string it's automatically quoted.</returns>
-        public static string NI<T>(T value)
+        internal static string NI<T>(T value)
         {
             // null is NULL..
             if (value == null)
@@ -88,7 +88,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <param name="value">The value to be inserted to the database..</param>
         /// <returns>System.String; if the value is null a string "NULL" is returned. If the type of the value is string it's automatically quoted.</returns>
-        public static string NIS<T>(T value)
+        internal static string NIS<T>(T value)
         {
             // null is NULL..
             if (value == null)
@@ -111,7 +111,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// </summary>
         /// <param name="value">The date and time value as it's stored in to the database.</param>
         /// <returns>A DateTime value converted from a given string.</returns>
-        public static DateTime DateFromDBString(string value)
+        internal static DateTime DateFromDBString(string value)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace ScriptNotepadOldDatabase.Database.UtilityClasses
         /// </summary>
         /// <param name="dateTime">The DateTime value to convert.</param>
         /// <returns>A quoted string converted from a given DateTime value.</returns>
-        public static string DateToDBString(DateTime dateTime)
+        internal static string DateToDBString(DateTime dateTime)
         {
             if (dateTime == DateTime.MinValue || dateTime == DateTime.MaxValue)
             {

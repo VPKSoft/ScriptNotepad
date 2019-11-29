@@ -34,16 +34,16 @@ using ScriptNotepadOldDatabase.UtilityClasses.Encodings;
 namespace ScriptNotepadOldDatabase.Database.TableCommands
 {
     /// <summary>
-    ////A class // A class which is used to formulate SQL sentences for the <see cref="Database"/> class for the RECENT_FILES data
+    /// A class which is used to formulate SQL sentences for the <see cref="Database"/> class for the RECENT_FILES data
     /// </summary>
-    public class DatabaseCommandsRecentFiles: DataFormulationHelpers
+    internal class DatabaseCommandsRecentFiles: DataFormulationHelpers
     {
         /// <summary>
         /// Gets the ID of the latest recent file insert from the database.
         /// </summary>
         /// <returns>A generated SQL sentence.</returns>
         // ReSharper disable once InconsistentNaming
-        public static string GenLatestDBRecentFileIDSentence()
+        internal static string GenLatestDBRecentFileIDSentence()
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -58,7 +58,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// <param name="sessionName">A name of the session to which the history documents belongs to.</param>
         /// <param name="maxCount">A maximum amount of file history to get.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenHistorySelect(string sessionName, int maxCount)
+        internal static string GenHistorySelect(string sessionName, int maxCount)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -80,7 +80,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// Generates a SQL sentence to select all file names saved in the RECENT_FILES table in the database.
         /// </summary>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenHistorySelect()
+        internal static string GenHistorySelect()
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -99,7 +99,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// </summary>
         /// <param name="sessionName">A name of the session to which the history list belongs to.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenHistoryListSelect(string sessionName)
+        internal static string GenHistoryListSelect(string sessionName)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -120,7 +120,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// <param name="ids">A list of ID numbers to generate a SQL sentence to delete <see cref="RECENT_FILES"/> entries from the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         // ReSharper disable once InconsistentNaming
-        public static string GenDeleteDBFileHistoryIDList(List<long> ids)
+        internal static string GenDeleteDBFileHistoryIDList(List<long> ids)
         {
             string deleteIdList = string.Join(", ", ids);
             string sql =
@@ -135,7 +135,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// </summary>
         /// <param name="recentFile">A recent file to insert into the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenHistoryInsert(RECENT_FILES recentFile)
+        internal static string GenHistoryInsert(RECENT_FILES recentFile)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -159,7 +159,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// <param name="recentFile">A RECENT_FILES class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         // ReSharper disable once InconsistentNaming
-        public static string GetExistingDBRecentFileIDSentence(RECENT_FILES recentFile)
+        internal static string GetExistingDBRecentFileIDSentence(RECENT_FILES recentFile)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -176,7 +176,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// </summary>
         /// <param name="recentFile">A recent file to be update on the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenHistoryUpdate(ref RECENT_FILES recentFile)
+        internal static string GenHistoryUpdate(ref RECENT_FILES recentFile)
         {
             recentFile.CLOSED_DATETIME = DateTime.Now;
 

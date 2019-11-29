@@ -38,7 +38,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
     /// A class containing methods for database interaction with the RECENT_FILES table.
     /// </summary>
     /// <seealso cref="Database" />
-    public class DatabaseRecentFiles: ScriptNotepadOldDatabase.Database.Database
+    internal class DatabaseRecentFiles: ScriptNotepadOldDatabase.Database.Database
     {
         /// <summary>
         /// Updates a recent RECENT_FILES class instance into the database table RECENT_FILES.
@@ -46,7 +46,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// <param name="recentFile">A RECENT_FILES class instance to update to the database's RECENT_FILES table.</param>
         /// <param name="sessionName">A name of the session to which the document belongs to.</param>
         /// <returns>The updated instance of the given <paramref name="recentFile"/> class instance if the operation was successful; otherwise null.</returns>
-        public static RECENT_FILES UpdateRecentFile(RECENT_FILES recentFile, string sessionName)
+        internal static RECENT_FILES UpdateRecentFile(RECENT_FILES recentFile, string sessionName)
         {
             recentFile.SESSIONNAME = sessionName;
             if (ExecuteArbitrarySQL(DatabaseCommandsRecentFiles.GenHistoryUpdate(ref recentFile)))
@@ -66,7 +66,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// <param name="sessionName">A name of the session to which the document belongs to.</param>
         /// <param name="encoding">The encoding of the recent file.</param>
         /// <returns>True if the operations was successful; otherwise false;</returns>
-        public static bool AddOrUpdateRecentFile(string fileName, string sessionName, Encoding encoding)
+        internal static bool AddOrUpdateRecentFile(string fileName, string sessionName, Encoding encoding)
         {
             return UpdateRecentFile(AddRecentFile(fileName, sessionName, encoding), sessionName) != null;
         }
@@ -103,7 +103,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
         /// <param name="maxCount">Maximum count of recent file entries to return.</param>
         /// <returns>A collection RECENT_FILES classes.</returns>
-        public static IEnumerable<RECENT_FILES> GetRecentFiles(string sessionName, int maxCount)
+        internal static IEnumerable<RECENT_FILES> GetRecentFiles(string sessionName, int maxCount)
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
 
@@ -121,7 +121,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// Gets the recent file list saved to the database.
         /// </summary>
         /// <returns>A collection RECENT_FILES classes.</returns>
-        public static IEnumerable<RECENT_FILES> GetRecentFiles()
+        internal static IEnumerable<RECENT_FILES> GetRecentFiles()
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
 
@@ -136,7 +136,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         }
 
 
-        private static IEnumerable<RECENT_FILES> FromDataReader(SQLiteDataReader reader)
+        internal static IEnumerable<RECENT_FILES> FromDataReader(SQLiteDataReader reader)
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
             // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, CLOSED_DATETIME: 4, 
@@ -174,7 +174,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// <param name="sessionName">A name of the session to which the document belongs to.</param>
         /// <param name="encoding">The encoding of the recent file.</param>
         /// <returns>A RECENT_FILES class instance if the recent file was successfully added to the database; otherwise null.</returns>
-        public static RECENT_FILES AddRecentFile(string fileName, string sessionName, Encoding encoding)
+        internal static RECENT_FILES AddRecentFile(string fileName, string sessionName, Encoding encoding)
         {
             return AddRecentFile(RECENT_FILES.FromFilename(fileName, encoding), sessionName);
         }
@@ -185,7 +185,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// <param name="recentFile">A RECENT_FILES class instance to add to the database's RECENT_FILES table.</param>
         /// <param name="sessionName">A name of the session to which the document belongs to.</param>
         /// <returns>A RECENT_FILES class instance if the recent file was successfully added to the database; otherwise null.</returns>
-        public static RECENT_FILES AddRecentFile(RECENT_FILES recentFile, string sessionName)
+        internal static RECENT_FILES AddRecentFile(RECENT_FILES recentFile, string sessionName)
         {
             int recordsAffected = 0;
             try

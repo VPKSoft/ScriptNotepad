@@ -31,14 +31,14 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
     /// <summary>
     /// A class which is used to formulate SQL sentences for the <see cref="ScriptNotepad.Database"/> class for general purpose commands.
     /// </summary>
-    public class DatabaseCommandsGeneral: DataFormulationHelpers
+    internal class DatabaseCommandsGeneral: DataFormulationHelpers
     {
         /// <summary>
         /// Generates a SQL snippet to get the session ID by it's name.
         /// </summary>
         /// <param name="sessionName">Name of the session.</param>
         /// <returns>A generated SQL snippet based on the given parameters.</returns>
-        public static string GenSessionNameIDCondition(string sessionName)
+        internal static string GenSessionNameIDCondition(string sessionName)
         {
             if (string.IsNullOrEmpty(sessionName))
             {
@@ -56,7 +56,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="sessionName">Name of the session.</param>
         /// <returns>A generated SQL snippet based on the given parameters.</returns>
-        public static string GenSessionNameIDConditionNull(string sessionName)
+        internal static string GenSessionNameIDConditionNull(string sessionName)
         {
             if (string.IsNullOrEmpty(sessionName))
             {
@@ -74,7 +74,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="sessionName">Name of the session.</param>
         /// <returns>A generated SQL snippet based on the given parameters.</returns>
-        public static string GenSessionNameIDConditionIsNull(string sessionName)
+        internal static string GenSessionNameIDConditionIsNull(string sessionName)
         {
             if (string.IsNullOrEmpty(sessionName))
             {
@@ -93,7 +93,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="sessionName">Name of the session.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenSessionNameIDSelect(string sessionName)
+        internal static string GenSessionNameIDSelect(string sessionName)
         {
             string sql =
                 $"SELECT IFNULL((SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";
@@ -106,7 +106,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="sessionName">Name of the session.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenSessionNameIdSelectNull(string sessionName)
+        internal static string GenSessionNameIdSelectNull(string sessionName)
         {
             string sql =
                 $"SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME {NIS(sessionName)}";
@@ -120,7 +120,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="sessionID">The ID of the session.</param>
         /// <returns>A generated SQL snippet based on the given parameters.</returns>
-        public static string GenSessionIDNameCondition(int sessionID)
+        internal static string GenSessionIDNameCondition(int sessionID)
         {
             string sql =
                 $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONID = {sessionID}), (SELECT SESSIONID FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";
@@ -133,7 +133,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="sessionName">Name of the session.</param>
         /// <returns>A generated SQL snippet based on the given parameters.</returns>
-        public static string GenSessionNameNameCondition(string sessionName)
+        internal static string GenSessionNameNameCondition(string sessionName)
         {
             string sql =
                 $"IFNULL((SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONNAME = {QS(sessionName)}), (SELECT SESSIONNAME FROM SESSION_NAME WHERE SESSIONNAME = 'Default'))";

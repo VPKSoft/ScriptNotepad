@@ -35,9 +35,13 @@ using VPKSoft.ConfLib;
 using VPKSoft.ErrorLogger;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using ScintillaNET;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
+using VPKSoft.LangLib;
 using TabDrawMode = ScintillaNET.TabDrawMode;
 
 namespace ScriptNotepad.Settings
@@ -641,6 +645,27 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("database/currentSession", typeof(string))]
         public string CurrentSession { get; set; } = "Default";
+
+        /// <summary>
+        /// Gets the current session entity.
+        /// </summary>
+        public Session CurrentSessionEntity
+        {
+            get
+            {
+                var defaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
+                    "Default|A name of the default session for the documents");
+
+                var session =
+                    ScriptNotepadDbContext.DbContext.Sessions.FirstOrDefault(f =>
+                        f.SessionName == CurrentSession || f.SessionName == "Default" ||
+                        f.SessionName == defaultSessionName);
+
+                return session;
+            }
+
+            set => CurrentSession = value.SessionName;
+        }
         #endregion
 
         #region SearchSettings

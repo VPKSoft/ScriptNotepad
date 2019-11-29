@@ -31,7 +31,7 @@ namespace ScriptNotepadOldDatabase.UtilityClasses.ErrorHandling
     /// <summary>
     /// A class from which a classes logging errors should be derived from.
     /// </summary>
-    public class ErrorHandlingBaseOld
+    internal class ErrorHandlingBaseOld
     {
         /// <summary>
         /// Gets or sets the action to be used to log an exception.

@@ -35,7 +35,7 @@ namespace ScriptNotepadOldDatabase.Database.Tables
     /// A class indicating a recent file in the database.
     /// </summary>
     /// <seealso cref="ErrorHandlingBaseOld"/>
-    public class RECENT_FILES : ErrorHandlingBaseOld
+    internal class RECENT_FILES : ErrorHandlingBaseOld
     {
         /// <summary>
         /// Creates a <see cref="RECENT_FILES"/> class instance from a given file name.
@@ -62,58 +62,58 @@ namespace ScriptNotepadOldDatabase.Database.Tables
         /// <summary>
         /// Gets or sets the ID number of the entry in the document history.
         /// </summary>
-        public long ID { get; set; } = -1;
+        internal long ID { get; set; } = -1;
 
         /// <summary>
         /// Gets or sets the full file name with path.
         /// </summary>
-        public string FILENAME_FULL { get; set; } = string.Empty;
+        internal string FILENAME_FULL { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the file name without path.
         /// </summary>
-        public string FILENAME { get; set; } = string.Empty;
+        internal string FILENAME { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the full path for the file.
         /// </summary>
-        public string FILEPATH { get; set; } = string.Empty;
+        internal string FILEPATH { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the date and time when the file was closed in the editor.
         /// </summary>
-        public DateTime CLOSED_DATETIME { get; set; } = DateTime.MinValue;
+        internal DateTime CLOSED_DATETIME { get; set; } = DateTime.MinValue;
 
         /// <summary>
         /// Gets or sets the session ID.
         /// </summary>
-        public long SESSIONID { get; set; } = 1;
+        internal long SESSIONID { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the name of the session.
         /// </summary>
-        public string SESSIONNAME { get; set; } = "Default";
+        internal string SESSIONNAME { get; set; } = "Default";
 
         /// <summary>
         /// Gets or sets the encoding of the recent file.
         /// </summary>
-        public Encoding ENCODING { get; set; }
+        internal Encoding ENCODING { get; set; }
 
         /// <summary>
         /// Gets or sets a reference to a file ID in the DBFILE_SAVE table.
         /// <note type="note">A null value indicates a DB null.</note>
         /// </summary>
-        public long? REFERENCEID { get; set; } = null;
+        internal long? REFERENCEID { get; set; } = null;
 
         /// <summary>
         /// Gets or sets a value indicating whether a snapshot of the file in question exists in the <see cref="DBFILE_SAVE"/> table in the database.
         /// </summary>
-        public bool EXISTSINDB { get; set; } = false;
+        internal bool EXISTSINDB { get; set; } = false;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="RECENT_FILES"/> property <see cref="FILENAME_FULL"/> exists in the file system.
         /// </summary>
-        public bool EXISTSINFILESYS { get => File.Exists(FILENAME_FULL); }
+        internal bool EXISTSINFILESYS { get => File.Exists(FILENAME_FULL); }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

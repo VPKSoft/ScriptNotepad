@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
+    <Compile Include="DataGetOld.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsRecentFiles.cs" />
     <Compile Include="Database\TableMethods\DatabaseCommandsGeneral.cs" />

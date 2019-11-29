@@ -36,7 +36,7 @@ namespace ScriptNotepadOldDatabase.Database
     /// <summary>
     /// A class the handle the SQLite database.
     /// </summary>
-    public class Database: DataFormulationHelpers
+    internal class Database: DataFormulationHelpers
     {
         // the database connection to use..
         internal static SQLiteConnection Connection { get; set; }
@@ -45,7 +45,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// Creates a new SQLiteConnection class for the Database class with the given connection string.
         /// </summary>
         /// <param name="connectionString">A connection string to create a SQLite database connection.</param>
-        public static void InitConnection(string connectionString)
+        internal static void InitConnection(string connectionString)
         {
             Connection = new SQLiteConnection(connectionString); // create a new SQLiteConnection class instance..
             Connection.Open();
@@ -57,7 +57,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// <param name="sessionName">Name of the session of which history file list should be cleaned from the database.</param>
         /// <param name="maxAmount">The maximum amount of entries to keep in the history file list.</param>
         /// <returns>A named tuple containing an indicator of the success of the deletion and the amount of deleted records from the database.</returns>
-        public static (bool success, int deletedAmount) CleanUpHistoryList(string sessionName, int maxAmount)
+        internal static (bool success, int deletedAmount) CleanUpHistoryList(string sessionName, int maxAmount)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// <summary>
         /// Gets or sets the action to be used to log an exception.
         /// </summary>
-        public static Action<Exception> ExceptionLogAction { get; set; } = null;
+        internal static Action<Exception> ExceptionLogAction { get; set; } = null;
 
         /// <summary>
         /// Executes a scalar SQL sentence against the database.
@@ -131,7 +131,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// <typeparam name="T">The return type of the scalar SQL sentence.</typeparam>
         /// <param name="sql">A scalar SQL sentence to be executed against the database.</param>
         /// <returns>The value of type T if the operation was successful; otherwise a default value of T is returned.</returns>
-        public static T GetScalar<T>(string sql)
+        internal static T GetScalar<T>(string sql)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// <param name="sql">A string containing SQL sentences to be executed to the database.</param>
         /// <returns>True if the given SQL sentences were executed successfully; otherwise false;</returns>
         // ReSharper disable once InconsistentNaming
-        public static bool ExecuteArbitrarySQL(string sql)
+        internal static bool ExecuteArbitrarySQL(string sql)
         {
             // as the SQLiteCommand is disposable a using clause is required..
             using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
@@ -192,7 +192,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// </summary>
         /// <param name="blob">A SQLiteBlob to create a memory stream from.</param>
         /// <returns>A memory stream created from the given <paramref name="blob"/>.</returns>
-        public static MemoryStream MemoryStreamFromBlob(SQLiteBlob blob)
+        internal static MemoryStream MemoryStreamFromBlob(SQLiteBlob blob)
         {
             int size = blob.GetCount();
             byte[] blobBytes = new byte[size];
@@ -204,7 +204,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// Localizes the default name session name.
         /// </summary>
         /// <param name="name">The localized name for "Default".</param>
-        public static void LocalizeDefaultSessionName(string name)
+        internal static void LocalizeDefaultSessionName(string name)
         {
             // update the name..
             ExecuteArbitrarySQL(DatabaseCommandsMisc.GenLocalizeDefaultSessionName(name));
@@ -216,7 +216,7 @@ namespace ScriptNotepadOldDatabase.Database
         /// <param name="sessionName">The name of the session which ID to get.</param>
         /// <returns>An ID number for the given session name.</returns>
         // ReSharper disable once InconsistentNaming
-        public static long GetSessionID(string sessionName)
+        internal static long GetSessionID(string sessionName)
         {
             return GetScalar<long>(DatabaseCommandsMisc.GenGetCurrentSessionID(sessionName));
         }

@@ -32,14 +32,14 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
     /// <summary>
     /// A class which is used to formulate SQL sentences for the <see cref="ScriptNotepad.Database"/> class with miscellaneous commands.
     /// </summary>
-    public class DatabaseCommandsMisc: DataFormulationHelpers
+    internal class DatabaseCommandsMisc: DataFormulationHelpers
     {
         /// <summary>
         /// Generates a SQL sentence to localize the "Default" session name.
         /// </summary>
         /// <param name="name">The name for the "Default" session.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenLocalizeDefaultSessionName(string name)
+        internal static string GenLocalizeDefaultSessionName(string name)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -53,7 +53,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// </summary>
         /// <param name="tableName">Name of the table of which next ID number to get.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenGetNextIDForTable(string tableName)
+        internal static string GenGetNextIDForTable(string tableName)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -72,7 +72,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// </summary>
         /// <param name="tableName">Name of the table of which next ID number to get.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenGetCurrentIDForTable(string tableName)
+        internal static string GenGetCurrentIDForTable(string tableName)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -91,7 +91,7 @@ namespace ScriptNotepadOldDatabase.Database.TableCommands
         /// </summary>
         /// <param name="sessionName">The name of the session which ID to get.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenGetCurrentSessionID(string sessionName)
+        internal static string GenGetCurrentSessionID(string sessionName)
         {
             string sql =
                 string.Join(Environment.NewLine,
