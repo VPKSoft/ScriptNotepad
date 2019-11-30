@@ -345,7 +345,7 @@ namespace ScriptNotepad
         }
         #endregion
 
-        #region HelperMethods                 
+        #region DatabaseMigration
         /// <summary>
         /// Migrates the database to a new format. For now it is from normal write SQL to Entity Framework Code-First database.
         /// </summary>
@@ -460,7 +460,9 @@ namespace ScriptNotepad
                 }
             }
         }
+        #endregion
 
+        #region HelperMethods                 
         /// <summary>
         /// Checks for new version of the application.
         /// </summary>
