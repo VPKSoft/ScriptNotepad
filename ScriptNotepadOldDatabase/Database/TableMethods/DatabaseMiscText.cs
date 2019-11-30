@@ -135,7 +135,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         {
             List<RECENT_FILES> result = new List<RECENT_FILES>();
 
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsRecentFiles.GenHistorySelect(), Connection))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsMiscText.GenSelectMiscText(), Connection))
             {
                 // loop through the result set..
                 using (SQLiteDataReader reader = command.ExecuteReader())
