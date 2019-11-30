@@ -390,6 +390,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the session the <see cref="FileSave"/> belongs to.
         /// </summary>
         [Required]
-        public Session Session { get; set; }
+        public FileSession Session { get; set; }
     }
 }

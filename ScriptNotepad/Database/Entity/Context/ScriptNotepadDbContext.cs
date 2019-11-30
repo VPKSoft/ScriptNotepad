@@ -28,10 +28,10 @@ using System;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SQLite;
+using System.Linq;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Model;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
-using VPKSoft.LangLib;
 
 namespace ScriptNotepad.Database.Entity.Context
 {
@@ -157,15 +157,14 @@ namespace ScriptNotepad.Database.Entity.Context
         public DbSet<FileSave> FileSaves { get; set; }
 
         /// <summary>
-        /// Gets or sets the sessions used with other entity instances.
+        /// Gets or sets the file sessions used with other entity instances.
         /// </summary>
-        public DbSet<Session> Sessions { get; set; }
+        public DbSet<FileSession> FileSessions { get; set; }
 
         /// <summary>
-        /// Gets or sets <see cref="MiscellaneousTextData"/> instances in the database.
+        /// Gets or sets <see cref="MiscellaneousTextEntry"/> instances in the database.
         /// </summary>
-        // ReSharper disable once IdentifierTypo
-        public DbSet<MiscellaneousTextData> MiscellaneousTextDatas { get; set; }
+        public DbSet<MiscellaneousTextEntry> MiscellaneousTextEntries { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Plugin"/> instances in the database.
@@ -186,5 +185,29 @@ namespace ScriptNotepad.Database.Entity.Context
         /// Gets or sets the <see cref="SearchAndReplaceHistory"/> instances in the database.
         /// </summary>
         public DbSet<SearchAndReplaceHistory> SearchAndReplaceHistories { get; set; }
+
+        /// <summary>
+        /// Deletes the entire session from the database context.
+        /// </summary>
+        /// <param name="session">The session to delete.</param>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public bool DeleteEntireSession(FileSession session)
+        {
+            try
+            {
+                FileSaves.RemoveRange(FileSaves.Where(f => f.Session == session));
+                MiscellaneousTextEntries.RemoveRange(MiscellaneousTextEntries.Where(f => f.Session == session));
+                RecentFiles.RemoveRange(RecentFiles.Where(f => f.Session == session));
+                FileSessions.Remove(session);
+                SaveChanges();
+                return true; // success..
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                return false; // failure..
+            }
+        }
     }
 }

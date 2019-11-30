@@ -86,7 +86,7 @@ SOFTWARE.";
             var defaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
                 "Default|A name of the default session for the documents");
 
-            var session = context.Sessions.Find(1) ?? context.Sessions.Add(new Session {Id = 1, SessionName = defaultSessionName});
+            var session = context.FileSessions.Find(1) ?? context.FileSessions.Add(new FileSession {Id = 1, SessionName = defaultSessionName});
 
             if (session != null)
             {

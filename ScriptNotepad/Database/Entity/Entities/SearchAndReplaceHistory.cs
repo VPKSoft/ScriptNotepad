@@ -51,7 +51,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the session the search or replace history entry belongs to.
         /// </summary>
         [Required]
-        public Session Session { get; set; }
+        public FileSession Session { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

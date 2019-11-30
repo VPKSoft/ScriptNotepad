@@ -163,6 +163,8 @@ namespace ScriptNotepad
             ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
                                                        "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
 
+            MigrateDatabase(); // migrate to Entity Framework Code-First database..
+
             // localize the open file dialog..
             StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
 
@@ -194,6 +196,9 @@ namespace ScriptNotepad
             // initialize the helper class for the status strip's labels..
             StatusStripTexts.InitLabels(ssLbLineColumn, ssLbLinesColumnSelection, ssLbLDocLinesSize, 
                 ssLbLineEnding, ssLbEncoding, ssLbSessionName, ssLbInsertOverride, sslbZoom);
+
+            // get the current file session..
+            currentSession = FormSettings.Settings.CurrentSessionEntity;
 
             // set the status strip label's to indicate that there is no active document..
             StatusStripTexts.SetEmptyTexts(CurrentSession.SessionName);
@@ -335,9 +340,36 @@ namespace ScriptNotepad
             // get the case-sensitivity value from the settings..
             mnuCaseSensitive.Checked = FormSettings.Settings.TextUpperCaseComparison;
 
+            // the constructor code finalized executing..
+            runningConstructor = false;
+        }
+        #endregion
+
+        #region HelperMethods                 
+        /// <summary>
+        /// Migrates the database to a new format. For now it is from normal write SQL to Entity Framework Code-First database.
+        /// </summary>
+        private void MigrateDatabase()
+        {
             // this might be a lengthy process, perhaps a some king of message should indicate that..
             if (FormSettings.Settings.DatabaseMigrationLevel == 0)
             {
+                // there is no database so there is no data yet..
+                ScriptNotepadDbContext.ReleaseDbContext(false);
+
+                // a possible failed migration needs deletion..
+                if (File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite")))
+                {
+                    try
+                    {
+                        File.Delete(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite"));
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionLogger.LogError(ex);
+                    }
+                }
+
                 MessageBox.Show(
                     DBLangEngine.GetMessage("msgDatabaseMigration1",
                         "The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process."),
@@ -346,14 +378,18 @@ namespace ScriptNotepad
 
                 MigrateToEntityFramework();
                 FormSettings.Settings.DatabaseMigrationLevel = 1;
+
+                // initialize the ScriptNotepadDbContext class instance..
+                ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
+                                                           "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
             }
-
-            // the constructor code finalized executing..
-            runningConstructor = false;
         }
-        #endregion
 
-        #region HelperMethods                
+        /// <summary>
+        /// Migrates the database to entity framework.
+        /// </summary>
+        /// <exception cref="Exception">
+        /// </exception>
         private void MigrateToEntityFramework()
         {
             string MigrateErrorMessage(string phase)
@@ -3416,13 +3452,36 @@ namespace ScriptNotepad
         /// </summary>
         private ProgrammingLanguageHelper ProgrammingLanguageHelper { get; }
 
+        // a field for the CurrentSession property..
+        private FileSession currentSession;
+        private bool sessionFirstLoad = true;
+
         /// <summary>
         /// Gets or sets the current session for the documents.
         /// </summary>
-        private Session CurrentSession
+        private FileSession CurrentSession
         {
-            get => FormSettings.Settings.CurrentSessionEntity;
-            set => FormSettings.Settings.CurrentSessionEntity = value;
+            get => currentSession;
+            set
+            {
+                if (value == null) // don't allow a null value..
+                {
+                    return;
+                }
+
+                if (value != currentSession)
+                {
+                    FormSettings.Settings.CurrentSessionEntity = value;
+
+                    if (sessionFirstLoad)
+                    {
+                        CloseSession(currentSession.SessionName);
+                        LoadDocumentsFromDatabase(value.SessionName);
+                    }
+                    sessionFirstLoad = false;
+                }
+                currentSession = value;
+            }
         }
 
         /// <summary>

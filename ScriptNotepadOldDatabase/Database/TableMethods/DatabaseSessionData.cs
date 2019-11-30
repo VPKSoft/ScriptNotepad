@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepadOldDatabase.Database.TableCommands;
 using ScriptNotepadOldDatabase.Database.Tables;
 
 namespace ScriptNotepadOldDatabase.Database.TableMethods

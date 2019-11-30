@@ -169,20 +169,20 @@ namespace ScriptNotepad.Database.TableMethods
                                     SESSIONNAME = reader.IsDBNull(5) ? null : reader.GetString(5),
                                 };
 
-                            var session = context.Sessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
+                            var session = context.FileSessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
                             if (session == null && legacy.SESSIONNAME == "Default")
                             {
-                                session = context.Sessions?.FirstOrDefault(f => f.Id == 1);
+                                session = context.FileSessions?.FirstOrDefault(f => f.Id == 1);
                             }
 
                             if (session == null)
                             {
-                                session = new Session {SessionName = legacy.SESSIONNAME};
-                                session = context.Sessions?.Add(session);
+                                session = new FileSession {SessionName = legacy.SESSIONNAME};
+                                session = context.FileSessions?.Add(session);
                                 context.SaveChanges();
                             }
 
-                            var miscellaneousTextData = new MiscellaneousTextData
+                            var miscellaneousTextData = new MiscellaneousTextEntry
                             {
                                 Id = (int) legacy.ID,
                                 TextValue = legacy.TEXTVALUE,
@@ -191,7 +191,7 @@ namespace ScriptNotepad.Database.TableMethods
                             };
                             try
                             {
-                                context.MiscellaneousTextDatas.Add(miscellaneousTextData);
+                                context.MiscellaneousTextEntries.Add(miscellaneousTextData);
                                 context.SaveChanges();
                             }
                             catch (Exception ex)

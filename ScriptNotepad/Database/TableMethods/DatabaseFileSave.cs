@@ -356,16 +356,16 @@ namespace ScriptNotepad.Database.TableMethods
                         {
                             var legacy = FromDataReader(reader, true);
 
-                            var session = context.Sessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
+                            var session = context.FileSessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
                             if (session == null && legacy.SESSIONNAME == "Default")
                             {
-                                session = context.Sessions?.FirstOrDefault(f => f.Id == 1);
+                                session = context.FileSessions?.FirstOrDefault(f => f.Id == 1);
                             }
 
                             if (session == null)
                             {
-                                session = new Session {SessionName = legacy.SESSIONNAME};
-                                session = context.Sessions?.Add(session);
+                                session = new FileSession {SessionName = legacy.SESSIONNAME};
+                                session = context.FileSessions?.Add(session);
                                 context.SaveChanges();
                             }
 

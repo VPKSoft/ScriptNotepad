@@ -32,7 +32,7 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// <summary>
     /// A class for storing session(s) into the database.
     /// </summary>
-    public class Session: IEntity
+    public class FileSession: IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.

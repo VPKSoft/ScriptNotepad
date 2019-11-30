@@ -37,7 +37,7 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
-    public class MiscellaneousTextData: IEntity
+    public class MiscellaneousTextEntry: IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
@@ -66,7 +66,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the <see cref="Session"/> this miscellaneous text data belongs to.
         /// </summary>
         [Required]
-        public Session Session { get; set; }
+        public FileSession Session { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

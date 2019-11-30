@@ -75,7 +75,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the session the recent file belongs to.
         /// </summary>
         [Required]
-        public Session Session { get; set; }
+        public FileSession Session { get; set; }
 
         /// <summary>
         /// Gets or sets the encoding of the recent file.

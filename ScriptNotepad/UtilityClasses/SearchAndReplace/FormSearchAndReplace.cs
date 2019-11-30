@@ -102,13 +102,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
             // get the search text history from the database..
             SearchHistory = DatabaseSearchAndReplace.GetSearchesAndReplaces(
-                FormSettings.Settings.CurrentSession,
+                FormSettings.Settings.CurrentSessionEntity.SessionName,
                 "SEARCH_HISTORY",
                 FormSettings.Settings.FileSearchHistoriesLimit);
 
             // get the replace text history from the database..
             ReplaceHistory = DatabaseSearchAndReplace.GetSearchesAndReplaces(
-                FormSettings.Settings.CurrentSession,
+                FormSettings.Settings.CurrentSessionEntity.SessionName,
                 "REPLACE_HISTORY",
                 FormSettings.Settings.FileSearchHistoriesLimit);
 
@@ -809,7 +809,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 {
                     SEARCH_OR_REPLACE_TEXT = SearchText, CASE_SENSITIVE = MatchCaseSet, TYPE = (int) SearchType
                 },
-                FormSettings.Settings.CurrentSession, "SEARCH_HISTORY");
+                FormSettings.Settings.CurrentSessionEntity.SessionName, "SEARCH_HISTORY");
 
             // conditional insert to the list..
             if (inserted != null && !SearchHistory.Exists(f =>
@@ -885,7 +885,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 {
                     SEARCH_OR_REPLACE_TEXT = ReplaceText, CASE_SENSITIVE = MatchCaseSet, TYPE = (int) SearchType
                 },
-                FormSettings.Settings.CurrentSession, "REPLACE_HISTORY");
+                FormSettings.Settings.CurrentSessionEntity.SessionName, "REPLACE_HISTORY");
 
             // conditional insert to the list..
             if (inserted != null && !ReplaceHistory.Exists(f =>

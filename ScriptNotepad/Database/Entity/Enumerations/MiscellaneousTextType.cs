@@ -29,7 +29,7 @@ using ScriptNotepad.Database.Entity.Entities;
 namespace ScriptNotepad.Database.Entity.Enumerations
 {
     /// <summary>
-    /// An enumeration for the <see cref="MiscellaneousTextData"/> type.
+    /// An enumeration for the <see cref="MiscellaneousTextEntry"/> type.
     /// </summary>
     public enum MiscellaneousTextType
     {

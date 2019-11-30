@@ -52,7 +52,7 @@ namespace ScriptNotepad.UtilityClasses.MenuHelpers
         /// <param name="maxCount">Maximum count of recent file entries to add to the given <paramref name="menuItem"/>.</param>
         /// <param name="addMenuOpenAll">A flag indicating whether the menu should contain an item to open all recent files.</param>
         /// <param name="hideItems">A list of tool strip items to hide if there are no recent files.</param>
-        public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, Database.Entity.Entities.Session session, 
+        public static void CreateRecentFilesMenu(ToolStripMenuItem menuItem, Database.Entity.Entities.FileSession session, 
             int maxCount, bool addMenuOpenAll, params ToolStripItem[] hideItems)
         {
             // dispose of the previous menu items..

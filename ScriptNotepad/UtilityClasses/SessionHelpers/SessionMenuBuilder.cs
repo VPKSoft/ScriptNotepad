@@ -26,14 +26,14 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
 
 namespace ScriptNotepad.UtilityClasses.SessionHelpers
 {
     /// <summary>
-    /// A class to help to build a menu for sessions within the software (<see cref="Database.Entity.Entities.Session"/>).
+    /// A class to help to build a menu for sessions within the software (<see cref="Database.Entity.Entities.FileSession"/>).
     /// </summary>
     public class SessionMenuBuilder
     {
@@ -42,15 +42,12 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
         /// </summary>
         /// <param name="parent">The parent tool strip menu item to create the session menu to.</param>
         /// <param name="currentSession">The currently active session.</param>
-        public static void CreateSessionMenu(ToolStripMenuItem parent, Database.Entity.Entities.Session currentSession)
+        public static void CreateSessionMenu(ToolStripMenuItem parent, FileSession currentSession)
         {
             // first dispose the previous menu..
             DisposeSessionMenu();
 
-            // get the session list from the database..
-            List<Database.Entity.Entities.Session> sessions = ScriptNotepadDbContext.DbContext.Sessions.ToList();
-
-            foreach (var session in sessions)
+            foreach (var session in ScriptNotepadDbContext.DbContext.FileSessions)
             {
                 var item = new ToolStripMenuItem
                 {
@@ -121,7 +118,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
 
             // get the data from the clicked menu item..
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-            var session = (Database.Entity.Entities.Session)menuItem.Tag;
+            var session = (FileSession)menuItem.Tag;
 
             // raise the event if subscribed..
             SessionMenuClicked?.Invoke(sender, new SessionMenuClickEventArgs { Session = session, Data = null });
@@ -149,7 +146,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
         /// <summary>
         /// Gets the session of the clicked session menu item.
         /// </summary>
-        public Database.Entity.Entities.Session Session { get; internal set; }
+        public FileSession Session { get; internal set; }
 
         /// <summary>
         /// Gets the data associated with the session menu item.

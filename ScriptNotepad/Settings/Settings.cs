@@ -644,12 +644,12 @@ namespace ScriptNotepad.Settings
         /// Gets or sets the current session (for the documents).
         /// </summary>
         [Setting("database/currentSession", typeof(string))]
-        public string CurrentSession { get; set; } = "Default";
+        private string CurrentSession { get; set; } = "Default";
 
         /// <summary>
         /// Gets the current session entity.
         /// </summary>
-        public Session CurrentSessionEntity
+        public FileSession CurrentSessionEntity
         {
             get
             {
@@ -657,7 +657,7 @@ namespace ScriptNotepad.Settings
                     "Default|A name of the default session for the documents");
 
                 var session =
-                    ScriptNotepadDbContext.DbContext.Sessions.FirstOrDefault(f =>
+                    ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f =>
                         f.SessionName == CurrentSession || f.SessionName == "Default" ||
                         f.SessionName == defaultSessionName);
 
