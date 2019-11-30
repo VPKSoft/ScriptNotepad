@@ -25,17 +25,18 @@ SOFTWARE.
 #endregion
 
 using System;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.Database.UtilityClasses;
+using ScriptNotepadOldDatabase.Database.TableMethods;
+using ScriptNotepadOldDatabase.Database.Tables;
+using ScriptNotepadOldDatabase.Database.UtilityClasses;
 
-namespace ScriptNotepad.Database.TableCommands
+namespace ScriptNotepadOldDatabase.Database.TableCommands
 {
     /// <summary>
     /// A class which is used to formulate SQL sentences for the <see cref="Database"/> class for the MISCTEXT_LIST database table.
-    /// Implements the <see cref="ScriptNotepad.Database.UtilityClasses.DataFormulationHelpers" />
+    /// Implements the <see cref="DataFormulationHelpers" />
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.UtilityClasses.DataFormulationHelpers" />
-    public class DatabaseCommandsMiscText: DataFormulationHelpers
+    /// <seealso cref="DataFormulationHelpers" />
+    internal class DatabaseCommandsMiscText: DataFormulationHelpers
     {
         /// <summary>
         /// Generates a SQL sentence to insert a an entry to the <see cref="MISCTEXT_LIST"/> database table.
@@ -43,7 +44,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="miscText">A MISCTEXT_LIST class instance to be used for the SQL sentence generation.</param>
         /// <param name="sessionName">A name of the session to which the misc text entry belongs to.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenInsertMiscText(MISCTEXT_LIST miscText, string sessionName = null)
+        internal static string GenInsertMiscText(MISCTEXT_LIST miscText, string sessionName = null)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -63,7 +64,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="miscText">A MISCTEXT_LIST class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenUpdateMiscText(MISCTEXT_LIST miscText)
+        internal static string GenUpdateMiscText(MISCTEXT_LIST miscText)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -84,7 +85,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="maxCount">Maximum count of misc text entries to return.</param>
         /// <param name="sessionName">A name of the session to which the misc text entry belongs to.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenSelectMiscText(MiscTextType textType, int maxCount, string sessionName = null)
+        internal static string GenSelectMiscText(MiscTextType textType, int maxCount, string sessionName = null)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -104,7 +105,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// Generates a select sentence to select all entries from the <see cref="MISCTEXT_LIST"/> database table.
         /// </summary>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenSelectMiscText()
+        internal static string GenSelectMiscText()
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -123,7 +124,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="remainAmount">The remaining amount of entries that should be left untouched.</param>
         /// <param name="sessionName">A name of the session to which the misc text entries belongs to.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenDeleteOlderEntries(MiscTextType textType, int remainAmount, string sessionName = null)
+        internal static string GenDeleteOlderEntries(MiscTextType textType, int remainAmount, string sessionName = null)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -142,7 +143,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="miscText">A MISCTEXT_LIST class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         // ReSharper disable once InconsistentNaming
-        public static string GetExistingDBMiscTextIDSentence(MISCTEXT_LIST miscText)
+        internal static string GetExistingDBMiscTextIDSentence(MISCTEXT_LIST miscText)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -153,6 +154,5 @@ namespace ScriptNotepad.Database.TableCommands
 
             return sql;
         }
-
     }
 }

@@ -26,27 +26,19 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ScriptNotepad.Database.Entity.Context;
-using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.Enumerations;
-using ScriptNotepad.Database.TableCommands;
-using ScriptNotepad.Database.Tables;
+using ScriptNotepadOldDatabase.Database.TableCommands;
+using ScriptNotepadOldDatabase.Database.Tables;
 using VPKSoft.LangLib;
 
-namespace ScriptNotepad.Database.TableMethods
+namespace ScriptNotepadOldDatabase.Database.TableMethods
 {
     /// <summary>
     /// Class DatabaseMiscText.
-    /// Implements the <see cref="ScriptNotepad.Database.Database" />
+    /// Implements the <see cref="Database" />
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Database" />
+    /// <seealso cref="Database" />
     class DatabaseMiscText : Database
     {
         /// <summary>
@@ -55,7 +47,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="miscText">A <see cref="MISCTEXT_LIST"/> class instance</param>
         /// <param name="sessionName">A name of the session to which the entry belongs to.</param>
         /// <returns>The updated instance of the given <paramref name="miscText"/> class instance if the operation was successful; otherwise null.</returns>
-        public static MISCTEXT_LIST UpdateMiscText(MISCTEXT_LIST miscText, string sessionName = null)
+        internal static MISCTEXT_LIST UpdateMiscText(MISCTEXT_LIST miscText, string sessionName = null)
         {
             miscText.SESSIONNAME = sessionName;
 
@@ -77,7 +69,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="miscText">A <see cref="MISCTEXT_LIST"/> class instance</param>
         /// <param name="sessionName">A name of the session to which the entry belongs to.</param>
         /// <returns>A MISCTEXT_LIST class instance if the entry was successfully added to the database; otherwise null.</returns>
-        public static MISCTEXT_LIST AddMiscText(MISCTEXT_LIST miscText, string sessionName = null)
+        internal static MISCTEXT_LIST AddMiscText(MISCTEXT_LIST miscText, string sessionName = null)
         {
             try
             {
@@ -130,82 +122,66 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="miscText">A MISCTEXT_LIST class instance to add or to update to the database's MISCTEXT_LIST table.</param>
         /// <param name="sessionName">A name of the session to which the misc text entry belongs to.</param>
         /// <returns>An instance to a <see cref="MISCTEXT_LIST"/> class if the operations was successful; otherwise null;</returns>
-        public static MISCTEXT_LIST AddOrUpdateMiscText(MISCTEXT_LIST miscText, string sessionName = null)
+        internal static MISCTEXT_LIST AddOrUpdateMiscText(MISCTEXT_LIST miscText, string sessionName = null)
         {
             return UpdateMiscText(AddMiscText(miscText, sessionName), sessionName);
         }
 
         /// <summary>
-        /// Converts the legacy database table <see cref="MISCTEXT_LIST"/> to Entity Framework format.
+        /// Gets the miscellaneous data saved to the database.
         /// </summary>
-        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
-        public static bool ToEntity()
+        /// <returns>A collection MISCTEXT_LIST classes.</returns>
+        internal static IEnumerable<MISCTEXT_LIST> GetMiscTextLists()
         {
-            var result = true;
+            List<RECENT_FILES> result = new List<RECENT_FILES>();
 
-            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
-
-            var sqLiteConnection = new SQLiteConnection(connectionString);
-            sqLiteConnection.Open();
-
-
-            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsRecentFiles.GenHistorySelect(), Connection))
             {
-                using (SQLiteCommand command =
-                    new SQLiteCommand(DatabaseCommandsMiscText.GenSelectMiscText(), Connection))
+                // loop through the result set..
+                using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            var legacy = 
-                                new MISCTEXT_LIST()
-                                {
-                                    ID = reader.GetInt64(0),
-                                    TEXTVALUE = reader.GetString(1),
-                                    TYPE = (MiscTextType) reader.GetInt32(2),
-                                    ADDED = DateFromDBString(reader.GetString(3)),
-                                    SESSIONID = reader.IsDBNull(4) ? null : (int?)reader.GetInt32(4), 
-                                    SESSIONNAME = reader.IsDBNull(5) ? null : reader.GetString(5),
-                                };
-
-                            var session = context.FileSessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
-                            if (session == null && legacy.SESSIONNAME == "Default")
+                        yield return
+                            new MISCTEXT_LIST()
                             {
-                                session = context.FileSessions?.FirstOrDefault(f => f.Id == 1);
-                            }
-
-                            if (session == null)
-                            {
-                                session = new FileSession {SessionName = legacy.SESSIONNAME};
-                                session = context.FileSessions?.Add(session);
-                                context.SaveChanges();
-                            }
-
-                            var miscellaneousTextData = new MiscellaneousTextEntry
-                            {
-                                Id = (int) legacy.ID,
-                                TextValue = legacy.TEXTVALUE,
-                                TextType = (MiscellaneousTextType)legacy.TYPE,
-                                Session = session,
+                                ID = reader.GetInt64(0),
+                                TEXTVALUE = reader.GetString(1),
+                                TYPE = (MiscTextType) reader.GetInt32(2),
+                                ADDED = DateFromDBString(reader.GetString(3)),
+                                SESSIONID = reader.IsDBNull(4) ? null : (int?) reader.GetInt32(4),
+                                SESSIONNAME = reader.IsDBNull(5) ? null : reader.GetString(5),
                             };
-                            try
-                            {
-                                context.MiscellaneousTextEntries.Add(miscellaneousTextData);
-                                context.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                result = false;
-                                ExceptionLogAction?.Invoke(ex);
-                                Debug.WriteLine(ex.Message);
-                            }
-                        }
                     }
                 }
             }
+        }
 
-            return result;
+        /// <summary>
+        /// Gets all the data to from the table convert to Entity Framework.
+        /// </summary>
+        /// <param name="connectionString">A SQLite database connection string.</param>
+        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.String, System.Int32, DateTime, System.String&gt;&gt;.</returns>
+        public static IEnumerable<(int Id, string TextValue, int Type, DateTime Added, string SessionName)>
+            GetEntityData(string connectionString)
+        {
+            InitConnection(connectionString);
+
+            using (var sqLiteConnection = new SQLiteConnection(connectionString))
+            {
+                var miscTexts = GetMiscTextLists();
+                foreach (var miscText in miscTexts)
+                {
+                    var legacy = miscText;
+                    yield return ((int) legacy.ID, legacy.TEXTVALUE, (int) legacy.TYPE, legacy.ADDED,
+                        legacy.SESSIONNAME);
+                }
+            }
+
+            using (Connection)
+            {
+                // dispose of the connection..
+            }
         }
 
         /// <summary>

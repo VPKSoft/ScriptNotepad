@@ -2,8 +2,10 @@
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepadOldDatabase;
 using VPKSoft.LangLib;
@@ -82,6 +84,54 @@ namespace ScriptNotepad.Database.Entity.Utility
                     try
                     {
                         context.RecentFiles.Add(recentFile);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the MISCTEXT_LIST database table into a Entity Framework Code-First <see cref="MiscellaneousTextEntry"/> data.
+        /// </summary>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool DatabaseMiscTextsToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                   "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var dataTuples = DataGetOld.GetEntityDataMiscText(connectionString);
+
+
+            connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                foreach (var dataTuple in dataTuples)
+                {
+                    var miscText = new MiscellaneousTextEntry
+                    {
+                        Id = dataTuple.Id,
+                        Session = GetSession(dataTuple.SessionName, context), 
+                        TextType = (MiscellaneousTextType)dataTuple.Type, 
+                        TextValue = dataTuple.TextValue, 
+                        Added = dataTuple.Added,
+                    };
+
+                    try
+                    {
+                        context.MiscellaneousTextEntries.Add(miscText);
                         context.SaveChanges();
                     }
                     catch (Exception ex)

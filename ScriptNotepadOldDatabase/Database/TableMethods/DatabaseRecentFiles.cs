@@ -71,14 +71,16 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
             return UpdateRecentFile(AddRecentFile(fileName, sessionName, encoding), sessionName) != null;
         }
 
+        /// <summary>
+        /// Gets all the data to from the table convert to Entity Framework.
+        /// </summary>
+        /// <param name="connectionString">A SQLite database connection string.</param>
+        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.String, System.String, Encoding, System.String, DateTime, System.String&gt;&gt;.</returns>
         public static
             IEnumerable<(int Id, string FileNameFull, string SessionName, Encoding Encoding, string FileName, DateTime
                 ClosedDateTime, string FilePath)> GetEntityData(string connectionString)
         {
             InitConnection(connectionString);
-            var result =
-                new List<(int Id, string FileNameFull, string SessionName, Encoding Encoding, string FileName, DateTime
-                    ClosedDateTime, string FilePath)>();
 
             using (var sqLiteConnection = new SQLiteConnection(connectionString))
             {

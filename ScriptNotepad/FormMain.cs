@@ -29,7 +29,6 @@ using Microsoft.Win32;
 using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
 using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
-using ScriptNotepad.Database.UtilityClasses;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.IOPermission;
 using ScriptNotepad.Localization;
@@ -70,7 +69,9 @@ using System.Threading;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.Entity.Utility;
+using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
@@ -417,7 +418,7 @@ namespace ScriptNotepad
                     throw new Exception(MigrateErrorMessage("DatabaseFileSave"));
                 }
 
-                if (!DatabaseMiscText.ToEntity())
+                if (!EntityConversion.DatabaseMiscTextsToEntity())
                 {
                     DisplayError("DatabaseMiscText");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
@@ -1061,7 +1062,8 @@ namespace ScriptNotepad
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
             // clean the old search path entries from the database..
-            DatabaseMiscText.DeleteOlderEntries(MiscTextType.Path, FormSettings.Settings.FileSearchHistoriesLimit);
+            MiscellaneousTextHelper.DeleteOlderEntries(MiscellaneousTextType.Path,
+                FormSettings.Settings.FileSearchHistoriesLimit, CurrentSession);
 
             // clean the old replace replace history entries from the database..
             DatabaseSearchAndReplace.DeleteOlderEntries("REPLACE_HISTORY", FormSettings.Settings.FileSearchHistoriesLimit,

@@ -25,18 +25,13 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Database.Tables
+namespace ScriptNotepadOldDatabase.Database.Tables
 {
     /// <summary>
     /// An enumeration for the <see cref="MISCTEXT_LIST.TYPE"/> field in the database.
     /// </summary>
-    public enum MiscTextType
+    internal enum MiscTextType
     {
         /// <summary>
         /// Indicates a path/directory in the file system.
@@ -54,43 +49,43 @@ namespace ScriptNotepad.Database.Tables
     /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class MISCTEXT_LIST: ErrorHandlingBase
+    internal class MISCTEXT_LIST
     {
         /// <summary>
         /// Gets or sets the ID number (database).
         /// </summary>
-        public long ID { get; set; } = -1;
+        internal long ID { get; set; } = -1;
 
         /// <summary>
         /// Gets or sets the text value of the entry.
         /// </summary>
-        public string TEXTVALUE { get; set; }
+        internal string TEXTVALUE { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the entry where 0 = directory/path, 1 = file filter, 2 = Regular expression, 3 = Simple extended.
         /// </summary>
-        public MiscTextType TYPE { get; set; }
+        internal MiscTextType TYPE { get; set; }
 
         /// <summary>
         /// Gets or sets the added date and time when the entry was added or updated to the database.
         /// </summary>
-        public DateTime ADDED { get; set; } = DateTime.Now;
+        internal DateTime ADDED { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Gets or sets the session ID the entry belongs to. This can be null.
         /// </summary>
-        public long? SESSIONID { get; set; } = null;
+        internal long? SESSIONID { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the name of a session.
         /// </summary>
-        public string SESSIONNAME { get; set; }
+        internal string SESSIONNAME { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        internal new string ToString()
         {
             return TEXTVALUE;
         }

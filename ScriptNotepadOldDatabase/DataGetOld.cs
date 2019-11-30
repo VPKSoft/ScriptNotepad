@@ -13,5 +13,12 @@ namespace ScriptNotepadOldDatabase
         {
             return DatabaseRecentFiles.GetEntityData(connectionString);
         }
+
+        public static
+            IEnumerable<(int Id, string TextValue, int Type, DateTime Added, string SessionName)> GetEntityDataMiscText(
+                string connectionString)
+        {
+            return DatabaseMiscText.GetEntityData(connectionString);
+        }
     }
 }

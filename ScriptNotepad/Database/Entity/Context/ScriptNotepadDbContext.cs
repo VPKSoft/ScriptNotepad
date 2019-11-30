@@ -30,6 +30,7 @@ using System.Data.Entity;
 using System.Data.SQLite;
 using System.Linq;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.Entity.Model;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
@@ -209,5 +210,7 @@ namespace ScriptNotepad.Database.Entity.Context
                 return false; // failure..
             }
         }
+
+
     }
 }

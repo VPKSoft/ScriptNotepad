@@ -38,6 +38,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
+using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
@@ -116,10 +120,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             SetAutoCompleteState(FormSettings.Settings.AutoCompleteEnabled);
 
             // get the filter used in the search and/or replace in files..
-            FilterHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.FileExtensionList, FormSettings.Settings.FileSearchHistoriesLimit);
+            FilterHistory = MiscellaneousTextHelper.GetEntriesByLimit(MiscellaneousTextType.FileExtensionList,
+                FormSettings.Settings.FileSearchHistoriesLimit, FormSettings.Settings.CurrentSessionEntity).ToList();
 
             // get the path(s) used in the search and/or replace in files..
-            PathHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.Path, FormSettings.Settings.FileSearchHistoriesLimit);
+            PathHistory = MiscellaneousTextHelper.GetEntriesByLimit(MiscellaneousTextType.Path,
+                FormSettings.Settings.FileSearchHistoriesLimit, FormSettings.Settings.CurrentSessionEntity).ToList();
 
             // set the user assigned color for the mark..
             btMarkColor.BackColor = FormSettings.Settings.MarkSearchReplaceColor;
@@ -163,19 +169,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         // the search filter history values..
-        private List<MISCTEXT_LIST> filterHistory = new List<MISCTEXT_LIST>();
+        private List<MiscellaneousTextEntry> filterHistory = new List<MiscellaneousTextEntry>();
 
         /// <summary>
         /// Gets or sets the search filter history values.
         /// </summary>
-        public List<MISCTEXT_LIST> FilterHistory
+        public List<MiscellaneousTextEntry> FilterHistory
         {
             get => filterHistory;
 
             set
             {
                 // sort the list as sorted in the database..
-                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.TEXTVALUE.ToLowerInvariant())
+                value = value.OrderByDescending(f => f.Added).ThenBy(f => f.TextValue.ToLowerInvariant())
                     .ToList();
 
                 // save the value..
@@ -187,19 +193,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         // the search and/or replace path values..
-        private List<MISCTEXT_LIST> pathHistory = new List<MISCTEXT_LIST>();
+        private List<MiscellaneousTextEntry> pathHistory = new List<MiscellaneousTextEntry>();
 
         /// <summary>
         /// Gets or sets the search and/or replace path values.
         /// </summary>
-        public List<MISCTEXT_LIST> PathHistory
+        public List<MiscellaneousTextEntry> PathHistory
         {
             get => pathHistory;
 
             set
             {
                 // sort the list as sorted in the database..
-                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.TEXTVALUE.ToLowerInvariant())
+                value = value.OrderByDescending(f => f.Added).ThenBy(f => f.TextValue.ToLowerInvariant())
                     .ToList();
 
                 // save the value..
@@ -829,16 +835,15 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 return;
             }
+        
 
-            var inserted = DatabaseMiscText.AddOrUpdateMiscText(
-                new MISCTEXT_LIST
-                {
-                    TEXTVALUE = cmbFilters3.Text.Trim(), TYPE = MiscTextType.FileExtensionList
-                });
+            var inserted = MiscellaneousTextHelper.AddUniqueMiscellaneousText(cmbFilters3.Text.Trim(),
+                MiscellaneousTextType.FileExtensionList, FormSettings.Settings.CurrentSessionEntity);
+
 
             // conditional insert to the list..
             if (inserted != null && !FilterHistory.Exists(f =>
-                    f.TYPE == inserted.TYPE && f.TEXTVALUE == inserted.TEXTVALUE))
+                    f.TextType == inserted.TextType && f.TextValue == inserted.TextValue))
             {
                 FilterHistory.Add(inserted);
                 ReListFilterHistory();
@@ -855,15 +860,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return;
             }
 
-            var inserted = DatabaseMiscText.AddOrUpdateMiscText(
-                new MISCTEXT_LIST
-                {
-                    TEXTVALUE = cmbDirectory3.Text, TYPE = MiscTextType.Path
-                });
+            var inserted = MiscellaneousTextHelper.AddUniqueMiscellaneousText(cmbDirectory3.Text,
+                MiscellaneousTextType.Path, FormSettings.Settings.CurrentSessionEntity);
 
             // conditional insert to the list..
             if (inserted != null && !FilterHistory.Exists(f =>
-                    f.TYPE == inserted.TYPE && f.TEXTVALUE == inserted.TEXTVALUE))
+                    f.TextType == inserted.TextType && f.TextValue == inserted.TextValue))
             {
                 PathHistory.Add(inserted);
                 ReListPathHistory();
