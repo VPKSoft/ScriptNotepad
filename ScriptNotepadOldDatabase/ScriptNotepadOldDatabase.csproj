@@ -55,6 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsSessionData.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsSessionName.cs" />
+    <Compile Include="Database\TableMethods\DatabaseSessionData.cs" />
+    <Compile Include="Database\TableMethods\DatabaseSessionName.cs" />
+    <Compile Include="Database\Tables\SESSION_NAME.cs" />
     <Compile Include="DataGetOld.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsRecentFiles.cs" />
