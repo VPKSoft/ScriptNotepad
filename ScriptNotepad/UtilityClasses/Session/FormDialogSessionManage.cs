@@ -30,6 +30,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.UtilityClasses.Session
@@ -240,7 +241,7 @@ namespace ScriptNotepad.UtilityClasses.Session
                     DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
-                        if (ScriptNotepadDbContext.DbContext.DeleteEntireSession(session))
+                        if (FileSessionHelper.DeleteEntireSession(session))
                         {
                             MessageBox.Show(
                                 DBLangEngine.GetMessage("msgSessionDeleteSuccess",

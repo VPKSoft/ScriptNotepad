@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ScriptNotepad.Database.Entity.Context;
@@ -40,7 +39,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
     /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class MiscellaneousTextHelper: ErrorHandlingBase
+    public class MiscellaneousTextEntryHelper: ErrorHandlingBase
     {
         /// <summary>
         /// Adds an unique miscellaneous text value to the database.
@@ -66,7 +65,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                         TextValue = miscText
                     };
 
-                    context.MiscellaneousTextEntries.Add(result);
+                    result = context.MiscellaneousTextEntries.Add(result);
                     context.SaveChanges();
                     return result;
                 }

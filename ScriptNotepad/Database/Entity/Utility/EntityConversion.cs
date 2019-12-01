@@ -99,6 +99,57 @@ namespace ScriptNotepad.Database.Entity.Utility
         }
 
         /// <summary>
+        /// Searches the and replace history to entity.
+        /// </summary>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool SearchAndReplaceHistoryToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                   "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var dataTuples = DataGetOld.GetEntityDataSearchAndReplace(connectionString);
+
+            connectionString = "Data Source=" + DBLangEngine.DataDir +
+                               "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                foreach (var dataTuple in dataTuples)
+                {
+                    var search = new SearchAndReplaceHistory
+                    {
+                        Id = dataTuple.Id,
+                        Session = GetSession(dataTuple.FileSession, context),
+                        SearchAndReplaceSearchType = (SearchAndReplaceSearchType) dataTuple.SearchAndReplaceSearchType,
+                        SearchAndReplaceType = (SearchAndReplaceType) dataTuple.SearchAndReplaceType,
+                        SearchOrReplaceText = dataTuple.SearchOrReplaceText,
+                        Added = dataTuple.Added,
+                        CaseSensitive = dataTuple.CaseSensitive,
+                    };
+
+
+                    try
+                    {
+                        context.SearchAndReplaceHistories.Add(search);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Converts the MISCTEXT_LIST database table into a Entity Framework Code-First <see cref="MiscellaneousTextEntry"/> data.
         /// </summary>
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>

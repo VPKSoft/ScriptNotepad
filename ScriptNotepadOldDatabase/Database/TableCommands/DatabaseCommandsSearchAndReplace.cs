@@ -25,17 +25,18 @@ SOFTWARE.
 #endregion
 
 using System;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.Database.UtilityClasses;
+using ScriptNotepadOldDatabase.Database.TableMethods;
+using ScriptNotepadOldDatabase.Database.Tables;
+using ScriptNotepadOldDatabase.Database.UtilityClasses;
 
-namespace ScriptNotepad.Database.TableCommands
+namespace ScriptNotepadOldDatabase.Database.TableCommands
 {
     /// <summary>
     /// A class which is used to formulate SQL sentences for the <see cref="Database"/> class for the SEARCH_HISTORY and REPLACE_HISTORY database tables.
-    /// Implements the <see cref="ScriptNotepad.Database.UtilityClasses.DataFormulationHelpers" />
+    /// Implements the <see cref="DataFormulationHelpers" />
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.UtilityClasses.DataFormulationHelpers" />
-    public class DatabaseCommandsSearchAndReplace: DataFormulationHelpers
+    /// <seealso cref="DataFormulationHelpers" />
+    internal class DatabaseCommandsSearchAndReplace: DataFormulationHelpers
     {
         /// <summary>
         /// Gets a database field name by a given table name for the database tables of SEARCH_HISTORY or REPLACE_HISTORY.
@@ -63,7 +64,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="searchAndReplace">A SEARCH_AND_REPLACE_HISTORY class instance to be used for the SQL sentence generation.</param>
         /// <param name="tableName">The name of the table where the insert should be done.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenInsertSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string tableName)
+        internal static string GenInsertSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string tableName)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -86,7 +87,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="searchAndReplace">A SEARCH_AND_REPLACE_HISTORY class instance to be used for the SQL sentence generation.</param>
         /// <param name="tableName">The name of the table where the update should be done.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenInsertUpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace,
+        internal static string GenInsertUpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace,
             string tableName)
         {
             string sql =
@@ -108,7 +109,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="sessionName">A name of the session to which the search or the replace entries belong to.</param>
         /// <param name="maxCount">A maximum amount of search and/or replace entries to get.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenSearchAndReplaceSelect(string tableName, string sessionName, int maxCount)
+        internal static string GenSearchAndReplaceSelect(string tableName, string sessionName, int maxCount)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -129,7 +130,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// Generates a SQL sentence to select search or replace entries from the database saved in the SEARCH_HISTORY or the REPLACE_HISTORY table.
         /// </summary>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenSearchAndReplaceSelect()
+        internal static string GenSearchAndReplaceSelect()
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -155,7 +156,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="searchAndReplace">A SEARCH_AND_REPLACE_HISTORY class instance to be used for the SQL sentence generation.</param>
         /// <param name="tableName">The name of the table where the ID should be gotten from.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GetExistingDBSearchAndReplacIDSentence(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string tableName)
+        internal static string GetExistingDBSearchAndReplacIDSentence(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string tableName)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -173,7 +174,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="sessionName">A name of the session to which the search or the replace entries belong to.</param>
         /// <param name="types">Types of either search and/or replace history entries.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenDeleteOlderEntries(string tableName, int remainAmount, string sessionName, params int[] types)
+        internal static string GenDeleteOlderEntries(string tableName, int remainAmount, string sessionName, params int[] types)
         {
             string sql =
                 string.Join(Environment.NewLine,

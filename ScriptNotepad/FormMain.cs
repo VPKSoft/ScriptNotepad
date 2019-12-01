@@ -453,7 +453,7 @@ namespace ScriptNotepad
                     throw new Exception(MigrateErrorMessage("DatabaseCodeSnippets"));
                 }
 
-                if (!DatabaseSearchAndReplace.ToEntity())
+                if (!EntityConversion.SearchAndReplaceHistoryToEntity())
                 {
                     DisplayError("DatabaseSearchAndReplace");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
@@ -1062,16 +1062,16 @@ namespace ScriptNotepad
             ExceptionLogger.LogMessage($"Database history list cleanup: success = {cleanupContents.success}, amount = {cleanupContents.deletedAmount}, session = {CurrentSession}.");
 
             // clean the old search path entries from the database..
-            MiscellaneousTextHelper.DeleteOlderEntries(MiscellaneousTextType.Path,
+            MiscellaneousTextEntryHelper.DeleteOlderEntries(MiscellaneousTextType.Path,
                 FormSettings.Settings.FileSearchHistoriesLimit, CurrentSession);
 
             // clean the old replace replace history entries from the database..
-            DatabaseSearchAndReplace.DeleteOlderEntries("REPLACE_HISTORY", FormSettings.Settings.FileSearchHistoriesLimit,
-                CurrentSession.SessionName, 0, 1, 2, 3);
+            SearchAndReplaceHistoryHelper.DeleteOlderEntries(SearchAndReplaceSearchType.All,
+                SearchAndReplaceType.Replace, FormSettings.Settings.FileSearchHistoriesLimit, CurrentSession);
 
             // clean the old replace search history entries from the database..
-            DatabaseSearchAndReplace.DeleteOlderEntries("SEARCH_HISTORY", FormSettings.Settings.FileSearchHistoriesLimit,
-                CurrentSession.SessionName, 0, 1, 2, 3);
+            SearchAndReplaceHistoryHelper.DeleteOlderEntries(SearchAndReplaceSearchType.All,
+                SearchAndReplaceType.Search, FormSettings.Settings.FileSearchHistoriesLimit, CurrentSession);
 
             // close the main form as the call came from elsewhere than the FormMain_FormClosed event..
             if (noUserInteraction)
@@ -1631,12 +1631,12 @@ namespace ScriptNotepad
             // would be missing (also a bug might occur)..
             if (sttcMain.AddNewDocument())
             {
-                if (sttcMain.CurrentDocument != null) // if the document was added or updated to the control..
+                if (sttcMain.LastAddedDocument != null) // if the document was added or updated to the control..
                 {
                     // append additional initialization to the document..
-                    AdditionalInitializeDocument(sttcMain.CurrentDocument);
+                    AdditionalInitializeDocument(sttcMain.LastAddedDocument);
 
-                    sttcMain.CurrentDocument.Tag =
+                    sttcMain.LastAddedDocument.Tag =
                         new DBFILE_SAVE()
                         {
                             FILENAME = sttcMain.CurrentDocument.FileName,
@@ -1653,10 +1653,10 @@ namespace ScriptNotepad
                     sttcMain.LastAddedDocument.FileTabButton.ContextMenuStrip = cmsFileTab;
 
                     // get a DBFILE_SAVE class instance from the document's tag..
-                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.CurrentDocument.Tag;
+                    DBFILE_SAVE fileSave = (DBFILE_SAVE)sttcMain.LastAddedDocument.Tag;
 
                     // save the DBFILE_SAVE class instance to the Tag property..
-                    sttcMain.CurrentDocument.Tag = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.CurrentDocument);
+                    sttcMain.LastAddedDocument.Tag = DatabaseFileSave.AddOrUpdateFile(fileSave, sttcMain.LastAddedDocument);
 
                     // append possible style and spell checking for the document..
                     AppendStyleAndSpellChecking(sttcMain.LastAddedDocument);

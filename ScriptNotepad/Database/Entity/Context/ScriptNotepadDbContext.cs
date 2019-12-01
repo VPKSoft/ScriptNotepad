@@ -186,31 +186,5 @@ namespace ScriptNotepad.Database.Entity.Context
         /// Gets or sets the <see cref="SearchAndReplaceHistory"/> instances in the database.
         /// </summary>
         public DbSet<SearchAndReplaceHistory> SearchAndReplaceHistories { get; set; }
-
-        /// <summary>
-        /// Deletes the entire session from the database context.
-        /// </summary>
-        /// <param name="session">The session to delete.</param>
-        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public bool DeleteEntireSession(FileSession session)
-        {
-            try
-            {
-                FileSaves.RemoveRange(FileSaves.Where(f => f.Session == session));
-                MiscellaneousTextEntries.RemoveRange(MiscellaneousTextEntries.Where(f => f.Session == session));
-                RecentFiles.RemoveRange(RecentFiles.Where(f => f.Session == session));
-                FileSessions.Remove(session);
-                SaveChanges();
-                return true; // success..
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return false; // failure..
-            }
-        }
-
-
     }
 }

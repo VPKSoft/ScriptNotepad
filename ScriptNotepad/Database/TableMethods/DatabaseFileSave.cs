@@ -196,6 +196,11 @@ namespace ScriptNotepad.Database.TableMethods
         /// <returns>A modified instance of the DBFILE_SAVE if the operation was successful; otherwise null;</returns>
         public static DBFILE_SAVE UpdateFile(DBFILE_SAVE fileSave, int currentPosition)
         {
+            if (fileSave == null)
+            {
+                return null;
+            }
+
             string sql = DatabaseCommandsFileSave.GenUpdateFileSentence(ref fileSave);
             try
             {

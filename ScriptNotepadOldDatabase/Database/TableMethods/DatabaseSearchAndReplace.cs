@@ -28,22 +28,17 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
-using ScriptNotepad.Database.Entity.Context;
-using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.Enumerations;
-using ScriptNotepad.Database.TableCommands;
-using ScriptNotepad.Database.Tables;
+using ScriptNotepadOldDatabase.Database.TableCommands;
+using ScriptNotepadOldDatabase.Database.Tables;
 using VPKSoft.LangLib;
 
-namespace ScriptNotepad.Database.TableMethods
+namespace ScriptNotepadOldDatabase.Database.TableMethods
 {
     /// <summary>
     /// A class containing methods for database interaction with the SEARCH_HISTORY and the REPLACE_HISTORY tables.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Database" />
-    public class DatabaseSearchAndReplace: Database
+    /// <seealso cref="Database" />
+    internal class DatabaseSearchAndReplace: Database
     {
         /// <summary>
         /// Updates a recent SEARCH_AND_REPLACE_HISTORY class instance into the database either to the SEARCH_HISTORY table or the REPLACE_HISTORY table.
@@ -52,7 +47,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="sessionName">A name of the session to which the search or replace entry belongs to.</param>
         /// <param name="tableName">A name of the table the entry to be updated belongs to; Either SEARCH_HISTORY or REPLACE_HISTORY tables are accepted values.</param>
         /// <returns>The updated instance of the given <paramref name="searchAndReplace"/> class instance if the operation was successful; otherwise null.</returns>
-        public static SEARCH_AND_REPLACE_HISTORY UpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
+        internal static SEARCH_AND_REPLACE_HISTORY UpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
         {
             searchAndReplace.SESSIONNAME = sessionName;
 
@@ -75,7 +70,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="sessionName">A name of the session to which the search and replace entry belongs to.</param>
         /// <param name="tableName">A name of the table the entry to be inserted belongs to; Either SEARCH_HISTORY or REPLACE_HISTORY tables are accepted values.</param>
         /// <returns>A SEARCH_AND_REPLACE_HISTORY class instance if the search and/or replace entry was successfully added to the database; otherwise null.</returns>
-        public static SEARCH_AND_REPLACE_HISTORY AddSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
+        internal static SEARCH_AND_REPLACE_HISTORY AddSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
         {
             try
             {
@@ -122,7 +117,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="sessionName">A name of the session to which the search and replace entry belongs to.</param>
         /// <param name="tableName">A name of the table the entry to be inserted belongs to; Either SEARCH_HISTORY or REPLACE_HISTORY tables are accepted values.</param>
         /// <returns>An instance to a <see cref="SEARCH_AND_REPLACE_HISTORY"/> class if the operations was successful; otherwise null;</returns>
-        public static SEARCH_AND_REPLACE_HISTORY AddOrUpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
+        internal static SEARCH_AND_REPLACE_HISTORY AddOrUpdateSearchAndReplace(SEARCH_AND_REPLACE_HISTORY searchAndReplace, string sessionName, string tableName)
         {
             return UpdateSearchAndReplace(AddSearchAndReplace(searchAndReplace, sessionName, tableName), sessionName,
                        tableName);
@@ -136,7 +131,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="sessionName">A name of the session to which the search or the replace entries belong to.</param>
         /// <param name="types">A array of types to include to the cleanup.</param>
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool DeleteOlderEntries(string tableName, int remainAmount, string sessionName,
+        internal static bool DeleteOlderEntries(string tableName, int remainAmount, string sessionName,
             params int[] types)
         {
             string sql =
@@ -146,63 +141,39 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
-        /// Converts the legacy database table <see cref="SEARCH_AND_REPLACE_HISTORY"/> to Entity Framework format.
+        /// Gets all the data to from the table convert to Entity Framework.
         /// </summary>
-        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
-        public static bool ToEntity()
+        /// <param name="connectionString">A SQLite database connection string.</param>
+        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.String, System.String, Encoding, System.String, DateTime, System.String&gt;&gt;.</returns>
+        public static
+            IEnumerable<(int Id, string SearchOrReplaceText, bool CaseSensitive, int SearchAndReplaceSearchType, int
+                SearchAndReplaceType, DateTime Added, string FileSession)> GetEntityData(string connectionString)
         {
-            var result = true;
-            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
-
-            var sqLiteConnection = new SQLiteConnection(connectionString);
-            sqLiteConnection.Open();
-
-
-            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            int TranslateTypeEnum(int value)
             {
-                var searchAndReplaces = GetSearchesAndReplaces();
-                foreach (var entry in searchAndReplaces)
+                switch (value)
                 {
-
-                    var legacy = entry;
-
-                    var session = context.FileSessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
-                    if (session == null && legacy.SESSIONNAME == "Default")
-                    {
-                        session = context.FileSessions?.FirstOrDefault(f => f.Id == 1);
-                    }
-
-                    if (session == null)
-                    {
-                        session = new FileSession {SessionName = legacy.SESSIONNAME};
-                        session = context.FileSessions?.Add(session);
-                        context.SaveChanges();
-                    }
-
-                    var searchAndReplaceHistoryNew = new SearchAndReplaceHistory
-                    {
-                        Id = (int) legacy.ID, Session = session, 
-                        SearchAndReplaceType = (SearchAndReplaceType)(legacy.ISREPLACE ? 1: 0), 
-                        Added = legacy.ADDED, 
-                        CaseSensitive = legacy.CASE_SENSITIVE, 
-                        SearchAndReplaceSearchType = (SearchAndReplaceSearchType)legacy.TYPE, 
-                        SearchOrReplaceText = legacy.SEARCH_OR_REPLACE_TEXT,
-                    };
-                    try
-                    {
-                        context.SearchAndReplaceHistories.Add(searchAndReplaceHistoryNew);
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        result = false;
-                        ExceptionLogAction?.Invoke(ex);
-                        Debug.WriteLine(ex.Message);
-                    }
+                    case 0: return 1;
+                    case 1: return 2;
+                    case 2: return 4;
+                    case 3: return 8;
                 }
+
+                return 0;
             }
 
-            return result;
+            InitConnection(connectionString);
+
+            using (var sqLiteConnection = new SQLiteConnection(connectionString))
+            {
+                var searches = GetSearchesAndReplaces();
+                foreach (var search in searches)
+                {
+                    var legacy = search;
+                    yield return ((int) legacy.ID, legacy.SEARCH_OR_REPLACE_TEXT, legacy.CASE_SENSITIVE,
+                        TranslateTypeEnum(legacy.TYPE), legacy.ISREPLACE ? 1 : 0, legacy.ADDED, legacy.SESSIONNAME);
+                }
+            }
         }
 
         /// <summary>
@@ -212,7 +183,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="tableName">The name of the table where the results should be gotten from.</param>
         /// <param name="maxCount">Maximum count of recent file entries to return.</param>
         /// <returns>A collection RECENT_FILES classes.</returns>
-        public static List<SEARCH_AND_REPLACE_HISTORY> GetSearchesAndReplaces(string sessionName, string tableName, int maxCount)
+        internal static List<SEARCH_AND_REPLACE_HISTORY> GetSearchesAndReplaces(string sessionName, string tableName, int maxCount)
         {
             List<SEARCH_AND_REPLACE_HISTORY> result = new List<SEARCH_AND_REPLACE_HISTORY>();
 
@@ -249,7 +220,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// Gets all the search and replace history entries from the database.
         /// </summary>
         /// <returns>A collection SEARCH_AND_REPLACE_HISTORY classes.</returns>
-        public static List<SEARCH_AND_REPLACE_HISTORY> GetSearchesAndReplaces()
+        internal static List<SEARCH_AND_REPLACE_HISTORY> GetSearchesAndReplaces()
         {
             List<SEARCH_AND_REPLACE_HISTORY> result = new List<SEARCH_AND_REPLACE_HISTORY>();
 

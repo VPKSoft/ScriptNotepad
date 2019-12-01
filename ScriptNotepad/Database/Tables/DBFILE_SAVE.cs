@@ -53,10 +53,25 @@ namespace ScriptNotepad.Database.Tables
             ENCODING = Encoding.UTF8;                
         }
 
+        private long id = -1;
+
         /// <summary>
         /// Gets or sets the ID number (database).
         /// </summary>
-        public long ID { get; set; } = -1;
+        public long ID
+        {
+            get => id; 
+            set
+            {
+                if (value <= 0)
+                {
+                    // TODO::After LINQ:throw new Exception("Catch the bug");
+                }
+
+                id = value;
+            }
+
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the file exists in the file system.

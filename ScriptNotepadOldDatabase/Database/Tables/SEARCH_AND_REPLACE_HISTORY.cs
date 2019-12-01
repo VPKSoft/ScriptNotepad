@@ -25,56 +25,55 @@ SOFTWARE.
 #endregion
 
 using System;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Database.Tables
+namespace ScriptNotepadOldDatabase.Database.Tables
 {
     /// <summary>
     /// A class representing either an database entry from the SEARCH_HISTORY or SEARCH_HISTORY table.
     /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class SEARCH_AND_REPLACE_HISTORY: ErrorHandlingBase
+    internal class SEARCH_AND_REPLACE_HISTORY
     {
         /// <summary>
         /// Gets or sets the ID number (database).
         /// </summary>
-        public long ID { get; set; } = -1;
+        internal long ID { get; set; } = -1;
 
         /// <summary>
         /// Gets or sets the search or replace text.
         /// </summary>
-        public string SEARCH_OR_REPLACE_TEXT { get; set; }
+        internal string SEARCH_OR_REPLACE_TEXT { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether search or replace was case sensitive.
         /// </summary>
-        public bool CASE_SENSITIVE { get; set; }
+        internal bool CASE_SENSITIVE { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the search where 0 = Normal, 1 = Extended, 2 = Regular expression, 3 = Simple extended.
         /// </summary>
-        public int TYPE { get; set; }
+        internal int TYPE { get; set; }
 
         /// <summary>
         /// Gets or sets the added date and time when the entry was added to the database or created.
         /// </summary>
-        public DateTime ADDED { get; set; } = DateTime.Now;
+        internal DateTime ADDED { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Gets or sets the session ID.
         /// </summary>
-        public long SESSIONID { get; set; } = 1;
+        internal long SESSIONID { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the name of a session.
         /// </summary>
-        public string SESSIONNAME { get; set; }
+        internal string SESSIONNAME { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="SEARCH_AND_REPLACE_HISTORY"/> is a replace history entry.
         /// </summary>
-        public bool ISREPLACE { get; set; }
+        internal bool ISREPLACE { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

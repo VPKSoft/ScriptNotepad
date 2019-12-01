@@ -20,5 +20,12 @@ namespace ScriptNotepadOldDatabase
         {
             return DatabaseMiscText.GetEntityData(connectionString);
         }
+
+        public static
+            IEnumerable<(int Id, string SearchOrReplaceText, bool CaseSensitive, int SearchAndReplaceSearchType, int
+                SearchAndReplaceType, DateTime Added, string FileSession)> GetEntityDataSearchAndReplace(string connectionString)
+        {
+            return DatabaseSearchAndReplace.GetEntityData(connectionString);
+        }
     }
 }

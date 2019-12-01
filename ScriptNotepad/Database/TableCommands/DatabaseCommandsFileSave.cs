@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ScriptNotepad.UtilityClasses.Encodings;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using static ScriptNotepad.Database.DatabaseEnumerations;
 
 namespace ScriptNotepad.Database.TableCommands
@@ -317,33 +318,45 @@ namespace ScriptNotepad.Database.TableCommands
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         public static string GenUpdateFileSentence(ref DBFILE_SAVE fileSave)
         {
-            fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL) ? new FileInfo(fileSave.FILENAME_FULL).LastWriteTime : DateTime.MinValue;
-            // NOT HERE: fileSave.DB_MODIFIED = DateTime.Now;
-            fileSave.EXISTS_INFILESYS = File.Exists(fileSave.FILENAME_FULL);
+            try
+            {
 
-            string sql =
-                string.Join(Environment.NewLine,
-                $"UPDATE DBFILE_SAVE SET",
-                $"EXISTS_INFILESYS = {BS(fileSave.EXISTS_INFILESYS)},",
-                $"FILENAME_FULL = {QS(fileSave.FILENAME_FULL)}, ",
-                $"FILENAME = {QS(fileSave.FILENAME)},",
-                $"FILEPATH = {QS(fileSave.FILEPATH)},",
-                $"FILESYS_MODIFIED = {DateToDBString(fileSave.FILESYS_MODIFIED)},",
-                $"FILESYS_SAVED = {DateToDBString(fileSave.FILESYS_SAVED)},",
-                $"DB_MODIFIED = {DateToDBString(fileSave.DB_MODIFIED)},",
-                $"LEXER_CODE = {(int)fileSave.LEXER_CODE},",
-                $"FILE_CONTENTS = @FILE,",
-                $"VISIBILITY_ORDER = {fileSave.VISIBILITY_ORDER},",
-                $"ISACTIVE = {BS(fileSave.ISACTIVE)},",
-                $"ISHISTORY = {BS(fileSave.ISHISTORY)},",
-                $"SESSIONID = {fileSave.SESSIONID},",
-                $"CURRENT_POSITION = {fileSave.CURRENT_POSITION},",
-                $"ENCODING = {QS(EncodingData.EncodingToString(fileSave.ENCODING))},",
-                $"USESPELL_CHECK = {BS(fileSave.USESPELL_CHECK)},",
-                $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM}",
-                $"WHERE ID = {fileSave.ID};");
+                fileSave.FILESYS_MODIFIED = File.Exists(fileSave.FILENAME_FULL)
+                    ? new FileInfo(fileSave.FILENAME_FULL).LastWriteTime
+                    : DateTime.MinValue;
+                // NOT HERE: fileSave.DB_MODIFIED = DateTime.Now;
+                fileSave.EXISTS_INFILESYS = File.Exists(fileSave.FILENAME_FULL);
 
-            return sql;
+                string sql =
+                    string.Join(Environment.NewLine,
+                        $"UPDATE DBFILE_SAVE SET",
+                        $"EXISTS_INFILESYS = {BS(fileSave.EXISTS_INFILESYS)},",
+                        $"FILENAME_FULL = {QS(fileSave.FILENAME_FULL)}, ",
+                        $"FILENAME = {QS(fileSave.FILENAME)},",
+                        $"FILEPATH = {QS(fileSave.FILEPATH)},",
+                        $"FILESYS_MODIFIED = {DateToDBString(fileSave.FILESYS_MODIFIED)},",
+                        $"FILESYS_SAVED = {DateToDBString(fileSave.FILESYS_SAVED)},",
+                        $"DB_MODIFIED = {DateToDBString(fileSave.DB_MODIFIED)},",
+                        $"LEXER_CODE = {(int) fileSave.LEXER_CODE},",
+                        $"FILE_CONTENTS = @FILE,",
+                        $"VISIBILITY_ORDER = {fileSave.VISIBILITY_ORDER},",
+                        $"ISACTIVE = {BS(fileSave.ISACTIVE)},",
+                        $"ISHISTORY = {BS(fileSave.ISHISTORY)},",
+                        $"SESSIONID = {fileSave.SESSIONID},",
+                        $"CURRENT_POSITION = {fileSave.CURRENT_POSITION},",
+                        $"ENCODING = {QS(EncodingData.EncodingToString(fileSave.ENCODING))},",
+                        $"USESPELL_CHECK = {BS(fileSave.USESPELL_CHECK)},",
+                        $"EDITOR_ZOOM = {fileSave.EDITOR_ZOOM}",
+                        $"WHERE ID = {fileSave.ID};");
+
+                return sql;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                return string.Empty;
+            }
         }
     }
 }
