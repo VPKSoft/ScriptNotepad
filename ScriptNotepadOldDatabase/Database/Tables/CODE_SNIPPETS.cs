@@ -35,14 +35,6 @@ namespace ScriptNotepadOldDatabase.Database.Tables
     internal class CODE_SNIPPETS
     {
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        internal override string ToString()
-        {
-            return SCRIPT_NAME;
-        }
-
-        /// <summary>
         /// Gets or sets the ID number of the entry in the database.
         /// </summary>
         internal long ID { get; set; } = -1;

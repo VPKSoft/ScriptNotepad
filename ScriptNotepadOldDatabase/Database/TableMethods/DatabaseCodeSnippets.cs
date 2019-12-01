@@ -150,55 +150,6 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         }
 
         /// <summary>
-        /// Converts the legacy database table <see cref="CODE_SNIPPETS"/> to Entity Framework format.
-        /// </summary>
-        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
-        internal static bool ToEntity()
-        {
-            var result = true;
-            var connectionString = "Data Source=" + DBLangEngine.DataDir +
-                                   "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
-
-            var sqLiteConnection = new SQLiteConnection(connectionString);
-            sqLiteConnection.Open();
-
-            var codeSnippets = GetCodeSnippets();
-
-            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
-            {
-                foreach (var codeSnippet in codeSnippets)
-                {
-                    var legacy = codeSnippet;
-
-                    var codeSnippetNew = new CodeSnippet
-                    {
-                        Id = (int) legacy.ID, 
-                        ScriptTextManipulationType = (ScriptSnippetType)legacy.SCRIPT_TYPE,
-                        ScriptLanguage = (CodeSnippetLanguage)legacy.SCRIPT_LANGUAGE, 
-                        Modified = legacy.MODIFIED,
-                        ScriptContents = legacy.SCRIPT_CONTENTS, 
-                        ScriptName = legacy.SCRIPT_NAME,
-                    };
-                    try
-                    {
-                        context.CodeSnippets.Add(codeSnippetNew);
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        result = false;
-                        ExceptionLogAction?.Invoke(ex);
-                        Debug.WriteLine(ex.Message);
-                    }
-
-                }
-            }
-
-            return result;
-        }
-
-
-        /// <summary>
         /// Gets all the code snippets from the database.
         /// </summary>
         /// <returns>A collection CODE_SNIPPETS classes.</returns>
