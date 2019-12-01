@@ -188,15 +188,13 @@
     <Compile Include="Database\Entity\Utility\EntityConversion.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\FileSessionHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\MiscellaneousTextEntryHelper.cs" />
+    <Compile Include="Database\Entity\Utility\ModelHelpers\PluginHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\SearchAndReplaceHistoryHelper.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsFileSave.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsGeneral.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
-    <Compile Include="Database\TableCommands\DatabaseCommandsPlugins.cs" />
-    <Compile Include="Database\TableMethods\DatabasePlugins.cs" />
     <Compile Include="Database\TableMethods\DatabaseFileSave.cs" />
     <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
-    <Compile Include="Database\Tables\PLUGINS.cs" />
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
     <Compile Include="UtilityClasses\MenuHelpers\RecentFilesMenuBuilder.cs" />
     <Compile Include="DialogForms\FormDialogQueryJumpLocation.cs">
@@ -317,7 +315,6 @@
     <Compile Include="PluginHandling\FormPluginManage.Designer.cs">
       <DependentUpon>FormPluginManage.cs</DependentUpon>
     </Compile>
-    <Compile Include="PluginHandling\PluginDatabaseEntry.cs" />
     <Compile Include="PluginHandling\PluginDirectoryRoaming.cs" />
     <Compile Include="PluginHandling\PluginInitializer.cs" />
     <Compile Include="Settings\FormSettings.cs">

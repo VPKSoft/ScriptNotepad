@@ -245,5 +245,65 @@ namespace ScriptNotepad.Database.Entity.Utility
 
             return result;
         }
+
+        /// <summary>
+        /// Converts the PLUGINS database table into a Entity Framework Code-First <see cref="Plugin"/> data.
+        /// </summary>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool PluginsToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                   "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var dataTuples = DataGetOld.GetEntityDataPlugins(connectionString);
+
+
+            connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                foreach (var dataTuple in dataTuples)
+                {
+                    var plugin = new Plugin
+                    {
+                        Id = dataTuple.Id,
+                        FileNameFull = dataTuple.FileNameFull,
+                        FileName = dataTuple.FileName,
+                        FilePath = dataTuple.FilePath,
+                        PluginVersion = dataTuple.PluginVersion,
+                        PluginDescription = dataTuple.PluginDescription,
+                        PluginName = dataTuple.PluginName,
+                        ExceptionCount = dataTuple.ExceptionCount,
+                        SortOrder = dataTuple.SortOrder,
+                        PluginUpdated = dataTuple.PluginUpdated,
+                        LoadFailures = dataTuple.LoadFailures,
+                        ApplicationCrashes = dataTuple.ApplicationCrashes,
+                        IsActive = dataTuple.IsActive,
+                        PendingDeletion = dataTuple.PendingDeletion,
+                        PluginInstalled = dataTuple.PluginInstalled,
+                        Rating = dataTuple.Rating,
+                    };
+
+
+                    try
+                    {
+                        context.Plugins.Add(plugin);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

@@ -24,34 +24,28 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.TableCommands;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.TableCommands;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
-using ScriptNotepad.Database.Entity.Context;
-using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.Enumerations;
+using ScriptNotepadOldDatabase.Database.TableCommands;
+using ScriptNotepadOldDatabase.Database.Tables;
 using VPKSoft.LangLib;
 
-namespace ScriptNotepad.Database.TableMethods
+namespace ScriptNotepadOldDatabase.Database.TableMethods
 {
     /// <summary>
     /// A class containing methods for database interaction with the PLUGINS table.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Database" />
-    public class DatabasePlugins: Database
+    /// <seealso cref="Database" />
+    internal class DatabasePlugins: Database
     {
         /// <summary>
         /// Adds a given PLUGINS class instance to the PLUGINS database table.
         /// </summary>
         /// <param name="plugin">A PLUGINS class instance to add to the database's PLUGINS table.</param>
         /// <returns>A PLUGINS class instance if the plug-in was successfully added to the database; otherwise null.</returns>
-        public static PLUGINS AddPlugin(PLUGINS plugin)
+        internal static PLUGINS AddPlugin(PLUGINS plugin)
         {
             // a necessary null check..
             if (plugin == null)
@@ -98,7 +92,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="plugin">The plug-in <see cref="PLUGINS"/> class to be updated to the database.</param>
         /// <returns>A PLUGINS class instance if the plug-in was successfully updated to the database; otherwise null.</returns>
-        public static PLUGINS UpdatePlugin(PLUGINS plugin)
+        internal static PLUGINS UpdatePlugin(PLUGINS plugin)
         {
             // a necessary null check..
             if (plugin == null)
@@ -133,7 +127,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="plugin">The plug-in to be added or updated.</param>
         /// <returns>A PLUGINS class instance if the plug-in was successfully added or updated to the database; otherwise null.</returns>
-        public static PLUGINS AddOrUpdatePlugin(PLUGINS plugin)
+        internal static PLUGINS AddOrUpdatePlugin(PLUGINS plugin)
         {
             try
             {
@@ -148,67 +142,43 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
-        /// Converts the legacy database table <see cref="PLUGINS"/> to Entity Framework format.
+        /// Gets all the data to from the table convert to Entity Framework.
         /// </summary>
-        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
-        public static bool ToEntity()
+        /// <param name="connectionString">A SQLite database connection string.</param>
+        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.String, System.String, System.String, System.String, System.String, System.String, System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, DateTime, DateTime, System.Boolean&gt;&gt;.</returns>
+        internal static IEnumerable<(int Id, string FileNameFull, string FileName, string FilePath, string PluginName,
+            string PluginVersion, string PluginDescription, bool IsActive, int ExceptionCount, int LoadFailures, int
+            ApplicationCrashes, int SortOrder, int Rating, DateTime PluginInstalled, DateTime PluginUpdated, bool
+            PendingDeletion)> GetEntityData(string connectionString)
         {
-            var result = true;
-            var connectionString = "Data Source=" + DBLangEngine.DataDir +
-                                   "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+            InitConnection(connectionString);
 
-            var sqLiteConnection = new SQLiteConnection(connectionString);
-            sqLiteConnection.Open();
-
-            var plugins = GetPlugins();
-
-            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            using (var sqLiteConnection = new SQLiteConnection(connectionString))
             {
+                var plugins = GetPlugins();
                 foreach (var plugin in plugins)
                 {
                     var legacy = plugin;
-
-                    var pluginNew = new Plugin
-                    {
-                        Id = (int) legacy.ID, 
-                        FileName = legacy.FILENAME, 
-                        FileNameFull = legacy.FILENAME_FULL, 
-                        PluginVersion = legacy.PLUGIN_VERSION, 
-                        PluginDescription = legacy.PLUGIN_DESCTIPTION, 
-                        PluginName = legacy.PLUGIN_NAME, 
-                        FilePath = legacy.FILEPATH, 
-                        PluginUpdated = legacy.PLUGIN_UPDATED, 
-                        ApplicationCrashes = legacy.APPLICATION_CRASHES, 
-                        ExceptionCount = legacy.EXCEPTION_COUNT, 
-                        IsActive = legacy.ISACTIVE, 
-                        PendingDeletion = legacy.PENDING_DELETION, 
-                        LoadFailures = legacy.LOAD_FAILURES, 
-                        PluginInstalled = legacy.PLUGIN_INSTALLED, 
-                        Rating = legacy.RATING, 
-                        SortOrder = legacy.SORTORDER
-                    };
-                    try
-                    {
-                        context.Plugins.Add(pluginNew);
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        result = false;
-                        ExceptionLogAction?.Invoke(ex);
-                        Debug.WriteLine(ex.Message);
-                    }
+                    yield return ((int) legacy.ID, legacy.FILENAME_FULL, legacy.FILENAME, legacy.FILEPATH,
+                        legacy.PLUGIN_NAME, legacy.PLUGIN_VERSION, legacy.PLUGIN_DESCTIPTION, legacy.ISACTIVE,
+                        legacy.EXCEPTION_COUNT, legacy.LOAD_FAILURES,
+                        legacy.APPLICATION_CRASHES, legacy.SORTORDER, legacy.RATING, legacy.PLUGIN_INSTALLED,
+                        legacy.PLUGIN_UPDATED, legacy.PENDING_DELETION);
                 }
             }
 
-            return result;
+            using (Connection)
+            {
+                // dispose of the connection..
+            }
         }
+
 
         /// <summary>
         /// Gets the plug-in data stored into the database.
         /// </summary>
         /// <returns>A collection PLUGINS classes.</returns>
-        public static IEnumerable<PLUGINS> GetPlugins()
+        internal static IEnumerable<PLUGINS> GetPlugins()
         {
             List<PLUGINS> result = new List<PLUGINS>();
 
@@ -256,7 +226,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="plugin">The plug-in to delete.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool DeletePlugin(PLUGINS plugin)
+        internal static bool DeletePlugin(PLUGINS plugin)
         {
             return ExecuteArbitrarySQL(DatabaseCommandsPlugins.GenDeletePluginSentence(plugin));
         }

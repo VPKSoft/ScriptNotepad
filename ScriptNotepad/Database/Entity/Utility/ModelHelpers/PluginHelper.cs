@@ -24,48 +24,65 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.Tables;
+using System;
+using System.IO;
+using System.Reflection;
+using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ScriptNotepad.PluginHandling
+namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
 {
     /// <summary>
-    /// A class for generating or updating a <see cref="PLUGINS"/> class which represents a table withing the database.
+    /// A class to help with <see cref="Plugin"/> entities.
+    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class PluginDatabaseEntry: ErrorHandlingBase
+    public class PluginHelper: ErrorHandlingBase
     {
         /// <summary>
-        /// Creates an instance of a <see cref="PLUGINS"/> class to be inserted into the database.
+        /// Gets a version string from a given <see cref="Assembly"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly to set the version from.</param>
+        internal static string VersionStringFromAssembly(Assembly assembly)
+        {
+            try
+            {
+                // return the version from the given assembly..
+                return assembly.GetName().Version.ToString();
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+
+                // return a default value..
+                return "1.0.0.0";
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of a <see cref="Plugin"/> class to be inserted into the database.
         /// </summary>
         /// <param name="assembly">The assembly of the plug-in.</param>
         /// <param name="plugin">The initialized plug-in.</param>
         /// <param name="fileNameFull">The full file name of the plug-in assembly.</param>
-        /// <returns>A PLUGINS class instance based on the given arguments.</returns>
-        public static PLUGINS FromPlugin(Assembly assembly, IScriptNotepadPlugin plugin, string fileNameFull)
+        /// <returns>A <see cref="Plugin"/> class instance based on the given arguments.</returns>
+        public static Plugin FromPlugin(Assembly assembly, IScriptNotepadPlugin plugin, string fileNameFull)
         {
             try
             {
                 // create a result based on the given parameters..
-                PLUGINS result = new PLUGINS()
+                var result = new Plugin
                 {
-                    ID = -1,
-                    FILENAME_FULL = fileNameFull,
-                    FILENAME = Path.GetFileName(fileNameFull),
-                    FILEPATH = Path.GetDirectoryName(fileNameFull),
-                    PLUGIN_NAME = plugin.PluginName,
-                    PLUGIN_DESCTIPTION = plugin.PluginDescription,
-                    ISACTIVE = true,
-                    PLUGIN_INSTALLED = DateTime.Now,
-                    PLUGIN_VERSION = PLUGINS.VersionStringFromAssembly(assembly),
+                    FileNameFull = fileNameFull,
+                    FileName = Path.GetFileName(fileNameFull),
+                    FilePath = Path.GetDirectoryName(fileNameFull),
+                    PluginName = plugin.PluginName,
+                    PluginDescription = plugin.PluginDescription,
+                    IsActive = true,
+                    PluginInstalled = DateTime.Now,
+                    PluginVersion = VersionStringFromAssembly(assembly),
                 };
 
                 // set the version for the plug-in..
@@ -85,20 +102,20 @@ namespace ScriptNotepad.PluginHandling
         /// <summary>
         /// Updates the plug-in entry data.
         /// </summary>
-        /// <param name="pluginEntry">The plug-in entry <see cref="PLUGINS"/>.</param>
+        /// <param name="pluginEntry">The plug-in entry <see cref="Plugin"/>.</param>
         /// <param name="assembly">The assembly of the plug-in.</param>
         /// <param name="plugin">The initialized plug-in.</param>
         /// <param name="fileNameFull">The full file name of the plug-in assembly.</param>
-        /// <returns>An updated PLUGINS class instance based on the given arguments.</returns>
-        public static PLUGINS UpdateFromPlugin(PLUGINS pluginEntry, Assembly assembly, IScriptNotepadPlugin plugin, string fileNameFull)
+        /// <returns>An updated <see cref="Plugin"/> class instance based on the given arguments.</returns>
+        public static Plugin UpdateFromPlugin(Plugin pluginEntry, Assembly assembly, IScriptNotepadPlugin plugin, string fileNameFull)
         {
             try
             {
-                pluginEntry.FILENAME_FULL = fileNameFull;
-                pluginEntry.FILENAME = Path.GetFileName(fileNameFull);
-                pluginEntry.FILEPATH = Path.GetDirectoryName(fileNameFull);
-                pluginEntry.PLUGIN_NAME = plugin.PluginName;
-                pluginEntry.PLUGIN_DESCTIPTION = plugin.PluginDescription;
+                pluginEntry.FileNameFull = fileNameFull;
+                pluginEntry.FileName = Path.GetFileName(fileNameFull);
+                pluginEntry.FilePath = Path.GetDirectoryName(fileNameFull);
+                pluginEntry.PluginName = plugin.PluginName;
+                pluginEntry.PluginDescription = plugin.PluginDescription;
 
                 // set the version for the plug-in..
                 pluginEntry.SetPluginUpdated(assembly);
@@ -117,8 +134,8 @@ namespace ScriptNotepad.PluginHandling
         /// </summary>
         /// <param name="assembly">The assembly of the plug-in.</param>
         /// <param name="fileNameFull">The full file name of the plug-in assembly.</param>
-        /// <returns>A PLUGINS class instance based on the given arguments.</returns>
-        public static PLUGINS InvalidPlugin(Assembly assembly, string fileNameFull)
+        /// <returns>A <see cref="Plugin"/> class instance based on the given arguments.</returns>
+        public static Plugin InvalidPlugin(Assembly assembly, string fileNameFull)
         {
             try
             {
@@ -129,18 +146,17 @@ namespace ScriptNotepad.PluginHandling
                 }
 
                 // create a result based on the given parameters..
-                PLUGINS result = new PLUGINS()
+                var result = new Plugin
                 {
-                    ID = -1,
-                    FILENAME_FULL = fileNameFull,
-                    FILENAME = Path.GetFileName(fileNameFull),
-                    FILEPATH = Path.GetDirectoryName(fileNameFull),
-                    PLUGIN_NAME = "Unknown",
-                    PLUGIN_DESCTIPTION = description,
-                    ISACTIVE = false,
-                    PLUGIN_INSTALLED = DateTime.Now,
-                    LOAD_FAILURES = 1,
-                    PLUGIN_VERSION = PLUGINS.VersionStringFromAssembly(assembly),
+                    FileNameFull = fileNameFull,
+                    FileName = Path.GetFileName(fileNameFull),
+                    FilePath = Path.GetDirectoryName(fileNameFull),
+                    PluginName = "Unknown",
+                    PluginDescription = description,
+                    IsActive = false,
+                    PluginInstalled = DateTime.Now,
+                    LoadFailures = 1,
+                    PluginVersion = VersionStringFromAssembly(assembly),
                 };
 
                 // set the version for the plug-in..

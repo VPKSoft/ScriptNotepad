@@ -25,15 +25,15 @@ SOFTWARE.
 #endregion
 
 using System;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.Database.UtilityClasses;
+using ScriptNotepadOldDatabase.Database.Tables;
+using ScriptNotepadOldDatabase.Database.UtilityClasses;
 
-namespace ScriptNotepad.TableCommands
+namespace ScriptNotepadOldDatabase.Database.TableCommands
 {
     /// <summary>
     /// A class which is used to formulate SQL sentences for the <see cref="Database"/> class for the PLUGINS database table.
     /// </summary>
-    public class DatabaseCommandsPlugins: DataFormulationHelpers
+    internal class DatabaseCommandsPlugins: DataFormulationHelpers
     {
         /// <summary>
         /// Generates a SQL sentence to insert a plug-in entry into the 
@@ -73,7 +73,7 @@ namespace ScriptNotepad.TableCommands
         /// </summary>
         /// <param name="plugin">A plug-in to be updated on the </param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenPluginUpdate(PLUGINS plugin)
+        internal static string GenPluginUpdate(PLUGINS plugin)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -101,7 +101,7 @@ namespace ScriptNotepad.TableCommands
         /// Generates a SQL sentence to select code plug-ins from the PLUGINS table in the 
         /// </summary>
         /// <returns>A generated SQL sentence.</returns>
-        public static string GenPluginSelect()
+        internal static string GenPluginSelect()
         {
             // ID: 0, FILENAME_FULL: 1, FILENAME: 2, FILEPATH: 3, PLUGIN_NAME: 4, PLUGIN_VERSION: 5,
             // PLUGIN_DESCTIPTION: 6, ISACTIVE: 7, EXCEPTION_COUNT: 8,
@@ -125,7 +125,7 @@ namespace ScriptNotepad.TableCommands
         /// </summary>
         /// <param name="plugin">A PLUGINS class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GetExistingPluginIDSentence(PLUGINS plugin)
+        internal static string GetExistingPluginIDSentence(PLUGINS plugin)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -141,7 +141,7 @@ namespace ScriptNotepad.TableCommands
         /// </summary>
         /// <param name="plugin">The plug-in to delete from the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenDeletePluginSentence(PLUGINS plugin)
+        internal static string GenDeletePluginSentence(PLUGINS plugin)
         {
             string sql =
                 string.Join(Environment.NewLine,

@@ -58,6 +58,7 @@ using ScriptNotepadPluginBase.EventArgClasses;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -425,7 +426,7 @@ namespace ScriptNotepad
                     throw new Exception(MigrateErrorMessage("DatabaseMiscText"));
                 }
 
-                if (!DatabasePlugins.ToEntity())
+                if (!EntityConversion.PluginsToEntity())
                 {
                     DisplayError("DatabasePlugins");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
@@ -768,12 +769,12 @@ namespace ScriptNotepad
             {
                 try
                 {
-                    var plugin = Plugins.FirstOrDefault(f => f.Plugin.FILENAME_FULL == module);
+                    var plugin = Plugins.FirstOrDefault(f => f.Plugin.FileNameFull == module);
                     if (plugin.Plugin != null)
                     {
-                        plugin.Plugin.APPLICATION_CRASHES++;
-                        plugin.Plugin.ISACTIVE = false;
-                        DatabasePlugins.UpdatePlugin(plugin.Plugin);
+                        plugin.Plugin.ApplicationCrashes++;
+                        plugin.Plugin.IsActive = false;
+                        ScriptNotepadDbContext.DbContext.SaveChanges();
                     }
                 }
                 catch
@@ -782,30 +783,32 @@ namespace ScriptNotepad
                 }
             };
 
-            IEnumerable<PLUGINS> databaseEntries = DatabasePlugins.GetPlugins();
+            IEnumerable<Plugin> databaseEntries = ScriptNotepadDbContext.DbContext.Plugins.ToList();
             bool pluginDeleted = false;
             // ReSharper disable once PossibleMultipleEnumeration
             foreach (var pluginEntry in databaseEntries)
             {
-                if (pluginEntry.PENDING_DELETION)
+                if (pluginEntry.PendingDeletion)
                 {
                     try
                     {
-                        File.Delete(pluginEntry.FILENAME_FULL);
+                        File.Delete(pluginEntry.FileNameFull);
                     }
                     catch (Exception ex)
                     {
                         // log the exception..
                         ExceptionLogger.LogError(ex);
                     }
-                    DatabasePlugins.DeletePlugin(pluginEntry);
+
+                    ScriptNotepadDbContext.DbContext.Plugins.Remove(pluginEntry);
+                    ScriptNotepadDbContext.DbContext.SaveChanges();
                     pluginDeleted = true;
                 }
             }
 
             if (pluginDeleted)
             {
-                databaseEntries = DatabasePlugins.GetPlugins();
+                databaseEntries = ScriptNotepadDbContext.DbContext.Plugins.ToList();
             }
 
             // load the existing plug-ins..
@@ -819,14 +822,14 @@ namespace ScriptNotepad
                     // ReSharper disable once PossibleMultipleEnumeration
                     databaseEntries.
                     FirstOrDefault(
-                        f => f.FILENAME == Path.GetFileName(plugin.Path));
+                        f => f.FileName == Path.GetFileName(plugin.Path));
 
                 // if the plug-in has been logged into the database and is disabled
                 // save the flag..
                 bool loadPlugin = true;
                 if (pluginEntry != null)
                 {
-                    loadPlugin = pluginEntry.ISACTIVE;
+                    loadPlugin = pluginEntry.IsActive;
                 }
 
                 // only valid plug-ins are accepted..
@@ -850,8 +853,8 @@ namespace ScriptNotepad
                         CurrentSession.SessionName, this))
                     {
                         pluginEntry = pluginEntry == null
-                            ? PluginDatabaseEntry.FromPlugin(plugin.Assembly, pluginAssembly.Plugin, plugin.Path)
-                            : PluginDatabaseEntry.UpdateFromPlugin(pluginEntry, plugin.Assembly, pluginAssembly.Plugin,
+                            ? PluginHelper.FromPlugin(plugin.Assembly, pluginAssembly.Plugin, plugin.Path)
+                            : PluginHelper.UpdateFromPlugin(pluginEntry, plugin.Assembly, pluginAssembly.Plugin,
                                 plugin.Path);
 
                         // on success, add the plug-in assembly and its instance to the internal list..
@@ -864,24 +867,26 @@ namespace ScriptNotepad
                         pluginEntry.SetPluginUpdated(plugin.Assembly);
 
                         // update the plug-in information to the database..
-                        DatabasePlugins.AddOrUpdatePlugin(pluginEntry);
+                        ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(pluginEntry);
+                        ScriptNotepadDbContext.DbContext.SaveChanges();
                     }
                 }
                 else
                 {
                     if (pluginEntry != null)
                     {
-                        pluginEntry.LOAD_FAILURES++;
+                        pluginEntry.LoadFailures++;
                     }
                     else
                     {
-                        pluginEntry = PluginDatabaseEntry.InvalidPlugin(plugin.Assembly, plugin.Path);
+                        pluginEntry = PluginHelper.InvalidPlugin(plugin.Assembly, plugin.Path);
                     }
                     // update the possible version and the update time stamp..
                     pluginEntry.SetPluginUpdated(plugin.Assembly);
 
                     // update the plug-in information to the database..
-                    DatabasePlugins.AddOrUpdatePlugin(pluginEntry);
+                    ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(pluginEntry);
+                    ScriptNotepadDbContext.DbContext.SaveChanges();
 
                     // on failure, add the "invalid" plug-in assembly and its instance to the internal list..
                     Plugins.Add((plugin.Assembly, null, pluginEntry));
@@ -981,10 +986,11 @@ namespace ScriptNotepad
                 }
                 catch (Exception ex)
                 {
-                    Plugins[i].Plugin.EXCEPTION_COUNT++;
+                    Plugins[i].Plugin.ExceptionCount++;
 
                     // the disposal failed so do add to the exception count..
-                    DatabasePlugins.UpdatePlugin(Plugins[i].Plugin);
+                    ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(Plugins[i].Plugin);
+                    ScriptNotepadDbContext.DbContext.SaveChanges();
 
                     // log the dispose failures as well..
                     ExceptionLogger.LogMessage($"Plug-in dispose failed. Plug-in: {Plugins[i].PluginInstance.PluginName}, Assembly: {Plugins[i].Assembly.FullName}.");
@@ -2588,7 +2594,8 @@ namespace ScriptNotepad
             // update the list of plug-in database into the database..
             foreach (var entry in pluginDatabaseEntries)
             {
-                DatabasePlugins.UpdatePlugin(entry);
+                ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(entry);
+                ScriptNotepadDbContext.DbContext.SaveChanges();
             }
 
             // disable the timers not mess with application exit..
@@ -3066,11 +3073,12 @@ namespace ScriptNotepad
         private void PluginException(object sender, PluginExceptionEventArgs e)
         {
             ExceptionLogger.LogError(e.Exception, $"PLUG-IN EXCEPTION: '{e.PluginModuleName}'.");
-            int idx = Plugins.FindIndex(f => f.Plugin.PLUGIN_NAME == e.PluginModuleName);
+            int idx = Plugins.FindIndex(f => f.Plugin.PluginName == e.PluginModuleName);
             if (idx != -1)
             {
-                Plugins[idx].Plugin.EXCEPTION_COUNT++;
-                DatabasePlugins.UpdatePlugin(Plugins[idx].Plugin);
+                Plugins[idx].Plugin.ExceptionCount++;
+                ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(Plugins[idx].Plugin);
+                ScriptNotepadDbContext.DbContext.SaveChanges();
             }
         }
 
@@ -3088,7 +3096,7 @@ namespace ScriptNotepad
                 foreach (var plugin in plugins)
                 {
                     // find an index to the plug-in possibly modified by the dialog..
-                    int idx = Plugins.FindIndex(f => f.Plugin.ID == plugin.ID);
+                    int idx = Plugins.FindIndex(f => f.Plugin.Id == plugin.Id);
 
                     // if a valid index was found..
                     if (idx != -1)
@@ -3484,8 +3492,8 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets the loaded active plug-ins.
         /// </summary>
-        private List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)> Plugins { get; } =
-            new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, PLUGINS Plugin)>();
+        private List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, Plugin Plugin)> Plugins { get; } =
+            new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, Plugin Plugin)>();
 
         /// <summary>
         /// Gets or sets the default encoding to be used with the files within this software.

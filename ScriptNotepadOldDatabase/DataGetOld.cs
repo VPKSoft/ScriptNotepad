@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ScriptNotepadOldDatabase.Database.TableCommands;
 using ScriptNotepadOldDatabase.Database.TableMethods;
 
 namespace ScriptNotepadOldDatabase
@@ -33,6 +34,14 @@ namespace ScriptNotepadOldDatabase
             GetEntityDataCodeSnippets(string connectionString)
         {
             return DatabaseCodeSnippets.GetEntityData(connectionString);
+        }
+
+        public static IEnumerable<(int Id, string FileNameFull, string FileName, string FilePath, string PluginName,
+            string PluginVersion, string PluginDescription, bool IsActive, int ExceptionCount, int LoadFailures, int
+            ApplicationCrashes, int SortOrder, int Rating, DateTime PluginInstalled, DateTime PluginUpdated, bool
+            PendingDeletion)> GetEntityDataPlugins(string connectionString)
+        {
+            return DatabasePlugins.GetEntityData(connectionString);
         }
     }
 }
