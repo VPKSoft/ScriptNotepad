@@ -150,6 +150,55 @@ namespace ScriptNotepad.Database.Entity.Utility
         }
 
         /// <summary>
+        /// Converts the CODE_SNIPPETS database table into a Entity Framework Code-First <see cref="CodeSnippet"/> data.
+        /// </summary>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool DatabaseCodeSnippetsToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                   "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var dataTuples = DataGetOld.GetEntityDataCodeSnippets(connectionString);
+
+
+            connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                foreach (var dataTuple in dataTuples)
+                {
+                    var codeSnippet = new CodeSnippet
+                    {
+                        Id = dataTuple.Id,
+                        ScriptTextManipulationType = (ScriptSnippetType) dataTuple.ScriptTextManipulationType,
+                        ScriptLanguage = CodeSnippetLanguage.Cs,
+                        ScriptName = dataTuple.ScriptName,
+                        Modified = dataTuple.Modified,
+                        ScriptContents = dataTuple.ScriptContents,
+                    };
+
+                    try
+                    {
+                        context.CodeSnippets.Add(codeSnippet);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Converts the MISCTEXT_LIST database table into a Entity Framework Code-First <see cref="MiscellaneousTextEntry"/> data.
         /// </summary>
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>

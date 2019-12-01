@@ -439,14 +439,7 @@ namespace ScriptNotepad
                     throw new Exception(MigrateErrorMessage("DatabaseRecentFiles"));
                 }
 
-                if (!DatabaseCodeSnippets.ToEntity())
-                {
-                    DisplayError("DatabaseCodeSnippets");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabaseCodeSnippets"));
-                }
-
-                if (!DatabaseCodeSnippets.ToEntity())
+                if (!EntityConversion.DatabaseCodeSnippetsToEntity())
                 {
                     DisplayError("DatabaseCodeSnippets");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..

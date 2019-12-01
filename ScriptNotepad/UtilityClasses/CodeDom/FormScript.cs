@@ -27,10 +27,14 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using ScintillaNET;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.TableMethods;
 using ScriptNotepad.Database.Tables;
 using ScriptNotepad.DialogForms;
@@ -40,7 +44,9 @@ using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaTabbedTextControl;
+using VPKSoft.Utils;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
+using Utils = VPKSoft.LangLib.Utils;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
 {
@@ -70,7 +76,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         private string defaultNameScriptTemplateLines = string.Empty;
 
         // a field to hold the code snippet's contents for saving possibility..
-        private CODE_SNIPPETS currentCodeSnippet = null;
+        private CodeSnippet currentCodeSnippet = null;
         #endregion
 
         #region MassiveConstructor
@@ -229,7 +235,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// Creates a CODE_SNIPPETS class instance from the GUI items.
         /// </summary>
         /// <returns>A CODE_SNIPPETS class instance.</returns>
-        private CODE_SNIPPETS CreateNewCodeSnippet()
+        private CodeSnippet CreateNewCodeSnippet()
         {
             // just call the overload..
             return CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
@@ -242,14 +248,16 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <param name="name">The name of the script.</param>
         /// <param name="scriptType">The type of the script.</param>
         /// <returns>A CODE_SNIPPETS class instance.</returns>
-        private CODE_SNIPPETS CreateNewCodeSnippet(string contents, string name, int scriptType)
+        private CodeSnippet CreateNewCodeSnippet(string contents, string name, int scriptType)
         {
             // return a new CODE_SNIPPETS class instance using the given parameters..
-            return currentCodeSnippet = new CODE_SNIPPETS
+            return currentCodeSnippet = new CodeSnippet
             {
-                SCRIPT_CONTENTS = contents,
-                SCRIPT_NAME = name,
-                SCRIPT_TYPE = scriptType
+                ScriptContents = contents,
+                ScriptName = name,
+                ScriptLanguage = CodeSnippetLanguage.Cs,
+                ScriptTextManipulationType = (ScriptSnippetType)scriptType, 
+                Modified = DateTime.Now,
             };
         }
 
@@ -337,15 +345,15 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         private void tsbOpen_Click(object sender, EventArgs e)
         {
             // display the script dialog..
-            CODE_SNIPPETS snippet = FormDialogScriptLoad.Execute(false);
+            var snippet = FormDialogScriptLoad.Execute(false);
 
             // if a selection was made..
             if (snippet != null)
             {
                 suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
-                tstScriptName.Text = snippet.SCRIPT_NAME;
-                scintilla.Text = snippet.SCRIPT_CONTENTS;
-                tsbComboScriptType.SelectedIndex = snippet.SCRIPT_TYPE;
+                tstScriptName.Text = snippet.ScriptName;
+                scintilla.Text = snippet.ScriptContents;
+                tsbComboScriptType.SelectedIndex = (int)snippet.ScriptTextManipulationType;
                 suspendChangedEvent = false; // "resume" the event handler..
                 currentCodeSnippet = snippet;
             }
@@ -381,8 +389,8 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                     CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
                 }
 
-                currentCodeSnippet.SCRIPT_NAME = tstScriptName.Text;
-                currentCodeSnippet.SCRIPT_CONTENTS = scintilla.Text;
+                currentCodeSnippet.ScriptName = tstScriptName.Text;
+                currentCodeSnippet.ScriptContents = scintilla.Text;
 
                 // don't allow the user to lose one's work on the current script..
                 EnableDisableControlsOnChange(false);
@@ -411,24 +419,33 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 currentCodeSnippet = CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
             }
 
-            // manipulate the currentCodeSnippet instance so it doesn't override reserved scripts in the database..
-            DatabaseCodeSnippets.MakeCodeSnippetValidForInsertOrUpdate(
-                ref currentCodeSnippet,
-                // the reserved word list..
+            // display an error if the script's name is any of the reserved script names..
+            if (ScriptNotepadDbContext.DbContext.CodeSnippets.Any(f => f.ScriptName.In(
                 defaultNameScriptTemplateText,
-                defaultNameScriptTemplateLines,
-                "Simple line ending change script",
+                defaultNameScriptTemplateLines, 
+                "Simple line ending change script", 
                 "Simple replace script",
-                "Simple XML manipulation script");
+                "Simple XML manipulation script")))
+            {
+                MessageBox.Show(
+                    DBLangEngine.GetMessage("msgReservedScriptName", "The given script name is reserved for the script samples. The script wasn't saved.|A message informing that the given script name is reserved for static sample scripts."),
+                    DBLangEngine.GetMessage("msgWarning",
+                        "Warning|A message warning of some kind problem"), MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
 
-            // save the script snippet into the database..
-            DatabaseCodeSnippets.AddOrUpdateCodeSnippet(currentCodeSnippet);
+                EnableDisableControlsOnChange(true);
+
+                return;
+            }
+
+            ScriptNotepadDbContext.DbContext.CodeSnippets.Add(currentCodeSnippet);
+            ScriptNotepadDbContext.DbContext.SaveChanges();
 
             // enable the controls as the user chose to save the changes of the script..
             EnableDisableControlsOnChange(true);
         }
 
-        // a user want's to compile the script to see if it's valid..
+        // a user wants to compile the script to see if it's valid..
         private void tsbTestScript_Click(object sender, EventArgs e)
         {
             // ..so do compile and output the results..

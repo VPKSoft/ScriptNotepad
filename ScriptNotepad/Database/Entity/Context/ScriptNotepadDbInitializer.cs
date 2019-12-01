@@ -24,9 +24,11 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using System.Data.Entity;
 using System.Linq;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
 using SQLite.CodeFirst;
 using VPKSoft.LangLib;
 
@@ -101,6 +103,39 @@ SOFTWARE.";
                 context.Set<SoftwareLicense>().Add(new SoftwareLicense
                     {LicenseText = LICENSE, LicenseSpdxIdentifier = SPDX_ID});
             }
+
+            var codeSnippet = new CodeSnippet
+            {
+                Id = 1,
+                ScriptName = @"Simple replace script",
+                ScriptContents = CodeSnippetSeedDataConstants.SimpleReplaceScript,
+                Modified = DateTime.Now,
+                ScriptLanguage = CodeSnippetLanguage.Cs,
+                ScriptTextManipulationType = ScriptSnippetType.Lines,
+            };
+            context.CodeSnippets.Add(codeSnippet);
+
+            codeSnippet = new CodeSnippet
+            {
+                Id = 2,
+                ScriptName = @"Simple line ending change script",
+                ScriptContents = CodeSnippetSeedDataConstants.SimpleLineEndingChangeScript,
+                Modified = DateTime.Now,
+                ScriptLanguage = CodeSnippetLanguage.Cs,
+                ScriptTextManipulationType = ScriptSnippetType.Text,
+            };
+            context.CodeSnippets.Add(codeSnippet);
+
+            codeSnippet = new CodeSnippet
+            {
+                Id = 3,
+                ScriptName = @"Simple XML manipulation script",
+                ScriptContents = CodeSnippetSeedDataConstants.SimpleXmlManipulationScript,
+                Modified = DateTime.Now,
+                ScriptLanguage = CodeSnippetLanguage.Cs,
+                ScriptTextManipulationType = ScriptSnippetType.Text,
+            };
+            context.CodeSnippets.Add(codeSnippet);
 
             // perhaps this puts things in motion..
             base.Seed(context);

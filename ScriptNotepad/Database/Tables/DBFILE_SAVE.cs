@@ -164,10 +164,24 @@ namespace ScriptNotepad.Database.Tables
         /// </summary>
         public int VISIBILITY_ORDER { get; set; } = -1;
 
+
+        private long sessionId = 1;
         /// <summary>
         /// Gets or sets the session ID.
         /// </summary>
-        public long SESSIONID { get; set; } = 1;
+        public long SESSIONID { get => sessionId;
+            set
+            {
+                if (value < 1)
+                {
+                    sessionId = 1;
+                }
+                else
+                {
+                    sessionId = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the name of the session.

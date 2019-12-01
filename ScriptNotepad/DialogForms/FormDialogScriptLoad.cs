@@ -24,13 +24,14 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.TableMethods;
-using ScriptNotepad.Database.Tables;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
+using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 
@@ -42,7 +43,7 @@ namespace ScriptNotepad.DialogForms
     /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
     public partial class FormDialogScriptLoad : DBLangEngineWinforms
     {
-        private IEnumerable<CODE_SNIPPETS> codeSnippets;
+        private IEnumerable<CodeSnippet> codeSnippets;
 
         // a field to hold localized name for a script template for manipulating Scintilla contents as text..
         string defaultNameScriptTemplateText = string.Empty;
@@ -75,7 +76,7 @@ namespace ScriptNotepad.DialogForms
             DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
             // get the code snippets in the database..
-            codeSnippets = DatabaseCodeSnippets.GetCodeSnippets();
+            codeSnippets = ScriptNotepadDbContext.DbContext.CodeSnippets.ToArray();
 
             // localize the script type default names..
             defaultNameScriptTemplateText =
@@ -108,7 +109,7 @@ namespace ScriptNotepad.DialogForms
         /// </summary>
         /// <param name="manage">A flag indicating if the dialog will be shown in manage mode.</param>
         /// <returns>An instance for the <see cref="CODE_SNIPPETS"/> class if user accepted the dialog; otherwise null.</returns>
-        public static CODE_SNIPPETS Execute(bool manage)
+        public static CodeSnippet Execute(bool manage)
         {
             // create a new instance of the FormDialogScriptLoad..
             FormDialogScriptLoad formDialogScriptLoad = new FormDialogScriptLoad();
@@ -130,7 +131,7 @@ namespace ScriptNotepad.DialogForms
             if (formDialogScriptLoad.ShowDialog() == DialogResult.OK)
             {
                 // if the OK button was selected then return the selected CODE_SNIPPETS class instance..
-                return (CODE_SNIPPETS)formDialogScriptLoad.lbScriptList.SelectedItem;
+                return (CodeSnippet)formDialogScriptLoad.lbScriptList.SelectedItem;
             }
             else
             {
@@ -144,13 +145,13 @@ namespace ScriptNotepad.DialogForms
         /// </summary>
         /// <param name="type">The type of the script.</param>
         /// <param name="filterText">The text for filtering the snippets by their names.</param>
-        private void FilterSnippets(int type, string filterText)
+        private void FilterSnippets(ScriptSnippetType type, string filterText)
         {
             // select the snipped based on the given parameter values..
-            IEnumerable<CODE_SNIPPETS> selectedSnippets =
+            IEnumerable<CodeSnippet> selectedSnippets =
                 codeSnippets.Where(
-                    f => f.SCRIPT_TYPE == type &&
-                    (filterText.Trim() == string.Empty || f.SCRIPT_NAME.ToLowerInvariant().Contains(filterText.ToLowerInvariant())));
+                    f => f.ScriptTextManipulationType == type &&
+                    (filterText.Trim() == string.Empty || f.ScriptName.ToLowerInvariant().Contains(filterText.ToLowerInvariant())));
 
             // list the script snippets to the list box..
             ListScriptSnippets(selectedSnippets);
@@ -160,13 +161,13 @@ namespace ScriptNotepad.DialogForms
         /// Filters the list box contents based on the script type and a possible search string.
         /// </summary>
         /// <param name="snippets">The snippets.</param>
-        private void ListScriptSnippets(IEnumerable<CODE_SNIPPETS> snippets)
+        private void ListScriptSnippets(IEnumerable<CodeSnippet> snippets)
         {
             // clear the previous contents from the list box..
             lbScriptList.Items.Clear();
 
             // list the code snippets to the list box..
-            foreach (CODE_SNIPPETS codeSnippet in snippets)
+            foreach (var codeSnippet in snippets)
             {
                 lbScriptList.Items.Add(codeSnippet);
             }
@@ -176,7 +177,7 @@ namespace ScriptNotepad.DialogForms
         private void common_ScriptChanged(object sender, EventArgs e)
         {
             // filter the list box contents based on the given filters..
-            FilterSnippets(cmbScriptType.SelectedIndex, tbFilter.Text);
+            FilterSnippets((ScriptSnippetType)cmbScriptType.SelectedIndex, tbFilter.Text);
         }
 
         private void lbScriptList_SelectedIndexChanged(object sender, EventArgs e)
@@ -216,23 +217,33 @@ namespace ScriptNotepad.DialogForms
                 foreach (var item in lbScriptList.SelectedItems)
                 {
                     // assume that an item in the list box is a CODE_SNIPPETS class instance..
-                    CODE_SNIPPETS snippet = (CODE_SNIPPETS)item;
+                    var snippet = (CodeSnippet)item;
 
                     // check if the script's name is valid for deletion..
-                    if (IsScriptPossibleToDelete(snippet.SCRIPT_NAME))
+                    if (IsScriptPossibleToDelete(snippet.ScriptName))
                     {
                         // some boolean algebra to determine if anything was actually delete from the database..
-                        deleted |= DatabaseCodeSnippets.DeleteCodeSnippet(snippet);
+                        try
+                        {
+                            ScriptNotepadDbContext.DbContext.CodeSnippets.Remove(snippet);
+                            deleted = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            ExceptionLogger.LogError(ex);
+                        }
                     }
                 }
 
                 if (deleted) // only refresh the list if some deletions were made..
                 {
+                    ScriptNotepadDbContext.DbContext.SaveChanges();
+
                     // get the remaining code snippets in the database..
-                    codeSnippets = DatabaseCodeSnippets.GetCodeSnippets();
+                    codeSnippets = ScriptNotepadDbContext.DbContext.CodeSnippets.ToArray();
 
                     // filter the list box contents based on the given filters..
-                    FilterSnippets(cmbScriptType.SelectedIndex, tbFilter.Text);
+                    FilterSnippets((ScriptSnippetType)cmbScriptType.SelectedIndex, tbFilter.Text);
                 }
             }
         }

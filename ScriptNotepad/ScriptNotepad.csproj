@@ -51,8 +51,8 @@
     <Reference Include="ColorMinePortable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ColorMinePortable.2.0.1\lib\netstandard2.0\ColorMinePortable.dll</HintPath>
     </Reference>
-    <Reference Include="DiffPlex, Version=1.4.4.0, Culture=neutral, PublicKeyToken=1d35e91d1bd7bc0f, processorArchitecture=MSIL">
-      <HintPath>..\packages\DiffPlex.1.4.4\lib\net40\DiffPlex.dll</HintPath>
+    <Reference Include="DiffPlex, Version=1.5.0.0, Culture=neutral, PublicKeyToken=1d35e91d1bd7bc0f, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiffPlex.1.5.0\lib\net40\DiffPlex.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -147,8 +147,8 @@
     <Reference Include="VPKSoft.SearchText, Version=1.0.1.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.SearchText.1.0.1.6\lib\net47\VPKSoft.SearchText.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.Utils, Version=1.0.4.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.Utils.1.0.4.1\lib\net45\VPKSoft.Utils.dll</HintPath>
+    <Reference Include="VPKSoft.Utils, Version=1.0.4.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.Utils.1.0.4.2\lib\net45\VPKSoft.Utils.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.VersionCheck, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.VersionCheck.1.0.1.4\lib\net47\VPKSoft.VersionCheck.dll</HintPath>
@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DatabaseEnumerations.cs" />
+    <Compile Include="Database\Entity\Context\CodeSnippetSeedDataConstants.cs" />
     <Compile Include="Database\Entity\Context\ScriptNotepadDbContext.cs" />
     <Compile Include="Database\Entity\Context\ScriptNotepadDbInitializer.cs" />
     <Compile Include="Database\Entity\Entities\CodeSnippet.cs" />
@@ -188,15 +189,12 @@
     <Compile Include="Database\Entity\Utility\ModelHelpers\FileSessionHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\MiscellaneousTextEntryHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\SearchAndReplaceHistoryHelper.cs" />
-    <Compile Include="Database\TableCommands\DatabaseCommandsCodeSnippets.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsFileSave.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsGeneral.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsPlugins.cs" />
-    <Compile Include="Database\TableMethods\DatabaseCodeSnippets.cs" />
     <Compile Include="Database\TableMethods\DatabasePlugins.cs" />
     <Compile Include="Database\TableMethods\DatabaseFileSave.cs" />
-    <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
     <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
     <Compile Include="Database\Tables\PLUGINS.cs" />
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />

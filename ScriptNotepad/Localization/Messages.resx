@@ -873,4 +873,7 @@
   <data name="msgDatabaseMigration1" xml:space="preserve">
     <value>The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process.</value>
   </data>
+  <data name="msgReservedScriptName" xml:space="preserve">
+    <value>The given script name is reserved for the script samples. The script wasn't saved.|A message informing that the given script name is reserved for static sample scripts.</value>
+  </data>
 </root>

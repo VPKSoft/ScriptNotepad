@@ -70,5 +70,14 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// </summary>
         [Required]
         public ScriptSnippetType ScriptTextManipulationType  { get; set; }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return ScriptName;
+        }
     }
 }

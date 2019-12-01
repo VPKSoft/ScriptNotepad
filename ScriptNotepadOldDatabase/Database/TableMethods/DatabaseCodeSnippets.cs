@@ -150,12 +150,47 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         }
 
         /// <summary>
+        /// Gets all the data to from the table convert to Entity Framework.
+        /// </summary>
+        /// <param name="connectionString">A SQLite database connection string.</param>
+        /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.String, System.String, DateTime, System.Int32&gt;&gt;.</returns>
+        internal static IEnumerable<(int Id, string ScriptContents, string ScriptName, DateTime Modified, int
+                ScriptTextManipulationType)>
+            GetEntityData(string connectionString)
+        {
+            InitConnection(connectionString);
+
+            using (var sqLiteConnection = new SQLiteConnection(connectionString))
+            {
+                var codeSnippets = GetCodeSnippets(1, 2, 3);
+                foreach (var codeSnippet in codeSnippets)
+                {
+                    var legacy = codeSnippet;
+                    yield return ((int) legacy.ID, legacy.SCRIPT_CONTENTS, legacy.SCRIPT_NAME, legacy.MODIFIED,
+                        legacy.SCRIPT_TYPE);
+                }
+            }
+
+            using (Connection)
+            {
+                // dispose of the connection..
+            }
+        }
+
+        /// <summary>
         /// Gets all the code snippets from the database.
         /// </summary>
         /// <returns>A collection CODE_SNIPPETS classes.</returns>
-        internal static IEnumerable<CODE_SNIPPETS> GetCodeSnippets()
+        internal static IEnumerable<CODE_SNIPPETS> GetCodeSnippets(params long[] excludeIds)
         {
             List<CODE_SNIPPETS> result = new List<CODE_SNIPPETS>();
+
+            List<long> excludeList = new List<long>();
+
+            if (excludeIds != null)
+            {
+                excludeList.AddRange(excludeIds);
+            }
 
             using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsCodeSnippets.GenScriptSelect(), Connection))
             {
@@ -165,6 +200,11 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
                     // ID: 0, SCRIPT_CONTENTS: 1, SCRIPT_NAME: 2, MODIFIED: 3, SCRIPT_TYPE: 4, SCRIPT_LANGUAGE: 5
                     while (reader.Read())
                     {
+                        if (excludeList.Contains(reader.GetInt64(0)))
+                        {
+                            continue;
+                        }
+
                         result.Add(
                             new CODE_SNIPPETS()
                             {

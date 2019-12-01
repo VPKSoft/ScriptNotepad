@@ -27,5 +27,12 @@ namespace ScriptNotepadOldDatabase
         {
             return DatabaseSearchAndReplace.GetEntityData(connectionString);
         }
+
+        public static IEnumerable<(int Id, string ScriptContents, string ScriptName, DateTime Modified, int
+                ScriptTextManipulationType)>
+            GetEntityDataCodeSnippets(string connectionString)
+        {
+            return DatabaseCodeSnippets.GetEntityData(connectionString);
+        }
     }
 }

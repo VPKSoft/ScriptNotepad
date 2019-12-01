@@ -162,7 +162,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="connectionString">A SQLite database connection string.</param>
         /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.String, System.Int32, DateTime, System.String&gt;&gt;.</returns>
-        public static IEnumerable<(int Id, string TextValue, int Type, DateTime Added, string SessionName)>
+        internal static IEnumerable<(int Id, string TextValue, int Type, DateTime Added, string SessionName)>
             GetEntityData(string connectionString)
         {
             InitConnection(connectionString);

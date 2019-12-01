@@ -145,7 +145,7 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
         /// </summary>
         /// <param name="connectionString">A SQLite database connection string.</param>
         /// <returns>IEnumerable&lt;System.ValueTuple&lt;System.Int32, System.String, System.String, Encoding, System.String, DateTime, System.String&gt;&gt;.</returns>
-        public static
+        internal static
             IEnumerable<(int Id, string SearchOrReplaceText, bool CaseSensitive, int SearchAndReplaceSearchType, int
                 SearchAndReplaceType, DateTime Added, string FileSession)> GetEntityData(string connectionString)
         {
