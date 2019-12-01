@@ -55,14 +55,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsCodeSnippets.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMiscText.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSearchAndReplace.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSessionData.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSessionName.cs" />
+    <Compile Include="Database\TableMethods\DatabaseCodeSnippets.cs" />
     <Compile Include="Database\TableMethods\DatabaseMiscText.cs" />
     <Compile Include="Database\TableMethods\DatabaseSearchAndReplace.cs" />
     <Compile Include="Database\TableMethods\DatabaseSessionData.cs" />
     <Compile Include="Database\TableMethods\DatabaseSessionName.cs" />
+    <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
     <Compile Include="Database\Tables\MISCTEXT_LIST.cs" />
     <Compile Include="Database\Tables\SEARCH_AND_REPLACE_HISTORY.cs" />
     <Compile Include="Database\Tables\SESSION_NAME.cs" />

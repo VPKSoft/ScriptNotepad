@@ -82,6 +82,7 @@ namespace ScriptNotepad.Database.Entity.Context
 
             try
             {
+                
                 DbContext = new ScriptNotepadDbContext(sqLiteConnection, true);
                 return true;
             }
