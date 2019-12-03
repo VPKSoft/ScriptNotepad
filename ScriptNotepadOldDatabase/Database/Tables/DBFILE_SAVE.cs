@@ -25,30 +25,25 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.IO;
-using System.Text;
-using VPKSoft.ScintillaTabbedTextControl;
-using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
-using ScriptNotepad.UtilityClasses.LinesAndBinary;
-using static VPKSoft.ScintillaLexers.LexerEnumerations;
+using System.Text;
 using VPKSoft.LangLib;
-using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
+using VPKSoft.ScintillaLexers;
 
-namespace ScriptNotepad.Database.Tables
+namespace ScriptNotepadOldDatabase.Database.Tables
 {
     /// <summary>
     /// Represents a file saved to the database.
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase"/>
-    public class DBFILE_SAVE: ErrorHandlingBase
+    internal class DBFILE_SAVE
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DBFILE_SAVE"/> class.
         /// </summary>
-        public DBFILE_SAVE()
+        internal DBFILE_SAVE()
         {
             ENCODING = Encoding.UTF8;                
         }
@@ -58,7 +53,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the ID number (database).
         /// </summary>
-        public long ID
+        internal long ID
         {
             get => id; 
             set
@@ -76,47 +71,47 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets a value indicating whether the file exists in the file system.
         /// </summary>
-        public bool EXISTS_INFILESYS { get; set; } = false;
+        internal bool EXISTS_INFILESYS { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the full file name with path.
         /// </summary>
-        public string FILENAME_FULL { get; set; }
+        internal string FILENAME_FULL { get; set; }
 
         /// <summary>
         /// Gets or sets the file name without path.
         /// </summary>
-        public string FILENAME { get; set; }
+        internal string FILENAME { get; set; }
 
         /// <summary>
         /// Gets or sets the full path for the file.
         /// </summary>
-        public string FILEPATH { get; set; }
+        internal string FILEPATH { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the file system.
         /// </summary>
-        public DateTime FILESYS_MODIFIED { get; set; } = DateTime.MinValue;
+        internal DateTime FILESYS_MODIFIED { get; set; } = DateTime.MinValue;
 
         /// <summary>
         /// Gets or sets the value indicating when the file was saved to the file system by the software.
         /// </summary>
-        public DateTime FILESYS_SAVED { get; set; } = DateTime.MinValue;
+        internal DateTime FILESYS_SAVED { get; set; } = DateTime.MinValue;
 
         /// <summary>
         /// The field to hold a value if the <see cref="PreviousDbModified"/> property has been set once.
         /// </summary>
-        private bool previousDbModifiedIsSet;
+        internal bool previousDbModifiedIsSet;
 
         /// <summary>
         /// A field to hold the <see cref="PreviousDbModified"/> property value.
         /// </summary>
-        private DateTime previousDbModified = DateTime.MinValue;
+        internal DateTime previousDbModified = DateTime.MinValue;
 
         /// <summary>
         /// Gets or sets the value indicating when the file was previously modified in the database.
         /// </summary>
-        public DateTime PreviousDbModified
+        internal DateTime PreviousDbModified
         {
             get => previousDbModified;
 
@@ -133,12 +128,12 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// A field to hold the <see cref="DB_MODIFIED"/> property value.
         /// </summary>
-        private DateTime dbModified = DateTime.MinValue;
+        internal DateTime dbModified = DateTime.MinValue;
 
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the database.
         /// </summary>
-        public DateTime DB_MODIFIED
+        internal DateTime DB_MODIFIED
         {
             get => dbModified;
 
@@ -152,24 +147,24 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the lexer number with the ScintillaNET.
         /// </summary>
-        public LexerType LEXER_CODE { get; set; }
+        internal LexerEnumerations.LexerType LEXER_CODE { get; set; }
 
         /// <summary>
         /// Gets or sets the file contents.
         /// </summary>
-        public string FILE_CONTENTS { get; set; }
+        internal string FILE_CONTENTS { get; set; }
 
         /// <summary>
         /// Gets or sets the visibility order (in a tabbed control).
         /// </summary>
-        public int VISIBILITY_ORDER { get; set; } = -1;
+        internal int VISIBILITY_ORDER { get; set; } = -1;
 
 
-        private long sessionId = 1;
+        internal long sessionId = 1;
         /// <summary>
         /// Gets or sets the session ID.
         /// </summary>
-        public long SESSIONID { get => sessionId;
+        internal long SESSIONID { get => sessionId;
             set
             {
                 if (value < 1)
@@ -186,17 +181,17 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the name of the session.
         /// </summary>
-        public string SESSIONNAME { get; set; } = "Default";
+        internal string SESSIONNAME { get; set; } = "Default";
 
         /// <summary>
         /// Gets or sets a value indicating whether if the file is activated in the tab control.
         /// </summary>
-        public bool ISACTIVE { get; set; }
+        internal bool ISACTIVE { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this entry is a history entry.
         /// </summary>
-        public bool ISHISTORY { get; set; }
+        internal bool ISHISTORY { get; set; }
 
         // a field for the ENCODING property..
         private Encoding encoding = Encoding.UTF8;
@@ -204,7 +199,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the encoding of the file save.
         /// </summary>
-        public Encoding ENCODING
+        internal Encoding ENCODING
         {
             get => encoding;
 
@@ -214,28 +209,28 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets the current position (cursor / caret) of the file.
         /// </summary>
-        public int CURRENT_POSITION { get; set; }
+        internal int CURRENT_POSITION { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use spell check with this document.
         /// </summary>
-        public bool USESPELL_CHECK { get; set; }
+        internal bool USESPELL_CHECK { get; set; }
 
         /// <summary>
         /// Gets or sets the editor zoom value in percentage.
         /// </summary>
-        public int EDITOR_ZOOM { get; set; } = 100;
+        internal int EDITOR_ZOOM { get; set; } = 100;
 
         /// <summary>
         /// Gets or sets the previous encodings of the file save for undo possibility.
         /// <note type="note">Redo possibility does not exist.</note>
         /// </summary>
-        public List<Encoding> PreviousEncodings { get; set; } = new List<Encoding>();
+        internal List<Encoding> PreviousEncodings { get; set; } = new List<Encoding>();
 
         /// <summary>
         /// Restores the previous time stamp for the <see cref="DB_MODIFIED"/> field.
         /// </summary>
-        public void PopPreviousDbModified()
+        internal void PopPreviousDbModified()
         {
             DB_MODIFIED = PreviousDbModified;
         }
@@ -243,7 +238,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Undoes the encoding change.
         /// </summary>
-        public void UndoEncodingChange()
+        internal void UndoEncodingChange()
         {
             // only if there exists a previous encoding..
             if (PreviousEncodings.Count > 0)
@@ -260,75 +255,12 @@ namespace ScriptNotepad.Database.Tables
         }
 
         /// <summary>
-        /// Reloads the contents of the document from the disk.
-        /// </summary>
-        /// <param name="document">A ScintillaTabbedDocument to which contents should also be updated.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public bool ReloadFromDisk(ScintillaTabbedDocument document)
-        {
-            try
-            {
-                // can't reload what doesn't exist..
-                if (File.Exists(FILENAME_FULL))
-                {
-                    // read the file contents from the file..
-                    using (FileStream fileStream = new FileStream(FILENAME_FULL, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        // create a byte buffer the contain all the bytes if the file with an assumption
-                        // no one wishes to open massive binary files..
-                        byte[] fileContents = new byte[fileStream.Length];
-
-                        // read the file contents to the buffer..
-                        fileStream.Read(fileContents, 0, (int)fileStream.Length);
-
-                        // set the file system's modified flag..
-                        FILESYS_MODIFIED = new FileInfo(FILENAME_FULL).LastWriteTime;
-                        DB_MODIFIED = FILESYS_MODIFIED; // set the other DateTime flags to indicate the same..
-                        FILESYS_SAVED = FILESYS_MODIFIED; // set the other DateTime flags to indicate the same..
-
-                        // create a new memory stream to hold the file contents..
-                        MemoryStream memoryStream = new MemoryStream(fileContents); 
-
-                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, ENCODING);
-
-                        // a reload doesn't need to be undone..
-                        document.Scintilla.EmptyUndoBuffer(); 
-
-                        FILE_CONTENTS = document.Scintilla.Text;
-
-                        // set the saved position of the document's caret..
-                        if (CURRENT_POSITION > 0 && CURRENT_POSITION < document.Scintilla.TextLength)
-                        {
-                            document.Scintilla.CurrentPosition = CURRENT_POSITION;
-                            document.Scintilla.SelectionStart = CURRENT_POSITION;
-                            document.Scintilla.SelectionEnd = CURRENT_POSITION;
-                            document.Scintilla.ScrollCaret();
-                        }
-
-                    }
-                    return true; // success..
-                }
-                else
-                {
-                    return false; // the file didn't exists, so fail..
-                }
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-
-                return false; // an exception occurred, so fail..
-            }
-        }
-
-        /// <summary>
         /// Compares two DateTime values <paramref name="dt1"/> > <paramref name="dt2"/>.
         /// </summary>
         /// <param name="dt1">The first DateTime to compare.</param>
         /// <param name="dt2">The second DateTime to compare.</param>
         /// <returns>True if the <paramref name="dt1"/> is larger than <paramref name="dt2"/> value; otherwise false.</returns>
-        public static bool DateTimeLarger(DateTime dt1, DateTime dt2)
+        internal static bool DateTimeLarger(DateTime dt1, DateTime dt2)
         {
             string s1 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt1);
             string s2 = UtilityClasses.DataFormulationHelpers.DateToDBString(dt2);
@@ -338,7 +270,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets a value indicating whether a software should query the user if the deleted file should be kept in the editor.
         /// </summary>
-        public bool ShouldQueryKeepFile
+        internal bool ShouldQueryKeepFile
         {
             get => EXISTS_INFILESYS && !File.Exists(FILENAME_FULL);
         }
@@ -346,7 +278,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets a value indicating whether a software should query the user if a file reappeared in the file system should be reloaded.
         /// </summary>
-        public bool ShouldQueryFileReappeared
+        internal bool ShouldQueryFileReappeared
         {
             get => !EXISTS_INFILESYS && File.Exists(FILENAME_FULL);
         }
@@ -354,7 +286,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets a value indicating whether the document is changed in the editor versus the file system.
         /// </summary>
-        public bool IsChangedInEditor => EXISTS_INFILESYS && DB_MODIFIED > FILESYS_MODIFIED;
+        internal bool IsChangedInEditor => EXISTS_INFILESYS && DB_MODIFIED > FILESYS_MODIFIED;
 
         // a value indicating if the user wants to reload the changes from the file system if the file has been changed..
         private bool shouldQueryDiskReload = true;
@@ -362,7 +294,7 @@ namespace ScriptNotepad.Database.Tables
         /// <summary>
         /// Gets or sets a value indicating whether the user should be queried of to reload the changed document from the file system.
         /// </summary>
-        public bool ShouldQueryDiskReload
+        internal bool ShouldQueryDiskReload
         {
             get
             {
@@ -384,100 +316,6 @@ namespace ScriptNotepad.Database.Tables
             // set the flag whether the user want's to hear the
             // stupid question of reloading the file on the next time..
             set => shouldQueryDiskReload = value;
-        }
-
-        /// <summary>
-        /// A text describing the file line ending type(s) of the document.
-        /// </summary>
-        private string fileEndingText = string.Empty;
-
-        // the file line types and their descriptions..
-        private IEnumerable<KeyValuePair<FileLineTypes, string>> fileLineTypesInternal;
-
-        /// <summary>
-        /// Gets the file line types and their descriptions.
-        /// </summary>
-        public IEnumerable<KeyValuePair<FileLineTypes, string>> FileLineTypes
-        {
-            get
-            {
-                if (fileLineTypesInternal == null)
-                {
-                    var fileLineTypes = ScriptNotepad.UtilityClasses.LinesAndBinary.
-                        FileLineType.GetFileLineTypes(FILE_CONTENTS,
-                            ENCODING);
-
-                    var lineTypesInternal = fileLineTypes as KeyValuePair<FileLineTypes, string>[] ??
-                                            fileLineTypes.ToArray();
-
-                    fileLineTypesInternal = lineTypesInternal;
-
-                    return lineTypesInternal;
-                }
-
-                return fileLineTypesInternal;
-            }
-        }
-
-        /// <summary>
-        /// Gets the type of the file line ending.
-        /// </summary>
-        public FileLineTypes FileLineType
-        {
-            get
-            {
-                List<KeyValuePair<FileLineTypes, string>> typesList =
-                    new List<KeyValuePair<FileLineTypes, string>>(FileLineTypes.ToArray());
-
-                if (typesList.Count == 0 ||
-                    typesList.Count == 1 && typesList[0].Key.HasFlag(Mixed)) 
-                {
-                    return CRLF;
-                }
-
-                if (typesList.Count == 1)
-                {
-                    return typesList[0].Key;
-                }
-
-                return typesList.FirstOrDefault().Key;
-            }
-        }
-
-        /// <summary>
-        /// Gets the text describing the file line ending type(s) of the document.
-        /// </summary>
-        public string FileLineEndingText
-        {
-            get
-            {
-                if (fileEndingText == string.Empty)
-                {
-                    fileEndingText = DBLangEngine.GetStatMessage("msgLineEndingShort",
-                        "LE: |A short message indicating a file line ending type value(s) as a concatenated text");
-
-
-                    var fileLineTypes = FileLineTypes;
-
-                    string endAppend = string.Empty;
-
-                    foreach (var fileLineType in fileLineTypes)
-                    {
-                        if (!fileLineType.Key.HasFlag(Mixed))
-                        {
-                            fileEndingText += fileLineType.Value + ", ";
-                        }
-                        else
-                        {
-                            endAppend = $" ({fileLineType.Value})";
-                        }
-
-                        fileEndingText = fileEndingText.TrimEnd(',', ' ') + endAppend;
-                    }
-                }
-
-                return fileEndingText;
-            }
         }
     }
 }

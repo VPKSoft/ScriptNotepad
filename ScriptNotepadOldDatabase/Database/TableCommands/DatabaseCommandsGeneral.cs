@@ -26,10 +26,10 @@ SOFTWARE.
 
 using ScriptNotepadOldDatabase.Database.UtilityClasses;
 
-namespace ScriptNotepadOldDatabase.Database.TableMethods
+namespace ScriptNotepadOldDatabase.Database.TableCommands
 {
     /// <summary>
-    /// A class which is used to formulate SQL sentences for the <see cref="ScriptNotepad.Database"/> class for general purpose commands.
+    /// A class which is used to formulate SQL sentences for the <see cref="Database"/> class for general purpose commands.
     /// </summary>
     internal class DatabaseCommandsGeneral: DataFormulationHelpers
     {

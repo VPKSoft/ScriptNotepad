@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ScriptNotepadOldDatabase.Database.TableCommands;
 using ScriptNotepadOldDatabase.Database.TableMethods;
+using VPKSoft.ScintillaLexers;
 
 namespace ScriptNotepadOldDatabase
 {
@@ -42,6 +43,20 @@ namespace ScriptNotepadOldDatabase
             PendingDeletion)> GetEntityDataPlugins(string connectionString)
         {
             return DatabasePlugins.GetEntityData(connectionString);
+        }
+
+        public static IEnumerable<(int Id, Encoding Encoding, bool ExistsInFileSystem, string FileNameFull,
+                string FileName, string FilePath, DateTime FileSystemModified, DateTime FileSystemSaved, DateTime
+                DatabaseModified, LexerEnumerations.LexerType LexerType, byte[] FileContents, int VisibilityOrder, bool
+                IsHistory, int CurrentCaretPosition, bool UseSpellChecking, int EditorZoomPercentage, int SessionId, bool IsActive, string SessionName)>
+            GetEntityDataFileSave(string connectionString)
+        {
+            return DatabaseFileSave.GetEntityData(connectionString);
+        }
+
+        public static IEnumerable<(int Id, string SessionName)> GetEntityDataSession(string connectionString)
+        {
+            return DatabaseSessionName.GetEntityData(connectionString);
         }
     }
 }

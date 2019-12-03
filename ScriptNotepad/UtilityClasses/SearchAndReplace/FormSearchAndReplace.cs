@@ -26,8 +26,6 @@ SOFTWARE.
 
 using Ookii.Dialogs.WinForms;
 using ScintillaNET;
-using ScriptNotepad.Database.TableMethods;
-using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.IO;
 using ScriptNotepad.UtilityClasses.Keyboard;
@@ -37,8 +35,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.Entity.Utility.ModelHelpers;

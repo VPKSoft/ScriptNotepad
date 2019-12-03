@@ -27,6 +27,8 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using ScriptNotepadOldDatabase.Database.TableCommands;
 using ScriptNotepadOldDatabase.Database.Tables;
 
@@ -120,6 +122,33 @@ namespace ScriptNotepadOldDatabase.Database.TableMethods
 
             return result;
         }
+
+        internal static IEnumerable<(int Id, string SessionName)> GetEntityData(string connectionString)
+        {
+            InitConnection(connectionString);
+
+            using (var sqLiteConnection = new SQLiteConnection(connectionString))
+            {
+                IEnumerable<SESSION_NAME> sessions = GetSessions();
+                sessions = sessions.OrderBy(f => f.SESSIONID);
+                foreach (var session in sessions)
+                {
+                    if (session.IsDefault)
+                    {
+                        continue;
+                    }
+
+                    var legacy = session;
+                    yield return ((int) legacy.SESSIONID, legacy.SESSIONNAME);
+                }
+            }
+
+            using (Connection)
+            {
+                // dispose of the connection..
+            }
+        }
+
 
         /// <summary>
         /// Inserts a session into the database.

@@ -9,6 +9,7 @@ using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepadOldDatabase;
 using VPKSoft.LangLib;
+using VPKSoft.Utils;
 
 namespace ScriptNotepad.Database.Entity.Utility
 {
@@ -43,6 +44,29 @@ namespace ScriptNotepad.Database.Entity.Utility
                 session = new FileSession {SessionName = sessionName};
                 session = context.FileSessions?.Add(session);
                 context.SaveChanges();
+            }
+
+            return session;
+        }
+
+        /// <summary>
+        /// Gets the file session for a given session Id number.
+        /// </summary>
+        /// <param name="sessionId">The session identifier.</param>
+        /// <param name="context">An optional <see cref="ScriptNotepadDbContext"/> context.</param>
+        /// <param name="sessionName">An optional session name.</param>
+        /// <returns>A <see cref="FileSession"/> class instance matching the session identifier.</returns>
+        private static FileSession GetSession(int sessionId, ScriptNotepadDbContext context = null, string sessionName = null)
+        {
+            if (context == null)
+            {
+                context = ScriptNotepadDbContext.DbContext;
+            }
+            var session = context.FileSessions?.FirstOrDefault(f => f.Id == sessionId);
+
+            if (session == null && sessionName != null)
+            {
+                session = context.FileSessions?.FirstOrDefault(f => f.SessionName == sessionName);
             }
 
             return session;
@@ -288,10 +312,115 @@ namespace ScriptNotepad.Database.Entity.Utility
                         Rating = dataTuple.Rating,
                     };
 
-
                     try
                     {
                         context.Plugins.Add(plugin);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the SESSION_NAME database table into a Entity Framework Code-First <see cref="FileSave"/> data.
+        /// </summary>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool SessionDataToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                   "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var dataTuples = DataGetOld.GetEntityDataSession(connectionString);
+
+
+            connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                foreach (var dataTuple in dataTuples)
+                {
+                    var session = new FileSession
+                    {
+                        Id = dataTuple.Id,
+                        SessionName = dataTuple.SessionName,
+                    };
+
+                    try
+                    {
+                        context.FileSessions.Add(session);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result = false;
+                        ExceptionLogAction?.Invoke(ex);
+                        Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the DBFILE_SAVE database table into a Entity Framework Code-First <see cref="FileSave"/> data.
+        /// </summary>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool FileSavesToEntity()
+        {
+            var result = true;
+            var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                   "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var dataTuples = DataGetOld.GetEntityDataFileSave(connectionString);
+
+
+            connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+
+            var sqLiteConnection = new SQLiteConnection(connectionString);
+            sqLiteConnection.Open();
+
+            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            {
+                foreach (var dataTuple in dataTuples)
+                {
+                    var fileSave = new FileSave
+                    {
+                        Id = dataTuple.Id, 
+                        Session = GetSession(dataTuple.SessionId, context, dataTuple.SessionName), 
+                        FileNameFull = dataTuple.FileNameFull, 
+                        Encoding = dataTuple.Encoding, 
+                        CurrentCaretPosition = dataTuple.CurrentCaretPosition, 
+                        DatabaseModified = dataTuple.DatabaseModified, 
+                        EditorZoomPercentage = dataTuple.EditorZoomPercentage, 
+                        ExistsInFileSystem = dataTuple.ExistsInFileSystem, 
+                        FileContents = dataTuple.FileContents, 
+                        FileName = dataTuple.FileName, 
+                        FilePath = dataTuple.FilePath, 
+                        FileSystemModified = dataTuple.FileSystemModified, 
+                        FileSystemSaved = dataTuple.FileSystemSaved, 
+                        IsActive = dataTuple.IsActive, 
+                        IsHistory = dataTuple.IsHistory, 
+                        LexerType = dataTuple.LexerType, 
+                        UseSpellChecking = dataTuple.UseSpellChecking, 
+                        VisibilityOrder = dataTuple.VisibilityOrder,
+                    };
+
+                    try
+                    {
+                        context.FileSaves.Add(fileSave);
                         context.SaveChanges();
                     }
                     catch (Exception ex)

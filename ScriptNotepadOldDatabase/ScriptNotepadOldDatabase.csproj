@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.112.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -49,33 +52,41 @@
     <Reference Include="VPKSoft.LangLib, Version=1.0.1.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.LangLib.1.0.1.9\lib\net461\VPKSoft.LangLib.dll</HintPath>
     </Reference>
+    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.0.9\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
+    </Reference>
     <Reference Include="VPKSoft.Utils, Version=1.0.4.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.Utils.1.0.4.2\lib\net45\VPKSoft.Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\DatabaseEnumerations.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsCodeSnippets.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsFileSave.cs" />
+    <Compile Include="Database\TableCommands\DatabaseCommandsGeneral.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMiscText.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsPlugins.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSearchAndReplace.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSessionData.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsSessionName.cs" />
     <Compile Include="Database\TableMethods\DatabaseCodeSnippets.cs" />
+    <Compile Include="Database\TableMethods\DatabaseFileSave.cs" />
     <Compile Include="Database\TableMethods\DatabaseMiscText.cs" />
     <Compile Include="Database\TableMethods\DatabasePlugins.cs" />
     <Compile Include="Database\TableMethods\DatabaseSearchAndReplace.cs" />
     <Compile Include="Database\TableMethods\DatabaseSessionData.cs" />
     <Compile Include="Database\TableMethods\DatabaseSessionName.cs" />
     <Compile Include="Database\Tables\CODE_SNIPPETS.cs" />
+    <Compile Include="Database\Tables\DBFILE_SAVE.cs" />
     <Compile Include="Database\Tables\MISCTEXT_LIST.cs" />
     <Compile Include="Database\Tables\PLUGINS.cs" />
     <Compile Include="Database\Tables\SEARCH_AND_REPLACE_HISTORY.cs" />
     <Compile Include="Database\Tables\SESSION_NAME.cs" />
+    <Compile Include="Database\UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
     <Compile Include="DataGetOld.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsMisc.cs" />
     <Compile Include="Database\TableCommands\DatabaseCommandsRecentFiles.cs" />
-    <Compile Include="Database\TableMethods\DatabaseCommandsGeneral.cs" />
     <Compile Include="Database\TableMethods\DatabaseRecentFiles.cs" />
     <Compile Include="Database\Tables\RECENT_FILES.cs" />
     <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />

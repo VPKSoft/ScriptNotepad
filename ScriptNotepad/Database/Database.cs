@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using ScriptNotepad.Database.UtilityClasses;
-using ScriptNotepad.Database.TableCommands;
 
 namespace ScriptNotepad.Database
 {
@@ -49,74 +48,6 @@ namespace ScriptNotepad.Database
         {
             Connection = new SQLiteConnection(connectionString); // create a new SQLiteConnection class instance..
             Connection.Open();
-        }
-
-        /// <summary>
-        /// Cleanups the history document contents with the given maximum <paramref name="maxDocuments"/> amount to be left in to the database.
-        /// </summary>
-        /// <param name="sessionName">Name of the session of which documents to be cleaned from the database.</param>
-        /// <param name="maxDocuments">The maximum amount of documents to keep in the database.</param>
-        /// <returns>A named tuple containing an indicator of the success of the deletion and the amount of deleted records from the database.</returns>
-        public static (bool success, int deletedAmount) CleanupHistoryDocumentContents(string sessionName, long maxDocuments)
-        {
-            try
-            {
-                // a list of DBFILE_SAVE ID numbers to be deleted from the database..
-                List<long> ids = new List<long>();
-
-                // generate a SQL sentence for the selection..
-                string sql = DatabaseCommandsFileSave.GenHistoryCleanupListSelect(sessionName);
-
-                // as the SQLiteCommand is disposable a using clause is required..
-                using (SQLiteCommand command = new SQLiteCommand(sql, Connection))
-                {
-                    // loop through the result set..
-                    using (SQLiteDataReader reader = command.ExecuteReader())
-                    {
-                        // ID: 0, HISTORY_AMOUNT: 1
-                        while (reader.Read())
-                        {
-                            // stop if the amount of documents is lower than the given maximum amount..
-                            if (reader.GetInt64(1) < maxDocuments)
-                            {
-                                return (false, 0);
-                            }
-
-                            // get the total count value..
-                            long count = reader.GetInt64(1);
-
-                            // collect the maximum amount of ID numbers to be deleted from the database..
-                            if (count - maxDocuments > ids.Count)
-                            {
-                                ids.Add(reader.GetInt64(0));
-                            }
-                            else // the amount if full..
-                            {
-                                // ..so break the loop..
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                // return the success value and the amount of deleted DBFILE_SAVE entries..
-                if (ids.Count > 0)
-                {
-                    // ..if any..
-                    return (ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenDeleteDBFileSaveIDList(ids)), ids.Count);
-                }
-                else
-                {
-                    // ..none where to be deleted..
-                    return (false, 0);
-                }
-            }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-                return (false, 0); // failure..
-            }
         }
 
         /// <summary>
@@ -197,27 +128,6 @@ namespace ScriptNotepad.Database
             byte[] blobBytes = new byte[size];
             blob.Read(blobBytes, size, 0);
             return new MemoryStream(blobBytes); // remember to dispose of this..
-        }
-
-        /// <summary>
-        /// Localizes the default name session name.
-        /// </summary>
-        /// <param name="name">The localized name for "Default".</param>
-        public static void LocalizeDefaultSessionName(string name)
-        {
-            // update the name..
-            ExecuteArbitrarySQL(DatabaseCommandsMisc.GenLocalizeDefaultSessionName(name));
-        }
-
-        /// <summary>
-        /// Gets the session ID for a given session name.
-        /// </summary>
-        /// <param name="sessionName">The name of the session which ID to get.</param>
-        /// <returns>An ID number for the given session name.</returns>
-        // ReSharper disable once InconsistentNaming
-        public static long GetSessionID(string sessionName)
-        {
-            return GetScalar<long>(DatabaseCommandsMisc.GenGetCurrentSessionID(sessionName));
         }
     }
 }

@@ -24,19 +24,17 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.Tables;
-
-namespace ScriptNotepad.Database
+namespace ScriptNotepadOldDatabase.Database
 {
     /// <summary>
     /// Some enumerations used by the database classes.
     /// </summary>
-    public static class DatabaseEnumerations
+    internal static class DatabaseEnumerations
     {
         /// <summary>
         /// An enumeration indicating how the database commands should react to the ISHISTORY flag of the <see cref="DBFILE_SAVE"/> class.
         /// </summary>
-        public enum DatabaseHistoryFlag
+        internal enum DatabaseHistoryFlag
         {
             /// <summary>
             /// No history files should be included.

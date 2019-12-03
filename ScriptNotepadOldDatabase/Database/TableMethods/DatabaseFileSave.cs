@@ -24,39 +24,34 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.TableCommands;
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.UtilityClasses.StreamHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using ScriptNotepad.Database.Entity.Context;
-using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.UtilityClasses.Encodings;
+using ScriptNotepadOldDatabase.Database.TableCommands;
+using ScriptNotepadOldDatabase.Database.Tables;
+using ScriptNotepadOldDatabase.Database.UtilityClasses.StreamHelpers;
+using ScriptNotepadOldDatabase.UtilityClasses.Encodings;
 using VPKSoft.LangLib;
-using VPKSoft.ScintillaTabbedTextControl;
-using static ScriptNotepad.Database.DatabaseEnumerations;
-using static VPKSoft.ScintillaLexers.LexerEnumerations;
+using VPKSoft.ScintillaLexers;
 
-namespace ScriptNotepad.Database.TableMethods
+namespace ScriptNotepadOldDatabase.Database.TableMethods
 {
     /// <summary>
     /// A class containing methods for database interaction with the DBFILE_SAVE table.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Database" />
-    public class DatabaseFileSave: Database
+    /// <seealso cref="Database" />
+    internal class DatabaseFileSave: Database
     {
         /// <summary>
         /// Adds a given DBFILE_SAVE class instance into the database cache.
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be added into the database.</param>
         /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
-        public static DBFILE_SAVE AddFile(DBFILE_SAVE fileSave)
+        internal static DBFILE_SAVE AddFile(DBFILE_SAVE fileSave)
         {
             try
             {
@@ -102,90 +97,13 @@ namespace ScriptNotepad.Database.TableMethods
         }
 
         /// <summary>
-        /// Adds a given file into the database cache.
-        /// </summary>
-        /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
-        /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
-        /// <param name="sessionId">An identifier for the session to which the document should be saved to.</param>
-        /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
-        /// <param name="encoding">An encoding for the document.</param>
-        /// <param name="id">An unique identifier for the file.</param>
-        /// <returns>A DBFILE_SAVE class instance file was successfully added to the database; otherwise null.</returns>
-        public static DBFILE_SAVE AddFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, long sessionId, Encoding encoding, int id = -1)
-        {
-            try
-            {
-                DBFILE_SAVE fileSave = new DBFILE_SAVE()
-                {
-                    ID = document.ID,
-                    EXISTS_INFILESYS = File.Exists(document.FileName),
-                    FILENAME_FULL = document.FileName,
-                    FILENAME = Path.GetFileName(document.FileName),
-                    FILEPATH = Path.GetDirectoryName(document.FileName),
-                    FILESYS_MODIFIED = File.Exists(document.FileName) ?
-                        new FileInfo(document.FileName).LastWriteTime :
-                        DateTime.MinValue,
-                    DB_MODIFIED = DateTime.Now,
-                    LEXER_CODE = document.LexerType,
-                    FILE_CONTENTS = document.Scintilla.Text,
-                    VISIBILITY_ORDER = (int)document.FileTabButton.Tag,
-                    SESSIONNAME = sessionName,
-                    SESSIONID = sessionId,
-                    ISACTIVE = document.FileTabButton.IsActive,
-                    ENCODING = encoding,
-                    ISHISTORY = databaseHistoryFlag == DatabaseHistoryFlag.IsHistory, // in a database sense only the value if IsHistory is true..
-                    CURRENT_POSITION = document.Scintilla.CurrentPosition,
-                    USESPELL_CHECK = true,
-                    EDITOR_ZOOM = document.ZoomPercentage,
-                };
-
-                return AddFile(fileSave);
-            }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Updates the file's ISHISTORY flag in the database.
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance which ISHISTORY flag to update to the database.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool UpdateFileHistoryFlag(DBFILE_SAVE fileSave)
+        internal static bool UpdateFileHistoryFlag(DBFILE_SAVE fileSave)
         {
             return ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenUpdateFileHistoryFlag(fileSave));
-        }
-
-        /// <summary>
-        /// Adds or updates a a given file into the database cache.
-        /// </summary>
-        /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
-        /// <param name="sessionName">A name of the session to which the document should be saved to.</param>
-        /// <param name="sessionId">An identifier for the session to which the document should be saved to.</param>
-        /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
-        /// <param name="encoding">An encoding for the document.</param>
-        /// <param name="id">An unique identifier for the file.</param>
-        /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
-        public static DBFILE_SAVE AddOrUpdateFile(ScintillaTabbedDocument document, DatabaseHistoryFlag databaseHistoryFlag, string sessionName, long sessionId, Encoding encoding, int id = -1)
-        {
-            return UpdateFile(AddFile(document, databaseHistoryFlag, sessionName, sessionId, encoding, id), document.Scintilla.CurrentPosition);
-        }
-
-        /// <summary>
-        /// Adds or updates a a given file into the database cache.
-        /// </summary>
-        /// <param name="fileSave">A DBFILE_SAVE class instance to be added or updated into the database.</param>
-        /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
-        /// <returns>An instance to a DBFILE_SAVE class if the operations was successful; otherwise null;</returns>
-        public static DBFILE_SAVE AddOrUpdateFile(DBFILE_SAVE fileSave, ScintillaTabbedDocument document)
-        {
-            fileSave.FILE_CONTENTS = document.Scintilla.Text;
-            fileSave.CURRENT_POSITION = document.Scintilla.CurrentPosition;
-            fileSave.FILEPATH = Path.GetDirectoryName(fileSave.FILENAME_FULL);
-            return UpdateFile(AddFile(fileSave), document.Scintilla.CurrentPosition);
         }
 
         /// <summary>
@@ -194,7 +112,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="fileSave">A DBFILE_SAVE class instance to be updated into the database.</param>
         /// <param name="currentPosition">The current caret position of the document.</param>
         /// <returns>A modified instance of the DBFILE_SAVE if the operation was successful; otherwise null;</returns>
-        public static DBFILE_SAVE UpdateFile(DBFILE_SAVE fileSave, int currentPosition)
+        internal static DBFILE_SAVE UpdateFile(DBFILE_SAVE fileSave, int currentPosition)
         {
             if (fileSave == null)
             {
@@ -239,9 +157,9 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="fileNameFull">The full file name of the file to get from the database.</param>
         /// <param name="getZoom">A flag indicating whether to get the saved zoom value from the database.</param>
         /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
-        public static DBFILE_SAVE GetFileFromDatabase(string sessionName, string fileNameFull, bool getZoom)
+        internal static DBFILE_SAVE GetFileFromDatabase(string sessionName, string fileNameFull, bool getZoom)
         {
-            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, DatabaseHistoryFlag.DontCare, fileNameFull), Connection))
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(sessionName, DatabaseEnumerations.DatabaseHistoryFlag.DontCare, fileNameFull), Connection))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
                 {
@@ -260,7 +178,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="sessionName">Name of the session to which the file is supposed to belong to.</param>
         /// <param name="fileNameFull">The full file name of the file.</param>
         /// <returns><c>true</c> if a file snapshot exists in the database, <c>false</c> otherwise.</returns>
-        public static bool FileExistsInDatabase(string sessionName, string fileNameFull)
+        internal static bool FileExistsInDatabase(string sessionName, string fileNameFull)
         {
             return GetScalar<long>(DatabaseCommandsFileSave.GenIfExistsInDatabase(sessionName, fileNameFull)) !=
                    default;
@@ -272,7 +190,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="sessionName">Name of the session to which the file is supposed to belong to.</param>
         /// <param name="fileNameFull">The full file name of the file.</param>
         /// <returns>An <see cref="Encoding"/> class instance if the operation was successful; otherwise null.</returns>
-        public static Encoding GetEncodingFromDatabase(string sessionName, string fileNameFull)
+        internal static Encoding GetEncodingFromDatabase(string sessionName, string fileNameFull)
         {
             try
             {
@@ -320,7 +238,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="fileSave">An instance to a <see cref="DBFILE_SAVE"/> class.</param>
         /// <param name="previousName">The previous name of the non-existing file.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool UpdateFileName(DBFILE_SAVE fileSave, string previousName)
+        internal static bool UpdateFileName(DBFILE_SAVE fileSave, string previousName)
         {
             return ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenRenameNewFile(fileSave, previousName));
         }
@@ -330,87 +248,42 @@ namespace ScriptNotepad.Database.TableMethods
         /// </summary>
         /// <param name="fileSave">An instance to a <see cref="DBFILE_SAVE"/> class.</param>
         /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool UpdateMiscFlags(DBFILE_SAVE fileSave)
+        internal static bool UpdateMiscFlags(DBFILE_SAVE fileSave)
         {
             return ExecuteArbitrarySQL(DatabaseCommandsFileSave.GenUpdateFileMiscFlags(fileSave));
         }
 
         /// <summary>
-        /// Converts the legacy database table <see cref="DBFILE_SAVE"/> to Entity Framework format.
+        /// Gets all the data to from the table convert to Entity Framework.
         /// </summary>
-        /// <returns><c>true</c> if the migration to the Entity Framework's Code-First migration was successful, <c>false</c> otherwise.</returns>
-        public static bool ToEntity()
+        /// <param name="connectionString">A SQLite database connection string.</param>
+        /// <returns>System.Collections.Generic.IEnumerable&lt;(System.Int32 Id, System.Text.Encoding Encoding, System.Boolean ExistsInFileSystem, System.String FileNameFull, System.String FileName, System.String FilePath, System.DateTime FileSystemModified, System.DateTime FileSystemSaved, System.DateTime DatabaseModified, VPKSoft.ScintillaLexers.LexerEnumerations.LexerType LexerType, System.Byte[] FileContents, System.Int32 VisibilityOrder, System.Boolean IsHistory, System.Int32 CurrentCaretPosition, System.Boolean UseSpellChecking, System.Int32 EditorZoomPercentage, System.Int32 SessionId, System.Boolean IsActive)&gt;.</returns>
+        internal static IEnumerable<(int Id, Encoding Encoding, bool ExistsInFileSystem, string FileNameFull,
+                        string FileName, string FilePath, DateTime FileSystemModified, DateTime FileSystemSaved, DateTime
+                        DatabaseModified, LexerEnumerations.LexerType LexerType, byte[] FileContents, int VisibilityOrder, bool
+                        IsHistory, int CurrentCaretPosition, bool UseSpellChecking, int EditorZoomPercentage, int SessionId, bool IsActive, string SessionName)>
+                    GetEntityData(string connectionString)
         {
-            var result = true;
-            
-            var connectionString = "Data Source=" + DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;";
+            InitConnection(connectionString);
 
-            var sqLiteConnection = new SQLiteConnection(connectionString);
-            sqLiteConnection.Open();
-
-
-            using (var context = new ScriptNotepadDbContext(sqLiteConnection, true))
+            using (var sqLiteConnection = new SQLiteConnection(connectionString))
             {
-                using (SQLiteCommand command =
-                    new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(), Connection))
+                var fileSaves = GetFilesFromDatabase();
+                foreach (var fileSave in fileSaves)
                 {
-                    // can't get the BLOB without this (?!)..
-                    using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
-                    {
-                        while (reader.Read())
-                        {
-                            var legacy = FromDataReader(reader, true);
-
-                            var session = context.FileSessions?.FirstOrDefault(f => f.SessionName == legacy.SESSIONNAME);
-                            if (session == null && legacy.SESSIONNAME == "Default")
-                            {
-                                session = context.FileSessions?.FirstOrDefault(f => f.Id == 1);
-                            }
-
-                            if (session == null)
-                            {
-                                session = new FileSession {SessionName = legacy.SESSIONNAME};
-                                session = context.FileSessions?.Add(session);
-                                context.SaveChanges();
-                            }
-
-                            var fileSave = new FileSave
-                            {
-                                Id = (int) legacy.ID,
-                                CurrentCaretPosition = legacy.CURRENT_POSITION,
-                                DatabaseModified = legacy.DB_MODIFIED,
-                                EditorZoomPercentage = legacy.EDITOR_ZOOM,
-                                Encoding = legacy.ENCODING,
-                                FileContents = legacy.ENCODING.GetBytes(legacy.FILE_CONTENTS),
-                                FileName = legacy.FILENAME,
-                                FileNameFull = legacy.FILENAME_FULL,
-                                FilePath = legacy.FILEPATH,
-                                FileSystemModified = legacy.FILESYS_MODIFIED,
-                                UseSpellChecking = legacy.USESPELL_CHECK,
-                                IsActive = legacy.ISACTIVE,
-                                IsHistory = legacy.ISHISTORY,
-                                VisibilityOrder = legacy.VISIBILITY_ORDER,
-                                LexerType = legacy.LEXER_CODE,
-                                ExistsInFileSystem = legacy.EXISTS_INFILESYS,
-                                Session = session,
-                            };
-                            try
-                            {
-                                context.FileSaves.Add(fileSave);
-                                context.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                result = false;
-                                ExceptionLogAction?.Invoke(ex);
-                                Debug.WriteLine(ex.Message);
-                            }
-                        }
-                    }
+                    var legacy = fileSave;
+                    
+                    yield return ((int)legacy.ID, legacy.ENCODING, legacy.EXISTS_INFILESYS, legacy.FILENAME_FULL,
+                            legacy.FILENAME, legacy.FILEPATH, legacy.FILESYS_MODIFIED, legacy.FILESYS_SAVED,
+                            legacy.DB_MODIFIED, legacy.LEXER_CODE, legacy.ENCODING.GetBytes(legacy.FILE_CONTENTS), legacy.VISIBILITY_ORDER,
+                            legacy.ISHISTORY, legacy.CURRENT_POSITION, legacy.USESPELL_CHECK, legacy.EDITOR_ZOOM, (int)legacy.SESSIONID, legacy.ISACTIVE, legacy.SESSIONNAME);
                 }
             }
 
-            return result;
+            using (Connection)
+            {
+                // dispose of the connection..
+            }
         }
 
         /// <summary>
@@ -419,7 +292,7 @@ namespace ScriptNotepad.Database.TableMethods
         /// <param name="reader">The <see cref="SQLiteDataReader"/> class instance to read the data from.</param>
         /// <param name="getZoom">A flag indicating whether to get the saved zoom value from the database.</param>
         /// <returns>A DBFILE_SAVE class instance if the operation was successful; otherwise null.</returns>
-        public static DBFILE_SAVE FromDataReader(SQLiteDataReader reader, bool getZoom)
+        internal static DBFILE_SAVE FromDataReader(SQLiteDataReader reader, bool getZoom)
         {
             try
             {
@@ -441,7 +314,7 @@ namespace ScriptNotepad.Database.TableMethods
                         FILEPATH = reader.GetString(4),
                         FILESYS_MODIFIED = DateFromDBString(reader.GetString(5)),
                         DB_MODIFIED = DateFromDBString(reader.GetString(6)),
-                        LEXER_CODE = (LexerType)reader.GetInt32(7), // cast to a lexer type..
+                        LEXER_CODE = (LexerEnumerations.LexerType)reader.GetInt32(7), // cast to a lexer type..
                         FILE_CONTENTS = StreamStringHelpers.MemoryStreamToText(MemoryStreamFromBlob(reader.GetBlob(8, true)), fileSaveEncoding),
                         VISIBILITY_ORDER = reader.GetInt32(9),
                         SESSIONID = reader.GetInt32(10),
@@ -466,11 +339,34 @@ namespace ScriptNotepad.Database.TableMethods
         /// <summary>
         /// Gets the file snapshots from the database.
         /// </summary>
+        /// <returns>A collection of DBFILE_SAVE class instances matching the given parameters.</returns>
+        internal static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase()
+        {
+            List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
+
+            using (SQLiteCommand command = new SQLiteCommand(DatabaseCommandsFileSave.GenDocumentSelect(), Connection))
+            {
+                // can't get the BLOB without this (?!)..
+                using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.KeyInfo))
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(FromDataReader(reader, true));
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the file snapshots from the database.
+        /// </summary>
         /// <param name="sessionName">Name of the session with the saved file snapshots belong to.</param>
         /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <param name="getZoom">A flag indicating whether to get the saved zoom value from the database.</param>
         /// <returns>A collection of DBFILE_SAVE class instances matching the given parameters.</returns>
-        public static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, DatabaseHistoryFlag databaseHistoryFlag, bool getZoom)
+        internal static IEnumerable<DBFILE_SAVE> GetFilesFromDatabase(string sessionName, DatabaseEnumerations.DatabaseHistoryFlag databaseHistoryFlag, bool getZoom)
         {
             List<DBFILE_SAVE> result = new List<DBFILE_SAVE>();
 

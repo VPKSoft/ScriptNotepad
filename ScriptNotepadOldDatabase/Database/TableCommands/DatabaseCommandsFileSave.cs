@@ -24,21 +24,20 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.Tables;
-using ScriptNotepad.Database.UtilityClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ScriptNotepad.UtilityClasses.Encodings;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
-using static ScriptNotepad.Database.DatabaseEnumerations;
+using ScriptNotepadOldDatabase.Database.TableMethods;
+using ScriptNotepadOldDatabase.Database.Tables;
+using ScriptNotepadOldDatabase.Database.UtilityClasses;
+using ScriptNotepadOldDatabase.UtilityClasses.Encodings;
 
-namespace ScriptNotepad.Database.TableCommands
+namespace ScriptNotepadOldDatabase.Database.TableCommands
 {
     /// <summary>
     /// A class which is used to formulate SQL sentences for the <see cref="Database"/> class for the DBFILE_SAVE database table.
     /// </summary>
-    public class DatabaseCommandsFileSave: DataFormulationHelpers
+    internal class DatabaseCommandsFileSave: DataFormulationHelpers
     {
         /// <summary>
         /// Gets the existing database file save identifier sentence.
@@ -46,7 +45,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         // ReSharper disable once InconsistentNaming
-        public static string GetExistingDBFileSaveIDSentence(DBFILE_SAVE fileSave)
+        internal static string GetExistingDBFileSaveIDSentence(DBFILE_SAVE fileSave)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -64,15 +63,15 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <param name="prefix">A prefix string to add to the result if the condition is a combined one (i.e. AND).</param>
         /// <returns>A string containing a database select condition based on the <paramref name="databaseHistoryFlag"/>.</returns>
-        private static string GetHistorySelectCondition(DatabaseHistoryFlag databaseHistoryFlag, string prefix)
+        internal static string GetHistorySelectCondition(DatabaseEnumerations.DatabaseHistoryFlag databaseHistoryFlag, string prefix)
         {
             switch (databaseHistoryFlag)
             {
-                case DatabaseHistoryFlag.IsHistory:
+                case DatabaseEnumerations.DatabaseHistoryFlag.IsHistory:
                     return prefix + " ISHISTORY = 1";
-                case DatabaseHistoryFlag.NotHistory:
+                case DatabaseEnumerations.DatabaseHistoryFlag.NotHistory:
                     return prefix + " ISHISTORY = 0";
-                case DatabaseHistoryFlag.DontCare:
+                case DatabaseEnumerations.DatabaseHistoryFlag.DontCare:
                     return string.Empty;
                 default:
                     return string.Empty;
@@ -84,7 +83,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="sessionName">A name of the session to which the history documents belong to.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenHistoryCleanupListSelect(string sessionName)
+        internal static string GenHistoryCleanupListSelect(string sessionName)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -105,7 +104,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="ids">A list of ID numbers to generate a SQL sentence to delete <see cref="DBFILE_SAVE"/> entries from the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
         // ReSharper disable once InconsistentNaming
-        public static string GenDeleteDBFileSaveIDList(List<long> ids)
+        internal static string GenDeleteDBFileSaveIDList(List<long> ids)
         {
             string deleteIdList = string.Join(", ", ids);
             string sql =
@@ -122,7 +121,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="databaseHistoryFlag">An enumeration indicating how to behave with the <see cref="DBFILE_SAVE"/> class ISHISTORY flag.</param>
         /// <param name="fileNameFull">A file name in case of a single file is being queried from the database.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenDocumentSelect(string sessionName, DatabaseHistoryFlag databaseHistoryFlag, string fileNameFull = "")
+        internal static string GenDocumentSelect(string sessionName, DatabaseEnumerations.DatabaseHistoryFlag databaseHistoryFlag, string fileNameFull = "")
         {
             string fileNameCondition = fileNameFull == string.Empty ? string.Empty :
                 $"AND FILENAME_FULL = {QS(fileNameFull)}";
@@ -145,11 +144,12 @@ namespace ScriptNotepad.Database.TableCommands
             return sql;
         }
 
+
         /// <summary>
         /// Generates a SQL sentence to select all the document snapshots from the DBFILE_SAVE table in the database.
         /// </summary>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenDocumentSelect()
+        internal static string GenDocumentSelect()
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -170,7 +170,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="sessionName">Name of the session with the saved file belongs to.</param>
         /// <param name="fileNameFull">A full file name of the file to check for.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenIfExistsInDatabase(string sessionName, string fileNameFull)
+        internal static string GenIfExistsInDatabase(string sessionName, string fileNameFull)
         {
 
             string sql =
@@ -190,7 +190,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="sessionName">Name of the session with the saved file belongs to.</param>
         /// <param name="fileNameFull">A full file name of the file.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GetEncodingFromDatabase(string sessionName, string fileNameFull)
+        internal static string GetEncodingFromDatabase(string sessionName, string fileNameFull)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -209,7 +209,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenInsertFileSentence(DBFILE_SAVE fileSave)
+        internal static string GenInsertFileSentence(DBFILE_SAVE fileSave)
         {
             string existsCondition = 
                 string.Join(Environment.NewLine,
@@ -254,7 +254,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenUpdateFileHistoryFlag(DBFILE_SAVE fileSave)
+        internal static string GenUpdateFileHistoryFlag(DBFILE_SAVE fileSave)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -269,7 +269,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
         /// <param name="previousName">The previous name of the non-existing file.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenRenameNewFile(DBFILE_SAVE fileSave, string previousName)
+        internal static string GenRenameNewFile(DBFILE_SAVE fileSave, string previousName)
         {
             string sql =
                 string.Join(Environment.NewLine,
@@ -296,7 +296,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="fileSave">A DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenUpdateFileMiscFlags(DBFILE_SAVE fileSave)
+        internal static string GenUpdateFileMiscFlags(DBFILE_SAVE fileSave)
         {
             string sql =
                 string.Join(Environment.NewLine, 
@@ -316,7 +316,7 @@ namespace ScriptNotepad.Database.TableCommands
         /// </summary>
         /// <param name="fileSave">A reference to a DBFILE_SAVE class instance to be used for the SQL sentence generation.</param>
         /// <returns>A generated SQL sentence based on the given parameters.</returns>
-        public static string GenUpdateFileSentence(ref DBFILE_SAVE fileSave)
+        internal static string GenUpdateFileSentence(ref DBFILE_SAVE fileSave)
         {
             try
             {
@@ -351,10 +351,8 @@ namespace ScriptNotepad.Database.TableCommands
 
                 return sql;
             }
-            catch (Exception ex)
+            catch 
             {
-                // log the exception..
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
                 return string.Empty;
             }
         }
