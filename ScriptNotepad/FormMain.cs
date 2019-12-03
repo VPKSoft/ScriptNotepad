@@ -135,21 +135,6 @@ namespace ScriptNotepad
             // create an IPC server at localhost, the port was randomized in the development phase..
             ipcServer.CreateServer("localhost", 50670);
 
-            // run the script to keep the database up to date..
-            if (!ScriptRunner.RunScript(Path.Combine(DBLangEngine.DataDir, "ScriptNotepad.sqlite"), // TODO::Remove after the migration..
-                Path.Combine(VPKSoft.Utils.Paths.AppInstallDir, "DatabaseScript", "script.sql_script")))
-            {
-                MessageBox.Show(
-                    DBLangEngine.GetMessage("msgErrorInScript",
-                    "A script error occurred on the database update|Something failed during running the database update script"),
-                    DBLangEngine.GetMessage("msgError", "Error|A message describing that some kind of error occurred."),
-                    MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-
-                // at this point there is no reason to continue the program's execution as the database might be in an invalid state..
-                throw new Exception(DBLangEngine.GetMessage("msgErrorInScript",
-                    "A script error occurred on the database update|Something failed during running the database update script"));
-            }
-
             // ReSharper disable once ArrangeThisQualifier
             // ReSharper disable once VirtualMemberCallInConstructor
             this.Text +=
