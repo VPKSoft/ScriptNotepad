@@ -1849,7 +1849,7 @@ namespace ScriptNotepad
 
                         // update the file system modified time stamp so the software doesn't ask if the file should
                         // be reloaded from the file system..
-                        fileSave.DatabaseModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
+                        fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
                         fileSave.FileSystemSaved = fileSave.FileSystemModified;
                         fileSave.DatabaseModified = fileSave.FileSystemModified;
                         

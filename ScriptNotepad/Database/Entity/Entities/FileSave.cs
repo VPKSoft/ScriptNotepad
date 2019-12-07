@@ -160,7 +160,10 @@ namespace ScriptNotepad.Database.Entity.Entities
             set 
             { 
                 PreviousDbModified = dbModified;
-                dbModified = value;
+
+                // lets round up a bit..
+                dbModified = new DateTime(value.Year, value.Month, value.Day,
+                    value.Hour, value.Minute, value.Second, DateTimeKind.Unspecified);
             }
         }
 
@@ -271,7 +274,10 @@ namespace ScriptNotepad.Database.Entity.Entities
             get
             {
                 var fileSysModified = new FileInfo(FileNameFull).LastWriteTime;
-                fileSysModified =  new DateTime(fileSysModified.Year, fileSysModified.Month, fileSysModified.Day, fileSysModified.Hour, fileSysModified.Minute, fileSysModified.Second, DateTimeKind.Unspecified);
+
+                // lets round up a bit..
+                fileSysModified = new DateTime(fileSysModified.Year, fileSysModified.Month, fileSysModified.Day,
+                    fileSysModified.Hour, fileSysModified.Minute, fileSysModified.Second, DateTimeKind.Unspecified);
 
                 // get the last time the file was written into..
                 DateTime dtUpdated = fileSysModified;
@@ -283,6 +289,12 @@ namespace ScriptNotepad.Database.Entity.Entities
                 // .. after rethinking, don't do this:  _ShouldQueryDiskReload = true;
 
                 // return the result if the file has been changed in the file system..
+
+                if (result)
+                {
+
+                }
+
                 return result;
             }
 

@@ -68,8 +68,8 @@
     <Reference Include="PropertyChanged, Version=3.1.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.1.3\lib\net40\PropertyChanged.dll</HintPath>
     </Reference>
-    <Reference Include="ScintillaDiff, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScintillaDiff.1.0.0.2\lib\net47\ScintillaDiff.dll</HintPath>
+    <Reference Include="ScintillaDiff, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScintillaDiff.1.0.0.3\lib\net47\ScintillaDiff.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
@@ -123,8 +123,8 @@
     <Reference Include="VPKSoft.ConfLib, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ConfLib.1.0.0.9\lib\net461\VPKSoft.ConfLib.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.5\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
+    <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.6\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.LangLib, Version=1.0.1.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.LangLib.1.0.1.9\lib\net461\VPKSoft.LangLib.dll</HintPath>
