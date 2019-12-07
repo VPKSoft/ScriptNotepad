@@ -330,3 +330,4 @@ ASALocalRun/
 .mfractor/
 /ScriptNotepad/DBLocalization.exe
 *.exe
+/ScriptNotepad/history.txt
