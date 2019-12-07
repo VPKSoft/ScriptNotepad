@@ -24,19 +24,15 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.Assembly;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Entities;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 
@@ -67,17 +63,16 @@ namespace ScriptNotepad.PluginHandling
             DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
         }
 
-        private List<PLUGINS> plugins = new List<PLUGINS>();
+        private List<Plugin> plugins = new List<Plugin>();
 
         /// <summary>
         /// Displays the dialog.
         /// </summary>
         /// <returns>True if the user accepted the changes made in the dialog; otherwise false.</returns>
-        public static bool Execute(ref List<PLUGINS> plugins)
+        public static bool Execute(ref List<Plugin> plugins)
         {
-            FormPluginManage formPluginManage = new FormPluginManage();
+            FormPluginManage formPluginManage = new FormPluginManage {plugins = plugins};
 
-            formPluginManage.plugins = plugins;
 
             if (formPluginManage.ShowDialog() == DialogResult.OK)
             {
@@ -106,10 +101,10 @@ namespace ScriptNotepad.PluginHandling
         {
             lbPluginList.Items.Clear();
             var sortedAndFiltered =
-                plugins.OrderBy(f => f.SORTORDER).
-                    OrderByDescending(f => f.RATING).
-                    OrderBy(f => f.PLUGIN_NAME.ToLowerInvariant()).
-                    OrderBy(f => f.PLUGIN_VERSION.ToLowerInvariant()).ToList();
+                plugins.OrderBy(f => f.SortOrder).
+                    ThenByDescending(f => f.Rating).
+                    ThenBy(f => f.PluginName.ToLowerInvariant()).
+                    ThenBy(f => f.PluginVersion.ToLowerInvariant()).ToList();
 
             if (!string.IsNullOrWhiteSpace(filterString))
             {
@@ -117,7 +112,7 @@ namespace ScriptNotepad.PluginHandling
                     sortedAndFiltered.Where(f => f.ToString().ToLowerInvariant().Contains(filterString.ToLowerInvariant())).ToList();
             }
 
-            foreach (PLUGINS plugin in sortedAndFiltered)
+            foreach (var plugin in sortedAndFiltered)
             {
                 lbPluginList.Items.Add(plugin);
             }
@@ -156,29 +151,29 @@ namespace ScriptNotepad.PluginHandling
         /// Displays the data of the given plug-in.
         /// </summary>
         /// <param name="plugin">The plug-in which data to display.</param>
-        private void DisplayPluginData(PLUGINS plugin)
+        private void DisplayPluginData(Plugin plugin)
         {
-            tbPluginName.Text = plugin == null ? string.Empty : plugin.PLUGIN_NAME;
-            tbPluginDescription.Text = plugin == null ? string.Empty : plugin.PLUGIN_DESCTIPTION;
-            tbPluginVersion.Text = plugin == null ? string.Empty : plugin.PLUGIN_VERSION;
-            tbExceptionsThrown.Text = plugin == null ? string.Empty : plugin.EXCEPTION_COUNT.ToString();
-            tbLoadFailures.Text = plugin == null ? string.Empty : plugin.LOAD_FAILURES.ToString();
-            tbAppCrashes.Text = plugin == null ? string.Empty : plugin.APPLICATION_CRASHES.ToString();
-            tbInstalledAt.Text = plugin == null ? string.Empty : plugin.PLUGIN_INSTALLED.ToShortDateString();
-            tbUpdatedAt.Text = plugin == null ? string.Empty : (plugin.PLUGIN_UPDATED == DateTime.MinValue ?
+            tbPluginName.Text = plugin == null ? string.Empty : plugin.PluginName;
+            tbPluginDescription.Text = plugin == null ? string.Empty : plugin.PluginDescription;
+            tbPluginVersion.Text = plugin == null ? string.Empty : plugin.PluginVersion;
+            tbExceptionsThrown.Text = plugin == null ? string.Empty : plugin.ExceptionCount.ToString();
+            tbLoadFailures.Text = plugin == null ? string.Empty : plugin.LoadFailures.ToString();
+            tbAppCrashes.Text = plugin == null ? string.Empty : plugin.ApplicationCrashes.ToString();
+            tbInstalledAt.Text = plugin == null ? string.Empty : plugin.PluginInstalled.ToShortDateString();
+            tbUpdatedAt.Text = plugin == null ? string.Empty : (plugin.PluginUpdated == DateTime.MinValue ?
                 DBLangEngine.GetMessage("msgNA", "N/A|A message indicating a none value") :
-                plugin.PLUGIN_UPDATED.ToShortDateString());
-            nudRating.Value = plugin == null ? 0 : plugin.RATING;
+                plugin.PluginUpdated.ToShortDateString());
+            nudRating.Value = plugin?.Rating ?? 0;
 
-            cbPluginActive.Checked = plugin == null ? false : plugin.ISACTIVE;
-            cbPluginExists.Checked = plugin == null ? false : plugin.Exists;
+            cbPluginActive.Checked = plugin != null && plugin.IsActive;
+            cbPluginExists.Checked = plugin != null && plugin.Exists;
 
             nudRating.Enabled = plugin != null;
             btDeletePlugin.Enabled = plugin != null;
             cbPluginActive.Enabled = plugin != null;
 
             // indicate a serious flaw with the plug-in..
-            if (plugin != null && plugin.APPLICATION_CRASHES > 0)
+            if (plugin != null && plugin.ApplicationCrashes > 0)
             {
                 lbAppCrashes.Font = new Font(Font, FontStyle.Bold);
                 lbAppCrashes.ForeColor = Color.Red;
@@ -199,7 +194,7 @@ namespace ScriptNotepad.PluginHandling
                 return;
             }
             ListBox listBox = (ListBox)sender;
-            PLUGINS plugin = (PLUGINS)listBox.SelectedItem;
+            Plugin plugin = (Plugin)listBox.SelectedItem;
             DisplayPluginData(plugin);
         }
 
@@ -210,15 +205,15 @@ namespace ScriptNotepad.PluginHandling
 
         private void btDeletePlugin_Click(object sender, EventArgs e)
         {
-            PLUGINS plugin = (PLUGINS)lbPluginList.SelectedItem;
+            Plugin plugin = (Plugin)lbPluginList.SelectedItem;
 
             if (plugin != null)
             {
-                int idx = plugins.FindIndex(f => f.ID == plugin.ID);
+                int idx = plugins.FindIndex(f => f.Id == plugin.Id);
 
                 if (idx != -1)
                 {
-                    plugins[idx].PENDING_DELETION = true;
+                    plugins[idx].PendingDeletion = true;
                 }
             }
         }
@@ -240,11 +235,11 @@ namespace ScriptNotepad.PluginHandling
                 // save the user set ordering..
                 for (int i = 0; i < lbPluginList.Items.Count; i++)
                 {
-                    PLUGINS plugin = (PLUGINS)lbPluginList.Items[i];
-                    int idx = plugins.FindIndex(f => f.ID == plugin.ID);
+                    var plugin = (Plugin)lbPluginList.Items[i];
+                    int idx = plugins.FindIndex(f => f.Id == plugin.Id);
                     if (idx != -1)
                     {
-                        plugins[idx].SORTORDER = i;
+                        plugins[idx].SortOrder = i;
                     }
                 }
                 ListPlugins(tbFilterPlugins.Text);
@@ -300,6 +295,7 @@ namespace ScriptNotepad.PluginHandling
                     {
                         // try to copy the file to the plug-in folder..
                         File.Copy(odDLL.FileName, 
+                            // ReSharper disable once AssignNullToNotNullAttribute
                             Path.Combine(FormSettings.Settings.PluginFolder, Path.GetFileName(odDLL.FileName)), 
                             true);
                     }
@@ -329,15 +325,15 @@ namespace ScriptNotepad.PluginHandling
         // the user wishes to toggle the active state of a plug-in..
         private void cbPluginActive_CheckedChanged(object sender, EventArgs e)
         {
-            PLUGINS plugin = (PLUGINS)lbPluginList.SelectedItem;
+            var plugin = (Plugin)lbPluginList.SelectedItem;
 
             if (plugin != null)
             {
-                int idx = plugins.FindIndex(f => f.ID == plugin.ID);
+                int idx = plugins.FindIndex(f => f.Id == plugin.Id);
 
                 if (idx != -1)
                 {
-                    plugins[idx].ISACTIVE = ((CheckBox)sender).Checked;
+                    plugins[idx].IsActive = ((CheckBox)sender).Checked;
                 }
             }
         }

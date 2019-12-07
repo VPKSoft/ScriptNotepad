@@ -67,8 +67,11 @@ namespace ScriptNotepad
 
             Paths.MakeAppSettingsFolder(); // ensure there is an application settings folder..
 
-            ExceptionLogger.Bind(); // bind before any visual objects are created
-            ExceptionLogger.ApplicationCrashData += ExceptionLogger_ApplicationCrashData;
+            if (!Debugger.IsAttached) // this is too efficient, the exceptions aren't caught by the ide :-)
+            {
+                ExceptionLogger.Bind(); // bind before any visual objects are created
+                ExceptionLogger.ApplicationCrashData += ExceptionLogger_ApplicationCrashData;
+            }
 
             // Save languages..
             if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)

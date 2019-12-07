@@ -170,7 +170,7 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
         /// <summary>
         /// Gets or set the <see cref="Scintilla"/> instance this class has event subscription for.
         /// </summary>
-        private Scintilla Scintilla { get; set; }
+        private Scintilla Scintilla { get; }
 
         /// <summary>
         /// Runs a spell check for the <see cref="Scintilla"/> document.

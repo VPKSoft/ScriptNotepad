@@ -25,11 +25,7 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.StreamHelpers;

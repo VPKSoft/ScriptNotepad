@@ -26,8 +26,6 @@ SOFTWARE.
 
 using Ookii.Dialogs.WinForms;
 using ScintillaNET;
-using ScriptNotepad.Database.TableMethods;
-using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.IO;
 using ScriptNotepad.UtilityClasses.Keyboard;
@@ -37,7 +35,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
+using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;
@@ -101,25 +101,25 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             ApplicationActivated += FormSearchAndReplace_ApplicationActivated;
 
             // get the search text history from the database..
-            SearchHistory = DatabaseSearchAndReplace.GetSearchesAndReplaces(
-                FormSettings.Settings.CurrentSession,
-                "SEARCH_HISTORY",
-                FormSettings.Settings.FileSearchHistoriesLimit);
+            SearchHistory = SearchAndReplaceHistoryHelper.GetEntriesByLimit(SearchAndReplaceSearchType.All,
+                SearchAndReplaceType.Search, FormSettings.Settings.FileSearchHistoriesLimit,
+                FormSettings.Settings.CurrentSessionEntity).ToList();
 
             // get the replace text history from the database..
-            ReplaceHistory = DatabaseSearchAndReplace.GetSearchesAndReplaces(
-                FormSettings.Settings.CurrentSession,
-                "REPLACE_HISTORY",
-                FormSettings.Settings.FileSearchHistoriesLimit);
+            ReplaceHistory = SearchAndReplaceHistoryHelper.GetEntriesByLimit(SearchAndReplaceSearchType.All,
+                SearchAndReplaceType.Replace, FormSettings.Settings.FileSearchHistoriesLimit,
+                FormSettings.Settings.CurrentSessionEntity).ToList();
 
             // set the combo boxed auto-complete state..
             SetAutoCompleteState(FormSettings.Settings.AutoCompleteEnabled);
 
             // get the filter used in the search and/or replace in files..
-            FilterHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.FileExtensionList, FormSettings.Settings.FileSearchHistoriesLimit);
+            FilterHistory = MiscellaneousTextEntryHelper.GetEntriesByLimit(MiscellaneousTextType.FileExtensionList,
+                FormSettings.Settings.FileSearchHistoriesLimit, FormSettings.Settings.CurrentSessionEntity).ToList();
 
             // get the path(s) used in the search and/or replace in files..
-            PathHistory = DatabaseMiscText.GetMiscTexts(MiscTextType.Path, FormSettings.Settings.FileSearchHistoriesLimit);
+            PathHistory = MiscellaneousTextEntryHelper.GetEntriesByLimit(MiscellaneousTextType.Path,
+                FormSettings.Settings.FileSearchHistoriesLimit, FormSettings.Settings.CurrentSessionEntity).ToList();
 
             // set the user assigned color for the mark..
             btMarkColor.BackColor = FormSettings.Settings.MarkSearchReplaceColor;
@@ -139,19 +139,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
 
         #region PublicProperties
         // the search history texts..
-        private List<SEARCH_AND_REPLACE_HISTORY> searchHistory = new List<SEARCH_AND_REPLACE_HISTORY>();
+        private List<SearchAndReplaceHistory> searchHistory = new List<SearchAndReplaceHistory>();
 
         /// <summary>
         /// Gets or sets the search history texts.
         /// </summary>
-        public List<SEARCH_AND_REPLACE_HISTORY> SearchHistory
+        public List<SearchAndReplaceHistory> SearchHistory
         {
             get => searchHistory;
 
             set
             {
                 // sort the list as sorted in the database..
-                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.SEARCH_OR_REPLACE_TEXT.ToLowerInvariant())
+                value = value.OrderByDescending(f => f.Added).ThenBy(f => f.SearchOrReplaceText.ToLowerInvariant())
                     .ToList();
 
                 // save the value..
@@ -163,19 +163,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         // the search filter history values..
-        private List<MISCTEXT_LIST> filterHistory = new List<MISCTEXT_LIST>();
+        private List<MiscellaneousTextEntry> filterHistory = new List<MiscellaneousTextEntry>();
 
         /// <summary>
         /// Gets or sets the search filter history values.
         /// </summary>
-        public List<MISCTEXT_LIST> FilterHistory
+        public List<MiscellaneousTextEntry> FilterHistory
         {
             get => filterHistory;
 
             set
             {
                 // sort the list as sorted in the database..
-                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.TEXTVALUE.ToLowerInvariant())
+                value = value.OrderByDescending(f => f.Added).ThenBy(f => f.TextValue.ToLowerInvariant())
                     .ToList();
 
                 // save the value..
@@ -187,19 +187,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         // the search and/or replace path values..
-        private List<MISCTEXT_LIST> pathHistory = new List<MISCTEXT_LIST>();
+        private List<MiscellaneousTextEntry> pathHistory = new List<MiscellaneousTextEntry>();
 
         /// <summary>
         /// Gets or sets the search and/or replace path values.
         /// </summary>
-        public List<MISCTEXT_LIST> PathHistory
+        public List<MiscellaneousTextEntry> PathHistory
         {
             get => pathHistory;
 
             set
             {
                 // sort the list as sorted in the database..
-                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.TEXTVALUE.ToLowerInvariant())
+                value = value.OrderByDescending(f => f.Added).ThenBy(f => f.TextValue.ToLowerInvariant())
                     .ToList();
 
                 // save the value..
@@ -211,19 +211,19 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         // the replace history texts..
-        private List<SEARCH_AND_REPLACE_HISTORY> replaceHistory = new List<SEARCH_AND_REPLACE_HISTORY>();
+        private List<SearchAndReplaceHistory> replaceHistory = new List<SearchAndReplaceHistory>();
 
         /// <summary>
         /// Gets or sets the replace history texts.
         /// </summary>
-        public List<SEARCH_AND_REPLACE_HISTORY> ReplaceHistory
+        public List<SearchAndReplaceHistory> ReplaceHistory
         {
             get => replaceHistory;
 
             set
             {
                 // sort the list as sorted in the database..
-                value = value.OrderByDescending(f => f.ADDED).ThenBy(f => f.SEARCH_OR_REPLACE_TEXT.ToLowerInvariant())
+                value = value.OrderByDescending(f => f.Added).ThenBy(f => f.SearchOrReplaceText.ToLowerInvariant())
                     .ToList();
 
                 // save the value..
@@ -679,6 +679,25 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         }
 
         /// <summary>
+        /// Gets the search type translated into the database format.
+        /// </summary>
+        /// <value>The search type database.</value>
+        private SearchAndReplaceSearchType SearchTypeDatabase
+        {
+            get
+            {
+                switch (SearchType)
+                {
+                    case TextSearcherEnums.SearchType.Normal: return SearchAndReplaceSearchType.Normal;
+                    case TextSearcherEnums.SearchType.Extended: return SearchAndReplaceSearchType.Extended;
+                    case TextSearcherEnums.SearchType.RegularExpression: return SearchAndReplaceSearchType.RegularExpression;
+                    case TextSearcherEnums.SearchType.SimpleExtended: return SearchAndReplaceSearchType.SimpleExtended;
+                }
+                return SearchAndReplaceSearchType.Normal;
+            }
+        }
+
+        /// <summary>
         /// Gets the search text.
         /// </summary>
         private string SearchText
@@ -804,16 +823,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return;
             }
 
-            var inserted = DatabaseSearchAndReplace.AddOrUpdateSearchAndReplace(
-                new SEARCH_AND_REPLACE_HISTORY
-                {
-                    SEARCH_OR_REPLACE_TEXT = SearchText, CASE_SENSITIVE = MatchCaseSet, TYPE = (int) SearchType
-                },
-                FormSettings.Settings.CurrentSession, "SEARCH_HISTORY");
+            var inserted = SearchAndReplaceHistoryHelper.AddOrUpdateAndReplaceHistory(SearchText, SearchTypeDatabase,
+                SearchAndReplaceType.Search, MatchCaseSet, FormSettings.Settings.CurrentSessionEntity);
 
             // conditional insert to the list..
             if (inserted != null && !SearchHistory.Exists(f =>
-                    f.TYPE == inserted.TYPE && f.SEARCH_OR_REPLACE_TEXT == inserted.SEARCH_OR_REPLACE_TEXT))
+                    f.SearchAndReplaceSearchType == inserted.SearchAndReplaceSearchType &&
+                    f.SearchOrReplaceText == inserted.SearchOrReplaceText)) 
             {
                 SearchHistory.Add(inserted);
                 ReListSearchHistory();
@@ -829,16 +845,15 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             {
                 return;
             }
+        
 
-            var inserted = DatabaseMiscText.AddOrUpdateMiscText(
-                new MISCTEXT_LIST
-                {
-                    TEXTVALUE = cmbFilters3.Text.Trim(), TYPE = MiscTextType.FileExtensionList
-                });
+            var inserted = MiscellaneousTextEntryHelper.AddUniqueMiscellaneousText(cmbFilters3.Text.Trim(),
+                MiscellaneousTextType.FileExtensionList, FormSettings.Settings.CurrentSessionEntity);
+
 
             // conditional insert to the list..
             if (inserted != null && !FilterHistory.Exists(f =>
-                    f.TYPE == inserted.TYPE && f.TEXTVALUE == inserted.TEXTVALUE))
+                    f.TextType == inserted.TextType && f.TextValue == inserted.TextValue))
             {
                 FilterHistory.Add(inserted);
                 ReListFilterHistory();
@@ -855,15 +870,12 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return;
             }
 
-            var inserted = DatabaseMiscText.AddOrUpdateMiscText(
-                new MISCTEXT_LIST
-                {
-                    TEXTVALUE = cmbDirectory3.Text, TYPE = MiscTextType.Path
-                });
+            var inserted = MiscellaneousTextEntryHelper.AddUniqueMiscellaneousText(cmbDirectory3.Text,
+                MiscellaneousTextType.Path, FormSettings.Settings.CurrentSessionEntity);
 
             // conditional insert to the list..
             if (inserted != null && !FilterHistory.Exists(f =>
-                    f.TYPE == inserted.TYPE && f.TEXTVALUE == inserted.TEXTVALUE))
+                    f.TextType == inserted.TextType && f.TextValue == inserted.TextValue))
             {
                 PathHistory.Add(inserted);
                 ReListPathHistory();
@@ -880,16 +892,13 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return;
             }
 
-            var inserted = DatabaseSearchAndReplace.AddOrUpdateSearchAndReplace(
-                new SEARCH_AND_REPLACE_HISTORY
-                {
-                    SEARCH_OR_REPLACE_TEXT = ReplaceText, CASE_SENSITIVE = MatchCaseSet, TYPE = (int) SearchType
-                },
-                FormSettings.Settings.CurrentSession, "REPLACE_HISTORY");
+            var inserted = SearchAndReplaceHistoryHelper.AddOrUpdateAndReplaceHistory(SearchText, SearchTypeDatabase,
+                SearchAndReplaceType.Replace, MatchCaseSet, FormSettings.Settings.CurrentSessionEntity);
 
             // conditional insert to the list..
             if (inserted != null && !ReplaceHistory.Exists(f =>
-                    f.TYPE == inserted.TYPE && f.SEARCH_OR_REPLACE_TEXT == inserted.SEARCH_OR_REPLACE_TEXT))
+                    f.SearchAndReplaceSearchType == inserted.SearchAndReplaceSearchType &&
+                    f.SearchOrReplaceText == inserted.SearchOrReplaceText)) 
             {
                 ReplaceHistory.Add(inserted);
                 ReListReplaceHistory();
@@ -2061,14 +2070,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 
             if (_cbTransparency.Checked)
             {
-                if (_rbTransparencyAlways.Checked)
-                {
-                    FormSettings.Settings.SearchBoxTransparency = 2;
-                }
-                else
-                {
-                    FormSettings.Settings.SearchBoxTransparency = 1;                        
-                }
+                FormSettings.Settings.SearchBoxTransparency = _rbTransparencyAlways.Checked ? 2 : 1;
             }
             else
             {
@@ -2147,9 +2149,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
 
             // the return key was pressed when a combo box was dropped down so suppress that..
-            if (e.KeyCode == Keys.Return && ActiveControl is ComboBox)
+            if (e.KeyCode == Keys.Return && ActiveControl is ComboBox comboBox)
             {
-                var comboBox = (ComboBox) ActiveControl;
                 if (comboBox.DroppedDown)
                 {
                     e.SuppressKeyPress = true;

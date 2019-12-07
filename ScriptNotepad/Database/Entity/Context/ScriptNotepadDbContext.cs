@@ -24,10 +24,13 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.SQLite;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Model;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.Database.Entity.Context
 {
@@ -60,6 +63,93 @@ namespace ScriptNotepad.Database.Entity.Context
         }
 
         /// <summary>
+        /// A static property to hold the <see cref="ScriptNotepadDbContext"/> created with the <see cref="InitializeDbContext"/> method.
+        /// </summary>
+        /// <value>The database context.</value>
+        public static ScriptNotepadDbContext DbContext { get; set; }
+
+        /// <summary>
+        /// Initializes the database <see cref="ScriptNotepadDbContext.DbContext"/> context.
+        /// </summary>
+        /// <param name="connectionString">The connection string to initialize the underlying SQLite database connection.</param>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool InitializeDbContext(string connectionString)
+        {
+            SqLiteConnection = new SQLiteConnection(connectionString);
+            SqLiteConnection.Open();
+
+            try
+            {
+                DbContext = new ScriptNotepadDbContext(SqLiteConnection, false);
+                DbContextInitialized = true;
+                return true;
+            }
+            catch (Exception ex) // report the exception and return false..
+            {
+                DbContext = null;
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                DbContextInitialized = false;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the SQLite connection for the Entity Framework Code First database.
+        /// </summary>
+        private static SQLiteConnection SqLiteConnection { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the database context is initialized.
+        /// </summary>
+        /// <value><c>true</c> if the database is context initialized; otherwise, <c>false</c>.</value>
+        internal static bool DbContextInitialized { get; set; }
+
+        /// <summary>
+        /// Releases the database <see cref="ScriptNotepadDbContext.DbContext"/> context.
+        /// </summary>
+        /// <param name="save">if set to <c>true</c> a the context is requested to save the changes before disposing of the context.</param>
+        /// <param name="forceGarbageCollection">A value indicating whether to force the <see cref="SqLiteConnection"/> immediately to be garbage-collected.</param>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public static bool ReleaseDbContext(bool save = true, bool forceGarbageCollection = false)
+        {
+            try
+            {
+                if (DbContext != null) // null check..
+                {
+                    using (DbContext) // dispose of the context..
+                    {
+                        if (save) // ..if set to save, then save..
+                        {
+                            DbContext.SaveChanges();
+                        }
+
+                        DbContext = null; // set to null..
+                    }
+
+                    using (SqLiteConnection)
+                    {
+                        SqLiteConnection.Close();
+                        SqLiteConnection = null;
+                        if (forceGarbageCollection)
+                        {
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
+                        }
+                    }
+                }
+                DbContextInitialized = false;
+
+                return true;
+            }
+            catch (Exception ex) // report the exception and return false..
+            {
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                DbContextInitialized = false;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Configures this <see cref="DbContext"/> class instance.
         /// </summary>
         private void Configure()
@@ -70,7 +160,7 @@ namespace ScriptNotepad.Database.Entity.Context
 
         /// <summary>
         /// This method is called when the model for a derived context has been initialized, but
-        /// before the model has been locked down and used to initialize the context.  The default
+        /// before the model has been locked down and used to initialize the context. The default
         /// implementation of this method does nothing, but it can be overridden in a derived class
         /// such that the model can be further configured before it is locked down.
         /// </summary>
@@ -94,15 +184,14 @@ namespace ScriptNotepad.Database.Entity.Context
         public DbSet<FileSave> FileSaves { get; set; }
 
         /// <summary>
-        /// Gets or sets the sessions used with other entity instances.
+        /// Gets or sets the file sessions used with other entity instances.
         /// </summary>
-        public DbSet<Session> Sessions { get; set; }
+        public DbSet<FileSession> FileSessions { get; set; }
 
         /// <summary>
-        /// Gets or sets <see cref="MiscellaneousTextData"/> instances in the database.
+        /// Gets or sets <see cref="MiscellaneousTextEntry"/> instances in the database.
         /// </summary>
-        // ReSharper disable once IdentifierTypo
-        public DbSet<MiscellaneousTextData> MiscellaneousTextDatas { get; set; }
+        public DbSet<MiscellaneousTextEntry> MiscellaneousTextEntries { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Plugin"/> instances in the database.

@@ -82,6 +82,7 @@ namespace ScriptNotepad.UtilityClasses.ColorHelpers
         {
             pnColor.BackColor = color;
             // ReSharper disable once LocalizableElement
+            // ReSharper disable once StringLiteralTypo
             tbColorFromArgb.Text = $"Color.FromArgb({color.A}, {color.R}, {color.G}, {color.B})";
 
             // ReSharper disable once LocalizableElement
@@ -109,11 +110,13 @@ namespace ScriptNotepad.UtilityClasses.ColorHelpers
             tbHSL.Text =
                 $"hsl({(int) hsl.H}, {(int) hsl.S * 100}%, {(int) hsl.L * 100}%)";
 
+            // ReSharper disable once IdentifierTypo
             var cmyk = hex.To<Cmyk>();
 
             // ReSharper disable once LocalizableElement
             tbCMYK.Text =
-                $"cmyk({(int)cmyk.C * 100}%, {(int) cmyk.M * 100}%, {(int) cmyk.Y * 100}%, {(int)cmyk.K * 100}%)";
+                // ReSharper disable once StringLiteralTypo
+                $@"cmyk({(int)cmyk.C * 100}%, {(int) cmyk.M * 100}%, {(int) cmyk.Y * 100}%, {(int)cmyk.K * 100}%)";
 
             return color;
         }

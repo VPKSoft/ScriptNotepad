@@ -24,16 +24,16 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.TableMethods;
-using ScriptNotepad.Database.Tables;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
 
 namespace ScriptNotepad.UtilityClasses.SessionHelpers
 {
     /// <summary>
-    /// A class to help to build a menu for sessions within the software (<see cref="SESSION_NAME"/>).
+    /// A class to help to build a menu for sessions within the software (<see cref="Database.Entity.Entities.FileSession"/>).
     /// </summary>
     public class SessionMenuBuilder
     {
@@ -41,26 +41,23 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
         /// Creates the session menu to a given parent tool strip menu item.
         /// </summary>
         /// <param name="parent">The parent tool strip menu item to create the session menu to.</param>
-        /// <param name="currentSession">The currently active session name.</param>
-        public static void CreateSessionMenu(ToolStripMenuItem parent, string currentSession)
+        /// <param name="currentSession">The currently active session.</param>
+        public static void CreateSessionMenu(ToolStripMenuItem parent, FileSession currentSession)
         {
             // first dispose the previous menu..
             DisposeSessionMenu();
 
-            // get the session list from the database..
-            List<SESSION_NAME> sessions = DatabaseSessionName.GetSessions();
-
-            foreach (var session in sessions)
+            foreach (var session in ScriptNotepadDbContext.DbContext.FileSessions)
             {
                 var item = new ToolStripMenuItem
                 {
-                    Text = session.SESSIONNAME,
+                    Text = session.SessionName,
                     Tag = session, CheckOnClick = true,
-                    Checked = session.SESSIONNAME == currentSession
+                    Checked = session.SessionName == currentSession.SessionName,
                 };
 
                 item.Click += SessionMenuItem_Click;
-                item.Checked = session.SESSIONNAME == currentSession;
+                item.Checked = session.SessionName == currentSession.SessionName;
 
                 CurrentMenu.Add(item);
 
@@ -71,7 +68,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
         /// <summary>
         /// Gets or sets the current menu items in the session parent menu.
         /// </summary>
-        private static List<ToolStripMenuItem> CurrentMenu { get; set; } = new List<ToolStripMenuItem>();
+        private static List<ToolStripMenuItem> CurrentMenu { get; } = new List<ToolStripMenuItem>();
              
 
         /// <summary>
@@ -90,7 +87,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
                 }
 
                 // cast the object as ToolStripMenuItem..
-                var sessionMenuItem = (ToolStripMenuItem)item;
+                var sessionMenuItem = item;
 
                 disposeList.Add(sessionMenuItem);
             }
@@ -99,6 +96,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
             CurrentMenu.Clear();
 
             // loop through the list of ToolStripMenuItems to disposed of..
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (int i = 0; i < disposeList.Count; i++)
             {
                 // dispose..
@@ -121,10 +119,10 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
 
             // get the data from the clicked menu item..
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-            SESSION_NAME session = (SESSION_NAME)menuItem.Tag;
+            var session = (FileSession)menuItem.Tag;
 
             // raise the event if subscribed..
-            SessionMenuClicked?.Invoke(sender, new SessionMenuClickEventArgs { SessionName = session, Data = null });
+            SessionMenuClicked?.Invoke(sender, new SessionMenuClickEventArgs { Session = session, Data = null });
         }
 
         /// <summary>
@@ -137,7 +135,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
         /// <summary>
         /// Occurs when a session menu item was clicked.
         /// </summary>
-        public static event OnSessionMenuClicked SessionMenuClicked = null;
+        public static event OnSessionMenuClicked SessionMenuClicked;
     }
 
     /// <summary>
@@ -147,9 +145,9 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
     public class SessionMenuClickEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets the session name of the clicked session menu item.
+        /// Gets the session of the clicked session menu item.
         /// </summary>
-        public SESSION_NAME SessionName { get; internal set; }
+        public FileSession Session { get; internal set; }
 
         /// <summary>
         /// Gets the data associated with the session menu item.

@@ -24,18 +24,13 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.Database.TableMethods;
-using ScriptNotepad.Database.Tables;
 using ScriptNotepad.Settings;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.UtilityClasses.Session
@@ -75,21 +70,12 @@ namespace ScriptNotepad.UtilityClasses.Session
         }
 
         /// <summary>
-        /// An internal list of the sessions in the database.
-        /// </summary>
-        private List<SESSION_NAME> sessions = new List<SESSION_NAME>();
-
-        /// <summary>
         /// Displays the session management dialog for session management.
         /// </summary>
         public static void Execute()
         {
             // create a new instance of "this" dialog..
-            FormDialogSessionManage formDialogSessionManage = new FormDialogSessionManage
-            {
-                // get the session list from the database..
-                sessions = DatabaseSessionName.GetSessions()
-            };
+            FormDialogSessionManage formDialogSessionManage = new FormDialogSessionManage();
 
             // display the dialog..
             formDialogSessionManage.ShowDialog();
@@ -114,7 +100,7 @@ namespace ScriptNotepad.UtilityClasses.Session
             cmbSessions.Items.Clear();
 
             // list the sessions to the combo box..
-            foreach (SESSION_NAME session in sessions)
+            foreach (FileSession session in ScriptNotepadDbContext.DbContext.FileSessions)
             {
                 cmbSessions.Items.Add(session);
             }
@@ -136,10 +122,10 @@ namespace ScriptNotepad.UtilityClasses.Session
             // a user wishes to add a new session with a name..
             if (ValidateSessionName(tbAddNewSessionWithName, true))
             {
-                DatabaseSessionName.InsertSession(tbAddNewSessionWithName.Text.Trim(' '));
+                ScriptNotepadDbContext.DbContext.FileSessions.Add(new FileSession
+                    {SessionName = tbAddNewSessionWithName.Text.Trim(' ')});
 
-                // get the session list from the database..
-                sessions = DatabaseSessionName.GetSessions();
+                ScriptNotepadDbContext.DbContext.SaveChanges();
 
                 // list the sessions to the combo box..
                 ListSessions();
@@ -165,19 +151,19 @@ namespace ScriptNotepad.UtilityClasses.Session
         /// </summary>
         /// <param name="textBox">The text box to use for validation.</param>
         /// <param name="canNotExist">If set to <c>true</c> the session name in the given text box may not exists within the current sessions in the database.</param>
-        /// <param name="ID">An optional ID number for the session to validate.</param>
+        /// <param name="id">An optional ID number for the session to validate.</param>
         /// <returns>True if the session name was validate successfully; otherwise false.</returns>
-        private bool ValidateSessionName(TextBox textBox, bool canNotExist, long ID = -1)
+        private bool ValidateSessionName(TextBox textBox, bool canNotExist, int id = -1)
         {
             bool result =
                 !(
                 string.IsNullOrWhiteSpace(textBox.Text) ||
-                (sessions.Exists(f => f.SESSIONNAME.ToLowerInvariant().Trim(' ') == textBox.Text.ToLowerInvariant().Trim(' ')) && canNotExist));
+                ScriptNotepadDbContext.DbContext.FileSessions.Any(f => f.SessionName.ToLowerInvariant().Trim(' ') == textBox.Text.ToLowerInvariant().Trim(' ')) && canNotExist);
 
-            if (ID != -1)
+            if (id != -1)
             {
                 result &=
-                    !sessions.Exists(f => f.SESSIONNAME.ToLowerInvariant().Trim(' ') == textBox.Text.ToLowerInvariant().Trim(' ') && f.SESSIONID == ID);
+                    !ScriptNotepadDbContext.DbContext.FileSessions.Any(f => f.SessionName.ToLowerInvariant().Trim(' ') == textBox.Text.ToLowerInvariant().Trim(' ') && f.Id == id);
             }
 
             return result;
@@ -192,32 +178,26 @@ namespace ScriptNotepad.UtilityClasses.Session
         {
             if (cmbSessions.SelectedItem != null)
             {
-                SESSION_NAME session = (SESSION_NAME)cmbSessions.SelectedItem;
+                var session = (FileSession)cmbSessions.SelectedItem;
 
-                if (ValidateSessionName(tbRenameSession, false, session.SESSIONID))
+                if (ValidateSessionName(tbRenameSession, false, session.Id))
                 {
-                    if (DatabaseSessionName.UpdateSessionName(session, tbRenameSession.Text.Trim(' ')))
-                    {
-                        // set the session name to the instance..
-                        session.SESSIONNAME = tbRenameSession.Text.Trim(' ');
+                    // set the session name to the instance..
+                    session.SessionName = tbRenameSession.Text.Trim(' ');
 
-                        // set the instance back to the combo box..
-                        cmbSessions.SelectedItem = session;
+                    ScriptNotepadDbContext.DbContext.SaveChanges();
 
-                        MessageBox.Show(
-                            DBLangEngine.GetMessage("msgSessionRenameSuccess",
+                    // set the session to the settings as it's saved as string using the session name..
+                    FormSettings.Settings.CurrentSessionEntity = session;
+
+                    // set the instance back to the combo box..
+                    cmbSessions.SelectedItem = session;
+
+                    MessageBox.Show(
+                        DBLangEngine.GetMessage("msgSessionRenameSuccess",
                             "The session was successfully renamed.|A message indicating a successful session rename."),
-                            DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
-                            MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-                    }
-                    else
-                    {
-                        MessageBox.Show(
-                            DBLangEngine.GetMessage("msgWarningInvalidSessionName",
-                            "The session name '{0}' is either invalid or already exists in the database|The given session name is invalid (white space or null) or the given session name already exists in the database", tbRenameSession.Text),
-                            DBLangEngine.GetMessage("msgWarning", "Warning|A message warning of some kind problem."),
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-                    }
+                        DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
+                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 }
                 else
                 {
@@ -234,7 +214,7 @@ namespace ScriptNotepad.UtilityClasses.Session
         {
             if (cmbSessions.SelectedItem != null)
             {
-                SESSION_NAME session = (SESSION_NAME)cmbSessions.SelectedItem;
+                FileSession session = (FileSession)cmbSessions.SelectedItem;
 
                 if (session.IsDefault)
                 {
@@ -245,7 +225,7 @@ namespace ScriptNotepad.UtilityClasses.Session
                         MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
                 }
-                else if (session.SESSIONNAME == FormSettings.Settings.CurrentSession)
+                else if (session.SessionName == FormSettings.Settings.CurrentSessionEntity.SessionName)
                 {
                     MessageBox.Show(
                         DBLangEngine.GetMessage("msgCurrentSessionCanNotDelete",
@@ -257,15 +237,12 @@ namespace ScriptNotepad.UtilityClasses.Session
                 {
                     if (MessageBox.Show(
                     DBLangEngine.GetMessage("msgConfirmDeleteEntireSession",
-                    "Please confirm you want to delete an entire session '{0}' from the database. This operation can not be undone. Continue?|A confirmation dialog if the user wishes to delete an entire session from the database. (NO POSSIBILITY TO UNDO!).", session.SESSIONNAME),
+                    "Please confirm you want to delete an entire session '{0}' from the database. This operation can not be undone. Continue?|A confirmation dialog if the user wishes to delete an entire session from the database. (NO POSSIBILITY TO UNDO!).", session.SessionName),
                     DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
-                        if (DatabaseSessionData.DeleteEntireSession(session))
+                        if (FileSessionHelper.DeleteEntireSession(session))
                         {
-                            // get the session list from the database..
-                            sessions = DatabaseSessionName.GetSessions();
-
                             MessageBox.Show(
                                 DBLangEngine.GetMessage("msgSessionDeleteSuccess",
                                 "The session was successfully deleted.|A message indicating a successful session delete."),

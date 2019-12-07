@@ -24,31 +24,39 @@ SOFTWARE.
 */
 #endregion
 
+using System;
+
 namespace ScriptNotepad.Database.Entity.Enumerations
 {
     /// <summary>
     /// An enumeration for a text search type.
     /// </summary>
+    [Flags]
     public enum SearchAndReplaceSearchType
     {
         /// <summary>
         /// A normal text search.
         /// </summary>
-        Normal,
+        Normal = 1,
 
         /// <summary>
         /// An extended text search.
         /// </summary>
-        Extended,
+        Extended = 2,
 
         /// <summary>
         /// A text search using regular expressions.
         /// </summary>
-        RegularExpression,
+        RegularExpression = 4,
 
         /// <summary>
         /// The simple text search with some additional extended formatting possibilities.
         /// </summary>
-        SimpleExtended,
+        SimpleExtended = 8,
+
+        /// <summary>
+        /// All the possibilities combined.
+        /// </summary>
+        All = Normal | Extended | RegularExpression | SimpleExtended,
     }
 }

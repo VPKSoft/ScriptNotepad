@@ -25,12 +25,11 @@ SOFTWARE.
 #endregion
 
 using System.Text;
-using ScriptNotepad.Database.Tables;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.Encodings;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaTabbedTextControl;
-using static ScriptNotepad.UtilityClasses.Encodings.DetectEncoding;
 
 namespace ScriptNotepad.Localization
 {
@@ -97,7 +96,7 @@ namespace ScriptNotepad.Localization
             {
                 if (!value)
                 {
-                    UninitLables();
+                    UnInitLabels();
                 }
             }
         }
@@ -136,7 +135,7 @@ namespace ScriptNotepad.Localization
         /// <summary>
         /// Un-initializes the status strip labels with given values.
         /// </summary>
-        public static void UninitLables()
+        public static void UnInitLabels()
         {
             LabelLineColumn = null;
             LabelLineColumnSelection = null;
@@ -222,33 +221,33 @@ namespace ScriptNotepad.Localization
 
             if (document.Tag != null)
             {
-                DBFILE_SAVE fileSave = (DBFILE_SAVE)document.Tag;
+                var fileSave = (FileSave)document.Tag;
 
                 LabelLineEnding.Text = fileSave.FileLineEndingText;
 
                 LabelEncoding.Text =
                     DBLangEngine.GetStatMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
-                    fileSave.ENCODING.EncodingName;
+                    fileSave.Encoding.EncodingName;
 
                 // special handling for unicode..
-                if (fileSave.ENCODING.CodePage == Encoding.UTF8.CodePage ||
-                    fileSave.ENCODING.CodePage == Encoding.Unicode.CodePage ||
-                    fileSave.ENCODING.CodePage == Encoding.UTF32.CodePage)
+                if (fileSave.Encoding.CodePage == Encoding.UTF8.CodePage ||
+                    fileSave.Encoding.CodePage == Encoding.Unicode.CodePage ||
+                    fileSave.Encoding.CodePage == Encoding.UTF32.CodePage)
                 {
                     LabelEncoding.Text += @": ";
 
-                    LabelEncoding.Text += fileSave.ENCODING.EmitsBom()
+                    LabelEncoding.Text += fileSave.Encoding.EmitsBom()
                         ? DBLangEngine.GetStatMessage("msgUnicodeBomShort",
                             "BOM|A short message describing that an unicode encoding contains a BOM (byte-order-mark)")
                         : DBLangEngine.GetStatMessage("msgUnicodeNoBomShort",
                             "NO-BOM|A short message describing that an unicode encoding doesn't contain a BOM (byte-order-mark)");
 
                     // UTF8 has only one byte order so skip the UTF8..
-                    if (fileSave.ENCODING.CodePage != Encoding.UTF8.CodePage)
+                    if (fileSave.Encoding.CodePage != Encoding.UTF8.CodePage)
                     {
                         LabelEncoding.Text += @"|";
 
-                        LabelEncoding.Text += fileSave.ENCODING.IsBigEndian()
+                        LabelEncoding.Text += fileSave.Encoding.IsBigEndian()
                             ? DBLangEngine.GetStatMessage("msgUnicodeBigEndianShort",
                                 "BE|A short message describing that an unicode encoding is in a big endian format")
                             : DBLangEngine.GetStatMessage("msgUnicodeLittleEndianShort",

@@ -41,9 +41,9 @@ namespace ScriptNotepad.Database.Entity.Model
         public static void Configure(DbModelBuilder modelBuilder)
         {
             ConfigureSimpleEntity<FileSave>(modelBuilder);
-            ConfigureSimpleEntity<Session>(modelBuilder);
+            ConfigureSimpleEntity<FileSession>(modelBuilder);
             ConfigureSimpleEntity<Plugin>(modelBuilder);
-            ConfigureSimpleEntity<MiscellaneousTextData>(modelBuilder);
+            ConfigureSimpleEntity<MiscellaneousTextEntry>(modelBuilder);
             ConfigureSimpleEntity<RecentFile>(modelBuilder);
             ConfigureSimpleEntity<CodeSnippet>(modelBuilder);
             ConfigureSimpleEntity<SearchAndReplaceHistory>(modelBuilder);

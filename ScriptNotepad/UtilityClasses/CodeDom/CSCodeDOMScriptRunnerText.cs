@@ -34,13 +34,13 @@ namespace ScriptNotepad
     /// <summary>
     /// A class to run C# script snippets against the contents of a Scintilla document as text.
     /// </summary>
-    /// <seealso cref="CSCodeDOMScriptRunnerParent" />
-    public class CSCodeDOMScriptRunnerText: CSCodeDOMScriptRunnerParent
+    /// <seealso cref="CsCodeDomScriptRunnerParent" />
+    public class CsCodeDomScriptRunnerText: CsCodeDomScriptRunnerParent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CSCodeDOMScriptRunnerText"/> class.
+        /// Initializes a new instance of the <see cref="CsCodeDomScriptRunnerText"/> class.
         /// </summary>
-        public CSCodeDOMScriptRunnerText() : base()
+        public CsCodeDomScriptRunnerText() : base()
         {
             CSharpScriptBase =
             string.Join(Environment.NewLine,

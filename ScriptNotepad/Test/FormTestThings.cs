@@ -24,23 +24,12 @@ SOFTWARE.
 */
 #endregion
 
-using ScintillaPrinting;
-using ScriptNotepad.DialogForms;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.UtilityClasses.Process;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScriptNotepad.Localization.Hunspell;
-using ScriptNotepad.Settings;
-using ScriptNotepad.UtilityClasses.Encodings;
 
 namespace ScriptNotepad.Test
 {

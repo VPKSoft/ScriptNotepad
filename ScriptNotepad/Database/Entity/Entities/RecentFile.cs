@@ -28,7 +28,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Text;
 using ScriptNotepad.UtilityClasses.Encodings;
@@ -75,7 +74,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the session the recent file belongs to.
         /// </summary>
         [Required]
-        public Session Session { get; set; }
+        public FileSession Session { get; set; }
 
         /// <summary>
         /// Gets or sets the encoding of the recent file.
@@ -98,14 +97,8 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// </summary>
         public bool ExistsInDatabase(DbSet<FileSave> fileSaves)
         {
-            return fileSaves.Count(f => f.FileNameFull == FileNameFull && f.Session.Equals(Session) && f.IsHistory) > 0;
+            return fileSaves.Count(f => f.FileNameFull == FileNameFull && f.Session.SessionName == Session.SessionName && f.IsHistory) > 0;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="RecentFile"/> property <see cref="FileNameFull"/> exists in the file system.
-        /// </summary>
-        [NotMapped]
-        public bool ExistsInFileSystem => File.Exists(FileNameFull);
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

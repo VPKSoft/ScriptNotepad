@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using System.IO;
-using System.Linq;
 
 namespace ScriptNotepad.UtilityClasses.StreamHelpers
 {
@@ -34,17 +33,6 @@ namespace ScriptNotepad.UtilityClasses.StreamHelpers
     /// </summary>
     public static class StreamStringHelpers
     {
-        /// <summary>
-        /// Saves a given text to a MemoryStream.
-        /// </summary>
-        /// <param name="text">The text to be saved to a MemoryStream.</param>
-        /// <param name="encoding">An encoding to be used with the used with the memory stream conversion.</param>
-        /// <returns>An instance to a MemoryStream class containing the given text.</returns>
-        public static MemoryStream TextToMemoryStream(string text, System.Text.Encoding encoding)
-        {
-            return new MemoryStream(encoding.GetBytes(text).ToArray());
-        }
-
         /// <summary>
         /// Returns the contents of a give <paramref name="memoryStream"/> as a string.
         /// </summary>

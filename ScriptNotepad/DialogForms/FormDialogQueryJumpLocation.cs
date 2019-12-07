@@ -25,10 +25,8 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using ScintillaNET;
-using ScriptNotepad.UtilityClasses.Keyboard;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.DialogForms

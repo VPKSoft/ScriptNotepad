@@ -65,6 +65,7 @@ namespace ScriptNotepad.Localization.Forms
         public static void LocalizeMisc()
         {
             // just make a new instance of this form and the forget about it..
+            // ReSharper disable once ObjectCreationAsStatement
             new FormLocalizationHelper();
         }
 

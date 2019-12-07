@@ -47,7 +47,6 @@ using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaUrlDetect;
 using TabDrawMode = ScintillaNET.TabDrawMode;
-using static VPKSoft.LangLib.DBLangEngine;
 
 namespace ScriptNotepad.Settings
 {

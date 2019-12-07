@@ -26,8 +26,9 @@ SOFTWARE.
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
-using ScriptNotepad.Database.TableMethods;
+using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Settings;
 using VPKSoft.ErrorLogger;
 using static ScriptNotepad.UtilityClasses.Encodings.TryMakeEncoding;
@@ -58,7 +59,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
             try
             {
                 // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
-                existsInDatabase = DatabaseFileSave.FileExistsInDatabase(sessionName, fileName);
+                existsInDatabase = ScriptNotepadDbContext.DbContext.FileSaves.Any(f => f.Session.SessionName == sessionName && f.FileNameFull == fileName);
 
                 noBom = false;
                 bigEndian = false;
@@ -87,7 +88,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
 
                 if (existsInDatabase && !reloadContents && !encodingOverridden && !File.Exists(fileName))
                 {
-                    encoding = DatabaseFileSave.GetEncodingFromDatabase(sessionName, fileName);
+                    encoding = ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Session.SessionName == sessionName && f.FileNameFull == fileName)?.Encoding;
                     return encoding;
                 }
 

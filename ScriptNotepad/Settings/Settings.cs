@@ -28,17 +28,23 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
-using PropertyChanged; // (C): https://github.com/Fody/PropertyChanged, MIT license
-using System.Reflection;
-using VPKSoft.ConfLib;
-using VPKSoft.ErrorLogger;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
+using PropertyChanged;
 using ScintillaNET;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
+using VPKSoft.ConfLib;
+using VPKSoft.ErrorLogger;
+using VPKSoft.LangLib;
+using VPKSoft.Utils;
 using TabDrawMode = ScintillaNET.TabDrawMode;
+// (C): https://github.com/Fody/PropertyChanged, MIT license
 
 namespace ScriptNotepad.Settings
 {
@@ -81,6 +87,7 @@ namespace ScriptNotepad.Settings
                 PropertyInfo[] propertyInfos = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
                 // loop through the properties..
+                // ReSharper disable once ForCanBeConvertedToForeach
                 for (int i = 0; i < propertyInfos.Length; i++)
                 {
                     // a special property to which the Convert class can't be used..
@@ -167,7 +174,7 @@ namespace ScriptNotepad.Settings
         /// <value>The migration level.</value>
         [Setting("database/migrationLevel", typeof(int))]
         //public int DatabaseMigrationLevel { get; set; } = 0;
-        public int DatabaseMigrationLevel { get; set; } = -1; // return an invalid value before the software is ready to branch merge..
+        public int DatabaseMigrationLevel { get; set; } = 0; // return an invalid value before the software is ready to branch merge..
         #endregion
 
         #region GuiSettings
@@ -640,7 +647,28 @@ namespace ScriptNotepad.Settings
         /// Gets or sets the current session (for the documents).
         /// </summary>
         [Setting("database/currentSession", typeof(string))]
-        public string CurrentSession { get; set; } = "Default";
+        private string CurrentSession { get; set; } = "Default";
+
+        /// <summary>
+        /// Gets the current session entity.
+        /// </summary>
+        public FileSession CurrentSessionEntity
+        {
+            get
+            {
+                var defaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
+                    "Default|A name of the default session for the documents");
+
+                var session =
+                    ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f =>
+                        f.SessionName == CurrentSession || f.SessionName == "Default" ||
+                        f.SessionName == defaultSessionName);
+
+                return session;
+            }
+
+            set => CurrentSession = value.SessionName;
+        }
         #endregion
 
         #region SearchSettings
@@ -1047,16 +1075,16 @@ namespace ScriptNotepad.Settings
         {
             if (defaultDirectory == string.Empty)
             {
-                return VPKSoft.Utils.Paths.GetAppSettingsFolder();
+                return Paths.GetAppSettingsFolder();
             }
 
             // create a folder for plug-ins if it doesn't exist already.. 
-            if (!Directory.Exists(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory)))
+            if (!Directory.Exists(Path.Combine(Paths.GetAppSettingsFolder(), defaultDirectory)))
             {
                 try
                 {
                     // create the folder..
-                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(),
+                    Directory.CreateDirectory(Path.Combine(Paths.GetAppSettingsFolder(),
                         defaultDirectory));
                 }
                 catch (Exception ex) // a failure so do log it..
@@ -1066,7 +1094,7 @@ namespace ScriptNotepad.Settings
                 }
             }
 
-            return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), defaultDirectory);
+            return Path.Combine(Paths.GetAppSettingsFolder(), defaultDirectory);
         }
 
         /// <summary>
@@ -1087,7 +1115,7 @@ namespace ScriptNotepad.Settings
     /// An attribute class for describing a setting name and it's type (VPKSoft.ConfLib).
     /// </summary>
     /// <seealso cref="System.Attribute" />
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)] // target a property only..
+    [AttributeUsage(AttributeTargets.Property)] // target a property only..
     public class SettingAttribute: Attribute
     {
         /// <summary>

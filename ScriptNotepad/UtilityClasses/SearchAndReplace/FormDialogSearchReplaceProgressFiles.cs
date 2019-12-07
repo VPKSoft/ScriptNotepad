@@ -76,7 +76,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Gets or sets an instance to the <see cref="DirectoryCrawler"/>.
         /// </summary>
-        private DirectoryCrawler Crawler { get; set; }
+        private DirectoryCrawler Crawler { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormDialogSearchReplaceProgressFiles"/> class.
@@ -265,7 +265,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
         /// <summary>
         /// Gets or sets a value indicating whether this form is allowed to close.
         /// </summary>
-        private bool AllowClose { get; set; } = false;
+        private bool AllowClose { get; set; }
 
         /// <summary>
         /// Handles the RunWorkerCompleted event of the bwMain control.

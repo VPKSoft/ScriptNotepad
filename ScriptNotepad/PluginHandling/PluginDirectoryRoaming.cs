@@ -62,6 +62,7 @@ namespace ScriptNotepad.PluginHandling
                 // loop through the results..
                 foreach (string assemblyFile in assemblies)
                 {
+                    // ReSharper disable once CommentTypo
                     // some other files (.dll_blaa) might come with the *.dll mask..
                     if (!String.Equals(Path.GetExtension(assemblyFile), ".dll", StringComparison.InvariantCultureIgnoreCase))
                     {

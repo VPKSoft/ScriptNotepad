@@ -34,11 +34,9 @@ using System.Text;
 using ScriptNotepad.UtilityClasses.Encodings;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.LinesAndBinary;
-using ScriptNotepad.UtilityClasses.StreamHelpers;
 using SQLite.CodeFirst;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaLexers;
-using VPKSoft.ScintillaTabbedTextControl;
 using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
 
 
@@ -99,15 +97,15 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the file system.
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
+//        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+//        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
         public DateTime FileSystemModified { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating when the file was saved to the file system by the software.
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
+//        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+//        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
         public DateTime FileSystemSaved { get; set; }
 
         /// <summary>
@@ -162,7 +160,10 @@ namespace ScriptNotepad.Database.Entity.Entities
             set 
             { 
                 PreviousDbModified = dbModified;
-                dbModified = value;
+
+                // lets round up a bit..
+                dbModified = new DateTime(value.Year, value.Month, value.Day,
+                    value.Hour, value.Minute, value.Second, DateTimeKind.Unspecified);
             }
         }
 
@@ -272,8 +273,14 @@ namespace ScriptNotepad.Database.Entity.Entities
         {
             get
             {
+                var fileSysModified = new FileInfo(FileNameFull).LastWriteTime;
+
+                // lets round up a bit..
+                fileSysModified = new DateTime(fileSysModified.Year, fileSysModified.Month, fileSysModified.Day,
+                    fileSysModified.Hour, fileSysModified.Minute, fileSysModified.Second, DateTimeKind.Unspecified);
+
                 // get the last time the file was written into..
-                DateTime dtUpdated = new FileInfo(FileNameFull).LastWriteTime;
+                DateTime dtUpdated = fileSysModified;
 
                 // get the result to be returned..
                 bool result = shouldQueryDiskReload && dtUpdated > FileSystemModified;
@@ -282,6 +289,12 @@ namespace ScriptNotepad.Database.Entity.Entities
                 // .. after rethinking, don't do this:  _ShouldQueryDiskReload = true;
 
                 // return the result if the file has been changed in the file system..
+
+                if (result)
+                {
+
+                }
+
                 return result;
             }
 
@@ -390,6 +403,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the session the <see cref="FileSave"/> belongs to.
         /// </summary>
         [Required]
-        public Session Session { get; set; }
+        public FileSession Session { get; set; }
     }
 }
