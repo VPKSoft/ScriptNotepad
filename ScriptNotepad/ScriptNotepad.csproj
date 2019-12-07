@@ -337,7 +337,6 @@
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerLines.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerParent.cs" />
     <Compile Include="UtilityClasses\CodeDom\CSCodeDOMScriptRunnerText.cs" />
-    <Compile Include="Database\Database.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -351,7 +350,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DatabaseScript\ScriptRunner.cs" />
     <Compile Include="UtilityClasses\Common\DataToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -493,9 +491,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="DatabaseScript\script.sql_script">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="ScriptNotepad.licenseheader" />
     <None Include="WindowsRegistry\OpenWith.reg" />
   </ItemGroup>

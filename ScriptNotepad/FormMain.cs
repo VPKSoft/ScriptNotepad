@@ -140,9 +140,6 @@ namespace ScriptNotepad
                 (ProcessElevation.IsElevated ? " (" +
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
 
-            // initialize a connection to the SQLite database..
-            Database.Database.InitConnection("Data Source=" + DBLangEngine.DataDir + "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;Cache Size=10000;"); // PRAGMA synchronous=OFF;PRAGMA journal_mode=OFF
-
             // initialize the ScriptNotepadDbContext class instance..
             ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
                                                        "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
@@ -239,9 +236,6 @@ namespace ScriptNotepad
             // subscribe the click event for the recent file menu items..
             RecentFilesMenuBuilder.RecentFileMenuClicked += RecentFilesMenuBuilder_RecentFileMenuClicked;
 
-            // create a dynamic action for the database exception logging..
-            Database.Database.ExceptionLogAction = ExceptionLogger.LogError;
-
             // set the current session name to the status strip..
             StatusStripTexts.SetSessionName(CurrentSession.SessionName);
 
@@ -335,13 +329,11 @@ namespace ScriptNotepad
         /// </summary>
         private void MigrateDatabase()
         {
-            // UPDATE DBFILE_SAVE SET SESSIONID = 1 WHERE SESSIONID = 0;
-
             // this might be a lengthy process, perhaps a some king of message should indicate that..
             if (FormSettings.Settings.DatabaseMigrationLevel == 0)
             {
                 // there is no database so there is no data yet..
-                ScriptNotepadDbContext.ReleaseDbContext(false);
+                ScriptNotepadDbContext.ReleaseDbContext(false, true);
 
                 // a possible failed migration needs deletion..
                 if (File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite")))

@@ -28,9 +28,7 @@ using System;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SQLite;
-using System.Linq;
 using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.Entity.Model;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
@@ -77,13 +75,12 @@ namespace ScriptNotepad.Database.Entity.Context
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
         public static bool InitializeDbContext(string connectionString)
         {
-            var sqLiteConnection = new SQLiteConnection(connectionString);
-            sqLiteConnection.Open();
+            SqLiteConnection = new SQLiteConnection(connectionString);
+            SqLiteConnection.Open();
 
             try
             {
-                
-                DbContext = new ScriptNotepadDbContext(sqLiteConnection, true);
+                DbContext = new ScriptNotepadDbContext(SqLiteConnection, false);
                 return true;
             }
             catch (Exception ex) // report the exception and return false..
@@ -94,12 +91,15 @@ namespace ScriptNotepad.Database.Entity.Context
             }
         }
 
+        private static SQLiteConnection SqLiteConnection { get; set; }
+
         /// <summary>
         /// Releases the database <see cref="ScriptNotepadDbContext.DbContext"/> context.
         /// </summary>
         /// <param name="save">if set to <c>true</c> a the context is requested to save the changes before disposing of the context.</param>
+        /// <param name="forceGarbageCollection">A value indicating whether to force the <see cref="SqLiteConnection"/> immediately to be garbage-collected.</param>
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool ReleaseDbContext(bool save = true)
+        public static bool ReleaseDbContext(bool save = true, bool forceGarbageCollection = false)
         {
             try
             {
@@ -114,7 +114,19 @@ namespace ScriptNotepad.Database.Entity.Context
 
                         DbContext = null; // set to null..
                     }
+
+                    using (SqLiteConnection)
+                    {
+                        SqLiteConnection.Close();
+                        SqLiteConnection = null;
+                        if (forceGarbageCollection)
+                        {
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
+                        }
+                    }
                 }
+
                 return true;
             }
             catch (Exception ex) // report the exception and return false..

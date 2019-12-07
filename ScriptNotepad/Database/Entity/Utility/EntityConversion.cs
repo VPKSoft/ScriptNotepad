@@ -87,7 +87,7 @@ namespace ScriptNotepad.Database.Entity.Utility
                 {
                     sqLiteConnection.Open();
                     using (SQLiteCommand command =
-                        new SQLiteCommand(@"UPDATE DBFILE_SAVE SET SESSIONID = 1 WHERE SESSIONID = 0;"))
+                        new SQLiteCommand(@"UPDATE DBFILE_SAVE SET SESSIONID = 1 WHERE SESSIONID = 0;", sqLiteConnection))
                     {
                         command.ExecuteNonQuery();
                     }
