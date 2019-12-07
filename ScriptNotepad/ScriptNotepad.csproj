@@ -185,12 +185,13 @@
     <Compile Include="Database\Entity\Utility\AssemblyVersion.cs" />
     <Compile Include="Database\Entity\Utility\DocumentReload.cs" />
     <Compile Include="Database\Entity\Utility\EntityConversion.cs" />
+    <Compile Include="Database\Entity\Utility\ModelHelpers\FileHistoryHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\FileSaveHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\FileSessionHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\MiscellaneousTextEntryHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\PluginHelper.cs" />
+    <Compile Include="Database\Entity\Utility\ModelHelpers\RecentFileHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\SearchAndReplaceHistoryHelper.cs" />
-    <Compile Include="Database\UtilityClasses\DataFormulationHelpers.cs" />
     <Compile Include="UtilityClasses\MenuHelpers\RecentFilesMenuBuilder.cs" />
     <Compile Include="DialogForms\FormDialogQueryJumpLocation.cs">
       <SubType>Form</SubType>

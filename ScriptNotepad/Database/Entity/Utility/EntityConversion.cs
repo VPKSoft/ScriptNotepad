@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepadOldDatabase;
 using VPKSoft.LangLib;
-using VPKSoft.Utils;
 
 namespace ScriptNotepad.Database.Entity.Utility
 {
@@ -70,6 +69,38 @@ namespace ScriptNotepad.Database.Entity.Utility
             }
 
             return session;
+        }
+
+        /// <summary>
+        /// Runs some preparing scripts for the old database.
+        /// </summary>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        [SuppressMessage("ReSharper", "StringLiteralTypo")]
+        public static bool FirstSteps()
+        {
+            try
+            {
+                var connectionString = "Data Source=" + DBLangEngine.DataDir +
+                                       "ScriptNotepad.sqlite;Pooling=true;FailIfMissing=false;";
+
+                using (var sqLiteConnection = new SQLiteConnection(connectionString))
+                {
+                    sqLiteConnection.Open();
+                    using (SQLiteCommand command =
+                        new SQLiteCommand(@"UPDATE DBFILE_SAVE SET SESSIONID = 1 WHERE SESSIONID = 0;"))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogAction?.Invoke(ex);
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         /// <summary>
