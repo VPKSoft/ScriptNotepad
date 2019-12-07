@@ -66,8 +66,10 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         {
             fileSave.FileContents = fileSave.Encoding.GetBytes(contents);
             ScriptNotepadDbContext.DbContext.FileSaves.AddOrUpdate(fileSave);
-            ScriptNotepadDbContext.DbContext.SaveChanges();
-            return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
+            //ScriptNotepadDbContext.DbContext.SaveChanges();
+
+            return fileSave;
+            //return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
         }
 
         /// <summary>

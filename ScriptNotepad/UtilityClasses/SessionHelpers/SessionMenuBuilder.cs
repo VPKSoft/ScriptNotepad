@@ -53,11 +53,11 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
                 {
                     Text = session.SessionName,
                     Tag = session, CheckOnClick = true,
-                    Checked = session.Equals(currentSession)
+                    Checked = session.SessionName == currentSession.SessionName,
                 };
 
                 item.Click += SessionMenuItem_Click;
-                item.Checked = session.Equals(currentSession);
+                item.Checked = session.SessionName == currentSession.SessionName;
 
                 CurrentMenu.Add(item);
 

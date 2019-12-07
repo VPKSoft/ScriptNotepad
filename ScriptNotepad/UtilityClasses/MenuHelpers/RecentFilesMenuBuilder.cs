@@ -60,7 +60,10 @@ namespace ScriptNotepad.UtilityClasses.MenuHelpers
 
             // get the recent files from the database..
             var recentFiles = ScriptNotepadDbContext.DbContext.RecentFiles
-                .OrderByDescending(f => f.ClosedDateTime).Where(f => f.Session.SessionName == session.SessionName).Take(maxCount);
+                .OrderByDescending(f => f.ClosedDateTime).Where(f =>
+                    f.Session.SessionName == session.SessionName && !ScriptNotepadDbContext.DbContext.FileSaves.Any(s =>
+                        !s.IsHistory && s.Session.SessionName == f.Session.SessionName &&
+                        s.FileNameFull == f.FileNameFull)).Take(maxCount);
 
             if (addMenuOpenAll)
             {

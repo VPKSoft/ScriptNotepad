@@ -81,17 +81,28 @@ namespace ScriptNotepad.Database.Entity.Context
             try
             {
                 DbContext = new ScriptNotepadDbContext(SqLiteConnection, false);
+                DbContextInitialized = true;
                 return true;
             }
             catch (Exception ex) // report the exception and return false..
             {
                 DbContext = null;
                 ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                DbContextInitialized = false;
                 return false;
             }
         }
 
+        /// <summary>
+        /// Gets or sets the SQLite connection for the Entity Framework Code First database.
+        /// </summary>
         private static SQLiteConnection SqLiteConnection { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the database context is initialized.
+        /// </summary>
+        /// <value><c>true</c> if the database is context initialized; otherwise, <c>false</c>.</value>
+        internal static bool DbContextInitialized { get; set; }
 
         /// <summary>
         /// Releases the database <see cref="ScriptNotepadDbContext.DbContext"/> context.
@@ -126,12 +137,14 @@ namespace ScriptNotepad.Database.Entity.Context
                         }
                     }
                 }
+                DbContextInitialized = false;
 
                 return true;
             }
             catch (Exception ex) // report the exception and return false..
             {
                 ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                DbContextInitialized = false;
                 return false;
             }
         }

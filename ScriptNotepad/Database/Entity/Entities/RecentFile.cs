@@ -97,7 +97,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// </summary>
         public bool ExistsInDatabase(DbSet<FileSave> fileSaves)
         {
-            return fileSaves.Count(f => f.FileNameFull == FileNameFull && f.Session.Equals(Session) && f.IsHistory) > 0;
+            return fileSaves.Count(f => f.FileNameFull == FileNameFull && f.Session.SessionName == Session.SessionName && f.IsHistory) > 0;
         }
 
         /// <summary>

@@ -332,35 +332,89 @@ namespace ScriptNotepad
             // this might be a lengthy process, perhaps a some king of message should indicate that..
             if (FormSettings.Settings.DatabaseMigrationLevel == 0)
             {
-                // there is no database so there is no data yet..
-                ScriptNotepadDbContext.ReleaseDbContext(false, true);
-
-                // a possible failed migration needs deletion..
-                if (File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite")))
+                try
                 {
-                    try
+                    // no need to migrate if there is no old format database..
+                    if (!File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepad.sqlite")))
                     {
-                        File.Delete(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite"));
+                        FormSettings.Settings.DatabaseMigrationLevel = 1;
+                        return;
                     }
-                    catch (Exception ex)
+
+                    // there is no database so there is no data yet..
+                    ScriptNotepadDbContext.ReleaseDbContext(false, true);
+
+                    // a possible failed migration needs deletion..
+                    if (File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite")))
                     {
-                        ExceptionLogger.LogError(ex);
+                        try
+                        {
+                            File.Delete(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite"));
+                        }
+                        catch (Exception ex)
+                        {
+                            ExceptionLogger.LogError(ex);
+                            MigrateDisplayError("Delete: 'ScriptNotepadEntity.sqlite'.");
+                            // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
+                            throw new Exception(MigrateErrorMessage("Delete: 'ScriptNotepadEntity.sqlite'."));
+                        }
+                    }
+
+                    MessageBox.Show(
+                        DBLangEngine.GetMessage("msgDatabaseMigration1",
+                            "The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process."),
+                        DBLangEngine.GetMessage("msgInformation",
+                            "Information|A message title describing of some kind information."),
+                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                    MigrateToEntityFramework();
+                    FormSettings.Settings.DatabaseMigrationLevel = 1;
+
+                    // initialize the ScriptNotepadDbContext class instance..
+                    ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
+                                                               "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
+                }
+                catch (Exception ex) // for some reason the migration failed..
+                {
+                    // log the exception..
+                    ExceptionLogger.LogError(ex);
+
+                    if (MessageBox.Show(DBLangEngine.GetMessage("msgEntityFrameworkError2",
+                        "Error converting the database to the Entity Framework Code-First with an exception: '{0}'. Would you like to start a new session?|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database. An option is given to the user to start with an empty session.",
+                        ex.Message), DBLangEngine.GetMessage("msgError",
+                        "Error|A message describing that some kind of error occurred."), MessageBoxButtons.YesNo, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        if (!ScriptNotepadDbContext.DbContextInitialized)
+                        {
+                            // initialize the ScriptNotepadDbContext class instance..
+                            ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
+                                                                       "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
+                        }
+                        FormSettings.Settings.DatabaseMigrationLevel = 1;
+                    }
+                    else // let it fall..
+                    {
+                        MigrateErrorMessage($"Unknown: {ex.Message}");
+                        throw;
                     }
                 }
-
-                MessageBox.Show(
-                    DBLangEngine.GetMessage("msgDatabaseMigration1",
-                        "The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process."),
-                    DBLangEngine.GetMessage("msgInformation", "Information|A message title describing of some kind information."),
-                    MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-
-                MigrateToEntityFramework();
-                FormSettings.Settings.DatabaseMigrationLevel = 1;
-
-                // initialize the ScriptNotepadDbContext class instance..
-                ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
-                                                           "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
             }
+        }
+
+        private string MigrateErrorMessage(string phase)
+        {
+            return DBLangEngine.GetMessage("msgEntityFrameworkError1",
+                "Error converting the database to the Entity Framework Code-First at method '{0}'.|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database.",
+                phase);
+        }
+
+        private void MigrateDisplayError(string phase)
+        {
+            MessageBox.Show(
+                MigrateErrorMessage(phase),
+                DBLangEngine.GetMessage("msgError",
+                    "Error|A message describing that some kind of error occurred."), MessageBoxButtons.OK,
+                MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
         }
 
         /// <summary>
@@ -370,76 +424,60 @@ namespace ScriptNotepad
         /// </exception>
         private void MigrateToEntityFramework()
         {
-            string MigrateErrorMessage(string phase)
-            {
-                return DBLangEngine.GetMessage("msgEntityFrameworkError1",
-                    "Error converting the database to the Entity Framework Code-First at method '{0}'.|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database.",
-                    phase);
-            }
-
-            void DisplayError(string phase)
-            {
-                MessageBox.Show(
-                    MigrateErrorMessage(phase),
-                    DBLangEngine.GetMessage("msgError",
-                        "Error|A message describing that some kind of error occurred.", phase), MessageBoxButtons.OK,
-                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-            }
-
             if (FormSettings.Settings.DatabaseMigrationLevel == 0)
             {
                 if (!EntityConversion.FirstSteps())
                 {
-                    DisplayError("FirstSteps");
+                    MigrateDisplayError("FirstSteps");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("FirstSteps"));
                 }
 
                 if (!EntityConversion.SessionDataToEntity())
                 {
-                    DisplayError("DatabaseSessionName");
+                    MigrateDisplayError("DatabaseSessionName");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabaseSessionName"));
                 }
 
                 if (!EntityConversion.FileSavesToEntity())
                 {
-                    DisplayError("DatabaseFileSave");
+                    MigrateDisplayError("DatabaseFileSave");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabaseFileSave"));
                 }
 
                 if (!EntityConversion.DatabaseMiscTextsToEntity())
                 {
-                    DisplayError("DatabaseMiscText");
+                    MigrateDisplayError("DatabaseMiscText");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabaseMiscText"));
                 }
 
                 if (!EntityConversion.PluginsToEntity())
                 {
-                    DisplayError("DatabasePlugins");
+                    MigrateDisplayError("DatabasePlugins");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabasePlugins"));
                 }
 
                 if (!EntityConversion.DatabaseRecentFilesToEntity())
                 {
-                    DisplayError("DatabaseRecentFiles");
+                    MigrateDisplayError("DatabaseRecentFiles");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabaseRecentFiles"));
                 }
 
                 if (!EntityConversion.DatabaseCodeSnippetsToEntity())
                 {
-                    DisplayError("DatabaseCodeSnippets");
+                    MigrateDisplayError("DatabaseCodeSnippets");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabaseCodeSnippets"));
                 }
 
                 if (!EntityConversion.SearchAndReplaceHistoryToEntity())
                 {
-                    DisplayError("DatabaseSearchAndReplace");
+                    MigrateDisplayError("DatabaseSearchAndReplace");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabaseSearchAndReplace"));
                 }
@@ -1491,7 +1529,7 @@ namespace ScriptNotepad
                     f.Session.SessionName == sessionName && !f.IsHistory);
 
             string activeDocument = string.Empty;
-
+            sttcMain.SuspendLayout();
             foreach (var file in files)
             {
                 if (file.IsActive)
@@ -1544,6 +1582,7 @@ namespace ScriptNotepad
 
                 UpdateDocumentSaveIndicators();
             }
+            sttcMain.ResumeLayout();
 
             if (activeDocument != string.Empty)
             {
@@ -2410,7 +2449,7 @@ namespace ScriptNotepad
             // only if something was gotten from the database..
             if (file != null)
             {
-                if (FormSettings.Settings.EditorSaveZoom)
+                if (!FormSettings.Settings.EditorSaveZoom)
                 {
                     file.EditorZoomPercentage = 100;
                 }
@@ -2434,6 +2473,7 @@ namespace ScriptNotepad
                         sttcMain.LastAddedDocument.Scintilla.SelectionStart = file.CurrentCaretPosition;
                         sttcMain.LastAddedDocument.Scintilla.SelectionEnd = file.CurrentCaretPosition;
                         sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
+                        sttcMain.LastAddedDocument.FileTabButton.IsSaved = IsFileChanged(file);
                     }
 
                     sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
@@ -3519,7 +3559,6 @@ namespace ScriptNotepad
 
         // a field for the CurrentSession property..
         private FileSession currentSession;
-        private bool sessionFirstLoad = true;
 
         /// <summary>
         /// Gets or sets the current session for the documents.
@@ -3538,12 +3577,8 @@ namespace ScriptNotepad
                 {
                     FormSettings.Settings.CurrentSessionEntity = value;
 
-                    if (sessionFirstLoad)
-                    {
-                        CloseSession();
-                        LoadDocumentsFromDatabase(value.SessionName);
-                    }
-                    sessionFirstLoad = false;
+                    CloseSession();
+                    LoadDocumentsFromDatabase(value.SessionName);
                 }
                 currentSession = value;
             }

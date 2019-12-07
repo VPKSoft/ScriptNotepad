@@ -876,4 +876,7 @@
   <data name="msgReservedScriptName" xml:space="preserve">
     <value>The given script name is reserved for the script samples. The script wasn't saved.|A message informing that the given script name is reserved for static sample scripts.</value>
   </data>
+  <data name="msgEntityFrameworkError2" xml:space="preserve">
+    <value>Error converting the database to the Entity Framework Code-First with an exception: '{0}'. Would you like to start a new session?|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database. An option is given to the user to start with an empty session.</value>
+  </data>
 </root>
