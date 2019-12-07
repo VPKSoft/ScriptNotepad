@@ -28,7 +28,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Text;
 using ScriptNotepad.UtilityClasses.Encodings;
@@ -100,12 +99,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         {
             return fileSaves.Count(f => f.FileNameFull == FileNameFull && f.Session.Equals(Session) && f.IsHistory) > 0;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="RecentFile"/> property <see cref="FileNameFull"/> exists in the file system.
-        /// </summary>
-        [NotMapped]
-        public bool ExistsInFileSystem => File.Exists(FileNameFull);
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

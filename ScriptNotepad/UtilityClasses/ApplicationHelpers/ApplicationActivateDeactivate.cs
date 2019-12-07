@@ -50,6 +50,7 @@ namespace ScriptNotepad.UtilityClasses.ApplicationHelpers
         /// <summary>
         /// A message send to the WndProc when the application activates / deactivates.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public const int WM_ACTIVATEAPP = 0x1C;
 
         /// <summary>

@@ -25,31 +25,29 @@ SOFTWARE.
 #endregion
 
 using Microsoft.CSharp;
-using System;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
 {
     /// <summary>
     /// A class to run C# script snippets a file contents as line strings with line endings.
     /// </summary>
-    public class CSCodeDOMScriptRunnerParent
+    public class CsCodeDomScriptRunnerParent
     {
         /// <summary>
         /// A CSharpCodeProvider class instance to translate the C# script code.
         /// </summary>
-        private CSharpCodeProvider cSharpCodeProvider = new CSharpCodeProvider();
+        private readonly CSharpCodeProvider cSharpCodeProvider = new CSharpCodeProvider();
 
         /// <summary>
         /// The compiler parameters for the CSharpCodeProvider which runs the C# script code.
         /// </summary>
-        private CompilerParameters compilerParameters = new CompilerParameters();
+        private readonly CompilerParameters compilerParameters = new CompilerParameters();
 
         /// <summary>
         /// The results of a CSharpCodeProvider class instance to detect a warning or error.
         /// </summary>
-        public CompilerResults CompilerResults { get; set; } = null;
+        public CompilerResults CompilerResults { get; set; }
 
         /// <summary>
         /// Gets the base "skeleton" C# code snippet for manipulating text as lines.
@@ -59,11 +57,12 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <summary>
         /// Gets a value indicating whether the script compile failed.
         /// </summary>
-        public bool CompileFailed { get; private set; } = false;
+        public bool CompileFailed { get; private set; }
 
         /// <summary>
         /// The base C# script code for manipulating a collection of lines.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         internal string _ScriptCode;
 
         /// <summary>
@@ -71,11 +70,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// </summary>
         public string ScriptCode
         {
-            get
-            {
-                // just return the value..
-                return _ScriptCode;
-            }
+            get => _ScriptCode;
 
             set
             {
@@ -96,7 +91,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             try
             {
                 // compile the C# script..
-                CompilerResults = cSharpCodeProvider.CompileAssemblyFromSource(compilerParameters, new string[] { ScriptCode });
+                CompilerResults = cSharpCodeProvider.CompileAssemblyFromSource(compilerParameters, ScriptCode);
 
 
                 // loop through the errors..
@@ -122,9 +117,9 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CSCodeDOMScriptRunnerLines"/> class.
+        /// Initializes a new instance of the <see cref="CsCodeDomScriptRunnerLines"/> class.
         /// </summary>
-        public CSCodeDOMScriptRunnerParent()
+        public CsCodeDomScriptRunnerParent()
         {
             // set some flags for the CodeDom compiler..
             compilerParameters.GenerateExecutable = false;

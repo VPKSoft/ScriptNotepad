@@ -507,7 +507,7 @@ namespace ScriptNotepad
                     // undo..
                     document.Scintilla.Undo();
 
-                    // get a DBFILE_SAVE class instance from the document's tag..
+                    // get a FileSave class instance from the document's tag..
                     var fileSave = (FileSave)document.Tag;
 
                     // undo the encoding change..
@@ -688,7 +688,7 @@ namespace ScriptNotepad
         /// <param name="action">The action to run.</param>
         public void LastAddedFileSaveAction(Action<FileSave> action)
         {
-            if (sttcMain.LastAddedDocument != null && sttcMain.LastAddedDocument.Tag != null)
+            if (sttcMain.LastAddedDocument?.Tag != null)
             {
                 if (sttcMain.LastAddedDocument.Tag is FileSave fileSave)
                 {
@@ -725,7 +725,7 @@ namespace ScriptNotepad
             // if there is an active document..
             if (sttcMain.CurrentDocument != null && sttcMain.CurrentDocument.Scintilla.Equals(scintilla))
             {
-                // get a DBFILE_SAVE class instance from the document's tag..
+                // get a FileSave class instance from the document's tag..
                 var fileSave = (FileSave)sttcMain.CurrentDocument.Tag;
 
                 // undo the encoding change..
@@ -2330,7 +2330,7 @@ namespace ScriptNotepad
         // checks if file selected in the open file dialog requires elevation and the file exists..
         private void odAnyFile_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (FileIOPermission.FileRequiresElevation(odAnyFile.FileName).ElevationRequied)
+            if (FileIoPermission.FileRequiresElevation(odAnyFile.FileName).ElevationRequied)
             {
                 if (MessageBox.Show(
                 DBLangEngine.GetMessage("msgElevationRequiredForFile",
@@ -3270,7 +3270,7 @@ namespace ScriptNotepad
         {
             if (sttcMain.CurrentDocument != null)
             {
-                // get the DBFILE_SAVE class instance from the document's tag..
+                // get the FileSave class instance from the document's tag..
                 var fileSave = (FileSave) sttcMain.CurrentDocument.Tag;
 
                 // avoid excess checks further in the code..
@@ -3347,7 +3347,7 @@ namespace ScriptNotepad
         {
             if (sender.Equals(mnuEdit)) // the edit menu is opening..
             {
-                // get the DBFILE_SAVE from the active document..
+                // get the FileSave from the active document..
                 var fileSave = (FileSave) sttcMain.CurrentDocument?.Tag;
 
                 if (fileSave != null) // the second null check..
@@ -3500,7 +3500,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets or sets a value indicating whether constructor of this form has finished.
         /// </summary>
-        private bool ConstructorFinished { get; set; }
+        private bool ConstructorFinished { get; }
 
         /// <summary>
         /// Gets or sets menu builder used to build the menu of the <see cref="Application"/>'s open forms.

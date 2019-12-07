@@ -30,7 +30,6 @@ using System.IO;
 using System.Reflection;
 using ScriptNotepad.Database.Entity.Utility;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
-using static ScriptNotepad.Database.Entity.Utility.AssemblyVersion;
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
@@ -146,16 +145,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         public override string ToString()
         {
             return PluginName + " / " + PluginDescription;
-        }
-
-        /// <summary>
-        /// Sets the <see cref="PluginVersion"/> from a given assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly to set the version from.</param>
-        private void VersionFromAssembly(Assembly assembly)
-        {
-            // get the plug-in version from the given assembly..
-            PluginVersion = VersionStringFromAssembly(assembly);
         }
 
         /// <summary>

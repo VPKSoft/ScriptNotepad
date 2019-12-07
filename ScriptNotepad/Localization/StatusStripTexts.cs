@@ -96,7 +96,7 @@ namespace ScriptNotepad.Localization
             {
                 if (!value)
                 {
-                    UninitLables();
+                    UnInitLabels();
                 }
             }
         }
@@ -135,7 +135,7 @@ namespace ScriptNotepad.Localization
         /// <summary>
         /// Un-initializes the status strip labels with given values.
         /// </summary>
-        public static void UninitLables()
+        public static void UnInitLabels()
         {
             LabelLineColumn = null;
             LabelLineColumnSelection = null;

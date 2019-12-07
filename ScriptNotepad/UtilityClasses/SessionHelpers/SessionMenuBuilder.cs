@@ -96,6 +96,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
             CurrentMenu.Clear();
 
             // loop through the list of ToolStripMenuItems to disposed of..
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (int i = 0; i < disposeList.Count; i++)
             {
                 // dispose..

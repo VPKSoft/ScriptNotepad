@@ -152,7 +152,7 @@ namespace ScriptNotepad.UtilityClasses.KeyboardShortcutHelper
         /// Gets or sets the internal key combination list the class should listen for.
         /// </summary>
         private List<(bool modifierAlt, bool modifierCtrl, bool modifierShift, Keys keys, string name, int location)>
-            KeyList { get; set; } =
+            KeyList { get; } =
             new List<(bool modifierAlt, bool modifierCtrl, bool modifierShift, Keys keys, string name, int location)>();
 
         internal List<KeyData> KeysCollected { get; set; } = new List<KeyData>();

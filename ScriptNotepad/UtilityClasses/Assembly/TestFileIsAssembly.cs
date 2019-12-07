@@ -46,8 +46,7 @@ namespace ScriptNotepad.UtilityClasses.Assembly
         {
             try
             {
-                AssemblyName assemblyName =
-                    AssemblyName.GetAssemblyName(fileName);
+                AssemblyName.GetAssemblyName(fileName);
                 return true;
             }
             catch (FileNotFoundException ex)

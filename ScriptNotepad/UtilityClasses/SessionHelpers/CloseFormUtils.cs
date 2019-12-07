@@ -24,11 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScriptNotepad.UtilityClasses.SessionHelpers
@@ -38,33 +34,6 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
     /// </summary>
     public static class CloseFormUtils
     {
-        /// <summary>
-        /// Closes all the forms of the application except the ones which type matches the given type <paramref name="type"/>.
-        /// </summary>
-        /// <param name="type">The type of the form to be left open.</param>
-        public static void CloseOpenForms(Type type)
-        {
-            // create a list of forms to be closed..
-            List<Form> forms = new List<Form>();
-
-            // set the contents for the lost of forms to be closed..
-            foreach (Form form in Application.OpenForms)
-            {
-                // ..with the exception..
-                if (form.GetType() != type)
-                {
-                    forms.Add(form);
-                }
-            }
-
-            // loop through the list of forms to be closed.. 
-            for (int i = 0; i < forms.Count; i++)
-            {
-                // ..and close them..
-                forms[i].Close();
-            }
-        }
-
         /// <summary>
         /// Closes all the open forms except the given form to exclude <paramref name="excludeForm"/>.
         /// </summary>
@@ -85,6 +54,7 @@ namespace ScriptNotepad.UtilityClasses.SessionHelpers
             }
 
             // loop through the list of forms to be closed.. 
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (int i = 0; i < forms.Count; i++)
             {
                 // ..and close them..

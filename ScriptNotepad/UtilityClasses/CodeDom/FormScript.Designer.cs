@@ -39,7 +39,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbRunScript = new System.Windows.Forms.ToolStripButton();
             this.tsbTestScript = new System.Windows.Forms.ToolStripButton();
-            this.scintilla = new ScintillaNET.Scintilla();
+            this.scintillaScript = new ScintillaNET.Scintilla();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tbCompilerResults = new System.Windows.Forms.TextBox();
             this.scMain = new System.Windows.Forms.SplitContainer();
@@ -145,18 +145,18 @@
             this.tsbTestScript.Text = "Test the script\'s validity";
             this.tsbTestScript.Click += new System.EventHandler(this.tsbTestScript_Click);
             // 
-            // scintilla
+            // scintillaScript
             // 
-            this.scintilla.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scintilla.IndentationGuides = ScintillaNET.IndentView.Real;
-            this.scintilla.Location = new System.Drawing.Point(0, 0);
-            this.scintilla.Name = "scintilla";
-            this.scintilla.Size = new System.Drawing.Size(944, 420);
-            this.scintilla.TabIndex = 0;
-            this.scintilla.CharAdded += new System.EventHandler<ScintillaNET.CharAddedEventArgs>(this.Scintilla_CharAdded);
-            this.scintilla.InsertCheck += new System.EventHandler<ScintillaNET.InsertCheckEventArgs>(this.Scintilla_InsertCheck);
-            this.scintilla.UpdateUI += new System.EventHandler<ScintillaNET.UpdateUIEventArgs>(this.Scintilla_UpdateUI);
-            this.scintilla.TextChanged += new System.EventHandler(this.common_Changed);
+            this.scintillaScript.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scintillaScript.IndentationGuides = ScintillaNET.IndentView.Real;
+            this.scintillaScript.Location = new System.Drawing.Point(0, 0);
+            this.scintillaScript.Name = "scintillaScript";
+            this.scintillaScript.Size = new System.Drawing.Size(944, 420);
+            this.scintillaScript.TabIndex = 0;
+            this.scintillaScript.CharAdded += new System.EventHandler<ScintillaNET.CharAddedEventArgs>(this.Scintilla_CharAdded);
+            this.scintillaScript.InsertCheck += new System.EventHandler<ScintillaNET.InsertCheckEventArgs>(this.Scintilla_InsertCheck);
+            this.scintillaScript.UpdateUI += new System.EventHandler<ScintillaNET.UpdateUIEventArgs>(this.Scintilla_UpdateUI);
+            this.scintillaScript.TextChanged += new System.EventHandler(this.common_Changed);
             // 
             // statusStrip1
             // 
@@ -189,7 +189,7 @@
             // 
             // scMain.Panel1
             // 
-            this.scMain.Panel1.Controls.Add(this.scintilla);
+            this.scMain.Panel1.Controls.Add(this.scintillaScript);
             // 
             // scMain.Panel2
             // 
@@ -230,7 +230,7 @@
         private System.Windows.Forms.ToolStripComboBox tsbComboScriptType;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private ScintillaNET.Scintilla scintilla;
+        private ScintillaNET.Scintilla scintillaScript;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripButton tsbRunScript;
         private System.Windows.Forms.TextBox tbCompilerResults;

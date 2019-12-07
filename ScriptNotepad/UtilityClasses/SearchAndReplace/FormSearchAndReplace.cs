@@ -2070,14 +2070,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 
             if (_cbTransparency.Checked)
             {
-                if (_rbTransparencyAlways.Checked)
-                {
-                    FormSettings.Settings.SearchBoxTransparency = 2;
-                }
-                else
-                {
-                    FormSettings.Settings.SearchBoxTransparency = 1;                        
-                }
+                FormSettings.Settings.SearchBoxTransparency = _rbTransparencyAlways.Checked ? 2 : 1;
             }
             else
             {
@@ -2156,9 +2149,8 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             }
 
             // the return key was pressed when a combo box was dropped down so suppress that..
-            if (e.KeyCode == Keys.Return && ActiveControl is ComboBox)
+            if (e.KeyCode == Keys.Return && ActiveControl is ComboBox comboBox)
             {
-                var comboBox = (ComboBox) ActiveControl;
                 if (comboBox.DroppedDown)
                 {
                     e.SuppressKeyPress = true;

@@ -55,25 +55,26 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
     {
         #region PrivateFields
         // a list to track the instances of this form so the changes can be delegated to each other..
-        private static List<FormScript> formScriptInstances = new List<FormScript>();
+        // ReSharper disable once CollectionNeverQueried.Local
+        private static readonly List<FormScript> FormScriptInstances = new List<FormScript>();
 
         // a CodeDOM provider for executing C# scripts for a list of lines..
-        private CSCodeDOMScriptRunnerLines scriptRunnerLines = new CSCodeDOMScriptRunnerLines();
+        private readonly CsCodeDomScriptRunnerLines scriptRunnerLines = new CsCodeDomScriptRunnerLines();
 
         // a CodeDOM provider for executing C# scripts for a string..
-        private CSCodeDOMScriptRunnerText scriptRunnerText = new CSCodeDOMScriptRunnerText();
+        private readonly CsCodeDomScriptRunnerText scriptRunnerText = new CsCodeDomScriptRunnerText();
 
         // an indicator if the Scintilla's text changed event should be disregarded..
-        private bool suspendChangedEvent = false;
+        private bool suspendChangedEvent;
 
         // a field to hold localized name for a script template for manipulating Scintilla contents as text..
-        private string defaultNameScriptTemplateText = string.Empty;
+        private readonly string defaultNameScriptTemplateText = string.Empty;
 
         // a field to hold localized name for a script template for manipulating Scintilla contents as lines..
-        private string defaultNameScriptTemplateLines = string.Empty;
+        private readonly string defaultNameScriptTemplateLines = string.Empty;
 
         // a field to hold the code snippet's contents for saving possibility..
-        private CodeSnippet currentCodeSnippet = null;
+        private CodeSnippet currentCodeSnippet;
         #endregion
 
         #region MassiveConstructor
@@ -83,7 +84,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         public FormScript()
         {
             // Add this form to be positioned..
-            PositionForms.Add(this, PositionCore.SizeChangeMode.MoveTopLeft);
+            PositionForms.Add(this);
 
             // add positioning..
             PositionCore.Bind();
@@ -124,7 +125,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 DBLangEngine.GetMessage("msgScriptTypeText", "Script text|As in the C# script type should be handling the Scintilla's contents as text");
 
             // set the default script for manipulating text..
-            scintilla.Text = scriptRunnerText.CSharpScriptBase;
+            scintillaScript.Text = scriptRunnerText.CSharpScriptBase;
 
             // set the text for the default script snippet..
             tstScriptName.Text = defaultNameScriptTemplateText;
@@ -132,7 +133,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
 
             // set the lexer as C#..
-            ScintillaLexers.CreateLexer(scintilla, LexerType.Cs);
+            ScintillaLexers.CreateLexer(scintillaScript, LexerType.Cs);
 
             // highlight the braces..
             SetBraceHighlights();
@@ -140,7 +141,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             suspendChangedEvent = false; // "resume" the event handler..
 
             // track the instances of this form so the changes can be delegated to each other..
-            formScriptInstances.Add(this);
+            FormScriptInstances.Add(this);
         }
         #endregion
 
@@ -148,15 +149,10 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <summary>
         /// Gets the type of the selected script in the tool strip's combo box.
         /// </summary>
-        private int SelectedScriptType
-        {
-            get
-            {
-                // the tool strip combo box doesn't seem to remember it's index,
-                // so get the index by using another way..
-                return tsbComboScriptType.Items.IndexOf(tsbComboScriptType.Text);
-            }
-        }
+        private int SelectedScriptType => 
+            // the tool strip combo box doesn't seem to remember it's index,
+            // so get the index by using another way..
+            tsbComboScriptType.Items.IndexOf(tsbComboScriptType.Text);
 
         /// <summary>
         /// Compiles the script in the view and outputs the compilation results.
@@ -166,7 +162,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         {
             tbCompilerResults.Text = string.Empty; // clear the previous results..
 
-            CSCodeDOMScriptRunnerParent scriptRunnerParent;
+            CsCodeDomScriptRunnerParent scriptRunnerParent;
             if (SelectedScriptType == 0)
             {
                 scriptRunnerParent = scriptRunnerText;
@@ -184,13 +180,13 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             }
 
             // set the script code from the Scintilla document contents..
-            scriptRunnerParent.ScriptCode = scintilla.Text;
+            scriptRunnerParent.ScriptCode = scintillaScript.Text;
 
 
             // loop through the compilation results..
-            for (int i = 0; i < scriptRunnerParent.CompilerResults.Output.Count; i++)
+            foreach (var compilerResult in scriptRunnerParent.CompilerResults.Output)
             {
-                tbCompilerResults.Text += scriptRunnerParent.CompilerResults.Output[i] + Environment.NewLine;
+                tbCompilerResults.Text += compilerResult + Environment.NewLine;
             }
 
             // no need to continue if the script compilation failed..
@@ -232,10 +228,10 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// Creates a CODE_SNIPPETS class instance from the GUI items.
         /// </summary>
         /// <returns>A CODE_SNIPPETS class instance.</returns>
-        private CodeSnippet CreateNewCodeSnippet()
+        private void CreateNewCodeSnippet()
         {
             // just call the overload..
-            return CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
+            CreateNewCodeSnippet(scintillaScript.Text, tstScriptName.Text, SelectedScriptType);
         }
 
         /// <summary>
@@ -284,13 +280,11 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 return false;
             }
 
-            bool result = true;
-
-            result = !((scriptName == defaultNameScriptTemplateText || // a localized template name for text will not do..
-                scriptName == defaultNameScriptTemplateLines || // a localized template name for lines will not do..
-                scriptName == "Simple line ending change script" || // a non-localized database template for lines will not do..
-                scriptName == "Simple replace script" ||
-                scriptName == "Simple XML manipulation script")); // a non-localized database template for text will not do..
+            var result = !((scriptName == defaultNameScriptTemplateText || // a localized template name for text will not do..
+                             scriptName == defaultNameScriptTemplateLines || // a localized template name for lines will not do..
+                             scriptName == "Simple line ending change script" || // a non-localized database template for lines will not do..
+                             scriptName == "Simple replace script" ||
+                             scriptName == "Simple XML manipulation script"));
 
             // return the result..
             return result;
@@ -301,7 +295,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         private void FormScript_FormClosing(object sender, FormClosingEventArgs e)
         {
             // this form is no longer going to be an instance for much longer..
-            formScriptInstances.Remove(this);
+            FormScriptInstances.Remove(this);
         }
 
         // a user wants to run the script against the active Scintilla document on the main form..
@@ -349,7 +343,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             {
                 suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
                 tstScriptName.Text = snippet.ScriptName;
-                scintilla.Text = snippet.ScriptContents;
+                scintillaScript.Text = snippet.ScriptContents;
                 tsbComboScriptType.SelectedIndex = (int)snippet.ScriptTextManipulationType;
                 suspendChangedEvent = false; // "resume" the event handler..
                 currentCodeSnippet = snippet;
@@ -367,13 +361,13 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                     suspendChangedEvent = true; // suspend the event handler as the contents of the script is about to change..
                     if (tsbComboScriptType.SelectedIndex == 0)
                     {
-                        scintilla.Text = scriptRunnerText.CSharpScriptBase;
+                        scintillaScript.Text = scriptRunnerText.CSharpScriptBase;
                         tstScriptName.Text = defaultNameScriptTemplateText;
                         CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
                     }
                     else
                     {
-                        scintilla.Text = scriptRunnerLines.CSharpScriptBase;
+                        scintillaScript.Text = scriptRunnerLines.CSharpScriptBase;
                         tstScriptName.Text = defaultNameScriptTemplateLines;
                         CreateNewCodeSnippet(); // create a new CODE_SNIPPETS class instance..
                     }
@@ -387,7 +381,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 }
 
                 currentCodeSnippet.ScriptName = tstScriptName.Text;
-                currentCodeSnippet.ScriptContents = scintilla.Text;
+                currentCodeSnippet.ScriptContents = scintillaScript.Text;
 
                 // don't allow the user to lose one's work on the current script..
                 EnableDisableControlsOnChange(false);
@@ -413,7 +407,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             // if the currentCodeSnippet is null then create a new one..
             if (currentCodeSnippet == null)
             {
-                currentCodeSnippet = CreateNewCodeSnippet(scintilla.Text, tstScriptName.Text, SelectedScriptType);
+                currentCodeSnippet = CreateNewCodeSnippet(scintillaScript.Text, tstScriptName.Text, SelectedScriptType);
             }
 
             // display an error if the script's name is any of the reserved script names..
@@ -473,7 +467,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <summary>
         /// Occurs when a user wants to run a script for a Scintilla document contents.
         /// </summary>
-        public event OnScintillaRequired ScintillaRequired = null;
+        public event OnScintillaRequired ScintillaRequired;
         #endregion
 
         #region "CodeIndent Handlers"
@@ -556,12 +550,12 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 return;
             }
 
-            scintilla.Styles[Style.BraceLight].ForeColor = FormSettings.Settings.BraceHighlightForegroundColor;
-            scintilla.Styles[Style.BraceLight].BackColor = FormSettings.Settings.BraceHighlightBackgroundColor;
-            scintilla.Styles[Style.BraceBad].BackColor = FormSettings.Settings.BraceBadHighlightForegroundColor;
+            scintillaScript.Styles[Style.BraceLight].ForeColor = FormSettings.Settings.BraceHighlightForegroundColor;
+            scintillaScript.Styles[Style.BraceLight].BackColor = FormSettings.Settings.BraceHighlightBackgroundColor;
+            scintillaScript.Styles[Style.BraceBad].BackColor = FormSettings.Settings.BraceBadHighlightForegroundColor;
 
-            scintilla.Styles[Style.BraceLight].Italic = FormSettings.Settings.HighlightBracesItalic;
-            scintilla.Styles[Style.BraceLight].Bold = FormSettings.Settings.HighlightBracesBold;
+            scintillaScript.Styles[Style.BraceLight].Italic = FormSettings.Settings.HighlightBracesItalic;
+            scintillaScript.Styles[Style.BraceLight].Bold = FormSettings.Settings.HighlightBracesBold;
         }
 
         private int lastCaretPos = -1;
@@ -570,18 +564,18 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         {
             // (C): https://github.com/jacobslusser/ScintillaNET/wiki/Brace-Matching
             // Has the caret changed position?
-            var caretPos = scintilla.CurrentPosition;
+            var caretPos = scintillaScript.CurrentPosition;
             if (lastCaretPos != caretPos)
             {
                 lastCaretPos = caretPos;
                 var bracePos1 = -1;
 
                 // Is there a brace to the left or right?
-                if (caretPos > 0 && IsBrace(scintilla.GetCharAt(caretPos - 1)))
+                if (caretPos > 0 && IsBrace(scintillaScript.GetCharAt(caretPos - 1)))
                 {
                     bracePos1 = (caretPos - 1);
                 }
-                else if (IsBrace(scintilla.GetCharAt(caretPos)))
+                else if (IsBrace(scintillaScript.GetCharAt(caretPos)))
                 {
                     bracePos1 = caretPos;
                 }
@@ -589,20 +583,20 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 if (bracePos1 >= 0)
                 {
                     // Find the matching brace
-                    var bracePos2 = scintilla.BraceMatch(bracePos1);
+                    var bracePos2 = scintillaScript.BraceMatch(bracePos1);
                     if (bracePos2 == Scintilla.InvalidPosition)
                     {
-                        scintilla.BraceBadLight(bracePos1);
+                        scintillaScript.BraceBadLight(bracePos1);
                     }
                     else
                     {
-                        scintilla.BraceHighlight(bracePos1, bracePos2);
+                        scintillaScript.BraceHighlight(bracePos1, bracePos2);
                     }
                 }
                 else
                 {
                     // Turn off brace matching
-                    scintilla.BraceHighlight(Scintilla.InvalidPosition, Scintilla.InvalidPosition);
+                    scintillaScript.BraceHighlight(Scintilla.InvalidPosition, Scintilla.InvalidPosition);
                 }
             }
         }

@@ -46,10 +46,10 @@ namespace ScriptNotepad.DialogForms
         private IEnumerable<CodeSnippet> codeSnippets;
 
         // a field to hold localized name for a script template for manipulating Scintilla contents as text..
-        string defaultNameScriptTemplateText = string.Empty;
+        readonly string defaultNameScriptTemplateText = string.Empty;
 
         // a field to hold localized name for a script template for manipulating Scintilla contents as lines..
-        string defaultNameScriptTemplateLines = string.Empty;
+        readonly string defaultNameScriptTemplateLines = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormDialogScriptLoad"/> class.
@@ -57,7 +57,7 @@ namespace ScriptNotepad.DialogForms
         public FormDialogScriptLoad()
         {
             // Add this form to be positioned..
-            PositionForms.Add(this, PositionCore.SizeChangeMode.MoveTopLeft);
+            PositionForms.Add(this);
 
             // add positioning..
             PositionCore.Bind();
@@ -108,16 +108,16 @@ namespace ScriptNotepad.DialogForms
         /// Shows this dialog for a user to select a script.
         /// </summary>
         /// <param name="manage">A flag indicating if the dialog will be shown in manage mode.</param>
-        /// <returns>An instance for the <see cref="CODE_SNIPPETS"/> class if user accepted the dialog; otherwise null.</returns>
+        /// <returns>An instance for the <see cref="CodeSnippet"/> class if user accepted the dialog; otherwise null.</returns>
         public static CodeSnippet Execute(bool manage)
         {
             // create a new instance of the FormDialogScriptLoad..
-            FormDialogScriptLoad formDialogScriptLoad = new FormDialogScriptLoad();
+            FormDialogScriptLoad formDialogScriptLoad = new FormDialogScriptLoad
+            {
+                btCancel = {Visible = !manage}, btOK = {Visible = !manage}, btClose = {Visible = manage}
+            };
 
             // set the button visibility based on the manage flag..
-            formDialogScriptLoad.btCancel.Visible = !manage;
-            formDialogScriptLoad.btOK.Visible = !manage;
-            formDialogScriptLoad.btClose.Visible = manage;
 
             // if the manage flag is set only one button returning DialogResult.Cancel value is used..
             if (manage)

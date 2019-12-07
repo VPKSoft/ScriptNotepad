@@ -34,7 +34,7 @@ namespace ScriptNotepad.IOPermission
     /// <summary>
     /// A class to check for file permissions; i.e. the file access requires elevation.
     /// </summary>
-    public  class FileIOPermission: ErrorHandlingBase
+    public class FileIoPermission: ErrorHandlingBase
     {
         /// <summary>
         /// Checks if the access to a given file with given permissions requires elevation.
@@ -48,10 +48,11 @@ namespace ScriptNotepad.IOPermission
         {
             try
             {
-                using (FileStream filestream = new FileStream(fileName, fileMode, fileAccess, fileShare))
+                using (new FileStream(fileName, fileMode, fileAccess, fileShare))
                 {
                     // nothing to  see here..
                 }
+
                 return (false, false);
             }
             // catch the exception and determine the result based on the type of the exception.
