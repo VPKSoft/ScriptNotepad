@@ -138,8 +138,8 @@
     <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.1.7\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.5.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.5.3\lib\net47\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.5.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.5.4\lib\net47\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaUrlDetect, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaUrlDetect.1.0.0.6\lib\net47\VPKSoft.ScintillaUrlDetect.dll</HintPath>

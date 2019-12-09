@@ -56,7 +56,6 @@ using ScriptNotepadPluginBase.EventArgClasses;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -895,7 +894,6 @@ namespace ScriptNotepad
                         pluginEntry.SetPluginUpdated(plugin.Assembly);
 
                         // update the plug-in information to the database..
-                        ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(pluginEntry);
                         ScriptNotepadDbContext.DbContext.SaveChanges();
                     }
                 }
@@ -913,7 +911,6 @@ namespace ScriptNotepad
                     pluginEntry.SetPluginUpdated(plugin.Assembly);
 
                     // update the plug-in information to the database..
-                    ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(pluginEntry);
                     ScriptNotepadDbContext.DbContext.SaveChanges();
 
                     // on failure, add the "invalid" plug-in assembly and its instance to the internal list..
@@ -1017,7 +1014,6 @@ namespace ScriptNotepad
                     Plugins[i].Plugin.ExceptionCount++;
 
                     // the disposal failed so do add to the exception count..
-                    ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(Plugins[i].Plugin);
                     ScriptNotepadDbContext.DbContext.SaveChanges();
 
                     // log the dispose failures as well..
@@ -1417,7 +1413,6 @@ namespace ScriptNotepad
 
                     fileSave.IsActive = sttcMain.Documents[i].FileTabButton.IsActive;
                     fileSave.VisibilityOrder = i;
-                    ScriptNotepadDbContext.DbContext.FileSaves.AddOrUpdate();
                     ScriptNotepadDbContext.DbContext.SaveChanges();
                     RecentFileHelper.AddOrUpdateRecentFile(fileSave);
                 }
@@ -1529,7 +1524,7 @@ namespace ScriptNotepad
                     f.Session.SessionName == sessionName && !f.IsHistory);
 
             string activeDocument = string.Empty;
-            sttcMain.SuspendLayout();
+            //sttcMain.SuspendLayout();
             foreach (var file in files)
             {
                 if (file.IsActive)
@@ -1582,7 +1577,7 @@ namespace ScriptNotepad
 
                 UpdateDocumentSaveIndicators();
             }
-            sttcMain.ResumeLayout();
+            //sttcMain.ResumeLayout();
 
             if (activeDocument != string.Empty)
             {
@@ -2688,15 +2683,8 @@ namespace ScriptNotepad
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // get the list of plug-in database entries..
-            var pluginDatabaseEntries = Plugins.Select(f => f.Plugin);
-
-            // update the list of plug-in database into the database..
-            foreach (var entry in pluginDatabaseEntries)
-            {
-                ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(entry);
-                ScriptNotepadDbContext.DbContext.SaveChanges();
-            }
+            // sa the changes into the database..
+            ScriptNotepadDbContext.DbContext.SaveChanges();
 
             // disable the timers not mess with application exit..
             tmAutoSave.Enabled = false;
@@ -3177,7 +3165,6 @@ namespace ScriptNotepad
             if (idx != -1)
             {
                 Plugins[idx].Plugin.ExceptionCount++;
-                ScriptNotepadDbContext.DbContext.Plugins.AddOrUpdate(Plugins[idx].Plugin);
                 ScriptNotepadDbContext.DbContext.SaveChanges();
             }
         }

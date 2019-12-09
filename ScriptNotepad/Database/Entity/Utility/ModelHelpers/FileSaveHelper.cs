@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -51,7 +50,6 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
             fileSave.FileContents = fileSave.Encoding.GetBytes(document.Scintilla.Text);
             fileSave.CurrentCaretPosition = document.Scintilla.CurrentPosition;
             fileSave.FilePath = Path.GetDirectoryName(fileSave.FileNameFull);
-            ScriptNotepadDbContext.DbContext.FileSaves.AddOrUpdate(fileSave);
             ScriptNotepadDbContext.DbContext.SaveChanges();
             return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
         }
@@ -65,7 +63,6 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         public static FileSave SetContents(this FileSave fileSave, string contents)
         {
             fileSave.FileContents = fileSave.Encoding.GetBytes(contents);
-            ScriptNotepadDbContext.DbContext.FileSaves.AddOrUpdate(fileSave);
             //ScriptNotepadDbContext.DbContext.SaveChanges();
 
             return fileSave;
@@ -79,7 +76,6 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         /// <returns>An instance to a <see cref="FileSave"/> modified class.</returns>
         public static FileSave AddOrUpdateFile(this FileSave fileSave)
         {
-            ScriptNotepadDbContext.DbContext.FileSaves.AddOrUpdate(fileSave);
             ScriptNotepadDbContext.DbContext.SaveChanges();
             return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
         }
@@ -118,7 +114,6 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
 
             fileSave.Encoding = encoding;
 
-            ScriptNotepadDbContext.DbContext.FileSaves.AddOrUpdate(fileSave);
             ScriptNotepadDbContext.DbContext.SaveChanges();
             return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
         }
@@ -158,7 +153,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 UseSpellChecking = true,
                 EditorZoomPercentage = document.ZoomPercentage,
             };
-            ScriptNotepadDbContext.DbContext.FileSaves.AddOrUpdate(fileSave);
+            ScriptNotepadDbContext.DbContext.FileSaves.Add(fileSave);
             ScriptNotepadDbContext.DbContext.SaveChanges();
             return fileSave;
         }
