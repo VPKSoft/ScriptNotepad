@@ -160,10 +160,7 @@ namespace ScriptNotepad.Database.Entity.Entities
             set 
             { 
                 PreviousDbModified = dbModified;
-
-                // lets round up a bit..
-                dbModified = new DateTime(value.Year, value.Month, value.Day,
-                    value.Hour, value.Minute, value.Second, DateTimeKind.Unspecified);
+                dbModified = value;
             }
         }
 
@@ -180,11 +177,184 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// </summary>
         public LexerEnumerations.LexerType LexerType { get; set; }
 
+        private bool useFileSystemOnContents;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the file system to store the contents of the file instead of a database BLOB.
+        /// </summary>
+        public bool UseFileSystemOnContents
+        {
+            get => useFileSystemOnContents;
+
+            set
+            {
+                if (value != useFileSystemOnContents)
+                {
+                    if (value) // a switch logic is required to perform an "easy" change..
+                    {
+                        SetFileContents(FileContents, true, false, false);
+                        FileContents = null;
+                    }
+                    else
+                    {
+                        FileContents = GetFileContents();
+                        File.Delete(TemporaryFileSaveName);
+                        TemporaryFileSaveName = null;
+                    }
+
+                    useFileSystemOnContents = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the location of the temporary file save in case the file changes are cached into the file system.
+        /// </summary>
+        public string TemporaryFileSaveName { get; set; }
+
+        /// <summary>
+        /// Sets the random file name for this <see cref="FileSave"/> instance to to be used as a file system cache for changed file contents. The <see cref="TemporaryFileSaveName"/> must be true for this to work.
+        /// </summary>
+        /// <returns>System.String.</returns>
+        public string SetRandomFile()
+        {
+            if (TemporaryFileSaveName == null && UseFileSystemOnContents)
+            {
+                Session.SetRandomPath();
+                TemporaryFileSaveName = Path.Combine(Session.TemporaryFilePath, Path.GetRandomFileName());
+            }
+            else if (!UseFileSystemOnContents)
+            {
+                TemporaryFileSaveName = null;
+            }
+
+            return TemporaryFileSaveName;
+        }
+
         /// <summary>
         /// Gets or sets the file contents.
         /// </summary>
         //[NotMapped]
-        public byte [] FileContents { get; set; }
+        public byte[] FileContents
+        {
+            get
+            {
+                if (useFileSystemOnContents) 
+                {
+                    // this will prevent the Entity Framework from saving the contents when file
+                    // system cache is used..
+                    return null;
+                }
+
+                return fileContentsMemory;
+            }
+
+            set => fileContentsMemory = value;
+        }
+
+        // the "file" contents..
+        private byte[] fileContentsMemory;
+
+        /// <summary>
+        /// Sets the file contents of this <see cref="FileSave"/> class instance.
+        /// The contents are either saved to the file system or to the database depending on the <see cref="UseFileSystemOnContents"/> property value.
+        /// </summary>
+        /// <param name="fileContents">The file contents.</param>
+        /// <param name="commit">A value indicating whether to commit the changes to the
+        /// database or to the file system cache depending on the <see cref="UseFileSystemOnContents"/> property value.</param>
+        /// <param name="saveToFileSystem">A value indicating whether to override existing copy of the file in the file system.</param>
+        /// <param name="contentChanged">A value indicating whether the file contents have been changed.</param>
+        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+        public bool SetFileContents(byte[] fileContents, bool commit, bool saveToFileSystem, 
+            bool contentChanged)
+        {
+            try
+            {
+                FileContents = fileContents;
+
+                if (UseFileSystemOnContents)
+                {
+                    if (commit && !saveToFileSystem)
+                    {
+                        File.WriteAllBytes(SetRandomFile(), fileContents);
+                    }
+
+                    if (saveToFileSystem)
+                    {
+                        File.WriteAllBytes(SetRandomFile(), fileContents);
+
+                        if (ExistsInFileSystem)
+                        {
+                            File.WriteAllBytes(FileNameFull, fileContents);
+                            FileSystemSaved = DateTime.Now;
+                        }
+                    }
+                }
+                else
+                {
+                    FileContents = fileContents;
+                }
+
+                if (contentChanged)
+                {
+                    DatabaseModified = DateTime.Now;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogAction?.Invoke(ex);
+                return false;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Gets the cached file contents of this <see cref="FileSave"/> class instance.
+        /// </summary>
+        /// <returns>A byte array with the file contents.</returns>
+        public byte[] GetFileContents()
+        {
+            try
+            {
+                if (UseFileSystemOnContents)
+                {
+                    return File.ReadAllBytes(TemporaryFileSaveName);
+                }
+                else
+                {
+                    return FileContents;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogAction?.Invoke(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the file contents as a memory stream.
+        /// </summary>
+        /// <value>The file contents as a memory stream.</value>
+        [NotMapped]
+        public MemoryStream FileContentsAsMemoryStream
+        {
+            get
+            {
+                var fileContents = GetFileContents();
+                if (fileContents == null || fileContents.Length == 0)
+                {
+                    return new MemoryStream();
+                }
+
+                return new MemoryStream(fileContents);
+            }
+
+            set => SetFileContents(value.ToArray(), true, false, false);
+        }
 
         /// <summary>
         /// Gets or sets the visibility order (in a tabbed control).
@@ -275,25 +445,11 @@ namespace ScriptNotepad.Database.Entity.Entities
             {
                 var fileSysModified = new FileInfo(FileNameFull).LastWriteTime;
 
-                // lets round up a bit..
-                fileSysModified = new DateTime(fileSysModified.Year, fileSysModified.Month, fileSysModified.Day,
-                    fileSysModified.Hour, fileSysModified.Minute, fileSysModified.Second, DateTimeKind.Unspecified);
-
                 // get the last time the file was written into..
                 DateTime dtUpdated = fileSysModified;
 
                 // get the result to be returned..
                 bool result = shouldQueryDiskReload && dtUpdated > FileSystemModified;
-
-                // reset this flag so the user can be annoyed again with a stupid question of reloading the file..
-                // .. after rethinking, don't do this:  _ShouldQueryDiskReload = true;
-
-                // return the result if the file has been changed in the file system..
-
-                if (result)
-                {
-
-                }
 
                 return result;
             }
@@ -319,7 +475,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         {
             get
             {
-                if (fileLineTypesInternal == null)
+                if (fileLineTypesInternal == null && FileContents == null)
                 {
                     var fileLineTypes = ScriptNotepad.UtilityClasses.LinesAndBinary.
                         FileLineType.GetFileLineTypes(FileContents);

@@ -28,10 +28,12 @@ using System;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
+using ScriptNotepad.UtilityClasses.DateTimeUtilities;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepadOldDatabase;
 using VPKSoft.LangLib;
@@ -391,7 +393,7 @@ namespace ScriptNotepad.Database.Entity.Utility
         /// Converts the SESSION_NAME database table into a Entity Framework Code-First <see cref="FileSave"/> data.
         /// </summary>
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool SessionDataToEntity()
+        public static bool SessionDataToEntity(bool useFileSystemAsCache)
         {
             var result = true;
             var connectionString = "Data Source=" + DBLangEngine.DataDir +
@@ -413,8 +415,9 @@ namespace ScriptNotepad.Database.Entity.Utility
                     {
                         Id = dataTuple.Id,
                         SessionName = dataTuple.SessionName,
+                        UseFileSystemOnContents = useFileSystemAsCache,
                     };
-
+                    
                     try
                     {
                         context.FileSessions.Add(session);
@@ -436,8 +439,9 @@ namespace ScriptNotepad.Database.Entity.Utility
         /// <summary>
         /// Converts the DBFILE_SAVE database table into a Entity Framework Code-First <see cref="FileSave"/> data.
         /// </summary>
+        /// <param name="useFileSystemAsCache">A flag indicating whether to use file the file system as data cache for file saves.</param>
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool FileSavesToEntity()
+        public static bool FileSavesToEntity(bool useFileSystemAsCache)
         {
             var result = true;
             var connectionString = "Data Source=" + DBLangEngine.DataDir +
@@ -465,7 +469,6 @@ namespace ScriptNotepad.Database.Entity.Utility
                         DatabaseModified = dataTuple.DatabaseModified, 
                         EditorZoomPercentage = dataTuple.EditorZoomPercentage, 
                         ExistsInFileSystem = dataTuple.ExistsInFileSystem, 
-                        FileContents = dataTuple.FileContents, 
                         FileName = dataTuple.FileName, 
                         FilePath = dataTuple.FilePath, 
                         FileSystemModified = dataTuple.FileSystemModified, 
@@ -475,7 +478,36 @@ namespace ScriptNotepad.Database.Entity.Utility
                         LexerType = dataTuple.LexerType, 
                         UseSpellChecking = dataTuple.UseSpellChecking, 
                         VisibilityOrder = dataTuple.VisibilityOrder,
+                        UseFileSystemOnContents = useFileSystemAsCache,
                     };
+
+                    if (fileSave.ExistsInFileSystem)
+                    {
+                        try
+                        {
+                            var dateTimeAdjust = fileSave.FileSystemModified;
+                            var fileSystemChanged = new FileInfo(fileSave.FileNameFull).LastWriteTime;
+
+                            // the previous database used rounded times..
+                            fileSystemChanged = fileSystemChanged.Truncate();
+                            dateTimeAdjust = dateTimeAdjust.Truncate();
+
+                            // so if the rounded time matches..
+                            if (dateTimeAdjust.CompareTo(fileSystemChanged) == 0)
+                            {
+                                // re-set to a more detailed time..
+                                fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // log the exception..
+                            ExceptionLogAction?.Invoke(ex);
+                        }
+                    }
+
+
+                    fileSave.SetFileContents(dataTuple.FileContents, true, false, false);
 
                     try
                     {

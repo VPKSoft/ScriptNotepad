@@ -44,10 +44,15 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         /// </summary>
         /// <param name="fileSave">A <see cref="FileSave"/> class instance to be added or updated into the database.</param>
         /// <param name="document">An instance to a ScintillaTabbedDocument class.</param>
+        /// <param name="commit">A value indicating whether to commit the changes to the
+        /// database or to the file system cache depending on the setting.</param>
+        /// <param name="saveToFileSystem">A value indicating whether to override existing copy of the file in the file system.</param>
+        /// <param name="contentChanged">A value indicating whether the file contents have been changed.</param>
         /// <returns>An instance to a <see cref="FileSave"/> modified class.</returns>
-        public static FileSave AddOrUpdateFile(this FileSave fileSave, ScintillaTabbedDocument document)
+        public static FileSave AddOrUpdateFile(this FileSave fileSave, ScintillaTabbedDocument document, bool commit,
+            bool saveToFileSystem, bool contentChanged)
         {
-            fileSave.FileContents = fileSave.Encoding.GetBytes(document.Scintilla.Text);
+            fileSave.SetFileContents(fileSave.Encoding.GetBytes(document.Scintilla.Text), commit, saveToFileSystem, contentChanged);
             fileSave.CurrentCaretPosition = document.Scintilla.CurrentPosition;
             fileSave.FilePath = Path.GetDirectoryName(fileSave.FileNameFull);
             ScriptNotepadDbContext.DbContext.SaveChanges();
@@ -59,14 +64,17 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         /// </summary>
         /// <param name="fileSave">The file save of which contents to set.</param>
         /// <param name="contents">The contents as a string.</param>
+        /// <param name="commit">A value indicating whether to commit the changes to the
+        /// database or to the file system cache depending on the setting.</param>
+        /// <param name="saveToFileSystem">A value indicating whether to override existing copy of the file in the file system.</param>
+        /// <param name="contentChanged">A value indicating whether the file contents have been changed.</param>
         /// <returns>An instance to a <see cref="FileSave"/> modified class.</returns>
-        public static FileSave SetContents(this FileSave fileSave, string contents)
+        public static FileSave SetContents(this FileSave fileSave, string contents, bool commit,
+            bool saveToFileSystem, bool contentChanged)
         {
-            fileSave.FileContents = fileSave.Encoding.GetBytes(contents);
-            //ScriptNotepadDbContext.DbContext.SaveChanges();
+            fileSave.SetFileContents(fileSave.Encoding.GetBytes(contents), commit, saveToFileSystem, contentChanged);
 
             return fileSave;
-            //return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
         }
 
         /// <summary>
@@ -102,10 +110,16 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         /// <param name="isHistory">if set to <c>true</c> the file is to be considered as a closed/history file.</param>
         /// <param name="sessionName">Name of the session the file belongs to.</param>
         /// <param name="encoding">The encoding of the file.</param>
+        /// <param name="commit">A value indicating whether to commit the changes to the
+        /// database or to the file system cache depending on the setting.</param>
+        /// <param name="saveToFileSystem">A value indicating whether to override existing copy of the file in the file system.</param>
+        /// <param name="contentChanged">A value indicating whether the file contents have been changed.</param>
         /// <returns>An instance to a <see cref="FileSave"/> modified class.</returns>
-        public static FileSave AddOrUpdateFile(this FileSave fileSave, ScintillaTabbedDocument document, bool isHistory, string sessionName, Encoding encoding)
+        public static FileSave AddOrUpdateFile(this FileSave fileSave, ScintillaTabbedDocument document, bool isHistory,
+            string sessionName, Encoding encoding, bool commit,
+            bool saveToFileSystem, bool contentChanged)
         {
-            fileSave.FileContents = fileSave.Encoding.GetBytes(document.Scintilla.Text);
+            fileSave.SetFileContents(fileSave.Encoding.GetBytes(document.Scintilla.Text), commit, saveToFileSystem, contentChanged);
             fileSave.CurrentCaretPosition = document.Scintilla.CurrentPosition;
             fileSave.FilePath = Path.GetDirectoryName(fileSave.FileNameFull);
             fileSave.IsHistory = isHistory;
@@ -142,7 +156,6 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                     : DateTime.MinValue,
                 DatabaseModified = DateTime.Now,
                 LexerType = document.LexerType,
-                FileContents = encoding.GetBytes(document.Scintilla.Text),
                 VisibilityOrder = (int) document.FileTabButton.Tag,
                 Session = ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f =>
                     f.SessionName == fileSession.SessionName),
@@ -152,7 +165,11 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 CurrentCaretPosition = document.Scintilla.CurrentPosition,
                 UseSpellChecking = true,
                 EditorZoomPercentage = document.ZoomPercentage,
+                UseFileSystemOnContents = fileSession.UseFileSystemOnContents,
             };
+
+            fileSave.SetFileContents(encoding.GetBytes(document.Scintilla.Text), true, false, true);
+
             ScriptNotepadDbContext.DbContext.FileSaves.Add(fileSave);
             ScriptNotepadDbContext.DbContext.SaveChanges();
             return fileSave;

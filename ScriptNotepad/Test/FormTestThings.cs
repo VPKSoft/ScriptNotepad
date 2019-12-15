@@ -29,6 +29,7 @@ using ScriptNotepad.UtilityClasses.Process;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using ScriptNotepad.DialogForms;
 using ScriptNotepad.Localization.Hunspell;
 
 namespace ScriptNotepad.Test
@@ -99,6 +100,12 @@ namespace ScriptNotepad.Test
             MessageBox.Show(data.HunspellCulture.ToString());
 
             var result = HunspellDictionaryCrawler.CrawlDirectory(@"C:\Files\GitHub\dictionaries");
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            MessageBoxExtended.Show(this, "Helevetin helevetin helevetti!", "Testing..",
+                MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Hand);
         }
     }
 }

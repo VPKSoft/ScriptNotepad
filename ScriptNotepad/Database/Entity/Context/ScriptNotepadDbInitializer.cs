@@ -77,13 +77,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.";
-            
+
 
         /// <summary>
-        /// Seeds the specified context.
+        /// Gets or sets a value indicating whether to use the file system to store the contents of the file instead of a database BLOB.
+        /// </summary>
+        public static bool UseFileSystemOnContents { get; set; }
+
+        /// <summary>
+        /// Seeds the database.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void Seed(ScriptNotepadDbContext context)
+        /// <param name="saveChanges">A value indicating whether to call the <see cref="DbContext.SaveChanges"/> method after the call.</param>
+        public static void SeedDatabase(ScriptNotepadDbContext context, bool saveChanges)
         {
             var defaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
                 "Default|A name of the default session for the documents");
@@ -95,6 +101,7 @@ SOFTWARE.";
                 // the user might have changed the locale of the software so change the name of to only constant
                 // thing with it..
                 session.SessionName = defaultSessionName;
+                session.UseFileSystemOnContents = UseFileSystemOnContents;
             }
 
             // and a license is required - (semi-evil) laughs..
@@ -136,6 +143,20 @@ SOFTWARE.";
                 ScriptTextManipulationType = ScriptSnippetType.Text,
             };
             context.CodeSnippets.Add(codeSnippet);
+
+            if (saveChanges)
+            {
+                context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Seeds the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        protected override void Seed(ScriptNotepadDbContext context)
+        {
+            SeedDatabase(context, false);
 
             // perhaps this puts things in motion..
             base.Seed(context);

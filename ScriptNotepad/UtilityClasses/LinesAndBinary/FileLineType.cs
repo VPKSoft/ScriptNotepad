@@ -474,7 +474,7 @@ namespace ScriptNotepad.UtilityClasses.LinesAndBinary
             FileLineTypes.ULF |
             FileLineTypes.ULFCR)
         {
-            using (MemoryStream memoryStream = new MemoryStream(buffer))
+            using (MemoryStream memoryStream = buffer == null || buffer.Length == 0 ? new MemoryStream() : new MemoryStream(buffer))
             {
                 return GetFileLineTypes(memoryStream, fileLineTypes);
             }

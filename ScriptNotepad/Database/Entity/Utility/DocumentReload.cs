@@ -74,7 +74,7 @@ namespace ScriptNotepad.Database.Entity.Utility
                         // a reload doesn't need to be undone..
                         document.Scintilla.EmptyUndoBuffer();
 
-                        fileSave.FileContents = memoryStream.ToArray();
+                        fileSave.FileContentsAsMemoryStream = memoryStream;
 
                         // set the saved position of the document's caret..
                         if (fileSave.CurrentCaretPosition > 0 && fileSave.CurrentCaretPosition < document.Scintilla.TextLength)
