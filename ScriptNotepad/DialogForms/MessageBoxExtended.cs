@@ -58,6 +58,11 @@ namespace ScriptNotepad.DialogForms
         public static string TextYesToAll { get; set; } = "Yes &to all";
 
         /// <summary>
+        /// Gets or sets the text for an Yes to all button. To property is for localization.
+        /// </summary>
+        public static string TextNoToAll { get; set; } = "No t&o all";
+
+        /// <summary>
         /// Gets or sets the text for an Ignore button. To property is for localization.
         /// </summary>
         public static string TextIgnore { get; set; } = "&Ignore";
@@ -68,6 +73,8 @@ namespace ScriptNotepad.DialogForms
         public static string TextRemember { get; set; } = "&Remember answer";
         #endregion
 
+
+        #region Constructors
         // Documentation: (©): Microsoft  (copy/paste) documentation whit modifications..
         /// <summary>
         /// Displays an extended message box in front of the specified object and with the specified text, caption, buttons, and icon.
@@ -82,34 +89,34 @@ namespace ScriptNotepad.DialogForms
         public static DialogResultExtended Show(IWin32Window owner, string text, string caption,
             MessageBoxButtonsExtended buttons, Image icon, bool useMnemonic)
         {
-            var messageBoxExtended = new MessageBoxExtended();
-
-            var dialogButtons = messageBoxExtended.CreateButtons(buttons);
-
-            foreach (var dialogButton in dialogButtons)
+            using (var messageBoxExtended = new MessageBoxExtended())
             {
-                messageBoxExtended.flpButtons.Controls.Add(dialogButton);
-                dialogButton.UseMnemonic = useMnemonic; // set the (stupid) mnemonic value..
+
+                var dialogButtons = messageBoxExtended.CreateButtons(buttons);
+
+                foreach (var dialogButton in dialogButtons)
+                {
+                    messageBoxExtended.flpButtons.Controls.Add(dialogButton);
+                    dialogButton.UseMnemonic = useMnemonic; // set the (stupid) mnemonic value..
+                }
+
+
+                messageBoxExtended.cbRememberAnswer.Text = TextRemember;
+                messageBoxExtended.lbText.Text = text;
+                messageBoxExtended.Text = caption;
+                messageBoxExtended.pbMessageBoxIcon.Image = icon;
+
+                if (owner == null)
+                {
+                    messageBoxExtended.ShowDialog();
+                }
+                else
+                {
+                    messageBoxExtended.ShowDialog(owner);
+                }
+
+                return messageBoxExtended.result;
             }
-
-            messageBoxExtended.cbRememberAnswer.Visible = messageBoxExtended.DisplayRememberBox;
-
-            messageBoxExtended.cbRememberAnswer.Text = TextRemember;
-            messageBoxExtended.cbRememberAnswer.Checked = messageBoxExtended.CheckRememberBox;
-            messageBoxExtended.lbText.Text = text;
-            messageBoxExtended.Text = caption;
-            messageBoxExtended.pbMessageBoxIcon.Image = icon;
-
-            if (owner == null)
-            {
-                messageBoxExtended.ShowDialog();
-            }
-            else
-            {
-                messageBoxExtended.ShowDialog(owner);
-            }
-
-            return messageBoxExtended.result;
         }
 
         // Documentation: (©): Microsoft  (copy/paste) documentation whit modifications..
@@ -206,152 +213,305 @@ namespace ScriptNotepad.DialogForms
         {
             return Show(null, text, caption, buttons, icon, true);
         }
+        #endregion
 
-
+        /// <summary>
+        /// The <see cref="DialogResultExtended"/> returned by a call to the the Show() method.
+        /// </summary>
         private DialogResultExtended result = DialogResultExtended.None;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to display the remember my answer check box.
+        /// </summary>
         private bool DisplayRememberBox { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [check remember box].
+        /// </summary>
+        /// <value><c>true</c> if [check remember box]; otherwise, <c>false</c>.</value>
         private bool CheckRememberBox { get; set; }
 
+        /// <summary>
+        /// Gets and creates an OK button.
+        /// </summary>
+        private Button ButtonOk
+        {
+            get
+            {
+                var button = new Button {Text = TextOk};
+                button.Click += delegate
+                {
+                    result = DialogResultExtended.OK;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates an Abort button.
+        /// </summary>
+        private Button ButtonAbort
+        {
+            get
+            {
+                var button = new Button {Text = TextAbort};
+                button.Click += delegate
+                {
+                    result = DialogResultExtended.Abort;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates a Retry button.
+        /// </summary>
+        private Button ButtonRetry
+        {
+            get
+            {
+                var button = new Button {Text = TextRetry};
+                button.Click += delegate
+                {
+                    result = DialogResultExtended.Retry;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates an Ignore button.
+        /// </summary>
+        private Button ButtonIgnore
+        {
+            get
+            {
+                var button = new Button {Text = TextIgnore};
+                button.Click += delegate
+                {
+                    result = DialogResultExtended.Retry;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates a Cancel button.
+        /// </summary>
+        private Button ButtonCancel
+        {
+            get
+            {
+                var button = new Button {Text = TextCancel};
+                button.Click += delegate
+                {
+                    result = DialogResultExtended.Cancel;
+                    Close();
+                };
+                components.Add(button);
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates an Yes button.
+        /// </summary>
+        private Button ButtonYes
+        {
+            get
+            {
+                var button = new Button {Text = TextYes};
+                button.Click += delegate
+                {
+                    result = DialogResultExtended.Yes;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates a No button.
+        /// </summary>
+        private Button ButtonNo
+        {
+            get
+            {
+                var button = new Button {Text = TextNo};
+                button.Click += delegate
+                {
+                    result = DialogResultExtended.No;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates an Yes to all button.
+        /// </summary>
+        private Button ButtonYesToAll
+        {
+            get
+            {
+                var button = new Button {Text = TextYesToAll};
+                button.Click += delegate
+                {
+                    result = RememberUserChoice ? DialogResultExtended.YesToAllRemember : DialogResultExtended.YesToAll;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets and creates a No to all button.
+        /// </summary>
+        private Button ButtonNoToAll
+        {
+            get
+            {
+                var button = new Button {Text = TextNoToAll};
+                button.Click += delegate
+                {
+                    result = RememberUserChoice ? DialogResultExtended.NoToAllRemember : DialogResultExtended.NoToAll;
+                    Close();
+                };
+                return button;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the user selected the remember choice check box.
+        /// Obviously false is returned if the check box is not visible.
+        /// </summary>
+        private bool RememberUserChoice
+        {
+            get
+            {
+                if (DisplayRememberBox)
+                {
+                    return cbRememberAnswer.Checked;
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Creates the buttons for the dialog box with the given <see cref="MessageBoxButtonsExtended"/> enumeration value.
+        /// </summary>
+        /// <param name="buttons">The buttons.</param>
+        /// <returns>A List&lt;Button&gt;. <see cref="Button"/> class instances based on th given parameters.</returns>
         private List<Button> CreateButtons(MessageBoxButtonsExtended buttons)
         {
             List<Button> uiButtons = new List<Button>();
 
-            Button button;
-
             switch (buttons)
             {
                 case MessageBoxButtonsExtended.OK:
-                    button = new Button{ Text = TextOk};
-                    button.Click += delegate
-                        { result = DialogResultExtended.OK; Close(); };
-                    uiButtons.Add(button); 
+                    uiButtons.Add(ButtonOk);
                     break;
 
                 case MessageBoxButtonsExtended.AbortRetryIgnore:
-                    button = new Button{ Text = TextAbort};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Abort; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextRetry};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Retry; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextIgnore};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Retry; Close(); };
-                    uiButtons.Add(button); 
+                    uiButtons.Add(ButtonAbort);
+                    uiButtons.Add(ButtonRetry);
+                    uiButtons.Add(ButtonIgnore);
                     break;
 
                 case MessageBoxButtonsExtended.OKCancel:
-                    button = new Button{ Text = TextOk};
-                    button.Click += delegate
-                        { result = DialogResultExtended.OK; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextCancel};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Cancel; Close(); };
-                    uiButtons.Add(button); 
+                    uiButtons.Add(ButtonOk);
+                    uiButtons.Add(ButtonCancel);
                     break;
-                
-                case MessageBoxButtonsExtended.RetryCancel:
-                    button = new Button{ Text = TextRetry};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Retry; Close(); };
-                    uiButtons.Add(button); 
 
-                    button = new Button{ Text = TextCancel};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Cancel; Close(); };
-                    uiButtons.Add(button); 
+                case MessageBoxButtonsExtended.RetryCancel:
+                    uiButtons.Add(ButtonRetry);
+                    uiButtons.Add(ButtonCancel);
                     break;
 
                 case MessageBoxButtonsExtended.YesNo:
-                    button = new Button{ Text = TextYes};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Yes; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextNo};
-                    button.Click += delegate
-                        { result = DialogResultExtended.No; Close(); };
-                    uiButtons.Add(button); 
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
                     break;
 
                 case MessageBoxButtonsExtended.YesNoCancel:
-                    button = new Button{ Text = TextYes};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Yes; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextNo};
-                    button.Click += delegate
-                        { result = DialogResultExtended.No; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextCancel};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Cancel; Close(); };
-                    uiButtons.Add(button); 
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonCancel);
                     break;
 
                 case MessageBoxButtonsExtended.YesNoYesToAll:
-                    button = new Button{ Text = TextYes};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Yes; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextNo};
-                    button.Click += delegate
-                        { result = DialogResultExtended.No; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextYesToAll};
-                    button.Click += delegate
-                        { result = DialogResultExtended.YesToAll; Close(); };
-                    uiButtons.Add(button); 
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonYesToAll);
                     break;
 
                 case MessageBoxButtonsExtended.YesNoYesToAllRememberChecked:
-                    button = new Button{ Text = TextYes};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Yes; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextNo};
-                    button.Click += delegate
-                        { result = DialogResultExtended.No; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextYesToAll};
-                    button.Click += delegate
-                        { result = DialogResultExtended.YesToAll; Close(); };
-                    uiButtons.Add(button);
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonYesToAll);
                     DisplayRememberBox = true;
                     CheckRememberBox = true;
                     break;
 
                 case MessageBoxButtonsExtended.YesNoYesToAllRemember:
-                    button = new Button{ Text = TextYes};
-                    button.Click += delegate
-                        { result = DialogResultExtended.Yes; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextNo};
-                    button.Click += delegate
-                        { result = DialogResultExtended.No; Close(); };
-                    uiButtons.Add(button); 
-
-                    button = new Button{ Text = TextYesToAll};
-                    button.Click += delegate
-                        { result = DialogResultExtended.YesToAll; Close(); };
-                    uiButtons.Add(button);
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonYesToAll);
                     DisplayRememberBox = true;
                     CheckRememberBox = false;
+                    break;
+
+                case MessageBoxButtonsExtended.YesNoYesToAllNoToAll:
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonYesToAll);
+                    uiButtons.Add(ButtonNoToAll);
+                    DisplayRememberBox = false;
+                    CheckRememberBox = false;
+                    break;
+
+                case MessageBoxButtonsExtended.YesNoYesToAllRememberNoToAllRemember:
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonYesToAll);
+                    uiButtons.Add(ButtonNoToAll);
+                    DisplayRememberBox = true;
+                    CheckRememberBox = false;
+                    break;
+
+                case MessageBoxButtonsExtended.YesNoYesToAllNoToAllRememberChecked:
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonYesToAll);
+                    uiButtons.Add(ButtonNoToAll);
+                    DisplayRememberBox = true;
+                    CheckRememberBox = true;
+                    break;
+
+                case MessageBoxButtonsExtended.YesNoNoToAll:
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonNoToAll);
+                    break;
+
+                case MessageBoxButtonsExtended.YesNoNoToAllRemember:
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonNoToAll);
+                    DisplayRememberBox = true;
+                    CheckRememberBox = false;
+                    break;
+
+                case MessageBoxButtonsExtended.YesNoNoToAllRememberChecked:
+                    uiButtons.Add(ButtonYes);
+                    uiButtons.Add(ButtonNo);
+                    uiButtons.Add(ButtonNoToAll);
+                    DisplayRememberBox = true;
+                    CheckRememberBox = true;
                     break;
             }
 
@@ -379,9 +539,55 @@ namespace ScriptNotepad.DialogForms
             return new Bitmap(size.Width, size.Height);
         }
 
+        /// <summary>
+        /// Gets the height of the label with the dialog text.
+        /// </summary>
+        private int LabelHeight
+        {
+            get
+            {
+                using(Graphics graphics = CreateGraphics())
+                {
+                    var size = graphics.MeasureString(lbText.Text, lbText.Font,
+                        lbText.Width - lbText.Margin.Horizontal);
+
+                    return (int) Math.Ceiling(size.Height);
+                }
+            }
+        }
+
         private void MessageBoxExtended_Shown(object sender, EventArgs e)
         {
-            
+            var coordinateX = 16;
+            var coordinateY = 16;
+            pbMessageBoxIcon.Location = new Point(coordinateX, coordinateY);
+
+            lbText.Left = pbMessageBoxIcon.Right + 20;
+            lbText.Top = coordinateY;
+            lbText.Width = ClientSize.Width - 20 - lbText.Left;
+
+            lbText.Height = LabelHeight;
+
+            coordinateY += pbMessageBoxIcon.Height;
+
+            cbRememberAnswer.Visible = DisplayRememberBox;
+
+            if (DisplayRememberBox)
+            {
+                coordinateY += 6;
+                cbRememberAnswer.Top = coordinateY;
+                cbRememberAnswer.Checked = CheckRememberBox;
+                coordinateY += 6 + cbRememberAnswer.Height;
+            }
+            else
+            {
+                coordinateY += 12;
+            }
+
+
+            var sizeY = coordinateY + flpButtons.Controls[0].Height + 25;
+
+            ClientSize = new Size(ClientSize.Width, sizeY);
         }
     }
 
@@ -447,13 +653,22 @@ namespace ScriptNotepad.DialogForms
         /// The dialog box return value is <see langword="YesToAllRemember" /> (usually sent from a button labeled YesToAll) with the remember check box checked.
         /// </summary>
         YesToAllRemember,
+
+        /// <summary>
+        /// The dialog box return value is <see langword="NoToAll" /> (usually sent from a button labeled NoToAll).
+        /// </summary>
+        NoToAll,
+
+        /// <summary>
+        /// The dialog box return value is <see langword="NoToAll" /> (usually sent from a button labeled NoToAll) with the remember check box checked.
+        /// </summary>
+        NoToAllRemember,
     }
 
     // Documentation: (©): Microsoft  (copy/paste) documentation whit modifications..
     /// <summary>
     /// An enumeration for the buttons for the <see cref="MessageBoxExtended"/> dialog.
     /// </summary>
-    [Flags]
     public enum MessageBoxButtonsExtended
     {
         /// <summary>
@@ -503,5 +718,35 @@ namespace ScriptNotepad.DialogForms
         /// The message box contains Yes, No and Yes to all (with remember choice check box checked) buttons.
         /// </summary>
         YesNoYesToAllRememberChecked,
+
+        /// <summary>
+        /// The message box contains Yes, No, Yes to all and No to all buttons.
+        /// </summary>
+        YesNoYesToAllNoToAll,
+
+        /// <summary>
+        /// The message box contains Yes, No, Yes to all and No to all (with remember choice check box unchecked) buttons.
+        /// </summary>
+        YesNoYesToAllRememberNoToAllRemember,
+
+        /// <summary>
+        /// The message box contains Yes, No, Yes to all and No to all (with remember choice check box checked) buttons.
+        /// </summary>
+        YesNoYesToAllNoToAllRememberChecked,
+
+        /// <summary>
+        /// The message box contains Yes, No and No to all buttons.
+        /// </summary>
+        YesNoNoToAll,
+
+        /// <summary>
+        /// The message box contains Yes, No and No to all (with remember choice check box unchecked) buttons.
+        /// </summary>
+        YesNoNoToAllRemember,
+
+        /// <summary>
+        /// The message box contains Yes, No and No to all (with remember choice check box checked) buttons.
+        /// </summary>
+        YesNoNoToAllRememberChecked,
     }
 }

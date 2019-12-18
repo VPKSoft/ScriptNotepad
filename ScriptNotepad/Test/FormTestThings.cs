@@ -104,8 +104,11 @@ namespace ScriptNotepad.Test
 
         private void button8_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(
             MessageBoxExtended.Show(this, "Helevetin helevetin helevetti!", "Testing..",
-                MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Hand);
+                //MessageBoxButtonsExtended.YesNo, 
+                MessageBoxButtonsExtended.YesNoYesToAllRememberNoToAllRemember,
+                MessageBoxIcon.Hand).ToString());
         }
     }
 }
