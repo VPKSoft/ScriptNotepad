@@ -52,7 +52,7 @@ namespace ScriptNotepad.Settings
     /// Settings for the ScriptNotepad software.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public class Settings : INotifyPropertyChanged, IDisposable
+    public sealed class Settings : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Settings"/> class.
@@ -636,6 +636,12 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("database/historyContents", typeof(bool))]
         public bool SaveFileHistoryContents { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use file system to cache the contents of the files. Otherwise the database is used.
+        /// </summary>
+        [Setting("database/useFileSystemCache", typeof(bool))]
+        public bool UseFileSystemCache { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the save file history contents count.

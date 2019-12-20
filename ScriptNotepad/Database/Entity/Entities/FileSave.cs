@@ -365,12 +365,12 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets a value indicating whether the file is activated in the tab control.
         /// </summary>
-        public bool IsActive { get; set; } 
+        public bool IsActive { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this entry is a history entry.
         /// </summary>
-        public bool IsHistory { get; set; }
+        public bool IsHistory { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the current position (cursor / caret) of the file.
@@ -465,7 +465,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         private string fileEndingText = string.Empty;
 
         // the file line types and their descriptions..
-        private IEnumerable<KeyValuePair<FileLineTypes, string>> fileLineTypesInternal;
+        private IEnumerable<KeyValuePair<FileLineTypes, string>> fileLineTypesInternal = new List<KeyValuePair<FileLineTypes, string>>();
 
         /// <summary>
         /// Gets the file line types and their descriptions.
@@ -526,7 +526,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         {
             get
             {
-                if (fileEndingText == string.Empty)
+                if (string.IsNullOrEmpty(fileEndingText))
                 {
                     fileEndingText = DBLangEngine.GetStatMessage("msgLineEndingShort",
                         "LE: |A short message indicating a file line ending type value(s) as a concatenated text");

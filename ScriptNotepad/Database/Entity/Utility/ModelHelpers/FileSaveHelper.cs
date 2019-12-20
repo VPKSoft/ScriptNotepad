@@ -56,6 +56,12 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
             fileSave.CurrentCaretPosition = document.Scintilla.CurrentPosition;
             fileSave.FilePath = Path.GetDirectoryName(fileSave.FileNameFull);
             ScriptNotepadDbContext.DbContext.SaveChanges();
+
+            if (!ScriptNotepadDbContext.DbContext.FileSaves.Any(f => f.Id == fileSave.Id))
+            {
+                return ScriptNotepadDbContext.DbContext.FileSaves.Add(fileSave);
+            }
+
             return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
         }
 

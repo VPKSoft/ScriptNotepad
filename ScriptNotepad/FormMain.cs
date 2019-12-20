@@ -128,7 +128,8 @@ namespace ScriptNotepad
                 Directory.CreateDirectory(FileSession.ApplicationDataDirectory);
             }
 
-            ScriptNotepadDbInitializer.UseFileSystemOnContents = true; // TODO::Ask the user and make a setting for this..
+            // TODO::Ask the user and make a setting for this..
+            ScriptNotepadDbInitializer.UseFileSystemOnContents = FormSettings.Settings.UseFileSystemCache;
 
             // initialize the language/localization database..
             DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
@@ -441,14 +442,14 @@ namespace ScriptNotepad
                     throw new Exception(MigrateErrorMessage("FirstSteps"));
                 }
 
-                if (!EntityConversion.SessionDataToEntity(true)) // TODO::Ask the user and make a setting for this..
+                if (!EntityConversion.SessionDataToEntity(FormSettings.Settings.UseFileSystemCache)) // TODO::Ask the user and make a setting for this..
                 {
                     MigrateDisplayError("DatabaseSessionName");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
                     throw new Exception(MigrateErrorMessage("DatabaseSessionName"));
                 }
 
-                if (!EntityConversion.FileSavesToEntity(true)) // TODO::Ask the user and make a setting for this..
+                if (!EntityConversion.FileSavesToEntity(FormSettings.Settings.UseFileSystemCache)) // TODO::Ask the user and make a setting for this..
                 {
                     MigrateDisplayError("DatabaseFileSave");
                     // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
