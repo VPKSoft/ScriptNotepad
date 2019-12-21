@@ -175,8 +175,23 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
         /// </summary>
         public void Dispose()
         {
-            DisposePreviousMenu();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                DisposePreviousMenu();
+            }
+        }
+
+
 
         private readonly ToolStripMenuItem menuStrip;
 

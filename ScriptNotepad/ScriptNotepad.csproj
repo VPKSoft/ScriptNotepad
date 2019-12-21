@@ -129,6 +129,9 @@
     <Reference Include="VPKSoft.LangLib, Version=1.0.1.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.LangLib.1.0.1.9\lib\net461\VPKSoft.LangLib.dll</HintPath>
     </Reference>
+    <Reference Include="VPKSoft.MessageBoxExtended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.MessageBoxExtended.1.0.0\lib\net47\VPKSoft.MessageBoxExtended.dll</HintPath>
+    </Reference>
     <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
     </Reference>
@@ -168,6 +171,7 @@
     <Compile Include="Database\Entity\Context\ScriptNotepadDbInitializer.cs" />
     <Compile Include="Database\Entity\Entities\CodeSnippet.cs" />
     <Compile Include="Database\Entity\Entities\CustomHistory.cs" />
+    <Compile Include="Database\Entity\Entities\FileContentBinary.cs" />
     <Compile Include="Database\Entity\Entities\FileSave.cs" />
     <Compile Include="Database\Entity\Entities\MiscellaneousTextEntry.cs" />
     <Compile Include="Database\Entity\Entities\Plugin.cs" />
@@ -192,12 +196,6 @@
     <Compile Include="Database\Entity\Utility\ModelHelpers\PluginHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\RecentFileHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\SearchAndReplaceHistoryHelper.cs" />
-    <Compile Include="DialogForms\MessageBoxExtended.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DialogForms\MessageBoxExtended.Designer.cs">
-      <DependentUpon>MessageBoxExtended.cs</DependentUpon>
-    </Compile>
     <Compile Include="UtilityClasses\DateTimeUtilities\DateTimeHelpers.cs" />
     <Compile Include="UtilityClasses\MenuHelpers\RecentFilesMenuBuilder.cs" />
     <Compile Include="DialogForms\FormDialogQueryJumpLocation.cs">
@@ -418,9 +416,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DialogForms\FormDialogSelectFileTab.resx">
       <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DialogForms\MessageBoxExtended.resx">
-      <DependentUpon>MessageBoxExtended.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UtilityClasses\ColorHelpers\FormPickAColor.resx">
       <DependentUpon>FormPickAColor.cs</DependentUpon>

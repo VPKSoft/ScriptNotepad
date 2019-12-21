@@ -112,7 +112,12 @@ namespace ScriptNotepad
                 new FormDialogRenameNewFile();
 
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
-                ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+
+                if (!Debugger.IsAttached)
+                {
+                    ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+                }
+
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
                 return;
             }
@@ -146,7 +151,12 @@ namespace ScriptNotepad
                     ExceptionLogger.LogError(ex);
                     // just in case something fails with the IPC communication..
                 }
-                ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+
+                if (!Debugger.IsAttached)
+                {
+                    ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+                }
+
                 ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
                 return;
             }
@@ -162,7 +172,12 @@ namespace ScriptNotepad
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
             PositionCore.UnBind(); // release the event handlers used by the PosLib and save the default data
-            ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+
+            if (!Debugger.IsAttached)
+            {
+                ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+            }
+
             ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
 
             if (RestartElevated && File.Exists(ElevateFile) && !Restart)
@@ -189,7 +204,11 @@ namespace ScriptNotepad
 
             // unsubscribe this event handler..
             ExceptionLogger.ApplicationCrashData -= ExceptionLogger_ApplicationCrashData;
-            ExceptionLogger.UnBind(); // unbind the exception logger..
+
+            if (!Debugger.IsAttached)
+            {
+                ExceptionLogger.UnBind(); // unbind the exception logger..
+            }
 
             // kill self as the native inter-op libraries may have some issues of keeping the process alive..
             Process.GetCurrentProcess().Kill();

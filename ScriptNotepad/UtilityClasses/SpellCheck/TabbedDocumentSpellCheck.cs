@@ -231,27 +231,40 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
         /// </summary>
         public void Dispose()
         {
-            // unsubscribe to the event where a user wishes to correct a
-            // misspelled word via the context menu..
-            SpellCheck.UserWordReplace -= SpellCheck_UserWordReplace;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            // unsubscribe to the Scintilla text changed event..
-            Scintilla.TextChanged -= Scintilla_TextChanged;
-
-            SpellCheck.WordAddDictionaryRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
-
-            SpellCheck.WordIgnoreRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
-
-            // save the user's dictionary to a file..
-            SpellCheck.SaveUserDictionaryToFile(UserDictionaryFile);
-
-            // save the user's ignore word list to a file..
-            SpellCheck.SaveUserWordIgnoreListToFile(UserIgnoreWordFile);
-
-            // dispose of the ScintillaSpellCheck class..
-            using (SpellCheck)
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                SpellCheck = null; // empty using clause is ugly :-(
+                // unsubscribe to the event where a user wishes to correct a
+                // misspelled word via the context menu..
+                SpellCheck.UserWordReplace -= SpellCheck_UserWordReplace;
+
+                // unsubscribe to the Scintilla text changed event..
+                Scintilla.TextChanged -= Scintilla_TextChanged;
+
+                SpellCheck.WordAddDictionaryRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+                SpellCheck.WordIgnoreRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+                // save the user's dictionary to a file..
+                SpellCheck.SaveUserDictionaryToFile(UserDictionaryFile);
+
+                // save the user's ignore word list to a file..
+                SpellCheck.SaveUserWordIgnoreListToFile(UserIgnoreWordFile);
+
+                // dispose of the ScintillaSpellCheck class..
+                using (SpellCheck)
+                {
+                    SpellCheck = null; // empty using clause is ugly :-(
+                }
             }
         }
 

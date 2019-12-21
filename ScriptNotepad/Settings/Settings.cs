@@ -52,7 +52,7 @@ namespace ScriptNotepad.Settings
     /// Settings for the ScriptNotepad software.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public sealed class Settings : INotifyPropertyChanged, IDisposable
+    public class Settings : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Settings"/> class.
@@ -1108,11 +1108,24 @@ namespace ScriptNotepad.Settings
         /// </summary>
         public void Dispose()
         {
-            // unsubscribe the event handler..
-            PropertyChanged -= Settings_PropertyChanged;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            // close the conflib class instance..
-            conflib?.Close();
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // unsubscribe the event handler..
+                PropertyChanged -= Settings_PropertyChanged;
+
+                // close the conflib class instance..
+                conflib?.Close();
+            }
         }
         #endregion
     }

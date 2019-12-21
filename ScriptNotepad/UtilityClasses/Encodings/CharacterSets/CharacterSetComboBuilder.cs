@@ -412,18 +412,32 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         /// </summary>
         public void Dispose()
         {
-            // unsubscribe the SelectedIndexChanged event..
-            CharacterSetComboBox.SelectedIndexChanged -= CharacterSetComboBox_SelectedIndexChanged;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            // unsubscribe the SelectedIndexChanged event..
-            EncodingComboBox.SelectedIndexChanged -= EncodingComboBox_SelectedIndexChanged;
-
-            // unsubscribe the TextChanged event if the FilterEncodingTextBox is not null..
-            if (FilterEncodingTextBox != null)
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                FilterEncodingTextBox.TextChanged -= FilterEncodingTextBox_TextChanged;
+                // unsubscribe the SelectedIndexChanged event..
+                CharacterSetComboBox.SelectedIndexChanged -= CharacterSetComboBox_SelectedIndexChanged;
+
+                // unsubscribe the SelectedIndexChanged event..
+                EncodingComboBox.SelectedIndexChanged -= EncodingComboBox_SelectedIndexChanged;
+
+                // unsubscribe the TextChanged event if the FilterEncodingTextBox is not null..
+                if (FilterEncodingTextBox != null)
+                {
+                    FilterEncodingTextBox.TextChanged -= FilterEncodingTextBox_TextChanged;
+                }
             }
         }
+
 
         /// <summary>
         /// A delegate for the EncodingMenuClicked event.

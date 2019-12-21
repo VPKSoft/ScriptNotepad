@@ -25,6 +25,7 @@ SOFTWARE.
 #endregion
 
 using System;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
@@ -210,18 +211,31 @@ namespace ScriptNotepad.UtilityClasses.MenuHelpers
         /// </summary>
         public void Dispose()
         {
-            // disable the form check timer..
-            Timer.Enabled = false;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            // clear the previously created menu..
-            ClearPreviousMenu();
-
-            // unsubscribe the events subscribed by this class instance..
-            mainItem.DropDownOpening -= MainItem_DropDownOpening;
-
-            using (Timer)
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                Timer.Tick -= Timer_Tick;
+                // disable the form check timer..
+                Timer.Enabled = false;
+
+                // clear the previously created menu..
+                ClearPreviousMenu();
+
+                // unsubscribe the events subscribed by this class instance..
+                mainItem.DropDownOpening -= MainItem_DropDownOpening;
+
+                using (Timer)
+                {
+                    Timer.Tick -= Timer_Tick;
+                }
             }
         }
     }

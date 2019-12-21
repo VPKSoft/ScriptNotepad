@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.Localization.Hunspell;
+using VPKSoft.MessageBoxExtended;
 
 namespace ScriptNotepad.Test
 {
@@ -104,6 +105,8 @@ namespace ScriptNotepad.Test
 
         private void button8_Click(object sender, EventArgs e)
         {
+            MessageBoxExtended.Localize("fi");
+
             MessageBox.Show(
             MessageBoxExtended.Show(this, "Helevetin helevetin helevetti!", "Testing..",
                 //MessageBoxButtonsExtended.YesNo, 
