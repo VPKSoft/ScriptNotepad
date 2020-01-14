@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2019 Petteri Kautonen
+Copyright(c) 2020 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -65,6 +65,8 @@ namespace ScriptNotepad.Database.Entity.Utility
                         fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
                         fileSave.DatabaseModified = fileSave.FileSystemModified; // set the other DateTime flags to indicate the same..
                         fileSave.FileSystemSaved = fileSave.FileSystemModified; // set the other DateTime flags to indicate the same..
+                        fileSave.ResetPreviousDbModified();
+
 
                         // create a new memory stream to hold the file contents..
                         MemoryStream memoryStream = new MemoryStream(fileContents); 

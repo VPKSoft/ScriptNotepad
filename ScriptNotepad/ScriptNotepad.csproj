@@ -403,7 +403,13 @@
     <Compile Include="UtilityClasses\TextManipulationUtils\WordWrapToSize.cs" />
     <Compile Include="UtilityClasses\TextManipulation\DuplicateLines.cs" />
     <Compile Include="UtilityClasses\TextManipulation\ScintillaLinesToStringList.cs" />
-    <Compile Include="UtilityClasses\TextManipulation\SortLines.cs" />
+    <Compile Include="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.Designer.cs">
+      <DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UtilityClasses\TextManipulation\TextSorting\SortLines.cs" />
     <Compile Include="UtilityClasses\TextManipulation\StringHelpers.cs" />
     <EmbeddedResource Include="DialogForms\FormDialogQueryJumpLocation.resx">
       <DependentUpon>FormDialogQueryJumpLocation.cs</DependentUpon>
@@ -477,6 +483,9 @@
     <EmbeddedResource Include="UtilityClasses\Session\FormDialogSessionManage.resx">
       <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.resx">
+      <DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Installer\DotNetChecker.nsh" />
     <None Include="Installer\make_installer.bat" />
     <None Include="Installer\setup_scriptnotepad.nsi" />
@@ -520,6 +529,7 @@
     <Content Include="Resources\download_dialog_localization.txt" />
     <None Include="Resources\jump_first.png" />
     <None Include="Resources\jump_last.png" />
+    <None Include="Resources\Fast-rewind.png" />
     <Content Include="setup_version_maintenance.exe" />
     <None Include="Resources\duplicate_lines.png" />
     <None Include="Resources\format-text-uppercase.png" />

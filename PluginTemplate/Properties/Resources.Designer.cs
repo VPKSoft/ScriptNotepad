@@ -19,7 +19,7 @@ namespace PluginTemplate.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,10 +61,15 @@ namespace PluginTemplate.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [en-US]
-        ///plginDescription	Sample plug-in by VPKSoft
-        ///[fi-FI]			Esimerkkiliitännäinen VPKSoftilta
-        ///.
+        ///   Looks up a localized string similar to This is the simple tab-delimited localization file for the plug-in localization.
+        ///As you can see only the &quot;[]&quot; tags and tab delimited key-value pairs matter for the localization.
+        ///The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+        ///[en-US]
+        ///plgDescription	Sample plug-in by VPKSoft
+        ///txtAbout	About	This text is discarded by the localization as this is the third tab-delimited field.
+        ///txtCauseException	Cause an exception
+        ///txtModifiedROT13	Modified ROT-13
+        ///txtModifiedUnRO [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tab_deli_localization {
             get {

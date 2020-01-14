@@ -69,6 +69,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="PluginTemplate.licenseheader" />
     <None Include="Resources\VPKSoft.ico" />
   </ItemGroup>
   <ItemGroup>

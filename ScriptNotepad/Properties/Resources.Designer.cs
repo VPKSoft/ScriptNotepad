@@ -271,6 +271,16 @@ namespace ScriptNotepad.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Fast_rewind {
+            get {
+                object obj = ResourceManager.GetObject("Fast-rewind", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .inp .dat .msg.
         /// </summary>
         internal static string file_patterns_abaqus {

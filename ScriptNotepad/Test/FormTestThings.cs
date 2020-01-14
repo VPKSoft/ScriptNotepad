@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2019 Petteri Kautonen
+Copyright(c) 2020 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.Localization.Hunspell;
+using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.MessageBoxExtended;
 
 namespace ScriptNotepad.Test
@@ -88,11 +89,7 @@ namespace ScriptNotepad.Test
 
         private void Button6_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(DateTime.MinValue.ToLongDateString());
-            /*
-            MessageBox.Show(
-                FormSettings.Settings.FromDataGrid(((FormSettings) Application.OpenForms[1]).dgvEncodings).ToString());
-                */
+            new FormDialogQuerySortTextStyle().ShowDialog();
         }
 
         private void Button7_Click(object sender, EventArgs e)

@@ -879,4 +879,34 @@
   <data name="msgEntityFrameworkError2" xml:space="preserve">
     <value>Error converting the database to the Entity Framework Code-First with an exception: '{0}'. Would you like to start a new session?|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database. An option is given to the user to start with an empty session.</value>
   </data>
+  <data name="msgCurrentCulture" xml:space="preserve">
+    <value>Current culture|A short explanation for the System.StringComparison.CurrentCulture enumeration value</value>
+  </data>
+  <data name="msgCurrentCultureIgnoreCase" xml:space="preserve">
+    <value>Current culture (no case)|A short explanation for the System.StringComparison.CurrentCultureIgnoreCase enumeration value</value>
+  </data>
+  <data name="msgInvariantCulture" xml:space="preserve">
+    <value>Invariant|A short explanation for the System.StringComparison.InvariantCulture enumeration value</value>
+  </data>
+  <data name="msgInvariantCultureIgnoreCase" xml:space="preserve">
+    <value>Invariant (no case)|A short explanation for the System.StringComparison.InvariantCultureIgnoreCase enumeration value</value>
+  </data>
+  <data name="msgOrdinalCulture" xml:space="preserve">
+    <value>Ordinal|A short explanation for the System.StringComparison.Ordinal enumeration value</value>
+  </data>
+  <data name="msgOrdinalCultureIgnoreCase" xml:space="preserve">
+    <value>Ordinal (no case)|A short explanation for the System.StringComparison.OrdinalIgnoreCase enumeration value</value>
+  </data>
+  <data name="msgStringComparisonLength" xml:space="preserve">
+    <value>Length|A short explanation for a text comparison (sorting by length)</value>
+  </data>
+  <data name="msgStringComparisonLowerFirst" xml:space="preserve">
+    <value>Lower first|A short explanation for a text comparison (completely lower-case strings are compared first)</value>
+  </data>
+  <data name="msgStringComparisonUpperFirst" xml:space="preserve">
+    <value>Upper first|A short explanation for a text comparison (completely upper-case strings are compared first)</value>
+  </data>
+  <data name="msgUnknown" xml:space="preserve">
+    <value>Unknown|A short message to describe an unknown or undefined value</value>
+  </data>
 </root>

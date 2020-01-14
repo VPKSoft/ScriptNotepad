@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2019 Petteri Kautonen
+Copyright(c) 2020 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -71,6 +71,7 @@ using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.Entity.Utility;
 using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using ScriptNotepad.UtilityClasses.TextManipulation;
+using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
 using VPKSoft.LangLib;
@@ -543,7 +544,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Undo the document changes if possible.
         /// </summary>
-        private void Undo()
+        internal void Undo()
         {
             // if there is an active document..
             CurrentDocumentAction(document =>
@@ -563,7 +564,7 @@ namespace ScriptNotepad
                     if (!document.Scintilla.CanUndo)
                     {
                         fileSave.PopPreviousDbModified();
-                        document.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                        document.FileTabButton.IsSaved = !IsFileChanged(fileSave);
                     }
                 }
             });
@@ -781,7 +782,7 @@ namespace ScriptNotepad
                 if (!sttcMain.CurrentDocument.Scintilla.CanUndo)
                 {
                     fileSave.PopPreviousDbModified();
-                    sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                    sttcMain.CurrentDocument.FileTabButton.IsSaved = !IsFileChanged(fileSave);
                 }
             }
             UpdateToolbarButtonsAndMenuItems();
@@ -1358,7 +1359,7 @@ namespace ScriptNotepad
             {
                 // get the file FileSave instance from the tag..
                 var fileSave = (FileSave)document.Tag;
-                document.FileTabButton.IsSaved = fileSave.ExistsInFileSystem && IsFileChanged(fileSave);
+                document.FileTabButton.IsSaved = !IsFileChanged(fileSave);
             }
             UpdateToolbarButtonsAndMenuItems();
         }
@@ -1369,11 +1370,17 @@ namespace ScriptNotepad
         /// <param name="fileSave">The <see cref="FileSave"/> class to check for.</param>
         private bool IsFileChanged(FileSave fileSave)
         {
-            var result = fileSave.ExistsInFileSystem &&
-                   !(fileSave.ExistsInFileSystem && (fileSave.FileSystemSaved == DateTime.MinValue ||
-                                                   fileSave.FileSystemSaved == fileSave.FileSystemModified) &&
-                     fileSave.FileSystemModified < fileSave.DatabaseModified);
-            return result;
+            if (!fileSave.ExistsInFileSystem)
+            {
+                return true;
+            }
+
+            if (fileSave.FileSystemModified < fileSave.DatabaseModified)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -2217,12 +2224,21 @@ namespace ScriptNotepad
             });
         }
 
-        // a user wishes to alphabetically order the the lines of the active document..
+        // a user wishes to alphabetically order the the lines of the active document in ascending or descending order..
         private void MnuSortLines_Click(object sender, EventArgs e)
         {
             CurrentScintillaAction(scintilla =>
             {
-                SortLines.Sort(scintilla, FormSettings.Settings.TextCurrentComparison);
+                SortLines.Sort(scintilla, FormSettings.Settings.TextCurrentComparison, sender.Equals(mnuSortDescending));
+            });
+        }
+
+        // a user wishes to use custom ordering the the lines of the active document in ascending or descending order..
+        private void mnuCustomizedSort_Click(object sender, EventArgs e)
+        {
+            CurrentScintillaAction(scintilla =>
+            {
+                FormDialogQuerySortTextStyle.ShowDialog(this, scintilla, this);
             });
         }
 
@@ -2480,7 +2496,7 @@ namespace ScriptNotepad
                         sttcMain.LastAddedDocument.Scintilla.SelectionStart = file.CurrentCaretPosition;
                         sttcMain.LastAddedDocument.Scintilla.SelectionEnd = file.CurrentCaretPosition;
                         sttcMain.LastAddedDocument.Scintilla.ScrollCaret();
-                        sttcMain.LastAddedDocument.FileTabButton.IsSaved = IsFileChanged(file);
+                        sttcMain.LastAddedDocument.FileTabButton.IsSaved = !IsFileChanged(file);
                     }
 
                     sttcMain.LastAddedDocument.Scintilla.TabWidth = FormSettings.Settings.EditorTabWidth;
@@ -2616,7 +2632,7 @@ namespace ScriptNotepad
                         }
 
                         fileSave.PopPreviousDbModified();
-                        document.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                        document.FileTabButton.IsSaved = !IsFileChanged(fileSave);
                     }
                 });
 
@@ -3036,8 +3052,9 @@ namespace ScriptNotepad
             fileSave.DatabaseModified = DateTime.Now;
             fileSave.SetContents(e.ScintillaTabbedDocument.Scintilla.Text, false, false, true);
 
-            e.ScintillaTabbedDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
+            e.ScintillaTabbedDocument.FileTabButton.IsSaved = !IsFileChanged(fileSave);
 
+            
             // if the text has been changed and id did not occur by encoding change
             // just clear the undo "buffer"..
             if (!TextChangedViaEncodingChange)
@@ -3045,7 +3062,7 @@ namespace ScriptNotepad
                 fileSave.PreviousEncodings.Clear();
                 TextChangedViaEncodingChange = false;
             }
-
+            
             // update the search if the user manually modified the contents of the document..
             FormSearchAndReplace.Instance.UpdateSearchContents(e.ScintillaTabbedDocument.Scintilla.Text,
                 e.ScintillaTabbedDocument.FileName);
@@ -3342,7 +3359,7 @@ namespace ScriptNotepad
 
                     fileSave.DatabaseModified = fileSave.FileSystemModified;
 
-                    sttcMain.CurrentDocument.FileTabButton.IsSaved = IsFileChanged(fileSave);
+                    sttcMain.CurrentDocument.FileTabButton.IsSaved = !IsFileChanged(fileSave);
 
                     UpdateToolbarButtonsAndMenuItems();
                 }

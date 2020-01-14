@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2019 Petteri Kautonen
+Copyright(c) 2020 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -666,9 +666,15 @@ namespace ScriptNotepad.Settings
                     "Default|A name of the default session for the documents");
 
                 var session =
-                    ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f =>
-                        f.SessionName == CurrentSession || f.SessionName == "Default" ||
-                        f.SessionName == defaultSessionName);
+                    ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f => f.Id == 1);
+
+                if (session != null)
+                {
+                    if (session.SessionName != defaultSessionName)
+                    {
+                        session.SessionName = defaultSessionName;
+                    }
+                }
 
                 return session;
             }

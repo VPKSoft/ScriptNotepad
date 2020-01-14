@@ -1,4 +1,4 @@
-﻿* Done? [YES  ] [2019/05/11] Make font a setting.							
+* Done? [YES  ] [2019/05/11] Make font a setting.							
 * Done? [YES  ] [2019/05/11] Add a question whether to add a context menu (open with) for the Windows shell to the installer.
 * Done? [YES  ] [2019/05/11] Create a language (programming language) selection menu.
 * Done? [YES  ] [2019/05/07] Add spell checking.
@@ -95,3 +95,9 @@
 * Done? [YES  ] [2019/10/26] Add setting whether to use spell checking with files opened from the shell context menu. 
 * Done? [YES  ] [2019/10/26] Fix: A 'ghost' file not existing within the file system might appear after a rename of a non-existing file.
 * Done? [YES  ] [2019/10/27] Fix: The software was not obeying the toggle spell checker button.
+* Done? [YES  ] [2019/11/07] Added: The software now has an option to mark URLs within the text.
+* Done? [YES  ] [2019/11/07] Added: The software now ask for a restart from the user after the settings have been changed.
+* Done? [YES  ] [2020/01/14] Add: Reversed sort order.
+* Done? [SOME ] [2020/01/14] Fix: Save indicators.
+* Done? [YES  ] [2020/01/14] Fix: Flickering of saved files.
+* Done? [YES  ] [2020/01/14] Add: Custom sorting dialog.

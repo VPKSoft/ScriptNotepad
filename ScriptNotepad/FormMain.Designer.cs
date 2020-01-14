@@ -193,6 +193,9 @@
             this.mnuCaseSensitive = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuSortLines = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSortAscending = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSortDescending = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCustomizedSort = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRemoveDuplicateLines = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
@@ -1623,11 +1626,36 @@
             // 
             // mnuSortLines
             // 
+            this.mnuSortLines.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuSortAscending,
+            this.mnuSortDescending,
+            this.mnuCustomizedSort});
             this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
             this.mnuSortLines.Name = "mnuSortLines";
             this.mnuSortLines.Size = new System.Drawing.Size(205, 22);
             this.mnuSortLines.Text = "Sort lines...";
             this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
+            // 
+            // mnuSortAscending
+            // 
+            this.mnuSortAscending.Name = "mnuSortAscending";
+            this.mnuSortAscending.Size = new System.Drawing.Size(180, 22);
+            this.mnuSortAscending.Text = "Sort ascending";
+            this.mnuSortAscending.Click += new System.EventHandler(this.MnuSortLines_Click);
+            // 
+            // mnuSortDescending
+            // 
+            this.mnuSortDescending.Name = "mnuSortDescending";
+            this.mnuSortDescending.Size = new System.Drawing.Size(180, 22);
+            this.mnuSortDescending.Text = "Sort descending";
+            this.mnuSortDescending.Click += new System.EventHandler(this.MnuSortLines_Click);
+            // 
+            // mnuCustomizedSort
+            // 
+            this.mnuCustomizedSort.Name = "mnuCustomizedSort";
+            this.mnuCustomizedSort.Size = new System.Drawing.Size(180, 22);
+            this.mnuCustomizedSort.Text = "Customized sort...";
+            this.mnuCustomizedSort.Click += new System.EventHandler(this.mnuCustomizedSort_Click);
             // 
             // mnuRemoveDuplicateLines
             // 
@@ -1951,6 +1979,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuFirstTab;
         private System.Windows.Forms.ToolStripMenuItem mnuLastTab;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem12;
+        private System.Windows.Forms.ToolStripMenuItem mnuSortAscending;
+        private System.Windows.Forms.ToolStripMenuItem mnuSortDescending;
+        private System.Windows.Forms.ToolStripMenuItem mnuCustomizedSort;
     }
 }
 
