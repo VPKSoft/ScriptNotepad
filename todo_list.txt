@@ -101,3 +101,4 @@
 * Done? [SOME ] [2020/01/14] Fix: Save indicators.
 * Done? [YES  ] [2020/01/14] Fix: Flickering of saved files.
 * Done? [YES  ] [2020/01/14] Add: Custom sorting dialog.
+* Done? [YES  ] [2020/01/19] Add: Text sorting by sub-string using the custom sorting dialog.

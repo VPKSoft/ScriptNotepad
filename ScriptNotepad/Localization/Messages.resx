@@ -909,4 +909,7 @@
   <data name="msgUnknown" xml:space="preserve">
     <value>Unknown|A short message to describe an unknown or undefined value</value>
   </data>
+  <data name="msgStringComparisonSubString" xml:space="preserve">
+    <value>Substring|A short explanation for a text substring comparison</value>
+  </data>
 </root>

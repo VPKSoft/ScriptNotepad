@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.Localization.Hunspell;
+using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.MessageBoxExtended;
 
@@ -61,7 +62,7 @@ namespace ScriptNotepad.Test
 
         private void button2_Click(object sender, EventArgs e)
         {
-            WindowsExplorerInteraction.ShowFileOrPathInExplorer(@"C:\Files\GitHub\ScintillaLexers\obj\Release\TempPE");
+            MessageBox.Show("A very long test text".SafeSubString(0, 3));
         }
 
         private void button3_Click(object sender, EventArgs e)

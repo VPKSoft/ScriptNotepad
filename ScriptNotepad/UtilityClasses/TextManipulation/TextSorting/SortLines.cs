@@ -73,8 +73,9 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// <param name="stringComparison">The type of string comparison to use with the sort.</param>
         /// <param name="descending">A value indicating whether to sort in descending order.</param>
         /// <param name="sortFunc">A Func to to do the actual string sorting.</param>
+        /// <param name="funcParameters">Optional parameter array in case the sort method function requires parameters.</param>
         public static void Sort(Scintilla scintilla, StringComparison stringComparison, bool descending,
-            Func<IEnumerable<string>, SortTextStyle, bool, IEnumerable<string>> sortFunc)
+            Func<IEnumerable<string>, SortTextStyle, bool, IEnumerable<string>> sortFunc , params object[] funcParameters)
         {
             try
             {
@@ -146,7 +147,9 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// <param name="scintilla">The scintilla control which contents to sort.</param>
         /// <param name="sortText">The sort text.</param>
         /// <param name="stringComparison">The type of string comparison to use with the sort.</param>
-        public static void Sort(Scintilla scintilla, SortText sortText, StringComparison stringComparison)
+        /// <param name="funcParameters">Optional parameter array in case the sort method function requires parameters.</param>
+        public static void Sort(Scintilla scintilla, SortText sortText, StringComparison stringComparison,
+            params object[] funcParameters)
         {
             if ((int) sortText.SortTextStyle >= (int) StringComparison.CurrentCulture &&
                 (int) sortText.SortTextStyle < (int) StringComparison.OrdinalIgnoreCase)
@@ -213,6 +216,21 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
                             return result;
                         });
                 }
+
+                if (sortText.SortTextStyle == SortTextStyle.SubString)
+                {
+                    Sort(scintilla, (StringComparison) sortText.SortTextStyle, sortText.Descending,
+                        delegate(IEnumerable<string> lines, SortTextStyle style, bool descending)
+                        {
+                            return sortText.Descending
+                                ? lines.OrderByDescending(f => f.ToComparisonVariant(stringComparison).SafeSubString(
+                                    (int) sortText.ExtraData1 - 1,
+                                    (int) sortText.ExtraData2))
+                                : lines.OrderBy(f => f.ToComparisonVariant(stringComparison).SafeSubString(
+                                    (int)sortText.ExtraData1 - 1,
+                                    (int)sortText.ExtraData2));
+                        });
+                }
             }
         }
     }
@@ -266,6 +284,11 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// First compare complete lower-case strings.
         /// </summary>
         LowerFirst,
+
+        /// <summary>
+        /// Compare only sub-string values for sorting.
+        /// </summary>
+        SubString,
     }
 
     /// <summary>
@@ -273,6 +296,39 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
     /// </summary>
     public class SortText
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SortText"/> class.
+        /// </summary>
+        /// <param name="sortTextStyle">The sort text style.</param>
+        /// <param name="descending">if set to <c>true</c> the sort order will be descending.</param>
+        public SortText(SortTextStyle sortTextStyle, bool descending)
+        {
+            Descending = descending;
+            SortTextStyle = sortTextStyle;
+
+            if (SortTextStyle == SortTextStyle.SubString)
+            {
+                ExtraData1 = 1;
+                ExtraData2 = 1;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SortText"/> class.
+        /// </summary>
+        /// <param name="sortTextStyle">The sort text style.</param>
+        public SortText(SortTextStyle sortTextStyle)
+        {
+            Descending = false;
+            SortTextStyle = sortTextStyle;
+
+            if (SortTextStyle == SortTextStyle.SubString)
+            {
+                ExtraData1 = 1;
+                ExtraData2 = 1;
+            }
+        }
+
         /// <summary>
         /// Gets a display name for this <see cref="SortText"/>.
         /// </summary>
@@ -309,6 +365,9 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
                     case SortTextStyle.LowerFirst:
                         return DBLangEngine.GetStatMessage("msgStringComparisonLowerFirst",
                             "Lower first|A short explanation for a text comparison (completely lower-case strings are compared first)");
+                    case SortTextStyle.SubString:
+                        return DBLangEngine.GetStatMessage("msgStringComparisonSubString",
+                            "Substring|A short explanation for a text substring comparison");
                     default:
                         return DBLangEngine.GetStatMessage("msgUnknown",
                             "Unknown|A short message to describe an unknown or undefined value");
@@ -324,17 +383,96 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// </returns>
         public override string ToString()
         {
-            return DisplayName;
+            return DisplayName + (SortTextStyle == SortTextStyle.SubString ? " [" + ExtraData1 + ", " + ExtraData2 +"]": string.Empty);
         }
+
+        /// <summary>
+        /// Gets or sets the extra data 1 used by few of the sort algorithms.
+        /// </summary>
+        public object ExtraData1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the extra data 2 used by few of the sort algorithms.
+        /// </summary>
+        public object ExtraData2 { get; set; }
 
         /// <summary>
         /// Gets the sorting style for this <see cref="SortText"/> class instance.
         /// </summary>
-        public SortTextStyle SortTextStyle { get; set; }
+        public SortTextStyle SortTextStyle { get; }
 
         /// <summary>
         /// A value indicating whether to use descending sorting for the text.
         /// </summary>
         public bool Descending { get; set; }
+
+        /// <summary>
+        /// Implements the == operator.
+        /// </summary>
+        /// <param name="sort1">The sort1.</param>
+        /// <param name="sort2">The sort2.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator == (SortText sort1, SortText sort2)
+        {
+            if (Equals(sort1, null) && Equals(sort2, null))
+            {
+                return true;
+            }
+
+            if (Equals(sort1, null) || Equals(sort2, null))
+            {
+                return false;
+            }
+
+            return sort1.Descending == sort2.Descending && sort1.SortTextStyle == sort2.SortTextStyle &&
+                   sort1.ExtraData1 == sort2.ExtraData1 && sort1.ExtraData2 == sort2.ExtraData2;
+        }
+
+        /// <summary>
+        /// Implements the != operator.
+        /// </summary>
+        /// <param name="sort1">The sort1.</param>
+        /// <param name="sort2">The sort1.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator != (SortText sort1, SortText sort2)
+        {
+            return !(sort1 == sort2);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="SortText" /> is equal to this instance.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns><c>true</c> if the specified <see cref="SortText" /> is equal to this instance, <c>false</c> otherwise.</returns>
+        protected bool Equals(SortText other)
+        {
+            return SortTextStyle == other.SortTextStyle && Descending == other.Descending &&
+                   other.ExtraData1 == ExtraData1 && other.ExtraData2 == ExtraData2;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((SortText) obj);
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (int) SortTextStyle * 397;
+            }
+        }
     }
 }

@@ -2236,9 +2236,15 @@ namespace ScriptNotepad
         // a user wishes to use custom ordering the the lines of the active document in ascending or descending order..
         private void mnuCustomizedSort_Click(object sender, EventArgs e)
         {
-            CurrentScintillaAction(scintilla =>
+            CurrentDocumentAction(document =>
             {
-                FormDialogQuerySortTextStyle.ShowDialog(this, scintilla, this);
+                if (document.SelectionLength > 0 && document.SelectionStartLine == document.SelectionEndLine)
+                {
+                    FormDialogQuerySortTextStyle.ShowDialog(this, document.Scintilla, this, document.SelectionStartColumn + 1, document.SelectionLength);
+                    return;
+                }
+
+                FormDialogQuerySortTextStyle.ShowDialog(this, document.Scintilla, this);
             });
         }
 

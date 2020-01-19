@@ -34,15 +34,23 @@
             this.lbSortStylesAvailable = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.listCheckSortStyles = new System.Windows.Forms.CheckedListBox();
             this.btClose = new System.Windows.Forms.Button();
             this.btSort = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpSubStringRange = new System.Windows.Forms.TableLayoutPanel();
+            this.lbSubStringRange = new System.Windows.Forms.Label();
+            this.lbSpan1 = new System.Windows.Forms.Label();
+            this.nudSubStringRange1 = new System.Windows.Forms.NumericUpDown();
+            this.nudSubStringRange2 = new System.Windows.Forms.NumericUpDown();
             this.lbCheckTooltip = new System.Windows.Forms.Label();
             this.btUndo = new System.Windows.Forms.Button();
+            this.listCheckSortStyles = new ScriptNotepad.UtilityClasses.TextManipulation.TextSorting.RefreshCheckListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tlpMain.SuspendLayout();
+            this.tlpSubStringRange.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange2)).BeginInit();
             this.SuspendLayout();
             // 
             // lbSortStyles
@@ -66,9 +74,10 @@
             this.listSortStylesAvailable.FormattingEnabled = true;
             this.listSortStylesAvailable.Location = new System.Drawing.Point(335, 25);
             this.listSortStylesAvailable.Name = "listSortStylesAvailable";
-            this.tableLayoutPanel1.SetRowSpan(this.listSortStylesAvailable, 2);
-            this.listSortStylesAvailable.Size = new System.Drawing.Size(304, 305);
+            this.tlpMain.SetRowSpan(this.listSortStylesAvailable, 2);
+            this.listSortStylesAvailable.Size = new System.Drawing.Size(304, 279);
             this.listSortStylesAvailable.TabIndex = 6;
+            this.listSortStylesAvailable.SelectedValueChanged += new System.EventHandler(this.listSortStylesAvailable_SelectedValueChanged);
             this.listSortStylesAvailable.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
             this.listSortStylesAvailable.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
             this.listSortStylesAvailable.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
@@ -109,35 +118,13 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::ScriptNotepad.Properties.Resources.Fast_rewind;
-            this.pictureBox2.Location = new System.Drawing.Point(313, 314);
+            this.pictureBox2.Location = new System.Drawing.Point(313, 288);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(16, 16);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 9;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormDialogQuerySortTextStyle_MouseUp);
-            // 
-            // listCheckSortStyles
-            // 
-            this.listCheckSortStyles.AllowDrop = true;
-            this.listCheckSortStyles.CheckOnClick = true;
-            this.listCheckSortStyles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listCheckSortStyles.FormattingEnabled = true;
-            this.listCheckSortStyles.IntegralHeight = false;
-            this.listCheckSortStyles.Location = new System.Drawing.Point(3, 25);
-            this.listCheckSortStyles.Name = "listCheckSortStyles";
-            this.tableLayoutPanel1.SetRowSpan(this.listCheckSortStyles, 2);
-            this.listCheckSortStyles.Size = new System.Drawing.Size(304, 305);
-            this.listCheckSortStyles.TabIndex = 10;
-            this.listCheckSortStyles.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.listCheckSortStyles_ItemCheck);
-            this.listCheckSortStyles.DragDrop += new System.Windows.Forms.DragEventHandler(this.listCheckSortStyles_DragDrop);
-            this.listCheckSortStyles.DragEnter += new System.Windows.Forms.DragEventHandler(this.listCheckSortStyles_DragEnterOver);
-            this.listCheckSortStyles.DragOver += new System.Windows.Forms.DragEventHandler(this.listCheckSortStyles_DragEnterOver);
-            this.listCheckSortStyles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listCheckSortStyles_KeyDown);
-            this.listCheckSortStyles.Leave += new System.EventHandler(this.listCheckSortStyles_Leave);
-            this.listCheckSortStyles.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listCheckSortStyles_MouseDown);
-            this.listCheckSortStyles.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listCheckSortStyles_MouseMove);
-            this.listCheckSortStyles.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormDialogQuerySortTextStyle_MouseUp);
             // 
             // btClose
             // 
@@ -169,29 +156,126 @@
             this.btSort.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
             this.btSort.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
             // 
-            // tableLayoutPanel1
+            // tlpMain
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tlpMain.AllowDrop = true;
+            this.tlpMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.lbSortStyles, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lbSortStylesAvailable, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox2, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.listCheckSortStyles, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.listSortStylesAvailable, 2, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(642, 333);
-            this.tableLayoutPanel1.TabIndex = 14;
+            this.tlpMain.ColumnCount = 3;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMain.Controls.Add(this.lbSortStyles, 0, 0);
+            this.tlpMain.Controls.Add(this.pictureBox1, 1, 0);
+            this.tlpMain.Controls.Add(this.lbSortStylesAvailable, 2, 0);
+            this.tlpMain.Controls.Add(this.pictureBox2, 1, 2);
+            this.tlpMain.Controls.Add(this.listCheckSortStyles, 0, 1);
+            this.tlpMain.Controls.Add(this.listSortStylesAvailable, 2, 1);
+            this.tlpMain.Controls.Add(this.tlpSubStringRange, 2, 3);
+            this.tlpMain.Location = new System.Drawing.Point(12, 12);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.RowCount = 4;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpMain.Size = new System.Drawing.Size(642, 333);
+            this.tlpMain.TabIndex = 14;
+            this.tlpMain.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
+            this.tlpMain.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            this.tlpMain.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            // 
+            // tlpSubStringRange
+            // 
+            this.tlpSubStringRange.AllowDrop = true;
+            this.tlpSubStringRange.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpSubStringRange.AutoSize = true;
+            this.tlpSubStringRange.ColumnCount = 4;
+            this.tlpSubStringRange.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSubStringRange.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpSubStringRange.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpSubStringRange.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpSubStringRange.Controls.Add(this.lbSubStringRange, 0, 0);
+            this.tlpSubStringRange.Controls.Add(this.lbSpan1, 2, 0);
+            this.tlpSubStringRange.Controls.Add(this.nudSubStringRange1, 1, 0);
+            this.tlpSubStringRange.Controls.Add(this.nudSubStringRange2, 3, 0);
+            this.tlpSubStringRange.Location = new System.Drawing.Point(332, 307);
+            this.tlpSubStringRange.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpSubStringRange.Name = "tlpSubStringRange";
+            this.tlpSubStringRange.RowCount = 1;
+            this.tlpSubStringRange.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSubStringRange.Size = new System.Drawing.Size(310, 26);
+            this.tlpSubStringRange.TabIndex = 11;
+            this.tlpSubStringRange.Visible = false;
+            this.tlpSubStringRange.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
+            this.tlpSubStringRange.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            this.tlpSubStringRange.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            // 
+            // lbSubStringRange
+            // 
+            this.lbSubStringRange.AllowDrop = true;
+            this.lbSubStringRange.AutoSize = true;
+            this.lbSubStringRange.Location = new System.Drawing.Point(3, 0);
+            this.lbSubStringRange.Name = "lbSubStringRange";
+            this.lbSubStringRange.Padding = new System.Windows.Forms.Padding(6, 6, 0, 0);
+            this.lbSubStringRange.Size = new System.Drawing.Size(90, 19);
+            this.lbSubStringRange.TabIndex = 0;
+            this.lbSubStringRange.Text = "Substring range:";
+            this.lbSubStringRange.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
+            this.lbSubStringRange.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            this.lbSubStringRange.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            // 
+            // lbSpan1
+            // 
+            this.lbSpan1.AllowDrop = true;
+            this.lbSpan1.AutoSize = true;
+            this.lbSpan1.Location = new System.Drawing.Point(214, 0);
+            this.lbSpan1.Name = "lbSpan1";
+            this.lbSpan1.Padding = new System.Windows.Forms.Padding(6, 6, 0, 0);
+            this.lbSpan1.Size = new System.Drawing.Size(16, 19);
+            this.lbSpan1.TabIndex = 2;
+            this.lbSpan1.Text = "-";
+            this.lbSpan1.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
+            this.lbSpan1.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            this.lbSpan1.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            // 
+            // nudSubStringRange1
+            // 
+            this.nudSubStringRange1.AllowDrop = true;
+            this.nudSubStringRange1.Location = new System.Drawing.Point(135, 3);
+            this.nudSubStringRange1.Name = "nudSubStringRange1";
+            this.nudSubStringRange1.Size = new System.Drawing.Size(73, 20);
+            this.nudSubStringRange1.TabIndex = 3;
+            this.nudSubStringRange1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSubStringRange1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudSubStringRange1.ValueChanged += new System.EventHandler(this.nudSubStringRange2_ValueChanged);
+            this.nudSubStringRange1.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
+            this.nudSubStringRange1.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            this.nudSubStringRange1.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            // 
+            // nudSubStringRange2
+            // 
+            this.nudSubStringRange2.AllowDrop = true;
+            this.nudSubStringRange2.Location = new System.Drawing.Point(236, 3);
+            this.nudSubStringRange2.Name = "nudSubStringRange2";
+            this.nudSubStringRange2.Size = new System.Drawing.Size(71, 20);
+            this.nudSubStringRange2.TabIndex = 1;
+            this.nudSubStringRange2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudSubStringRange2.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nudSubStringRange2.ValueChanged += new System.EventHandler(this.nudSubStringRange2_ValueChanged);
+            this.nudSubStringRange2.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
+            this.nudSubStringRange2.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            this.nudSubStringRange2.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
             // 
             // lbCheckTooltip
             // 
@@ -222,6 +306,29 @@
             this.btUndo.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
             this.btUndo.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
             // 
+            // listCheckSortStyles
+            // 
+            this.listCheckSortStyles.AllowDrop = true;
+            this.listCheckSortStyles.CheckOnClick = true;
+            this.listCheckSortStyles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listCheckSortStyles.FormattingEnabled = true;
+            this.listCheckSortStyles.IntegralHeight = false;
+            this.listCheckSortStyles.Location = new System.Drawing.Point(3, 25);
+            this.listCheckSortStyles.Name = "listCheckSortStyles";
+            this.tlpMain.SetRowSpan(this.listCheckSortStyles, 2);
+            this.listCheckSortStyles.Size = new System.Drawing.Size(304, 279);
+            this.listCheckSortStyles.TabIndex = 10;
+            this.listCheckSortStyles.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.listCheckSortStyles_ItemCheck);
+            this.listCheckSortStyles.SelectedValueChanged += new System.EventHandler(this.listSortStylesAvailable_SelectedValueChanged);
+            this.listCheckSortStyles.DragDrop += new System.Windows.Forms.DragEventHandler(this.listCheckSortStyles_DragDrop);
+            this.listCheckSortStyles.DragEnter += new System.Windows.Forms.DragEventHandler(this.listCheckSortStyles_DragEnterOver);
+            this.listCheckSortStyles.DragOver += new System.Windows.Forms.DragEventHandler(this.listCheckSortStyles_DragEnterOver);
+            this.listCheckSortStyles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listCheckSortStyles_KeyDown);
+            this.listCheckSortStyles.Leave += new System.EventHandler(this.listCheckSortStyles_Leave);
+            this.listCheckSortStyles.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listCheckSortStyles_MouseDown);
+            this.listCheckSortStyles.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listCheckSortStyles_MouseMove);
+            this.listCheckSortStyles.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormDialogQuerySortTextStyle_MouseUp);
+            // 
             // FormDialogQuerySortTextStyle
             // 
             this.AcceptButton = this.btSort;
@@ -232,7 +339,7 @@
             this.ClientSize = new System.Drawing.Size(666, 386);
             this.Controls.Add(this.btUndo);
             this.Controls.Add(this.lbCheckTooltip);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.btClose);
             this.Controls.Add(this.btSort);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -251,8 +358,12 @@
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormDialogQuerySortTextStyle_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.tlpMain.ResumeLayout(false);
+            this.tlpMain.PerformLayout();
+            this.tlpSubStringRange.ResumeLayout(false);
+            this.tlpSubStringRange.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,11 +375,16 @@
         private System.Windows.Forms.Label lbSortStylesAvailable;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.CheckedListBox listCheckSortStyles;
+        private RefreshCheckListBox listCheckSortStyles;
         private System.Windows.Forms.Button btClose;
         private System.Windows.Forms.Button btSort;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.Label lbCheckTooltip;
         private System.Windows.Forms.Button btUndo;
+        private System.Windows.Forms.TableLayoutPanel tlpSubStringRange;
+        private System.Windows.Forms.Label lbSubStringRange;
+        private System.Windows.Forms.NumericUpDown nudSubStringRange2;
+        private System.Windows.Forms.Label lbSpan1;
+        private System.Windows.Forms.NumericUpDown nudSubStringRange1;
     }
 }

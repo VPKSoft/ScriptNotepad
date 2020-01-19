@@ -24,13 +24,13 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Drawing;
-using VPKSoft.LangLib;
-using System.Windows.Forms;
 using ScintillaNET;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.Keyboard;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+using VPKSoft.LangLib;
 
 
 namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
@@ -91,7 +91,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         {
             foreach (var value in Enum.GetValues(typeof(SortTextStyle)))
             {
-                listSortStylesAvailable.Items.Add(new SortText {SortTextStyle = (SortTextStyle) value,});
+                listSortStylesAvailable.Items.Add(new SortText((SortTextStyle) value));
             }
         }
 
@@ -105,7 +105,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             foreach (var item in listCheckSortStyles.Items)
             {
                 var itemData = (SortText) item;
-                if (itemData.SortTextStyle == sortText.SortTextStyle && itemData.Descending == sortText.Descending)
+                if (itemData == sortText)
                 {
                     return true;
                 }
@@ -162,6 +162,15 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             }
 
             var sortText = (SortText)listSortStylesAvailable.SelectedItem;
+
+            if (sortText.SortTextStyle == SortTextStyle.SubString)
+            {
+                sortText = new SortText(sortText.SortTextStyle, sortText.Descending)
+                {
+                    ExtraData1 = (int)nudSubStringRange1.Value, ExtraData2 = (int)nudSubStringRange2.Value
+                };
+            }
+
             if (SortStyleExists(sortText))
             {
                 return;
@@ -196,6 +205,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         private void listCheckSortStyles_MouseDown(object sender, MouseEventArgs e)
         {
             StartDragCheckListBox = true;
+            StartDragAvailableListBox = false;
             MouseDownPointCheckListBox = e.Location;
         }
 
@@ -223,6 +233,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             if (CheckListCanDrop(e))
             {
                 var sortText = (SortText) e.Data.GetData(typeof(SortText));
+
                 if (checkListBox.Equals(DragDropOrigin))
                 {
                     checkListBox.Items.Remove(sortText);
@@ -291,7 +302,17 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             if (index != -1)
             {
                 DragDropOrigin = listBox;
-                listBox.DoDragDrop(listBox.Items[index], DragDropEffects.Copy);
+
+                var item = (SortText)listBox.Items[index];
+
+                if (item.SortTextStyle == SortTextStyle.SubString)
+                {
+                    item = new SortText(item.SortTextStyle, item.Descending)
+                        {ExtraData1 = (int)nudSubStringRange1.Value, ExtraData2 = (int)nudSubStringRange2.Value};
+                }
+
+
+                listBox.DoDragDrop(item, DragDropEffects.Copy);
             }
         }
 
@@ -356,6 +377,24 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             StartDragCheckListBox = false;
             StartDragAvailableListBox = false;
         }
+
+        private void listSortStylesAvailable_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var listBox = (ListBox) sender;
+            var textStyle = (SortText)listBox.SelectedItem;
+            tlpSubStringRange.Visible = textStyle.SortTextStyle == SortTextStyle.SubString;
+        }
+
+        private void nudSubStringRange2_ValueChanged(object sender, EventArgs e)
+        {
+            var textStyle = (SortText)listCheckSortStyles.SelectedItem;
+            if (textStyle != null)
+            {
+                textStyle.ExtraData1 = (int)nudSubStringRange1.Value;
+                textStyle.ExtraData2 = (int)nudSubStringRange2.Value;
+                listCheckSortStyles.RefreshItems();
+            }
+        }
         #endregion
 
         #region PrivateProperties
@@ -385,7 +424,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         // ReSharper disable once UnusedMember.Global
         public static DialogResult ShowDialog(Scintilla scintilla, FormMain formMain)
         {
-            return ShowDialog(null, scintilla, formMain);
+            return ShowDialog(null, scintilla, formMain, 1, 1);
         }
 
         /// <summary>
@@ -398,10 +437,45 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// <exception cref="T:System.InvalidOperationException">The form being shown is already visible.-or- The form being shown is disabled.-or- The form being shown is not a top-level window.-or- The form being shown as a dialog box is already a modal form.-or-The current process is not running in user interactive mode (for more information, see <see cref="P:System.Windows.Forms.SystemInformation.UserInteractive" />).</exception>
         public static DialogResult ShowDialog(IWin32Window owner, Scintilla scintilla, FormMain formMain)
         {
+            return ShowDialog(owner, scintilla, formMain, 1, 1);
+        }
+
+        /// <summary>
+        /// Shows the form as a modal dialog box with the specified owner.
+        /// </summary>
+        /// <param name="owner">Any object that implements <see cref="T:System.Windows.Forms.IWin32Window" /> that represents the top-level window that will own the modal dialog box. </param>
+        /// <param name="scintilla">The scintilla control which contents to sort.</param>
+        /// <param name="formMain">An instance to the <see cref="FormMain"/> Form for an undo operation call.</param>
+        /// <param name="stringStart">A starting position of a possible one line selection within a document.</param>
+        /// <param name="stringLength">A length of a possible one line selection within a document.</param>
+        /// <returns>One of the <see cref="T:System.Windows.Forms.DialogResult" /> values.</returns>
+        /// <exception cref="T:System.InvalidOperationException">The form being shown is already visible.-or- The form being shown is disabled.-or- The form being shown is not a top-level window.-or- The form being shown as a dialog box is already a modal form.-or-The current process is not running in user interactive mode (for more information, see <see cref="P:System.Windows.Forms.SystemInformation.UserInteractive" />).</exception>
+        public static DialogResult ShowDialog(IWin32Window owner, Scintilla scintilla, FormMain formMain, int stringStart, int stringLength)
+        {
             var form = new FormDialogQuerySortTextStyle
                 {Scintilla = scintilla, btUndo = {Enabled = scintilla.CanUndo}, FormMain = formMain};
+
+            form.nudSubStringRange1.Value = stringStart;
+            form.nudSubStringRange2.Value = stringLength;
+
             return form.ShowDialog(owner);
         }
         #endregion
+    }
+
+    /// <summary>
+    /// A <see cref="CheckedListBox"/> sub-class allowing the items within the list to be refreshed.
+    /// Implements the <see cref="System.Windows.Forms.CheckedListBox" />
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.CheckedListBox" />
+    internal class RefreshCheckListBox : CheckedListBox
+    {
+        /// <summary>
+        /// Parses all <see cref="T:System.Windows.Forms.CheckedListBox" /> items again and gets new text strings for the items.
+        /// </summary>
+        public new void RefreshItems()
+        {
+            base.RefreshItems();
+        }
     }
 }

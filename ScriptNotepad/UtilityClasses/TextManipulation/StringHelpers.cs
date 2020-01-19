@@ -65,5 +65,67 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
 
             return str;
         }
+
+        /// <summary>
+        /// Reverses the specified string.
+        /// </summary>
+        /// <param name="str">The string to reverse.</param>
+        /// <returns>A string reversed character by character compared to the original string.</returns>
+        public static string Reverse(this string str)
+        {
+            var result = string.Empty;
+            for (int i = str.Length - 1; i >= 0; i--)
+            {
+                result += str[i];
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieves a substring from this instance.
+        /// The substring starts at a specified character position and continues to the end or to the start of the string
+        /// depending on the sign of the index.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        /// <param name="startIndex">The zero-based starting or ending character position of a substring in this instance.</param>
+        /// <returns>A string that is equivalent to the substring that begins at or ends to the <paramref name="startIndex" /> in this instance, or <see cref="F:System.String.Empty" /> if <paramref name="startIndex" /> is equal to the length of this instance or in case of an invalid index.</returns>
+        public static string SafeSubString(this string str, int startIndex)
+        {
+            try
+            {
+                var result = startIndex >= 0 ? 
+                    str.Substring(startIndex) : 
+                    str.Substring(str.Length + startIndex);
+                return result;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a substring from this instance. The substring starts at a specified character position and has a specified length.
+        /// If the length is specified as negative the the length is decreased from the specified character position.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        /// <param name="startIndex">The zero-based starting character position of a substring in this instance.</param>
+        /// <param name="length">The number of characters in the substring. Also negative lengths is allowed and the start index is the decremented by the length.</param>
+        /// <returns>A string that is equivalent to the substring of length <paramref name="length" /> that begins at <paramref name="startIndex" /> in this instance or at at <paramref name="startIndex" /> decremented by a given negative length <paramref name="length"/>, or <see cref="F:System.String.Empty" /> if <paramref name="startIndex" /> is equal to the length of this instance and <paramref name="length" /> is zero.</returns>
+        public static string SafeSubString(this string str, int startIndex, int length)
+        {
+            try
+            {
+                var result = length >= 0 ? 
+                    str.Substring(startIndex, length) : 
+                    str.Substring(startIndex + length, -length);
+                return result;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
     }
 }
