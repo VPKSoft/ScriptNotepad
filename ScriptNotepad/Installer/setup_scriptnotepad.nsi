@@ -27,7 +27,7 @@ Name "ScriptNotepad"
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)" 
-!define VERSION 1.0.1.9
+!define VERSION 1.0.2.0
 !define COMPANY VPKSoft
 !define URL http://www.vpksoft.net
 
@@ -80,12 +80,12 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE Finnish
 
 # Installer attributes
-OutFile setup_scriptnotepad_1_0_1_9.exe
+OutFile setup_scriptnotepad_1_0_2_0.exe
 InstallDir "$PROGRAMFILES64\ScriptNotepad"
 CRCCheck on
 XPStyle on
 ShowInstDetails hide
-VIProductVersion 1.0.1.9
+VIProductVersion 1.0.2.0
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName "ScriptNotepad installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"

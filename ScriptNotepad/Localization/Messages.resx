@@ -912,4 +912,7 @@
   <data name="msgStringComparisonSubString" xml:space="preserve">
     <value>Substring|A short explanation for a text substring comparison</value>
   </data>
+  <data name="msgStringComparisonRegex" xml:space="preserve">
+    <value>Regular expression|A short explanation for a text regular expression comparison</value>
+  </data>
 </root>

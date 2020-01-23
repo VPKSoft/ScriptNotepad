@@ -1097,6 +1097,10 @@ namespace ScriptNotepad
             MiscellaneousTextEntryHelper.DeleteOlderEntries(MiscellaneousTextType.Path,
                 FormSettings.Settings.FileSearchHistoriesLimit, CurrentSession);
 
+            // clean excess regular expressions from the custom text sorting dialog..
+            MiscellaneousTextEntryHelper.DeleteOlderEntries(MiscellaneousTextType.RegexSorting,
+                20, CurrentSession);
+
             // clean the old replace replace history entries from the database..
             SearchAndReplaceHistoryHelper.DeleteOlderEntries(SearchAndReplaceSearchType.All,
                 SearchAndReplaceType.Replace, FormSettings.Settings.FileSearchHistoriesLimit, CurrentSession);

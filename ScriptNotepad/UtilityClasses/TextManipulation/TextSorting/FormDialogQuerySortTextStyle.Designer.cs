@@ -42,6 +42,9 @@
             this.lbSpan1 = new System.Windows.Forms.Label();
             this.nudSubStringRange1 = new System.Windows.Forms.NumericUpDown();
             this.nudSubStringRange2 = new System.Windows.Forms.NumericUpDown();
+            this.tlpRegex = new System.Windows.Forms.TableLayoutPanel();
+            this.lbRegex = new System.Windows.Forms.Label();
+            this.tbRegex = new System.Windows.Forms.ComboBox();
             this.lbCheckTooltip = new System.Windows.Forms.Label();
             this.btUndo = new System.Windows.Forms.Button();
             this.listCheckSortStyles = new ScriptNotepad.UtilityClasses.TextManipulation.TextSorting.RefreshCheckListBox();
@@ -51,6 +54,7 @@
             this.tlpSubStringRange.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange2)).BeginInit();
+            this.tlpRegex.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbSortStyles
@@ -75,7 +79,7 @@
             this.listSortStylesAvailable.Location = new System.Drawing.Point(335, 25);
             this.listSortStylesAvailable.Name = "listSortStylesAvailable";
             this.tlpMain.SetRowSpan(this.listSortStylesAvailable, 2);
-            this.listSortStylesAvailable.Size = new System.Drawing.Size(304, 279);
+            this.listSortStylesAvailable.Size = new System.Drawing.Size(304, 252);
             this.listSortStylesAvailable.TabIndex = 6;
             this.listSortStylesAvailable.SelectedValueChanged += new System.EventHandler(this.listSortStylesAvailable_SelectedValueChanged);
             this.listSortStylesAvailable.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
@@ -118,7 +122,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::ScriptNotepad.Properties.Resources.Fast_rewind;
-            this.pictureBox2.Location = new System.Drawing.Point(313, 288);
+            this.pictureBox2.Location = new System.Drawing.Point(313, 261);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(16, 16);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -172,12 +176,14 @@
             this.tlpMain.Controls.Add(this.pictureBox2, 1, 2);
             this.tlpMain.Controls.Add(this.listCheckSortStyles, 0, 1);
             this.tlpMain.Controls.Add(this.listSortStylesAvailable, 2, 1);
-            this.tlpMain.Controls.Add(this.tlpSubStringRange, 2, 3);
+            this.tlpMain.Controls.Add(this.tlpSubStringRange, 0, 4);
+            this.tlpMain.Controls.Add(this.tlpRegex, 0, 3);
             this.tlpMain.Location = new System.Drawing.Point(12, 12);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 4;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.Size = new System.Drawing.Size(642, 333);
@@ -193,6 +199,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tlpSubStringRange.AutoSize = true;
             this.tlpSubStringRange.ColumnCount = 4;
+            this.tlpMain.SetColumnSpan(this.tlpSubStringRange, 3);
             this.tlpSubStringRange.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpSubStringRange.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tlpSubStringRange.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -201,12 +208,12 @@
             this.tlpSubStringRange.Controls.Add(this.lbSpan1, 2, 0);
             this.tlpSubStringRange.Controls.Add(this.nudSubStringRange1, 1, 0);
             this.tlpSubStringRange.Controls.Add(this.nudSubStringRange2, 3, 0);
-            this.tlpSubStringRange.Location = new System.Drawing.Point(332, 307);
+            this.tlpSubStringRange.Location = new System.Drawing.Point(0, 307);
             this.tlpSubStringRange.Margin = new System.Windows.Forms.Padding(0);
             this.tlpSubStringRange.Name = "tlpSubStringRange";
             this.tlpSubStringRange.RowCount = 1;
             this.tlpSubStringRange.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpSubStringRange.Size = new System.Drawing.Size(310, 26);
+            this.tlpSubStringRange.Size = new System.Drawing.Size(642, 26);
             this.tlpSubStringRange.TabIndex = 11;
             this.tlpSubStringRange.Visible = false;
             this.tlpSubStringRange.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
@@ -231,7 +238,7 @@
             // 
             this.lbSpan1.AllowDrop = true;
             this.lbSpan1.AutoSize = true;
-            this.lbSpan1.Location = new System.Drawing.Point(214, 0);
+            this.lbSpan1.Location = new System.Drawing.Point(546, 0);
             this.lbSpan1.Name = "lbSpan1";
             this.lbSpan1.Padding = new System.Windows.Forms.Padding(6, 6, 0, 0);
             this.lbSpan1.Size = new System.Drawing.Size(16, 19);
@@ -244,7 +251,7 @@
             // nudSubStringRange1
             // 
             this.nudSubStringRange1.AllowDrop = true;
-            this.nudSubStringRange1.Location = new System.Drawing.Point(135, 3);
+            this.nudSubStringRange1.Location = new System.Drawing.Point(467, 3);
             this.nudSubStringRange1.Name = "nudSubStringRange1";
             this.nudSubStringRange1.Size = new System.Drawing.Size(73, 20);
             this.nudSubStringRange1.TabIndex = 3;
@@ -262,7 +269,7 @@
             // nudSubStringRange2
             // 
             this.nudSubStringRange2.AllowDrop = true;
-            this.nudSubStringRange2.Location = new System.Drawing.Point(236, 3);
+            this.nudSubStringRange2.Location = new System.Drawing.Point(568, 3);
             this.nudSubStringRange2.Name = "nudSubStringRange2";
             this.nudSubStringRange2.Size = new System.Drawing.Size(71, 20);
             this.nudSubStringRange2.TabIndex = 1;
@@ -276,6 +283,52 @@
             this.nudSubStringRange2.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragDrop);
             this.nudSubStringRange2.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
             this.nudSubStringRange2.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDialogQuerySortTextStyle_DragEnterOver);
+            // 
+            // tlpRegex
+            // 
+            this.tlpRegex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpRegex.AutoSize = true;
+            this.tlpRegex.ColumnCount = 2;
+            this.tlpMain.SetColumnSpan(this.tlpRegex, 3);
+            this.tlpRegex.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpRegex.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpRegex.Controls.Add(this.lbRegex, 0, 0);
+            this.tlpRegex.Controls.Add(this.tbRegex, 1, 0);
+            this.tlpRegex.Location = new System.Drawing.Point(0, 280);
+            this.tlpRegex.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpRegex.Name = "tlpRegex";
+            this.tlpRegex.RowCount = 1;
+            this.tlpRegex.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpRegex.Size = new System.Drawing.Size(642, 27);
+            this.tlpRegex.TabIndex = 12;
+            this.tlpRegex.Visible = false;
+            // 
+            // lbRegex
+            // 
+            this.lbRegex.AutoSize = true;
+            this.lbRegex.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbRegex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbRegex.Location = new System.Drawing.Point(3, 0);
+            this.lbRegex.Name = "lbRegex";
+            this.lbRegex.Padding = new System.Windows.Forms.Padding(6, 6, 0, 0);
+            this.lbRegex.Size = new System.Drawing.Size(106, 19);
+            this.lbRegex.TabIndex = 0;
+            this.lbRegex.Text = "Regular expression:";
+            this.lbRegex.Click += new System.EventHandler(this.lbRegex_Click);
+            // 
+            // tbRegex
+            // 
+            this.tbRegex.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbRegex.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbRegex.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.tbRegex.FormattingEnabled = true;
+            this.tbRegex.Location = new System.Drawing.Point(115, 3);
+            this.tbRegex.Name = "tbRegex";
+            this.tbRegex.Size = new System.Drawing.Size(524, 21);
+            this.tbRegex.TabIndex = 1;
+            this.tbRegex.TextChanged += new System.EventHandler(this.tbRegex_TextChanged);
             // 
             // lbCheckTooltip
             // 
@@ -316,7 +369,7 @@
             this.listCheckSortStyles.Location = new System.Drawing.Point(3, 25);
             this.listCheckSortStyles.Name = "listCheckSortStyles";
             this.tlpMain.SetRowSpan(this.listCheckSortStyles, 2);
-            this.listCheckSortStyles.Size = new System.Drawing.Size(304, 279);
+            this.listCheckSortStyles.Size = new System.Drawing.Size(304, 252);
             this.listCheckSortStyles.TabIndex = 10;
             this.listCheckSortStyles.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.listCheckSortStyles_ItemCheck);
             this.listCheckSortStyles.SelectedValueChanged += new System.EventHandler(this.listSortStylesAvailable_SelectedValueChanged);
@@ -364,6 +417,8 @@
             this.tlpSubStringRange.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSubStringRange2)).EndInit();
+            this.tlpRegex.ResumeLayout(false);
+            this.tlpRegex.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -386,5 +441,8 @@
         private System.Windows.Forms.NumericUpDown nudSubStringRange2;
         private System.Windows.Forms.Label lbSpan1;
         private System.Windows.Forms.NumericUpDown nudSubStringRange1;
+        private System.Windows.Forms.TableLayoutPanel tlpRegex;
+        private System.Windows.Forms.Label lbRegex;
+        private System.Windows.Forms.ComboBox tbRegex;
     }
 }

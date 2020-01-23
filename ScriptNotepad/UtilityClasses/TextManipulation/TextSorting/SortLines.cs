@@ -27,6 +27,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using VPKSoft.LangLib;
@@ -231,6 +232,21 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
                                     (int)sortText.ExtraData2));
                         });
                 }
+
+                if (sortText.SortTextStyle == SortTextStyle.Regex)
+                {
+                    Sort(scintilla, (StringComparison) sortText.SortTextStyle, sortText.Descending,
+                        delegate(IEnumerable<string> lines, SortTextStyle style, bool descending)
+                        {
+                            var regex = new Regex(sortText.ExtraData1.ToString(), RegexOptions.Compiled);
+
+                            return sortText.Descending
+                                ? lines.OrderByDescending(f =>
+                                    regex.Match(f).Value.ToComparisonVariant(stringComparison))
+                                : lines.OrderByDescending(f =>
+                                    regex.Match(f).Value.ToComparisonVariant(stringComparison));
+                        });
+                }
             }
         }
     }
@@ -289,12 +305,20 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// Compare only sub-string values for sorting.
         /// </summary>
         SubString,
+
+        
+        /// <summary>
+        /// Compare regular expression matches yo sort strings.
+        /// </summary>
+        Regex,        
     }
 
     /// <summary>
     /// A class to indicate a single text sorting style.
+    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase"/>
     /// </summary>
-    public class SortText
+    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    public class SortText: ErrorHandlingBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SortText"/> class.
@@ -368,6 +392,9 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
                     case SortTextStyle.SubString:
                         return DBLangEngine.GetStatMessage("msgStringComparisonSubString",
                             "Substring|A short explanation for a text substring comparison");
+                    case SortTextStyle.Regex:
+                        return DBLangEngine.GetStatMessage("msgStringComparisonRegex",
+                            "Regular expression|A short explanation for a text regular expression comparison");
                     default:
                         return DBLangEngine.GetStatMessage("msgUnknown",
                             "Unknown|A short message to describe an unknown or undefined value");
@@ -383,7 +410,18 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// </returns>
         public override string ToString()
         {
-            return DisplayName + (SortTextStyle == SortTextStyle.SubString ? " [" + ExtraData1 + ", " + ExtraData2 +"]": string.Empty);
+            var result = DisplayName;
+            if (SortTextStyle == SortTextStyle.SubString)
+            {
+                result += " [" + ExtraData1 + ", " + ExtraData2 + "]";
+            }
+
+            if (SortTextStyle == SortTextStyle.Regex)
+            {
+                result += ": '" + ExtraData1 + "'";
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -395,6 +433,39 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// Gets or sets the extra data 2 used by few of the sort algorithms.
         /// </summary>
         public object ExtraData2 { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="SortText"/> instance indicates a <see cref="Regex"/> and the Regex is valid.
+        /// </summary>
+        public bool IsValidRegex 
+        {
+            get
+            {
+                if (SortTextStyle != SortTextStyle.Regex)
+                {
+                    return true;
+                }
+
+                if (string.IsNullOrEmpty(ExtraData1.ToString()))
+                {
+                    return false;
+                }
+
+                try
+                {
+                    // ReSharper disable once ObjectCreationAsStatement, this is intentional..
+                    new Regex(ExtraData1.ToString());
+                }
+                catch (Exception ex)
+                {
+                    // log the exception..
+                    ExceptionLogAction?.Invoke(ex);
+                    return false;
+                }
+
+                return true;
+            }
+        }
 
         /// <summary>
         /// Gets the sorting style for this <see cref="SortText"/> class instance.

@@ -29,7 +29,12 @@ using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.Keyboard;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
+using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 
 
@@ -68,6 +73,15 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             pictureBox1.AllowDrop = true;
             pictureBox2.AllowDrop = true;
             #endregion
+
+            var savedRegexs = ScriptNotepadDbContext.DbContext.MiscellaneousTextEntries.Where(f =>
+                f.TextType == MiscellaneousTextType.RegexSorting &&
+                f.Session.Id == FormSettings.Settings.CurrentSessionEntity.Id).OrderBy(f => f.Added);
+
+            foreach (var savedRegex in savedRegexs)
+            {
+                tbRegex.Items.Add(savedRegex.TextValue);
+            }
         }
 
         #region PrivateMethods
@@ -151,6 +165,22 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             return true;
         }
 
+        private void SaveRegex(string regex)
+        {
+            if (!ScriptNotepadDbContext.DbContext.MiscellaneousTextEntries.Any(f =>
+                f.TextType == MiscellaneousTextType.RegexSorting &&
+                f.Session.Id == FormSettings.Settings.CurrentSessionEntity.Id && f.TextValue == regex))
+            {
+                ScriptNotepadDbContext.DbContext.MiscellaneousTextEntries.Add(new MiscellaneousTextEntry
+                {
+                    TextType = MiscellaneousTextType.RegexSorting,
+                    Session = FormSettings.Settings.CurrentSessionEntity, 
+                    TextValue = regex,
+                });
+                ScriptNotepadDbContext.DbContext.SaveChanges();
+            }
+        }
+
         /// <summary>
         /// Moves an available sorting item to the check list box of sorting styles to use.
         /// </summary>
@@ -167,8 +197,23 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
             {
                 sortText = new SortText(sortText.SortTextStyle, sortText.Descending)
                 {
-                    ExtraData1 = (int)nudSubStringRange1.Value, ExtraData2 = (int)nudSubStringRange2.Value
+                    ExtraData1 = (int)nudSubStringRange1.Value, ExtraData2 = (int)nudSubStringRange2.Value,
                 };
+            }
+
+            if (sortText.SortTextStyle == SortTextStyle.Regex)
+            {
+                sortText = new SortText(sortText.SortTextStyle, sortText.Descending)
+                {
+                    ExtraData1 = tbRegex.Text,
+                };
+
+                if (!sortText.IsValidRegex)
+                {
+                    return;
+                }
+
+                SaveRegex(tbRegex.Text);
             }
 
             if (SortStyleExists(sortText))
@@ -310,7 +355,18 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
                     item = new SortText(item.SortTextStyle, item.Descending)
                         {ExtraData1 = (int)nudSubStringRange1.Value, ExtraData2 = (int)nudSubStringRange2.Value};
                 }
+                else if (item.SortTextStyle == SortTextStyle.Regex)
+                {
+                    item = new SortText(item.SortTextStyle, item.Descending)
+                        {ExtraData1 = tbRegex.Text};
 
+                    if (!item.IsValidRegex)
+                    {
+                        return;
+                    }
+
+                    SaveRegex(tbRegex.Text);
+                }
 
                 listBox.DoDragDrop(item, DragDropEffects.Copy);
             }
@@ -382,6 +438,26 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         {
             var listBox = (ListBox) sender;
             var textStyle = (SortText)listBox.SelectedItem;
+            if (textStyle.SortTextStyle == SortTextStyle.SubString)
+            {
+                tlpSubStringRange.Visible = true;
+                tlpRegex.Visible = false;
+                tlpMain.SetCellPosition(tlpSubStringRange, new TableLayoutPanelCellPosition(0, 3));
+                tlpMain.SetCellPosition(tlpRegex, new TableLayoutPanelCellPosition(0, 4));
+            }
+            else if (textStyle.SortTextStyle == SortTextStyle.Regex)
+            {
+                tlpSubStringRange.Visible = false;
+                tlpRegex.Visible = true;
+                tlpMain.SetCellPosition(tlpSubStringRange, new TableLayoutPanelCellPosition(0, 4));
+                tlpMain.SetCellPosition(tlpRegex, new TableLayoutPanelCellPosition(0, 3));
+            }
+            else
+            {
+                tlpSubStringRange.Visible = false;
+                tlpRegex.Visible = false;
+            }
+
             tlpSubStringRange.Visible = textStyle.SortTextStyle == SortTextStyle.SubString;
         }
 
@@ -453,14 +529,40 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         public static DialogResult ShowDialog(IWin32Window owner, Scintilla scintilla, FormMain formMain, int stringStart, int stringLength)
         {
             var form = new FormDialogQuerySortTextStyle
-                {Scintilla = scintilla, btUndo = {Enabled = scintilla.CanUndo}, FormMain = formMain};
-
-            form.nudSubStringRange1.Value = stringStart;
-            form.nudSubStringRange2.Value = stringLength;
+            {
+                Scintilla = scintilla,
+                btUndo = {Enabled = scintilla.CanUndo},
+                FormMain = formMain,
+                nudSubStringRange1 = {Value = stringStart},
+                nudSubStringRange2 = {Value = stringLength}
+            };
 
             return form.ShowDialog(owner);
         }
         #endregion
+
+        private void tbRegex_TextChanged(object sender, EventArgs e)
+        {
+            var textStyle = (SortText)listCheckSortStyles.SelectedItem;
+            if (textStyle != null)
+            {
+                textStyle.ExtraData1 = tbRegex.Text;
+                listCheckSortStyles.RefreshItems();
+            }
+        }
+
+        private void lbRegex_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("https://regex101.com");
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogger.LogError(ex);
+            }
+        }
     }
 
     /// <summary>

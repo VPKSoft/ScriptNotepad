@@ -42,5 +42,10 @@ namespace ScriptNotepad.Database.Entity.Enumerations
         /// Indicates a file extension list delimited with semicolon (;); I.e. *.txt;*.cs.
         /// </summary>
         FileExtensionList = 1,
+
+        /// <summary>
+        /// The regular expression sorting within the custom sort dialog.
+        /// </summary>
+        RegexSorting = 2,
     }
 }
