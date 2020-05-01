@@ -193,6 +193,13 @@
             this.tbDateTimeFormat1 = new System.Windows.Forms.TextBox();
             this.lbDateStyle = new System.Windows.Forms.Label();
             this.tabUrls = new System.Windows.Forms.TabPage();
+            this.tlpUrlColors = new System.Windows.Forms.TableLayoutPanel();
+            this.lbUrlTextColor = new System.Windows.Forms.Label();
+            this.btUrlTextColor = new System.Windows.Forms.Button();
+            this.lbUrlIndicatorColor = new System.Windows.Forms.Label();
+            this.btUrlIndicatorColor = new System.Windows.Forms.Button();
+            this.nudURLUseAutoEllipsis = new System.Windows.Forms.NumericUpDown();
+            this.cbURLUseAutoEllipsis = new System.Windows.Forms.CheckBox();
             this.btUrlDetectDefaults = new System.Windows.Forms.Button();
             this.lbDwellToolTipBackgroundColor = new System.Windows.Forms.Label();
             this.btDwellToolTipBackgroundColor = new System.Windows.Forms.Button();
@@ -202,10 +209,6 @@
             this.cbUseDwellToolTip = new System.Windows.Forms.CheckBox();
             this.lbUrlIndicatorStyle = new System.Windows.Forms.Label();
             this.cmbUrlIndicatorStyle = new System.Windows.Forms.ComboBox();
-            this.lbUrlIndicatorColor = new System.Windows.Forms.Label();
-            this.btUrlIndicatorColor = new System.Windows.Forms.Button();
-            this.lbUrlTextColor = new System.Windows.Forms.Label();
-            this.btUrlTextColor = new System.Windows.Forms.Button();
             this.scintillaUrlStyle = new ScintillaNET.Scintilla();
             this.cbStartProcessOnUrlClick = new System.Windows.Forms.CheckBox();
             this.cbHighlightUrls = new System.Windows.Forms.CheckBox();
@@ -217,9 +220,11 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.cbURLUseAutoEllipsis = new System.Windows.Forms.CheckBox();
-            this.nudURLUseAutoEllipsis = new System.Windows.Forms.NumericUpDown();
-            this.tlpUrlColors = new System.Windows.Forms.TableLayoutPanel();
+            this.cbUseCustomSpellCheckingLibrary = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lbSpellCheckingLibraryNameVersion = new System.Windows.Forms.Label();
+            this.odAssembly = new System.Windows.Forms.OpenFileDialog();
+            this.tbSpellCheckingLibraryNameVersionValue = new System.Windows.Forms.TextBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -258,9 +263,10 @@
             this.tabDateAndTime.SuspendLayout();
             this.gbDate.SuspendLayout();
             this.tabUrls.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).BeginInit();
             this.tlpUrlColors.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -1760,6 +1766,8 @@
             // tabSpellCheck
             // 
             this.tabSpellCheck.BackColor = System.Drawing.SystemColors.Window;
+            this.tabSpellCheck.Controls.Add(this.panel1);
+            this.tabSpellCheck.Controls.Add(this.cbUseCustomSpellCheckingLibrary);
             this.tabSpellCheck.Controls.Add(this.cbSpellCheckInShellContext);
             this.tabSpellCheck.Controls.Add(this.cbSpellCheckInUseNewFiles);
             this.tabSpellCheck.Controls.Add(this.cmbInstalledDictionaries);
@@ -1788,7 +1796,7 @@
             // cbSpellCheckInShellContext
             // 
             this.cbSpellCheckInShellContext.AutoSize = true;
-            this.cbSpellCheckInShellContext.Location = new System.Drawing.Point(6, 31);
+            this.cbSpellCheckInShellContext.Location = new System.Drawing.Point(9, 31);
             this.cbSpellCheckInShellContext.Name = "cbSpellCheckInShellContext";
             this.cbSpellCheckInShellContext.Size = new System.Drawing.Size(299, 17);
             this.cbSpellCheckInShellContext.TabIndex = 46;
@@ -1798,7 +1806,7 @@
             // cbSpellCheckInUseNewFiles
             // 
             this.cbSpellCheckInUseNewFiles.AutoSize = true;
-            this.cbSpellCheckInUseNewFiles.Location = new System.Drawing.Point(247, 8);
+            this.cbSpellCheckInUseNewFiles.Location = new System.Drawing.Point(378, 8);
             this.cbSpellCheckInUseNewFiles.Name = "cbSpellCheckInUseNewFiles";
             this.cbSpellCheckInUseNewFiles.Size = new System.Drawing.Size(175, 17);
             this.cbSpellCheckInUseNewFiles.TabIndex = 45;
@@ -1813,7 +1821,7 @@
             this.cmbInstalledDictionaries.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbInstalledDictionaries.DisplayMember = "DisplayName";
             this.cmbInstalledDictionaries.FormattingEnabled = true;
-            this.cmbInstalledDictionaries.Location = new System.Drawing.Point(6, 296);
+            this.cmbInstalledDictionaries.Location = new System.Drawing.Point(9, 261);
             this.cmbInstalledDictionaries.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
             this.cmbInstalledDictionaries.Name = "cmbInstalledDictionaries";
             this.cmbInstalledDictionaries.Size = new System.Drawing.Size(645, 21);
@@ -1823,7 +1831,7 @@
             // lbInstalledDictionaries
             // 
             this.lbInstalledDictionaries.AutoSize = true;
-            this.lbInstalledDictionaries.Location = new System.Drawing.Point(3, 271);
+            this.lbInstalledDictionaries.Location = new System.Drawing.Point(6, 245);
             this.lbInstalledDictionaries.Name = "lbInstalledDictionaries";
             this.lbInstalledDictionaries.Size = new System.Drawing.Size(149, 13);
             this.lbInstalledDictionaries.TabIndex = 43;
@@ -1832,7 +1840,7 @@
             // btDictionaryPath
             // 
             this.btDictionaryPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btDictionaryPath.Location = new System.Drawing.Point(620, 237);
+            this.btDictionaryPath.Location = new System.Drawing.Point(623, 222);
             this.btDictionaryPath.Name = "btDictionaryPath";
             this.btDictionaryPath.Size = new System.Drawing.Size(31, 20);
             this.btDictionaryPath.TabIndex = 42;
@@ -1845,7 +1853,7 @@
             // 
             this.tbDictionaryPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDictionaryPath.Location = new System.Drawing.Point(6, 237);
+            this.tbDictionaryPath.Location = new System.Drawing.Point(9, 222);
             this.tbDictionaryPath.Name = "tbDictionaryPath";
             this.tbDictionaryPath.Size = new System.Drawing.Size(608, 20);
             this.tbDictionaryPath.TabIndex = 41;
@@ -1853,7 +1861,7 @@
             // lbDictionaryPath
             // 
             this.lbDictionaryPath.AutoSize = true;
-            this.lbDictionaryPath.Location = new System.Drawing.Point(3, 214);
+            this.lbDictionaryPath.Location = new System.Drawing.Point(6, 206);
             this.lbDictionaryPath.Name = "lbDictionaryPath";
             this.lbDictionaryPath.Size = new System.Drawing.Size(139, 13);
             this.lbDictionaryPath.TabIndex = 40;
@@ -1862,7 +1870,7 @@
             // lbEditorSpellRecheckInactivity
             // 
             this.lbEditorSpellRecheckInactivity.AutoSize = true;
-            this.lbEditorSpellRecheckInactivity.Location = new System.Drawing.Point(3, 187);
+            this.lbEditorSpellRecheckInactivity.Location = new System.Drawing.Point(6, 105);
             this.lbEditorSpellRecheckInactivity.Name = "lbEditorSpellRecheckInactivity";
             this.lbEditorSpellRecheckInactivity.Size = new System.Drawing.Size(358, 13);
             this.lbEditorSpellRecheckInactivity.TabIndex = 38;
@@ -1871,7 +1879,7 @@
             // nudEditorSpellRecheckInactivity
             // 
             this.nudEditorSpellRecheckInactivity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudEditorSpellRecheckInactivity.Location = new System.Drawing.Point(561, 185);
+            this.nudEditorSpellRecheckInactivity.Location = new System.Drawing.Point(564, 103);
             this.nudEditorSpellRecheckInactivity.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -1889,7 +1897,7 @@
             // btSpellCheckMarkColor
             // 
             this.btSpellCheckMarkColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSpellCheckMarkColor.Location = new System.Drawing.Point(365, 156);
+            this.btSpellCheckMarkColor.Location = new System.Drawing.Point(368, 74);
             this.btSpellCheckMarkColor.Name = "btSpellCheckMarkColor";
             this.btSpellCheckMarkColor.Size = new System.Drawing.Size(286, 23);
             this.btSpellCheckMarkColor.TabIndex = 36;
@@ -1899,7 +1907,7 @@
             // lbSpellCheckMarkColor
             // 
             this.lbSpellCheckMarkColor.AutoSize = true;
-            this.lbSpellCheckMarkColor.Location = new System.Drawing.Point(3, 161);
+            this.lbSpellCheckMarkColor.Location = new System.Drawing.Point(6, 79);
             this.lbSpellCheckMarkColor.Name = "lbSpellCheckMarkColor";
             this.lbSpellCheckMarkColor.Size = new System.Drawing.Size(118, 13);
             this.lbSpellCheckMarkColor.TabIndex = 35;
@@ -1908,7 +1916,7 @@
             // btHunspellAffixFile
             // 
             this.btHunspellAffixFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btHunspellAffixFile.Location = new System.Drawing.Point(620, 130);
+            this.btHunspellAffixFile.Location = new System.Drawing.Point(623, 183);
             this.btHunspellAffixFile.Name = "btHunspellAffixFile";
             this.btHunspellAffixFile.Size = new System.Drawing.Size(31, 20);
             this.btHunspellAffixFile.TabIndex = 34;
@@ -1920,7 +1928,7 @@
             // 
             this.tbHunspellAffixFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbHunspellAffixFile.Location = new System.Drawing.Point(6, 130);
+            this.tbHunspellAffixFile.Location = new System.Drawing.Point(9, 183);
             this.tbHunspellAffixFile.Name = "tbHunspellAffixFile";
             this.tbHunspellAffixFile.Size = new System.Drawing.Size(608, 20);
             this.tbHunspellAffixFile.TabIndex = 33;
@@ -1928,7 +1936,7 @@
             // lbHunspellAffixFile
             // 
             this.lbHunspellAffixFile.AutoSize = true;
-            this.lbHunspellAffixFile.Location = new System.Drawing.Point(3, 107);
+            this.lbHunspellAffixFile.Location = new System.Drawing.Point(6, 167);
             this.lbHunspellAffixFile.Name = "lbHunspellAffixFile";
             this.lbHunspellAffixFile.Size = new System.Drawing.Size(128, 13);
             this.lbHunspellAffixFile.TabIndex = 32;
@@ -1937,7 +1945,7 @@
             // btHunspellDictionary
             // 
             this.btHunspellDictionary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btHunspellDictionary.Location = new System.Drawing.Point(620, 77);
+            this.btHunspellDictionary.Location = new System.Drawing.Point(623, 143);
             this.btHunspellDictionary.Name = "btHunspellDictionary";
             this.btHunspellDictionary.Size = new System.Drawing.Size(31, 20);
             this.btHunspellDictionary.TabIndex = 31;
@@ -1949,7 +1957,7 @@
             // 
             this.tbHunspellDictionary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbHunspellDictionary.Location = new System.Drawing.Point(6, 78);
+            this.tbHunspellDictionary.Location = new System.Drawing.Point(9, 144);
             this.tbHunspellDictionary.Name = "tbHunspellDictionary";
             this.tbHunspellDictionary.Size = new System.Drawing.Size(608, 20);
             this.tbHunspellDictionary.TabIndex = 4;
@@ -1957,7 +1965,7 @@
             // lbHunspellDictionary
             // 
             this.lbHunspellDictionary.AutoSize = true;
-            this.lbHunspellDictionary.Location = new System.Drawing.Point(3, 55);
+            this.lbHunspellDictionary.Location = new System.Drawing.Point(6, 128);
             this.lbHunspellDictionary.Name = "lbHunspellDictionary";
             this.lbHunspellDictionary.Size = new System.Drawing.Size(154, 13);
             this.lbHunspellDictionary.TabIndex = 2;
@@ -1966,7 +1974,7 @@
             // cbSpellCheckInUse
             // 
             this.cbSpellCheckInUse.AutoSize = true;
-            this.cbSpellCheckInUse.Location = new System.Drawing.Point(6, 8);
+            this.cbSpellCheckInUse.Location = new System.Drawing.Point(9, 8);
             this.cbSpellCheckInUse.Name = "cbSpellCheckInUse";
             this.cbSpellCheckInUse.Size = new System.Drawing.Size(116, 17);
             this.cbSpellCheckInUse.TabIndex = 1;
@@ -2225,6 +2233,96 @@
             this.tabUrls.Text = "URL detection";
             this.tabUrls.UseVisualStyleBackColor = true;
             // 
+            // tlpUrlColors
+            // 
+            this.tlpUrlColors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tlpUrlColors.ColumnCount = 4;
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpUrlColors.Controls.Add(this.lbUrlTextColor, 0, 0);
+            this.tlpUrlColors.Controls.Add(this.btUrlTextColor, 1, 0);
+            this.tlpUrlColors.Controls.Add(this.lbUrlIndicatorColor, 2, 0);
+            this.tlpUrlColors.Controls.Add(this.btUrlIndicatorColor, 3, 0);
+            this.tlpUrlColors.Location = new System.Drawing.Point(0, 66);
+            this.tlpUrlColors.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpUrlColors.Name = "tlpUrlColors";
+            this.tlpUrlColors.RowCount = 1;
+            this.tlpUrlColors.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpUrlColors.Size = new System.Drawing.Size(654, 29);
+            this.tlpUrlColors.TabIndex = 65;
+            // 
+            // lbUrlTextColor
+            // 
+            this.lbUrlTextColor.AutoSize = true;
+            this.lbUrlTextColor.Location = new System.Drawing.Point(3, 0);
+            this.lbUrlTextColor.Name = "lbUrlTextColor";
+            this.lbUrlTextColor.Size = new System.Drawing.Size(78, 13);
+            this.lbUrlTextColor.TabIndex = 49;
+            this.lbUrlTextColor.Text = "URL text color:";
+            // 
+            // btUrlTextColor
+            // 
+            this.btUrlTextColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUrlTextColor.Location = new System.Drawing.Point(216, 0);
+            this.btUrlTextColor.Margin = new System.Windows.Forms.Padding(0);
+            this.btUrlTextColor.Name = "btUrlTextColor";
+            this.btUrlTextColor.Size = new System.Drawing.Size(111, 23);
+            this.btUrlTextColor.TabIndex = 48;
+            this.btUrlTextColor.UseVisualStyleBackColor = true;
+            this.btUrlTextColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // lbUrlIndicatorColor
+            // 
+            this.lbUrlIndicatorColor.AutoSize = true;
+            this.lbUrlIndicatorColor.Location = new System.Drawing.Point(330, 0);
+            this.lbUrlIndicatorColor.Name = "lbUrlIndicatorColor";
+            this.lbUrlIndicatorColor.Size = new System.Drawing.Size(101, 13);
+            this.lbUrlIndicatorColor.TabIndex = 51;
+            this.lbUrlIndicatorColor.Text = "URL indicator color:";
+            // 
+            // btUrlIndicatorColor
+            // 
+            this.btUrlIndicatorColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btUrlIndicatorColor.Location = new System.Drawing.Point(543, 0);
+            this.btUrlIndicatorColor.Margin = new System.Windows.Forms.Padding(0);
+            this.btUrlIndicatorColor.Name = "btUrlIndicatorColor";
+            this.btUrlIndicatorColor.Size = new System.Drawing.Size(111, 23);
+            this.btUrlIndicatorColor.TabIndex = 50;
+            this.btUrlIndicatorColor.UseVisualStyleBackColor = true;
+            this.btUrlIndicatorColor.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
+            // nudURLUseAutoEllipsis
+            // 
+            this.nudURLUseAutoEllipsis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.nudURLUseAutoEllipsis.Location = new System.Drawing.Point(552, 209);
+            this.nudURLUseAutoEllipsis.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.nudURLUseAutoEllipsis.Name = "nudURLUseAutoEllipsis";
+            this.nudURLUseAutoEllipsis.Size = new System.Drawing.Size(102, 20);
+            this.nudURLUseAutoEllipsis.TabIndex = 64;
+            this.nudURLUseAutoEllipsis.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudURLUseAutoEllipsis.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
+            // cbURLUseAutoEllipsis
+            // 
+            this.cbURLUseAutoEllipsis.AutoSize = true;
+            this.cbURLUseAutoEllipsis.Location = new System.Drawing.Point(6, 210);
+            this.cbURLUseAutoEllipsis.Name = "cbURLUseAutoEllipsis";
+            this.cbURLUseAutoEllipsis.Size = new System.Drawing.Size(283, 17);
+            this.cbURLUseAutoEllipsis.TabIndex = 63;
+            this.cbURLUseAutoEllipsis.Text = "Use auto-ellipsis (...) an URLs longer than (characters):";
+            this.cbURLUseAutoEllipsis.UseVisualStyleBackColor = true;
+            // 
             // btUrlDetectDefaults
             // 
             this.btUrlDetectDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -2330,46 +2428,6 @@
             this.cmbUrlIndicatorStyle.TabIndex = 52;
             this.cmbUrlIndicatorStyle.SelectedIndexChanged += new System.EventHandler(this.urlStyling_Changed);
             // 
-            // lbUrlIndicatorColor
-            // 
-            this.lbUrlIndicatorColor.AutoSize = true;
-            this.lbUrlIndicatorColor.Location = new System.Drawing.Point(330, 0);
-            this.lbUrlIndicatorColor.Name = "lbUrlIndicatorColor";
-            this.lbUrlIndicatorColor.Size = new System.Drawing.Size(101, 13);
-            this.lbUrlIndicatorColor.TabIndex = 51;
-            this.lbUrlIndicatorColor.Text = "URL indicator color:";
-            // 
-            // btUrlIndicatorColor
-            // 
-            this.btUrlIndicatorColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btUrlIndicatorColor.Location = new System.Drawing.Point(543, 0);
-            this.btUrlIndicatorColor.Margin = new System.Windows.Forms.Padding(0);
-            this.btUrlIndicatorColor.Name = "btUrlIndicatorColor";
-            this.btUrlIndicatorColor.Size = new System.Drawing.Size(111, 23);
-            this.btUrlIndicatorColor.TabIndex = 50;
-            this.btUrlIndicatorColor.UseVisualStyleBackColor = true;
-            this.btUrlIndicatorColor.Click += new System.EventHandler(this.ColorButton_Click);
-            // 
-            // lbUrlTextColor
-            // 
-            this.lbUrlTextColor.AutoSize = true;
-            this.lbUrlTextColor.Location = new System.Drawing.Point(3, 0);
-            this.lbUrlTextColor.Name = "lbUrlTextColor";
-            this.lbUrlTextColor.Size = new System.Drawing.Size(78, 13);
-            this.lbUrlTextColor.TabIndex = 49;
-            this.lbUrlTextColor.Text = "URL text color:";
-            // 
-            // btUrlTextColor
-            // 
-            this.btUrlTextColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btUrlTextColor.Location = new System.Drawing.Point(216, 0);
-            this.btUrlTextColor.Margin = new System.Windows.Forms.Padding(0);
-            this.btUrlTextColor.Name = "btUrlTextColor";
-            this.btUrlTextColor.Size = new System.Drawing.Size(111, 23);
-            this.btUrlTextColor.TabIndex = 48;
-            this.btUrlTextColor.UseVisualStyleBackColor = true;
-            this.btUrlTextColor.Click += new System.EventHandler(this.ColorButton_Click);
-            // 
             // scintillaUrlStyle
             // 
             this.scintillaUrlStyle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -2456,55 +2514,50 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
-            // cbURLUseAutoEllipsis
+            // cbUseCustomSpellCheckingLibrary
             // 
-            this.cbURLUseAutoEllipsis.AutoSize = true;
-            this.cbURLUseAutoEllipsis.Location = new System.Drawing.Point(6, 210);
-            this.cbURLUseAutoEllipsis.Name = "cbURLUseAutoEllipsis";
-            this.cbURLUseAutoEllipsis.Size = new System.Drawing.Size(283, 17);
-            this.cbURLUseAutoEllipsis.TabIndex = 63;
-            this.cbURLUseAutoEllipsis.Text = "Use auto-ellipsis (...) an URLs longer than (characters):";
-            this.cbURLUseAutoEllipsis.UseVisualStyleBackColor = true;
+            this.cbUseCustomSpellCheckingLibrary.AutoSize = true;
+            this.cbUseCustomSpellCheckingLibrary.Location = new System.Drawing.Point(9, 54);
+            this.cbUseCustomSpellCheckingLibrary.Name = "cbUseCustomSpellCheckingLibrary";
+            this.cbUseCustomSpellCheckingLibrary.Size = new System.Drawing.Size(183, 17);
+            this.cbUseCustomSpellCheckingLibrary.TabIndex = 47;
+            this.cbUseCustomSpellCheckingLibrary.Text = "Use custom spell checking library";
+            this.cbUseCustomSpellCheckingLibrary.UseVisualStyleBackColor = true;
             // 
-            // nudURLUseAutoEllipsis
+            // panel1
             // 
-            this.nudURLUseAutoEllipsis.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudURLUseAutoEllipsis.Location = new System.Drawing.Point(552, 209);
-            this.nudURLUseAutoEllipsis.Minimum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this.nudURLUseAutoEllipsis.Name = "nudURLUseAutoEllipsis";
-            this.nudURLUseAutoEllipsis.Size = new System.Drawing.Size(102, 20);
-            this.nudURLUseAutoEllipsis.TabIndex = 64;
-            this.nudURLUseAutoEllipsis.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudURLUseAutoEllipsis.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
+            this.panel1.Controls.Add(this.tbSpellCheckingLibraryNameVersionValue);
+            this.panel1.Controls.Add(this.lbSpellCheckingLibraryNameVersion);
+            this.panel1.Location = new System.Drawing.Point(3, 311);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(657, 229);
+            this.panel1.TabIndex = 48;
             // 
-            // tlpUrlColors
+            // lbSpellCheckingLibraryNameVersion
             // 
-            this.tlpUrlColors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lbSpellCheckingLibraryNameVersion.AutoSize = true;
+            this.lbSpellCheckingLibraryNameVersion.Location = new System.Drawing.Point(3, 0);
+            this.lbSpellCheckingLibraryNameVersion.Name = "lbSpellCheckingLibraryNameVersion";
+            this.lbSpellCheckingLibraryNameVersion.Size = new System.Drawing.Size(110, 13);
+            this.lbSpellCheckingLibraryNameVersion.TabIndex = 0;
+            this.lbSpellCheckingLibraryNameVersion.Text = "Spell checking library:";
+            // 
+            // tbSpellCheckingLibraryNameVersionValue
+            // 
+            this.tbSpellCheckingLibraryNameVersionValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlpUrlColors.ColumnCount = 4;
-            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUrlColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tlpUrlColors.Controls.Add(this.lbUrlTextColor, 0, 0);
-            this.tlpUrlColors.Controls.Add(this.btUrlTextColor, 1, 0);
-            this.tlpUrlColors.Controls.Add(this.lbUrlIndicatorColor, 2, 0);
-            this.tlpUrlColors.Controls.Add(this.btUrlIndicatorColor, 3, 0);
-            this.tlpUrlColors.Location = new System.Drawing.Point(0, 66);
-            this.tlpUrlColors.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpUrlColors.Name = "tlpUrlColors";
-            this.tlpUrlColors.RowCount = 1;
-            this.tlpUrlColors.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpUrlColors.Size = new System.Drawing.Size(654, 29);
-            this.tlpUrlColors.TabIndex = 65;
+            this.tbSpellCheckingLibraryNameVersionValue.BackColor = System.Drawing.SystemColors.Window;
+            this.tbSpellCheckingLibraryNameVersionValue.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbSpellCheckingLibraryNameVersionValue.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.tbSpellCheckingLibraryNameVersionValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSpellCheckingLibraryNameVersionValue.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tbSpellCheckingLibraryNameVersionValue.Location = new System.Drawing.Point(6, 41);
+            this.tbSpellCheckingLibraryNameVersionValue.Name = "tbSpellCheckingLibraryNameVersionValue";
+            this.tbSpellCheckingLibraryNameVersionValue.ReadOnly = true;
+            this.tbSpellCheckingLibraryNameVersionValue.Size = new System.Drawing.Size(506, 13);
+            this.tbSpellCheckingLibraryNameVersionValue.TabIndex = 9;
+            this.tbSpellCheckingLibraryNameVersionValue.TabStop = false;
+            this.tbSpellCheckingLibraryNameVersionValue.Text = "Translation Library, Version 1.0, ";
             // 
             // FormSettings
             // 
@@ -2585,10 +2638,12 @@
             this.gbDate.PerformLayout();
             this.tabUrls.ResumeLayout(false);
             this.tabUrls.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).EndInit();
             this.tlpUrlColors.ResumeLayout(false);
             this.tlpUrlColors.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2786,5 +2841,10 @@
         private System.Windows.Forms.NumericUpDown nudURLUseAutoEllipsis;
         private System.Windows.Forms.CheckBox cbURLUseAutoEllipsis;
         private System.Windows.Forms.TableLayoutPanel tlpUrlColors;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox cbUseCustomSpellCheckingLibrary;
+        private System.Windows.Forms.Label lbSpellCheckingLibraryNameVersion;
+        private System.Windows.Forms.TextBox tbSpellCheckingLibraryNameVersionValue;
+        private System.Windows.Forms.OpenFileDialog odAssembly;
     }
 }

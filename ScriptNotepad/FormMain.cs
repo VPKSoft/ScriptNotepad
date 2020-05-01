@@ -70,6 +70,7 @@ using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Database.Entity.Utility;
 using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
+using ScriptNotepad.Localization.ExternalLibraryLoader;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.ErrorLogger;
@@ -154,6 +155,10 @@ namespace ScriptNotepad
                                                        "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
 
             MigrateDatabase(); // migrate to Entity Framework Code-First database..
+
+            #region TestCode
+            ExternalSpellChecker.LoadSpellCheck(@"C:\Files\GitHub\VoikkoSharp\VoikkoSharpTestApp\bin\Debug", "VoikkoSharp.dll");
+            #endregion
 
             // localize the open file dialog..
             StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
@@ -1451,7 +1456,7 @@ namespace ScriptNotepad
         private void AppendStyleAndSpellChecking(ScintillaTabbedDocument document)
         {
             // ReSharper disable once ObjectCreationAsStatement
-            new TabbedDocumentSpellCheck(document);
+            new TabbedDocumentSpellCheck(document, false);
 
             string fileName = FormSettings.NotepadPlusPlusStyleFile;
 
@@ -2531,7 +2536,7 @@ namespace ScriptNotepad
                     sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
 
                     // ReSharper disable once ObjectCreationAsStatement
-                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument);
+                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument, false);
 
                     // set the misc indicators..
                     SetDocumentMiscIndicators(sttcMain.LastAddedDocument);

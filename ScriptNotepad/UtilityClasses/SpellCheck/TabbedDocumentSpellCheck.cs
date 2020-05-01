@@ -45,7 +45,8 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
         /// Initializes a new instance of the <see cref="TabbedDocumentSpellCheck"/> class.
         /// </summary>
         /// <param name="document">The <see cref="ScintillaTabbedDocument"/> to attach the spell checker.</param>
-        public TabbedDocumentSpellCheck(ScintillaTabbedDocument document)
+        /// <param name="loadDictionaryFiles">Specifies whether the dictionary files should be loaded to the instance.</param>
+        public TabbedDocumentSpellCheck(ScintillaTabbedDocument document, bool loadDictionaryFiles)
         {
             // verify the settings and the fact that the document doesn't already have this instance..
             if (FormSettings.Settings.EditorUseSpellChecking &&
@@ -63,7 +64,8 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                     {
                         MenuIgnoreText = DBLangEngine.GetStatMessage("msgSpellCheckIgnoreWordMenuText",
                             "Ignore word \"{0}\".|A context menu item for spell checking to ignore a word"),
-                        MenuAddToDictionaryText = DBLangEngine.GetStatMessage("msgSpellCheckAddWordToDictionaryText",
+                        MenuAddToDictionaryText = DBLangEngine.GetStatMessage(
+                            "msgSpellCheckAddWordToDictionaryText",
                             "Add word \"{0}\" to the dictionary.|A context menu item for spell checking to add a word to the dictionary"),
                         MenuDictionaryTopItemText = DBLangEngine.GetStatMessage("msgSpellChecking",
                             "Spell checking|A message displayed in a spelling correct menu's top item."),
@@ -73,6 +75,11 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                         ShowAddToDictionaryMenu = true,
                         ScintillaIndicatorColor = FormSettings.Settings.EditorSpellCheckColor,
                     };
+
+                    if (!loadDictionaryFiles)
+                    {
+                        SpellCheck.Dictionary = null;
+                    }
 
                     // add this instance to the document's Tag0 property..
                     document.Tag0 = this;
