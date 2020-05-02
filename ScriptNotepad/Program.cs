@@ -36,6 +36,7 @@ using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.PluginHandling;
+using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.ColorHelpers;
 using ScriptNotepad.UtilityClasses.MiscForms;
@@ -113,6 +114,8 @@ namespace ScriptNotepad
                 new FormDialogRenameNewFile();
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogQuerySortTextStyle();
+                // ReSharper disable once ObjectCreationAsStatement
+                new FormDialogCustomSpellCheckerInfo();
 
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
 

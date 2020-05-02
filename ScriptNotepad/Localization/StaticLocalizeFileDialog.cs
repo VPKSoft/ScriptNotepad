@@ -55,6 +55,26 @@ namespace ScriptNotepad.Localization
         }
 
         /// <summary>
+        /// Localizes a given file dialog and adds the localized XML file filter to it's Filter property.
+        /// </summary>
+        /// <param name="dialog">The file dialog to localize.</param>
+        public static void InitOpenXmlFileDialog(FileDialog dialog)
+        {
+            dialog.Filter = string.Empty;
+            dialog.Filter += DBLangEngine.GetStatMessage("msgeXtensibleMarkupLanguageFile", "eXtensible Markup Language file|*.xml;*.xsml;*.xls;*.xsd;*.kml;*.wsdl;*.xlf;*.xliff|A text in a file dialog indicating eXtensible Markup Language files");
+        }
+
+        /// <summary>
+        /// Localizes a given file dialog and adds the localized custom spell check library file filter (zip) to it's Filter property.
+        /// </summary>
+        /// <param name="dialog">The file dialog to localize.</param>
+        public static void InitOpenSpellCheckerZip(FileDialog dialog)
+        {
+            dialog.Filter = string.Empty;
+            dialog.Filter += DBLangEngine.GetStatMessage("msgCustomSpellCheckerZipFile", "Custom spell check library|*.zip|A text in a file dialog filter to indicate a custom spell checker library in a compressed zip package");
+        }
+
+        /// <summary>
         /// Localizes a given file dialog with a HTML filter.
         /// </summary>
         /// <param name="dialog">The file dialog to localize.</param>

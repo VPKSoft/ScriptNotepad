@@ -29,6 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\ScriptNotepad.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +41,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\ScriptNotepad.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>notepad7.ico</ApplicationIcon>
@@ -83,8 +85,8 @@
     <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.5\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
     </Reference>
-    <Reference Include="SQLite.CodeFirst, Version=1.5.3.29, Culture=neutral, PublicKeyToken=eb96ba0a78d831a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\SQLite.CodeFirst.1.5.3.29\lib\net45\SQLite.CodeFirst.dll</HintPath>
+    <Reference Include="SQLite.CodeFirst, Version=1.6.0.30, Culture=neutral, PublicKeyToken=eb96ba0a78d831a7, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLite.CodeFirst.1.6.0.30\lib\net45\SQLite.CodeFirst.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -129,8 +131,8 @@
     <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.6\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ExternalDictionaryPackage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ExternalDictionaryPackage.1.0.0\lib\net47\VPKSoft.ExternalDictionaryPackage.dll</HintPath>
+    <Reference Include="VPKSoft.ExternalDictionaryPackage, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ExternalDictionaryPackage.1.0.0.2\lib\net47\VPKSoft.ExternalDictionaryPackage.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.LangLib, Version=1.0.1.9, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.LangLib.1.0.1.9\lib\net461\VPKSoft.LangLib.dll</HintPath>
@@ -206,6 +208,12 @@
     <Compile Include="Database\Entity\Utility\ModelHelpers\RecentFileHelper.cs" />
     <Compile Include="Database\Entity\Utility\ModelHelpers\SearchAndReplaceHistoryHelper.cs" />
     <Compile Include="Localization\ExternalLibraryLoader\ExternalSpellChecker.cs" />
+    <Compile Include="Settings\FormDialogCustomSpellCheckerInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\FormDialogCustomSpellCheckerInfo.Designer.cs">
+      <DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="UtilityClasses\DateTimeUtilities\DateTimeHelpers.cs" />
     <Compile Include="UtilityClasses\MenuHelpers\RecentFilesMenuBuilder.cs" />
     <Compile Include="DialogForms\FormDialogQueryJumpLocation.cs">
@@ -431,6 +439,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DialogForms\FormDialogSelectFileTab.resx">
       <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\FormDialogCustomSpellCheckerInfo.resx">
+      <DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UtilityClasses\ColorHelpers\FormPickAColor.resx">
       <DependentUpon>FormPickAColor.cs</DependentUpon>

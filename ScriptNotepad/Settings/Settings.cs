@@ -102,7 +102,6 @@ namespace ScriptNotepad.Settings
                         continue; // ..so do continue..
                     }
 
-
                     try // avoid crashes..
                     {
                         // get the SettingAttribute class instance of the property..
@@ -127,13 +126,13 @@ namespace ScriptNotepad.Settings
                         }
                         else
                         {
-                            if (currentValue == null)
+                            if (currentValue == null && settingAttribute.SettingType != typeof(string))
                             {
                                 continue;
                             }
 
                             propertyInfos[i].SetValue(this,
-                                Convert.ChangeType(conflib[settingAttribute.SettingName, currentValue.ToString()],
+                                Convert.ChangeType(conflib[settingAttribute.SettingName, currentValue?.ToString()],
                                     settingAttribute.SettingType));
                         }
                     }
@@ -396,6 +395,25 @@ namespace ScriptNotepad.Settings
         /// </summary>
         [Setting("editorSpell/dictionaryPath", typeof(string))]
         public string EditorHunspellDictionaryPath { get; set; } = DefaultDirectory("Dictionaries");
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the spell checker should use a custom dictionary (an external assembly) for the spell checking.
+        /// </summary>
+        [Setting("editorSpell/useCustomDictionary", typeof(bool))]
+        public bool EditorSpellUseCustomDictionary { get; set; }
+
+        /// <summary>
+        /// Gets or sets the editor spell custom dictionary (an external assembly) definition file.
+        /// </summary>
+        [Setting("editorSpell/customDictionaryDefinitionFile", typeof(string))]
+        public string EditorSpellCustomDictionaryDefinitionFile { get; set; }
+
+        /// <summary>
+        /// Gets or sets the editor spell custom dictionary install path.
+        /// </summary>
+        [Setting("editorSpell/customDictionaryInstallPath", typeof(string))]
+        public string EditorSpellCustomDictionaryInstallPath { get; set; } =
+            FormSettings.CreateDefaultCustomDictionaryDirectory();
         #endregion
 
         #region UrlDetection

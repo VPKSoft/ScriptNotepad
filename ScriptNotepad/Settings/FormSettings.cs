@@ -44,6 +44,7 @@ using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
 using ScriptNotepad.UtilityClasses.GraphicUtils;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using VPKSoft.ErrorLogger;
+using VPKSoft.ExternalDictionaryPackage;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaUrlDetect;
 using TabDrawMode = ScintillaNET.TabDrawMode;
@@ -119,12 +120,20 @@ namespace ScriptNotepad.Settings
             // localize the dialog filters..
             StaticLocalizeFileDialog.InitOpenHunspellDictionaryDialog(odDictionaryFile);
             StaticLocalizeFileDialog.InitOpenHunspellAffixFileDialog(odAffixFile);
+            StaticLocalizeFileDialog.InitOpenSpellCheckerZip(odSpellCheckerPackage);
+            StaticLocalizeFileDialog.InitOpenXmlFileDialog(odXml);
 
             // create the URL styling class for the Scintilla text box..
             scintillaUrlDetect = new ScintillaUrlDetect(scintillaUrlStyle);
         }
 
         private ScintillaUrlDetect scintillaUrlDetect;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to suspend certain event handler execution to avoid consecutive code execution.
+        /// </summary>
+        // ReSharper disable once UnusedMember.Local
+        private bool SuspendEvents { get; set; }
 
         private class FontFamilyHolder
         {
@@ -351,6 +360,10 @@ namespace ScriptNotepad.Settings
                     encoding.unicodeFailOnInvalidChar);
             }
 
+            // custom spell checker library..
+            cbUseCustomSpellCheckingLibrary.Checked = Settings.EditorSpellUseCustomDictionary;
+            tbSpellCheckingLibraryFile.Text = Settings.EditorSpellCustomDictionaryDefinitionFile;
+
             #region UrlStyle
             cbHighlightUrls.Checked = Settings.HighlightUrls;
             cbStartProcessOnUrlClick.Checked = Settings.StartProcessOnUrlClick;
@@ -541,6 +554,10 @@ namespace ScriptNotepad.Settings
             Settings.EncodingList = 
                 Settings.EncodingStringFromDefinitionList(encodings);
 
+            // custom spell checker library..
+            Settings.EditorSpellUseCustomDictionary = cbUseCustomSpellCheckingLibrary.Checked;
+            Settings.EditorSpellCustomDictionaryDefinitionFile = tbSpellCheckingLibraryFile.Text;
+
             #region UrlStyle
             Settings.HighlightUrls = cbHighlightUrls.Checked;
             Settings.StartProcessOnUrlClick = cbStartProcessOnUrlClick.Checked;
@@ -680,6 +697,7 @@ namespace ScriptNotepad.Settings
         /// <summary>
         /// Creates the default plug-in directory for the software.
         /// </summary>
+        /// <returns>The location of the folder.</returns>
         public static string CreateDefaultPluginDirectory()
         {
             // create a folder for plug-ins if it doesn't exist already.. 
@@ -700,6 +718,32 @@ namespace ScriptNotepad.Settings
                 }
             }
             return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins");
+        }
+
+        /// <summary>
+        /// Creates the default custom dictionary install folder for the software.
+        /// </summary>
+        /// <returns>The location of the folder.</returns>
+        public static string CreateDefaultCustomDictionaryDirectory()
+        {
+            // create a folder for custom dictionaries if it doesn't exist already.. 
+            if (!Directory.Exists(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries")))
+            {
+                try
+                {
+                    // create the folder..
+                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries"));
+
+                    // save the folder in the settings..
+                    Settings.EditorSpellCustomDictionaryInstallPath = Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries");
+                }
+                catch (Exception ex) // a failure so do log it..
+                {
+                    ExceptionLogger.LogError(ex);
+                    return string.Empty;
+                }
+            }
+            return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries");
         }
 
         private void btCommonSelectFolder_Click(object sender, EventArgs e)
@@ -1170,10 +1214,7 @@ namespace ScriptNotepad.Settings
                 }
             }
 
-            if (scintillaUrlDetect == null)
-            {
-                scintillaUrlDetect = new ScintillaUrlDetect(scintillaUrlStyle);
-            }
+            scintillaUrlDetect ??= new ScintillaUrlDetect(scintillaUrlStyle);
 
             scintillaUrlDetect.ScintillaUrlIndicatorColor = btUrlIndicatorColor.BackColor;
             scintillaUrlDetect.ScintillaUrlTextIndicatorColor = btUrlTextColor.BackColor;
@@ -1209,6 +1250,71 @@ namespace ScriptNotepad.Settings
         private void urlStyling_Changed(object sender, EventArgs e)
         {
             ReStyleUrlScintillaBox();
+        }
+
+        private void cbUseCustomSpellCheckingLibrary_CheckedChanged(object sender, EventArgs e)
+        {
+            var checkBox = (CheckBox) sender;
+            pnEditorSpellCustomSetting.Visible = checkBox.Checked;
+            if (checkBox.Checked)
+            {
+                pnEditorSpellCustomSetting.Location = new Point(pnEditorSpellCustomSetting.Location.X,
+                    lbHunspellDictionary.Location.Y);
+            }
+        }
+
+        private void btInstallSpellCheckerFromFile_Click(object sender, EventArgs e)
+        {
+            odSpellCheckerPackage.Title = DBLangEngine.GetMessage("msgDialogSelectCustomSpellChecker",
+                "Select a spell checker library package|A title for an open file dialog to indicate user that the user is selecting a compressed zip file containing an assembly providing custom spell checking functionality");
+
+            if (odSpellCheckerPackage.ShowDialog() == DialogResult.OK)
+            {
+                var zip = odSpellCheckerPackage.FileName;
+                var package = DictionaryPackage.InstallPackage(zip, Settings.EditorSpellCustomDictionaryInstallPath);
+                tbSpellCheckingLibraryFile.Text = package;
+            }
+        }
+
+        private void btRemoveInstalledSpellChecker_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var info = DictionaryPackage.GetXmlDefinitionDataFromDefinitionFile(tbSpellCheckingLibraryFile.Text);
+                var result =
+                    MessageBox.Show(this,
+                    DBLangEngine.GetMessage("msgQueryDeleteSpellCheckLibrary",
+                        "Really remove spell check library '{0}' ({1}) ?", info.name, info.lib),
+                    DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog"),
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if (result == DialogResult.Yes)
+                {
+                    var deletePath = Path.GetDirectoryName(tbSpellCheckingLibraryFile.Text);
+                    if (Directory.Exists(deletePath))
+                    {
+                        Directory.Delete(deletePath, true);
+                    }
+
+                    tbSpellCheckingLibraryFile.Text =
+                        DBLangEngine.GetMessage("msgNA", "N/A|A message indicating a none value");
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogger.LogError(ex);
+            }
+        }
+
+        private void tbSpellCheckingLibraryFile_TextChanged(object sender, EventArgs e)
+        {
+            var textBox = (TextBox) sender;
+            textBox.ForeColor = File.Exists(textBox.Text) ? Color.Black : Color.Red;
+            btRemoveInstalledSpellChecker.Enabled = File.Exists(textBox.Text);
+        }
+
+        private void pbAbout_Click(object sender, EventArgs e)
+        {
+            FormDialogCustomSpellCheckerInfo.ShowDialog(this, tbSpellCheckingLibraryFile.Text);
         }
     }
 }

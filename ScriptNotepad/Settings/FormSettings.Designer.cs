@@ -154,6 +154,13 @@
             this.lbBadBraceColor = new System.Windows.Forms.Label();
             this.btBraceHighlightBackgroundColor = new System.Windows.Forms.Button();
             this.tabSpellCheck = new System.Windows.Forms.TabPage();
+            this.pnEditorSpellCustomSetting = new System.Windows.Forms.Panel();
+            this.btRemoveInstalledSpellChecker = new System.Windows.Forms.Button();
+            this.btInstallSpellCheckerFromFile = new System.Windows.Forms.Button();
+            this.pbAbout = new System.Windows.Forms.PictureBox();
+            this.tbSpellCheckingLibraryFile = new System.Windows.Forms.TextBox();
+            this.lbSpellCheckingLibraryNameVersion = new System.Windows.Forms.Label();
+            this.cbUseCustomSpellCheckingLibrary = new System.Windows.Forms.CheckBox();
             this.cbSpellCheckInShellContext = new System.Windows.Forms.CheckBox();
             this.cbSpellCheckInUseNewFiles = new System.Windows.Forms.CheckBox();
             this.cmbInstalledDictionaries = new System.Windows.Forms.ComboBox();
@@ -220,11 +227,9 @@
             this.odAffixFile = new System.Windows.Forms.OpenFileDialog();
             this.fdEditorFont = new System.Windows.Forms.FontDialog();
             this.tbRestartNote = new System.Windows.Forms.TextBox();
-            this.cbUseCustomSpellCheckingLibrary = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lbSpellCheckingLibraryNameVersion = new System.Windows.Forms.Label();
             this.odAssembly = new System.Windows.Forms.OpenFileDialog();
-            this.tbSpellCheckingLibraryNameVersionValue = new System.Windows.Forms.TextBox();
+            this.odXml = new System.Windows.Forms.OpenFileDialog();
+            this.odSpellCheckerPackage = new System.Windows.Forms.OpenFileDialog();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -259,6 +264,8 @@
             this.gbUseBraceMatching.SuspendLayout();
             this.gbBraceFontStyle.SuspendLayout();
             this.tabSpellCheck.SuspendLayout();
+            this.pnEditorSpellCustomSetting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAbout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).BeginInit();
             this.tabDateAndTime.SuspendLayout();
             this.gbDate.SuspendLayout();
@@ -266,7 +273,6 @@
             this.tlpUrlColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMain
@@ -1766,7 +1772,7 @@
             // tabSpellCheck
             // 
             this.tabSpellCheck.BackColor = System.Drawing.SystemColors.Window;
-            this.tabSpellCheck.Controls.Add(this.panel1);
+            this.tabSpellCheck.Controls.Add(this.pnEditorSpellCustomSetting);
             this.tabSpellCheck.Controls.Add(this.cbUseCustomSpellCheckingLibrary);
             this.tabSpellCheck.Controls.Add(this.cbSpellCheckInShellContext);
             this.tabSpellCheck.Controls.Add(this.cbSpellCheckInUseNewFiles);
@@ -1792,6 +1798,90 @@
             this.tabSpellCheck.Size = new System.Drawing.Size(660, 371);
             this.tabSpellCheck.TabIndex = 3;
             this.tabSpellCheck.Text = "Spell checking";
+            // 
+            // pnEditorSpellCustomSetting
+            // 
+            this.pnEditorSpellCustomSetting.Controls.Add(this.btRemoveInstalledSpellChecker);
+            this.pnEditorSpellCustomSetting.Controls.Add(this.btInstallSpellCheckerFromFile);
+            this.pnEditorSpellCustomSetting.Controls.Add(this.pbAbout);
+            this.pnEditorSpellCustomSetting.Controls.Add(this.tbSpellCheckingLibraryFile);
+            this.pnEditorSpellCustomSetting.Controls.Add(this.lbSpellCheckingLibraryNameVersion);
+            this.pnEditorSpellCustomSetting.Location = new System.Drawing.Point(3, 311);
+            this.pnEditorSpellCustomSetting.Name = "pnEditorSpellCustomSetting";
+            this.pnEditorSpellCustomSetting.Size = new System.Drawing.Size(657, 229);
+            this.pnEditorSpellCustomSetting.TabIndex = 48;
+            this.pnEditorSpellCustomSetting.Visible = false;
+            // 
+            // btRemoveInstalledSpellChecker
+            // 
+            this.btRemoveInstalledSpellChecker.Location = new System.Drawing.Point(87, 35);
+            this.btRemoveInstalledSpellChecker.Name = "btRemoveInstalledSpellChecker";
+            this.btRemoveInstalledSpellChecker.Size = new System.Drawing.Size(75, 23);
+            this.btRemoveInstalledSpellChecker.TabIndex = 52;
+            this.btRemoveInstalledSpellChecker.Text = "Remove";
+            this.btRemoveInstalledSpellChecker.UseVisualStyleBackColor = true;
+            this.btRemoveInstalledSpellChecker.Click += new System.EventHandler(this.btRemoveInstalledSpellChecker_Click);
+            // 
+            // btInstallSpellCheckerFromFile
+            // 
+            this.btInstallSpellCheckerFromFile.Location = new System.Drawing.Point(6, 35);
+            this.btInstallSpellCheckerFromFile.Name = "btInstallSpellCheckerFromFile";
+            this.btInstallSpellCheckerFromFile.Size = new System.Drawing.Size(75, 23);
+            this.btInstallSpellCheckerFromFile.TabIndex = 51;
+            this.btInstallSpellCheckerFromFile.Text = "Install...";
+            this.btInstallSpellCheckerFromFile.UseVisualStyleBackColor = true;
+            this.btInstallSpellCheckerFromFile.Click += new System.EventHandler(this.btInstallSpellCheckerFromFile_Click);
+            // 
+            // pbAbout
+            // 
+            this.pbAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbAbout.Image = global::ScriptNotepad.Properties.Resources.About;
+            this.pbAbout.Location = new System.Drawing.Point(630, 12);
+            this.pbAbout.Name = "pbAbout";
+            this.pbAbout.Size = new System.Drawing.Size(21, 20);
+            this.pbAbout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbAbout.TabIndex = 49;
+            this.pbAbout.TabStop = false;
+            this.ttMain.SetToolTip(this.pbAbout, "Display spell checker information");
+            this.pbAbout.Click += new System.EventHandler(this.pbAbout_Click);
+            // 
+            // tbSpellCheckingLibraryFile
+            // 
+            this.tbSpellCheckingLibraryFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSpellCheckingLibraryFile.BackColor = System.Drawing.SystemColors.Window;
+            this.tbSpellCheckingLibraryFile.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbSpellCheckingLibraryFile.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.tbSpellCheckingLibraryFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSpellCheckingLibraryFile.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tbSpellCheckingLibraryFile.Location = new System.Drawing.Point(6, 16);
+            this.tbSpellCheckingLibraryFile.Name = "tbSpellCheckingLibraryFile";
+            this.tbSpellCheckingLibraryFile.ReadOnly = true;
+            this.tbSpellCheckingLibraryFile.Size = new System.Drawing.Size(618, 13);
+            this.tbSpellCheckingLibraryFile.TabIndex = 9;
+            this.tbSpellCheckingLibraryFile.TabStop = false;
+            this.tbSpellCheckingLibraryFile.Text = "N/A";
+            this.tbSpellCheckingLibraryFile.TextChanged += new System.EventHandler(this.tbSpellCheckingLibraryFile_TextChanged);
+            // 
+            // lbSpellCheckingLibraryNameVersion
+            // 
+            this.lbSpellCheckingLibraryNameVersion.AutoSize = true;
+            this.lbSpellCheckingLibraryNameVersion.Location = new System.Drawing.Point(3, 0);
+            this.lbSpellCheckingLibraryNameVersion.Name = "lbSpellCheckingLibraryNameVersion";
+            this.lbSpellCheckingLibraryNameVersion.Size = new System.Drawing.Size(110, 13);
+            this.lbSpellCheckingLibraryNameVersion.TabIndex = 0;
+            this.lbSpellCheckingLibraryNameVersion.Text = "Spell checking library:";
+            // 
+            // cbUseCustomSpellCheckingLibrary
+            // 
+            this.cbUseCustomSpellCheckingLibrary.AutoSize = true;
+            this.cbUseCustomSpellCheckingLibrary.Location = new System.Drawing.Point(9, 54);
+            this.cbUseCustomSpellCheckingLibrary.Name = "cbUseCustomSpellCheckingLibrary";
+            this.cbUseCustomSpellCheckingLibrary.Size = new System.Drawing.Size(183, 17);
+            this.cbUseCustomSpellCheckingLibrary.TabIndex = 47;
+            this.cbUseCustomSpellCheckingLibrary.Text = "Use custom spell checking library";
+            this.cbUseCustomSpellCheckingLibrary.UseVisualStyleBackColor = true;
+            this.cbUseCustomSpellCheckingLibrary.CheckedChanged += new System.EventHandler(this.cbUseCustomSpellCheckingLibrary_CheckedChanged);
             // 
             // cbSpellCheckInShellContext
             // 
@@ -2514,50 +2604,15 @@
             this.tbRestartNote.TabStop = false;
             this.tbRestartNote.Text = "NOTE: Almost all settings require a restart of the software";
             // 
-            // cbUseCustomSpellCheckingLibrary
+            // odXml
             // 
-            this.cbUseCustomSpellCheckingLibrary.AutoSize = true;
-            this.cbUseCustomSpellCheckingLibrary.Location = new System.Drawing.Point(9, 54);
-            this.cbUseCustomSpellCheckingLibrary.Name = "cbUseCustomSpellCheckingLibrary";
-            this.cbUseCustomSpellCheckingLibrary.Size = new System.Drawing.Size(183, 17);
-            this.cbUseCustomSpellCheckingLibrary.TabIndex = 47;
-            this.cbUseCustomSpellCheckingLibrary.Text = "Use custom spell checking library";
-            this.cbUseCustomSpellCheckingLibrary.UseVisualStyleBackColor = true;
+            this.odXml.DefaultExt = "*.xml";
+            this.odXml.Filter = "eXtensible Markup Language files|*.xml";
             // 
-            // panel1
+            // odSpellCheckerPackage
             // 
-            this.panel1.Controls.Add(this.tbSpellCheckingLibraryNameVersionValue);
-            this.panel1.Controls.Add(this.lbSpellCheckingLibraryNameVersion);
-            this.panel1.Location = new System.Drawing.Point(3, 311);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(657, 229);
-            this.panel1.TabIndex = 48;
-            // 
-            // lbSpellCheckingLibraryNameVersion
-            // 
-            this.lbSpellCheckingLibraryNameVersion.AutoSize = true;
-            this.lbSpellCheckingLibraryNameVersion.Location = new System.Drawing.Point(3, 0);
-            this.lbSpellCheckingLibraryNameVersion.Name = "lbSpellCheckingLibraryNameVersion";
-            this.lbSpellCheckingLibraryNameVersion.Size = new System.Drawing.Size(110, 13);
-            this.lbSpellCheckingLibraryNameVersion.TabIndex = 0;
-            this.lbSpellCheckingLibraryNameVersion.Text = "Spell checking library:";
-            // 
-            // tbSpellCheckingLibraryNameVersionValue
-            // 
-            this.tbSpellCheckingLibraryNameVersionValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSpellCheckingLibraryNameVersionValue.BackColor = System.Drawing.SystemColors.Window;
-            this.tbSpellCheckingLibraryNameVersionValue.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSpellCheckingLibraryNameVersionValue.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.tbSpellCheckingLibraryNameVersionValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbSpellCheckingLibraryNameVersionValue.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.tbSpellCheckingLibraryNameVersionValue.Location = new System.Drawing.Point(6, 41);
-            this.tbSpellCheckingLibraryNameVersionValue.Name = "tbSpellCheckingLibraryNameVersionValue";
-            this.tbSpellCheckingLibraryNameVersionValue.ReadOnly = true;
-            this.tbSpellCheckingLibraryNameVersionValue.Size = new System.Drawing.Size(506, 13);
-            this.tbSpellCheckingLibraryNameVersionValue.TabIndex = 9;
-            this.tbSpellCheckingLibraryNameVersionValue.TabStop = false;
-            this.tbSpellCheckingLibraryNameVersionValue.Text = "Translation Library, Version 1.0, ";
+            this.odSpellCheckerPackage.DefaultExt = "*.zip";
+            this.odSpellCheckerPackage.Filter = "Custom spell check library|*.zip";
             // 
             // FormSettings
             // 
@@ -2631,6 +2686,9 @@
             this.gbBraceFontStyle.PerformLayout();
             this.tabSpellCheck.ResumeLayout(false);
             this.tabSpellCheck.PerformLayout();
+            this.pnEditorSpellCustomSetting.ResumeLayout(false);
+            this.pnEditorSpellCustomSetting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAbout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudEditorSpellRecheckInactivity)).EndInit();
             this.tabDateAndTime.ResumeLayout(false);
             this.tabDateAndTime.PerformLayout();
@@ -2642,8 +2700,6 @@
             this.tlpUrlColors.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudURLUseAutoEllipsis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDwellToolTipDelay)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2841,10 +2897,15 @@
         private System.Windows.Forms.NumericUpDown nudURLUseAutoEllipsis;
         private System.Windows.Forms.CheckBox cbURLUseAutoEllipsis;
         private System.Windows.Forms.TableLayoutPanel tlpUrlColors;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnEditorSpellCustomSetting;
         private System.Windows.Forms.CheckBox cbUseCustomSpellCheckingLibrary;
         private System.Windows.Forms.Label lbSpellCheckingLibraryNameVersion;
-        private System.Windows.Forms.TextBox tbSpellCheckingLibraryNameVersionValue;
+        private System.Windows.Forms.TextBox tbSpellCheckingLibraryFile;
         private System.Windows.Forms.OpenFileDialog odAssembly;
+        private System.Windows.Forms.PictureBox pbAbout;
+        private System.Windows.Forms.OpenFileDialog odXml;
+        private System.Windows.Forms.Button btInstallSpellCheckerFromFile;
+        private System.Windows.Forms.OpenFileDialog odSpellCheckerPackage;
+        private System.Windows.Forms.Button btRemoveInstalledSpellChecker;
     }
 }

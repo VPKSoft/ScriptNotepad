@@ -74,6 +74,7 @@ using ScriptNotepad.Localization.ExternalLibraryLoader;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.ErrorLogger;
+using VPKSoft.ExternalDictionaryPackage;
 using VPKSoft.IPC;
 using VPKSoft.LangLib;
 using VPKSoft.MessageHelper;
@@ -156,9 +157,23 @@ namespace ScriptNotepad
 
             MigrateDatabase(); // migrate to Entity Framework Code-First database..
 
-            #region TestCode
-            ExternalSpellChecker.LoadSpellCheck(@"C:\Files\GitHub\VoikkoSharp\VoikkoSharpTestApp\bin\Debug", "VoikkoSharp.dll");
-            #endregion
+            // TODO::Move elsewhere..
+            if (FormSettings.Settings.EditorSpellUseCustomDictionary)
+            {
+                try
+                {
+                    var data = DictionaryPackage.GetXmlDefinitionDataFromDefinitionFile(FormSettings.Settings
+                        .EditorSpellCustomDictionaryDefinitionFile);
+                    ExternalSpellChecker.LoadSpellCheck(Path.GetFullPath(FormSettings.Settings
+                        .EditorSpellCustomDictionaryDefinitionFile), data.lib);
+
+                }
+                catch (Exception ex)
+                {
+                    // log the exception..
+                    ExceptionLogger.LogError(ex);
+                }
+            }
 
             // localize the open file dialog..
             StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
@@ -278,6 +293,8 @@ namespace ScriptNotepad
 
             // create the default directory for the plug-ins if it doesn't exist yet..
             FormSettings.CreateDefaultPluginDirectory();
+            // create the default directory for custom dictionaries if it doesn't exist yet..
+            FormSettings.CreateDefaultCustomDictionaryDirectory();
 
             // localize the about "box"..
             VersionCheck.AboutDialogDisplayDownloadDialog = true; // I want to make it fancy..
@@ -1456,7 +1473,7 @@ namespace ScriptNotepad
         private void AppendStyleAndSpellChecking(ScintillaTabbedDocument document)
         {
             // ReSharper disable once ObjectCreationAsStatement
-            new TabbedDocumentSpellCheck(document, false);
+            new TabbedDocumentSpellCheck(document, !FormSettings.Settings.EditorSpellUseCustomDictionary);
 
             string fileName = FormSettings.NotepadPlusPlusStyleFile;
 
@@ -2536,7 +2553,7 @@ namespace ScriptNotepad
                     sttcMain.LastAddedDocument.Scintilla.EmptyUndoBuffer();
 
                     // ReSharper disable once ObjectCreationAsStatement
-                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument, false);
+                    new TabbedDocumentSpellCheck(sttcMain.LastAddedDocument, !FormSettings.Settings.EditorSpellUseCustomDictionary);
 
                     // set the misc indicators..
                     SetDocumentMiscIndicators(sttcMain.LastAddedDocument);

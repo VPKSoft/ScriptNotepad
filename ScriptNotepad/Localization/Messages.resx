@@ -915,4 +915,13 @@
   <data name="msgStringComparisonRegex" xml:space="preserve">
     <value>Regular expression|A short explanation for a text regular expression comparison</value>
   </data>
+  <data name="msgCustomSpellCheckerZipFile" xml:space="preserve">
+    <value>Custom spell check library|*.zip|A text in a file dialog filter to indicate a custom spell checker library in a compressed zip package</value>
+  </data>
+  <data name="msgDialogSelectCustomSpellChecker" xml:space="preserve">
+    <value>Select a spell checker library package|A title for an open file dialog to indicate user that the user is selecting a compressed zip file containing an assembly providing custom spell checking functionality</value>
+  </data>
+  <data name="msgDialogSelectCustomXmlDefinitionFile" xml:space="preserve">
+    <value>Select a XML file with the definition|A title for an open file dialog to indicate that the user is selecting a XML file containing some custom definition for something...</value>
+  </data>
 </root>
