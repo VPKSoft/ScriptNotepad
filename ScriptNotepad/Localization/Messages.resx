@@ -924,4 +924,10 @@
   <data name="msgDialogSelectCustomXmlDefinitionFile" xml:space="preserve">
     <value>Select a XML file with the definition|A title for an open file dialog to indicate that the user is selecting a XML file containing some custom definition for something...</value>
   </data>
+  <data name="msgDisplaySpellCheckerInfo" xml:space="preserve">
+    <value>Display spell checker information|A too tip for a button to display spell information dialog for a custom spell checker library</value>
+  </data>
+  <data name="msgQueryDeleteSpellCheckLibrary" xml:space="preserve">
+    <value>Really remove spell check library '{0}' ({1}) ?|A message confirming that the user is removing a custom spell checker library</value>
+  </data>
 </root>

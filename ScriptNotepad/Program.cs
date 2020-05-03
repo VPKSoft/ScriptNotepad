@@ -56,6 +56,12 @@ namespace ScriptNotepad
         [STAThread]
         static void Main()
         {
+            if (!Debugger.IsAttached) // this is too efficient, the exceptions aren't caught by the ide :-)
+            {
+                ExceptionLogger.Bind(); // bind before any visual objects are created
+                ExceptionLogger.ApplicationCrashData += ExceptionLogger_ApplicationCrashData;
+            }
+
             // localizeProcess (user wishes to localize the software)..
             Process localizeProcess = VPKSoft.LangLib.Utils.CreateDBLocalizeProcess(Paths.AppInstallDir);
 
@@ -64,16 +70,17 @@ namespace ScriptNotepad
             {
                 // start the DBLocalization.exe and return..
                 localizeProcess.Start();
+
+                ExceptionLogger.LogMessage("Started localize process..");
+
+                if (!Debugger.IsAttached)
+                {
+                    ExceptionLogger.UnBind(); // unbind so the truncate thread is stopped successfully..
+                }
                 return;
             }
 
             Paths.MakeAppSettingsFolder(); // ensure there is an application settings folder..
-
-            if (!Debugger.IsAttached) // this is too efficient, the exceptions aren't caught by the ide :-)
-            {
-                ExceptionLogger.Bind(); // bind before any visual objects are created
-                ExceptionLogger.ApplicationCrashData += ExceptionLogger_ApplicationCrashData;
-            }
 
             // Save languages..
             if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)

@@ -157,23 +157,8 @@ namespace ScriptNotepad
 
             MigrateDatabase(); // migrate to Entity Framework Code-First database..
 
-            // TODO::Move elsewhere..
-            if (FormSettings.Settings.EditorSpellUseCustomDictionary)
-            {
-                try
-                {
-                    var data = DictionaryPackage.GetXmlDefinitionDataFromDefinitionFile(FormSettings.Settings
-                        .EditorSpellCustomDictionaryDefinitionFile);
-                    ExternalSpellChecker.LoadSpellCheck(Path.GetFullPath(FormSettings.Settings
-                        .EditorSpellCustomDictionaryDefinitionFile), data.lib);
-
-                }
-                catch (Exception ex)
-                {
-                    // log the exception..
-                    ExceptionLogger.LogError(ex);
-                }
-            }
+            // load the external spell check library if defined..
+            ExternalSpellChecker.Load();
 
             // localize the open file dialog..
             StaticLocalizeFileDialog.InitFileDialog(odAnyFile);
@@ -2929,11 +2914,11 @@ namespace ScriptNotepad
         {
             try
             {
-                string args = "--localize=\"" +
-                              Path.Combine(
-                                  Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                  "ScriptNotepad",
-                                  "lang.sqlite") + "\"";
+                var localizePath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "ScriptNotepad",
+                    "lang.sqlite");
+                string args = "--localize=\"" + localizePath + "\"";
 
                 Process.Start(Application.ExecutablePath, args);
             }

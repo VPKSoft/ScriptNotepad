@@ -96,6 +96,10 @@ namespace ScriptNotepad.Settings
             ttMain.SetToolTip(pbDefaultFolder,
                 DBLangEngine.GetMessage("msgSetToDefault", "Set to default|A some value is set to default value"));
 
+            ttMain.SetToolTip(pbAbout,
+                DBLangEngine.GetMessage("msgDisplaySpellCheckerInfo", "Display spell checker information|A too tip for a button to display spell information dialog for a custom spell checker library"));
+
+
             // list the translated cultures..
             List<CultureInfo> cultures = DBLangEngine.GetLocalizedCultures();
 
@@ -1284,7 +1288,7 @@ namespace ScriptNotepad.Settings
                 var result =
                     MessageBox.Show(this,
                     DBLangEngine.GetMessage("msgQueryDeleteSpellCheckLibrary",
-                        "Really remove spell check library '{0}' ({1}) ?", info.name, info.lib),
+                        "Really remove spell check library '{0}' ({1}) ?|A message confirming that the user is removing a custom spell checker library", info.name, info.lib),
                     DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog"),
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                 if (result == DialogResult.Yes)

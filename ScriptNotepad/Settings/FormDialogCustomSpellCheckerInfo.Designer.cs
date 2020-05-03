@@ -42,12 +42,14 @@
             this.lbCultureDescriptionNative = new System.Windows.Forms.Label();
             this.tbCultureDescriptionNative = new System.Windows.Forms.TextBox();
             this.lbUrl = new System.Windows.Forms.Label();
-            this.tbUrl = new System.Windows.Forms.TextBox();
             this.lbLibrary = new System.Windows.Forms.Label();
             this.tbLibrary = new System.Windows.Forms.TextBox();
             this.lbSpdxLicenseLink = new System.Windows.Forms.Label();
             this.lbSpdxLicenseLinkValue = new System.Windows.Forms.Label();
             this.btClose = new System.Windows.Forms.Button();
+            this.lbAssemblyVersion = new System.Windows.Forms.Label();
+            this.tbAssemblyVersion = new System.Windows.Forms.TextBox();
+            this.lbUrlValue = new System.Windows.Forms.Label();
             this.tlpSpellCheckerInformation.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,15 +74,18 @@
             this.tlpSpellCheckerInformation.Controls.Add(this.lbCultureDescriptionNative, 0, 6);
             this.tlpSpellCheckerInformation.Controls.Add(this.tbCultureDescriptionNative, 1, 6);
             this.tlpSpellCheckerInformation.Controls.Add(this.lbUrl, 0, 7);
-            this.tlpSpellCheckerInformation.Controls.Add(this.tbUrl, 1, 7);
             this.tlpSpellCheckerInformation.Controls.Add(this.lbLibrary, 0, 1);
             this.tlpSpellCheckerInformation.Controls.Add(this.tbLibrary, 1, 1);
             this.tlpSpellCheckerInformation.Controls.Add(this.lbSpdxLicenseLink, 0, 8);
             this.tlpSpellCheckerInformation.Controls.Add(this.lbSpdxLicenseLinkValue, 1, 8);
-            this.tlpSpellCheckerInformation.Controls.Add(this.btClose, 1, 10);
+            this.tlpSpellCheckerInformation.Controls.Add(this.btClose, 1, 11);
+            this.tlpSpellCheckerInformation.Controls.Add(this.lbAssemblyVersion, 0, 9);
+            this.tlpSpellCheckerInformation.Controls.Add(this.tbAssemblyVersion, 1, 9);
+            this.tlpSpellCheckerInformation.Controls.Add(this.lbUrlValue, 1, 7);
             this.tlpSpellCheckerInformation.Location = new System.Drawing.Point(12, 12);
             this.tlpSpellCheckerInformation.Name = "tlpSpellCheckerInformation";
-            this.tlpSpellCheckerInformation.RowCount = 11;
+            this.tlpSpellCheckerInformation.RowCount = 12;
+            this.tlpSpellCheckerInformation.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpSpellCheckerInformation.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpSpellCheckerInformation.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpSpellCheckerInformation.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -224,17 +229,6 @@
             this.lbUrl.TabIndex = 14;
             this.lbUrl.Text = "Url:";
             // 
-            // tbUrl
-            // 
-            this.tbUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbUrl.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbUrl.Location = new System.Drawing.Point(253, 136);
-            this.tbUrl.Name = "tbUrl";
-            this.tbUrl.ReadOnly = true;
-            this.tbUrl.Size = new System.Drawing.Size(244, 13);
-            this.tbUrl.TabIndex = 15;
-            // 
             // lbLibrary
             // 
             this.lbLibrary.AutoSize = true;
@@ -258,7 +252,7 @@
             // lbSpdxLicenseLink
             // 
             this.lbSpdxLicenseLink.AutoSize = true;
-            this.lbSpdxLicenseLink.Location = new System.Drawing.Point(3, 152);
+            this.lbSpdxLicenseLink.Location = new System.Drawing.Point(3, 146);
             this.lbSpdxLicenseLink.Name = "lbSpdxLicenseLink";
             this.lbSpdxLicenseLink.Size = new System.Drawing.Size(47, 13);
             this.lbSpdxLicenseLink.TabIndex = 19;
@@ -270,7 +264,7 @@
             this.lbSpdxLicenseLinkValue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbSpdxLicenseLinkValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbSpdxLicenseLinkValue.ForeColor = System.Drawing.Color.Blue;
-            this.lbSpdxLicenseLinkValue.Location = new System.Drawing.Point(250, 152);
+            this.lbSpdxLicenseLinkValue.Location = new System.Drawing.Point(250, 146);
             this.lbSpdxLicenseLinkValue.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lbSpdxLicenseLinkValue.Name = "lbSpdxLicenseLinkValue";
             this.lbSpdxLicenseLinkValue.Size = new System.Drawing.Size(10, 13);
@@ -288,6 +282,40 @@
             this.btClose.Text = "Close";
             this.btClose.UseVisualStyleBackColor = true;
             this.btClose.Click += new System.EventHandler(this.btClose_Click);
+            // 
+            // lbAssemblyVersion
+            // 
+            this.lbAssemblyVersion.AutoSize = true;
+            this.lbAssemblyVersion.Location = new System.Drawing.Point(3, 159);
+            this.lbAssemblyVersion.Name = "lbAssemblyVersion";
+            this.lbAssemblyVersion.Size = new System.Drawing.Size(45, 13);
+            this.lbAssemblyVersion.TabIndex = 22;
+            this.lbAssemblyVersion.Text = "Version:";
+            // 
+            // tbAssemblyVersion
+            // 
+            this.tbAssemblyVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbAssemblyVersion.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbAssemblyVersion.Location = new System.Drawing.Point(253, 162);
+            this.tbAssemblyVersion.Name = "tbAssemblyVersion";
+            this.tbAssemblyVersion.ReadOnly = true;
+            this.tbAssemblyVersion.Size = new System.Drawing.Size(244, 13);
+            this.tbAssemblyVersion.TabIndex = 23;
+            // 
+            // lbUrlValue
+            // 
+            this.lbUrlValue.AutoSize = true;
+            this.lbUrlValue.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbUrlValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbUrlValue.ForeColor = System.Drawing.Color.Blue;
+            this.lbUrlValue.Location = new System.Drawing.Point(250, 133);
+            this.lbUrlValue.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.lbUrlValue.Name = "lbUrlValue";
+            this.lbUrlValue.Size = new System.Drawing.Size(10, 13);
+            this.lbUrlValue.TabIndex = 24;
+            this.lbUrlValue.Text = "-";
+            this.lbUrlValue.Click += new System.EventHandler(this.lbUrlValue_Click);
             // 
             // FormDialogCustomSpellCheckerInfo
             // 
@@ -322,11 +350,13 @@
         private System.Windows.Forms.Label lbCultureDescriptionNative;
         private System.Windows.Forms.TextBox tbCultureDescriptionNative;
         private System.Windows.Forms.Label lbUrl;
-        private System.Windows.Forms.TextBox tbUrl;
         private System.Windows.Forms.Label lbLibrary;
         private System.Windows.Forms.TextBox tbLibrary;
         private System.Windows.Forms.Label lbSpdxLicenseLink;
         private System.Windows.Forms.Label lbSpdxLicenseLinkValue;
         private System.Windows.Forms.Button btClose;
+        private System.Windows.Forms.Label lbAssemblyVersion;
+        private System.Windows.Forms.TextBox tbAssemblyVersion;
+        private System.Windows.Forms.Label lbUrlValue;
     }
 }

@@ -134,8 +134,8 @@
     <Reference Include="VPKSoft.ExternalDictionaryPackage, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ExternalDictionaryPackage.1.0.0.2\lib\net47\VPKSoft.ExternalDictionaryPackage.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.LangLib, Version=1.0.1.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.LangLib.1.0.1.9\lib\net461\VPKSoft.LangLib.dll</HintPath>
+    <Reference Include="VPKSoft.LangLib, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.LangLib.1.0.2\lib\net461\VPKSoft.LangLib.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.MessageBoxExtended, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.MessageBoxExtended.1.0.0.8\lib\net47\VPKSoft.MessageBoxExtended.dll</HintPath>
@@ -528,7 +528,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DBLocalization.exe" />
+    <Content Include="DBLocalization.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icons\astonished.ico" />
     <Content Include="Icons\notepad0.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
