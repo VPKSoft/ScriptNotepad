@@ -122,7 +122,9 @@ namespace ScriptNotepad.Localization.ExternalLibraryLoader
             // and append the base path of the original assembly (ie. look in the same dir)
             string filename = args.Name.Split(',')[0] + ".dll".ToLower();
 
-            filename = Path.Combine(@"C:\Files\GitHub\VoikkoSharp\VoikkoSharpTestApp\bin\Debug", filename);
+            filename = Path.Combine(
+                Path.GetDirectoryName(FormSettings.Settings.EditorSpellCustomDictionaryDefinitionFile) ?? string.Empty,
+                filename);
 
             try
             {

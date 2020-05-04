@@ -62,7 +62,7 @@ namespace ScriptNotepad.Localization.Hunspell
             if (HunspellCulture.CultureTypes.HasFlag(CultureTypes.UserCustomCulture) || HunspellCulture.Name == string.Empty)
             {
                 // do a regex math for the Hunspell dictionary file to see if it's file name contains a valid xx_YY or xx-YY culture name..
-                var nameRegex = Regex.Match(DictionaryFile, "\\D{2}(_|-)\\D{2}").Value.Replace('_', '-');
+                var nameRegex = Regex.Match(Path.GetFileName(DictionaryFile), "\\D{2}(_|-)\\D{2}").Value.Replace('_', '-');
 
                 // if the regex match is empty..
                 if (nameRegex == string.Empty)
@@ -71,14 +71,14 @@ namespace ScriptNotepad.Localization.Hunspell
                     nameRegex = Path.GetFileNameWithoutExtension(DictionaryFile);
 
                     // if the file name's length is >1 make the first letter to upper case..
-                    if (nameRegex.Length >= 2)
+                    if (nameRegex != null && nameRegex.Length >= 2)
                     {
                         nameRegex = nameRegex[0].ToString().ToUpperInvariant() + nameRegex.Substring(1);
                     }
                     else
                     {
                         // the file name's length is one characters, so make the whole file name to upper case..
-                        nameRegex = nameRegex.ToUpperInvariant();
+                        nameRegex = nameRegex?.ToUpperInvariant();
                     }
                 }
 
@@ -86,7 +86,7 @@ namespace ScriptNotepad.Localization.Hunspell
                 if (HunspellCulture.ToString() == string.Empty)
                 {
                     // ..return the name gotten using regex and file name..
-                    return nameRegex;
+                    return nameRegex ?? string.Empty;
                 }
                 
                 // otherwise return the CultureInfo instance ToString() with an addition of the name gotten from the file name..
@@ -107,7 +107,7 @@ namespace ScriptNotepad.Localization.Hunspell
             HunspellData result = new HunspellData();
 
             // the files are excepted to be in format i.e. "en_US.dic"..
-            string cultureName = Regex.Match(fileName, "\\D{2}(_|-)\\D{2}").Value;
+            string cultureName = Regex.Match(Path.GetFileName(fileName), "\\D{2}(_|-)\\D{2}").Value;
             cultureName = cultureName.Replace('_', '-');
 
             // get a CultureInfo value for the Hunspell dictionary file..
