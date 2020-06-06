@@ -1,6 +1,6 @@
 # MIT License
 # 
-# Copyright(c) 2019 Petteri Kautonen
+# Copyright(c) 2020 Petteri Kautonen
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ Name "ScriptNotepad"
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)" 
-!define VERSION 1.0.2.2
+!define VERSION 1.0.2.3
 !define COMPANY VPKSoft
 !define URL http://www.vpksoft.net
 
@@ -80,19 +80,19 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE Finnish
 
 # Installer attributes
-OutFile setup_scriptnotepad_1_0_2_2.exe
+OutFile setup_scriptnotepad_1_0_2_3.exe
 InstallDir "$PROGRAMFILES64\ScriptNotepad"
 CRCCheck on
 XPStyle on
 ShowInstDetails hide
-VIProductVersion 1.0.2.2
+VIProductVersion 1.0.2.3
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName "ScriptNotepad installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyWebsite "${URL}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} FileVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} FileDescription "ScriptNotepad"
-VIAddVersionKey /LANG=${LANG_ENGLISH} LegalCopyright "Copyright © VPKSoft 2019"
+VIAddVersionKey /LANG=${LANG_ENGLISH} LegalCopyright "Copyright © VPKSoft 2020"
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails hide
 
