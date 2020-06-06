@@ -67,11 +67,9 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                 if (FormSettings.Settings.AutoDetectEncoding && !encodingOverridden &&
                     (!existsInDatabase || reloadContents))
                 {
-                    using (FileStream fileStream = File.OpenRead(fileName))
-                    {
-                        encoding = DetectEncoding.FromStream(fileStream);
-                        return encoding;
-                    }
+                    using FileStream fileStream = File.OpenRead(fileName);
+                    encoding = DetectEncoding.FromStream(fileStream);
+                    return encoding;
                 }
 
                 if ((FormSettings.Settings.DetectNoBom || overrideDetectBom) && !encodingOverridden &&

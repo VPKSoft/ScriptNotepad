@@ -24,9 +24,13 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
+using UtfUnknown;
 
 namespace ScriptNotepad.UtilityClasses.Encodings
 {
@@ -36,7 +40,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
     // (C): https://en.wikipedia.org/wiki/ISO/IEC_8859-1
     // (C): https://en.wikipedia.org/wiki/Byte_order_mar
     // (C): https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character
-    public class DetectEncoding
+    public class DetectEncoding: ErrorHandlingBase
     {
         /// <summary>
         /// The UTF8 byte order marks.
@@ -181,10 +185,8 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         /// <returns>The detected <see cref="Encoding"/>.</returns>
         public static Encoding FromBytes(byte[] bytes)
         {
-            using (var memoryStream = new MemoryStream(bytes))
-            {
-                return FromStream(memoryStream);
-            }
+            using var memoryStream = new MemoryStream(bytes);
+            return FromStream(memoryStream);
         }
 
         /// <summary>
@@ -194,10 +196,8 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         /// <returns>The detected <see cref="Encoding"/>.</returns>
         public static Encoding FromBytes(List<byte> bytes)
         {
-            using(var memoryStream = new MemoryStream(bytes.ToArray()))
-            {
-                return FromStream(memoryStream);
-            }
+            using var memoryStream = new MemoryStream(bytes.ToArray());
+            return FromStream(memoryStream);
         }
 
         /// <summary>
@@ -207,11 +207,44 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         /// <returns>The detected <see cref="Encoding"/>.</returns>
         public static Encoding FromStream(FileStream stream)
         {
-            using(var memoryStream = new MemoryStream())
+            using var memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            return FromStream(memoryStream);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Encoding"/> from <see cref="UtfUnknown.DetectionResult"/> value.
+        /// </summary>
+        /// <param name="result">The result of the <see cref="UtfUnknown.CharsetDetector.DetectFromStream(Stream)"/> call.</param>
+        /// <returns>The detected encoding.</returns>
+        public static Encoding GetPrimaryFromCharsetDetector(DetectionResult result)
+        {
+            var resultOrdered =
+                result.Details.OrderByDescending(f => f.Confidence).ThenBy(
+                    e => e.Encoding is UTF7Encoding || e.Encoding is UTF8Encoding || e.Encoding is UnicodeEncoding ||
+                         e.Encoding is UTF32Encoding).ToList();
+
+            var encoding = resultOrdered.FirstOrDefault()?.Encoding;
+
+            if (encoding != null)
             {
-                stream.CopyTo(memoryStream);
-                return FromStream(memoryStream);
+                if (encoding is UTF8Encoding)
+                {
+                    return new UTF8Encoding(false);
+                }
+
+                if (encoding is UnicodeEncoding unicodeEncoding)
+                {
+                    return new UnicodeEncoding(unicodeEncoding.IsBigEndian(), false);
+                }
+
+                if (encoding is UTF32Encoding utf32Encoding)
+                {
+                    return new UnicodeEncoding(utf32Encoding.IsBigEndian(), false);
+                }
             }
+
+            return encoding;
         }
 
         /// <summary>
@@ -257,8 +290,24 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                 return new UTF32Encoding(false, true, true);
             }
 
+            try // use the UTF-unknown (C: https://github.com/CharsetDetector/UTF-unknown) library..
+            {
+                stream.Position = 0;
+                var result = CharsetDetector.DetectFromStream(stream);
+                var encoding = GetPrimaryFromCharsetDetector(result);
+                if (encoding != null)
+                {
+                    // US-ASCII seems to be the library default, so use the default instead..
+                    return encoding.CodePage == 20127 ? FallBackEncoding : encoding; 
+                }
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+            }
+
             return FallBackEncoding;
         }
-
     }
 }

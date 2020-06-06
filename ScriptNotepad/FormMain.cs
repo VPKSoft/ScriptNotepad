@@ -74,7 +74,6 @@ using ScriptNotepad.Localization.ExternalLibraryLoader;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.ErrorLogger;
-using VPKSoft.ExternalDictionaryPackage;
 using VPKSoft.IPC;
 using VPKSoft.LangLib;
 using VPKSoft.MessageHelper;

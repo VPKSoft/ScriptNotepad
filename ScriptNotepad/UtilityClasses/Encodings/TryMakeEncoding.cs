@@ -64,57 +64,53 @@ namespace ScriptNotepad.UtilityClasses.Encodings
             bigEndian = false;
             try
             {
-                using (FileStream fileStream = File.OpenRead(fileName))
+                using FileStream fileStream = File.OpenRead(fileName);
+                using MemoryStream memoryStream = new MemoryStream();
+                fileStream.CopyTo(memoryStream);
+
+                // try the UTF8 encoding..
+                var result = TryUtf8Encoding(memoryStream, out encoding, out noBom);
+
+                if (result != null)
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    {
-                        fileStream.CopyTo(memoryStream);
+                    bigEndian = false;
+                    return result;
+                }
 
-                        // try the UTF8 encoding..
-                        var result = TryUtf8Encoding(memoryStream, out encoding, out noBom);
+                // try the UTF16 encoding with LittleEndian..
+                result = TryUtf16Encoding(memoryStream, false, out encoding, out noBom);
 
-                        if (result != null)
-                        {
-                            bigEndian = false;
-                            return result;
-                        }
+                if (result != null)
+                {
+                    bigEndian = false;
+                    return result;
+                }
 
-                        // try the UTF16 encoding with LittleEndian..
-                        result = TryUtf16Encoding(memoryStream, false, out encoding, out noBom);
+                // try the UTF16 encoding with BigEndian..
+                result = TryUtf16Encoding(memoryStream, true, out encoding, out noBom);
 
-                        if (result != null)
-                        {
-                            bigEndian = false;
-                            return result;
-                        }
+                if (result != null)
+                {
+                    bigEndian = true;
+                    return result;
+                }
 
-                        // try the UTF16 encoding with BigEndian..
-                        result = TryUtf16Encoding(memoryStream, true, out encoding, out noBom);
+                // try the UTF32 encoding with LittleEndian..
+                result = TryUtf32Encoding(memoryStream, false, out encoding, out noBom);
 
-                        if (result != null)
-                        {
-                            bigEndian = true;
-                            return result;
-                        }
+                if (result != null)
+                {
+                    bigEndian = false;
+                    return result;
+                }
 
-                        // try the UTF32 encoding with LittleEndian..
-                        result = TryUtf32Encoding(memoryStream, false, out encoding, out noBom);
+                // try the UTF32 encoding with BigEndian..
+                result = TryUtf32Encoding(memoryStream, true, out encoding, out noBom);
 
-                        if (result != null)
-                        {
-                            bigEndian = false;
-                            return result;
-                        }
-
-                        // try the UTF32 encoding with BigEndian..
-                        result = TryUtf32Encoding(memoryStream, true, out encoding, out noBom);
-
-                        if (result != null)
-                        {
-                            bigEndian = true;
-                            return result;
-                        }
-                    }
+                if (result != null)
+                {
+                    bigEndian = true;
+                    return result;
                 }
             }
             catch (Exception ex)
