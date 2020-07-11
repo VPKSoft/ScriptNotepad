@@ -24,12 +24,10 @@ SOFTWARE.
 */
 #endregion
 
-using Microsoft.CSharp;
-using ScriptNotepad.UtilityClasses.CodeDom;
 using System;
-using System.CodeDom.Compiler;
+using VPKSoft.ErrorLogger;
 
-namespace ScriptNotepad
+namespace ScriptNotepad.UtilityClasses.CodeDom
 {
     /// <summary>
     /// A class to run C# script snippets against the contents of a Scintilla document as text.
@@ -40,10 +38,11 @@ namespace ScriptNotepad
         /// <summary>
         /// Initializes a new instance of the <see cref="CsCodeDomScriptRunnerText"/> class.
         /// </summary>
-        public CsCodeDomScriptRunnerText() : base()
+        public CsCodeDomScriptRunnerText()
         {
             CSharpScriptBase =
             string.Join(Environment.NewLine,
+                // ReSharper disable once StringLiteralTypo
                 "#region Usings",
                 "using System;",
                 "using System.Linq;",
@@ -81,12 +80,14 @@ namespace ScriptNotepad
             try
             {
                 // try to run the C# script against the given file contents..
-                object result = CompilerResults.CompiledAssembly.GetType("ManipulateText").GetMethod("Evaluate").Invoke(null, new object[] { fileContents });
+                object result = CompilerResults.CompiledAssembly.GetType("ManipulateText").GetMethod("Evaluate")
+                    ?.Invoke(null, new object[] {fileContents});
                 return result as string; // indicate a success..
             }
-            catch
+            catch (Exception ex)
             {
-                return null; // fail..
+                ExceptionLogger.LogError(ex);
+                return fileContents; // fail..
             }
         }
     }

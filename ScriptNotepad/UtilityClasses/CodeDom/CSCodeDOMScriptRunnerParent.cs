@@ -24,8 +24,10 @@ SOFTWARE.
 */
 #endregion
 
-using Microsoft.CSharp;
+using System;
 using System.CodeDom.Compiler;
+using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
+using VPKSoft.ErrorLogger;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
 {
@@ -108,8 +110,9 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 CompileFailed = false;
                 return CompilerResults; // return the results of the compilation..
             }
-            catch
+            catch (Exception ex)
             {
+                ExceptionLogger.LogError(ex);
                 // set the flag to indicate failed compilation..
                 CompileFailed = true;
                 return CompilerResults; // return the results of the compilation..

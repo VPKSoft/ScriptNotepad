@@ -104,4 +104,5 @@
 * Done? [YES  ] [2020/01/19] Add: Text sorting by sub-string using the custom sorting dialog.
 * Done? [YES  ] [2020/01/23] Add: Text sorting by regular expression using the custom sorting dialog.
 * Done? [N/A  } [2020/05/26] Fix: Multiple modal dialogs might occur if a file is detected to have changed.
-* Done? [N/A  } [2020/05/26] Ignore non-important modal boxes upon application exit (such as reload a file).
+* Done? [N/A  } [2020/05/26] Ignore non-important modal boxes upon session exit (such as reload a file).
+* Done? [YES  } [2020/07/11] Changed CodeDom compiler to Roslyn compiler.

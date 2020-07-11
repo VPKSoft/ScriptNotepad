@@ -27,7 +27,7 @@ Name "ScriptNotepad"
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)" 
-!define VERSION 1.0.2.3
+!define VERSION 1.0.2.4
 !define COMPANY VPKSoft
 !define URL http://www.vpksoft.net
 
@@ -80,12 +80,12 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE Finnish
 
 # Installer attributes
-OutFile setup_scriptnotepad_1_0_2_3.exe
+OutFile setup_scriptnotepad_1_0_2_4.exe
 InstallDir "$PROGRAMFILES64\ScriptNotepad"
 CRCCheck on
 XPStyle on
 ShowInstDetails hide
-VIProductVersion 1.0.2.3
+VIProductVersion 1.0.2.4
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName "ScriptNotepad installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"
@@ -112,8 +112,12 @@ Section -Main SEC0000
 	
 	${nsProcess::Unload}
 	    
-    File /r ..\bin\Release\*.*
+    File /r /x roslyn /x bin ..\bin\Release\*.* 
 	File .\languages.ico
+
+    SetOutPath $INSTDIR\bin\roslyn
+    File /r ..\bin\Release\roslyn\*.* 
+
 		
     SetOutPath "$LOCALAPPDATA\ScriptNotepad"
     File ..\Localization\SQLiteDatabase\lang.sqlite   

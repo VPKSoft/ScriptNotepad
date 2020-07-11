@@ -24,10 +24,9 @@ SOFTWARE.
 */
 #endregion
 
-using Microsoft.CSharp;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using VPKSoft.ErrorLogger;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
 {
@@ -40,10 +39,11 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <summary>
         /// Initializes a new instance of the <see cref="CsCodeDomScriptRunnerLines"/> class.
         /// </summary>
-        public CsCodeDomScriptRunnerLines(): base()
+        public CsCodeDomScriptRunnerLines()
         {
             CSharpScriptBase =
                 string.Join(Environment.NewLine,
+                    // ReSharper disable once StringLiteralTypo
                     "#region Usings",
                     "using System;",
                     "using System.Linq;",
@@ -87,13 +87,15 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             try
             {
                 // try to run the C# script against the given file lines..
-                object result = CompilerResults.CompiledAssembly.GetType("ManipulateLineLines").GetMethod("Evaluate").Invoke(null, new object[] { fileLines });
+                object result = CompilerResults.CompiledAssembly.GetType("ManipulateLineLines").GetMethod("Evaluate")
+                    ?.Invoke(null, new object[] {fileLines});
                 return result as string; // indicate a success..
             }
-            catch
+            catch (Exception ex)
             {
+                ExceptionLogger.LogError(ex);
                 // fail..
-                return null;
+                return string.Concat(fileLines);
             }
         }
     }

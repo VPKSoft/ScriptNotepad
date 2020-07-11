@@ -182,11 +182,13 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             // set the script code from the Scintilla document contents..
             scriptRunnerParent.ScriptCode = scintillaScript.Text;
 
-
-            // loop through the compilation results..
-            foreach (var compilerResult in scriptRunnerParent.CompilerResults.Output)
+            if (scriptRunnerParent?.CompilerResults?.Output != null)
             {
-                tbCompilerResults.Text += compilerResult + Environment.NewLine;
+                // loop through the compilation results..
+                foreach (var compilerResult in scriptRunnerParent.CompilerResults.Output)
+                {
+                    tbCompilerResults.Text += compilerResult + Environment.NewLine;
+                }
             }
 
             // no need to continue if the script compilation failed..
