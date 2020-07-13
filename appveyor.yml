@@ -11,14 +11,14 @@ environment:
   secret_file_salt: N/A
 before_build:
 - cmd: >-
-    nuget restore C:\projects\scriptnotepad\ScriptNotepad.sln
+    nuget restore C:\projects\scriptnotepad\ScriptNotepad.sln -PackagesDirectory C:\projects\scriptnotepad\packages
 
 
-    nuget restore C:\projects\scriptnotepad\PluginTemplate\PluginTemplate.csproj
+    nuget restore C:\projects\scriptnotepad\PluginTemplate\PluginTemplate.csproj -PackagesDirectory C:\projects\scriptnotepad\packages
 
-    nuget restore C:\projects\scriptnotepad\ScriptNotepad\ScriptNotepad.csproj
+    nuget restore C:\projects\scriptnotepad\ScriptNotepad\ScriptNotepad.csproj -PackagesDirectory C:\projects\scriptnotepad\packages
 
-    nuget restore C:\projects\scriptnotepad\ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj
+    nuget restore C:\projects\scriptnotepad\ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj -PackagesDirectory C:\projects\scriptnotepad\packages
 build:
   verbosity: minimal
 after_build:
