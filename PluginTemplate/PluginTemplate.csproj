@@ -80,7 +80,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY /Y "$(TargetPath)" "%25LOCALAPPDATA%25\ScriptNotepad\Plugins" 
+    <PostBuildEvent>::XCOPY /Y "$(TargetPath)" "%25LOCALAPPDATA%25\ScriptNotepad\Plugins" 
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
