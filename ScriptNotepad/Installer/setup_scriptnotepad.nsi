@@ -129,8 +129,8 @@ Section -Main SEC0000
     SetOutPath "$LOCALAPPDATA\ScriptNotepad\Dictionaries\en"
 
 	#replace this folder in order to compile the installer successfully..
-    File C:\Files\GitHub\dictionaries\en\en_US.dic  
-    File C:\Files\GitHub\dictionaries\en\en_US.aff  
+    File ..\..\dictionaries\en\en_US.dic  
+    File ..\..\dictionaries\en\en_US.aff  
 
 	#replace this folder in order to compile the installer successfully..
 	SetOutPath "$LOCALAPPDATA\ScriptNotepad\Notepad-plus-plus-themes"

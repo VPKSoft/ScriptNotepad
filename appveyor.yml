@@ -30,6 +30,17 @@ before_build:
 
 
     appveyor DownloadFile https://www.vpksoft.net/private/utility/NSIS_Plugins/Plugins/x86-unicode/DotNetChecker.dll -FileName "C:\Program Files (x86)\NSIS\Plugins\x86-unicode\DotNetChecker.dll"
+
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\dictionaries
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\dictionaries\en
+
+
+    appveyor DownloadFile https://raw.githubusercontent.com/LibreOffice/dictionaries/master/en/en_US.dic -FileName %APPVEYOR_BUILD_FOLDER%\dictionaries\en\en_US.dic
+
+
+    appveyor DownloadFile https://raw.githubusercontent.com/LibreOffice/dictionaries/master/en/en_US.aff -FileName %APPVEYOR_BUILD_FOLDER%\dictionaries\en\en_US.aff
 build:
   verbosity: minimal
 after_build:
