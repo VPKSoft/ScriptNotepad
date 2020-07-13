@@ -15,6 +15,15 @@ before_build:
     nuget restore %APPVEYOR_BUILD_FOLDER%\ScriptNotepad.sln
 
     appveyor DownloadFile https://www.vpksoft.net/private/utility/DBLocalization.exe -FileName %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\DBLocalization.exe
+
+
+    appveyor DownloadFile https://www.vpksoft.net/private/utility/NSIS_Plugins/Include/nsProcess.nsh -FileName "C:\Program Files (x86)\NSIS\Include\nsProcess.nsh"
+
+
+    appveyor DownloadFile https://www.vpksoft.net/private/utility/NSIS_Plugins/Plugins/x86-ansi/nsProcess.dll -FileName "C:\Program Files (x86)\NSIS\Plugins\x86-ansi\nsProcess.dll"
+
+
+    appveyor DownloadFile https://www.vpksoft.net/private/utility/NSIS_Plugins/Plugins/x86-unicode/nsProcess.dll -FileName "C:\Program Files (x86)\NSIS\Plugins\x86-unicode\nsProcess.dll"
 build:
   verbosity: minimal
 after_build:
