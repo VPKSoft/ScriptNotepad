@@ -22,5 +22,5 @@ after_build:
 
     "c:\Program Files (x86)\NSIS\makensis.exe" %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\Installer\setup_scriptnotepad.nsi
 artifacts:
-- path: setup_scriptnotepad*.exe
+- path: ScriptNotepad\Installer\setup_scriptnotepad*.exe
   name: Executable Installer
