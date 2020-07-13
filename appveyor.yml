@@ -15,8 +15,8 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    del ..\bin\Release\*.pdb
+    del C:\projects\scriptnotepad\ScriptNotepad\bin\Release\*.pdb
 
-    del ..\bin\Release\*.xml
+    del C:\projects\scriptnotepad\ScriptNotepad\bin\Release\*.xml
 
     "c:\Program Files (x86)\NSIS\makensis.exe" C:\projects\scriptnotepad\ScriptNotepad\Installer\setup_scriptnotepad.nsi
