@@ -45,19 +45,19 @@ before_build:
 
     mkdir %APPVEYOR_BUILD_FOLDER%\themes
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Black board.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Black board.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Black board.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Black%20board.xml"
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Choco.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Choco.xml"
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\DansLeRuSH-Dark.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/DansLeRuSH-Dark.xml"
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Deep Black.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Deep Black.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Deep Black.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Deep%20Black.xml"
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Hello Kitty.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Hello Kitty.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Hello Kitty.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Hello%20Kitty.xml"
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\HotFudgeSundae.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/HotFudgeSundae.xml"
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Mono Industrial.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Mono Industrial.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Mono Industrial.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Mono%20Industrial.xml"
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Monokai.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Monokai.xml"
 
@@ -67,9 +67,9 @@ before_build:
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Obsidian.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Obsidian.xml"
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Plastic Code Wrap.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Plastic Code Wrap.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Plastic Code Wrap.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Plastic%20Code%20Wrap.xml"
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Ruby Blue.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Ruby Blue.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Ruby Blue.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Ruby%20Blue.xml"
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Solarized-light.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Solarized-light.xml"
 
@@ -77,13 +77,15 @@ before_build:
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Twilight.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Twilight.xml"
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Vibrant Ink.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Vibrant Ink.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Vibrant Ink.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Vibrant%20Ink.xml"
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Zenburn.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Zenburn.xml"
 
     curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\khaki.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/khaki.xml"
 
-    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\vim Dark Blue.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/vim Dark Blue.xml"
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\vim Dark Blue.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/vim%20Dark%20Blue.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\stylers.model.xml "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/src/stylers.model.xml"
 build:
   verbosity: minimal
 after_build:

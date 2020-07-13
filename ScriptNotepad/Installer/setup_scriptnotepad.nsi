@@ -134,8 +134,8 @@ Section -Main SEC0000
 
 	#replace this folder in order to compile the installer successfully..
 	SetOutPath "$LOCALAPPDATA\ScriptNotepad\Notepad-plus-plus-themes"
-	File /r C:\Files\GitHub\notepad-plus-plus\PowerEditor\installer\themes\*.xml
-	File C:\Files\GitHub\notepad-plus-plus\PowerEditor\src\stylers.model.xml
+	File /r ..\..\themes\*.xml
+	#File C:\Files\GitHub\notepad-plus-plus\PowerEditor\src\stylers.model.xml
    
 	SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\ScriptNotepad.lnk" $INSTDIR\ScriptNotepad.exe	
