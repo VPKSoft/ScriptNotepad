@@ -10,15 +10,7 @@ environment:
     secure: gNV8Ss8XJNaTuYl+m4iMcA==
   secret_file_salt: N/A
 before_build:
-- cmd: >-
-    nuget restore C:\projects\scriptnotepad\ScriptNotepad.sln -PackagesDirectory C:\projects\scriptnotepad\packages
-
-
-    nuget restore C:\projects\scriptnotepad\PluginTemplate\PluginTemplate.csproj -PackagesDirectory C:\projects\scriptnotepad\packages
-
-    nuget restore C:\projects\scriptnotepad\ScriptNotepad\ScriptNotepad.csproj -PackagesDirectory C:\projects\scriptnotepad\packages
-
-    nuget restore C:\projects\scriptnotepad\ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj -PackagesDirectory C:\projects\scriptnotepad\packages
+- cmd: nuget restore C:\projects\scriptnotepad\ScriptNotepad.sln
 build:
   verbosity: minimal
 after_build:
