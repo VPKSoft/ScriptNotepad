@@ -10,7 +10,10 @@ environment:
     secure: gNV8Ss8XJNaTuYl+m4iMcA==
   secret_file_salt: N/A
 before_build:
-- cmd: nuget restore C:\projects\scriptnotepad\ScriptNotepad.sln
+- cmd: >-
+    nuget restore C:\projects\scriptnotepad\ScriptNotepad.sln
+
+    appveyor DownloadFile https://www.vpksoft.net/private/utility/DBLocalization.exe -FileName C:\projects\scriptnotepad\ScriptNotepad\DBLocalization.exe
 build:
   verbosity: minimal
 after_build:
