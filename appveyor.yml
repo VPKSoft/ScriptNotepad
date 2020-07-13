@@ -41,6 +41,49 @@ before_build:
 
 
     appveyor DownloadFile https://raw.githubusercontent.com/LibreOffice/dictionaries/master/en/en_US.aff -FileName %APPVEYOR_BUILD_FOLDER%\dictionaries\en\en_US.aff
+
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\themes
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Black board.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Black board.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Choco.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Choco.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\DansLeRuSH-Dark.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/DansLeRuSH-Dark.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Deep Black.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Deep Black.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Hello Kitty.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Hello Kitty.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\HotFudgeSundae.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/HotFudgeSundae.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Mono Industrial.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Mono Industrial.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Monokai.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Monokai.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\MossyLawn.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/MossyLawn.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Navajo.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Navajo.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Obsidian.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Obsidian.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Plastic Code Wrap.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Plastic Code Wrap.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Ruby Blue.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Ruby Blue.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Solarized-light.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Solarized-light.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Solarized.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Solarized.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Twilight.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Twilight.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Vibrant Ink.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Vibrant Ink.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\Zenburn.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/Zenburn.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\khaki.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/khaki.xml"
+
+    curl -fsS -o "%APPVEYOR_BUILD_FOLDER%\themes\vim Dark Blue.xml" "https://raw.githubusercontent.com/notepad-plus-plus/notepad-plus-plus/master/PowerEditor/installer/themes/vim Dark Blue.xml"
 build:
   verbosity: minimal
 after_build:
