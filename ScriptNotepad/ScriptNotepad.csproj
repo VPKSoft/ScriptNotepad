@@ -76,8 +76,8 @@
     <Reference Include="PropertyChanged, Version=3.2.8.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.2.8\lib\net40\PropertyChanged.dll</HintPath>
     </Reference>
-    <Reference Include="ScintillaDiff, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScintillaDiff.1.0.0.5\lib\net47\ScintillaDiff.dll</HintPath>
+    <Reference Include="ScintillaDiff, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScintillaDiff.1.0.0.6\lib\net47\ScintillaDiff.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
@@ -152,14 +152,14 @@
     <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.1\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.2\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.2.1\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.5.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.5.7\lib\net47\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
     </Reference>
-    <Reference Include="VPKSoft.ScintillaUrlDetect, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaUrlDetect.1.0.0.7\lib\net47\VPKSoft.ScintillaUrlDetect.dll</HintPath>
+    <Reference Include="VPKSoft.ScintillaUrlDetect, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VPKSoft.ScintillaUrlDetect.1.0.0.8\lib\net47\VPKSoft.ScintillaUrlDetect.dll</HintPath>
     </Reference>
     <Reference Include="VPKSoft.SearchText, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VPKSoft.SearchText.1.0.1.7\lib\net47\VPKSoft.SearchText.dll</HintPath>
