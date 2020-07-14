@@ -23,16 +23,16 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\DBLocalization.exe > nul 2>&1
+    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\DBLocalization.exe > nul
 
 
-    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr %timestamp_url_sha256% /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\DBLocalization.exe > nul 2>&1
+    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr %timestamp_url_sha256% /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\DBLocalization.exe > nul
 
 
-    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\ScriptNotepad.exe > nul 2>&1
+    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\ScriptNotepad.exe > nul
 
 
-    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr %timestamp_url_sha256% /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\ScriptNotepad.exe > nul 2>&1
+    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr %timestamp_url_sha256% /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\ScriptNotepad.exe > nul
 
 
     del %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\*.pdb
@@ -50,10 +50,10 @@ after_build:
     "c:\Program Files (x86)\NSIS\makensis.exe" %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\Installer\setup_scriptnotepad.nsi
 
 
-    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\Installer\%NSIS_OUT% > nul 2>&1
+    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\Installer\%NSIS_OUT% > nul
 
 
-    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr %timestamp_url_sha256% /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\Installer\%NSIS_OUT% > nul 2>&1
+    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr %timestamp_url_sha256% /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\Installer\%NSIS_OUT% > nul
 artifacts:
 - path: ScriptNotepad\Installer\setup_scriptnotepad*.exe
   name: Executable Installer
