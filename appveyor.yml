@@ -20,7 +20,7 @@ after_build:
     signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\DBLocalization.exe > nul 2>&1
 
 
-    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr %timestamp_url_sha256% /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\DBLocalization.exe
+    signtool.exe sign /f VPKSoft.pfx /p %cspwd% /fd sha256 /tr http://timestamp.comodoca.com/\?td=sha256 /td sha256 /as /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\DBLocalization.exe
 
 
     signtool.exe sign /f VPKSoft.pfx /p %cspwd% /t http://timestamp.comodoca.com /v %APPVEYOR_BUILD_FOLDER%\ScriptNotepad\bin\Release\ScriptNotepad.exe > nul 2>&1
