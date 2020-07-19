@@ -1,6 +1,8 @@
 # ScriptNotepad
 A tabbed notepad/text/code software with scripting support (C#) to manipulate a file's contents. The software is based on the [ScintillaNET](https://github.com/jacobslusser/ScintillaNET) control.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/73wn4d5cgb3b4qgg?svg=true)](https://ci.appveyor.com/project/VPKSoft/scriptnotepad)
+
 ## Features
 * Support for multiple programming languages for code folding and highlighing.
 * Support for spell checking via Hunspell dictionaries.
@@ -23,7 +25,7 @@ _A script window with a script template_
 ![image](https://user-images.githubusercontent.com/40712699/59549877-ae98cc00-8f6c-11e9-93ec-bc7eb442a821.png)
 
 ## Thanks to
-* [JetBrains](http://www.jetbrains.com) for their open source license(s).
+* [JetBrains](https://www.jetbrains.com/?from=ScriptNotepad) for their open source license(s).
 
 ![JetBrains](http://www.vpksoft.net/site/External/JetBrains/jetbrains.svg)
 * Many others; will be updated...
