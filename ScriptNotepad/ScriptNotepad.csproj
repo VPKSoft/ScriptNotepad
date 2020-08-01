@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
-  <Import Project="..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -47,76 +45,13 @@
     <ApplicationIcon>notepad7.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutocompleteMenu-ScintillaNET, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCompleteMenu-ScintillaNET.1.6.2\lib\net461\AutocompleteMenu-ScintillaNET.dll</HintPath>
-    </Reference>
-    <Reference Include="ColorMinePortable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ColorMinePortable.2.0.1\lib\netstandard2.0\ColorMinePortable.dll</HintPath>
-    </Reference>
-    <Reference Include="DiffPlex, Version=1.6.3.0, Culture=neutral, PublicKeyToken=1d35e91d1bd7bc0f, processorArchitecture=MSIL">
-      <HintPath>..\packages\DiffPlex.1.6.3\lib\net40\DiffPlex.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetZip, Version=1.13.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.13.8\lib\net40\DotNetZip.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-    <Reference Include="Ookii.Dialogs.WinForms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=66aa232afad40158, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ookii.Dialogs.WinForms.1.1.0\lib\net45\Ookii.Dialogs.WinForms.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="PropertyChanged, Version=3.2.8.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
-      <HintPath>..\packages\PropertyChanged.Fody.3.2.8\lib\net40\PropertyChanged.dll</HintPath>
-    </Reference>
-    <Reference Include="ScintillaDiff, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScintillaDiff.1.0.0.6\lib\net47\ScintillaDiff.dll</HintPath>
-    </Reference>
-    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
-    </Reference>
-    <Reference Include="ScintillaNetPrinting, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScintillaNetPrinting.1.0.0.1\lib\net40\ScintillaNetPrinting.dll</HintPath>
-    </Reference>
-    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.5\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLite.CodeFirst, Version=1.6.0.30, Culture=neutral, PublicKeyToken=eb96ba0a78d831a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\SQLite.CodeFirst.1.6.0.30\lib\net45\SQLite.CodeFirst.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.113.1\lib\net46\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.113.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.113.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="System.Design" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -128,59 +63,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UtfUnknown, Version=2.0.0.0, Culture=neutral, PublicKeyToken=90217ce7a23260d4, processorArchitecture=MSIL">
-      <HintPath>..\packages\UTF.Unknown.2.3.0\lib\net40\UtfUnknown.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.ConfLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ConfLib.1.0.1\lib\net461\VPKSoft.ConfLib.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.ErrorLogger, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ErrorLogger.1.0.0.6\lib\net45\VPKSoft.ErrorLogger.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.ExternalDictionaryPackage, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ExternalDictionaryPackage.1.0.0.2\lib\net47\VPKSoft.ExternalDictionaryPackage.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.LangLib, Version=1.0.2.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.LangLib.1.0.2.1\lib\net461\VPKSoft.LangLib.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.MessageBoxExtended, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.MessageBoxExtended.1.0.0.8\lib\net47\VPKSoft.MessageBoxExtended.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.PosLib, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.PosLib.1.0.1.1\lib\net45\VPKSoft.PosLib.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.ScintillaLexers, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaLexers.1.1.1\lib\net45\VPKSoft.ScintillaLexers.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.ScintillaSpellCheck, Version=1.0.2.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaSpellCheck.1.0.2.1\lib\net47\VPKSoft.ScintillaSpellCheck.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.ScintillaTabbedTextControl, Version=1.0.5.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaTabbedTextControl.1.0.5.7\lib\net47\VPKSoft.ScintillaTabbedTextControl.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.ScintillaUrlDetect, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.ScintillaUrlDetect.1.0.0.8\lib\net47\VPKSoft.ScintillaUrlDetect.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.SearchText, Version=1.0.1.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.SearchText.1.0.1.7\lib\net47\VPKSoft.SearchText.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.SpellCheck.ExternalDictionarySource, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.SpellCheck.ExternalDictionarySource.1.0.0.1\lib\net47\VPKSoft.SpellCheck.ExternalDictionarySource.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.Utils, Version=1.0.4.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.Utils.1.0.4.7\lib\net45\VPKSoft.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="VPKSoft.VersionCheck, Version=1.0.1.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VPKSoft.VersionCheck.1.0.1.4\lib\net47\VPKSoft.VersionCheck.dll</HintPath>
-    </Reference>
-    <Reference Include="WeCantSpell.Hunspell, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WeCantSpell.Hunspell.3.0.1\lib\net45\WeCantSpell.Hunspell.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="WPFHexaEditor, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPFHexaEditor.2.0.2\lib\net47\WPFHexaEditor.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Entity\Context\CodeSnippetSeedDataConstants.cs" />
@@ -515,7 +399,6 @@
     <None Include="Installer\DotNetChecker.nsh" />
     <None Include="Installer\make_installer.bat" />
     <None Include="Installer\setup_scriptnotepad.nsi" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -525,8 +408,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resources\EBCDIC-NoSpecialChar.tbl" />
-    <None Include="Resources\EBCDIC.tbl" />
     <None Include="ScriptNotepad.licenseheader" />
     <None Include="WindowsRegistry\OpenWith.reg" />
   </ItemGroup>
@@ -534,7 +415,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DBLocalization.exe" />
     <Content Include="Icons\astonished.ico" />
     <Content Include="Icons\notepad0.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -551,9 +431,6 @@
     <Content Include="Icons\notepad4.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\vpksoft_logo.png" />
-    <Content Include="Resources\download_dialog_localization.txt" />
-    <Content Include="setup_version_maintenance.exe" />
     <None Include="Resources\jump_first.png" />
     <None Include="Resources\jump_last.png" />
     <None Include="Resources\Fast-rewind.png" />
@@ -645,25 +522,94 @@
       <Name>ScriptNotepadOldDatabase</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="ColorMinePortable">
+      <Version>2.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="DotNetZip">
+      <Version>1.13.8</Version>
+    </PackageReference>
+    <PackageReference Include="EntityFramework">
+      <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="Fody">
+      <Version>6.2.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="jnm2.ReferenceAssemblies.net35">
+      <Version>1.0.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <Version>3.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
+      <Version>1.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Ookii.Dialogs.WinForms">
+      <Version>1.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="ScintillaDiff">
+      <Version>1.0.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="ScintillaNetPrinting">
+      <Version>1.0.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="ScriptNotepadPluginBase">
+      <Version>1.0.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="SQLite.CodeFirst">
+      <Version>1.6.0.30</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.113.1</Version>
+    </PackageReference>
+    <PackageReference Include="UTF.Unknown">
+      <Version>2.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.ConfLib">
+      <Version>1.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.ErrorLogger">
+      <Version>1.0.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.ExternalDictionaryPackage">
+      <Version>1.0.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.LangLib">
+      <Version>1.0.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.MessageBoxExtended">
+      <Version>1.0.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.PosLib">
+      <Version>1.0.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.ScintillaSpellCheck">
+      <Version>1.0.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl">
+      <Version>1.0.5.7</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.ScintillaUrlDetect">
+      <Version>1.0.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.SearchText">
+      <Version>1.0.1.7</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.Utils">
+      <Version>1.0.4.7</Version>
+    </PackageReference>
+    <PackageReference Include="VPKSoft.VersionCheck">
+      <Version>1.0.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="WPFHexaEditor">
+      <Version>2.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net47.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net47.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NETFramework.ReferenceAssemblies.net47.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net47.targets'))" />
-    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
-    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Fody.6.2.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.2.0\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
-  </Target>
-  <Import Project="..\packages\Microsoft.NETFramework.ReferenceAssemblies.net47.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net47.targets" Condition="Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net47.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net47.targets')" />
-  <Import Project="..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets" Condition="Exists('..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets')" />
-  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
-  <Import Project="..\packages\Fody.6.2.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.2.0\build\Fody.targets')" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net46\System.Data.SQLite.Core.targets')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
 </Project>

@@ -35,12 +35,6 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
-    </Reference>
-    <Reference Include="ScriptNotepadPluginBase, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScriptNotepadPluginBase.1.0.0.5\lib\net47\ScriptNotepadPluginBase.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -68,7 +62,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="PluginTemplate.licenseheader" />
     <None Include="Resources\VPKSoft.ico" />
   </ItemGroup>
@@ -77,6 +70,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\tab_deli_localization.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ScriptNotepadPluginBase">
+      <Version>1.0.0.5</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
