@@ -584,7 +584,7 @@
       <Version>1.0.5</Version>
     </PackageReference>
     <PackageReference Include="VPKSoft.MessageBoxExtended">
-      <Version>1.0.0.8</Version>
+      <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="VPKSoft.PosLib">
       <Version>1.0.1.1</Version>
