@@ -335,3 +335,5 @@ ASALocalRun/
 
 # generated Wix files
 *.[g].wxs
+*.msi
+/InstallerBaseWixSharp/*.msi
