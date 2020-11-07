@@ -1,0 +1,10 @@
+﻿This is the simple tab-delimited localization file.
+As you can see only the "[]" tags and tab delimited key-value pairs matter for the localization.
+The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+[en-US]
+txtDeleteLocalApplicationData	Delete application data
+txtDeleteApplicationDataQuery	Delete application settings and other data?
+
+[fi-FI]
+txtDeleteLocalApplicationData	Poista sovelluksen tiedot
+txtDeleteApplicationDataQuery	Poista sovelluksen asetukset ja muut tiedot?

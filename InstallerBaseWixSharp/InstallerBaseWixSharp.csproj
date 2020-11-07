@@ -1,0 +1,91 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{C9A243E5-6443-4A00-ACAC-C20A61286264}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>WixSharpSetup</AssemblyName>
+    <TargetFramework>net40</TargetFramework>
+    <AssemblyTitle>InstallerBaseWixSharp</AssemblyTitle>
+    <Product>InstallerBaseWixSharp</Product>
+    <Copyright>Copyright © VPKSoft 2020</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <DocumentationFile>bin\Debug\WixSharpSetup.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DocumentationFile>bin\Release\WixSharpSetup.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Files\FileResources\replace_this_ico.ico</ApplicationIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.vpksoft.net</PackageProjectUrl>
+    <PackageIcon>replace_this_logo.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="*.msi" />    
+    <None Remove="InstallerBaseWixSharp.msi" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WixSharp" Version="1.14.8" />
+    <PackageReference Include="WixSharp.bin" Version="1.14.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Files\Dialogs\AssociationsDialog.cs" />
+    <Compile Update="Files\Dialogs\RunProgramDialog - Copy.Designer.cs">
+      <DependentUpon>RunProgramDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Files\Localization\FormDialogSelectLanguage.cs" />
+    <Compile Update="Files\Localization\FormDialogSelectLanguage.Designer.cs">
+      <DependentUpon>FormDialogSelectLanguage.cs</DependentUpon>
+    </Compile>
+    <None Include="Files\Localization\WixUI_en-US.wxl" />
+    <None Include="Files\Localization\WixUI_fi-FI.wxl" />
+    <None Include="wix\$(ProjectName).g.wxs" />
+    <Compile Update="Files\Dialogs\RunProgramDialog.cs" />
+    <Compile Update="Files\Dialogs\RunProgramDialog.Designer.cs">
+      <DependentUpon>RunProgramDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Files\Dialogs\ProgressDialog.cs" />
+    <Compile Update="Files\Dialogs\ProgressDialog.Designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Files\Dialogs\RunProgramDialog - Copy.resx">
+      <DependentUpon>RunProgramDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Files\Dialogs\RunProgramDialog.resx">
+      <DependentUpon>RunProgramDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Files\Localization\FormDialogSelectLanguage.resx">
+      <DependentUpon>FormDialogSelectLanguage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Files\Dialogs\ProgressDialog.resx">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\install_side.png" />
+    <Content Include="Files\install_top.png" />
+    <Content Include="Files\FileResources\replace_this_ico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Files\FileResources\" />
+    <Folder Include="ApplicationSide\" />
+  </ItemGroup>
+</Project>

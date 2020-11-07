@@ -332,3 +332,6 @@ ASALocalRun/
 *.exe
 /ScriptNotepad/history.txt
 /MigrationBackup
+
+# generated Wix files
+*.[g].wxs

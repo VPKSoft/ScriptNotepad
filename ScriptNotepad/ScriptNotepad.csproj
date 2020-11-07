@@ -1,401 +1,288 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6B770702-6E99-439C-9679-61D048B3B876}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ScriptNotepad</RootNamespace>
-    <AssemblyName>ScriptNotepad</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net47</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <AssemblyTitle>ScriptNotepad</AssemblyTitle>
+    <Company>VPKSoft</Company>
+    <Product>ScriptNotepad</Product>
+    <Description>A tabbed notepad software with scripting support (C#).</Description>
+    <Copyright>Copyright © VPKSoft 2020</Copyright>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\ScriptNotepad.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\ScriptNotepad.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>latest</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>notepad7.ico</ApplicationIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.vpksoft.net/2015-03-31-13-33-28/scriptnotepad</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/VPKSoft/ScriptNotepad</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
+    <PackageTags>notepad script editor</PackageTags>
+    <Version>1.0.3</Version>
+    <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Design" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\Entity\Context\CodeSnippetSeedDataConstants.cs" />
-    <Compile Include="Database\Entity\Context\ScriptNotepadDbContext.cs" />
-    <Compile Include="Database\Entity\Context\ScriptNotepadDbInitializer.cs" />
-    <Compile Include="Database\Entity\Entities\CodeSnippet.cs" />
-    <Compile Include="Database\Entity\Entities\CustomHistory.cs" />
-    <Compile Include="Database\Entity\Entities\FileContentBinary.cs" />
-    <Compile Include="Database\Entity\Entities\FileSave.cs" />
-    <Compile Include="Database\Entity\Entities\MiscellaneousTextEntry.cs" />
-    <Compile Include="Database\Entity\Entities\Plugin.cs" />
-    <Compile Include="Database\Entity\Entities\RecentFile.cs" />
-    <Compile Include="Database\Entity\Entities\SearchAndReplaceHistory.cs" />
-    <Compile Include="Database\Entity\Entities\FileSession.cs" />
-    <Compile Include="Database\Entity\Entities\SoftwareLicense.cs" />
-    <Compile Include="Database\Entity\Enumerations\CodeSnippetLanguage.cs" />
-    <Compile Include="Database\Entity\Enumerations\MiscellaneousTextType.cs" />
-    <Compile Include="Database\Entity\Enumerations\ScriptSnippetType.cs" />
-    <Compile Include="Database\Entity\Enumerations\SearchAndReplaceType.cs" />
-    <Compile Include="Database\Entity\Enumerations\SearchAndReplaceSearchType.cs" />
-    <Compile Include="Database\Entity\IEntity.cs" />
-    <Compile Include="Database\Entity\Model\ModelConfiguration.cs" />
-    <Compile Include="Database\Entity\Utility\AssemblyVersion.cs" />
-    <Compile Include="Database\Entity\Utility\DocumentReload.cs" />
-    <Compile Include="Database\Entity\Utility\EntityConversion.cs" />
-    <Compile Include="Database\Entity\Utility\ModelHelpers\FileHistoryHelper.cs" />
-    <Compile Include="Database\Entity\Utility\ModelHelpers\FileSaveHelper.cs" />
-    <Compile Include="Database\Entity\Utility\ModelHelpers\FileSessionHelper.cs" />
-    <Compile Include="Database\Entity\Utility\ModelHelpers\MiscellaneousTextEntryHelper.cs" />
-    <Compile Include="Database\Entity\Utility\ModelHelpers\PluginHelper.cs" />
-    <Compile Include="Database\Entity\Utility\ModelHelpers\RecentFileHelper.cs" />
-    <Compile Include="Database\Entity\Utility\ModelHelpers\SearchAndReplaceHistoryHelper.cs" />
-    <Compile Include="Localization\ExternalLibraryLoader\ExternalSpellChecker.cs" />
-    <Compile Include="Settings\FormDialogCustomSpellCheckerInfo.cs">
+    <Compile Update="Settings\FormDialogCustomSpellCheckerInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\FormDialogCustomSpellCheckerInfo.Designer.cs">
+    <Compile Update="Settings\FormDialogCustomSpellCheckerInfo.Designer.cs">
       <DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\DateTimeUtilities\DateTimeHelpers.cs" />
-    <Compile Include="UtilityClasses\MenuHelpers\RecentFilesMenuBuilder.cs" />
-    <Compile Include="DialogForms\FormDialogQueryJumpLocation.cs">
+    <Compile Update="DialogForms\FormDialogQueryJumpLocation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogForms\FormDialogQueryJumpLocation.Designer.cs">
+    <Compile Update="DialogForms\FormDialogQueryJumpLocation.Designer.cs">
       <DependentUpon>FormDialogQueryJumpLocation.cs</DependentUpon>
     </Compile>
-    <Compile Include="DialogForms\FormDialogQueryNumber.cs">
+    <Compile Update="DialogForms\FormDialogQueryNumber.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogForms\FormDialogQueryNumber.Designer.cs">
+    <Compile Update="DialogForms\FormDialogQueryNumber.Designer.cs">
       <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
     </Compile>
-    <Compile Include="DialogForms\FormDialogRenameNewFile.cs">
+    <Compile Update="DialogForms\FormDialogRenameNewFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogForms\FormDialogRenameNewFile.Designer.cs">
+    <Compile Update="DialogForms\FormDialogRenameNewFile.Designer.cs">
       <DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="DialogForms\FormDialogSelectFileTab.cs">
+    <Compile Update="DialogForms\FormDialogSelectFileTab.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogForms\FormDialogSelectFileTab.Designer.cs">
+    <Compile Update="DialogForms\FormDialogSelectFileTab.Designer.cs">
       <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="EventHandlerDelegation\FormMainHandlers.cs">
+    <Compile Update="EventHandlerDelegation\FormMainHandlers.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Localization\Hunspell\HunspellData.cs" />
-    <Compile Include="Localization\Hunspell\HunspellDictionaryCrawler.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings\XmlNotepadPlusMarks\MarkColorsHelper.cs" />
-    <Compile Include="UtilityClasses\ApplicationHelpers\ApplicationActivateDeactivate.cs" />
-    <Compile Include="UtilityClasses\ColorHelpers\FormPickAColor.cs">
+    <Compile Update="UtilityClasses\ColorHelpers\FormPickAColor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\ColorHelpers\FormPickAColor.Designer.cs">
+    <Compile Update="UtilityClasses\ColorHelpers\FormPickAColor.Designer.cs">
       <DependentUpon>FormPickAColor.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\Common\StatusStripComboItem.cs">
+    <Compile Update="UtilityClasses\Common\StatusStripComboItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\Encodings\DetectEncoding.cs" />
-    <Compile Include="UtilityClasses\Encodings\EncodingData.cs" />
-    <Compile Include="UtilityClasses\Encodings\EncodingExceptionEventArgs.cs" />
-    <Compile Include="UtilityClasses\Encodings\EncodingHelpers.cs" />
-    <Compile Include="UtilityClasses\Encodings\FileEncoding.cs" />
-    <Compile Include="UtilityClasses\Encodings\TryMakeEncoding.cs" />
-    <Compile Include="UtilityClasses\GraphicUtils\FontFamilyHelpers.cs" />
-    <Compile Include="UtilityClasses\IO\DirectoryCrawler.cs" />
-    <Compile Include="UtilityClasses\IO\DirectoryCrawlerEventArgs.cs" />
-    <Compile Include="UtilityClasses\KeyboardShortcutHelper\KeyboardMultiCombination.cs" />
-    <Compile Include="UtilityClasses\Keyboard\KeyboardHelpers.cs" />
-    <Compile Include="UtilityClasses\Keyboard\KeySendList.ExcludeLicense.cs" />
-    <Compile Include="UtilityClasses\MathUtils\MathUtils.cs" />
-    <Compile Include="UtilityClasses\MenuHelpers\ContextMenuStyles.cs" />
-    <Compile Include="UtilityClasses\MenuHelpers\TabMenuBuilder.cs" />
-    <Compile Include="UtilityClasses\MenuHelpers\WinFormsFormMenuBuilder.cs" />
-    <Compile Include="UtilityClasses\MiscForms\FormFileDiffView.cs">
+    <Compile Update="UtilityClasses\MiscForms\FormFileDiffView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\MiscForms\FormFileDiffView.Designer.cs">
+    <Compile Update="UtilityClasses\MiscForms\FormFileDiffView.Designer.cs">
       <DependentUpon>FormFileDiffView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\ProgrammingLanguages\ProgrammingLanguageHelper.cs" />
-    <Compile Include="UtilityClasses\ProgrammingLanguages\ProgrammingLanguageMenuClickEventArgs.cs" />
-    <Compile Include="UtilityClasses\ScintillaNETUtils\ScintillaContextMenu.cs" />
-    <Compile Include="UtilityClasses\ScintillaUtils\SetStyleBraceMatch.cs" />
-    <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.Designer.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.Designer.cs">
       <DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
     </Compile>
-    <Compile Include="DialogForms\FormDialogQueryEncoding.cs">
+    <Compile Update="DialogForms\FormDialogQueryEncoding.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogForms\FormDialogQueryEncoding.Designer.cs">
+    <Compile Update="DialogForms\FormDialogQueryEncoding.Designer.cs">
       <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gists\MessageHelper.cs" />
-    <Compile Include="IOPermission\FileIOPermission.cs" />
-    <Compile Include="Localization\Forms\FormLocalizationHelper.cs">
+    <Compile Update="Localization\Forms\FormLocalizationHelper.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Localization\Forms\FormLocalizationHelper.Designer.cs">
+    <Compile Update="Localization\Forms\FormLocalizationHelper.Designer.cs">
       <DependentUpon>FormLocalizationHelper.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\CodeDom\FormScript.cs">
+    <Compile Update="UtilityClasses\CodeDom\FormScript.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\CodeDom\FormScript.Designer.cs">
+    <Compile Update="UtilityClasses\CodeDom\FormScript.Designer.cs">
       <DependentUpon>FormScript.cs</DependentUpon>
     </Compile>
-    <Compile Include="DialogForms\FormDialogScriptLoad.cs">
+    <Compile Update="DialogForms\FormDialogScriptLoad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogForms\FormDialogScriptLoad.Designer.cs">
+    <Compile Update="DialogForms\FormDialogScriptLoad.Designer.cs">
       <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
     </Compile>
-    <Compile Include="Localization\StaticLocalizeFileDialog.cs" />
-    <Compile Include="FormHexEdit.cs">
+    <Compile Update="FormHexEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormHexEdit.Designer.cs">
+    <Compile Update="FormHexEdit.Designer.cs">
       <DependentUpon>FormHexEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Localization\StatusStripTexts.cs" />
-    <Compile Include="PluginHandling\FormPluginManage.cs">
+    <Compile Update="PluginHandling\FormPluginManage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PluginHandling\FormPluginManage.Designer.cs">
+    <Compile Update="PluginHandling\FormPluginManage.Designer.cs">
       <DependentUpon>FormPluginManage.cs</DependentUpon>
     </Compile>
-    <Compile Include="PluginHandling\PluginDirectoryRoaming.cs" />
-    <Compile Include="PluginHandling\PluginInitializer.cs" />
-    <Compile Include="Settings\FormSettings.cs">
+    <Compile Update="Settings\FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\FormSettings.Designer.cs">
+    <Compile Update="Settings\FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Test\FormTestThingDialog.cs">
+    <Compile Update="Test\FormTestThingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Test\FormTestThingDialog.Designer.cs">
+    <Compile Update="Test\FormTestThingDialog.Designer.cs">
       <DependentUpon>FormTestThingDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Test\FormTestThings.cs">
+    <Compile Update="Test\FormTestThings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Test\FormTestThings.Designer.cs">
+    <Compile Update="Test\FormTestThings.Designer.cs">
       <DependentUpon>FormTestThings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\Assembly\TestFileIsAssembly.cs" />
-    <Compile Include="UtilityClasses\Clipboard\ClipboardTextHelper.cs" />
-    <Compile Include="UtilityClasses\CodeDom\CsCodeDomScriptRunnerLines.cs" />
-    <Compile Include="UtilityClasses\CodeDom\CsCodeDomScriptRunnerParent.cs" />
-    <Compile Include="UtilityClasses\CodeDom\CsCodeDomScriptRunnerText.cs" />
-    <Compile Include="FormMain.cs">
+    <Compile Update="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormMain.Designer.cs">
+    <Compile Update="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Localization\Messages.Designer.cs">
+    <Compile Update="Localization\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UtilityClasses\Common\DataToolStripMenuItem.cs">
+    <Compile Update="UtilityClasses\Common\DataToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\Encodings\CharacterSets\CharacterSetComboBuilder.cs" />
-    <Compile Include="UtilityClasses\Encodings\CharacterSets\CharacterSetMenuBuilder.cs" />
-    <Compile Include="UtilityClasses\Encodings\CharacterSets\EncodingCharacterSet.cs" />
-    <Compile Include="UtilityClasses\ErrorHandling\ErrorHandlingBase.cs" />
-    <Compile Include="UtilityClasses\ExternalProcessInteraction\ApplicationProcess.cs" />
-    <Compile Include="UtilityClasses\ExternalProcessInteraction\CommandPromptInteraction.cs" />
-    <Compile Include="UtilityClasses\ExternalProcessInteraction\WindowsExplorerInteraction.cs" />
-    <Compile Include="UtilityClasses\LinesAndBinary\FileLineType.cs" />
-    <Compile Include="UtilityClasses\Process\ProcessElevation.cs" />
-    <Compile Include="UtilityClasses\ScintillaHelpers\ScintillaLines.cs" />
-    <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.Designer.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.Designer.cs">
       <DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.Designer.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.Designer.cs">
       <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchResultTree.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\SearchAndReplace\FormSearchResultTree.Designer.cs">
+    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.Designer.cs">
       <DependentUpon>FormSearchResultTree.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\SearchAndReplace\Misc\Highlight.cs" />
-    <Compile Include="UtilityClasses\SearchAndReplace\Misc\SearchResultTreeViewClickEventArgs.cs" />
-    <Compile Include="UtilityClasses\SearchAndReplace\ProgressRequestActionEventArgs.cs" />
-    <Compile Include="UtilityClasses\SearchAndReplace\ScintillaDocumentEventArgs.cs" />
-    <Compile Include="UtilityClasses\SessionHelpers\CloseFormUtils.cs" />
-    <Compile Include="UtilityClasses\SessionHelpers\SessionMenuBuilder.cs" />
-    <Compile Include="UtilityClasses\Session\FormDialogSessionManage.cs">
+    <Compile Update="UtilityClasses\Session\FormDialogSessionManage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\Session\FormDialogSessionManage.Designer.cs">
+    <Compile Update="UtilityClasses\Session\FormDialogSessionManage.Designer.cs">
       <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\SpellCheck\TabbedDocumentSpellCheck.cs" />
-    <Compile Include="UtilityClasses\StreamHelpers\StreamStringHelpers.cs" />
-    <Compile Include="UtilityClasses\TextManipulationUtils\WordWrapToSize.cs" />
-    <Compile Include="UtilityClasses\TextManipulation\DuplicateLines.cs" />
-    <Compile Include="UtilityClasses\TextManipulation\ScintillaLinesToStringList.cs" />
-    <Compile Include="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.cs">
+    <Compile Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.Designer.cs">
+    <Compile Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.Designer.cs">
       <DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\TextManipulation\TextSorting\SortLines.cs" />
-    <Compile Include="UtilityClasses\TextManipulation\StringHelpers.cs" />
-    <EmbeddedResource Include="DialogForms\FormDialogQueryJumpLocation.resx">
+    <EmbeddedResource Update="DialogForms\FormDialogQueryJumpLocation.resx">
       <DependentUpon>FormDialogQueryJumpLocation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DialogForms\FormDialogQueryNumber.resx">
+    <EmbeddedResource Update="DialogForms\FormDialogQueryNumber.resx">
       <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DialogForms\FormDialogRenameNewFile.resx">
+    <EmbeddedResource Update="DialogForms\FormDialogRenameNewFile.resx">
       <DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DialogForms\FormDialogSelectFileTab.resx">
+    <EmbeddedResource Update="DialogForms\FormDialogSelectFileTab.resx">
       <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings\FormDialogCustomSpellCheckerInfo.resx">
+    <EmbeddedResource Update="Settings\FormDialogCustomSpellCheckerInfo.resx">
       <DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\ColorHelpers\FormPickAColor.resx">
+    <EmbeddedResource Update="UtilityClasses\ColorHelpers\FormPickAColor.resx">
       <DependentUpon>FormPickAColor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\MiscForms\FormFileDiffView.resx">
+    <EmbeddedResource Update="UtilityClasses\MiscForms\FormFileDiffView.resx">
       <DependentUpon>FormFileDiffView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.resx">
+    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.resx">
       <DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DialogForms\FormDialogQueryEncoding.resx">
+    <EmbeddedResource Update="DialogForms\FormDialogQueryEncoding.resx">
       <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormHexEdit.resx">
+    <EmbeddedResource Update="FormHexEdit.resx">
       <DependentUpon>FormHexEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\Forms\FormLocalizationHelper.resx">
+    <EmbeddedResource Update="Localization\Forms\FormLocalizationHelper.resx">
       <DependentUpon>FormLocalizationHelper.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormMain.resx">
+    <EmbeddedResource Update="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\CodeDom\FormScript.resx">
+    <EmbeddedResource Update="UtilityClasses\CodeDom\FormScript.resx">
       <DependentUpon>FormScript.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DialogForms\FormDialogScriptLoad.resx">
+    <EmbeddedResource Update="DialogForms\FormDialogScriptLoad.resx">
       <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\Messages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PluginHandling\FormPluginManage.resx">
+    <EmbeddedResource Update="PluginHandling\FormPluginManage.resx">
       <DependentUpon>FormPluginManage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Settings\FormSettings.resx">
+    <EmbeddedResource Update="Settings\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Test\FormTestThingDialog.resx">
+    <EmbeddedResource Update="Test\FormTestThingDialog.resx">
       <DependentUpon>FormTestThingDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Test\FormTestThings.resx">
+    <EmbeddedResource Update="Test\FormTestThings.resx">
       <DependentUpon>FormTestThings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.resx">
+    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.resx">
       <DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormSearchAndReplace.resx">
+    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.resx">
       <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\SearchAndReplace\FormSearchResultTree.resx">
+    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.resx">
       <DependentUpon>FormSearchResultTree.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\Session\FormDialogSessionManage.resx">
+    <EmbeddedResource Update="UtilityClasses\Session\FormDialogSessionManage.resx">
       <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.resx">
+    <EmbeddedResource Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.resx">
       <DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\ScriptNotepad_icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="Installer\DotNetChecker.nsh" />
     <None Include="Installer\make_installer.bat" />
     <None Include="Installer\setup_scriptnotepad.nsi" />
@@ -403,16 +290,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="ScriptNotepad.licenseheader" />
     <None Include="WindowsRegistry\OpenWith.reg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icons\astonished.ico" />
@@ -517,99 +401,44 @@
     <None Include="Resources\New document.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj">
-      <Project>{ffc49136-29ec-41e0-b364-4995f9422a1d}</Project>
-      <Name>ScriptNotepadOldDatabase</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ColorMinePortable">
-      <Version>2.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="DotNetZip">
-      <Version>1.14.0</Version>
-    </PackageReference>
-    <PackageReference Include="EntityFramework">
-      <Version>6.4.4</Version>
-    </PackageReference>
-    <PackageReference Include="Fody">
-      <Version>6.3.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="ColorMinePortable" Version="2.0.1" />
+    <PackageReference Include="DotNetZip" Version="1.14.0" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Fody" Version="6.3.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="jnm2.ReferenceAssemblies.net35">
-      <Version>1.0.1</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <Version>3.6.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
-      <Version>1.0.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="3.6.0" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Ookii.Dialogs.WinForms">
-      <Version>1.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="ScintillaDiff">
-      <Version>1.0.9</Version>
-    </PackageReference>
-    <PackageReference Include="ScintillaNetPrinting">
-      <Version>1.0.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="ScriptNotepadPluginBase">
-      <Version>1.0.0.5</Version>
-    </PackageReference>
-    <PackageReference Include="SQLite.CodeFirst">
-      <Version>1.6.0.30</Version>
-    </PackageReference>
-    <PackageReference Include="System.Data.SQLite">
-      <Version>1.0.113.6</Version>
-    </PackageReference>
-    <PackageReference Include="UTF.Unknown">
-      <Version>2.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.ConfLib">
-      <Version>1.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.ErrorLogger">
-      <Version>1.0.0.6</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.ExternalDictionaryPackage">
-      <Version>1.0.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.LangLib">
-      <Version>1.0.5</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.MessageBoxExtended">
-      <Version>1.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.PosLib">
-      <Version>1.0.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.ScintillaSpellCheck">
-      <Version>1.0.2.1</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl">
-      <Version>1.0.5.7</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.ScintillaUrlDetect">
-      <Version>1.0.0.8</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.SearchText">
-      <Version>1.0.1.7</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.Utils">
-      <Version>1.0.4.7</Version>
-    </PackageReference>
-    <PackageReference Include="VPKSoft.VersionCheck">
-      <Version>1.0.1.4</Version>
-    </PackageReference>
-    <PackageReference Include="WPFHexaEditor">
-      <Version>2.0.3</Version>
-    </PackageReference>
+    <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.1.0" />
+    <PackageReference Include="ScintillaDiff" Version="1.0.9" />
+    <PackageReference Include="ScintillaNetPrinting" Version="1.0.0.1" />
+    <PackageReference Include="ScriptNotepadPluginBase" Version="1.0.0.5" />
+    <PackageReference Include="SQLite.CodeFirst" Version="1.6.0.30" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.6" />
+    <PackageReference Include="UTF.Unknown" Version="2.3.0" />
+    <PackageReference Include="VPKSoft.ConfLib" Version="1.0.2" />
+    <PackageReference Include="VPKSoft.ErrorLogger" Version="1.0.0.6" />
+    <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.0.2" />
+    <PackageReference Include="VPKSoft.LangLib" Version="1.0.5" />
+    <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.1" />
+    <PackageReference Include="VPKSoft.PosLib" Version="1.0.1.1" />
+    <PackageReference Include="VPKSoft.ScintillaSpellCheck" Version="1.0.2.1" />
+    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl" Version="1.0.5.7" />
+    <PackageReference Include="VPKSoft.ScintillaUrlDetect" Version="1.0.0.8" />
+    <PackageReference Include="VPKSoft.SearchText" Version="1.0.1.7" />
+    <PackageReference Include="VPKSoft.Utils" Version="1.0.4.7" />
+    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.1.4" />
+    <PackageReference Include="WPFHexaEditor" Version="2.0.3" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Remove="Database\Entity\Entities\FileContent.cs" />
+  </ItemGroup>
 </Project>

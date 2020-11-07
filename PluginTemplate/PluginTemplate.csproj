@@ -1,67 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PluginTemplate</RootNamespace>
-    <AssemblyName>PluginTemplate</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>net47</TargetFramework>
+    <AssemblyTitle>PluginTemplate</AssemblyTitle>
+    <Company>VPKSoft</Company>
+    <Product>PluginTemplate</Product>
+    <Description>A sample plugin for the ScriptNotepad</Description>
+    <Copyright>Copyright © VPKSoft 2020</Copyright>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <LangVersion>latest</LangVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <PostBuildEvent>::XCOPY /Y "$(TargetPath)" "%25LOCALAPPDATA%25\ScriptNotepad\Plugins" 
+</PostBuildEvent>
+    <PostBuildEvent>::XCOPY /Y "$(TargetPath)" "%25LOCALAPPDATA%25\ScriptNotepad\Plugins" 
+</PostBuildEvent>
+    <PostBuildEvent>::XCOPY /Y "$(TargetPath)" "%25LOCALAPPDATA%25\ScriptNotepad\Plugins" 
+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>::XCOPY /Y "$(TargetPath)" "%25LOCALAPPDATA%25\ScriptNotepad\Plugins" 
+</PostBuildEvent>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.vpksoft.net/2015-03-31-13-33-28/scriptnotepad</PackageProjectUrl>
+    <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/VPKSoft/ScriptNotepad</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Version>1.0.3</Version>
+    <PackageTags>ScriptNotepad plugin template sample</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SamplePlugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="..\ScriptNotepad_icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="PluginTemplate.licenseheader" />
     <None Include="Resources\VPKSoft.ico" />
   </ItemGroup>
@@ -72,13 +63,6 @@
     <None Include="Resources\tab_deli_localization.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ScriptNotepadPluginBase">
-      <Version>1.0.0.5</Version>
-    </PackageReference>
+    <PackageReference Include="ScriptNotepadPluginBase" Version="1.0.0.5" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>::XCOPY /Y "$(TargetPath)" "%25LOCALAPPDATA%25\ScriptNotepad\Plugins" 
-</PostBuildEvent>
-  </PropertyGroup>
 </Project>
