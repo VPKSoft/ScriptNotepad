@@ -337,3 +337,4 @@ ASALocalRun/
 *.[g].wxs
 *.msi
 /InstallerBaseWixSharp/*.msi
+/InstallerBaseWixSharp/*.msi

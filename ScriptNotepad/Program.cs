@@ -43,6 +43,7 @@ using ScriptNotepad.UtilityClasses.MiscForms;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
+using VPKSoft.WaitForProcessUtil;
 
 // limit the PropertyChanged to the Settings class (https://github.com/Fody/PropertyChanged)
 [assembly: PropertyChanged.FilterType("ScriptNotepad.Settings.")] 
@@ -54,8 +55,10 @@ namespace ScriptNotepad
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string [] args)
         {
+            WaitForProcess.WaitForProcessArguments(args, 30);
+
             if (!Debugger.IsAttached) // this is too efficient, the exceptions aren't caught by the ide :-)
             {
                 ExceptionLogger.Bind(); // bind before any visual objects are created
@@ -96,7 +99,7 @@ namespace ScriptNotepad
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormHexEdit();
                 // ReSharper disable once ObjectCreationAsStatement
-                new Settings.FormSettings();
+                new FormSettings();
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormPluginManage();
                 // ReSharper disable once ObjectCreationAsStatement
@@ -143,7 +146,6 @@ namespace ScriptNotepad
                 {
                     IpcClientServer ipcClient = new IpcClientServer();
                     ipcClient.CreateClient("localhost", 50670);
-                    string[] args = Environment.GetCommandLineArgs();
 
                     // only send the existing files to the running instance, don't send the executable
                     // file name thus the start from 1..
@@ -177,9 +179,9 @@ namespace ScriptNotepad
             PositionCore.Bind(); // attach the PosLib to the application            
 
             // create a Settings class instance for the settings form..
-            Settings.FormSettings.Settings = new Settings.Settings();
+            FormSettings.Settings = new Settings.Settings();
 
-            DBLangEngine.UseCulture = Settings.FormSettings.Settings.Culture; // set the localization value..
+            DBLangEngine.UseCulture = FormSettings.Settings.Culture; // set the localization value..
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
