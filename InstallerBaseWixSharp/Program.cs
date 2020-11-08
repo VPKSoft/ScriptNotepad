@@ -245,7 +245,13 @@ namespace InstallerBaseWixSharp
                 {
                     if (System.IO.File.Exists(e.Session.Property("RUNEXE")))
                     {
-                        Process.Start(e.Session.Property("RUNEXE"), $"--waitPid {e.Session.Property("PIDPARAM")}");
+                        var startInfo = new ProcessStartInfo(e.Session.Property("RUNEXE"),
+                            $"--waitPid {e.Session.Property("PIDPARAM")}");
+
+                        // start the process as the current user..
+                        startInfo.UseShellExecute = false;
+                        startInfo.LoadUserProfile = true;
+                        Process.Start(startInfo);
                     }
                     else
                     {
