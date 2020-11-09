@@ -91,7 +91,7 @@ namespace InstallerBaseWixSharp
                 new Property("AppName", AppName),
                 new Property("Company", Company))
             {
-                GUID = new Guid("3E320290-4AB2-4DA5-9F90-C3C775EDA03C"),
+                GUID = new Guid("E142C7BA-2A0E-48B1-BB4E-CDC759AEBF91"),
                 ManagedUI = new ManagedUI(),
                 ControlPanelInfo = 
                 {
