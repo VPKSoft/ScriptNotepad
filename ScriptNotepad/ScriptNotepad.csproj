@@ -407,9 +407,6 @@
     <PackageReference Include="ColorMinePortable" Version="2.0.1" />
     <PackageReference Include="DotNetZip" Version="1.14.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="Fody" Version="6.3.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
