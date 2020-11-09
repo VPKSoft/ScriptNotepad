@@ -434,7 +434,7 @@
     <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.1" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.1.1" />
     <PackageReference Include="VPKSoft.ScintillaSpellCheck" Version="1.0.2.1" />
-    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl" Version="1.0.5.7" />
+    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl" Version="1.0.7" />
     <PackageReference Include="VPKSoft.ScintillaUrlDetect" Version="1.0.0.8" />
     <PackageReference Include="VPKSoft.SearchText" Version="1.0.1.7" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.4.7" />
