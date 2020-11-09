@@ -24,11 +24,12 @@ _The main window_
 _A script window with a script template_
 ![image](https://user-images.githubusercontent.com/40712699/59549877-ae98cc00-8f6c-11e9-93ec-bc7eb442a821.png)
 
-## Thanks to
+### Thanks to
 * [JetBrains](https://www.jetbrains.com/?from=ScriptNotepad) for their open source license(s).
+* [![VPKSoft](https://circleci.com/gh/VPKSoft/ScriptNotepad.svg?style=shield)](https://app.circleci.com/pipelines/github/VPKSoft/ScriptNotepad) 
 
-![JetBrains](http://www.vpksoft.net/site/External/JetBrains/jetbrains.svg)
-* Many others; will be updated...
+
+[![JetBrains](http://www.vpksoft.net/site/External/JetBrains/jetbrains.svg)](https://www.jetbrains.com/?from=ScriptNotepad)
 
 ## TODO
 * A lot ;-)
