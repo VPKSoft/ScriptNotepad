@@ -63,6 +63,6 @@
     <None Include="Resources\tab_deli_localization.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ScriptNotepadPluginBase" Version="1.0.0.5" />
+    <PackageReference Include="ScriptNotepadPluginBase" Version="1.0.2" />
   </ItemGroup>
 </Project>

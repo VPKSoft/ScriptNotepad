@@ -418,27 +418,28 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.1.0" />
-    <PackageReference Include="ScintillaDiff" Version="1.0.9" />
-    <PackageReference Include="ScintillaNetPrinting" Version="1.0.1" />
-    <PackageReference Include="ScriptNotepadPluginBase" Version="1.0.2" />
+    <PackageReference Include="ScintillaDiff.SUO" Version="1.0.9" />
+    <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.1" />
+    <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.2" />
     <PackageReference Include="SQLite.CodeFirst" Version="1.6.0.30" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.6" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.6" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
     <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.113" />
+    <PackageReference Include="unofficial.ScintillaNET" Version="3.6.51" />
     <PackageReference Include="UTF.Unknown" Version="2.3.0" />
-    <PackageReference Include="VPKSoft.ConfLib" Version="1.0.2" />
+    <PackageReference Include="VPKSoft.ConfLib" Version="1.0.3" />
     <PackageReference Include="VPKSoft.ErrorLogger" Version="1.0.0.6" />
     <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.0.2" />
     <PackageReference Include="VPKSoft.LangLib" Version="1.0.5" />
     <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.1" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.1.1" />
-    <PackageReference Include="VPKSoft.ScintillaSpellCheck" Version="1.0.2.1" />
-    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl" Version="1.0.5.7" />
-    <PackageReference Include="VPKSoft.ScintillaUrlDetect" Version="1.0.0.8" />
-    <PackageReference Include="VPKSoft.SearchText" Version="1.0.1.7" />
+    <PackageReference Include="VPKSoft.ScintillaSpellCheck.SUO" Version="1.0.3" />
+    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.SUO" Version="1.0.8" />
+    <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.1" />
+    <PackageReference Include="VPKSoft.SearchText" Version="1.0.2" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.4.7" />
-    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.1.4" />
+    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.2" />
     <PackageReference Include="WPFHexaEditor" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
