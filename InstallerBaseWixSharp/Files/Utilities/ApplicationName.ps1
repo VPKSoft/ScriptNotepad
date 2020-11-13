@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 #>
 
-$files = Get-ChildItem -Recurse ..\..\* -Include "*.cs", "*.wxl" -Exclude "*.Designer.cs"
+$files = Get-ChildItem -Recurse ..\..\* -Include "*.cs", "*.wxl" "*.txt" -Exclude "*.Designer.cs"
 
 # English (United States);Finnish (Finland)
 $languages = "0x00000102;0x00000118"; # see the Files\Localization\SupportedLanguages.cs file..

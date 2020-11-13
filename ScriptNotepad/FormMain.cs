@@ -76,6 +76,8 @@ using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
 using VPKSoft.LangLib;
+using VPKSoft.MessageBoxExtended;
+using VPKSoft.MessageBoxExtended.Controls;
 using VPKSoft.MessageHelper;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
@@ -332,6 +334,10 @@ namespace ScriptNotepad
 
             // get the case-sensitivity value from the settings..
             mnuCaseSensitive.Checked = FormSettings.Settings.TextUpperCaseComparison;
+
+            var boxStackContainer = new ToolStripMessageBoxExpandStack {Text = "Open dialogs"};
+            BoxStack = boxStackContainer.MessageBoxExpandStack;
+            tsMain.Items.Add(boxStackContainer);
 
             // the constructor code finalized executing..
             runningConstructor = false;
@@ -1178,39 +1184,41 @@ namespace ScriptNotepad
                     // the changed file from the disk..
                     if (fileSave.ShouldQueryDiskReload && !runningConstructor)
                     {
-                        if (MessageBox.Show(
-                            DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happen", fileSave.FileNameFull),
-                            DBLangEngine.GetMessage("msgFileArbitraryFileChange", "A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded"),
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question,
-                            MessageBoxDefaultButton.Button1) == DialogResult.Yes)
-                        {
-                            // the user answered yes..
-                            sttcMain.SuspendTextChangedEvents = true; // suspend the changed events on the ScintillaTabbedTextControl..
-                            fileSave.ReloadFromDisk(sttcMain.Documents[i]); // reload the file..
-                            sttcMain.SuspendTextChangedEvents = false; // resume the changed events on the ScintillaTabbedTextControl..
+                        var document = sttcMain.Documents[i];
+                        var messageBox = new MessageBoxExtended(DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happen", fileSave.FileNameFull),
+                            DBLangEngine.GetMessage("msgFileArbitraryFileChange", "A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded"), MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Question,
+                            (dialogResult, remember, data) =>
+                            {
+                                if (dialogResult == DialogResultExtended.Yes)
+                                {
+                                    // the user answered yes..
+                                    sttcMain.SuspendTextChangedEvents = true; // suspend the changed events on the ScintillaTabbedTextControl..
+                                    fileSave.ReloadFromDisk(sttcMain.Documents[i]); // reload the file..
+                                    sttcMain.SuspendTextChangedEvents = false; // resume the changed events on the ScintillaTabbedTextControl..
 
-                            // just in case set the tag back..
-                            sttcMain.Documents[i].Tag = fileSave;
+                                    // just in case set the tag back..
+                                    document.Tag = fileSave;
 
-                            // set the flag that the form should be activated after the dialog..
-                            bringToFrontQueued = true;
-                        }
-                        else // the user doesn't want to load the changes made to the document from the file system..
-                        {
-                            // indicate that the query shouldn't happen again..
-                            fileSave.ShouldQueryDiskReload = false;
+                                    // set the flag that the form should be activated after the dialog..
+                                    bringToFrontQueued = true;
+                                }
+                                else // the user doesn't want to load the changes made to the document from the file system..
+                                {
+                                    // indicate that the query shouldn't happen again..
+                                    fileSave.ShouldQueryDiskReload = false;
 
-                            // set the flag that the file's modified date in the database
-                            // has been changed as the user didn't wish to reload the file from the file system: FS != DB..
-                            fileSave.DatabaseModified = DateTime.Now;
+                                    // set the flag that the file's modified date in the database
+                                    // has been changed as the user didn't wish to reload the file from the file system: FS != DB..
+                                    fileSave.DatabaseModified = DateTime.Now;
 
-                            // just in case set the tag back..
-                            sttcMain.Documents[i].Tag = fileSave;
+                                    // just in case set the tag back..
+                                    document.Tag = fileSave;
 
-                            // set the flag that the form should be activated after the dialog..
-                            bringToFrontQueued = true;
-                        }
+                                    // set the flag that the form should be activated after the dialog..
+                                    bringToFrontQueued = true;
+                                }
+                            });
+                        BoxStack.AddDialog(messageBox, true);
                     }
                 }
                 else
@@ -3509,7 +3517,12 @@ namespace ScriptNotepad
         private bool suspendSelectionUpdate;
         #endregion
 
-        #region PrivateProperties                
+        #region PrivateProperties        
+        /// <summary>
+        /// Gets the message box stack containing the <see cref="MessageBoxExtended"/> instances.
+        /// </summary>
+        private MessageBoxExpandStack BoxStack { get; set; }
+
         /// <summary>
         /// Gets or sets the value whether the timers within the program should be enabled or disabled.
         /// </summary>

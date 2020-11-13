@@ -30,6 +30,8 @@ SOFTWARE.
 //#define UseAssociationDialog
 // define this to use the local application data folder..
 #define InstallLocalAppData
+// define this to use the star(*) file registration..
+#define ShellStarAssociate
 
 using System;
 using System.Diagnostics;
@@ -149,26 +151,52 @@ namespace InstallerBaseWixSharp
 
             project.AfterInstall += delegate(SetupEventArgs args)
             {
-                if (args.IsUninstalling)
+                string locale = "en-US";
+                if (args.IsInstalling)
                 {
-                    string locale = "en-US";
                     try
                     {
-                        locale = CommonCalls.GetKeyValue(Company, AppName, "LOCALE");
-                        CommonCalls.DeleteValue(Company, AppName, "LOCALE");
+                        locale = args.Session.Property("LANGNAME");
                     }
                     catch
                     {
-                        // ignored..
+                            // ignored..
                     }
+                }
 
+                try
+                {
+                    locale = CommonCalls.GetKeyValue(Company, AppName, "LOCALE");
+                    CommonCalls.DeleteValue(Company, AppName, "LOCALE");
+                }
+                catch
+                {
+                    // ignored..
+                }
+
+                var sideLocalization = new TabDeliLocalization();
+                sideLocalization.GetLocalizedTexts(Properties.Resources.tabdeli_messages);
+
+                if (args.IsUninstalling)
+                {
                     RegistryFileAssociation.UnAssociateFiles(Company, AppName);
                     CommonCalls.DeleteCompanyKeyIfEmpty(Company);
 
-                    #if InstallLocalAppData
-                    var sideLocalization = new TabDeliLocalization();
-                    sideLocalization.GetLocalizedTexts(Properties.Resources.tabdeli_messages);
+                    #if ShellStarAssociate
+                    try
+                    {
+                        var openWithMessage = sideLocalization.GetMessage("txtOpenWithShellMenu",
+                            "Open with ", locale);
 
+                        RegistryStarAssociation.UnRegisterStarAssociation(openWithMessage);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    #endif
+
+                    #if InstallLocalAppData
                     var messageCaption = sideLocalization.GetMessage("txtDeleteLocalApplicationData",
                         "Delete application data", locale);
 
@@ -195,6 +223,32 @@ namespace InstallerBaseWixSharp
 
                 if (args.IsInstalling)
                 {
+                    #if ShellStarAssociate
+                    var messageCaption = sideLocalization.GetMessage("txtStarAssociation",
+                        "Add open with menu", locale);
+
+                    var messageText = sideLocalization.GetMessage("txtStarAssociationQuery",
+                        "Add an open with this application to the file explorer menu?", locale);
+
+                    if (MessageBox.Show(messageText,
+                        messageCaption, MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            var openWithMessage = sideLocalization.GetMessage("txtOpenWithShellMenu",
+                                "Open with ScriptNotepad", locale);
+
+                            RegistryStarAssociation.RegisterStarAssociation(args.Session.Property("RUNEXE"), AppName,
+                                openWithMessage);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }                                    
+                    #endif
+
                     RegistryFileAssociation.AssociateFiles(Company, AppName, args.Session.Property("RUNEXE"),
                         args.Session.Property("ASSOCIATIONS"), true);
 

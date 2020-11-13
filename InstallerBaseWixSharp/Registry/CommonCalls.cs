@@ -51,6 +51,26 @@ namespace InstallerBaseWixSharp.Registry
             return key;
         }
 
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once UnusedMember.Local
+        // ReSharper disable once IdentifierTypo        
+        // ReSharper disable once CommentTypo
+        /// <summary>
+        /// Opens the or creates a <see cref="Registry"/> key to HKCS (HKey Classes Root).
+        /// </summary>
+        /// <param name="path">The registry path.</param>
+        /// <returns>The opened or created <see cref="RegistryKey"/> instance.</returns>
+        public static RegistryKey OpenOrCreateKeyHKCR(string path)
+        {
+            var key = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(path, true);
+            if (key == null)
+            {
+                Microsoft.Win32.Registry.ClassesRoot.CreateSubKey(path);
+                key = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(path, true);
+            }
+            return key;
+        }
+
         /// <summary>
         /// Gets the registry key valueName.
         /// </summary>
@@ -123,4 +143,3 @@ namespace InstallerBaseWixSharp.Registry
         // ReSharper disable once CommentTypo
     }
 }
-

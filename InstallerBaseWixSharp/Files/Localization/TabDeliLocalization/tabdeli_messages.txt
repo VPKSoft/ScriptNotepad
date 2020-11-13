@@ -4,7 +4,13 @@ The tab-delimited text can also include comments, etc. by adding a new tab-delim
 [en-US]
 txtDeleteLocalApplicationData	Delete application data
 txtDeleteApplicationDataQuery	Delete application settings and other data?
+txtStarAssociation	Add open with menu
+txtStarAssociationQuery	Add an open with this application to the file explorer menu?
+txtOpenWithShellMenu	Open with ScriptNotepad
 
 [fi-FI]
 txtDeleteLocalApplicationData	Poista sovelluksen tiedot
 txtDeleteApplicationDataQuery	Poista sovelluksen asetukset ja muut tiedot?
+txtStarAssociation	Lisää avaa sovelluksella valikko
+txtStarAssociationQuery	Lisää avaa tällä sovelluksella valikko resurssien hallinnan valikkoon?
+txtOpenWithShellMenu	Avaa sovelluksella ScriptNotepad
