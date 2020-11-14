@@ -9,7 +9,7 @@
     <Description>A tabbed notepad software with scripting support (C#).</Description>
     <Copyright>Copyright © VPKSoft 2020</Copyright>
     <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
+    <FileVersion>1.0.4.0</FileVersion>
     <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -29,7 +29,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
     <PackageTags>notepad script editor</PackageTags>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>

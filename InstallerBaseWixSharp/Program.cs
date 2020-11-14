@@ -45,6 +45,7 @@ using InstallerBaseWixSharp.Registry;
 using WixSharp;
 using WixSharp.Forms;
 using File = WixSharp.File;
+using ProcessExtensions = InstallerBaseWixSharp.Files.PInvoke.ProcessExtensions;
 
 namespace InstallerBaseWixSharp
 {
@@ -239,7 +240,7 @@ namespace InstallerBaseWixSharp
                             var openWithMessage = sideLocalization.GetMessage("txtOpenWithShellMenu",
                                 "Open with ScriptNotepad", locale);
 
-                            RegistryStarAssociation.RegisterStarAssociation(args.Session.Property("RUNEXE"), AppName,
+                            RegistryStarAssociation.RegisterStarAssociation(args.Session.Property("EXENAME"), AppName,
                                 openWithMessage);
                         }
                         catch (Exception ex)
@@ -249,7 +250,7 @@ namespace InstallerBaseWixSharp
                     }                                    
                     #endif
 
-                    RegistryFileAssociation.AssociateFiles(Company, AppName, args.Session.Property("RUNEXE"),
+                    RegistryFileAssociation.AssociateFiles(Company, AppName, args.Session.Property("EXENAME"),
                         args.Session.Property("ASSOCIATIONS"), true);
 
                     try
@@ -273,7 +274,7 @@ namespace InstallerBaseWixSharp
 
             ValidateAssemblyCompatibility();
 
-            project.DefaultDeferredProperties += ",RUNEXE,PIDPARAM,ASSOCIATIONS,LANGNAME";
+            project.DefaultDeferredProperties += ",RUNEXE,PIDPARAM,ASSOCIATIONS,LANGNAME,EXENAME";
 
             project.Localize();
 
@@ -299,13 +300,8 @@ namespace InstallerBaseWixSharp
                 {
                     if (System.IO.File.Exists(e.Session.Property("RUNEXE")))
                     {
-                        var startInfo = new ProcessStartInfo(e.Session.Property("RUNEXE"),
+                        ProcessExtensions.StartProcessAsCurrentUser(e.Session.Property("RUNEXE"),
                             $"--waitPid {e.Session.Property("PIDPARAM")}");
-
-                        // start the process as the current user..
-                        startInfo.UseShellExecute = false;
-                        startInfo.LoadUserProfile = true;
-                        Process.Start(startInfo);
                     }
                     else
                     {
