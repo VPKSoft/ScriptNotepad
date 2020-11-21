@@ -405,7 +405,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ColorMinePortable" Version="2.0.1" />
-    <PackageReference Include="DotNetZip" Version="1.14.0" />
+    <PackageReference Include="DotNetZip" Version="1.15.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -436,8 +436,8 @@
     <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.1" />
     <PackageReference Include="VPKSoft.SearchText" Version="1.0.2" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.4.7" />
-    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.2" />
-    <PackageReference Include="WPFHexaEditor" Version="2.1.0" />
+    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.3" />
+    <PackageReference Include="WPFHexaEditor" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Database\Entity\Entities\FileContent.cs" />
