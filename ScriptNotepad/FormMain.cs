@@ -387,12 +387,12 @@ namespace ScriptNotepad
                         }
                     }
 
-                    MessageBox.Show(
+                    MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgDatabaseMigration1",
                             "The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process."),
                         DBLangEngine.GetMessage("msgInformation",
                             "Information|A message title describing of some kind information."),
-                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
                     MigrateToEntityFramework();
                     FormSettings.Settings.DatabaseMigrationLevel = 1;

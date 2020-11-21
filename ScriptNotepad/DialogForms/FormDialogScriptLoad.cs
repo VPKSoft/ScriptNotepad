@@ -33,6 +33,7 @@ using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
+using VPKSoft.MessageBoxExtended;
 using VPKSoft.PosLib;
 
 namespace ScriptNotepad.DialogForms
@@ -206,10 +207,10 @@ namespace ScriptNotepad.DialogForms
         private void btDeleteScript_Click(object sender, EventArgs e)
         {
             // display a confirmation dialog..
-            if (MessageBox.Show(
+            if (MessageBoxExtended.Show(
                 DBLangEngine.GetMessage("msgDeleteScriptConfirm", "Delete selected script snippet(s)?|A confirmation question whether to delete selected script snippets from the database"),
                 DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog"), 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Question) == DialogResultExtended.Yes)
             {
                 bool deleted = false; // a flag indicating if any scripts were actually deleted..
 

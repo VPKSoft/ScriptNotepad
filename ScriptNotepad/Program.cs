@@ -142,16 +142,21 @@ namespace ScriptNotepad
             if (AppRunning.CheckIfRunning("VPKSoft.ScriptNotepad.C#"))
             {
                 ExceptionLogger.LogMessage($"Application is running. Checking for open file requests. The current directory is: '{Environment.CurrentDirectory}'.");
+                ExceptionLogger.LogMessage($"The arguments are: '{string.Join("', '", args)}'.");
                 try
                 {
                     IpcClientServer ipcClient = new IpcClientServer();
                     ipcClient.CreateClient("localhost", 50670);
 
-                    // only send the existing files to the running instance, don't send the executable
-                    // file name thus the start from 1..
-                    for (int i = 1; i < args.Length; i++)
+                    // only send the existing files to the running instance..
+                    foreach (var arg in args)
                     {
-                        string file = args[i];
+                        if (arg == Process.GetCurrentProcess().MainModule?.FileName)
+                        {
+                            // don't open your self..
+                            continue;
+                        }
+                        string file = arg;
                         
                         ExceptionLogger.LogMessage($"Request file open: '{file}'.");
                         if (File.Exists(file))
