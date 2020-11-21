@@ -46,6 +46,7 @@ using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using VPKSoft.ErrorLogger;
 using VPKSoft.ExternalDictionaryPackage;
 using VPKSoft.LangLib;
+using VPKSoft.MessageBoxExtended;
 using VPKSoft.ScintillaUrlDetect;
 using TabDrawMode = ScintillaNET.TabDrawMode;
 
@@ -171,11 +172,11 @@ namespace ScriptNotepad.Settings
 
             if (dialogResult == DialogResult.OK || dialogResult == DialogResult.Yes)
             {
-                restart = MessageBox.Show(
+                restart = MessageBoxExtended.Show(
                               DBLangEngine.GetStatMessage("msgRestartSettingsToAffect",
                                   "Restart the application for the changes to take affect?|A message querying the user whether to restart the software saving the changed settings."),
-                              DBLangEngine.GetStatMessage("msgQuestion", "Question|A title for a message box asking a question."), MessageBoxButtons.YesNo,
-                              MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes;
+                              DBLangEngine.GetStatMessage("msgQuestion", "Question|A title for a message box asking a question."), MessageBoxButtonsExtended.YesNo,
+                              MessageBoxIcon.Question, ExtendedDefaultButtons.Button1) == DialogResultExtended.Yes;
 
                 formSettings.SaveSettings();
                 return true;
@@ -1286,12 +1287,12 @@ namespace ScriptNotepad.Settings
             {
                 var info = DictionaryPackage.GetXmlDefinitionDataFromDefinitionFile(tbSpellCheckingLibraryFile.Text);
                 var result =
-                    MessageBox.Show(this,
+                    MessageBoxExtended.Show(this,
                     DBLangEngine.GetMessage("msgQueryDeleteSpellCheckLibrary",
                         "Really remove spell check library '{0}' ({1}) ?|A message confirming that the user is removing a custom spell checker library", info.name, info.lib),
                     DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog"),
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-                if (result == DialogResult.Yes)
+                    MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Question, ExtendedDefaultButtons.Button2);
+                if (result == DialogResultExtended.Yes)
                 {
                     var deletePath = Path.GetDirectoryName(tbSpellCheckingLibraryFile.Text);
                     if (Directory.Exists(deletePath))

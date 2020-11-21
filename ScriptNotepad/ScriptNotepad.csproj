@@ -8,8 +8,8 @@
     <Product>ScriptNotepad</Product>
     <Description>A tabbed notepad software with scripting support (C#).</Description>
     <Copyright>Copyright © VPKSoft 2020</Copyright>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
     <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -29,7 +29,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
     <PackageTags>notepad script editor</PackageTags>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
@@ -429,7 +429,7 @@
     <PackageReference Include="VPKSoft.ErrorLogger" Version="1.0.0.6" />
     <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.0.2" />
     <PackageReference Include="VPKSoft.LangLib" Version="1.0.5" />
-    <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.2" />
+    <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.4" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.1.1" />
     <PackageReference Include="VPKSoft.ScintillaSpellCheck.SUO" Version="1.0.3" />
     <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.SUO" Version="1.0.8" />

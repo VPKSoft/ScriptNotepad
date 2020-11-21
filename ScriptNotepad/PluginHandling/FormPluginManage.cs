@@ -35,6 +35,7 @@ using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Entities;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
+using VPKSoft.MessageBoxExtended;
 
 namespace ScriptNotepad.PluginHandling
 {
@@ -301,11 +302,11 @@ namespace ScriptNotepad.PluginHandling
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(
+                        MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgErrorPluginInstall",
                             "The plug-in instillation failed with the following error: '{0}'.|Something failed during copying a plug-in to the plug-ins folder", ex.Message),
                             DBLangEngine.GetMessage("msgError", "Error|A message describing that some kind of error occurred."),
-                            MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                            MessageBoxButtonsExtended.OK, MessageBoxIcon.Error, ExtendedDefaultButtons.Button1);
 
                         // log the exception..
                         ExceptionLogger.LogError(ex);
@@ -313,11 +314,11 @@ namespace ScriptNotepad.PluginHandling
                 }
                 else
                 {
-                    MessageBox.Show(
+                    MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgWarningPluginNotAssembly",
                         "The plug-in initialization failed because it is not a valid .NET Framework assembly.|The given assembly isn't a .NET Framework assembly"),
                         DBLangEngine.GetMessage("msgWarning", "Warning|A message warning of some kind problem."),
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Warning, ExtendedDefaultButtons.Button1);
                 }
             }
         }

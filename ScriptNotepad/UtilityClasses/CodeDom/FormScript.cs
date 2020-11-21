@@ -39,6 +39,7 @@ using ScriptNotepad.DialogForms;
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using VPKSoft.LangLib;
+using VPKSoft.MessageBoxExtended;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.Utils;
@@ -420,11 +421,11 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 "Simple replace script",
                 "Simple XML manipulation script")))
             {
-                MessageBox.Show(
+                MessageBoxExtended.Show(
                     DBLangEngine.GetMessage("msgReservedScriptName", "The given script name is reserved for the script samples. The script wasn't saved.|A message informing that the given script name is reserved for static sample scripts."),
                     DBLangEngine.GetMessage("msgWarning",
-                        "Warning|A message warning of some kind problem"), MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                        "Warning|A message warning of some kind problem"), MessageBoxButtonsExtended.OK,
+                    MessageBoxIcon.Warning, ExtendedDefaultButtons.Button1);
 
                 EnableDisableControlsOnChange(true);
 

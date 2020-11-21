@@ -32,6 +32,7 @@ using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using VPKSoft.LangLib;
+using VPKSoft.MessageBoxExtended;
 
 namespace ScriptNotepad.UtilityClasses.Session
 {
@@ -130,19 +131,19 @@ namespace ScriptNotepad.UtilityClasses.Session
                 // list the sessions to the combo box..
                 ListSessions();
 
-                MessageBox.Show(
+                MessageBoxExtended.Show(
                     DBLangEngine.GetMessage("msgSessionCreateSuccess",
                     "The session was successfully created.|A message indicating a successful session creation."),
                     DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
-                    MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                    MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, ExtendedDefaultButtons.Button1);
             }
             else
             {
-                MessageBox.Show(
+                MessageBoxExtended.Show(
                     DBLangEngine.GetMessage("msgWarningInvalidSessionName",
                     "The session name '{0}' is either invalid or already exists in the database|The given session name is invalid (white space or null) or the given session name already exists in the database", tbAddNewSessionWithName.Text),
                     DBLangEngine.GetMessage("msgWarning", "Warning|A message warning of some kind problem."),
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                    MessageBoxButtonsExtended.OK, MessageBoxIcon.Warning, ExtendedDefaultButtons.Button1);
             }
         }
 
@@ -193,19 +194,19 @@ namespace ScriptNotepad.UtilityClasses.Session
                     // set the instance back to the combo box..
                     cmbSessions.SelectedItem = session;
 
-                    MessageBox.Show(
+                    MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgSessionRenameSuccess",
                             "The session was successfully renamed.|A message indicating a successful session rename."),
                         DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
-                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, ExtendedDefaultButtons.Button1);
                 }
                 else
                 {
-                    MessageBox.Show(
+                    MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgWarningInvalidSessionName",
                         "The session name '{0}' is either invalid or already exists in the database|The given session name is invalid (white space or null) or the given session name already exists in the database", tbRenameSession.Text),
                         DBLangEngine.GetMessage("msgWarning", "Warning|A message warning of some kind problem."),
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Warning, ExtendedDefaultButtons.Button1);
                 }
             }
         }
@@ -218,36 +219,36 @@ namespace ScriptNotepad.UtilityClasses.Session
 
                 if (session.IsDefault)
                 {
-                    MessageBox.Show(
+                    MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgDefaultSessionCanNotDelete",
                         "The default session can not be deleted.|A message informing that the default session can not be deleted."),
                         DBLangEngine.GetMessage("msgInformation", "Information|A message title describing of some kind information."),
-                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, ExtendedDefaultButtons.Button1);
 
                 }
                 else if (session.SessionName == FormSettings.Settings.CurrentSessionEntity.SessionName)
                 {
-                    MessageBox.Show(
+                    MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgCurrentSessionCanNotDelete",
                         "The currently active session can not be deleted.|A message informing that the currently active session can not be deleted."),
                         DBLangEngine.GetMessage("msgInformation", "Information|A message title describing of some kind information."),
-                        MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, ExtendedDefaultButtons.Button1);
                 }
                 else
                 {
-                    if (MessageBox.Show(
+                    if (MessageBoxExtended.Show(
                     DBLangEngine.GetMessage("msgConfirmDeleteEntireSession",
                     "Please confirm you want to delete an entire session '{0}' from the database. This operation can not be undone. Continue?|A confirmation dialog if the user wishes to delete an entire session from the database. (NO POSSIBILITY TO UNDO!).", session.SessionName),
                     DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Question, ExtendedDefaultButtons.Button2) == DialogResultExtended.Yes)
                     {
                         if (FileSessionHelper.DeleteEntireSession(session))
                         {
-                            MessageBox.Show(
+                            MessageBoxExtended.Show(
                                 DBLangEngine.GetMessage("msgSessionDeleteSuccess",
                                 "The session was successfully deleted.|A message indicating a successful session delete."),
                                 DBLangEngine.GetMessage("msgSuccess", "Success|A message indicating a successful operation."),
-                                MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                                MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, ExtendedDefaultButtons.Button1);
                         }
                     }
                 }

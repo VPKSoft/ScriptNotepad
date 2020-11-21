@@ -392,7 +392,7 @@ namespace ScriptNotepad
                             "The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process."),
                         DBLangEngine.GetMessage("msgInformation",
                             "Information|A message title describing of some kind information."),
-                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                        MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, ExtendedDefaultButtons.Button1);
 
                     MigrateToEntityFramework();
                     FormSettings.Settings.DatabaseMigrationLevel = 1;
@@ -406,10 +406,12 @@ namespace ScriptNotepad
                     // log the exception..
                     ExceptionLogger.LogError(ex);
 
-                    if (MessageBox.Show(DBLangEngine.GetMessage("msgEntityFrameworkError2",
-                        "Error converting the database to the Entity Framework Code-First with an exception: '{0}'. Would you like to start a new session?|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database. An option is given to the user to start with an empty session.",
-                        ex.Message), DBLangEngine.GetMessage("msgError",
-                        "Error|A message describing that some kind of error occurred."), MessageBoxButtons.YesNo, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (MessageBoxExtended.Show(DBLangEngine.GetMessage("msgEntityFrameworkError2",
+                                "Error converting the database to the Entity Framework Code-First with an exception: '{0}'. Would you like to start a new session?|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database. An option is given to the user to start with an empty session.",
+                                ex.Message), DBLangEngine.GetMessage("msgError",
+                                "Error|A message describing that some kind of error occurred."),
+                            MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Error, ExtendedDefaultButtons.Button2) ==
+                        DialogResultExtended.Yes) 
                     {
                         if (!ScriptNotepadDbContext.DbContextInitialized)
                         {
@@ -437,11 +439,11 @@ namespace ScriptNotepad
 
         private void MigrateDisplayError(string phase)
         {
-            MessageBox.Show(
+            MessageBoxExtended.Show(
                 MigrateErrorMessage(phase),
                 DBLangEngine.GetMessage("msgError",
-                    "Error|A message describing that some kind of error occurred."), MessageBoxButtons.OK,
-                MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    "Error|A message describing that some kind of error occurred."), MessageBoxButtonsExtended.OK,
+                MessageBoxIcon.Error, ExtendedDefaultButtons.Button1);
         }
 
         /// <summary>
@@ -1094,6 +1096,9 @@ namespace ScriptNotepad
                 Activated -= FormMain_Activated;
                 FormClosed -= FormMain_FormClosed;
 
+                // close all the dialog boxes with a dialog result of cancel..
+                MessageBoxExtendedControl.CloseAllBoxesWithResult(DialogResultExtended.Cancel);
+
                 // close all other open forms except this MainForm as they might dialogs, etc. to prevent the
                 // session log of procedure..
                 CloseFormUtils.CloseOpenForms(this);
@@ -1190,12 +1195,12 @@ namespace ScriptNotepad
                     // the changed file from the disk..
                     if (fileSave.ShouldQueryDiskReload && !runningConstructor)
                     { 
-                        if (MessageBox.Show(
+                        if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happen", fileSave.FileNameFull),
                             DBLangEngine.GetMessage("msgFileArbitraryFileChange", "A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded"),
-                            MessageBoxButtons.YesNo,
+                            MessageBoxButtonsExtended.YesNo,
                             MessageBoxIcon.Question,
-                            MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                            ExtendedDefaultButtons.Button1) == DialogResultExtended.Yes)
                         {
                             // the user answered yes..
                             sttcMain.SuspendTextChangedEvents = true; // suspend the changed events on the ScintillaTabbedTextControl..
@@ -1231,12 +1236,12 @@ namespace ScriptNotepad
                     // file from the file system in the editor..
                     if (fileSave.ShouldQueryKeepFile && !runningConstructor)
                     {
-                        if (MessageBox.Show(
+                        if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasBeenDeleted", "The file '{0}' has been deleted. Keep the file in the editor?|As in the opened file has been deleted from the file system and user is asked if to keep the deleted file in the editor", fileSave.FileNameFull),
                             DBLangEngine.GetMessage("msgFileHasBeenDeletedTitle", "A file has been deleted|A caption message for a message dialog which will ask if a deleted file should be kept in the editor"),
-                            MessageBoxButtons.YesNo,
+                            MessageBoxButtonsExtended.YesNo,
                             MessageBoxIcon.Question,
-                            MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                            ExtendedDefaultButtons.Button1) == DialogResultExtended.Yes)
                         {
                             // the user answered yes..
                             fileSave.ExistsInFileSystem = false; // set the flag to false..
@@ -1259,12 +1264,12 @@ namespace ScriptNotepad
                     }
                     else if (fileSave.ShouldQueryFileReappeared && !runningConstructor)
                     {
-                        if (MessageBox.Show(
+                        if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasReappeared", "The file '{0}' has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it's contents from the file system", fileSave.FileNameFull),
                             DBLangEngine.GetMessage("msgFileHasReappearedTitle", "A file has reappeared|A caption message for a message dialog which will ask if a reappeared file should be reloaded from the file system"),
-                            MessageBoxButtons.YesNo,
+                            MessageBoxButtonsExtended.YesNo,
                             MessageBoxIcon.Question,
-                            MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                            ExtendedDefaultButtons.Button1) == DialogResultExtended.Yes)
                         {
                             // the user answered yes..
                             fileSave.ExistsInFileSystem = true; // set the flag to true..
@@ -1790,12 +1795,12 @@ namespace ScriptNotepad
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(
+                    MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgErrorOpeningFile", "Error opening file '{0}' with message: '{1}'.|Some kind of error occurred while opening a file.",
                             fileName, ex.GetBaseException().Message),
                         DBLangEngine.GetMessage("msgError",
-                            "Error|A message describing that some kind of error occurred."), MessageBoxButtons.OK,
-                        MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                            "Error|A message describing that some kind of error occurred."), MessageBoxButtonsExtended.OK,
+                        MessageBoxIcon.Error, ExtendedDefaultButtons.Button1);
                     return;
                 }
 
@@ -2421,11 +2426,11 @@ namespace ScriptNotepad
         {
             if (FileIoPermission.FileRequiresElevation(odAnyFile.FileName).ElevationRequied)
             {
-                if (MessageBox.Show(
+                if (MessageBoxExtended.Show(
                 DBLangEngine.GetMessage("msgElevationRequiredForFile",
                 "Opening the file '{0}' requires elevation (Run as Administrator). Restart the software as Administrator?|A message describing that a access to a file requires elevated permissions (Administrator)", odAnyFile.FileName),
                 DBLangEngine.GetMessage("msgConfirm", "Confirm|A caption text for a confirm dialog."),
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Question, ExtendedDefaultButtons.Button2) == DialogResultExtended.Yes)
                 {
                     e.Cancel = true;
                     Program.ElevateFile = odAnyFile.FileName;
@@ -2781,12 +2786,12 @@ namespace ScriptNotepad
                         // reload from the file system..
                         if (fileSave.IsChangedInEditor && !runningConstructor)
                         {
-                            if (MessageBox.Show(
+                            if (MessageBoxExtended.Show(
                                 DBLangEngine.GetMessage("msgFileHasChangedInEditorAction", "The file '{0}' has been changed in the editor and a reload from the file system is required. Continue?|A file has been changed in the editor and a reload from the file system is required to complete an arbitrary action", fileSave.FileNameFull),
                                 DBLangEngine.GetMessage("msgFileArbitraryFileChange", "A file has been changed|A caption message for a message dialog which will ask if a changed file should be reloaded"),
-                                MessageBoxButtons.YesNo,
+                                MessageBoxButtonsExtended.YesNo,
                                 MessageBoxIcon.Question,
-                                MessageBoxDefaultButton.Button2) == DialogResult.No)
+                                ExtendedDefaultButtons.Button2) == DialogResultExtended.No)
                             {
                                 return; // the user decided not to reload..
                             }
