@@ -414,7 +414,7 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.1.0" />
+    <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.2.0" />
     <PackageReference Include="ScintillaDiff.SUO" Version="1.0.9" />
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.1" />
     <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.2" />
