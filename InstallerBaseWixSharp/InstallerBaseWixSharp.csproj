@@ -30,7 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="WixSharp" Version="1.14.8" />
-    <PackageReference Include="WixSharp.bin" Version="1.14.8" />
+    <PackageReference Include="WixSharp.bin" Version="1.15.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
