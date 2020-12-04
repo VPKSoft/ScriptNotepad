@@ -86,9 +86,9 @@ namespace InstallerBaseWixSharp
                         WorkingDirectory = "[INSTALLDIR]", IconFile = ApplicationIcon
                     }),
 #if InstallLocalAppData
-                new Dir($@"%LocalAppDataFolder%\{AppName}", new File(@"..\ScriptNotepad\Localization\SQLiteDatabase\lang.sqlite")),
+                new Dir($@"%LocalAppDataFolder%\{AppName}", new File(@"..\ScriptNotepad\Localization\SQLiteDatabase\lang.sqlite"),
+                    new Dir(@"Dictionaries\en", new File(@"..\dictionaries\en\en_US.dic"), new File(@"..\dictionaries\en\en_US.aff"))),
 #endif
-
                 new CloseApplication($"[INSTALLDIR]{Executable}", true), 
                 new Property("Executable", Executable),
                 new Property("AppName", AppName),

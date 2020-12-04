@@ -2854,6 +2854,7 @@ namespace ScriptNotepad
         {
             // ..just no questions asked save the document snapshots into the SQLite database..
             SaveDocumentsToDatabase();
+            EndSession(true);
         }
 
         /// <summary>
