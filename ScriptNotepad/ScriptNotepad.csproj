@@ -433,7 +433,7 @@
     <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.4" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.1.1" />
     <PackageReference Include="VPKSoft.ScintillaSpellCheck.SUO" Version="1.0.4" />
-    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.SUO" Version="1.0.8" />
+    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.SUO" Version="1.0.9" />
     <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.1" />
     <PackageReference Include="VPKSoft.SearchText" Version="1.0.2" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.5" />
