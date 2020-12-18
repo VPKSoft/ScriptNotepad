@@ -415,7 +415,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.2.0" />
-    <PackageReference Include="ScintillaDiff.SUO" Version="1.0.9" />
+    <PackageReference Include="ScintillaDiff.SUO" Version="1.0.11" />
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.1" />
     <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.2" />
     <PackageReference Include="SQLite.CodeFirst" Version="1.6.0.30" />
