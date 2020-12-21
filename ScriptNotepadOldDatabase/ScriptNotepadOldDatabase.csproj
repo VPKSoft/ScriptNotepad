@@ -30,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.6" />
     <PackageReference Include="VPKSoft.LangLib" Version="1.0.5" />
-    <PackageReference Include="VPKSoft.ScintillaLexers" Version="1.1.2" />
+    <PackageReference Include="VPKSoft.ScintillaLexers.SUO" Version="1.1.3" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.5" />
   </ItemGroup>
 </Project>
