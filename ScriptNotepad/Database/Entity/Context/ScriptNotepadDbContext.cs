@@ -174,8 +174,9 @@ namespace ScriptNotepad.Database.Entity.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelConfiguration.Configure(modelBuilder);
-            var initializer = new ScriptNotepadDbInitializer(modelBuilder);
-            System.Data.Entity.Database.SetInitializer(initializer);
+            base.OnModelCreating(modelBuilder);
+//            var initializer = new ScriptNotepadDbInitializer(modelBuilder);
+//            System.Data.Entity.Database.SetInitializer(initializer);
         }
 
         /// <summary>

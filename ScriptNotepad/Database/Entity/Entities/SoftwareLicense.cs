@@ -25,6 +25,7 @@ SOFTWARE.
 #endregion
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
@@ -32,17 +33,20 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// A class to save the license of the software to the database.
     /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
+    [Table("SoftwareLicenses")]
     public class SoftwareLicense: IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
+        [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the license text.
         /// </summary>
         [Required]
+        [Column("LicenseText")]
         public string LicenseText { get; set; }
 
         /// <summary>
@@ -50,6 +54,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// See: https://spdx.org/licenses/
         /// </summary>
         [Required]
+        [Column("LicenseSpdxIdentifier")]
         public string LicenseSpdxIdentifier { get; set; }
     }
 }

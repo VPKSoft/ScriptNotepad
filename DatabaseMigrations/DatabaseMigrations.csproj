@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{1AF9A267-5B28-430E-AC0A-CFAC3AE499E3}</ProjectGuid>
+    <TargetFramework>net47</TargetFramework>
+    <AssemblyTitle>DatabaseMigrations</AssemblyTitle>
+    <Product>DatabaseMigrations.</Product>
+    <Copyright>Copyright ©  2021</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <Authors>VPKSoft</Authors>
+    <Description>DatabaseMigrations for the ScriptNotepad software.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/VPKSoft/ScriptNotepad</PackageProjectUrl>
+    <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/VPKSoft/ScriptNotepad</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Just database migrations.</PackageReleaseNotes>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentMigrator" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Abstractions" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Extensions.Oracle" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Extensions.Postgres" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Extensions.SqlAnywhere" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Extensions.SqlServer" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Core" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Db2" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Firebird" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Hana" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Jet" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.MySql" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Oracle" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Postgres" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Redshift" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.SqlAnywhere" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.SqlServerCe" Version="3.2.10" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="5.0.0" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="5.0.0" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ScriptNotepad_icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

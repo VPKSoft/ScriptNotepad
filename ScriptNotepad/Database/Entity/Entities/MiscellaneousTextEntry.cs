@@ -28,7 +28,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ScriptNotepad.Database.Entity.Enumerations;
-using SQLite.CodeFirst;
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
@@ -37,35 +36,41 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+    [Table("MiscellaneousTextEntries")]
     public class MiscellaneousTextEntry: IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
+        [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the text value.
         /// </summary>
         [Required]
+        [Column("TextValue")]
         public string TextValue { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the text.
         /// </summary>
+        [Column("TextType")]
         public MiscellaneousTextType TextType { get; set; }
 
         /// <summary>
         /// Gets or sets the added date and time when the entry was added or updated to the database.
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [SqlDefaultValue(DefaultValue = "DATETIME('now', 'localtime')")]
+        //[SqlDefaultValue(DefaultValue = "DATETIME('now', 'localtime')")]
+        [Column("Added")]
         public DateTime Added { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Gets or sets the <see cref="Session"/> this miscellaneous text data belongs to.
         /// </summary>
         [Required]
+        [Column("Session")]
         public FileSession Session { get; set; }
 
         /// <summary>

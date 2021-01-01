@@ -26,6 +26,7 @@ SOFTWARE.
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ScriptNotepad.Database.Entity.Enumerations;
 
 namespace ScriptNotepad.Database.Entity.Entities
@@ -35,48 +36,56 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+    [Table("SearchAndReplaceHistories")]
     public class SearchAndReplaceHistory : IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
         /// <value>The identifier.</value>
+        [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the search or replace text.
         /// </summary>
         [Required]
+        [Column("SearchOrReplaceText")]
         public string SearchOrReplaceText { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether search or replace was case sensitive.
         /// </summary>
         [Required]
+        [Column("CaseSensitive")]
         public bool CaseSensitive { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the search.
         /// </summary>
         [Required]
+        [Column("SearchAndReplaceSearchType")]
         public SearchAndReplaceSearchType SearchAndReplaceSearchType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the search or replace.
         /// </summary>
         [Required]
+        [Column("SearchAndReplaceType")]
         public SearchAndReplaceType SearchAndReplaceType { get; set; }
 
         /// <summary>
         /// Gets or sets the added date and time when the entry was added to the database or created.
         /// </summary>
         [Required]
+        [Column("Added")]
         public DateTime Added { get; set; }
 
         /// <summary>
         /// Gets or sets the session the search or replace history entry belongs to.
         /// </summary>
         [Required]
+        [Column("Session")]
         public FileSession Session { get; set; }
 
         /// <summary>

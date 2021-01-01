@@ -34,7 +34,6 @@ using System.Text;
 using ScriptNotepad.UtilityClasses.Encodings;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.LinesAndBinary;
-using SQLite.CodeFirst;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaLexers;
 using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
@@ -49,17 +48,20 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+    [Table("FileSaves")]
     public class FileSave: ErrorHandlingBase, IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
+        [Column("Id")]
         public int Id { get; set; } = -1;
 
         /// <summary>
         /// Gets or sets a string representing the encoding of the file save.
         /// </summary>
-        [SqlDefaultValue(DefaultValue = "'utf-8;65001;True;False;False'")]
+//        [SqlDefaultValue(DefaultValue = "'utf-8;65001;True;False;False'")]
+        [Column("EncodingAsString")]
         public string EncodingAsString { get; set; } = "utf-8;65001;True;False;False";
 
         /// <summary>
@@ -75,23 +77,27 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets a value indicating whether the file exists in the file system.
         /// </summary>
+        [Column("ExistsInFileSystem")]
         public bool ExistsInFileSystem { get; set; }
 
         /// <summary>
         /// Gets or sets the full file name with path.
         /// </summary>
         [Required]
+        [Column("FileNameFull")]
         public string FileNameFull { get; set; }
 
         /// <summary>
         /// Gets or sets the file name without path.
         /// </summary>
         [Required]
+        [Column("FileName")]
         public string FileName { get; set; }
 
         /// <summary>
         /// Gets or sets the full path for the file.
         /// </summary>
+        [Column("FilePath")]
         public string FilePath { get; set; }
 
         /// <summary>
@@ -99,6 +105,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// </summary>
 //        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 //        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
+        [Column("FileSystemModified")]
         public DateTime FileSystemModified { get; set; }
 
         /// <summary>
@@ -106,6 +113,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// </summary>
 //        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 //        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
+        [Column("FileSystemSaved")]
         public DateTime FileSystemSaved { get; set; }
 
         /// <summary>
@@ -153,6 +161,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the database.
         /// </summary>
+        [Column("DatabaseModified")]
         public DateTime DatabaseModified
         {
             get => dbModified;
@@ -175,6 +184,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the lexer number with the ScintillaNET.
         /// </summary>
+        [Column("LexerType")]
         public LexerEnumerations.LexerType LexerType { get; set; }
 
         private bool useFileSystemOnContents;
@@ -182,6 +192,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets a value indicating whether to use the file system to store the contents of the file instead of a database BLOB.
         /// </summary>
+        [Column("UseFileSystemOnContents")]
         public bool UseFileSystemOnContents
         {
             get => useFileSystemOnContents;
@@ -210,6 +221,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the location of the temporary file save in case the file changes are cached into the file system.
         /// </summary>
+        [Column("TemporaryFileSaveName")]
         public string TemporaryFileSaveName { get; set; }
 
         /// <summary>
@@ -309,8 +321,6 @@ namespace ScriptNotepad.Database.Entity.Entities
             }
         }
 
-
-
         /// <summary>
         /// Gets the cached file contents of this <see cref="FileSave"/> class instance.
         /// </summary>
@@ -359,33 +369,39 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the visibility order (in a tabbed control).
         /// </summary>
-        [SqlDefaultValue(DefaultValue = "-1")] 
+//        [SqlDefaultValue(DefaultValue = "-1")] 
+        [Column("VisibilityOrder")]
         public int VisibilityOrder { get; set; } = -1;
 
         /// <summary>
         /// Gets or sets a value indicating whether the file is activated in the tab control.
         /// </summary>
+        [Column("IsActive")]
         public bool IsActive { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this entry is a history entry.
         /// </summary>
+        [Column("IsHistory")]
         public bool IsHistory { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the current position (cursor / caret) of the file.
         /// </summary>
+        [Column("CurrentCaretPosition")]
         public int CurrentCaretPosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use spell check with this document.
         /// </summary>
+        [Column("UseSpellChecking")]
         public bool UseSpellChecking { get; set; }
 
         /// <summary>
         /// Gets or sets the editor zoom value in percentage.
         /// </summary>
-        [SqlDefaultValue(DefaultValue = "100")] 
+//        [SqlDefaultValue(DefaultValue = "100")] 
+        [Column("EditorZoomPercentage")]
         public int EditorZoomPercentage { get; set; } = 100;
 
         /// <summary>
@@ -559,6 +575,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the session the <see cref="FileSave"/> belongs to.
         /// </summary>
         [Required]
+        [Column("Session")]
         public FileSession Session { get; set; }
     }
 }

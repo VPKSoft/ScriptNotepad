@@ -295,7 +295,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="ScriptNotepad.licenseheader" />
     <None Include="WindowsRegistry\OpenWith.reg" />
   </ItemGroup>
   <ItemGroup>
@@ -401,6 +400,7 @@
     <None Include="Resources\New document.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseMigrations\DatabaseMigrations.csproj" />
     <ProjectReference Include="..\ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -418,7 +418,6 @@
     <PackageReference Include="ScintillaDiff.SUO" Version="1.0.12" />
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.3" />
     <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.2" />
-    <PackageReference Include="SQLite.CodeFirst" Version="1.6.0.30" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />

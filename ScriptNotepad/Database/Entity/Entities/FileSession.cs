@@ -29,24 +29,26 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
-using SQLite.CodeFirst;
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
     /// A class for storing session(s) into the database.
     /// </summary>
+    [Table("FileSessions")]
     public class FileSession: ErrorHandlingBase, IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
+        [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of a session.
         /// </summary>
-        [Unique(OnConflictAction.Ignore)]
+//        [Unique(OnConflictAction.Ignore)]
+        [Column("SessionName")]
         public string SessionName { get; set; }
 
         /// <summary>
@@ -59,11 +61,13 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the temporary file path in case the file system is used to cache the contents
         /// of the <see cref="FileSave"/> entities belonging to the session.
         /// </summary>
+        [Column("TemporaryFilePath")]
         public string TemporaryFilePath { get; set; }
 
         /// <summary>
         /// Gets or sets the application data directory for caching files in case the <see cref="UseFileSystemOnContents"/> property is set to true.
         /// </summary>
+        [Column("ApplicationDataDirectory")]
         public static string ApplicationDataDirectory { get; set; }
 
         /// <summary>
@@ -98,6 +102,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets a value indicating whether to use the file system to store the contents of the file instead of a database BLOB.
         /// </summary>
+        [Column("UseFileSystemOnContents")]
         [Required]
         public bool UseFileSystemOnContents
         {

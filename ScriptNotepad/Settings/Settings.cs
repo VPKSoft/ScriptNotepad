@@ -683,6 +683,8 @@ namespace ScriptNotepad.Settings
                 var defaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
                     "Default|A name of the default session for the documents");
 
+                var sessions = ScriptNotepadDbContext.DbContext.FileSessions.ToList();
+
                 var session =
                     ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f => f.Id == 1);
 

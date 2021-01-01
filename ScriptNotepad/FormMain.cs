@@ -27,9 +27,16 @@ SOFTWARE.
 #region Usings
 using Microsoft.Win32;
 using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
+using ScriptNotepad.Database.DirectAccess;
+using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.Enumerations;
+using ScriptNotepad.Database.Entity.Utility;
+using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.IOPermission;
 using ScriptNotepad.Localization;
+using ScriptNotepad.Localization.ExternalLibraryLoader;
 using ScriptNotepad.Localization.Forms;
 using ScriptNotepad.PluginHandling;
 using ScriptNotepad.Settings;
@@ -51,6 +58,8 @@ using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.UtilityClasses.SessionHelpers;
 using ScriptNotepad.UtilityClasses.SpellCheck;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
+using ScriptNotepad.UtilityClasses.TextManipulation;
+using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using ScriptNotepad.UtilityClasses.TextManipulationUtils;
 using ScriptNotepadPluginBase.EventArgClasses;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
@@ -65,14 +74,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using ScriptNotepad.Database.Entity.Context;
-using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.Enumerations;
-using ScriptNotepad.Database.Entity.Utility;
-using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
-using ScriptNotepad.Localization.ExternalLibraryLoader;
-using ScriptNotepad.UtilityClasses.TextManipulation;
-using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.ErrorLogger;
 using VPKSoft.IPC;
 using VPKSoft.LangLib;
@@ -82,13 +83,14 @@ using VPKSoft.MessageHelper;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
 using VPKSoft.ScintillaLexers.HelperClasses;
+using VPKSoft.ScintillaNet.AutoComplete.CSharp.Cs;
 using VPKSoft.ScintillaTabbedTextControl;
 using VPKSoft.ScintillaUrlDetect;
 using VPKSoft.VersionCheck;
 using VPKSoft.VersionCheck.Forms;
+using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivateDeactivate;
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
-using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivateDeactivate;
 using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase;
 #endregion
 
@@ -131,9 +133,6 @@ namespace ScriptNotepad
                 Directory.CreateDirectory(FileSession.ApplicationDataDirectory);
             }
 
-            // TODO::Ask the user and make a setting for this..
-            ScriptNotepadDbInitializer.UseFileSystemOnContents = FormSettings.Settings.UseFileSystemCache;
-
             // initialize the language/localization database..
             DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
@@ -146,15 +145,31 @@ namespace ScriptNotepad
             // create an IPC server at localhost, the port was randomized in the development phase..
             ipcServer.CreateServer("localhost", 50670);
 
-            // ReSharper disable once ArrangeThisQualifier
-            // ReSharper disable once VirtualMemberCallInConstructor
-            this.Text +=
+            var databaseFile = DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite";
+
+            var connectionString = $"Data Source={databaseFile};Pooling=true;FailIfMissing=false;";
+
+            base.Text +=
                 (ProcessElevation.IsElevated ? " (" +
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
 
+            DatabaseMigrations.ExecuteDatabaseMigrate.DefaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
+                "Default|A name of the default session for the documents");
+
+            try
+            {
+                // run the database migrations (FluentMigrator)..
+                DatabaseMigrations.ExecuteDatabaseMigrate.Migrate(connectionString);
+            }
+            catch (Exception ex)
+            {
+                // ..the database already exists, so do create and update the VersionInfo table..
+                CheckFluentMigrator.MarkMigration(connectionString);
+                ExceptionLogger.LogError(ex);
+            }
+
             // initialize the ScriptNotepadDbContext class instance..
-            ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
-                                                       "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
+            ScriptNotepadDbContext.InitializeDbContext(connectionString);
 
             MigrateDatabase(); // migrate to Entity Framework Code-First database..
 
@@ -1568,7 +1583,7 @@ namespace ScriptNotepad
                     f.Session.SessionName == sessionName && !f.IsHistory);
 
             string activeDocument = string.Empty;
-            //sttcMain.SuspendLayout();
+
             foreach (var file in files)
             {
                 if (file.IsActive)
