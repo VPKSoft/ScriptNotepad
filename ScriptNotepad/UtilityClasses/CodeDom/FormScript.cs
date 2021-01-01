@@ -42,6 +42,7 @@ using VPKSoft.LangLib;
 using VPKSoft.MessageBoxExtended;
 using VPKSoft.PosLib;
 using VPKSoft.ScintillaLexers;
+using VPKSoft.ScintillaNet.AutoComplete.CSharp.Cs;
 using VPKSoft.Utils;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 using Utils = VPKSoft.LangLib.Utils;
@@ -76,6 +77,14 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
 
         // a field to hold the code snippet's contents for saving possibility..
         private CodeSnippet currentCodeSnippet;
+        #endregion
+
+        #region PrivateProperties        
+        /// <summary>
+        /// Gets the automatic code-completion instance for the script dialog.
+        /// </summary>
+        /// <value>The automatic code-completion instance for the script dialog.</value>
+        private AutoCompleteCs AutoCompleteCs { get; }
         #endregion
 
         #region MassiveConstructor
@@ -143,6 +152,9 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
 
             // track the instances of this form so the changes can be delegated to each other..
             FormScriptInstances.Add(this);
+
+            // initialize the auto-complete for the Scintilla control..
+            AutoCompleteCs = new AutoCompleteCs(scintillaScript);
         }
         #endregion
 
@@ -299,6 +311,9 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         {
             // this form is no longer going to be an instance for much longer..
             FormScriptInstances.Remove(this);
+
+            // dispose the auto-completion class instance..
+            AutoCompleteCs.Dispose();
         }
 
         // a user wants to run the script against the active Scintilla document on the main form..
