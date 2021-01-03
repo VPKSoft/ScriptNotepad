@@ -10,7 +10,7 @@ A tabbed notepad/text/code software with scripting support (C#) to manipulate a 
 * Localizable directly from the menu for your own language. (new languages are welcome!)
 * Highly customizable.
 * Possibility to export a code file to HTML.
-* Small size (installer: 4MB).
+* Small size (installer: 30MB).
 * Session support; you may create a session for etc. one for common files, one for SQL files and so on..
 * Currently supported locales: en-US, fi-FI
 * Support for plug-ins as .NET assemblies. A sample plugin is included (a modifed ROT-13 algorithm - suprise!).
