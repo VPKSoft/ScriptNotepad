@@ -608,15 +608,25 @@ namespace ScriptNotepad.Settings
         private static CultureInfo _culture;
 
         /// <summary>
+        /// Gets or sets the name of the culture used with localization.
+        /// </summary>
+        /// <value>The name of the culture used with localization.</value>
+        [IsSetting]
+        public string CultureName { get; set; } = "en-US";
+
+        /// <summary>
         /// Gets or sets the current language (Culture) to be used with the software's localization.
         /// </summary>
-        [IsSetting]
         public CultureInfo Culture
         {
             get =>
-                _culture ?? new CultureInfo("en-US");
+                _culture ?? new CultureInfo(CultureName ?? "en-US");
 
-            set => _culture = value;
+            set
+            {
+                _culture = value;
+                CultureName = value.Name;
+            }
         }
         #endregion
 

@@ -8,8 +8,8 @@
     <Product>ScriptNotepad</Product>
     <Description>A tabbed notepad software with scripting support (C#).</Description>
     <Copyright>Copyright © VPKSoft 2020</Copyright>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
     <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -29,7 +29,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
     <PackageTags>notepad script editor</PackageTags>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
@@ -415,7 +415,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.2.0" />
-    <PackageReference Include="ScintillaDiff.SUO" Version="1.0.12" />
+    <PackageReference Include="ScintillaDiff.SUO" Version="1.0.13" />
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.3" />
     <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.2" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />

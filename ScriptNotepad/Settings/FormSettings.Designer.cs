@@ -96,6 +96,7 @@
             this.lbCharacterSet = new System.Windows.Forms.Label();
             this.lbEncoding = new System.Windows.Forms.Label();
             this.tabEditorSettings = new System.Windows.Forms.TabPage();
+            this.cbUseAutoCompleteCs = new System.Windows.Forms.CheckBox();
             this.gbZoomSetting = new System.Windows.Forms.GroupBox();
             this.cbSaveDocumentZoom = new System.Windows.Forms.CheckBox();
             this.cbIndividualZoom = new System.Windows.Forms.CheckBox();
@@ -230,7 +231,6 @@
             this.odAssembly = new System.Windows.Forms.OpenFileDialog();
             this.odXml = new System.Windows.Forms.OpenFileDialog();
             this.odSpellCheckerPackage = new System.Windows.Forms.OpenFileDialog();
-            this.cbUseAutoCompleteCs = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -1120,6 +1120,16 @@
             this.tabEditorSettings.Size = new System.Drawing.Size(660, 371);
             this.tabEditorSettings.TabIndex = 2;
             this.tabEditorSettings.Text = "Editor";
+            // 
+            // cbUseAutoCompleteCs
+            // 
+            this.cbUseAutoCompleteCs.AutoSize = true;
+            this.cbUseAutoCompleteCs.Location = new System.Drawing.Point(9, 314);
+            this.cbUseAutoCompleteCs.Name = "cbUseAutoCompleteCs";
+            this.cbUseAutoCompleteCs.Size = new System.Drawing.Size(378, 17);
+            this.cbUseAutoCompleteCs.TabIndex = 13;
+            this.cbUseAutoCompleteCs.Text = "Use (experimental) code auto-completion for the C# programming language";
+            this.cbUseAutoCompleteCs.UseVisualStyleBackColor = true;
             // 
             // gbZoomSetting
             // 
@@ -2619,16 +2629,6 @@
             // 
             this.odSpellCheckerPackage.DefaultExt = "*.zip";
             this.odSpellCheckerPackage.Filter = "Custom spell check library|*.zip";
-            // 
-            // cbUseAutoCompleteCs
-            // 
-            this.cbUseAutoCompleteCs.AutoSize = true;
-            this.cbUseAutoCompleteCs.Location = new System.Drawing.Point(9, 314);
-            this.cbUseAutoCompleteCs.Name = "cbUseAutoCompleteCs";
-            this.cbUseAutoCompleteCs.Size = new System.Drawing.Size(330, 17);
-            this.cbUseAutoCompleteCs.TabIndex = 13;
-            this.cbUseAutoCompleteCs.Text = "Use (experimental) spell check for the C# programming language";
-            this.cbUseAutoCompleteCs.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
