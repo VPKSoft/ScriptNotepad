@@ -213,5 +213,11 @@ namespace ScriptNotepad.Database.Entity.Context
         /// Gets or sets the <see cref="SearchAndReplaceHistory"/> instances in the database.
         /// </summary>
         public DbSet<SearchAndReplaceHistory> SearchAndReplaceHistories { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="MiscellaneousParameters"/> instances in the database.
+        /// </summary>
+        /// <value>The <see cref="MiscellaneousParameters"/> instances in the database.</value>
+        public DbSet<MiscellaneousParameters> MiscellaneousParameters { get; set; }
     }
 }

@@ -187,9 +187,9 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         {
             noBom = false;
 
-            if (!FormSettings.Settings.SkipUnicodeDetectLE && !bigEndian &&
+            if (!FormSettings.Settings.SkipUnicodeDetectLe && !bigEndian &&
                 ByteMatch(GetEncodingComparisonBytes(stream), Utf16LittleEndianBom) ||
-                !FormSettings.Settings.SkipUnicodeDetectBE && bigEndian &&
+                !FormSettings.Settings.SkipUnicodeDetectBe && bigEndian &&
                 ByteMatch(GetEncodingComparisonBytes(stream), Utf16BigEndianBom))
             {
                 try
@@ -208,8 +208,8 @@ namespace ScriptNotepad.UtilityClasses.Encodings
             }
 
             // the user doesn't want this detection..
-            if (FormSettings.Settings.SkipUnicodeDetectLE && !bigEndian ||
-                FormSettings.Settings.SkipUnicodeDetectBE && bigEndian)
+            if (FormSettings.Settings.SkipUnicodeDetectLe && !bigEndian ||
+                FormSettings.Settings.SkipUnicodeDetectBe && bigEndian)
             {
                 // so just return..
                 encoding = null;
@@ -251,8 +251,8 @@ namespace ScriptNotepad.UtilityClasses.Encodings
         {
             noBom = false;
 
-            if (!FormSettings.Settings.SkipUtf32LE && !bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32LittleEndianBom) ||
-                !FormSettings.Settings.SkipUtf32BE && bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32BigEndianBom))
+            if (!FormSettings.Settings.SkipUtf32Le && !bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32LittleEndianBom) ||
+                !FormSettings.Settings.SkipUtf32Be && bigEndian && ByteMatch(GetEncodingComparisonBytes(stream), Utf32BigEndianBom))
             {
                 try
                 {
@@ -270,8 +270,8 @@ namespace ScriptNotepad.UtilityClasses.Encodings
             }
 
             // the user doesn't want this detection..
-            if (FormSettings.Settings.SkipUtf32LE && !bigEndian ||
-                FormSettings.Settings.SkipUtf32BE && bigEndian)
+            if (FormSettings.Settings.SkipUtf32Le && !bigEndian ||
+                FormSettings.Settings.SkipUtf32Be && bigEndian)
             {
                 // ..so just return..
                 encoding = null;

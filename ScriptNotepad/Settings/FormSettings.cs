@@ -340,10 +340,10 @@ namespace ScriptNotepad.Settings
             cbUpdateAutoCheck.Checked = Settings.UpdateAutoCheck;
 
             // get the Unicode detection skip values..
-            cbNoUnicodeLE.Checked = Settings.SkipUnicodeDetectLE;
-            cbNoUnicodeBE.Checked = Settings.SkipUnicodeDetectBE;
-            cbNoUTF32LE.Checked = Settings.SkipUtf32LE;
-            cbNoUTF32BE.Checked = Settings.SkipUtf32BE;
+            cbNoUnicodeLE.Checked = Settings.SkipUnicodeDetectLe;
+            cbNoUnicodeBE.Checked = Settings.SkipUnicodeDetectBe;
+            cbNoUTF32LE.Checked = Settings.SkipUtf32Le;
+            cbNoUTF32BE.Checked = Settings.SkipUtf32Be;
 
             #region TextSettings
             cbCaseSensitive.Checked = Settings.TextUpperCaseComparison;
@@ -368,6 +368,11 @@ namespace ScriptNotepad.Settings
             // custom spell checker library..
             cbUseCustomSpellCheckingLibrary.Checked = Settings.EditorSpellUseCustomDictionary;
             tbSpellCheckingLibraryFile.Text = Settings.EditorSpellCustomDictionaryDefinitionFile;
+
+            #region EditorAdditional
+            // an experimental auto-complete for the C# programming language and the Scintilla control..
+            cbUseAutoCompleteCs.Checked = Settings.UseCSharpAutoComplete;
+            #endregion
 
             #region UrlStyle
             cbHighlightUrls.Checked = Settings.HighlightUrls;
@@ -548,10 +553,10 @@ namespace ScriptNotepad.Settings
             Settings.UpdateAutoCheck = cbUpdateAutoCheck.Checked;
 
             // set the Unicode detection skip values..
-            Settings.SkipUnicodeDetectLE = cbNoUnicodeLE.Checked;
-            Settings.SkipUnicodeDetectBE = cbNoUnicodeBE.Checked;
-            Settings.SkipUtf32LE = cbNoUTF32LE.Checked;
-            Settings.SkipUtf32BE = cbNoUTF32BE.Checked;
+            Settings.SkipUnicodeDetectLe = cbNoUnicodeLE.Checked;
+            Settings.SkipUnicodeDetectBe = cbNoUnicodeBE.Checked;
+            Settings.SkipUtf32Le = cbNoUTF32LE.Checked;
+            Settings.SkipUtf32Be = cbNoUTF32BE.Checked;
 
             // the default encoding setting is deprecated and hidden..
             var encodings = Settings.EncodingsFromDataGrid(dgvEncodings);
@@ -592,6 +597,13 @@ namespace ScriptNotepad.Settings
             Settings.DateFormat6 = tbDateTimeFormat6.Text;
             Settings.DateFormatUseInvariantCulture = cbDateTimeUseInvarianCulture.Checked;
             #endregion
+
+            #region EditorAdditional
+            // an experimental auto-complete for the C# programming language and the Scintilla control..
+            Settings.UseCSharpAutoComplete = cbUseAutoCompleteCs.Checked;
+            #endregion
+
+            Settings.Save(Program.SettingFileName);
         }
         #endregion
 

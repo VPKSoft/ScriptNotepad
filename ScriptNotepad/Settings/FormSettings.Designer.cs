@@ -230,6 +230,7 @@
             this.odAssembly = new System.Windows.Forms.OpenFileDialog();
             this.odXml = new System.Windows.Forms.OpenFileDialog();
             this.odSpellCheckerPackage = new System.Windows.Forms.OpenFileDialog();
+            this.cbUseAutoCompleteCs = new System.Windows.Forms.CheckBox();
             this.tcMain.SuspendLayout();
             this.tpgGeneralSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHistoryAmount)).BeginInit();
@@ -1101,6 +1102,7 @@
             // tabEditorSettings
             // 
             this.tabEditorSettings.BackColor = System.Drawing.SystemColors.Window;
+            this.tabEditorSettings.Controls.Add(this.cbUseAutoCompleteCs);
             this.tabEditorSettings.Controls.Add(this.gbZoomSetting);
             this.tabEditorSettings.Controls.Add(this.lbTabWidth);
             this.tabEditorSettings.Controls.Add(this.nudTabWidth);
@@ -1352,10 +1354,12 @@
             this.scintilla.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.scintilla.AutoCMaxHeight = 9;
             this.scintilla.Location = new System.Drawing.Point(6, 100);
             this.scintilla.Name = "scintilla";
             this.scintilla.ScrollWidth = 2421;
             this.scintilla.Size = new System.Drawing.Size(648, 265);
+            this.scintilla.TabIndents = true;
             this.scintilla.TabIndex = 17;
             this.scintilla.Text = resources.GetString("scintilla.Text");
             // 
@@ -2523,9 +2527,11 @@
             this.scintillaUrlStyle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.scintillaUrlStyle.AutoCMaxHeight = 9;
             this.scintillaUrlStyle.Location = new System.Drawing.Point(9, 264);
             this.scintillaUrlStyle.Name = "scintillaUrlStyle";
             this.scintillaUrlStyle.Size = new System.Drawing.Size(645, 101);
+            this.scintillaUrlStyle.TabIndents = true;
             this.scintillaUrlStyle.TabIndex = 47;
             this.scintillaUrlStyle.Text = "https://www.vpksoft.net\r\nmailto:vpksoft@vpksoft.net";
             // 
@@ -2613,6 +2619,16 @@
             // 
             this.odSpellCheckerPackage.DefaultExt = "*.zip";
             this.odSpellCheckerPackage.Filter = "Custom spell check library|*.zip";
+            // 
+            // cbUseAutoCompleteCs
+            // 
+            this.cbUseAutoCompleteCs.AutoSize = true;
+            this.cbUseAutoCompleteCs.Location = new System.Drawing.Point(9, 314);
+            this.cbUseAutoCompleteCs.Name = "cbUseAutoCompleteCs";
+            this.cbUseAutoCompleteCs.Size = new System.Drawing.Size(330, 17);
+            this.cbUseAutoCompleteCs.TabIndex = 13;
+            this.cbUseAutoCompleteCs.Text = "Use (experimental) spell check for the C# programming language";
+            this.cbUseAutoCompleteCs.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -2907,5 +2923,6 @@
         private System.Windows.Forms.Button btInstallSpellCheckerFromFile;
         private System.Windows.Forms.OpenFileDialog odSpellCheckerPackage;
         private System.Windows.Forms.Button btRemoveInstalledSpellChecker;
+        private System.Windows.Forms.CheckBox cbUseAutoCompleteCs;
     }
 }

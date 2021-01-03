@@ -155,7 +155,47 @@ namespace DatabaseMigrations
                 .WithColumn("LicenseText").AsString().NotNullable()
                 .WithColumn("LicenseSpdxIdentifier").AsString().NotNullable();
 
-            // seed with some constant data..
+            // seed the database with data..
+            SeedData();
+        }
+
+        /// <summary>
+        /// Collects the DOWN migration expressions
+        /// </summary>
+        public override void Down()
+        {
+            // delete the CodeSnippets table..
+            Delete.Table("CodeSnippets");
+
+            // delete the FileSessions table..
+            Delete.Table("FileSessions");
+
+            // delete the FileSaves table..
+            Delete.Index("IX_FileSave_Session_Id");
+            Delete.Table("FileSaves");
+
+            // delete the MiscellaneousTextEntries table..
+            Delete.Index("IX_MiscellaneousTextEntry_Session_Id");
+            Delete.Table("MiscellaneousTextEntries");
+            
+            // delete the Plugins table..
+            Delete.Table("Plugins");
+
+            // delete the RecentFiles table..
+            Delete.Index("IX_RecentFile_Session_Id");
+            Delete.Table("RecentFiles");
+         
+            // delete the SearchAndReplaceHistories table..
+            Delete.Index("IX_SearchAndReplaceHistory_Session_Id");
+            Delete.Table("SearchAndReplaceHistories");
+
+            // delete the Plugins table..
+            Delete.Table("SoftwareLicenses");
+        }
+
+        public void SeedData()
+        {
+                        // seed with some constant data..
             Insert.IntoTable("SoftwareLicenses").Row(new ConcurrentDictionary<string, object>(
                 new List<KeyValuePair<string, object>>(new[]
                 {
@@ -200,41 +240,7 @@ namespace DatabaseMigrations
                     new KeyValuePair<string, object>("UseFileSystemOnContents", false),
                 })));
         }
-
-        /// <summary>
-        /// Collects the DOWN migration expressions
-        /// </summary>
-        public override void Down()
-        {
-            // delete the CodeSnippets table..
-            Delete.Table("CodeSnippets");
-
-            // delete the FileSessions table..
-            Delete.Table("FileSessions");
-
-            // delete the FileSaves table..
-            Delete.Index("IX_FileSave_Session_Id");
-            Delete.Table("FileSaves");
-
-            // delete the MiscellaneousTextEntries table..
-            Delete.Index("IX_MiscellaneousTextEntry_Session_Id");
-            Delete.Table("MiscellaneousTextEntries");
-            
-            // delete the Plugins table..
-            Delete.Table("Plugins");
-
-            // delete the RecentFiles table..
-            Delete.Index("IX_RecentFile_Session_Id");
-            Delete.Table("RecentFiles");
-         
-            // delete the SearchAndReplaceHistories table..
-            Delete.Index("IX_SearchAndReplaceHistory_Session_Id");
-            Delete.Table("SearchAndReplaceHistories");
-
-            // delete the Plugins table..
-            Delete.Table("SoftwareLicenses");
-        }
-
+        
         /// <summary>
         /// The simple text lines replace script (C#).
         /// </summary>

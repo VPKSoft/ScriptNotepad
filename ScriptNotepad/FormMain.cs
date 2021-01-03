@@ -665,6 +665,18 @@ namespace ScriptNotepad
                         sttcMain.Documents[i].Tag1 = null;
                     }
                 }
+                
+                // dispose of the C# auto-complete..
+                if (sttcMain.Documents[i] != null && sttcMain.Documents[i].Tag2 != null &&
+                    sttcMain.Documents[i].Tag2.GetType() == typeof(AutoCompleteCs))
+                {
+                    var autoCompleteCs = (AutoCompleteCs) sttcMain.Documents[i].Tag2;
+
+                    using (autoCompleteCs)
+                    {
+                        sttcMain.Documents[i].Tag2 = null;
+                    }
+                }
             }
         }
 
@@ -1360,6 +1372,13 @@ namespace ScriptNotepad
                     }
                 }
 
+                // dispose of the C# auto-complete..
+                if (sttcMain.Documents[docIndex].Tag2 != null &&
+                    sttcMain.Documents[docIndex].Tag2.GetType() == typeof(AutoCompleteCs))
+                {
+                    (sttcMain.Documents[docIndex].Tag2 as AutoCompleteCs)?.Dispose();
+                }
+
                 // URL highlighter disposal..
                 if (sttcMain.Documents[docIndex].Tag1 != null && sttcMain.Documents[docIndex].Tag1.GetType() == typeof(ScintillaUrlDetect))
                 {
@@ -1615,6 +1634,13 @@ namespace ScriptNotepad
 
                     // set the lexer type from the saved database value..
                     sttcMain.LastAddedDocument.LexerType = file.LexerType;
+
+                    // set the C# auto-complete if the conditions are met..
+                    if (sttcMain.LastAddedDocument.Tag2 == null && FormSettings.Settings.UseCSharpAutoComplete &&
+                        sttcMain.LastAddedDocument.LexerType == LexerEnumerations.LexerType.Cs) 
+                    { 
+                        sttcMain.LastAddedDocument.Tag2 = new AutoCompleteCs(sttcMain.LastAddedDocument.Scintilla);
+                    }
 
                     SetSpellCheckerState(file.UseSpellChecking, true);
 
@@ -1885,6 +1911,14 @@ namespace ScriptNotepad
                         // set the lexer type from the saved database value..
                         sttcMain.LastAddedDocument.LexerType = fileSave.LexerType;
 
+                        // set the C# auto-complete if the conditions are met..
+                        if (sttcMain.LastAddedDocument.Tag2 == null && FormSettings.Settings.UseCSharpAutoComplete &&
+                            sttcMain.LastAddedDocument.LexerType == LexerEnumerations.LexerType.Cs) 
+                        { 
+                            sttcMain.LastAddedDocument.Tag2 = new AutoCompleteCs(sttcMain.LastAddedDocument.Scintilla);
+                        }
+
+
                         // enabled the caret line background color..
                         SetCaretLineColor();
 
@@ -1981,6 +2015,13 @@ namespace ScriptNotepad
 
                             // a new lexer might have to be assigned..
                             document.LexerType = LexerFileExtensions.LexerTypeFromFileName(fileSave.FileNameFull);
+
+                            // set the C# auto-complete if the conditions are met..
+                            if (document.Tag2 == null && FormSettings.Settings.UseCSharpAutoComplete &&
+                                document.LexerType == LexerEnumerations.LexerType.Cs) 
+                            { 
+                                document.Tag2 = new AutoCompleteCs(sttcMain.LastAddedDocument.Scintilla);
+                            }
 
                             // update the file system modified time stamp so the software doesn't ask if the file should
                             // be reloaded from the file system..
@@ -2135,10 +2176,10 @@ namespace ScriptNotepad
                 // the user wants to save the HTML directly into a HTML file..
                 if (sender.Equals(mnuHTMLToFile) || sender.Equals(mnuHTMLToFileExecute))
                 {
-                    sdHTML.InitialDirectory = FormSettings.Settings.FileLocationSaveAsHTML;
+                    sdHTML.InitialDirectory = FormSettings.Settings.FileLocationSaveAsHtml;
                     if (sdHTML.ShowDialog() == DialogResult.OK)
                     {
-                        FormSettings.Settings.FileLocationSaveAsHTML = Path.GetDirectoryName(sdHTML.FileName);
+                        FormSettings.Settings.FileLocationSaveAsHtml = Path.GetDirectoryName(sdHTML.FileName);
                         File.WriteAllText(sdHTML.FileName, html, Encoding.UTF8);
                     }
 
@@ -2261,6 +2302,13 @@ namespace ScriptNotepad
                     var fileSave = (FileSave) document.Tag;
                     fileSave.LexerType = e.LexerType;
                     fileSave.AddOrUpdateFile();
+
+                    // set the C# auto-complete if the conditions are met..
+                    if (document.Tag2 == null && FormSettings.Settings.UseCSharpAutoComplete &&
+                        document.LexerType == LexerEnumerations.LexerType.Cs)
+                    { 
+                        document.Tag2 = new AutoCompleteCs(sttcMain.LastAddedDocument.Scintilla);
+                    }
                 }
             });
         }
@@ -2533,6 +2581,13 @@ namespace ScriptNotepad
                     // set the lexer type from the saved database value..
                     sttcMain.LastAddedDocument.LexerType = file.LexerType;
 
+                    // set the C# auto-complete if the conditions are met..
+                    if (sttcMain.LastAddedDocument.Tag2 == null && FormSettings.Settings.UseCSharpAutoComplete &&
+                        sttcMain.LastAddedDocument.LexerType == LexerEnumerations.LexerType.Cs) 
+                    { 
+                        sttcMain.LastAddedDocument.Tag2 = new AutoCompleteCs(sttcMain.LastAddedDocument.Scintilla);
+                    }
+
                     // not history any more..
                     file.IsHistory = false;
 
@@ -2758,8 +2813,11 @@ namespace ScriptNotepad
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // sa the changes into the database..
+            // save the changes into the database..
             ScriptNotepadDbContext.DbContext.SaveChanges();
+
+            // save the possible setting changes..
+            FormSettings.Settings.Save(Program.SettingFileName);
 
             // disable the timers not mess with application exit..
             tmAutoSave.Enabled = false;

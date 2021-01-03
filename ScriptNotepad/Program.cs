@@ -32,6 +32,8 @@ using System.IO;
 using VPKSoft.PosLib; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using VPKSoft.ErrorLogger; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using System.Diagnostics;
+using System.Drawing;
+using System.Reflection;
 using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
@@ -43,6 +45,7 @@ using ScriptNotepad.UtilityClasses.MiscForms;
 using ScriptNotepad.UtilityClasses.Session;
 using ScriptNotepad.UtilityClasses.SearchAndReplace;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
+using VPKSoft.Utils.XmlSettingsMisc;
 using VPKSoft.WaitForProcessUtil;
 
 // limit the PropertyChanged to the Settings class (https://github.com/Fody/PropertyChanged)
@@ -183,8 +186,26 @@ namespace ScriptNotepad
 
             PositionCore.Bind(); // attach the PosLib to the application            
 
+            SettingFileName = PathHandler.GetSettingsFile(Assembly.GetEntryAssembly(), ".xml",
+                Environment.SpecialFolder.LocalApplicationData);
+
             // create a Settings class instance for the settings form..
             FormSettings.Settings = new Settings.Settings();
+
+            FormSettings.Settings.RequestTypeConverter += settings_RequestTypeConverter;
+
+            if (!File.Exists(SettingFileName))
+            {
+                using var settingsOld = new Settings.SettingsOld();
+                settingsOld.MoveSettings(FormSettings.Settings);
+                FormSettings.Settings.Save(SettingFileName);
+            }
+            else
+            {
+                FormSettings.Settings.DatabaseMigrationLevel = 1;
+            }
+
+            FormSettings.Settings.Load(SettingFileName);
 
             DBLangEngine.UseCulture = FormSettings.Settings.Culture; // set the localization value..
 
@@ -208,6 +229,14 @@ namespace ScriptNotepad
             if (Restart)
             {
                 ApplicationProcess.RunApplicationProcess(false, string.Empty);
+            }
+        }
+
+        private static void settings_RequestTypeConverter(object sender, RequestTypeConverterEventArgs e)
+        {
+            if (e.TypeToConvert == typeof(Color))
+            {
+                e.TypeConverter = new ColorConverter();
             }
         }
 
@@ -240,6 +269,12 @@ namespace ScriptNotepad
         /// Gets or sets a value indicating whether to restart the software upon closing it.
         /// </summary>
         internal static bool Restart { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the name of the setting file.
+        /// </summary>
+        /// <value>The name of the setting file.</value>
+        internal static string SettingFileName { get; set; }
 
         #region InternalProperties        
         /// <summary>
