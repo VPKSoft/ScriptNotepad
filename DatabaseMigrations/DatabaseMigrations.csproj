@@ -31,7 +31,7 @@
     <PackageReference Include="FluentMigrator.Runner" Version="3.2.10" />
     <PackageReference Include="FluentMigrator.Runner.Core" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Runner.Db2" Version="3.2.11" />
-    <PackageReference Include="FluentMigrator.Runner.Firebird" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator.Runner.Firebird" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Runner.Hana" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Runner.Jet" Version="3.2.10" />
     <PackageReference Include="FluentMigrator.Runner.MySql" Version="3.2.11" />
