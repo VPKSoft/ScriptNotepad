@@ -22,7 +22,7 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentMigrator" Version="3.2.10" />
+    <PackageReference Include="FluentMigrator" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Abstractions" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Extensions.Oracle" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Extensions.Postgres" Version="3.2.11" />
