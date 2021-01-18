@@ -431,7 +431,7 @@
     <PackageReference Include="VPKSoft.LangLib" Version="1.0.6" />
     <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.6" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.1.1" />
-    <PackageReference Include="VPKSoft.ScintillaNet.AutoComplete.CSharp" Version="1.0.1" />
+    <PackageReference Include="VPKSoft.ScintillaNet.AutoComplete.CSharp" Version="1.0.2" />
     <PackageReference Include="VPKSoft.ScintillaSpellCheck.SUO" Version="1.0.5" />
     <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.SUO" Version="1.0.11" />
     <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.3" />
