@@ -193,6 +193,9 @@ namespace DatabaseMigrations
             Delete.Table("SoftwareLicenses");
         }
 
+        /// <summary>
+        /// Seeds the database with the necessary data.
+        /// </summary>
         public void SeedData()
         {
                         // seed with some constant data..
