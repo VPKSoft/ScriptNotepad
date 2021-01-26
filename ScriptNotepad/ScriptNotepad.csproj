@@ -422,7 +422,7 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
     <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.113" />
-    <PackageReference Include="unofficial.ScintillaNET" Version="3.8.0" />
+    <PackageReference Include="unofficial.ScintillaNET" Version="3.8.1" />
     <PackageReference Include="UTF.Unknown" Version="2.3.0" />
     <PackageReference Include="VoikkoSharp" Version="1.0.2" />
     <PackageReference Include="VPKSoft.ConfLib" Version="1.0.3" />
