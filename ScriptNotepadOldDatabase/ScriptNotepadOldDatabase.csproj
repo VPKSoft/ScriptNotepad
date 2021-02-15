@@ -29,7 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
-    <PackageReference Include="VPKSoft.LangLib" Version="1.0.6" />
+    <PackageReference Include="VPKSoft.LangLib" Version="1.0.7" />
     <PackageReference Include="VPKSoft.ScintillaLexers.SUO" Version="1.1.5" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.6" />
   </ItemGroup>
