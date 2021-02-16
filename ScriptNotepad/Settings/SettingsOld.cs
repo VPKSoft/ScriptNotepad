@@ -784,8 +784,6 @@ namespace ScriptNotepad.Settings
                 var defaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
                     "Default|A name of the default session for the documents");
 
-                var sessions = ScriptNotepadDbContext.DbContext.FileSessions.ToList();
-
                 var session =
                     ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f => f.Id == 1);
 
@@ -1208,16 +1206,16 @@ namespace ScriptNotepad.Settings
         {
             if (defaultDirectory == string.Empty)
             {
-                return Paths.GetAppSettingsFolder();
+                return Paths.GetAppSettingsFolder(Misc.AppType.Winforms);
             }
 
             // create a folder for plug-ins if it doesn't exist already.. 
-            if (!Directory.Exists(Path.Combine(Paths.GetAppSettingsFolder(), defaultDirectory)))
+            if (!Directory.Exists(Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), defaultDirectory)))
             {
                 try
                 {
                     // create the folder..
-                    Directory.CreateDirectory(Path.Combine(Paths.GetAppSettingsFolder(),
+                    Directory.CreateDirectory(Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms),
                         defaultDirectory));
                 }
                 catch (Exception ex) // a failure so do log it..
@@ -1227,7 +1225,7 @@ namespace ScriptNotepad.Settings
                 }
             }
 
-            return Path.Combine(Paths.GetAppSettingsFolder(), defaultDirectory);
+            return Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), defaultDirectory);
         }
 
         /// <summary>

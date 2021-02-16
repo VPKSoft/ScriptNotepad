@@ -48,6 +48,7 @@ using VPKSoft.ExternalDictionaryPackage;
 using VPKSoft.LangLib;
 using VPKSoft.MessageBoxExtended;
 using VPKSoft.ScintillaUrlDetect;
+using VPKSoft.Utils;
 using TabDrawMode = ScintillaNET.TabDrawMode;
 
 namespace ScriptNotepad.Settings
@@ -718,15 +719,15 @@ namespace ScriptNotepad.Settings
         public static string CreateDefaultPluginDirectory()
         {
             // create a folder for plug-ins if it doesn't exist already.. 
-            if (!Directory.Exists(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins")))
+            if (!Directory.Exists(Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "Plugins")))
             {
                 try
                 {
                     // create the folder..
-                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins"));
+                    Directory.CreateDirectory(Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "Plugins"));
 
                     // save the folder in the settings..
-                    Settings.PluginFolder = Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins");
+                    Settings.PluginFolder = Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "Plugins");
                 }
                 catch (Exception ex) // a failure so do log it..
                 {
@@ -734,7 +735,7 @@ namespace ScriptNotepad.Settings
                     return string.Empty;
                 }
             }
-            return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "Plugins");
+            return Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "Plugins");
         }
 
         /// <summary>
@@ -744,15 +745,15 @@ namespace ScriptNotepad.Settings
         public static string CreateDefaultCustomDictionaryDirectory()
         {
             // create a folder for custom dictionaries if it doesn't exist already.. 
-            if (!Directory.Exists(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries")))
+            if (!Directory.Exists(Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "CustomDictionaries")))
             {
                 try
                 {
                     // create the folder..
-                    Directory.CreateDirectory(Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries"));
+                    Directory.CreateDirectory(Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "CustomDictionaries"));
 
                     // save the folder in the settings..
-                    Settings.EditorSpellCustomDictionaryInstallPath = Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries");
+                    Settings.EditorSpellCustomDictionaryInstallPath = Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "CustomDictionaries");
                 }
                 catch (Exception ex) // a failure so do log it..
                 {
@@ -760,7 +761,7 @@ namespace ScriptNotepad.Settings
                     return string.Empty;
                 }
             }
-            return Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "CustomDictionaries");
+            return Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "CustomDictionaries");
         }
 
         private void btCommonSelectFolder_Click(object sender, EventArgs e)

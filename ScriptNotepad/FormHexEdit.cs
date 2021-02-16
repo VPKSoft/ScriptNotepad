@@ -49,7 +49,7 @@ namespace ScriptNotepad
             PositionForms.Add(this, PositionCore.SizeChangeMode.MoveTopLeft);
 
             // add positioning..
-            PositionCore.Bind();
+            PositionCore.Bind(ApplicationType.WinForms);
 
             InitializeComponent();
 

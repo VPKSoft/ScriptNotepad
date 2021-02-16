@@ -68,7 +68,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             PositionForms.Add(this);
 
             // add positioning..
-            PositionCore.Bind();
+            PositionCore.Bind(ApplicationType.WinForms);
 
             InitializeComponent();
 
@@ -1140,7 +1140,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // FormDialogSearchReplaceProgressFiles.RequestNextAction..
             new FormDialogSearchReplaceProgressFiles(crawler,
                 // no name for this delegate..
-                (o, args) =>
+                (_, args) =>
                 {
                     // check the settings for a maximum search file size..
                     if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)
@@ -1233,7 +1233,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
             // FormDialogSearchReplaceProgressFiles.RequestNextAction..
             new FormDialogSearchReplaceProgressFiles(crawler,
                 // no name for this delegate..
-                (o, args) =>
+                (_, args) =>
                 {
                     // check the settings for a maximum search file size..
                     if ((new FileInfo(args.FileName)).Length > FormSettings.Settings.FileSearchMaxSizeMb * 1000000)

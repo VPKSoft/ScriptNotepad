@@ -74,8 +74,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using RpcSelf;
 using VPKSoft.ErrorLogger;
-using VPKSoft.IPC;
 using VPKSoft.LangLib;
 using VPKSoft.MessageBoxExtended;
 using VPKSoft.MessageBoxExtended.Controls;
@@ -114,7 +114,7 @@ namespace ScriptNotepad
             PositionForms.Add(this);
 
             // add positioning..
-            PositionCore.Bind();
+            PositionCore.Bind(ApplicationType.WinForms);
 
             InitializeComponent();
 
@@ -139,11 +139,11 @@ namespace ScriptNotepad
             // subscribe to the session ended event to save the documents without asking stupid questions..
             SystemEvents.SessionEnded += SystemEvents_SessionEnded;
 
-            // subscribe to the IPC event if the application receives a message from another instance of this application..
-            IpcClientServer.RemoteMessage.MessageReceived += RemoteMessage_MessageReceived;
-
             // create an IPC server at localhost, the port was randomized in the development phase..
-            ipcServer.CreateServer("localhost", 50670);
+            IpcServer = new RpcSelfHost<string>(50670);
+
+            // subscribe to the IPC event if the application receives a message from another instance of this application..
+            IpcServer.MessageReceived += RemoteMessage_MessageReceived;
 
             var databaseFile = DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite";
 
@@ -1018,7 +1018,8 @@ namespace ScriptNotepad
             FormSearchResultTree.SearchResultSelected -= FormSearchResultTreeSearchResultSelected;
 
             // unsubscribe the IpcClientServer MessageReceived event handler..
-            IpcClientServer.RemoteMessage.MessageReceived -= RemoteMessage_MessageReceived;
+            IpcServer.MessageReceived -= RemoteMessage_MessageReceived;
+            IpcServer.Dispose();
 
             // unsubscribe the encoding menu clicked handler..
             CharacterSetMenuBuilder.EncodingMenuClicked -= CharacterSetMenuBuilder_EncodingMenuClicked;
@@ -2757,11 +2758,11 @@ namespace ScriptNotepad
 
         // this event is raised when another instance of this application receives a file name
         // via the IPC (no multiple instance allowed)..
-        private void RemoteMessage_MessageReceived(object sender, MessageReceivedEventArgs e)
+        private void RemoteMessage_MessageReceived(object sender, IpcExchangeEventArgs<string> e)
         {
             Invoke(new MethodInvoker(delegate
             {
-                OpenDocument(e.Message, DefaultEncodings, 
+                OpenDocument(e.Object, DefaultEncodings, 
                     false, false, false, true);
                 // the user probably will like the program to show up, if the software activates
                 // it self from a windows shell call to open a file..
@@ -3578,12 +3579,6 @@ namespace ScriptNotepad
         private readonly bool runningConstructor = true;
 
         /// <summary>
-        /// An IPC client / server to transmit Windows shell file open requests to the current process.
-        /// (C): VPKSoft: https://gist.github.com/VPKSoft/5d78f1c06ec51ebad34817b491fe6ac6
-        /// </summary>
-        private readonly IpcClientServer ipcServer = new IpcClientServer();
-
-        /// <summary>
         /// A flag indicating if the main form should be activated.
         /// </summary>
         private bool bringToFrontQueued;
@@ -3604,7 +3599,7 @@ namespace ScriptNotepad
         /// <summary>
         /// Gets the message box stack containing the <see cref="MessageBoxExtended"/> instances.
         /// </summary>
-        private MessageBoxExpandStack BoxStack { get; set; }
+        private MessageBoxExpandStack BoxStack { get; }
 
         /// <summary>
         /// Gets or sets the value whether the timers within the program should be enabled or disabled.
@@ -3631,6 +3626,12 @@ namespace ScriptNotepad
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the IPC server.
+        /// </summary>
+        /// <value>The IPC server.</value>
+        private static RpcSelfHost<string> IpcServer { get; set; }
 
         /// <summary>
         /// Gets the search string in case of a active document has a selection within a one line.
@@ -3717,7 +3718,7 @@ namespace ScriptNotepad
         /// Gets or sets the loaded active plug-ins.
         /// </summary>
         private List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, Plugin Plugin)> Plugins { get; } =
-            new List<(Assembly Assembly, IScriptNotepadPlugin PluginInstance, Plugin Plugin)>();
+            new();
 
         /// <summary>
         /// Gets or sets the default encoding to be used with the files within this software.

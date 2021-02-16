@@ -97,7 +97,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             PositionForms.Add(this);
 
             // add positioning..
-            PositionCore.Bind();
+            PositionCore.Bind(ApplicationType.WinForms);
 
             InitializeComponent();
 
@@ -195,7 +195,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             // set the script code from the Scintilla document contents..
             scriptRunnerParent.ScriptCode = scintillaScript.Text;
 
-            if (scriptRunnerParent?.CompilerResults?.Output != null)
+            if (scriptRunnerParent.CompilerResults?.Output != null)
             {
                 // loop through the compilation results..
                 foreach (var compilerResult in scriptRunnerParent.CompilerResults.Output)

@@ -61,7 +61,7 @@ namespace ScriptNotepad.DialogForms
             PositionForms.Add(this);
 
             // add positioning..
-            PositionCore.Bind();
+            PositionCore.Bind(ApplicationType.WinForms);
 
             InitializeComponent();
 

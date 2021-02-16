@@ -33,6 +33,7 @@ using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaSpellCheck;
 using VPKSoft.ScintillaTabbedTextControl;
+using VPKSoft.Utils;
 
 namespace ScriptNotepad.UtilityClasses.SpellCheck
 {
@@ -166,13 +167,13 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
         /// Gets or sets the user dictionary file.
         /// </summary>
         public static string UserDictionaryFile { get; set; } =
-            Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "user_dictionary.dic");
+            Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "user_dictionary.dic");
 
         /// <summary>
         /// Gets or sets the user ignore word file.
         /// </summary>
         public static string UserIgnoreWordFile { get; set; } =
-            Path.Combine(VPKSoft.Utils.Paths.GetAppSettingsFolder(), "user_dictionary.ignore");
+            Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "user_dictionary.ignore");
 
         /// <summary>
         /// Gets or set the <see cref="Scintilla"/> instance this class has event subscription for.

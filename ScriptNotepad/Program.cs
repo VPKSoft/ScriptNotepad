@@ -27,13 +27,13 @@ SOFTWARE.
 using System;
 using System.Windows.Forms;
 using VPKSoft.Utils;
-using VPKSoft.IPC;
 using System.IO;
 using VPKSoft.PosLib; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using VPKSoft.ErrorLogger; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
+using RpcSelf;
 using ScriptNotepad.DialogForms;
 using VPKSoft.LangLib;
 using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
@@ -69,7 +69,7 @@ namespace ScriptNotepad
             }
 
             // localizeProcess (user wishes to localize the software)..
-            Process localizeProcess = VPKSoft.LangLib.Utils.CreateDBLocalizeProcess(Paths.AppInstallDir);
+            Process localizeProcess = Utils.CreateDBLocalizeProcess(Paths.AppInstallDir);
 
             // if the localize process was requested via the command line..
             if (localizeProcess != null)
@@ -86,10 +86,10 @@ namespace ScriptNotepad
                 return;
             }
 
-            Paths.MakeAppSettingsFolder(); // ensure there is an application settings folder..
+            Paths.MakeAppSettingsFolder(Misc.AppType.Winforms); // ensure there is an application settings folder..
 
             // Save languages..
-            if (VPKSoft.LangLib.Utils.ShouldLocalize() != null)
+            if (Utils.ShouldLocalize() != null)
             {
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormMain();
@@ -148,8 +148,7 @@ namespace ScriptNotepad
                 ExceptionLogger.LogMessage($"The arguments are: '{string.Join("', '", args)}'.");
                 try
                 {
-                    IpcClientServer ipcClient = new IpcClientServer();
-                    ipcClient.CreateClient("localhost", 50670);
+                    RpcSelfClient<string> ipcClient = new RpcSelfClient<string>(50670);
 
                     // only send the existing files to the running instance..
                     foreach (var arg in args)
@@ -165,7 +164,7 @@ namespace ScriptNotepad
                         if (File.Exists(file))
                         {
                             ExceptionLogger.LogMessage($"File exists: '{file}'. Send open request.");
-                            ipcClient.SendMessage(file);
+                            ipcClient.SendData(file);
                         }
                     }
                 }
@@ -184,7 +183,7 @@ namespace ScriptNotepad
                 return;
             }
 
-            PositionCore.Bind(); // attach the PosLib to the application            
+            PositionCore.Bind(ApplicationType.WinForms); // attach the PosLib to the application            
 
             SettingFileName = PathHandler.GetSettingsFile(Assembly.GetEntryAssembly(), ".xml",
                 Environment.SpecialFolder.LocalApplicationData);
@@ -196,7 +195,7 @@ namespace ScriptNotepad
 
             if (!File.Exists(SettingFileName))
             {
-                using var settingsOld = new Settings.SettingsOld();
+                using var settingsOld = new SettingsOld();
                 settingsOld.MoveSettings(FormSettings.Settings);
                 FormSettings.Settings.Save(SettingFileName);
             }
@@ -212,7 +211,7 @@ namespace ScriptNotepad
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
-            PositionCore.UnBind(); // release the event handlers used by the PosLib and save the default data
+            PositionCore.UnBind(ApplicationType.WinForms); // release the event handlers used by the PosLib and save the default data
 
             if (!Debugger.IsAttached)
             {

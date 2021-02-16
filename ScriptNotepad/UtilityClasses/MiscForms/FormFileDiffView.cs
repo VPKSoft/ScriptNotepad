@@ -48,7 +48,7 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
             PositionForms.Add(this);
 
             // add positioning..
-            PositionCore.Bind();
+            PositionCore.Bind(ApplicationType.WinForms);
 
             InitializeComponent();
 

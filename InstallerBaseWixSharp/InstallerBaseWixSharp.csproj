@@ -3,7 +3,7 @@
     <ProjectGuid>{C9A243E5-6443-4A00-ACAC-C20A61286264}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AssemblyName>WixSharpSetup</AssemblyName>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyTitle>InstallerBaseWixSharp</AssemblyTitle>
     <Product>InstallerBaseWixSharp</Product>
     <Copyright>Copyright © VPKSoft 2020</Copyright>
