@@ -425,7 +425,7 @@
     <PackageReference Include="unofficial.ScintillaNET" Version="3.8.1" />
     <PackageReference Include="UTF.Unknown" Version="2.3.0" />
     <PackageReference Include="VoikkoSharp" Version="1.0.2" />
-    <PackageReference Include="VPKSoft.ConfLib" Version="1.0.3" />
+    <PackageReference Include="VPKSoft.ConfLib" Version="1.0.4" />
     <PackageReference Include="VPKSoft.ErrorLogger" Version="1.0.0.6" />
     <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.1" />
     <PackageReference Include="VPKSoft.LangLib" Version="1.0.7" />
