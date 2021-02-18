@@ -418,25 +418,25 @@
     <PackageReference Include="RpcSelf" Version="1.0.1" />
     <PackageReference Include="ScintillaDiff.SUO" Version="1.0.15" />
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.5" />
-    <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.2" />
+    <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.3" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
     <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.113" />
-    <PackageReference Include="unofficial.ScintillaNET" Version="3.8.1" />
+    <PackageReference Include="unofficial.ScintillaNET" Version="3.8.2" />
     <PackageReference Include="UTF.Unknown" Version="2.3.0" />
-    <PackageReference Include="VoikkoSharp" Version="1.0.2" />
+    <PackageReference Include="VoikkoSharp" Version="1.0.3" />
     <PackageReference Include="VPKSoft.ConfLib" Version="1.0.4" />
-    <PackageReference Include="VPKSoft.ErrorLogger" Version="1.0.0.6" />
-    <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.1" />
+    <PackageReference Include="VPKSoft.ErrorLogger" Version="1.1.0" />
+    <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.2" />
     <PackageReference Include="VPKSoft.LangLib" Version="1.0.7" />
-    <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.6" />
+    <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.8" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.2" />
     <PackageReference Include="VPKSoft.ScintillaNet.AutoComplete.CSharp" Version="1.0.3" />
     <PackageReference Include="VPKSoft.ScintillaSpellCheck.SUO" Version="1.0.6" />
     <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.SUO" Version="1.0.12" />
     <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.5" />
-    <PackageReference Include="VPKSoft.SearchText" Version="1.0.2" />
+    <PackageReference Include="VPKSoft.SearchText" Version="1.0.3" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.7" />
     <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.3" />
     <PackageReference Include="VPKSoft.XmlSettings" Version="1.0.1" />
