@@ -40,7 +40,7 @@
     <PackageReference Include="FluentMigrator.Runner.Redshift" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Runner.SqlAnywhere" Version="3.2.11" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.2.11" />
-    <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="3.2.11" />
+    <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="3.2.15" />
     <PackageReference Include="FluentMigrator.Runner.SqlServerCe" Version="3.2.11" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
