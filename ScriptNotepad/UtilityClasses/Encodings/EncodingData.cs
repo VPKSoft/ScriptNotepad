@@ -150,7 +150,14 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                     return new UTF32Encoding(webName == "utf-32BE", byteOrderMark, throwInvalidChars);
                 }
 
-                return Encoding.GetEncoding(webName);
+                try
+                {
+                    return Encoding.GetEncoding(webName);
+                }
+                catch
+                {
+                    return CodePagesEncodingProvider.Instance.GetEncoding(webName);
+                }
             }
             catch
             {

@@ -27,7 +27,6 @@ SOFTWARE.
 #region Usings
 using Microsoft.Win32;
 using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
-using ScriptNotepad.Database.DirectAccess;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
@@ -75,6 +74,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using RpcSelf;
+using ScriptNotepad.Database.DirectAccess;
+using ScriptNotepad.Database.Entity.Migrations;
+using ScriptNotepadOldDatabaseEntity;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.MessageBoxExtended;
@@ -92,6 +94,9 @@ using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivate
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase;
+using ScriptNotepad.Database.Entity.EntityHelpers;
+using FileSaveHelper = ScriptNotepad.Database.Entity.Utility.ModelHelpers.FileSaveHelper;
+
 #endregion
 
 namespace ScriptNotepad
@@ -145,21 +150,21 @@ namespace ScriptNotepad
             // subscribe to the IPC event if the application receives a message from another instance of this application..
             IpcServer.MessageReceived += RemoteMessage_MessageReceived;
 
-            var databaseFile = DBLangEngine.DataDir + "ScriptNotepadEntity.sqlite";
+            var databaseFile = DBLangEngine.DataDir + "ScriptNotepadEntityCore.sqlite";
 
-            var connectionString = $"Data Source={databaseFile};Pooling=true;FailIfMissing=false;";
+            var connectionString = $"Data Source={databaseFile}";
 
             base.Text +=
                 (ProcessElevation.IsElevated ? " (" +
                 DBLangEngine.GetMessage("msgProcessIsElevated", "Administrator|A message indicating that a process is elevated.") + ")" : string.Empty);
 
-            DatabaseMigrations.ExecuteDatabaseMigrate.DefaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
+            ExecuteDatabaseMigrate.DefaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
                 "Default|A name of the default session for the documents");
 
             try
             {
                 // run the database migrations (FluentMigrator)..
-                DatabaseMigrations.ExecuteDatabaseMigrate.Migrate(connectionString);
+                ExecuteDatabaseMigrate.Migrate(connectionString);
             }
             catch (Exception ex)
             {
@@ -171,7 +176,7 @@ namespace ScriptNotepad
             // initialize the ScriptNotepadDbContext class instance..
             ScriptNotepadDbContext.InitializeDbContext(connectionString);
 
-            MigrateDatabase(); // migrate to Entity Framework Code-First database..
+            MigrateDatabaseEfCore(); // migrate to Entity Framework Core database..
 
             // load the external spell check library if defined..
             ExternalSpellChecker.Load();
@@ -366,42 +371,13 @@ namespace ScriptNotepad
         #endregion
 
         #region DatabaseMigration
-        /// <summary>
-        /// Migrates the database to a new format. For now it is from normal write SQL to Entity Framework Code-First database.
-        /// </summary>
-        private void MigrateDatabase()
+        private void MigrateDatabaseEfCore()
         {
-            // this might be a lengthy process, perhaps a some king of message should indicate that..
-            if (FormSettings.Settings.DatabaseMigrationLevel == 0)
+            try
             {
-                try
+                // check the migration level..
+                if (FormSettings.Settings.DatabaseMigrationLevel < 2 && File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite")))
                 {
-                    // no need to migrate if there is no old format database..
-                    if (!File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepad.sqlite")))
-                    {
-                        FormSettings.Settings.DatabaseMigrationLevel = 1;
-                        return;
-                    }
-
-                    // there is no database so there is no data yet..
-                    ScriptNotepadDbContext.ReleaseDbContext(false, true);
-
-                    // a possible failed migration needs deletion..
-                    if (File.Exists(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite")))
-                    {
-                        try
-                        {
-                            File.Delete(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite"));
-                        }
-                        catch (Exception ex)
-                        {
-                            ExceptionLogger.LogError(ex);
-                            MigrateDisplayError("Delete: 'ScriptNotepadEntity.sqlite'.");
-                            // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                            throw new Exception(MigrateErrorMessage("Delete: 'ScriptNotepadEntity.sqlite'."));
-                        }
-                    }
-
                     MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgDatabaseMigration1",
                             "The database will be updated. This might take a few minutes.|A message informing that database is migrating to a Entity Framework Code-First database and it might be a lengthy process."),
@@ -409,122 +385,33 @@ namespace ScriptNotepad
                             "Information|A message title describing of some kind information."),
                         MessageBoxButtonsExtended.OK, MessageBoxIcon.Information, ExtendedDefaultButtons.Button1);
 
-                    MigrateToEntityFramework();
-                    FormSettings.Settings.DatabaseMigrationLevel = 1;
+                    List<Exception> migrateExceptions;
 
-                    // initialize the ScriptNotepadDbContext class instance..
-                    ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
-                                                               "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
-                }
-                catch (Exception ex) // for some reason the migration failed..
-                {
-                    // log the exception..
-                    ExceptionLogger.LogError(ex);
-
-                    if (MessageBoxExtended.Show(DBLangEngine.GetMessage("msgEntityFrameworkError2",
-                                "Error converting the database to the Entity Framework Code-First with an exception: '{0}'. Would you like to start a new session?|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database. An option is given to the user to start with an empty session.",
-                                ex.Message), DBLangEngine.GetMessage("msgError",
-                                "Error|A message describing that some kind of error occurred."),
-                            MessageBoxButtonsExtended.YesNo, MessageBoxIcon.Error, ExtendedDefaultButtons.Button2) ==
-                        DialogResultExtended.Yes) 
+                    if ((migrateExceptions = ScriptNotepadOldDbContext.MigrateToEfCore(
+                        Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite"), 
+                        Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntityCore.sqlite"))).Count > 0) 
                     {
-                        if (!ScriptNotepadDbContext.DbContextInitialized)
+                        foreach (var migrateException in migrateExceptions)
                         {
-                            // initialize the ScriptNotepadDbContext class instance..
-                            ScriptNotepadDbContext.InitializeDbContext("Data Source=" + DBLangEngine.DataDir +
-                                                                       "ScriptNotepadEntity.sqlite;Pooling=true;FailIfMissing=false;");
+                            MessageBoxExtended.Show(
+                                migrateException.Message,
+                                DBLangEngine.GetMessage("msgError",
+                                    "Error|A message describing that some kind of error occurred."), MessageBoxButtonsExtended.OK,
+                                MessageBoxIcon.Error, ExtendedDefaultButtons.Button1);
+                            ExceptionLogger.LogError(migrateException);
                         }
-                        FormSettings.Settings.DatabaseMigrationLevel = 1;
+                        Process.GetCurrentProcess().Kill();
+                        return;
                     }
-                    else // let it fall..
-                    {
-                        MigrateErrorMessage($"Unknown: {ex.Message}");
-                        throw;
-                    }
+
+                    FormSettings.Settings.DatabaseMigrationLevel = 2;
+
+                    File.Delete(Path.Combine(DBLangEngine.DataDir, "ScriptNotepadEntity.sqlite"));
                 }
             }
-        }
-
-        private string MigrateErrorMessage(string phase)
-        {
-            return DBLangEngine.GetMessage("msgEntityFrameworkError1",
-                "Error converting the database to the Entity Framework Code-First at method '{0}'.|Some kind of error occurred while trying to convert the database to Entity Framework Code-First database.",
-                phase);
-        }
-
-        private void MigrateDisplayError(string phase)
-        {
-            MessageBoxExtended.Show(
-                MigrateErrorMessage(phase),
-                DBLangEngine.GetMessage("msgError",
-                    "Error|A message describing that some kind of error occurred."), MessageBoxButtonsExtended.OK,
-                MessageBoxIcon.Error, ExtendedDefaultButtons.Button1);
-        }
-
-        /// <summary>
-        /// Migrates the database to entity framework.
-        /// </summary>
-        /// <exception cref="Exception">
-        /// </exception>
-        private void MigrateToEntityFramework()
-        {
-            if (FormSettings.Settings.DatabaseMigrationLevel == 0)
+            catch (Exception ex)
             {
-                if (!EntityConversion.FirstSteps())
-                {
-                    MigrateDisplayError("FirstSteps");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("FirstSteps"));
-                }
-
-                if (!EntityConversion.SessionDataToEntity(FormSettings.Settings.UseFileSystemCache)) // TODO::Ask the user and make a setting for this..
-                {
-                    MigrateDisplayError("DatabaseSessionName");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabaseSessionName"));
-                }
-
-                if (!EntityConversion.FileSavesToEntity(FormSettings.Settings.UseFileSystemCache)) // TODO::Ask the user and make a setting for this..
-                {
-                    MigrateDisplayError("DatabaseFileSave");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabaseFileSave"));
-                }
-
-                if (!EntityConversion.DatabaseMiscTextsToEntity())
-                {
-                    MigrateDisplayError("DatabaseMiscText");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabaseMiscText"));
-                }
-
-                if (!EntityConversion.PluginsToEntity())
-                {
-                    MigrateDisplayError("DatabasePlugins");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabasePlugins"));
-                }
-
-                if (!EntityConversion.DatabaseRecentFilesToEntity())
-                {
-                    MigrateDisplayError("DatabaseRecentFiles");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabaseRecentFiles"));
-                }
-
-                if (!EntityConversion.DatabaseCodeSnippetsToEntity())
-                {
-                    MigrateDisplayError("DatabaseCodeSnippets");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabaseCodeSnippets"));
-                }
-
-                if (!EntityConversion.SearchAndReplaceHistoryToEntity())
-                {
-                    MigrateDisplayError("DatabaseSearchAndReplace");
-                    // at this point there is no reason to continue the program's execution --> the migration to the Entity Framework Code-First failed..
-                    throw new Exception(MigrateErrorMessage("DatabaseSearchAndReplace"));
-                }
+                ExceptionLogger.LogError(ex);
             }
         }
         #endregion
@@ -1611,7 +1498,7 @@ namespace ScriptNotepad
                     activeDocument = file.FileNameFull;
                 }
 
-                sttcMain.AddDocument(file.FileNameFull, file.Id, file.Encoding, file.FileContentsAsMemoryStream);
+                sttcMain.AddDocument(file.FileNameFull, file.Id, file.GetEncoding(), file.FileContentsAsMemoryStream);
 
                 if (sttcMain.LastAddedDocument != null)
                 {
@@ -1871,7 +1758,7 @@ namespace ScriptNotepad
                         {
                             sttcMain.LastAddedDocument.Tag = fileSave;
                             sttcMain.LastAddedDocument.ID = fileSave.Id;
-                            fileSave.Encoding = encoding;
+                            fileSave.SetEncoding(encoding ?? new UTF8Encoding(true));
 
                             // set the saved position of the document's caret..
                             if (fileSave.CurrentCaretPosition > 0 && fileSave.CurrentCaretPosition < sttcMain.LastAddedDocument.Scintilla.TextLength)
@@ -2573,7 +2460,7 @@ namespace ScriptNotepad
                     file.EditorZoomPercentage = 100;
                 }
 
-                sttcMain.AddDocument(file.FileNameFull, file.Id, file.Encoding, file.FileContentsAsMemoryStream);
+                sttcMain.AddDocument(file.FileNameFull, file.Id, file.GetEncoding(), file.FileContentsAsMemoryStream);
                 if (sttcMain.LastAddedDocument != null)
                 {
                     // append additional initialization to the document..
@@ -2871,7 +2758,7 @@ namespace ScriptNotepad
                             }
                         }
 
-                        fileSave.Encoding = encoding; // set the new encoding..
+                        fileSave.SetEncoding(encoding); // set the new encoding..
 
                         // reload the file with the user given encoding..
                         fileSave.ReloadFromDisk(sttcMain.CurrentDocument);
@@ -2884,12 +2771,12 @@ namespace ScriptNotepad
                     {
                         // convert the contents to a new encoding..
                         sttcMain.CurrentDocument.Scintilla.Text =
-                            StreamStringHelpers.ConvertEncoding(fileSave.Encoding, encoding, sttcMain.CurrentDocument.Scintilla.Text);
+                            StreamStringHelpers.ConvertEncoding(fileSave.GetEncoding(), encoding, sttcMain.CurrentDocument.Scintilla.Text);
 
                         // save the previous encoding for an undo-possibility..
-                        fileSave.PreviousEncodings.Add(fileSave.Encoding);
+                        fileSave.PreviousEncodings.Add(fileSave.GetEncoding());
 
-                        fileSave.Encoding = encoding; // set the new encoding..
+                        fileSave.SetEncoding(encoding); // set the new encoding..
 
                         // save the FileSave instance to the document's Tag property..
                         sttcMain.CurrentDocument.Tag = fileSave;
@@ -3261,7 +3148,7 @@ namespace ScriptNotepad
 
                 // add the document details to the event arguments..
                 e.Documents.Add(
-                    (fileSave.Encoding,
+                    (fileSave.GetEncoding(),
                     sttcMain.CurrentDocument.Scintilla,
                     fileSave.FileNameFull,
                     fileSave.FileSystemModified,
@@ -3285,7 +3172,7 @@ namespace ScriptNotepad
 
                 // add the document details to the event arguments..
                 e.Documents.Add(
-                    (fileSave.Encoding,
+                    (fileSave.GetEncoding(),
                     sttcMain.Documents[i].Scintilla,
                     fileSave.FileNameFull,
                     fileSave.FileSystemModified,
@@ -3449,9 +3336,9 @@ namespace ScriptNotepad
                 if (File.Exists(sttcMain.CurrentDocument.FileName))
                 {
                     // the encoding shouldn't change based on the file's contents if a snapshot of the file already exists in the database..
-                    fileSave.Encoding =
-                        GetFileEncoding(CurrentSession.SessionName, sttcMain.CurrentDocument.FileName, fileSave.Encoding, true,
-                            false, false, out _, out _, out _);
+                    fileSave.SetEncoding(
+                        GetFileEncoding(CurrentSession.SessionName, sttcMain.CurrentDocument.FileName, fileSave.GetEncoding(), true,
+                            false, false, out _, out _, out _));
 
                     // the user answered yes..
                     sttcMain.SuspendTextChangedEvents =

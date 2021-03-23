@@ -549,18 +549,25 @@ namespace ScriptNotepad.Settings
                 var defaultSessionName = DBLangEngine.GetStatMessage("msgDefaultSessionName",
                     "Default|A name of the default session for the documents");
 
-                var session =
-                    ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f => f.Id == 1);
-
-                if (session != null)
+                try
                 {
-                    if (session.SessionName != defaultSessionName)
-                    {
-                        session.SessionName = defaultSessionName;
-                    }
-                }
+                    var session =
+                        ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f => f.Id == 1);
 
-                return session;
+                    if (session != null)
+                    {
+                        if (session.SessionName != defaultSessionName)
+                        {
+                            session.SessionName = defaultSessionName;
+                        }
+                    }
+
+                    return session;
+                }
+                catch
+                {
+                    return null;
+                }
             }
 
             set => CurrentSession = value.SessionName;

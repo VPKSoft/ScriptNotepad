@@ -32,6 +32,8 @@ using System.Reflection;
 using ScriptNotepad.Database.Entity.Utility;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
+#nullable enable
+
 namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
@@ -47,114 +49,87 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
-        [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the full file name with path of the plug-in assembly.
         /// </summary>
-        [Required]
-        [Column("FileNameFull")]
-        public string FileNameFull { get; set; }
+        public string FileNameFull { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the full file name without path of the plug-in assembly.
         /// </summary>
-        [Required]
-        [Column("FileName")]
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the full path of the plug-in assembly.
         /// </summary>
-        [Required]
-        [Column("FilePath")]
-        public string FilePath { get; set; }
+        public string FilePath { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the name of the plug-in.
         /// </summary>
-        [Required]
-        [Column("PluginName")]
-        public string PluginName { get; set; }
+        public string PluginName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the version of the plug-in assembly.
         /// </summary>
-        [Required]
-        [Column("PluginVersion")]
-        public string PluginVersion { get; set; } 
+        public string PluginVersion { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the description of the plug-in.
         /// </summary>
-        [Column("PluginDescription")]
-        public string PluginDescription { get; set; }
+        public string PluginDescription { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets a value indicating whether the plug-in is active.
         /// </summary>
-        [Required]
-        [Column("IsActive")]
         public bool IsActive { get; set; } 
 
         /// <summary>
         /// Gets or sets the exception count the plug-in has reported via an event.
         /// </summary>
-        [Required]
-        [Column("ExceptionCount")]
-        public int ExceptionCount { get; set; } = 0;
+        public int ExceptionCount { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of failed load attempts for the plug-in.
         /// </summary>
-        [Required]
-        [Column("LoadFailures")]
-        public int LoadFailures { get; set; } = 0;
+        public int LoadFailures { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of how many times the plug-in has crashed the entire software.
         /// </summary>
-        [Required]
-        [Column("ApplicationCrashes")]
-        public int ApplicationCrashes { get; set; } = 0;
+        public int ApplicationCrashes { get; set; }
 
         /// <summary>
         /// Gets or sets the sort order for the plug-in during the load process.
         /// </summary>
-        [Required]
-        [Column("SortOrder")]
-        public int SortOrder { get; set; } = 0;
+        public int SortOrder { get; set; }
 
         /// <summary>
         /// Gets or sets the rating for the plug-in (0-100).
         /// </summary>
-        [Required]
-        [Column("Rating")]
         public int Rating { get; set; } = 50;
 
         /// <summary>
         /// Gets or sets the date and time when the plug-in was installed.
         /// </summary>
-        [Required]
-        [Column("PluginInstalled")]
         public DateTime PluginInstalled { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time when the plug-in was updated.
         /// </summary>
-        [Column("PluginUpdated")]
         public DateTime PluginUpdated { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if the plug-in is pending for deletion from the plug-ins folder on application restart.
         /// </summary>
-        [Column("PendingDeletion")]
         public bool PendingDeletion { get; set; } 
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FileNameFull"/> exists in the file system.
         /// </summary>
+        [NotMapped]
         public bool Exists => File.Exists(FileNameFull);
 
         /// <summary>
@@ -176,3 +151,5 @@ namespace ScriptNotepad.Database.Entity.Entities
         }
     }
 }
+
+#nullable restore

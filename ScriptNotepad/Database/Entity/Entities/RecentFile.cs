@@ -24,12 +24,13 @@ SOFTWARE.
 */
 #endregion
 
+#nullable enable
+
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using ScriptNotepad.UtilityClasses.Encodings;
 
 namespace ScriptNotepad.Database.Entity.Entities
@@ -45,42 +46,39 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
-        [Column("Id")]
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the session identifier.
+        /// </summary>
+        /// <value>The session identifier.</value>
+        public int SessionId { get; set; }
 
         /// <summary>
         /// Gets or sets the full file name with path.
         /// </summary>
-        [Required]
-        [Column("FileNameFull")]
-        public string FileNameFull { get; set; }
+        public string FileNameFull { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the file name without path.
         /// </summary>
-        [Required]
-        [Column("FileName")]
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the full path for the file.
         /// </summary>
-        [Column("FilePath")]
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time when the file was closed in the editor.
         /// </summary>
-        [Required]
-        [Column("ClosedDateTime")]
         public DateTime ClosedDateTime { get; set; }
 
         /// <summary>
         /// Gets or sets the session the recent file belongs to.
         /// </summary>
-        [Required]
-        [Column("Session")]
-        public FileSession Session { get; set; }
+        [ForeignKey(nameof(SessionId))]
+        public virtual FileSession Session { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the encoding of the recent file.
@@ -96,7 +94,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets a string representing the encoding of the file save.
         /// </summary>
 //        [SqlDefaultValue(DefaultValue = "'utf-8;65001;True;False;False'")]
-        [Column("EncodingAsString")]
         public string EncodingAsString { get; set; } = "utf-8;65001;True;False;False";
 
         /// <summary>
@@ -116,3 +113,5 @@ namespace ScriptNotepad.Database.Entity.Entities
         }
     }
 }
+
+#nullable restore

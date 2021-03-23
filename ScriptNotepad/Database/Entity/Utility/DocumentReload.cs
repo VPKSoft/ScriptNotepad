@@ -27,6 +27,7 @@ SOFTWARE.
 using System;
 using System.IO;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.EntityHelpers;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using VPKSoft.ScintillaTabbedTextControl;
@@ -71,7 +72,7 @@ namespace ScriptNotepad.Database.Entity.Utility
                         // create a new memory stream to hold the file contents..
                         MemoryStream memoryStream = new MemoryStream(fileContents); 
 
-                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, fileSave.Encoding);
+                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, fileSave.GetEncoding());
 
                         // a reload doesn't need to be undone..
                         document.Scintilla.EmptyUndoBuffer();

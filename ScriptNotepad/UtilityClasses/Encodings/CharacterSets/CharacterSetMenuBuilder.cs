@@ -65,7 +65,12 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
                 // loop through the encodings within the character set..
                 foreach (var encoding in encodings)
                 {
-                    // create a menu item for the encoding..
+                    if (encoding == null)
+                    {
+                        continue;
+                    }
+
+                        // create a menu item for the encoding..
                     DataToolStripMenuItem menuItemEncoding = new DataToolStripMenuItem(encoding.EncodingName)
                     {
                         Tag = encoding, Data = data

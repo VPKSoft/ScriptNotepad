@@ -25,41 +25,57 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Data.SQLite;
+using Microsoft.EntityFrameworkCore;
 using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.Model;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.Database.Entity.Context
 {
     /// <summary>
-    /// The database context for the ScriptNotepad <see cref="DbContext"/>.
-    /// Implements the <see cref="System.Data.Entity.DbContext" />
+    /// The database context for the ScriptNotepad <see cref="Microsoft.EntityFrameworkCore.DbContext"/>.
+    /// Implements the <see cref="Microsoft.EntityFrameworkCore.DbContext" />
     /// </summary>
-    /// <seealso cref="System.Data.Entity.DbContext" />
+    /// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
     public class ScriptNotepadDbContext: DbContext
     {
+        private static string ConnectionString { get; set; } = "ScriptNotepadEntityCore.sqlite";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptNotepadDbContext"/> class.
         /// </summary>
-        /// <param name="connectionString">The connection string for a SQLite database.</param>
-        public ScriptNotepadDbContext(string connectionString)
-            : base(connectionString)
+        public ScriptNotepadDbContext()
         {
-            Configure();
+            ConnectionString ??= "ScriptNotepadEntityCore.sqlite";
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptNotepadDbContext"/> class.
         /// </summary>
-        /// <param name="connection">A database connection for the <see cref="DbContext"/>.</param>
-        /// <param name="contextOwnsConnection">if set to <c>true</c> the <see cref="DbContext"/> owns the connection. I.e. the connection is disposed by the <see cref="DbContext"/>.</param>
-        public ScriptNotepadDbContext(DbConnection connection, bool contextOwnsConnection)
-            : base(connection, contextOwnsConnection)
+        /// <param name="connectionString">The connection string for a SQLite database.</param>
+        public ScriptNotepadDbContext(string connectionString)
         {
-            Configure();
+            ScriptNotepadDbContext.ConnectionString = connectionString;
+        }
+
+        /// <summary>
+        /// <para>
+        /// Override this method to configure the database (and other options) to be used for this context.
+        /// This method is called for each instance of the context that is created.
+        /// The base implementation does nothing.
+        /// </para>
+        /// <para>
+        /// In situations where an instance of <see cref="T:Microsoft.EntityFrameworkCore.DbContextOptions" /> may or may not have been passed
+        /// to the constructor, you can use <see cref="P:Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured" /> to determine if
+        /// the options have already been set, and skip some or all of the logic in
+        /// <see cref="M:Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)" />.
+        /// </para>
+        /// </summary>
+        /// <param name="optionsBuilder">A builder used to create or modify options for this context. Databases (and other extensions)
+        /// typically define extension methods on this object that allow you to configure the context.</param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite(ConnectionString);
+            base.OnConfiguring(optionsBuilder);
         }
 
         /// <summary>
@@ -75,12 +91,9 @@ namespace ScriptNotepad.Database.Entity.Context
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
         public static bool InitializeDbContext(string connectionString)
         {
-            SqLiteConnection = new SQLiteConnection(connectionString);
-            SqLiteConnection.Open();
-
             try
             {
-                DbContext = new ScriptNotepadDbContext(SqLiteConnection, false);
+                DbContext = new ScriptNotepadDbContext(connectionString);
                 DbContextInitialized = true;
                 return true;
             }
@@ -94,11 +107,6 @@ namespace ScriptNotepad.Database.Entity.Context
         }
 
         /// <summary>
-        /// Gets or sets the SQLite connection for the Entity Framework Code First database.
-        /// </summary>
-        private static SQLiteConnection SqLiteConnection { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the database context is initialized.
         /// </summary>
         /// <value><c>true</c> if the database is context initialized; otherwise, <c>false</c>.</value>
@@ -108,7 +116,7 @@ namespace ScriptNotepad.Database.Entity.Context
         /// Releases the database <see cref="ScriptNotepadDbContext.DbContext"/> context.
         /// </summary>
         /// <param name="save">if set to <c>true</c> a the context is requested to save the changes before disposing of the context.</param>
-        /// <param name="forceGarbageCollection">A value indicating whether to force the <see cref="SqLiteConnection"/> immediately to be garbage-collected.</param>
+        /// <param name="forceGarbageCollection">A value indicating whether to force the <see cref="DbContext"/> instance immediately to be garbage-collected.</param>
         /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
         public static bool ReleaseDbContext(bool save = true, bool forceGarbageCollection = false)
         {
@@ -126,17 +134,13 @@ namespace ScriptNotepad.Database.Entity.Context
                         DbContext = null; // set to null..
                     }
 
-                    using (SqLiteConnection)
+                    if (forceGarbageCollection)
                     {
-                        SqLiteConnection.Close();
-                        SqLiteConnection = null;
-                        if (forceGarbageCollection)
-                        {
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-                        }
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
                     }
                 }
+
                 DbContextInitialized = false;
 
                 return true;
@@ -147,36 +151,6 @@ namespace ScriptNotepad.Database.Entity.Context
                 DbContextInitialized = false;
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Configures this <see cref="DbContext"/> class instance.
-        /// </summary>
-        private void Configure()
-        {
-            Configuration.ProxyCreationEnabled = true;
-            Configuration.LazyLoadingEnabled = true;
-        }
-
-        /// <summary>
-        /// This method is called when the model for a derived context has been initialized, but
-        /// before the model has been locked down and used to initialize the context. The default
-        /// implementation of this method does nothing, but it can be overridden in a derived class
-        /// such that the model can be further configured before it is locked down.
-        /// </summary>
-        /// <param name="modelBuilder">The builder that defines the model for the context being created.</param>
-        /// <remarks>Typically, this method is called only once when the first instance of a derived context
-        /// is created.  The model for that context is then cached and is for all further instances of
-        /// the context in the app domain.  This caching can be disabled by setting the ModelCaching
-        /// property on the given ModelBuilder, but note that this can seriously degrade performance.
-        /// More control over caching is provided through use of the DbModelBuilder and DbContextFactory
-        /// classes directly.</remarks>
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            ModelConfiguration.Configure(modelBuilder);
-            base.OnModelCreating(modelBuilder);
-//            var initializer = new ScriptNotepadDbInitializer(modelBuilder);
-//            System.Data.Entity.Database.SetInitializer(initializer);
         }
 
         /// <summary>
@@ -218,6 +192,6 @@ namespace ScriptNotepad.Database.Entity.Context
         /// Gets or sets the <see cref="MiscellaneousParameters"/> instances in the database.
         /// </summary>
         /// <value>The <see cref="MiscellaneousParameters"/> instances in the database.</value>
-        public DbSet<MiscellaneousParameters> MiscellaneousParameters { get; set; }
+        public DbSet<MiscellaneousParameter> MiscellaneousParameters { get; set; }
     }
 }

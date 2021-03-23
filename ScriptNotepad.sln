@@ -7,11 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptNotepad", "ScriptNote
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginTemplate", "PluginTemplate\PluginTemplate.csproj", "{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptNotepadOldDatabase", "ScriptNotepadOldDatabase\ScriptNotepadOldDatabase.csproj", "{FFC49136-29EC-41E0-B364-4995F9422A1D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstallerBaseWixSharp", "InstallerBaseWixSharp\InstallerBaseWixSharp.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseMigrations", "DatabaseMigrations\DatabaseMigrations.csproj", "{1AF9A267-5B28-430E-AC0A-CFAC3AE499E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptNotepadOldDatabaseEntity", "ScriptNotepadOldDatabaseEntity\ScriptNotepadOldDatabaseEntity.csproj", "{6AD59D54-54FE-4C35-91A9-8163EDFEDE60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,18 +25,14 @@ Global
 		{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D68A1D7B-390D-4F3C-B38F-3C76FB0752E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FFC49136-29EC-41E0-B364-4995F9422A1D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1AF9A267-5B28-430E-AC0A-CFAC3AE499E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AF9A267-5B28-430E-AC0A-CFAC3AE499E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AF9A267-5B28-430E-AC0A-CFAC3AE499E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AF9A267-5B28-430E-AC0A-CFAC3AE499E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD59D54-54FE-4C35-91A9-8163EDFEDE60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD59D54-54FE-4C35-91A9-8163EDFEDE60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD59D54-54FE-4C35-91A9-8163EDFEDE60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD59D54-54FE-4C35-91A9-8163EDFEDE60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

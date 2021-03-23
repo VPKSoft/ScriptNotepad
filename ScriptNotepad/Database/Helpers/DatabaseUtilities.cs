@@ -49,7 +49,7 @@ namespace ScriptNotepad.Database.Helpers
                 return true;
             }
 
-            context.MiscellaneousParameters.Add(new MiscellaneousParameters {Added = DateTime.Now, Value = value});
+            context.MiscellaneousParameters.Add(new MiscellaneousParameter {Added = DateTime.Now, Value = value});
             context.SaveChanges();
             return false;
         }

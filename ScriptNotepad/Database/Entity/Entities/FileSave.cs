@@ -26,18 +26,18 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ScriptNotepad.UtilityClasses.Encodings;
+using ScriptNotepad.Database.Entity.EntityHelpers;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.LinesAndBinary;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaLexers;
 using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
 
+#nullable enable
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
@@ -54,66 +54,47 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
-        [Column("Id")]
-        public int Id { get; set; } = -1;
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the session identifier.
+        /// </summary>
+        /// <value>The session identifier.</value>
+        public int SessionId { get; set; }
 
         /// <summary>
         /// Gets or sets a string representing the encoding of the file save.
         /// </summary>
-//        [SqlDefaultValue(DefaultValue = "'utf-8;65001;True;False;False'")]
-        [Column("EncodingAsString")]
         public string EncodingAsString { get; set; } = "utf-8;65001;True;False;False";
-
-        /// <summary>
-        /// Gets or sets the encoding of the file save.
-        /// </summary>
-        [NotMapped]
-        public Encoding Encoding
-        {
-            get => EncodingAsString == null ? Encoding.UTF8 : EncodingData.EncodingFromString(EncodingAsString);
-            set => EncodingAsString = EncodingData.EncodingToString(value);
-        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the file exists in the file system.
         /// </summary>
-        [Column("ExistsInFileSystem")]
         public bool ExistsInFileSystem { get; set; }
 
         /// <summary>
         /// Gets or sets the full file name with path.
         /// </summary>
-        [Required]
-        [Column("FileNameFull")]
-        public string FileNameFull { get; set; }
+        public string FileNameFull { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the file name without path.
         /// </summary>
-        [Required]
-        [Column("FileName")]
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the full path for the file.
         /// </summary>
-        [Column("FilePath")]
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the file system.
         /// </summary>
-//        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-//        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
-        [Column("FileSystemModified")]
         public DateTime FileSystemModified { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating when the file was saved to the file system by the software.
         /// </summary>
-//        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-//        [SqlDefaultValue(DefaultValue = "DATETIME('0001-01-01 00:00:00', 'localtime')")]
-        [Column("FileSystemSaved")]
         public DateTime FileSystemSaved { get; set; }
 
         /// <summary>
@@ -161,7 +142,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the value indicating when the file was modified in the database.
         /// </summary>
-        [Column("DatabaseModified")]
         public DateTime DatabaseModified
         {
             get => dbModified;
@@ -174,176 +154,24 @@ namespace ScriptNotepad.Database.Entity.Entities
         }
 
         /// <summary>
-        /// Restores the previous time stamp for the <see cref="DatabaseModified"/> property value.
-        /// </summary>
-        public void PopPreviousDbModified()
-        {
-            DatabaseModified = PreviousDbModified;
-        }
-
-        /// <summary>
         /// Gets or sets the lexer number with the ScintillaNET.
         /// </summary>
-        [Column("LexerType")]
         public LexerEnumerations.LexerType LexerType { get; set; }
-
-        private bool useFileSystemOnContents;
 
         /// <summary>
         /// Gets or sets a value indicating whether to use the file system to store the contents of the file instead of a database BLOB.
         /// </summary>
-        [Column("UseFileSystemOnContents")]
-        public bool UseFileSystemOnContents
-        {
-            get => useFileSystemOnContents;
-
-            set
-            {
-                if (value != useFileSystemOnContents)
-                {
-                    if (value) // a switch logic is required to perform an "easy" change..
-                    {
-                        SetFileContents(FileContents, true, false, false);
-                        FileContents = null;
-                    }
-                    else
-                    {
-                        FileContents = GetFileContents();
-                        File.Delete(TemporaryFileSaveName);
-                        TemporaryFileSaveName = null;
-                    }
-
-                    useFileSystemOnContents = value;
-                }
-            }
-        }
+        public bool? UseFileSystemOnContents { get; set; }
 
         /// <summary>
         /// Gets or sets the location of the temporary file save in case the file changes are cached into the file system.
         /// </summary>
-        [Column("TemporaryFileSaveName")]
-        public string TemporaryFileSaveName { get; set; }
-
-        /// <summary>
-        /// Sets the random file name for this <see cref="FileSave"/> instance to to be used as a file system cache for changed file contents. The <see cref="TemporaryFileSaveName"/> must be true for this to work.
-        /// </summary>
-        /// <returns>System.String.</returns>
-        public string SetRandomFile()
-        {
-            if (TemporaryFileSaveName == null && UseFileSystemOnContents)
-            {
-                Session.SetRandomPath();
-                TemporaryFileSaveName = Path.Combine(Session.TemporaryFilePath, Path.GetRandomFileName());
-            }
-            else if (!UseFileSystemOnContents)
-            {
-                TemporaryFileSaveName = null;
-            }
-
-            return TemporaryFileSaveName;
-        }
+        public string? TemporaryFileSaveName { get; set; }
 
         /// <summary>
         /// Gets or sets the file contents.
         /// </summary>
-        //[NotMapped]
-        public byte[] FileContents
-        {
-            get
-            {
-                if (useFileSystemOnContents) 
-                {
-                    // this will prevent the Entity Framework from saving the contents when file
-                    // system cache is used..
-                    return null;
-                }
-
-                return fileContentsMemory;
-            }
-
-            set => fileContentsMemory = value;
-        }
-
-        // the "file" contents..
-        private byte[] fileContentsMemory;
-
-        /// <summary>
-        /// Sets the file contents of this <see cref="FileSave"/> class instance.
-        /// The contents are either saved to the file system or to the database depending on the <see cref="UseFileSystemOnContents"/> property value.
-        /// </summary>
-        /// <param name="fileContents">The file contents.</param>
-        /// <param name="commit">A value indicating whether to commit the changes to the
-        /// database or to the file system cache depending on the <see cref="UseFileSystemOnContents"/> property value.</param>
-        /// <param name="saveToFileSystem">A value indicating whether to override existing copy of the file in the file system.</param>
-        /// <param name="contentChanged">A value indicating whether the file contents have been changed.</param>
-        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public bool SetFileContents(byte[] fileContents, bool commit, bool saveToFileSystem, 
-            bool contentChanged)
-        {
-            try
-            {
-                FileContents = fileContents;
-
-                if (UseFileSystemOnContents)
-                {
-                    if (commit && !saveToFileSystem)
-                    {
-                        File.WriteAllBytes(SetRandomFile(), fileContents);
-                    }
-
-                    if (saveToFileSystem)
-                    {
-                        File.WriteAllBytes(SetRandomFile(), fileContents);
-
-                        if (ExistsInFileSystem)
-                        {
-                            File.WriteAllBytes(FileNameFull, fileContents);
-                            FileSystemSaved = DateTime.Now;
-                        }
-                    }
-                }
-                else
-                {
-                    FileContents = fileContents;
-                }
-
-                if (contentChanged)
-                {
-                    DatabaseModified = DateTime.Now;
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets the cached file contents of this <see cref="FileSave"/> class instance.
-        /// </summary>
-        /// <returns>A byte array with the file contents.</returns>
-        public byte[] GetFileContents()
-        {
-            try
-            {
-                if (UseFileSystemOnContents)
-                {
-                    return File.ReadAllBytes(TemporaryFileSaveName);
-                }
-                else
-                {
-                    return FileContents;
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionLogAction?.Invoke(ex);
-                return null;
-            }
-        }
+        public byte[]? FileContents { get; set; }
 
         /// <summary>
         /// Gets or sets the file contents as a memory stream.
@@ -354,7 +182,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         {
             get
             {
-                var fileContents = GetFileContents();
+                var fileContents = this.GetFileContents();
                 if (fileContents == null || fileContents.Length == 0)
                 {
                     return new MemoryStream();
@@ -363,72 +191,45 @@ namespace ScriptNotepad.Database.Entity.Entities
                 return new MemoryStream(fileContents);
             }
 
-            set => SetFileContents(value.ToArray(), true, false, false);
+            set => this.SetFileContents(value.ToArray(), true, false, false);
         }
 
         /// <summary>
         /// Gets or sets the visibility order (in a tabbed control).
         /// </summary>
-//        [SqlDefaultValue(DefaultValue = "-1")] 
-        [Column("VisibilityOrder")]
-        public int VisibilityOrder { get; set; } = -1;
+        public int VisibilityOrder { get; set; } 
 
         /// <summary>
         /// Gets or sets a value indicating whether the file is activated in the tab control.
         /// </summary>
-        [Column("IsActive")]
         public bool IsActive { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this entry is a history entry.
         /// </summary>
-        [Column("IsHistory")]
         public bool IsHistory { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the current position (cursor / caret) of the file.
         /// </summary>
-        [Column("CurrentCaretPosition")]
         public int CurrentCaretPosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to use spell check with this document.
         /// </summary>
-        [Column("UseSpellChecking")]
         public bool UseSpellChecking { get; set; }
 
         /// <summary>
         /// Gets or sets the editor zoom value in percentage.
         /// </summary>
-//        [SqlDefaultValue(DefaultValue = "100")] 
-        [Column("EditorZoomPercentage")]
-        public int EditorZoomPercentage { get; set; } = 100;
+        public int EditorZoomPercentage { get; set; }
 
         /// <summary>
         /// Gets or sets the previous encodings of the file save for undo possibility.
         /// <note type="note">Redo possibility does not exist.</note>
         /// </summary>
         [NotMapped]
-        public List<Encoding> PreviousEncodings { get; set; } = new List<Encoding>();
-
-        /// <summary>
-        /// Undoes the encoding change.
-        /// </summary>
-        public void UndoEncodingChange()
-        {
-            // only if there exists a previous encoding..
-            if (PreviousEncodings.Count > 0)
-            {
-                // get the last index of the list..
-                int idx = PreviousEncodings.Count - 1;
-
-                // set the previous encoding value..
-                Encoding = PreviousEncodings[idx];
-
-                // remove the last encoding from the list..
-                PreviousEncodings.RemoveAt(idx);
-            }
-        }
+        public List<Encoding> PreviousEncodings { get; set; } = new();
 
         /// <summary>
         /// Gets a value indicating whether a software should query the user if the deleted file should be kept in the editor.
@@ -491,7 +292,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         {
             get
             {
-                if (fileLineTypesInternal == null && FileContents == null)
+                if (FileContents == null)
                 {
                     var fileLineTypes = ScriptNotepad.UtilityClasses.LinesAndBinary.
                         FileLineType.GetFileLineTypes(FileContents);
@@ -517,7 +318,7 @@ namespace ScriptNotepad.Database.Entity.Entities
             get
             {
                 List<KeyValuePair<FileLineTypes, string>> typesList =
-                    new List<KeyValuePair<FileLineTypes, string>>(FileLineTypes.ToArray());
+                    new(FileLineTypes.ToArray());
 
                 if (typesList.Count == 0 ||
                     typesList.Count == 1 && typesList[0].Key.HasFlag(Mixed)) 
@@ -574,8 +375,9 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the session the <see cref="FileSave"/> belongs to.
         /// </summary>
-        [Required]
-        [Column("Session")]
-        public FileSession Session { get; set; }
+        [ForeignKey(nameof(SessionId))]
+        public virtual FileSession Session { get; set; } = new();
     }
 }
+
+#nullable restore

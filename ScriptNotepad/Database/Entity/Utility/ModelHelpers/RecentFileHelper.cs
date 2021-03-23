@@ -28,6 +28,7 @@ using System;
 using System.Linq;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.EntityHelpers;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
@@ -55,7 +56,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 if (recentFile != null)
                 {
                     recentFile.ClosedDateTime = DateTime.Now;
-                    recentFile.Encoding = fileSave.Encoding;
+                    recentFile.Encoding = fileSave.GetEncoding();
                 }
                 else
                 {
@@ -63,7 +64,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                     {
                         FileNameFull = fileSave.FileNameFull,
                         Session = fileSave.Session,
-                        Encoding = fileSave.Encoding,
+                        Encoding = fileSave.GetEncoding(),
                         ClosedDateTime = DateTime.Now,
                         FileName = fileSave.FileName,
                         FilePath = fileSave.FilePath,

@@ -59,10 +59,12 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 if (deleteAmount > 0)
                 {
                     deleteSavesIds = deleteSavesIds.Take(deleteAmount);
-                    var deleted = dbContext.FileSaves.RemoveRange(
-                            dbContext.FileSaves.Where(f =>
-                                deleteSavesIds.OrderBy(d => d.modified).Any(h => h.id == f.Id)))
-                        .Count();
+
+                    var deleted = dbContext.FileSaves.Count(f => deleteSavesIds.OrderBy(d => d.modified).Any(h => h.id == f.Id));
+
+                    dbContext.FileSaves.RemoveRange(
+                        dbContext.FileSaves.Where(f =>
+                            deleteSavesIds.OrderBy(d => d.modified).Any(h => h.id == f.Id)));
 
                     dbContext.SaveChanges();
 
@@ -108,9 +110,13 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
 
                 if (historyRemoveCount > 0)
                 {
-                    var deleted = dbContext.RecentFiles.RemoveRange(dbContext.RecentFiles
+                    var deleted = dbContext.RecentFiles
                         .OrderByDescending(f => f.ClosedDateTime)
-                        .Take(historyRemoveCount)).Count();
+                        .Take(historyRemoveCount).Count();
+
+                    dbContext.RecentFiles.RemoveRange(dbContext.RecentFiles
+                        .OrderByDescending(f => f.ClosedDateTime)
+                        .Take(historyRemoveCount));
 
                     dbContext.SaveChanges();
 

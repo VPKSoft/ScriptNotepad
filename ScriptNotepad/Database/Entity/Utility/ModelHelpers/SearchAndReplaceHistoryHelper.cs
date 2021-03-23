@@ -125,7 +125,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                         Session = fileSession,
                     };
 
-                    result = context.SearchAndReplaceHistories.Add(result);
+                    result = context.SearchAndReplaceHistories.Add(result).Entity;
                     context.SaveChanges();
                     return result;
                 }

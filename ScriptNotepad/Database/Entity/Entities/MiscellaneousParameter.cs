@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2020 Petteri Kautonen
+Copyright(c) 2021 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,32 +24,39 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepadOldDatabase.Database
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+#nullable enable
+
+namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
-    /// Some enumerations used by the database classes.
+    /// A class for miscellaneous entries, I.e. history data entered into database.
+    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
     /// </summary>
-    internal static class DatabaseEnumerations
+    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+    [Table("MiscellaneousParameters")]
+    public class MiscellaneousParameter: IEntity
     {
         /// <summary>
-        /// An enumeration indicating how the database commands should react to the ISHISTORY flag of the <see cref="DBFILE_SAVE"/> class.
+        /// Gets or sets the identifier for the entity.
         /// </summary>
-        internal enum DatabaseHistoryFlag
-        {
-            /// <summary>
-            /// No history files should be included.
-            /// </summary>
-            NotHistory,
+        /// <value>The identifier.</value>
+        public int Id { get; set; }
 
-            /// <summary>
-            /// Only history files should be included.
-            /// </summary>
-            IsHistory,
+        /// <summary>
+        /// Gets or sets the <see cref="DateTime"/> when the entry was added to the database.
+        /// </summary>
+        /// <value>The <see cref="DateTime"/> when the entry was added to the database.</value>
+        public DateTime Added { get; set; }
 
-            /// <summary>
-            /// The ISHISTORY flag should be ignored.
-            /// </summary>
-            DontCare
-        }
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        /// <value>The value.</value>
+        public string Value { get; set; } = string.Empty;
     }
 }
+
+#nullable restore

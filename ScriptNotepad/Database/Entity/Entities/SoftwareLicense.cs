@@ -27,6 +27,8 @@ SOFTWARE.
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+#nullable enable
+
 namespace ScriptNotepad.Database.Entity.Entities
 {
     /// <summary>
@@ -39,22 +41,19 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
-        [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the license text.
         /// </summary>
-        [Required]
-        [Column("LicenseText")]
-        public string LicenseText { get; set; }
+        public string LicenseText { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the license SPDX identifier.
         /// See: https://spdx.org/licenses/
         /// </summary>
-        [Required]
-        [Column("LicenseSpdxIdentifier")]
-        public string LicenseSpdxIdentifier { get; set; }
+        public string LicenseSpdxIdentifier { get; set; } = string.Empty;
     }
 }
+
+#nullable restore

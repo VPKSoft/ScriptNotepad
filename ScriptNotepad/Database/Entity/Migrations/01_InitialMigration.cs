@@ -27,10 +27,9 @@ SOFTWARE.
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data;
 using FluentMigrator;
 
-namespace DatabaseMigrations
+namespace ScriptNotepad.Database.Entity.Migrations
 {
     /// <summary>
     /// Initial database migration for the ScriptNotepad software.
@@ -59,13 +58,13 @@ namespace DatabaseMigrations
                 .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("SessionName").AsString().Unique().Nullable()
                 .WithColumn("TemporaryFilePath").AsString().Nullable()
+                .WithColumn("ApplicationDataDirectory").AsString().Nullable()
                 .WithColumn("UseFileSystemOnContents").AsBoolean().NotNullable();
 
             // the FileSaves table..
             Create.Table("FileSaves")
                 .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
-                .WithColumn("EncodingAsString").AsString().NotNullable()
-                .WithDefaultValue("'utf-8;65001;True;False;False'")
+                .WithColumn("EncodingAsString").AsString().NotNullable().WithDefaultValue("'utf-8;65001;True;False;False'")
                 .WithColumn("ExistsInFileSystem").AsBoolean().NotNullable()
                 .WithColumn("FileNameFull").AsString().NotNullable()
                 .WithColumn("FileName").AsString().NotNullable()
@@ -83,11 +82,7 @@ namespace DatabaseMigrations
                 .WithColumn("CurrentCaretPosition").AsInt32().NotNullable()
                 .WithColumn("UseSpellChecking").AsBoolean().NotNullable()
                 .WithColumn("EditorZoomPercentage").AsInt32().NotNullable().WithDefaultValue(100)
-                .WithColumn("Session_Id").AsInt64().ForeignKey("FK_FileSaves_FileSessions_Id", "FileSessions", "Id")
-                .OnDelete(Rule.Cascade).NotNullable();
-
-            // an index to the FileSaves table..
-            Create.Index("IX_FileSave_Session_Id").OnTable("FileSaves").OnColumn("Session_Id");
+                .WithColumn("SessionId").AsInt64().ForeignKey("FK_FileSaves_FileSessions_Id", "FileSessions", "Id");
 
             // the MiscellaneousTextEntries table..
             Create.Table("MiscellaneousTextEntries")
@@ -95,11 +90,7 @@ namespace DatabaseMigrations
                 .WithColumn("TextValue").AsString().NotNullable()
                 .WithColumn("TextType").AsInt32().NotNullable()
                 .WithColumn("Added").AsDateTime().NotNullable().WithDefaultValue("DATETIME('now', 'localtime')")
-                .WithColumn("Session_Id").AsInt64().ForeignKey("FK_MiscellaneousTextEntries_FileSessions_Id", "FileSessions", "Id")
-                .OnDelete(Rule.Cascade).NotNullable();
-
-            // an index to the MiscellaneousTextEntries table..
-            Create.Index("IX_MiscellaneousTextEntry_Session_Id").OnTable("MiscellaneousTextEntries").OnColumn("Session_Id");
+                .WithColumn("SessionId").AsInt64().ForeignKey("FK_MiscellaneousTextEntries_FileSessions_Id", "FileSessions", "Id");
 
             // the Plugins table..
             Create.Table("Plugins")
@@ -129,11 +120,7 @@ namespace DatabaseMigrations
                 .WithColumn("ClosedDateTime").AsDateTime().NotNullable()
                 .WithColumn("EncodingAsString").AsString().NotNullable()
                 .WithDefaultValue("'utf-8;65001;True;False;False'")
-                .WithColumn("Session_Id").AsInt64().ForeignKey("FK_RecentFiles_FileSessions_Id", "FileSessions", "Id")
-                .OnDelete(Rule.Cascade).NotNullable();
-
-            // an index to the RecentFiles table..
-            Create.Index("IX_RecentFile_Session_Id").OnTable("RecentFiles").OnColumn("Session_Id");
+                .WithColumn("SessionId").AsInt64().ForeignKey("FK_RecentFiles_FileSessions_Id", "FileSessions", "Id");
 
             // the RecentSearchAndReplaceHistoriesFiles table..
             Create.Table("SearchAndReplaceHistories")
@@ -143,17 +130,19 @@ namespace DatabaseMigrations
                 .WithColumn("SearchAndReplaceSearchType").AsInt32().NotNullable()
                 .WithColumn("SearchAndReplaceType").AsInt32().NotNullable()
                 .WithColumn("Added").AsDateTime().NotNullable()
-                .WithColumn("Session_Id").AsInt64().ForeignKey("FK_SearchAndReplaceHistories_FileSessions_Id", "FileSessions", "Id")
-                .OnDelete(Rule.Cascade).NotNullable();
-
-            // an index to the RecentSearchAndReplaceHistoriesFiles table..
-            Create.Index("IX_SearchAndReplaceHistory_Session_Id").OnTable("SearchAndReplaceHistories").OnColumn("Session_Id");
+                .WithColumn("SessionId").AsInt64().ForeignKey("FK_SearchAndReplaceHistories_FileSessions_Id", "FileSessions", "Id");
 
             // the SoftwareLicenses table..
             Create.Table("SoftwareLicenses")
                 .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("LicenseText").AsString().NotNullable()
                 .WithColumn("LicenseSpdxIdentifier").AsString().NotNullable();
+
+            // the MiscellaneousParameters table..
+            Create.Table("MiscellaneousParameters")
+                .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
+                .WithColumn("Added").AsDateTime().NotNullable()
+                .WithColumn("Value").AsString().NotNullable();
 
             // seed the database with data..
             SeedData();
@@ -171,26 +160,25 @@ namespace DatabaseMigrations
             Delete.Table("FileSessions");
 
             // delete the FileSaves table..
-            Delete.Index("IX_FileSave_Session_Id");
             Delete.Table("FileSaves");
 
             // delete the MiscellaneousTextEntries table..
-            Delete.Index("IX_MiscellaneousTextEntry_Session_Id");
             Delete.Table("MiscellaneousTextEntries");
             
             // delete the Plugins table..
             Delete.Table("Plugins");
 
             // delete the RecentFiles table..
-            Delete.Index("IX_RecentFile_Session_Id");
             Delete.Table("RecentFiles");
          
             // delete the SearchAndReplaceHistories table..
-            Delete.Index("IX_SearchAndReplaceHistory_Session_Id");
             Delete.Table("SearchAndReplaceHistories");
 
             // delete the Plugins table..
             Delete.Table("SoftwareLicenses");
+
+            // delete the MiscellaneousParameters table..
+            Delete.Table("MiscellaneousParameters");
         }
 
         /// <summary>

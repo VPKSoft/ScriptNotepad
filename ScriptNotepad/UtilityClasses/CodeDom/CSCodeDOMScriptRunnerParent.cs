@@ -26,7 +26,7 @@ SOFTWARE.
 
 using System;
 using System.CodeDom.Compiler;
-using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
+using Microsoft.CSharp;
 using VPKSoft.ErrorLogger;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom

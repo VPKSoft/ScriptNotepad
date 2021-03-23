@@ -24,8 +24,9 @@ SOFTWARE.
 */
 #endregion
 
+#nullable enable
+
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ScriptNotepad.Database.Entity.Enumerations;
 
@@ -42,40 +43,31 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// <summary>
         /// Gets or sets the identifier for the entity.
         /// </summary>
-        [Column("Id")]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the script's contents.
         /// </summary>
-        [Column("ScriptContents")]
-        public string ScriptContents { get; set; }
+        public string? ScriptContents { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the script.
         /// </summary>
-        [Column("ScriptName")]
-        public string ScriptName { get; set; }
+        public string ScriptName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the date and time when the script was previously modified.
         /// </summary>
-        [Column("Modified")]
-        [Required]
         public DateTime Modified { get; set; }
 
         /// <summary>
         /// Gets or sets the language type of the script snippet.
         /// </summary>
-        [Column("ScriptLanguage")]
-        [Required]
         public CodeSnippetLanguage ScriptLanguage { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the script text manipulation.
         /// </summary>
-        [Column("ScriptTextManipulationType")]
-        [Required]
         public ScriptSnippetType ScriptTextManipulationType  { get; set; }
 
         /// <summary>
@@ -88,3 +80,5 @@ namespace ScriptNotepad.Database.Entity.Entities
         }
     }
 }
+
+#nullable restore

@@ -29,6 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.Database.Entity.EntityHelpers;
 using ScriptNotepad.Settings;
 using VPKSoft.ErrorLogger;
 using static ScriptNotepad.UtilityClasses.Encodings.TryMakeEncoding;
@@ -86,7 +87,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings
 
                 if (existsInDatabase && !reloadContents && !encodingOverridden && !File.Exists(fileName))
                 {
-                    encoding = ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Session.SessionName == sessionName && f.FileNameFull == fileName)?.Encoding;
+                    encoding = ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Session.SessionName == sessionName && f.FileNameFull == fileName)?.GetEncoding();
                     return encoding;
                 }
 

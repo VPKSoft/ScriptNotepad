@@ -233,14 +233,15 @@
             this.tlpMain.Controls.Add(this.ssMain, 0, 2);
             this.tlpMain.Controls.Add(this.sttcMain, 0, 1);
             this.tlpMain.Controls.Add(this.pnDock, 0, 3);
-            this.tlpMain.Location = new System.Drawing.Point(12, 27);
+            this.tlpMain.Location = new System.Drawing.Point(14, 31);
+            this.tlpMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 4;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpMain.Size = new System.Drawing.Size(945, 551);
+            this.tlpMain.Size = new System.Drawing.Size(1102, 636);
             this.tlpMain.TabIndex = 3;
             // 
             // tsMain
@@ -273,7 +274,7 @@
             this.tsbPaste});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(945, 25);
+            this.tsMain.Size = new System.Drawing.Size(1102, 25);
             this.tsMain.TabIndex = 0;
             this.tsMain.Text = "toolStrip1";
             // 
@@ -504,112 +505,113 @@
             this.ssLbSpace7,
             this.sslbZoom,
             this.sslbZoomPercentage});
-            this.ssMain.Location = new System.Drawing.Point(0, 531);
+            this.ssMain.Location = new System.Drawing.Point(0, 614);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(945, 20);
+            this.ssMain.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.ssMain.Size = new System.Drawing.Size(1102, 22);
             this.ssMain.TabIndex = 3;
             this.ssMain.Text = "statusStrip1";
             // 
             // ssLbLineColumn
             // 
             this.ssLbLineColumn.Name = "ssLbLineColumn";
-            this.ssLbLineColumn.Size = new System.Drawing.Size(77, 15);
+            this.ssLbLineColumn.Size = new System.Drawing.Size(77, 17);
             this.ssLbLineColumn.Text = "Line: 1  Col: 1";
             // 
             // tsslLineCol
             // 
             this.tsslLineCol.Name = "tsslLineCol";
-            this.tsslLineCol.Size = new System.Drawing.Size(0, 15);
+            this.tsslLineCol.Size = new System.Drawing.Size(0, 17);
             // 
             // ssLbSpace1
             // 
             this.ssLbSpace1.AutoSize = false;
             this.ssLbSpace1.Name = "ssLbSpace1";
-            this.ssLbSpace1.Size = new System.Drawing.Size(30, 15);
+            this.ssLbSpace1.Size = new System.Drawing.Size(30, 17);
             // 
             // ssLbLinesColumnSelection
             // 
             this.ssLbLinesColumnSelection.Name = "ssLbLinesColumnSelection";
-            this.ssLbLinesColumnSelection.Size = new System.Drawing.Size(134, 15);
+            this.ssLbLinesColumnSelection.Size = new System.Drawing.Size(134, 17);
             this.ssLbLinesColumnSelection.Text = "Sel1: 1|1  Sel2: 1|1  Len: 0";
             // 
             // ssLbSpace2
             // 
             this.ssLbSpace2.AutoSize = false;
             this.ssLbSpace2.Name = "ssLbSpace2";
-            this.ssLbSpace2.Size = new System.Drawing.Size(30, 15);
+            this.ssLbSpace2.Size = new System.Drawing.Size(30, 17);
             // 
             // ssLbLDocLinesSize
             // 
             this.ssLbLDocLinesSize.Name = "ssLbLDocLinesSize";
-            this.ssLbLDocLinesSize.Size = new System.Drawing.Size(92, 15);
+            this.ssLbLDocLinesSize.Size = new System.Drawing.Size(92, 17);
             this.ssLbLDocLinesSize.Text = "length: 0 lines: 0";
             // 
             // ssLbSpace3
             // 
             this.ssLbSpace3.AutoSize = false;
             this.ssLbSpace3.Name = "ssLbSpace3";
-            this.ssLbSpace3.Size = new System.Drawing.Size(30, 15);
+            this.ssLbSpace3.Size = new System.Drawing.Size(30, 17);
             // 
             // ssLbLineEnding
             // 
             this.ssLbLineEnding.Name = "ssLbLineEnding";
-            this.ssLbLineEnding.Size = new System.Drawing.Size(42, 15);
+            this.ssLbLineEnding.Size = new System.Drawing.Size(42, 17);
             this.ssLbLineEnding.Text = "CR+LF";
             // 
             // ssLbSpace4
             // 
             this.ssLbSpace4.AutoSize = false;
             this.ssLbSpace4.Name = "ssLbSpace4";
-            this.ssLbSpace4.Size = new System.Drawing.Size(30, 15);
+            this.ssLbSpace4.Size = new System.Drawing.Size(30, 17);
             // 
             // ssLbEncoding
             // 
             this.ssLbEncoding.Name = "ssLbEncoding";
-            this.ssLbEncoding.Size = new System.Drawing.Size(33, 15);
+            this.ssLbEncoding.Size = new System.Drawing.Size(33, 17);
             this.ssLbEncoding.Text = "UTF8";
             // 
             // ssLbSpace5
             // 
             this.ssLbSpace5.AutoSize = false;
             this.ssLbSpace5.Name = "ssLbSpace5";
-            this.ssLbSpace5.Size = new System.Drawing.Size(30, 15);
+            this.ssLbSpace5.Size = new System.Drawing.Size(30, 17);
             // 
             // ssLbInsertOverride
             // 
             this.ssLbInsertOverride.Name = "ssLbInsertOverride";
-            this.ssLbInsertOverride.Size = new System.Drawing.Size(25, 15);
+            this.ssLbInsertOverride.Size = new System.Drawing.Size(25, 17);
             this.ssLbInsertOverride.Text = "INS";
             // 
             // ssLbSpace6
             // 
             this.ssLbSpace6.AutoSize = false;
             this.ssLbSpace6.Name = "ssLbSpace6";
-            this.ssLbSpace6.Size = new System.Drawing.Size(30, 15);
+            this.ssLbSpace6.Size = new System.Drawing.Size(30, 17);
             // 
             // ssLbSessionName
             // 
             this.ssLbSessionName.Name = "ssLbSessionName";
-            this.ssLbSessionName.Size = new System.Drawing.Size(90, 15);
+            this.ssLbSessionName.Size = new System.Drawing.Size(90, 17);
             this.ssLbSessionName.Text = "Session: Default";
             // 
             // ssLbSpace7
             // 
             this.ssLbSpace7.AutoSize = false;
             this.ssLbSpace7.Name = "ssLbSpace7";
-            this.ssLbSpace7.Size = new System.Drawing.Size(30, 15);
+            this.ssLbSpace7.Size = new System.Drawing.Size(30, 17);
             // 
             // sslbZoom
             // 
             this.sslbZoom.Name = "sslbZoom";
-            this.sslbZoom.Size = new System.Drawing.Size(42, 15);
+            this.sslbZoom.Size = new System.Drawing.Size(42, 17);
             this.sslbZoom.Text = "Zoom:";
             this.sslbZoom.Click += new System.EventHandler(this.ResetZoom_Click);
             // 
             // sslbZoomPercentage
             // 
             this.sslbZoomPercentage.Name = "sslbZoomPercentage";
-            this.sslbZoomPercentage.Size = new System.Drawing.Size(35, 15);
+            this.sslbZoomPercentage.Size = new System.Drawing.Size(35, 17);
             this.sslbZoomPercentage.Text = "100%";
             this.sslbZoomPercentage.Click += new System.EventHandler(this.ResetZoom_Click);
             // 
@@ -625,13 +627,14 @@
             this.sttcMain.CurrentZoomPercentage = 100;
             this.sttcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sttcMain.LeftFileIndex = 0;
-            this.sttcMain.Location = new System.Drawing.Point(3, 28);
+            this.sttcMain.Location = new System.Drawing.Point(5, 28);
+            this.sttcMain.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.sttcMain.Name = "sttcMain";
             this.sttcMain.NewFilenameStart = "new ";
             this.sttcMain.RightButtonTabActivation = true;
             this.sttcMain.RightButtonTabDragging = false;
             this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
-            this.sttcMain.Size = new System.Drawing.Size(939, 500);
+            this.sttcMain.Size = new System.Drawing.Size(1092, 582);
             this.sttcMain.SuspendTextChangedEvents = false;
             this.sttcMain.TabIndex = 4;
             this.sttcMain.TabWidth = 4;
@@ -660,10 +663,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnDock.AutoSize = true;
             this.tlpMain.SetColumnSpan(this.pnDock, 5);
-            this.pnDock.Location = new System.Drawing.Point(0, 551);
+            this.pnDock.Location = new System.Drawing.Point(0, 636);
             this.pnDock.Margin = new System.Windows.Forms.Padding(0);
             this.pnDock.Name = "pnDock";
-            this.pnDock.Size = new System.Drawing.Size(945, 1);
+            this.pnDock.Size = new System.Drawing.Size(1102, 1);
             this.pnDock.TabIndex = 5;
             // 
             // odAnyFile
@@ -1595,7 +1598,8 @@
             this.mnuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(969, 24);
+            this.menuMain.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuMain.Size = new System.Drawing.Size(1130, 24);
             this.menuMain.TabIndex = 4;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -1639,21 +1643,21 @@
             // mnuSortAscending
             // 
             this.mnuSortAscending.Name = "mnuSortAscending";
-            this.mnuSortAscending.Size = new System.Drawing.Size(180, 22);
+            this.mnuSortAscending.Size = new System.Drawing.Size(169, 22);
             this.mnuSortAscending.Text = "Sort ascending";
             this.mnuSortAscending.Click += new System.EventHandler(this.MnuSortLines_Click);
             // 
             // mnuSortDescending
             // 
             this.mnuSortDescending.Name = "mnuSortDescending";
-            this.mnuSortDescending.Size = new System.Drawing.Size(180, 22);
+            this.mnuSortDescending.Size = new System.Drawing.Size(169, 22);
             this.mnuSortDescending.Text = "Sort descending";
             this.mnuSortDescending.Click += new System.EventHandler(this.MnuSortLines_Click);
             // 
             // mnuCustomizedSort
             // 
             this.mnuCustomizedSort.Name = "mnuCustomizedSort";
-            this.mnuCustomizedSort.Size = new System.Drawing.Size(180, 22);
+            this.mnuCustomizedSort.Size = new System.Drawing.Size(169, 22);
             this.mnuCustomizedSort.Text = "Customized sort...";
             this.mnuCustomizedSort.Click += new System.EventHandler(this.mnuCustomizedSort_Click);
             // 
@@ -1773,14 +1777,15 @@
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(969, 590);
+            this.ClientSize = new System.Drawing.Size(1130, 681);
             this.Controls.Add(this.tlpMain);
             this.Controls.Add(this.menuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuMain;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "FormMain";
             this.Text = "ScriptNotepad";
             this.Activated += new System.EventHandler(this.FormMain_Activated);

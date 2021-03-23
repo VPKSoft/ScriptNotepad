@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.EntityHelpers;
 using VPKSoft.ScintillaTabbedTextControl;
 
 namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
@@ -52,14 +53,14 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         public static FileSave AddOrUpdateFile(this FileSave fileSave, ScintillaTabbedDocument document, bool commit,
             bool saveToFileSystem, bool contentChanged)
         {
-            fileSave.SetFileContents(fileSave.Encoding.GetBytes(document.Scintilla.Text), commit, saveToFileSystem, contentChanged);
+            fileSave.SetFileContents(fileSave.GetEncoding().GetBytes(document.Scintilla.Text), commit, saveToFileSystem, contentChanged);
             fileSave.CurrentCaretPosition = document.Scintilla.CurrentPosition;
             fileSave.FilePath = Path.GetDirectoryName(fileSave.FileNameFull);
             ScriptNotepadDbContext.DbContext.SaveChanges();
 
             if (!ScriptNotepadDbContext.DbContext.FileSaves.Any(f => f.Id == fileSave.Id))
             {
-                return ScriptNotepadDbContext.DbContext.FileSaves.Add(fileSave);
+                return ScriptNotepadDbContext.DbContext.FileSaves.Add(fileSave).Entity;
             }
 
             return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
@@ -78,7 +79,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
         public static FileSave SetContents(this FileSave fileSave, string contents, bool commit,
             bool saveToFileSystem, bool contentChanged)
         {
-            fileSave.SetFileContents(fileSave.Encoding.GetBytes(contents), commit, saveToFileSystem, contentChanged);
+            fileSave.SetFileContents(fileSave.GetEncoding().GetBytes(contents), commit, saveToFileSystem, contentChanged);
 
             return fileSave;
         }
@@ -125,14 +126,14 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
             string sessionName, Encoding encoding, bool commit,
             bool saveToFileSystem, bool contentChanged)
         {
-            fileSave.SetFileContents(fileSave.Encoding.GetBytes(document.Scintilla.Text), commit, saveToFileSystem, contentChanged);
+            fileSave.SetFileContents(fileSave.GetEncoding().GetBytes(document.Scintilla.Text), commit, saveToFileSystem, contentChanged);
             fileSave.CurrentCaretPosition = document.Scintilla.CurrentPosition;
             fileSave.FilePath = Path.GetDirectoryName(fileSave.FileNameFull);
             fileSave.IsHistory = isHistory;
             fileSave.Session =
                 ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f => f.SessionName == sessionName);
 
-            fileSave.Encoding = encoding;
+            fileSave.SetEncoding(encoding);
 
             ScriptNotepadDbContext.DbContext.SaveChanges();
             return ScriptNotepadDbContext.DbContext.FileSaves.FirstOrDefault(f => f.Id == fileSave.Id);
@@ -166,13 +167,14 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 Session = ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f =>
                     f.SessionName == fileSession.SessionName),
                 IsActive = document.FileTabButton.IsActive,
-                Encoding = encoding,
                 IsHistory = isHistory,
                 CurrentCaretPosition = document.Scintilla.CurrentPosition,
                 UseSpellChecking = true,
                 EditorZoomPercentage = document.ZoomPercentage,
                 UseFileSystemOnContents = fileSession.UseFileSystemOnContents,
             };
+
+            fileSave.SetEncoding(encoding);
 
             fileSave.SetFileContents(encoding.GetBytes(document.Scintilla.Text), true, false, true);
 

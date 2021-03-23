@@ -24,6 +24,7 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -435,14 +436,33 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
         {
             get
             {
+                var result = new List<Encoding>();
                 int idx = internalList.FindIndex(f => f.Value == characterSets);
                 if (idx != -1)
                 {
                     foreach (int encodingNum in internalList[idx].Key)
                     {
-                        yield return Encoding.GetEncoding(encodingNum);
+                        try
+                        {
+                            result.Add(Encoding.GetEncoding(encodingNum));
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                var encoding = CodePagesEncodingProvider.Instance.GetEncoding(encodingNum);
+                                result.Add(encoding);
+
+                            }
+                            catch
+                            {
+                                // ignored..
+                            }
+                        }
                     }
                 }
+
+                return result;
             }
         }
     }

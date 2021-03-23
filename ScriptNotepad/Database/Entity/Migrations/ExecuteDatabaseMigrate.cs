@@ -25,11 +25,11 @@ SOFTWARE.
 #endregion
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
 
 // This sample (C): https://fluentmigrator.github.io/articles/quickstart.html?tabs=runner-in-process
-namespace DatabaseMigrations
+namespace ScriptNotepad.Database.Entity.Migrations
 {
     /// <summary>
     /// A class to run the database migrations.
@@ -48,10 +48,8 @@ namespace DatabaseMigrations
 
             // Put the database update into a scope to ensure
             // that all resources will be disposed.
-            using (var scope = serviceProvider.CreateScope())
-            {
-                UpdateDatabase(scope.ServiceProvider);
-            }
+            using var scope = serviceProvider.CreateScope();
+            UpdateDatabase(scope.ServiceProvider);
         }
 
         /// <summary>

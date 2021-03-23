@@ -27,6 +27,7 @@ SOFTWARE.
 using System.Text;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Entities;
+using ScriptNotepad.Database.Entity.EntityHelpers;
 using ScriptNotepad.UtilityClasses.Encodings;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaTabbedTextControl;
@@ -227,27 +228,27 @@ namespace ScriptNotepad.Localization
 
                 LabelEncoding.Text =
                     DBLangEngine.GetStatMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +
-                    fileSave.Encoding.EncodingName;
+                    fileSave.GetEncoding().EncodingName;
 
                 // special handling for unicode..
-                if (fileSave.Encoding.CodePage == Encoding.UTF8.CodePage ||
-                    fileSave.Encoding.CodePage == Encoding.Unicode.CodePage ||
-                    fileSave.Encoding.CodePage == Encoding.UTF32.CodePage)
+                if (fileSave.GetEncoding().CodePage == Encoding.UTF8.CodePage ||
+                    fileSave.GetEncoding().CodePage == Encoding.Unicode.CodePage ||
+                    fileSave.GetEncoding().CodePage == Encoding.UTF32.CodePage)
                 {
                     LabelEncoding.Text += @": ";
 
-                    LabelEncoding.Text += fileSave.Encoding.EmitsBom()
+                    LabelEncoding.Text += fileSave.GetEncoding().EmitsBom()
                         ? DBLangEngine.GetStatMessage("msgUnicodeBomShort",
                             "BOM|A short message describing that an unicode encoding contains a BOM (byte-order-mark)")
                         : DBLangEngine.GetStatMessage("msgUnicodeNoBomShort",
                             "NO-BOM|A short message describing that an unicode encoding doesn't contain a BOM (byte-order-mark)");
 
                     // UTF8 has only one byte order so skip the UTF8..
-                    if (fileSave.Encoding.CodePage != Encoding.UTF8.CodePage)
+                    if (fileSave.GetEncoding().CodePage != Encoding.UTF8.CodePage)
                     {
                         LabelEncoding.Text += @"|";
 
-                        LabelEncoding.Text += fileSave.Encoding.IsBigEndian()
+                        LabelEncoding.Text += fileSave.GetEncoding().IsBigEndian()
                             ? DBLangEngine.GetStatMessage("msgUnicodeBigEndianShort",
                                 "BE|A short message describing that an unicode encoding is in a big endian format")
                             : DBLangEngine.GetStatMessage("msgUnicodeLittleEndianShort",

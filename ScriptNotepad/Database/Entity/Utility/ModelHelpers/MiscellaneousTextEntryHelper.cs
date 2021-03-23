@@ -65,7 +65,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                         TextValue = miscText
                     };
 
-                    result = context.MiscellaneousTextEntries.Add(result);
+                    result = context.MiscellaneousTextEntries.Add(result).Entity;
                     context.SaveChanges();
                     return result;
                 }
