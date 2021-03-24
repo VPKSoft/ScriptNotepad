@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2020 Petteri Kautonen
+Copyright(c) 2021 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,20 +26,47 @@ SOFTWARE.
 
 using System;
 using System.Linq;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.EntityHelpers;
+using ScriptNotepad.UtilityClasses.Encodings;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
+namespace ScriptNotepad.Editor.EntityHelpers
 {
     /// <summary>
-    /// A class to help with the <see cref="RecentFile"/> entities.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Helper methods for the <see cref="RecentFile"/> entity.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class RecentFileHelper: ErrorHandlingBase
+    public static class RecentFileHelper
     {
+        /// <summary>
+        /// Gets the encoding of the recent file.
+        /// </summary>
+        /// <param name="recentFile">The <see cref="RecentFile"/> instance.</param>
+        public static Encoding GetEncoding(this RecentFile recentFile)
+        {
+            return EncodingData.EncodingFromString(recentFile.EncodingAsString) ?? Encoding.UTF8;
+        }
+
+        /// <summary>
+        /// Gets the encoding of the recent file.
+        /// </summary>
+        /// <param name="recentFile">The <see cref="RecentFile"/> instance.</param>
+        public static void SetEncoding(this RecentFile recentFile, Encoding value)
+        {
+            recentFile.EncodingAsString = EncodingData.EncodingToString(value);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a snapshot of the file in question exists in the database.
+        /// </summary>
+        /// <param name="recentFile">The <see cref="RecentFile"/> instance.</param>
+        public static bool ExistsInDatabase(this RecentFile recentFile, DbSet<FileSave> fileSaves)
+        {
+            return fileSaves.Count(f => f.FileNameFull == recentFile.FileNameFull && f.Session.SessionName == recentFile.Session.SessionName && f.IsHistory) > 0;
+        }
+
         /// <summary>
         /// Adds or updates a <see cref="RecentFile"/> entity into the database.
         /// </summary>
@@ -56,7 +83,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 if (recentFile != null)
                 {
                     recentFile.ClosedDateTime = DateTime.Now;
-                    recentFile.Encoding = fileSave.GetEncoding();
+                    recentFile.SetEncoding(fileSave.GetEncoding());
                 }
                 else
                 {
@@ -64,7 +91,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                     {
                         FileNameFull = fileSave.FileNameFull,
                         Session = fileSave.Session,
-                        Encoding = fileSave.GetEncoding(),
+                        EncodingAsString = EncodingData.EncodingToString(fileSave.GetEncoding()),
                         ClosedDateTime = DateTime.Now,
                         FileName = fileSave.FileName,
                         FilePath = fileSave.FilePath,
@@ -77,7 +104,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
             catch (Exception ex)
             {
                 // log the exception..
-                ExceptionLogAction?.Invoke(ex);
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
                 return false;
             }
         }

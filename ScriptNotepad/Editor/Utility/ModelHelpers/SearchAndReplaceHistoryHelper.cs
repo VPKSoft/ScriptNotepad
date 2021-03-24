@@ -32,7 +32,7 @@ using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
+namespace ScriptNotepad.Editor.Utility.ModelHelpers
 {
     /// <summary>
     /// A class to help with <see cref="SearchAndReplaceHistory"/> entities.

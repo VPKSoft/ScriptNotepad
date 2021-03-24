@@ -28,10 +28,6 @@ SOFTWARE.
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using ScriptNotepad.UtilityClasses.Encodings;
 
 namespace ScriptNotepad.Database.Entity.Entities
 {
@@ -81,28 +77,9 @@ namespace ScriptNotepad.Database.Entity.Entities
         public virtual FileSession Session { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets the encoding of the recent file.
-        /// </summary>
-        [NotMapped]
-        public Encoding Encoding
-        {
-            get => EncodingAsString == null ? Encoding.UTF8 : EncodingData.EncodingFromString(EncodingAsString);
-            set => EncodingAsString = EncodingData.EncodingToString(value);
-        }
-
-        /// <summary>
         /// Gets or sets a string representing the encoding of the file save.
         /// </summary>
-//        [SqlDefaultValue(DefaultValue = "'utf-8;65001;True;False;False'")]
         public string EncodingAsString { get; set; } = "utf-8;65001;True;False;False";
-
-        /// <summary>
-        /// Gets a value indicating whether a snapshot of the file in question exists in the database.
-        /// </summary>
-        public bool ExistsInDatabase(DbSet<FileSave> fileSaves)
-        {
-            return fileSaves.Count(f => f.FileNameFull == FileNameFull && f.Session.SessionName == Session.SessionName && f.IsHistory) > 0;
-        }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

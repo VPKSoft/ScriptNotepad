@@ -30,10 +30,10 @@ using System.Linq;
 using System.Text;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.EntityHelpers;
+using ScriptNotepad.Editor.EntityHelpers;
 using VPKSoft.ScintillaTabbedTextControl;
 
-namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
+namespace ScriptNotepad.Editor.Utility.ModelHelpers
 {
     /// <summary>
     /// A class to help with <see cref="FileSave"/> entities.
@@ -161,7 +161,6 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 FileSystemModified = File.Exists(document.FileName)
                     ? new FileInfo(document.FileName).LastWriteTime
                     : DateTime.MinValue,
-                DatabaseModified = DateTime.Now,
                 LexerType = document.LexerType,
                 VisibilityOrder = (int) document.FileTabButton.Tag,
                 Session = ScriptNotepadDbContext.DbContext.FileSessions.FirstOrDefault(f =>
@@ -173,6 +172,8 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 EditorZoomPercentage = document.ZoomPercentage,
                 UseFileSystemOnContents = fileSession.UseFileSystemOnContents,
             };
+
+            fileSave.SetDatabaseModified(DateTime.Now);
 
             fileSave.SetEncoding(encoding);
 

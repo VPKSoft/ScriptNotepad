@@ -25,17 +25,8 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
-using System.Linq;
-using System.Text;
-using ScriptNotepad.Database.Entity.EntityHelpers;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
-using ScriptNotepad.UtilityClasses.LinesAndBinary;
-using VPKSoft.LangLib;
 using VPKSoft.ScintillaLexers;
-using static ScriptNotepad.UtilityClasses.LinesAndBinary.FileLineTypes;
 
 #nullable enable
 
@@ -49,7 +40,7 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
     [Table("FileSaves")]
-    public class FileSave: ErrorHandlingBase, IEntity
+    public class FileSave: IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
@@ -98,60 +89,9 @@ namespace ScriptNotepad.Database.Entity.Entities
         public DateTime FileSystemSaved { get; set; }
 
         /// <summary>
-        /// Resets the previous database modified property, so it can be set again.
-        /// </summary>
-        public void ResetPreviousDbModified()
-        {
-            previousDbModifiedIsSet = false;
-            previousDbModified = DateTime.MinValue;
-        }
-
-        /// <summary>
-        /// The field to hold a value if the <see cref="PreviousDbModified"/> property has been set once.
-        /// </summary>
-        private bool previousDbModifiedIsSet;
-
-        /// <summary>
-        /// A field to hold the <see cref="PreviousDbModified"/> property value.
-        /// </summary>
-        private DateTime previousDbModified = DateTime.MinValue;
-
-        /// <summary>
-        /// Gets or sets the value indicating when the file was previously modified in the database.
-        /// </summary>
-        [NotMapped]
-        public DateTime PreviousDbModified
-        {
-            get => previousDbModified;
-
-            set
-            {
-                if (previousDbModified.CompareTo(value) != 0 && !previousDbModifiedIsSet)
-                {
-                    previousDbModified = value;
-                    previousDbModifiedIsSet = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// A field to hold the <see cref="DatabaseModified"/> property value.
-        /// </summary>
-        private DateTime dbModified = DateTime.MinValue;
-
-        /// <summary>
         /// Gets or sets the value indicating when the file was modified in the database.
         /// </summary>
-        public DateTime DatabaseModified
-        {
-            get => dbModified;
-
-            set 
-            { 
-                PreviousDbModified = dbModified;
-                dbModified = value;
-            }
-        }
+        public DateTime DatabaseModified { get; set; } = DateTime.MinValue;
 
         /// <summary>
         /// Gets or sets the lexer number with the ScintillaNET.
@@ -172,27 +112,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the file contents.
         /// </summary>
         public byte[]? FileContents { get; set; }
-
-        /// <summary>
-        /// Gets or sets the file contents as a memory stream.
-        /// </summary>
-        /// <value>The file contents as a memory stream.</value>
-        [NotMapped]
-        public MemoryStream FileContentsAsMemoryStream
-        {
-            get
-            {
-                var fileContents = this.GetFileContents();
-                if (fileContents == null || fileContents.Length == 0)
-                {
-                    return new MemoryStream();
-                }
-
-                return new MemoryStream(fileContents);
-            }
-
-            set => this.SetFileContents(value.ToArray(), true, false, false);
-        }
 
         /// <summary>
         /// Gets or sets the visibility order (in a tabbed control).
@@ -223,154 +142,6 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the editor zoom value in percentage.
         /// </summary>
         public int EditorZoomPercentage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the previous encodings of the file save for undo possibility.
-        /// <note type="note">Redo possibility does not exist.</note>
-        /// </summary>
-        [NotMapped]
-        public List<Encoding> PreviousEncodings { get; set; } = new();
-
-        /// <summary>
-        /// Gets a value indicating whether a software should query the user if the deleted file should be kept in the editor.
-        /// </summary>
-        [NotMapped]
-        public bool ShouldQueryKeepFile => ExistsInFileSystem && !File.Exists(FileNameFull);
-
-        /// <summary>
-        /// Gets a value indicating whether a software should query the user if a file reappeared in the file system should be reloaded.
-        /// </summary>
-        [NotMapped]
-        public bool ShouldQueryFileReappeared => !ExistsInFileSystem && File.Exists(FileNameFull);
-
-        /// <summary>
-        /// Gets a value indicating whether the document is changed in the editor versus the file system.
-        /// </summary>
-        [NotMapped]
-        public bool IsChangedInEditor => ExistsInFileSystem && DatabaseModified > FileSystemModified;
-
-        // a value indicating if the user wants to reload the changes from the file system if the file has been changed..
-        private bool shouldQueryDiskReload = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the user should be queried of to reload the changed document from the file system.
-        /// </summary>
-        [NotMapped]
-        public bool ShouldQueryDiskReload
-        {
-            get
-            {
-                var fileSysModified = new FileInfo(FileNameFull).LastWriteTime;
-
-                // get the last time the file was written into..
-                DateTime dtUpdated = fileSysModified;
-
-                // get the result to be returned..
-                bool result = shouldQueryDiskReload && dtUpdated > FileSystemModified;
-
-                return result;
-            }
-
-            // set the flag whether the user wants to hear the
-            // stupid question of reloading the file on the next time..
-            set => shouldQueryDiskReload = value;
-        }
-
-        /// <summary>
-        /// A text describing the file line ending type(s) of the document.
-        /// </summary>
-        private string fileEndingText = string.Empty;
-
-        // the file line types and their descriptions..
-        private IEnumerable<KeyValuePair<FileLineTypes, string>> fileLineTypesInternal = new List<KeyValuePair<FileLineTypes, string>>();
-
-        /// <summary>
-        /// Gets the file line types and their descriptions.
-        /// </summary>
-        [NotMapped]
-        public IEnumerable<KeyValuePair<FileLineTypes, string>> FileLineTypes
-        {
-            get
-            {
-                if (FileContents == null)
-                {
-                    var fileLineTypes = ScriptNotepad.UtilityClasses.LinesAndBinary.
-                        FileLineType.GetFileLineTypes(FileContents);
-
-                    var lineTypesInternal = fileLineTypes as KeyValuePair<FileLineTypes, string>[] ??
-                                            fileLineTypes.ToArray();
-
-                    fileLineTypesInternal = lineTypesInternal;
-
-                    return lineTypesInternal;
-                }
-
-                return fileLineTypesInternal;
-            }
-        }
-
-        /// <summary>
-        /// Gets the type of the file line ending.
-        /// </summary>
-        [NotMapped]
-        public FileLineTypes FileLineType
-        {
-            get
-            {
-                List<KeyValuePair<FileLineTypes, string>> typesList =
-                    new(FileLineTypes.ToArray());
-
-                if (typesList.Count == 0 ||
-                    typesList.Count == 1 && typesList[0].Key.HasFlag(Mixed)) 
-                {
-                    return CRLF;
-                }
-
-                if (typesList.Count == 1)
-                {
-                    return typesList[0].Key;
-                }
-
-                return typesList.FirstOrDefault().Key;
-            }
-        }
-
-        /// <summary>
-        /// Gets the text describing the file line ending type(s) of the document.
-        /// </summary>
-        [NotMapped]
-        public string FileLineEndingText
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(fileEndingText))
-                {
-                    fileEndingText = DBLangEngine.GetStatMessage("msgLineEndingShort",
-                        "LE: |A short message indicating a file line ending type value(s) as a concatenated text");
-
-
-                    var fileLineTypes = FileLineTypes;
-
-                    string endAppend = string.Empty;
-
-                    foreach (var fileLineType in fileLineTypes)
-                    {
-                        if (!fileLineType.Key.HasFlag(Mixed))
-                        {
-                            fileEndingText += fileLineType.Value + ", ";
-                        }
-                        else
-                        {
-                            endAppend = $" ({fileLineType.Value})";
-                        }
-
-                        fileEndingText = fileEndingText.TrimEnd(',', ' ') + endAppend;
-                    }
-                }
-
-                return fileEndingText;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the session the <see cref="FileSave"/> belongs to.

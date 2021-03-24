@@ -27,12 +27,12 @@ SOFTWARE.
 using System;
 using System.IO;
 using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.EntityHelpers;
+using ScriptNotepad.Editor.EntityHelpers;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using VPKSoft.ScintillaTabbedTextControl;
 
-namespace ScriptNotepad.Database.Entity.Utility
+namespace ScriptNotepad.Editor.Utility
 {
     /// <summary>
     /// A helper class to reload a document from the file system.
@@ -64,7 +64,8 @@ namespace ScriptNotepad.Database.Entity.Utility
 
                         // set the file system's modified flag..
                         fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
-                        fileSave.DatabaseModified = fileSave.FileSystemModified; // set the other DateTime flags to indicate the same..
+
+                        fileSave.SetDatabaseModified(fileSave.FileSystemModified); // set the other DateTime flags to indicate the same..
                         fileSave.FileSystemSaved = fileSave.FileSystemModified; // set the other DateTime flags to indicate the same..
                         fileSave.ResetPreviousDbModified();
 
@@ -77,7 +78,7 @@ namespace ScriptNotepad.Database.Entity.Utility
                         // a reload doesn't need to be undone..
                         document.Scintilla.EmptyUndoBuffer();
 
-                        fileSave.FileContentsAsMemoryStream = memoryStream;
+                        fileSave.SetFileContentsAsMemoryStream(memoryStream);
 
                         // set the saved position of the document's caret..
                         if (fileSave.CurrentCaretPosition > 0 && fileSave.CurrentCaretPosition < document.Scintilla.TextLength)

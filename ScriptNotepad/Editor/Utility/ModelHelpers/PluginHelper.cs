@@ -31,7 +31,7 @@ using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
 
-namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
+namespace ScriptNotepad.Editor.Utility.ModelHelpers
 {
     /// <summary>
     /// A class to help with <see cref="Plugin"/> entities.
@@ -86,7 +86,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 };
 
                 // set the version for the plug-in..
-                result.SetPluginUpdated(assembly);
+                AssemblyVersion.SetPluginUpdated(result, assembly);
 
                 // return the result..
                 return result;
@@ -118,7 +118,8 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 pluginEntry.PluginDescription = plugin.PluginDescription;
 
                 // set the version for the plug-in..
-                pluginEntry.SetPluginUpdated(assembly);
+                AssemblyVersion.SetPluginUpdated(pluginEntry, assembly);
+
                 return pluginEntry;
             }
             catch (Exception ex)
@@ -160,7 +161,7 @@ namespace ScriptNotepad.Database.Entity.Utility.ModelHelpers
                 };
 
                 // set the version for the plug-in..
-                result.SetPluginUpdated(assembly);
+                AssemblyVersion.SetPluginUpdated(result, assembly);
 
                 // return the result..
                 return result;

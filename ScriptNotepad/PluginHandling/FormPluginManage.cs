@@ -167,7 +167,7 @@ namespace ScriptNotepad.PluginHandling
             nudRating.Value = plugin?.Rating ?? 0;
 
             cbPluginActive.Checked = plugin != null && plugin.IsActive;
-            cbPluginExists.Checked = plugin != null && plugin.Exists;
+            cbPluginExists.Checked = plugin != null && File.Exists(plugin.FileNameFull);
 
             nudRating.Enabled = plugin != null;
             btDeletePlugin.Enabled = plugin != null;

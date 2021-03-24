@@ -30,7 +30,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
+using ScriptNotepad.Editor.Utility.ModelHelpers;
 using VPKSoft.LangLib;
 using VPKSoft.MessageBoxExtended;
 
@@ -217,7 +217,7 @@ namespace ScriptNotepad.UtilityClasses.Session
             {
                 FileSession session = (FileSession)cmbSessions.SelectedItem;
 
-                if (session.IsDefault)
+                if (session.Id == 1) // Id == 1 is the default..
                 {
                     MessageBoxExtended.Show(
                         DBLangEngine.GetMessage("msgDefaultSessionCanNotDelete",

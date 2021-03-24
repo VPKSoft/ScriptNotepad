@@ -30,8 +30,6 @@ using ScintillaNET; // (C)::https://github.com/jacobslusser/ScintillaNET
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
-using ScriptNotepad.Database.Entity.Utility;
-using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
 using ScriptNotepad.DialogForms;
 using ScriptNotepad.IOPermission;
 using ScriptNotepad.Localization;
@@ -76,6 +74,7 @@ using System.Windows.Forms;
 using RpcSelf;
 using ScriptNotepad.Database.DirectAccess;
 using ScriptNotepad.Database.Entity.Migrations;
+using ScriptNotepad.Editor.EntityHelpers;
 using ScriptNotepadOldDatabaseEntity;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
@@ -94,8 +93,10 @@ using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivate
 using static ScriptNotepad.UtilityClasses.Encodings.FileEncoding;
 using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase;
-using ScriptNotepad.Database.Entity.EntityHelpers;
-using FileSaveHelper = ScriptNotepad.Database.Entity.Utility.ModelHelpers.FileSaveHelper;
+using ScriptNotepad.Editor.Utility;
+using ScriptNotepad.Editor.Utility.ModelHelpers;
+using FileSaveHelper = ScriptNotepad.Editor.Utility.ModelHelpers.FileSaveHelper;
+using FileSessionHelper = ScriptNotepad.Editor.EntityHelpers.FileSessionHelper;
 
 #endregion
 
@@ -132,10 +133,10 @@ namespace ScriptNotepad
             }
 
             // this is required..
-            FileSession.ApplicationDataDirectory = Path.Combine(DBLangEngine.DataDir, "Cache");
-            if (!Directory.Exists(FileSession.ApplicationDataDirectory))
+            FileSessionHelper.ApplicationDataDirectory = Path.Combine(DBLangEngine.DataDir, "Cache");
+            if (!Directory.Exists(FileSessionHelper.ApplicationDataDirectory))
             {
-                Directory.CreateDirectory(FileSession.ApplicationDataDirectory);
+                Directory.CreateDirectory(FileSessionHelper.ApplicationDataDirectory);
             }
 
             // initialize the language/localization database..
@@ -835,7 +836,7 @@ namespace ScriptNotepad
                     // update the possible version and the update time stamp..
                     if (pluginEntry != null)
                     {
-                        pluginEntry.SetPluginUpdated(plugin.Assembly);
+                        AssemblyVersion.SetPluginUpdated(pluginEntry, plugin.Assembly);
 
                         // update the plug-in information to the database..
                         ScriptNotepadDbContext.DbContext.SaveChanges();
@@ -852,7 +853,7 @@ namespace ScriptNotepad
                         pluginEntry = PluginHelper.InvalidPlugin(plugin.Assembly, plugin.Path);
                     }
                     // update the possible version and the update time stamp..
-                    pluginEntry.SetPluginUpdated(plugin.Assembly);
+                    AssemblyVersion.SetPluginUpdated(pluginEntry, plugin.Assembly);
 
                     // update the plug-in information to the database..
                     ScriptNotepadDbContext.DbContext.SaveChanges();
@@ -1104,11 +1105,11 @@ namespace ScriptNotepad
 
                 // check if the file exists because it cannot be reloaded otherwise 
                 // from the file system..
-                if (File.Exists(sttcMain.Documents[i].FileName) && !fileSave.ShouldQueryFileReappeared)
+                if (File.Exists(sttcMain.Documents[i].FileName) && !fileSave.ShouldQueryFileReappeared())
                 {
                     // query the user if one wishes to reload
                     // the changed file from the disk..
-                    if (fileSave.ShouldQueryDiskReload && !runningConstructor)
+                    if (fileSave.GetShouldQueryDiskReload() && !runningConstructor)
                     { 
                         if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happen", fileSave.FileNameFull),
@@ -1131,11 +1132,11 @@ namespace ScriptNotepad
                         else // the user doesn't want to load the changes made to the document from the file system..
                         {
                             // indicate that the query shouldn't happen again..
-                            fileSave.ShouldQueryDiskReload = false;
+                            fileSave.SetShouldQueryDiskReload(false);
 
                             // set the flag that the file's modified date in the database
                             // has been changed as the user didn't wish to reload the file from the file system: FS != DB..
-                            fileSave.DatabaseModified = DateTime.Now;
+                            fileSave.SetDatabaseModified(DateTime.Now);
 
                             // just in case set the tag back..
                             sttcMain.Documents[i].Tag = fileSave;
@@ -1149,7 +1150,7 @@ namespace ScriptNotepad
                 {
                     // query the user if one wishes to keep a deleted
                     // file from the file system in the editor..
-                    if (fileSave.ShouldQueryKeepFile && !runningConstructor)
+                    if (fileSave.ShouldQueryKeepFile() && !runningConstructor)
                     {
                         if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasBeenDeleted", "The file '{0}' has been deleted. Keep the file in the editor?|As in the opened file has been deleted from the file system and user is asked if to keep the deleted file in the editor", fileSave.FileNameFull),
@@ -1177,7 +1178,7 @@ namespace ScriptNotepad
                                 sttcMain.Documents[i].Scintilla.CurrentPosition);
                         }
                     }
-                    else if (fileSave.ShouldQueryFileReappeared && !runningConstructor)
+                    else if (fileSave.ShouldQueryFileReappeared() && !runningConstructor)
                     {
                         if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasReappeared", "The file '{0}' has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it's contents from the file system", fileSave.FileNameFull),
@@ -1498,7 +1499,7 @@ namespace ScriptNotepad
                     activeDocument = file.FileNameFull;
                 }
 
-                sttcMain.AddDocument(file.FileNameFull, file.Id, file.GetEncoding(), file.FileContentsAsMemoryStream);
+                sttcMain.AddDocument(file.FileNameFull, file.Id, file.GetEncoding(), file.GetFileContentsAsMemoryStream());
 
                 if (sttcMain.LastAddedDocument != null)
                 {
@@ -1867,7 +1868,7 @@ namespace ScriptNotepad
                         // be reloaded from the file system..
                         fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
                         fileSave.FileSystemSaved = fileSave.FileSystemModified;
-                        fileSave.DatabaseModified = fileSave.FileSystemModified;
+                        fileSave.SetDatabaseModified(fileSave.FileSystemModified);
                         
                         document.Tag = fileSave.AddOrUpdateFile();
                     }
@@ -1915,7 +1916,7 @@ namespace ScriptNotepad
                             // be reloaded from the file system..
                             fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
                             fileSave.FileSystemSaved = fileSave.FileSystemModified;
-                            fileSave.DatabaseModified = fileSave.FileSystemModified;
+                            fileSave.SetDatabaseModified(fileSave.FileSystemModified);
 
                             // update document misc data, i.e. the assigned lexer to the database..
                             fileSave.AddOrUpdateFile();
@@ -2420,7 +2421,8 @@ namespace ScriptNotepad
             // else open the file from the file system..
             else if (e.RecentFile != null)
             {
-                OpenDocument(e.RecentFile.FileName, e.RecentFile.Encoding, false, false);
+                OpenDocument(e.RecentFile.FileName, EncodingData.EncodingFromString(e.RecentFile.EncodingAsString),
+                    false, false);
             }
             // in this case the menu item should contain all the recent files belonging to a session..
             else if (e.RecentFiles != null)
@@ -2436,7 +2438,8 @@ namespace ScriptNotepad
                     // else open the file from the file system..
                     else
                     {
-                        OpenDocument(recentFile.FileNameFull, recentFile.Encoding, false, false);
+                        OpenDocument(recentFile.FileNameFull,
+                            EncodingData.EncodingFromString(recentFile.EncodingAsString), false, false);
                     }
                 }
             }
@@ -2460,7 +2463,7 @@ namespace ScriptNotepad
                     file.EditorZoomPercentage = 100;
                 }
 
-                sttcMain.AddDocument(file.FileNameFull, file.Id, file.GetEncoding(), file.FileContentsAsMemoryStream);
+                sttcMain.AddDocument(file.FileNameFull, file.Id, file.GetEncoding(), file.GetFileContentsAsMemoryStream());
                 if (sttcMain.LastAddedDocument != null)
                 {
                     // append additional initialization to the document..
@@ -2745,7 +2748,7 @@ namespace ScriptNotepad
                     {
                         // if the file has been changed in the editor, so confirm the user for a 
                         // reload from the file system..
-                        if (fileSave.IsChangedInEditor && !runningConstructor)
+                        if (fileSave.IsChangedInEditor() && !runningConstructor)
                         {
                             if (MessageBoxExtended.Show(
                                 DBLangEngine.GetMessage("msgFileHasChangedInEditorAction", "The file '{0}' has been changed in the editor and a reload from the file system is required. Continue?|A file has been changed in the editor and a reload from the file system is required to complete an arbitrary action", fileSave.FileNameFull),
@@ -2774,7 +2777,7 @@ namespace ScriptNotepad
                             StreamStringHelpers.ConvertEncoding(fileSave.GetEncoding(), encoding, sttcMain.CurrentDocument.Scintilla.Text);
 
                         // save the previous encoding for an undo-possibility..
-                        fileSave.PreviousEncodings.Add(fileSave.GetEncoding());
+                        fileSave.AddPreviousEncoding(fileSave.GetEncoding());
 
                         fileSave.SetEncoding(encoding); // set the new encoding..
 
@@ -3043,7 +3046,7 @@ namespace ScriptNotepad
         private void sttcMain_DocumentTextChanged(object sender, ScintillaTextChangedEventArgs e)
         {
             var fileSave = (FileSave)e.ScintillaTabbedDocument.Tag;
-            fileSave.DatabaseModified = DateTime.Now;
+            fileSave.SetDatabaseModified(DateTime.Now);
             fileSave.SetContents(e.ScintillaTabbedDocument.Scintilla.Text, false, false, true);
 
             e.ScintillaTabbedDocument.FileTabButton.IsSaved = !IsFileChanged(fileSave);
@@ -3053,7 +3056,7 @@ namespace ScriptNotepad
             // just clear the undo "buffer"..
             if (!TextChangedViaEncodingChange)
             {
-                fileSave.PreviousEncodings.Clear();
+                fileSave.ClearPreviousEncodings();
                 TextChangedViaEncodingChange = false;
             }
             
@@ -3351,7 +3354,7 @@ namespace ScriptNotepad
                     // just in case set the tag back..
                     sttcMain.CurrentDocument.Tag = fileSave;
 
-                    fileSave.DatabaseModified = fileSave.FileSystemModified;
+                    fileSave.SetDatabaseModified(fileSave.FileSystemModified);
 
                     sttcMain.CurrentDocument.FileTabButton.IsSaved = !IsFileChanged(fileSave);
 
@@ -3426,7 +3429,7 @@ namespace ScriptNotepad
 
                 DuplicateLines.RemoveDuplicateLines(document.Scintilla,
                     FormSettings.Settings.TextCurrentComparison,
-                    fileSave.FileLineType);
+                    fileSave.GetFileLineType());
 
                 if (!suspendSelectionUpdate)
                 {
@@ -3856,7 +3859,7 @@ namespace ScriptNotepad
                     sttcMain.LeftFileIndex = sttcMain.LeftFileIndex;
 
                     // update the time stamp..
-                    fileSave.DatabaseModified = DateTime.Now;
+                    fileSave.SetDatabaseModified(DateTime.Now);
 
                     // update document misc data, i.e. the assigned lexer to the database..
                     fileSave.AddOrUpdateFile();

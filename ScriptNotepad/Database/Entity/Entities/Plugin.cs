@@ -25,12 +25,7 @@ SOFTWARE.
 #endregion
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
-using System.Reflection;
-using ScriptNotepad.Database.Entity.Utility;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 #nullable enable
 
@@ -44,7 +39,7 @@ namespace ScriptNotepad.Database.Entity.Entities
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
     [Table("Plugins")]
-    public class Plugin : ErrorHandlingBase, IEntity
+    public class Plugin : IEntity
     {
         /// <summary>
         /// Gets or sets the identifier for the entity.
@@ -127,27 +122,11 @@ namespace ScriptNotepad.Database.Entity.Entities
         public bool PendingDeletion { get; set; } 
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="FileNameFull"/> exists in the file system.
-        /// </summary>
-        [NotMapped]
-        public bool Exists => File.Exists(FileNameFull);
-
-        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         public override string ToString()
         {
             return PluginName + " / " + PluginDescription;
-        }
-
-        /// <summary>
-        /// Sets the <see cref="PluginUpdated"/> property if the given assembly version is larger than the previous <see cref="PluginVersion"/>.
-        /// </summary>
-        /// <param name="assembly">The assembly which version to compare to the current <see cref="PluginVersion"/> one.</param>
-
-        public void SetPluginUpdated(Assembly assembly)
-        {
-            AssemblyVersion.SetPluginUpdated(this, assembly);
         }
     }
 }

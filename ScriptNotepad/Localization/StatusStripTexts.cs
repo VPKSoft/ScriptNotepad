@@ -27,7 +27,7 @@ SOFTWARE.
 using System.Text;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Entities;
-using ScriptNotepad.Database.Entity.EntityHelpers;
+using ScriptNotepad.Editor.EntityHelpers;
 using ScriptNotepad.UtilityClasses.Encodings;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaTabbedTextControl;
@@ -224,7 +224,7 @@ namespace ScriptNotepad.Localization
             {
                 var fileSave = (FileSave)document.Tag;
 
-                LabelLineEnding.Text = fileSave.FileLineEndingText;
+                LabelLineEnding.Text = fileSave.FileLineEndingText();
 
                 LabelEncoding.Text =
                     DBLangEngine.GetStatMessage("msgShortEncodingPreText", "Encoding: |A short text to describe a detected encoding value (i.e.) Unicode (UTF-8).") +

@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ScriptNotepad.Database.Entity.Context;
-using ScriptNotepad.Database.Entity.EntityHelpers;
+using ScriptNotepad.Editor.EntityHelpers;
 using ScriptNotepad.Settings;
 using VPKSoft.ErrorLogger;
 using static ScriptNotepad.UtilityClasses.Encodings.TryMakeEncoding;

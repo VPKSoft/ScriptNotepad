@@ -37,7 +37,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
-using ScriptNotepad.Database.Entity.Utility.ModelHelpers;
+using ScriptNotepad.Editor.Utility.ModelHelpers;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
 using VPKSoft.PosLib;

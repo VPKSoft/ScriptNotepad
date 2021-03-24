@@ -29,7 +29,7 @@ using System.Reflection;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Database.Entity.Utility
+namespace ScriptNotepad.Editor.Utility
 {
     /// <summary>
     /// A class to help to deal with <see cref="Assembly"/> versions.
