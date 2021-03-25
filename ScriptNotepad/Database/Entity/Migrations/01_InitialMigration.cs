@@ -36,7 +36,7 @@ namespace ScriptNotepad.Database.Entity.Migrations
     /// Implements the <see cref="FluentMigrator.Migration" />
     /// </summary>
     /// <seealso cref="FluentMigrator.Migration" />
-    [Migration(20210101103253)]
+    [Migration(2021_0101_10_32_53)]
     public class InitialMigration: Migration
     {
         /// <summary>

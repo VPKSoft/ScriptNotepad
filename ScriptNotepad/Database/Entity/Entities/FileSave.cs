@@ -144,6 +144,12 @@ namespace ScriptNotepad.Database.Entity.Entities
         public int EditorZoomPercentage { get; set; }
 
         /// <summary>
+        /// Gets or sets the value containing the document folding data.
+        /// </summary>
+        /// <value>The value containing the document folding data.</value>
+        public string FoldSave { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the session the <see cref="FileSave"/> belongs to.
         /// </summary>
         [ForeignKey(nameof(SessionId))]

@@ -119,6 +119,8 @@ namespace ScriptNotepad
             // Add this form to be positioned..
             PositionForms.Add(this);
 
+            MessageBoxBase.DefaultOwner = this;
+
             // add positioning..
             PositionCore.Bind(ApplicationType.WinForms);
 
