@@ -309,6 +309,9 @@ namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
                 (LexerType.InnoSetup,
                     DBLangEngine.GetStatMessage("msgProgrammingInnoSetup",
                         "InnoSetup installer script|A programming, markup, setting, script or other file and/or language/text")),
+                (LexerType.Json,
+                DBLangEngine.GetStatMessage("msgProgrammingJson",
+                    "Json (JavaScript Object Notation)|A programming, markup, setting, script or other file and/or language/text")),
             });
     }
 }
