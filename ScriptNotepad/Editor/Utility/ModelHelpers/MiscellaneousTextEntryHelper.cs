@@ -117,7 +117,9 @@ namespace ScriptNotepad.Editor.Utility.ModelHelpers
         public static IEnumerable<MiscellaneousTextEntry> GetEntriesByLimit(MiscellaneousTextType miscellaneousTextType, int limit, FileSession fileSession)
         {
             return ScriptNotepadDbContext.DbContext
-                .MiscellaneousTextEntries.Where(f => f.Session.SessionName == fileSession.SessionName).OrderBy(f => f.Added)
+                .MiscellaneousTextEntries
+                .Where(f => f.Session.SessionName == fileSession.SessionName && f.TextType == miscellaneousTextType)
+                .OrderBy(f => f.Added)
                 .Take(limit);
         }
     }

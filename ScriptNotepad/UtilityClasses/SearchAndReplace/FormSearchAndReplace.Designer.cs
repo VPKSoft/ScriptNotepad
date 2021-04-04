@@ -178,9 +178,10 @@
             this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ssLbStatus,
             this.pbSearchProgress});
-            this.ssMain.Location = new System.Drawing.Point(0, 298);
+            this.ssMain.Location = new System.Drawing.Point(0, 345);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(536, 22);
+            this.ssMain.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.ssMain.Size = new System.Drawing.Size(625, 24);
             this.ssMain.TabIndex = 0;
             // 
             // ssLbStatus
@@ -188,13 +189,13 @@
             this.ssLbStatus.AutoSize = false;
             this.ssLbStatus.Name = "ssLbStatus";
             this.ssLbStatus.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.ssLbStatus.Size = new System.Drawing.Size(400, 17);
+            this.ssLbStatus.Size = new System.Drawing.Size(400, 19);
             this.ssLbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbSearchProgress
             // 
             this.pbSearchProgress.Name = "pbSearchProgress";
-            this.pbSearchProgress.Size = new System.Drawing.Size(100, 16);
+            this.pbSearchProgress.Size = new System.Drawing.Size(117, 18);
             this.pbSearchProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
             // tcMain
@@ -205,9 +206,10 @@
             this.tcMain.Controls.Add(this.tabMarkMatches);
             this.tcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcMain.Location = new System.Drawing.Point(0, 0);
+            this.tcMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(536, 298);
+            this.tcMain.Size = new System.Drawing.Size(625, 345);
             this.tcMain.TabIndex = 1;
             this.tcMain.SelectedIndexChanged += new System.EventHandler(this.TcMain_TabIndexChanged);
             this.tcMain.TabIndexChanged += new System.EventHandler(this.TcMain_TabIndexChanged);
@@ -228,10 +230,11 @@
             this.tabFind.Controls.Add(this.btFindPrevious);
             this.tabFind.Controls.Add(this.pnLabelHolder01);
             this.tabFind.Controls.Add(this.cmbFind);
-            this.tabFind.Location = new System.Drawing.Point(4, 22);
+            this.tabFind.Location = new System.Drawing.Point(4, 24);
+            this.tabFind.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabFind.Name = "tabFind";
-            this.tabFind.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFind.Size = new System.Drawing.Size(528, 272);
+            this.tabFind.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabFind.Size = new System.Drawing.Size(617, 317);
             this.tabFind.TabIndex = 0;
             this.tabFind.Text = "Find";
             this.tabFind.UseVisualStyleBackColor = true;
@@ -242,9 +245,10 @@
             this.cbTransparency.AutoSize = true;
             this.cbTransparency.Checked = true;
             this.cbTransparency.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTransparency.Location = new System.Drawing.Point(333, 174);
+            this.cbTransparency.Location = new System.Drawing.Point(400, 202);
+            this.cbTransparency.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbTransparency.Name = "cbTransparency";
-            this.cbTransparency.Size = new System.Drawing.Size(91, 17);
+            this.cbTransparency.Size = new System.Drawing.Size(95, 19);
             this.cbTransparency.TabIndex = 14;
             this.cbTransparency.Text = "Transparency";
             this.cbTransparency.UseVisualStyleBackColor = true;
@@ -256,20 +260,23 @@
             this.gpTransparency.Controls.Add(this.tbOpacity);
             this.gpTransparency.Controls.Add(this.rbTransparencyAlways);
             this.gpTransparency.Controls.Add(this.rbTransparencyOnLosingFocus);
-            this.gpTransparency.Location = new System.Drawing.Point(339, 175);
+            this.gpTransparency.Location = new System.Drawing.Point(396, 203);
+            this.gpTransparency.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpTransparency.Name = "gpTransparency";
-            this.gpTransparency.Size = new System.Drawing.Size(181, 91);
+            this.gpTransparency.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.gpTransparency.Size = new System.Drawing.Size(211, 105);
             this.gpTransparency.TabIndex = 13;
             this.gpTransparency.TabStop = false;
             // 
             // tbOpacity
             // 
             this.tbOpacity.AutoSize = false;
-            this.tbOpacity.Location = new System.Drawing.Point(6, 65);
+            this.tbOpacity.Location = new System.Drawing.Point(7, 75);
+            this.tbOpacity.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tbOpacity.Maximum = 100;
             this.tbOpacity.Minimum = 1;
             this.tbOpacity.Name = "tbOpacity";
-            this.tbOpacity.Size = new System.Drawing.Size(169, 17);
+            this.tbOpacity.Size = new System.Drawing.Size(197, 20);
             this.tbOpacity.TabIndex = 15;
             this.tbOpacity.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbOpacity.Value = 80;
@@ -278,9 +285,10 @@
             // rbTransparencyAlways
             // 
             this.rbTransparencyAlways.AutoSize = true;
-            this.rbTransparencyAlways.Location = new System.Drawing.Point(6, 42);
+            this.rbTransparencyAlways.Location = new System.Drawing.Point(7, 48);
+            this.rbTransparencyAlways.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyAlways.Name = "rbTransparencyAlways";
-            this.rbTransparencyAlways.Size = new System.Drawing.Size(58, 17);
+            this.rbTransparencyAlways.Size = new System.Drawing.Size(62, 19);
             this.rbTransparencyAlways.TabIndex = 1;
             this.rbTransparencyAlways.Text = "Always";
             this.rbTransparencyAlways.UseVisualStyleBackColor = true;
@@ -290,9 +298,10 @@
             // 
             this.rbTransparencyOnLosingFocus.AutoSize = true;
             this.rbTransparencyOnLosingFocus.Checked = true;
-            this.rbTransparencyOnLosingFocus.Location = new System.Drawing.Point(6, 19);
+            this.rbTransparencyOnLosingFocus.Location = new System.Drawing.Point(7, 22);
+            this.rbTransparencyOnLosingFocus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyOnLosingFocus.Name = "rbTransparencyOnLosingFocus";
-            this.rbTransparencyOnLosingFocus.Size = new System.Drawing.Size(98, 17);
+            this.rbTransparencyOnLosingFocus.Size = new System.Drawing.Size(108, 19);
             this.rbTransparencyOnLosingFocus.TabIndex = 0;
             this.rbTransparencyOnLosingFocus.TabStop = true;
             this.rbTransparencyOnLosingFocus.Text = "On losing focus";
@@ -306,10 +315,11 @@
             this.gpSearchMode.Controls.Add(this.rbRegEx);
             this.gpSearchMode.Controls.Add(this.rbExtented);
             this.gpSearchMode.Controls.Add(this.rbNormal);
-            this.gpSearchMode.Location = new System.Drawing.Point(8, 160);
+            this.gpSearchMode.Location = new System.Drawing.Point(9, 186);
+            this.gpSearchMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpSearchMode.Name = "gpSearchMode";
-            this.gpSearchMode.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.gpSearchMode.Size = new System.Drawing.Size(258, 106);
+            this.gpSearchMode.Padding = new System.Windows.Forms.Padding(4, 0, 4, 3);
+            this.gpSearchMode.Size = new System.Drawing.Size(301, 122);
             this.gpSearchMode.TabIndex = 12;
             this.gpSearchMode.TabStop = false;
             this.gpSearchMode.Text = "Search mode";
@@ -317,9 +327,10 @@
             // rbSimpleExtended
             // 
             this.rbSimpleExtended.AutoSize = true;
-            this.rbSimpleExtended.Location = new System.Drawing.Point(6, 85);
+            this.rbSimpleExtended.Location = new System.Drawing.Point(7, 98);
+            this.rbSimpleExtended.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbSimpleExtended.Name = "rbSimpleExtended";
-            this.rbSimpleExtended.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended.Size = new System.Drawing.Size(169, 19);
             this.rbSimpleExtended.TabIndex = 3;
             this.rbSimpleExtended.Text = "Simple extended (#, %, *, ?)";
             this.ttMain.SetToolTip(this.rbSimpleExtended, "? = one character, * = multiple characters, # = digit, % = single digit");
@@ -329,9 +340,10 @@
             // rbRegEx
             // 
             this.rbRegEx.AutoSize = true;
-            this.rbRegEx.Location = new System.Drawing.Point(6, 62);
+            this.rbRegEx.Location = new System.Drawing.Point(7, 72);
+            this.rbRegEx.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbRegEx.Name = "rbRegEx";
-            this.rbRegEx.Size = new System.Drawing.Size(115, 17);
+            this.rbRegEx.Size = new System.Drawing.Size(124, 19);
             this.rbRegEx.TabIndex = 2;
             this.rbRegEx.Text = "Regular expression";
             this.rbRegEx.UseVisualStyleBackColor = true;
@@ -340,9 +352,10 @@
             // rbExtented
             // 
             this.rbExtented.AutoSize = true;
-            this.rbExtented.Location = new System.Drawing.Point(6, 39);
+            this.rbExtented.Location = new System.Drawing.Point(7, 45);
+            this.rbExtented.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbExtented.Name = "rbExtented";
-            this.rbExtented.Size = new System.Drawing.Size(154, 17);
+            this.rbExtented.Size = new System.Drawing.Size(164, 19);
             this.rbExtented.TabIndex = 1;
             this.rbExtented.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
             this.rbExtented.UseVisualStyleBackColor = true;
@@ -352,9 +365,10 @@
             // 
             this.rbNormal.AutoSize = true;
             this.rbNormal.Checked = true;
-            this.rbNormal.Location = new System.Drawing.Point(6, 16);
+            this.rbNormal.Location = new System.Drawing.Point(7, 18);
+            this.rbNormal.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbNormal.Name = "rbNormal";
-            this.rbNormal.Size = new System.Drawing.Size(58, 17);
+            this.rbNormal.Size = new System.Drawing.Size(65, 19);
             this.rbNormal.TabIndex = 0;
             this.rbNormal.TabStop = true;
             this.rbNormal.Text = "Normal";
@@ -366,9 +380,10 @@
             this.cbWrapAround.AutoSize = true;
             this.cbWrapAround.Checked = true;
             this.cbWrapAround.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbWrapAround.Location = new System.Drawing.Point(8, 127);
+            this.cbWrapAround.Location = new System.Drawing.Point(9, 147);
+            this.cbWrapAround.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbWrapAround.Name = "cbWrapAround";
-            this.cbWrapAround.Size = new System.Drawing.Size(88, 17);
+            this.cbWrapAround.Size = new System.Drawing.Size(95, 19);
             this.cbWrapAround.TabIndex = 11;
             this.cbWrapAround.Text = "Wrap around";
             this.cbWrapAround.UseVisualStyleBackColor = true;
@@ -377,9 +392,10 @@
             // cbMatchCase
             // 
             this.cbMatchCase.AutoSize = true;
-            this.cbMatchCase.Location = new System.Drawing.Point(8, 104);
+            this.cbMatchCase.Location = new System.Drawing.Point(9, 120);
+            this.cbMatchCase.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchCase.Name = "cbMatchCase";
-            this.cbMatchCase.Size = new System.Drawing.Size(82, 17);
+            this.cbMatchCase.Size = new System.Drawing.Size(86, 19);
             this.cbMatchCase.TabIndex = 10;
             this.cbMatchCase.Text = "Match case";
             this.cbMatchCase.UseVisualStyleBackColor = true;
@@ -388,9 +404,10 @@
             // cbMatchWholeWord
             // 
             this.cbMatchWholeWord.AutoSize = true;
-            this.cbMatchWholeWord.Location = new System.Drawing.Point(8, 81);
+            this.cbMatchWholeWord.Location = new System.Drawing.Point(9, 93);
+            this.cbMatchWholeWord.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchWholeWord.Name = "cbMatchWholeWord";
-            this.cbMatchWholeWord.Size = new System.Drawing.Size(135, 17);
+            this.cbMatchWholeWord.Size = new System.Drawing.Size(151, 19);
             this.cbMatchWholeWord.TabIndex = 9;
             this.cbMatchWholeWord.Text = "Match whole word only";
             this.cbMatchWholeWord.UseVisualStyleBackColor = true;
@@ -399,9 +416,10 @@
             // btClose
             // 
             this.btClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btClose.Location = new System.Drawing.Point(366, 148);
+            this.btClose.Location = new System.Drawing.Point(427, 171);
+            this.btClose.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btClose.Name = "btClose";
-            this.btClose.Size = new System.Drawing.Size(156, 21);
+            this.btClose.Size = new System.Drawing.Size(182, 24);
             this.btClose.TabIndex = 8;
             this.btClose.Text = "Close";
             this.btClose.UseVisualStyleBackColor = true;
@@ -410,9 +428,10 @@
             // btFindAllCurrent
             // 
             this.btFindAllCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindAllCurrent.Location = new System.Drawing.Point(364, 104);
+            this.btFindAllCurrent.Location = new System.Drawing.Point(425, 120);
+            this.btFindAllCurrent.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btFindAllCurrent.Name = "btFindAllCurrent";
-            this.btFindAllCurrent.Size = new System.Drawing.Size(156, 38);
+            this.btFindAllCurrent.Size = new System.Drawing.Size(182, 44);
             this.btFindAllCurrent.TabIndex = 7;
             this.btFindAllCurrent.Text = "Find all in current document";
             this.btFindAllCurrent.UseVisualStyleBackColor = true;
@@ -421,9 +440,10 @@
             // btFindAllInAll
             // 
             this.btFindAllInAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindAllInAll.Location = new System.Drawing.Point(364, 60);
+            this.btFindAllInAll.Location = new System.Drawing.Point(425, 69);
+            this.btFindAllInAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btFindAllInAll.Name = "btFindAllInAll";
-            this.btFindAllInAll.Size = new System.Drawing.Size(156, 38);
+            this.btFindAllInAll.Size = new System.Drawing.Size(182, 44);
             this.btFindAllInAll.TabIndex = 6;
             this.btFindAllInAll.Text = "Find all in all opened documents";
             this.btFindAllInAll.UseVisualStyleBackColor = true;
@@ -432,9 +452,10 @@
             // btCount
             // 
             this.btCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btCount.Location = new System.Drawing.Point(364, 33);
+            this.btCount.Location = new System.Drawing.Point(425, 38);
+            this.btCount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btCount.Name = "btCount";
-            this.btCount.Size = new System.Drawing.Size(156, 21);
+            this.btCount.Size = new System.Drawing.Size(182, 24);
             this.btCount.TabIndex = 5;
             this.btCount.Text = "Count";
             this.btCount.UseVisualStyleBackColor = true;
@@ -443,9 +464,10 @@
             // btFindNext
             // 
             this.btFindNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindNext.Location = new System.Drawing.Point(445, 6);
+            this.btFindNext.Location = new System.Drawing.Point(519, 7);
+            this.btFindNext.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btFindNext.Name = "btFindNext";
-            this.btFindNext.Size = new System.Drawing.Size(75, 21);
+            this.btFindNext.Size = new System.Drawing.Size(88, 24);
             this.btFindNext.TabIndex = 4;
             this.btFindNext.Text = "Find >>";
             this.btFindNext.UseVisualStyleBackColor = true;
@@ -454,9 +476,10 @@
             // btFindPrevious
             // 
             this.btFindPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindPrevious.Location = new System.Drawing.Point(364, 6);
+            this.btFindPrevious.Location = new System.Drawing.Point(425, 7);
+            this.btFindPrevious.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btFindPrevious.Name = "btFindPrevious";
-            this.btFindPrevious.Size = new System.Drawing.Size(75, 21);
+            this.btFindPrevious.Size = new System.Drawing.Size(88, 24);
             this.btFindPrevious.TabIndex = 3;
             this.btFindPrevious.Text = "<< Find";
             this.btFindPrevious.UseVisualStyleBackColor = true;
@@ -465,10 +488,10 @@
             // pnLabelHolder01
             // 
             this.pnLabelHolder01.Controls.Add(this.lbFind);
-            this.pnLabelHolder01.Location = new System.Drawing.Point(5, 6);
+            this.pnLabelHolder01.Location = new System.Drawing.Point(6, 7);
             this.pnLabelHolder01.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder01.Name = "pnLabelHolder01";
-            this.pnLabelHolder01.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder01.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder01.TabIndex = 2;
             // 
             // lbFind
@@ -476,8 +499,9 @@
             this.lbFind.AutoEllipsis = true;
             this.lbFind.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbFind.Location = new System.Drawing.Point(0, 0);
+            this.lbFind.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbFind.Name = "lbFind";
-            this.lbFind.Size = new System.Drawing.Size(99, 21);
+            this.lbFind.Size = new System.Drawing.Size(115, 24);
             this.lbFind.TabIndex = 0;
             this.lbFind.Text = "Find:";
             this.lbFind.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -487,9 +511,10 @@
             this.cmbFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbFind.FormattingEnabled = true;
-            this.cmbFind.Location = new System.Drawing.Point(107, 6);
+            this.cmbFind.Location = new System.Drawing.Point(125, 7);
+            this.cmbFind.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbFind.Name = "cmbFind";
-            this.cmbFind.Size = new System.Drawing.Size(251, 21);
+            this.cmbFind.Size = new System.Drawing.Size(292, 23);
             this.cmbFind.TabIndex = 1;
             this.cmbFind.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbFind.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -512,10 +537,11 @@
             this.tabReplace.Controls.Add(this.cmbReplace);
             this.tabReplace.Controls.Add(this.pnLabelHolder02);
             this.tabReplace.Controls.Add(this.cmbFind2);
-            this.tabReplace.Location = new System.Drawing.Point(4, 22);
+            this.tabReplace.Location = new System.Drawing.Point(4, 24);
+            this.tabReplace.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabReplace.Name = "tabReplace";
-            this.tabReplace.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReplace.Size = new System.Drawing.Size(528, 272);
+            this.tabReplace.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabReplace.Size = new System.Drawing.Size(617, 316);
             this.tabReplace.TabIndex = 1;
             this.tabReplace.Text = "Replace";
             this.tabReplace.UseVisualStyleBackColor = true;
@@ -525,20 +551,21 @@
             this.gpInSelection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gpInSelection.Controls.Add(this.cbInSelection2);
             this.gpInSelection.Controls.Add(this.btReplaceAll);
-            this.gpInSelection.Location = new System.Drawing.Point(219, 57);
+            this.gpInSelection.Location = new System.Drawing.Point(255, 66);
             this.gpInSelection.Margin = new System.Windows.Forms.Padding(0);
             this.gpInSelection.Name = "gpInSelection";
             this.gpInSelection.Padding = new System.Windows.Forms.Padding(0);
-            this.gpInSelection.Size = new System.Drawing.Size(306, 34);
+            this.gpInSelection.Size = new System.Drawing.Size(357, 39);
             this.gpInSelection.TabIndex = 27;
             this.gpInSelection.TabStop = false;
             // 
             // cbInSelection2
             // 
             this.cbInSelection2.AutoSize = true;
-            this.cbInSelection2.Location = new System.Drawing.Point(6, 13);
+            this.cbInSelection2.Location = new System.Drawing.Point(7, 15);
+            this.cbInSelection2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbInSelection2.Name = "cbInSelection2";
-            this.cbInSelection2.Size = new System.Drawing.Size(80, 17);
+            this.cbInSelection2.Size = new System.Drawing.Size(86, 19);
             this.cbInSelection2.TabIndex = 24;
             this.cbInSelection2.Text = "In selection";
             this.cbInSelection2.UseVisualStyleBackColor = true;
@@ -547,9 +574,10 @@
             // btReplaceAll
             // 
             this.btReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btReplaceAll.Location = new System.Drawing.Point(144, 10);
+            this.btReplaceAll.Location = new System.Drawing.Point(168, 12);
+            this.btReplaceAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btReplaceAll.Name = "btReplaceAll";
-            this.btReplaceAll.Size = new System.Drawing.Size(156, 21);
+            this.btReplaceAll.Size = new System.Drawing.Size(182, 24);
             this.btReplaceAll.TabIndex = 18;
             this.btReplaceAll.Text = "Replace all";
             this.btReplaceAll.UseVisualStyleBackColor = true;
@@ -561,9 +589,10 @@
             this.cbTransparency2.AutoSize = true;
             this.cbTransparency2.Checked = true;
             this.cbTransparency2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTransparency2.Location = new System.Drawing.Point(332, 174);
+            this.cbTransparency2.Location = new System.Drawing.Point(399, 201);
+            this.cbTransparency2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbTransparency2.Name = "cbTransparency2";
-            this.cbTransparency2.Size = new System.Drawing.Size(91, 17);
+            this.cbTransparency2.Size = new System.Drawing.Size(95, 19);
             this.cbTransparency2.TabIndex = 26;
             this.cbTransparency2.Text = "Transparency";
             this.cbTransparency2.UseVisualStyleBackColor = true;
@@ -575,20 +604,23 @@
             this.gpTransparency2.Controls.Add(this.tbOpacity2);
             this.gpTransparency2.Controls.Add(this.rbTransparencyAlways2);
             this.gpTransparency2.Controls.Add(this.rbTransparencyOnLosingFocus2);
-            this.gpTransparency2.Location = new System.Drawing.Point(338, 175);
+            this.gpTransparency2.Location = new System.Drawing.Point(394, 202);
+            this.gpTransparency2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpTransparency2.Name = "gpTransparency2";
-            this.gpTransparency2.Size = new System.Drawing.Size(181, 91);
+            this.gpTransparency2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.gpTransparency2.Size = new System.Drawing.Size(211, 105);
             this.gpTransparency2.TabIndex = 25;
             this.gpTransparency2.TabStop = false;
             // 
             // tbOpacity2
             // 
             this.tbOpacity2.AutoSize = false;
-            this.tbOpacity2.Location = new System.Drawing.Point(6, 65);
+            this.tbOpacity2.Location = new System.Drawing.Point(7, 75);
+            this.tbOpacity2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tbOpacity2.Maximum = 100;
             this.tbOpacity2.Minimum = 1;
             this.tbOpacity2.Name = "tbOpacity2";
-            this.tbOpacity2.Size = new System.Drawing.Size(169, 17);
+            this.tbOpacity2.Size = new System.Drawing.Size(197, 20);
             this.tbOpacity2.TabIndex = 15;
             this.tbOpacity2.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbOpacity2.Value = 80;
@@ -597,9 +629,10 @@
             // rbTransparencyAlways2
             // 
             this.rbTransparencyAlways2.AutoSize = true;
-            this.rbTransparencyAlways2.Location = new System.Drawing.Point(6, 42);
+            this.rbTransparencyAlways2.Location = new System.Drawing.Point(7, 48);
+            this.rbTransparencyAlways2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyAlways2.Name = "rbTransparencyAlways2";
-            this.rbTransparencyAlways2.Size = new System.Drawing.Size(58, 17);
+            this.rbTransparencyAlways2.Size = new System.Drawing.Size(62, 19);
             this.rbTransparencyAlways2.TabIndex = 1;
             this.rbTransparencyAlways2.Text = "Always";
             this.rbTransparencyAlways2.UseVisualStyleBackColor = true;
@@ -609,9 +642,10 @@
             // 
             this.rbTransparencyOnLosingFocus2.AutoSize = true;
             this.rbTransparencyOnLosingFocus2.Checked = true;
-            this.rbTransparencyOnLosingFocus2.Location = new System.Drawing.Point(6, 19);
+            this.rbTransparencyOnLosingFocus2.Location = new System.Drawing.Point(7, 22);
+            this.rbTransparencyOnLosingFocus2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyOnLosingFocus2.Name = "rbTransparencyOnLosingFocus2";
-            this.rbTransparencyOnLosingFocus2.Size = new System.Drawing.Size(98, 17);
+            this.rbTransparencyOnLosingFocus2.Size = new System.Drawing.Size(108, 19);
             this.rbTransparencyOnLosingFocus2.TabIndex = 0;
             this.rbTransparencyOnLosingFocus2.TabStop = true;
             this.rbTransparencyOnLosingFocus2.Text = "On losing focus";
@@ -625,10 +659,11 @@
             this.gpSearchMode2.Controls.Add(this.rbRegEx2);
             this.gpSearchMode2.Controls.Add(this.rbExtented2);
             this.gpSearchMode2.Controls.Add(this.rbNormal2);
-            this.gpSearchMode2.Location = new System.Drawing.Point(8, 160);
+            this.gpSearchMode2.Location = new System.Drawing.Point(9, 185);
+            this.gpSearchMode2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpSearchMode2.Name = "gpSearchMode2";
-            this.gpSearchMode2.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.gpSearchMode2.Size = new System.Drawing.Size(258, 106);
+            this.gpSearchMode2.Padding = new System.Windows.Forms.Padding(4, 0, 4, 3);
+            this.gpSearchMode2.Size = new System.Drawing.Size(301, 122);
             this.gpSearchMode2.TabIndex = 24;
             this.gpSearchMode2.TabStop = false;
             this.gpSearchMode2.Text = "Search mode";
@@ -636,9 +671,10 @@
             // rbSimpleExtended2
             // 
             this.rbSimpleExtended2.AutoSize = true;
-            this.rbSimpleExtended2.Location = new System.Drawing.Point(6, 85);
+            this.rbSimpleExtended2.Location = new System.Drawing.Point(7, 98);
+            this.rbSimpleExtended2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbSimpleExtended2.Name = "rbSimpleExtended2";
-            this.rbSimpleExtended2.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended2.Size = new System.Drawing.Size(169, 19);
             this.rbSimpleExtended2.TabIndex = 4;
             this.rbSimpleExtended2.Text = "Simple extended (#, %, *, ?)";
             this.rbSimpleExtended2.UseVisualStyleBackColor = true;
@@ -647,9 +683,10 @@
             // rbRegEx2
             // 
             this.rbRegEx2.AutoSize = true;
-            this.rbRegEx2.Location = new System.Drawing.Point(6, 62);
+            this.rbRegEx2.Location = new System.Drawing.Point(7, 72);
+            this.rbRegEx2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbRegEx2.Name = "rbRegEx2";
-            this.rbRegEx2.Size = new System.Drawing.Size(115, 17);
+            this.rbRegEx2.Size = new System.Drawing.Size(124, 19);
             this.rbRegEx2.TabIndex = 2;
             this.rbRegEx2.Text = "Regular expression";
             this.rbRegEx2.UseVisualStyleBackColor = true;
@@ -658,9 +695,10 @@
             // rbExtented2
             // 
             this.rbExtented2.AutoSize = true;
-            this.rbExtented2.Location = new System.Drawing.Point(6, 39);
+            this.rbExtented2.Location = new System.Drawing.Point(7, 45);
+            this.rbExtented2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbExtented2.Name = "rbExtented2";
-            this.rbExtented2.Size = new System.Drawing.Size(154, 17);
+            this.rbExtented2.Size = new System.Drawing.Size(164, 19);
             this.rbExtented2.TabIndex = 1;
             this.rbExtented2.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
             this.rbExtented2.UseVisualStyleBackColor = true;
@@ -670,9 +708,10 @@
             // 
             this.rbNormal2.AutoSize = true;
             this.rbNormal2.Checked = true;
-            this.rbNormal2.Location = new System.Drawing.Point(6, 16);
+            this.rbNormal2.Location = new System.Drawing.Point(7, 18);
+            this.rbNormal2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbNormal2.Name = "rbNormal2";
-            this.rbNormal2.Size = new System.Drawing.Size(58, 17);
+            this.rbNormal2.Size = new System.Drawing.Size(65, 19);
             this.rbNormal2.TabIndex = 0;
             this.rbNormal2.TabStop = true;
             this.rbNormal2.Text = "Normal";
@@ -684,9 +723,10 @@
             this.cbWrapAround2.AutoSize = true;
             this.cbWrapAround2.Checked = true;
             this.cbWrapAround2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbWrapAround2.Location = new System.Drawing.Point(8, 127);
+            this.cbWrapAround2.Location = new System.Drawing.Point(9, 147);
+            this.cbWrapAround2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbWrapAround2.Name = "cbWrapAround2";
-            this.cbWrapAround2.Size = new System.Drawing.Size(88, 17);
+            this.cbWrapAround2.Size = new System.Drawing.Size(95, 19);
             this.cbWrapAround2.TabIndex = 23;
             this.cbWrapAround2.Text = "Wrap around";
             this.cbWrapAround2.UseVisualStyleBackColor = true;
@@ -695,9 +735,10 @@
             // cbMatchCase2
             // 
             this.cbMatchCase2.AutoSize = true;
-            this.cbMatchCase2.Location = new System.Drawing.Point(8, 104);
+            this.cbMatchCase2.Location = new System.Drawing.Point(9, 120);
+            this.cbMatchCase2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchCase2.Name = "cbMatchCase2";
-            this.cbMatchCase2.Size = new System.Drawing.Size(82, 17);
+            this.cbMatchCase2.Size = new System.Drawing.Size(86, 19);
             this.cbMatchCase2.TabIndex = 22;
             this.cbMatchCase2.Text = "Match case";
             this.cbMatchCase2.UseVisualStyleBackColor = true;
@@ -706,9 +747,10 @@
             // cbMatchWholeWord2
             // 
             this.cbMatchWholeWord2.AutoSize = true;
-            this.cbMatchWholeWord2.Location = new System.Drawing.Point(8, 81);
+            this.cbMatchWholeWord2.Location = new System.Drawing.Point(9, 93);
+            this.cbMatchWholeWord2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchWholeWord2.Name = "cbMatchWholeWord2";
-            this.cbMatchWholeWord2.Size = new System.Drawing.Size(135, 17);
+            this.cbMatchWholeWord2.Size = new System.Drawing.Size(151, 19);
             this.cbMatchWholeWord2.TabIndex = 21;
             this.cbMatchWholeWord2.Text = "Match whole word only";
             this.cbMatchWholeWord2.UseVisualStyleBackColor = true;
@@ -717,9 +759,10 @@
             // btClose2
             // 
             this.btClose2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btClose2.Location = new System.Drawing.Point(363, 138);
+            this.btClose2.Location = new System.Drawing.Point(424, 159);
+            this.btClose2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btClose2.Name = "btClose2";
-            this.btClose2.Size = new System.Drawing.Size(156, 21);
+            this.btClose2.Size = new System.Drawing.Size(182, 24);
             this.btClose2.TabIndex = 20;
             this.btClose2.Text = "Close";
             this.btClose2.UseVisualStyleBackColor = true;
@@ -728,9 +771,10 @@
             // btReplaceAllInAll
             // 
             this.btReplaceAllInAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btReplaceAllInAll.Location = new System.Drawing.Point(363, 94);
+            this.btReplaceAllInAll.Location = new System.Drawing.Point(424, 108);
+            this.btReplaceAllInAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btReplaceAllInAll.Name = "btReplaceAllInAll";
-            this.btReplaceAllInAll.Size = new System.Drawing.Size(156, 38);
+            this.btReplaceAllInAll.Size = new System.Drawing.Size(182, 44);
             this.btReplaceAllInAll.TabIndex = 19;
             this.btReplaceAllInAll.Text = "Replace all in all opended documents";
             this.btReplaceAllInAll.UseVisualStyleBackColor = true;
@@ -739,9 +783,10 @@
             // btReplace
             // 
             this.btReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btReplace.Location = new System.Drawing.Point(363, 33);
+            this.btReplace.Location = new System.Drawing.Point(424, 38);
+            this.btReplace.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btReplace.Name = "btReplace";
-            this.btReplace.Size = new System.Drawing.Size(156, 21);
+            this.btReplace.Size = new System.Drawing.Size(182, 24);
             this.btReplace.TabIndex = 17;
             this.btReplace.Text = "Replace";
             this.btReplace.UseVisualStyleBackColor = true;
@@ -750,9 +795,10 @@
             // btFindNext2
             // 
             this.btFindNext2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindNext2.Location = new System.Drawing.Point(444, 6);
+            this.btFindNext2.Location = new System.Drawing.Point(518, 7);
+            this.btFindNext2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btFindNext2.Name = "btFindNext2";
-            this.btFindNext2.Size = new System.Drawing.Size(75, 21);
+            this.btFindNext2.Size = new System.Drawing.Size(88, 24);
             this.btFindNext2.TabIndex = 16;
             this.btFindNext2.Text = "Find >>";
             this.btFindNext2.UseVisualStyleBackColor = true;
@@ -761,9 +807,10 @@
             // btFindPrevious2
             // 
             this.btFindPrevious2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindPrevious2.Location = new System.Drawing.Point(363, 6);
+            this.btFindPrevious2.Location = new System.Drawing.Point(424, 7);
+            this.btFindPrevious2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btFindPrevious2.Name = "btFindPrevious2";
-            this.btFindPrevious2.Size = new System.Drawing.Size(75, 21);
+            this.btFindPrevious2.Size = new System.Drawing.Size(88, 24);
             this.btFindPrevious2.TabIndex = 15;
             this.btFindPrevious2.Text = "<< Find";
             this.btFindPrevious2.UseVisualStyleBackColor = true;
@@ -772,10 +819,10 @@
             // pnLabelHolder03
             // 
             this.pnLabelHolder03.Controls.Add(this.lbReplace);
-            this.pnLabelHolder03.Location = new System.Drawing.Point(5, 33);
+            this.pnLabelHolder03.Location = new System.Drawing.Point(6, 38);
             this.pnLabelHolder03.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder03.Name = "pnLabelHolder03";
-            this.pnLabelHolder03.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder03.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder03.TabIndex = 6;
             // 
             // lbReplace
@@ -783,8 +830,9 @@
             this.lbReplace.AutoEllipsis = true;
             this.lbReplace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbReplace.Location = new System.Drawing.Point(0, 0);
+            this.lbReplace.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbReplace.Name = "lbReplace";
-            this.lbReplace.Size = new System.Drawing.Size(99, 21);
+            this.lbReplace.Size = new System.Drawing.Size(115, 24);
             this.lbReplace.TabIndex = 0;
             this.lbReplace.Text = "Replace:";
             this.lbReplace.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -794,9 +842,10 @@
             this.cmbReplace.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbReplace.FormattingEnabled = true;
-            this.cmbReplace.Location = new System.Drawing.Point(107, 33);
+            this.cmbReplace.Location = new System.Drawing.Point(125, 38);
+            this.cmbReplace.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbReplace.Name = "cmbReplace";
-            this.cmbReplace.Size = new System.Drawing.Size(251, 21);
+            this.cmbReplace.Size = new System.Drawing.Size(292, 23);
             this.cmbReplace.TabIndex = 5;
             this.cmbReplace.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbReplace.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -804,10 +853,10 @@
             // pnLabelHolder02
             // 
             this.pnLabelHolder02.Controls.Add(this.lbFind2);
-            this.pnLabelHolder02.Location = new System.Drawing.Point(5, 6);
+            this.pnLabelHolder02.Location = new System.Drawing.Point(6, 7);
             this.pnLabelHolder02.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder02.Name = "pnLabelHolder02";
-            this.pnLabelHolder02.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder02.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder02.TabIndex = 4;
             // 
             // lbFind2
@@ -815,8 +864,9 @@
             this.lbFind2.AutoEllipsis = true;
             this.lbFind2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbFind2.Location = new System.Drawing.Point(0, 0);
+            this.lbFind2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbFind2.Name = "lbFind2";
-            this.lbFind2.Size = new System.Drawing.Size(99, 21);
+            this.lbFind2.Size = new System.Drawing.Size(115, 24);
             this.lbFind2.TabIndex = 0;
             this.lbFind2.Text = "Find:";
             this.lbFind2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -826,9 +876,10 @@
             this.cmbFind2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbFind2.FormattingEnabled = true;
-            this.cmbFind2.Location = new System.Drawing.Point(107, 6);
+            this.cmbFind2.Location = new System.Drawing.Point(125, 7);
+            this.cmbFind2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbFind2.Name = "cmbFind2";
-            this.cmbFind2.Size = new System.Drawing.Size(251, 21);
+            this.cmbFind2.Size = new System.Drawing.Size(292, 23);
             this.cmbFind2.TabIndex = 3;
             this.cmbFind2.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbFind2.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -855,10 +906,11 @@
             this.tabFindInFiles.Controls.Add(this.cmbReplace3);
             this.tabFindInFiles.Controls.Add(this.pnLabelHolder04);
             this.tabFindInFiles.Controls.Add(this.cmbFind3);
-            this.tabFindInFiles.Location = new System.Drawing.Point(4, 22);
+            this.tabFindInFiles.Location = new System.Drawing.Point(4, 24);
+            this.tabFindInFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabFindInFiles.Name = "tabFindInFiles";
-            this.tabFindInFiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFindInFiles.Size = new System.Drawing.Size(528, 272);
+            this.tabFindInFiles.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabFindInFiles.Size = new System.Drawing.Size(617, 317);
             this.tabFindInFiles.TabIndex = 2;
             this.tabFindInFiles.Text = "Find in files";
             this.tabFindInFiles.UseVisualStyleBackColor = true;
@@ -866,9 +918,10 @@
             // cbInHiddenFiles
             // 
             this.cbInHiddenFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbInHiddenFiles.Location = new System.Drawing.Point(364, 91);
+            this.cbInHiddenFiles.Location = new System.Drawing.Point(425, 105);
+            this.cbInHiddenFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbInHiddenFiles.Name = "cbInHiddenFiles";
-            this.cbInHiddenFiles.Size = new System.Drawing.Size(156, 17);
+            this.cbInHiddenFiles.Size = new System.Drawing.Size(182, 20);
             this.cbInHiddenFiles.TabIndex = 42;
             this.cbInHiddenFiles.Text = "In hidden files";
             this.cbInHiddenFiles.UseVisualStyleBackColor = true;
@@ -877,9 +930,10 @@
             // cbHiddenFolders
             // 
             this.cbHiddenFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbHiddenFolders.Location = new System.Drawing.Point(364, 137);
+            this.cbHiddenFolders.Location = new System.Drawing.Point(425, 158);
+            this.cbHiddenFolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbHiddenFolders.Name = "cbHiddenFolders";
-            this.cbHiddenFolders.Size = new System.Drawing.Size(156, 17);
+            this.cbHiddenFolders.Size = new System.Drawing.Size(182, 20);
             this.cbHiddenFolders.TabIndex = 41;
             this.cbHiddenFolders.Text = "In hidden folders";
             this.cbHiddenFolders.UseVisualStyleBackColor = true;
@@ -888,9 +942,10 @@
             // cbInSubFolders
             // 
             this.cbInSubFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbInSubFolders.Location = new System.Drawing.Point(364, 114);
+            this.cbInSubFolders.Location = new System.Drawing.Point(425, 132);
+            this.cbInSubFolders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbInSubFolders.Name = "cbInSubFolders";
-            this.cbInSubFolders.Size = new System.Drawing.Size(156, 17);
+            this.cbInSubFolders.Size = new System.Drawing.Size(182, 20);
             this.cbInSubFolders.TabIndex = 40;
             this.cbInSubFolders.Text = "In all sub-folders";
             this.cbInSubFolders.UseVisualStyleBackColor = true;
@@ -902,9 +957,10 @@
             this.cbTransparency3.AutoSize = true;
             this.cbTransparency3.Checked = true;
             this.cbTransparency3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTransparency3.Location = new System.Drawing.Point(332, 174);
+            this.cbTransparency3.Location = new System.Drawing.Point(399, 202);
+            this.cbTransparency3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbTransparency3.Name = "cbTransparency3";
-            this.cbTransparency3.Size = new System.Drawing.Size(91, 17);
+            this.cbTransparency3.Size = new System.Drawing.Size(95, 19);
             this.cbTransparency3.TabIndex = 39;
             this.cbTransparency3.Text = "Transparency";
             this.cbTransparency3.UseVisualStyleBackColor = true;
@@ -916,20 +972,23 @@
             this.gpTransparency3.Controls.Add(this.tbOpacity3);
             this.gpTransparency3.Controls.Add(this.rbTransparencyAlways3);
             this.gpTransparency3.Controls.Add(this.rbTransparencyOnLosingFocus3);
-            this.gpTransparency3.Location = new System.Drawing.Point(338, 175);
+            this.gpTransparency3.Location = new System.Drawing.Point(394, 203);
+            this.gpTransparency3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpTransparency3.Name = "gpTransparency3";
-            this.gpTransparency3.Size = new System.Drawing.Size(181, 91);
+            this.gpTransparency3.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.gpTransparency3.Size = new System.Drawing.Size(211, 105);
             this.gpTransparency3.TabIndex = 38;
             this.gpTransparency3.TabStop = false;
             // 
             // tbOpacity3
             // 
             this.tbOpacity3.AutoSize = false;
-            this.tbOpacity3.Location = new System.Drawing.Point(6, 65);
+            this.tbOpacity3.Location = new System.Drawing.Point(7, 75);
+            this.tbOpacity3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tbOpacity3.Maximum = 100;
             this.tbOpacity3.Minimum = 1;
             this.tbOpacity3.Name = "tbOpacity3";
-            this.tbOpacity3.Size = new System.Drawing.Size(169, 17);
+            this.tbOpacity3.Size = new System.Drawing.Size(197, 20);
             this.tbOpacity3.TabIndex = 15;
             this.tbOpacity3.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbOpacity3.Value = 80;
@@ -938,9 +997,10 @@
             // rbTransparencyAlways3
             // 
             this.rbTransparencyAlways3.AutoSize = true;
-            this.rbTransparencyAlways3.Location = new System.Drawing.Point(6, 42);
+            this.rbTransparencyAlways3.Location = new System.Drawing.Point(7, 48);
+            this.rbTransparencyAlways3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyAlways3.Name = "rbTransparencyAlways3";
-            this.rbTransparencyAlways3.Size = new System.Drawing.Size(58, 17);
+            this.rbTransparencyAlways3.Size = new System.Drawing.Size(62, 19);
             this.rbTransparencyAlways3.TabIndex = 1;
             this.rbTransparencyAlways3.Text = "Always";
             this.rbTransparencyAlways3.UseVisualStyleBackColor = true;
@@ -950,9 +1010,10 @@
             // 
             this.rbTransparencyOnLosingFocus3.AutoSize = true;
             this.rbTransparencyOnLosingFocus3.Checked = true;
-            this.rbTransparencyOnLosingFocus3.Location = new System.Drawing.Point(6, 19);
+            this.rbTransparencyOnLosingFocus3.Location = new System.Drawing.Point(7, 22);
+            this.rbTransparencyOnLosingFocus3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyOnLosingFocus3.Name = "rbTransparencyOnLosingFocus3";
-            this.rbTransparencyOnLosingFocus3.Size = new System.Drawing.Size(98, 17);
+            this.rbTransparencyOnLosingFocus3.Size = new System.Drawing.Size(108, 19);
             this.rbTransparencyOnLosingFocus3.TabIndex = 0;
             this.rbTransparencyOnLosingFocus3.TabStop = true;
             this.rbTransparencyOnLosingFocus3.Text = "On losing focus";
@@ -962,9 +1023,10 @@
             // btClose3
             // 
             this.btClose3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btClose3.Location = new System.Drawing.Point(364, 60);
+            this.btClose3.Location = new System.Drawing.Point(425, 69);
+            this.btClose3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btClose3.Name = "btClose3";
-            this.btClose3.Size = new System.Drawing.Size(156, 21);
+            this.btClose3.Size = new System.Drawing.Size(182, 24);
             this.btClose3.TabIndex = 37;
             this.btClose3.Text = "Close";
             this.btClose3.UseVisualStyleBackColor = true;
@@ -973,9 +1035,10 @@
             // btReplaceAllInFiles
             // 
             this.btReplaceAllInFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btReplaceAllInFiles.Location = new System.Drawing.Point(364, 33);
+            this.btReplaceAllInFiles.Location = new System.Drawing.Point(425, 38);
+            this.btReplaceAllInFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btReplaceAllInFiles.Name = "btReplaceAllInFiles";
-            this.btReplaceAllInFiles.Size = new System.Drawing.Size(156, 21);
+            this.btReplaceAllInFiles.Size = new System.Drawing.Size(182, 24);
             this.btReplaceAllInFiles.TabIndex = 36;
             this.btReplaceAllInFiles.Text = "Replace all in files";
             this.btReplaceAllInFiles.UseVisualStyleBackColor = true;
@@ -988,10 +1051,11 @@
             this.gpSearchMode3.Controls.Add(this.rbRegEx3);
             this.gpSearchMode3.Controls.Add(this.rbExtented3);
             this.gpSearchMode3.Controls.Add(this.rbNormal3);
-            this.gpSearchMode3.Location = new System.Drawing.Point(8, 160);
+            this.gpSearchMode3.Location = new System.Drawing.Point(9, 186);
+            this.gpSearchMode3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpSearchMode3.Name = "gpSearchMode3";
-            this.gpSearchMode3.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.gpSearchMode3.Size = new System.Drawing.Size(258, 106);
+            this.gpSearchMode3.Padding = new System.Windows.Forms.Padding(4, 0, 4, 3);
+            this.gpSearchMode3.Size = new System.Drawing.Size(301, 122);
             this.gpSearchMode3.TabIndex = 35;
             this.gpSearchMode3.TabStop = false;
             this.gpSearchMode3.Text = "Search mode";
@@ -999,9 +1063,10 @@
             // rbSimpleExtended3
             // 
             this.rbSimpleExtended3.AutoSize = true;
-            this.rbSimpleExtended3.Location = new System.Drawing.Point(6, 85);
+            this.rbSimpleExtended3.Location = new System.Drawing.Point(7, 98);
+            this.rbSimpleExtended3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbSimpleExtended3.Name = "rbSimpleExtended3";
-            this.rbSimpleExtended3.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended3.Size = new System.Drawing.Size(169, 19);
             this.rbSimpleExtended3.TabIndex = 4;
             this.rbSimpleExtended3.Text = "Simple extended (#, %, *, ?)";
             this.rbSimpleExtended3.UseVisualStyleBackColor = true;
@@ -1010,9 +1075,10 @@
             // rbRegEx3
             // 
             this.rbRegEx3.AutoSize = true;
-            this.rbRegEx3.Location = new System.Drawing.Point(6, 62);
+            this.rbRegEx3.Location = new System.Drawing.Point(7, 72);
+            this.rbRegEx3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbRegEx3.Name = "rbRegEx3";
-            this.rbRegEx3.Size = new System.Drawing.Size(115, 17);
+            this.rbRegEx3.Size = new System.Drawing.Size(124, 19);
             this.rbRegEx3.TabIndex = 2;
             this.rbRegEx3.Text = "Regular expression";
             this.rbRegEx3.UseVisualStyleBackColor = true;
@@ -1021,9 +1087,10 @@
             // rbExtented3
             // 
             this.rbExtented3.AutoSize = true;
-            this.rbExtented3.Location = new System.Drawing.Point(6, 39);
+            this.rbExtented3.Location = new System.Drawing.Point(7, 45);
+            this.rbExtented3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbExtented3.Name = "rbExtented3";
-            this.rbExtented3.Size = new System.Drawing.Size(154, 17);
+            this.rbExtented3.Size = new System.Drawing.Size(164, 19);
             this.rbExtented3.TabIndex = 1;
             this.rbExtented3.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
             this.rbExtented3.UseVisualStyleBackColor = true;
@@ -1033,9 +1100,10 @@
             // 
             this.rbNormal3.AutoSize = true;
             this.rbNormal3.Checked = true;
-            this.rbNormal3.Location = new System.Drawing.Point(6, 16);
+            this.rbNormal3.Location = new System.Drawing.Point(7, 18);
+            this.rbNormal3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbNormal3.Name = "rbNormal3";
-            this.rbNormal3.Size = new System.Drawing.Size(58, 17);
+            this.rbNormal3.Size = new System.Drawing.Size(65, 19);
             this.rbNormal3.TabIndex = 0;
             this.rbNormal3.TabStop = true;
             this.rbNormal3.Text = "Normal";
@@ -1045,9 +1113,10 @@
             // btFindAllInFiles
             // 
             this.btFindAllInFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btFindAllInFiles.Location = new System.Drawing.Point(364, 6);
+            this.btFindAllInFiles.Location = new System.Drawing.Point(425, 7);
+            this.btFindAllInFiles.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btFindAllInFiles.Name = "btFindAllInFiles";
-            this.btFindAllInFiles.Size = new System.Drawing.Size(156, 21);
+            this.btFindAllInFiles.Size = new System.Drawing.Size(182, 24);
             this.btFindAllInFiles.TabIndex = 34;
             this.btFindAllInFiles.Text = "Find all";
             this.btFindAllInFiles.UseVisualStyleBackColor = true;
@@ -1056,9 +1125,10 @@
             // cbMatchCase3
             // 
             this.cbMatchCase3.AutoSize = true;
-            this.cbMatchCase3.Location = new System.Drawing.Point(6, 137);
+            this.cbMatchCase3.Location = new System.Drawing.Point(7, 158);
+            this.cbMatchCase3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchCase3.Name = "cbMatchCase3";
-            this.cbMatchCase3.Size = new System.Drawing.Size(82, 17);
+            this.cbMatchCase3.Size = new System.Drawing.Size(86, 19);
             this.cbMatchCase3.TabIndex = 33;
             this.cbMatchCase3.Text = "Match case";
             this.cbMatchCase3.UseVisualStyleBackColor = true;
@@ -1067,9 +1137,10 @@
             // cbMatchWholeWord3
             // 
             this.cbMatchWholeWord3.AutoSize = true;
-            this.cbMatchWholeWord3.Location = new System.Drawing.Point(6, 114);
+            this.cbMatchWholeWord3.Location = new System.Drawing.Point(7, 132);
+            this.cbMatchWholeWord3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchWholeWord3.Name = "cbMatchWholeWord3";
-            this.cbMatchWholeWord3.Size = new System.Drawing.Size(135, 17);
+            this.cbMatchWholeWord3.Size = new System.Drawing.Size(151, 19);
             this.cbMatchWholeWord3.TabIndex = 32;
             this.cbMatchWholeWord3.Text = "Match whole word only";
             this.cbMatchWholeWord3.UseVisualStyleBackColor = true;
@@ -1078,9 +1149,10 @@
             // btSelectFolder
             // 
             this.btSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btSelectFolder.Location = new System.Drawing.Point(327, 87);
+            this.btSelectFolder.Location = new System.Drawing.Point(382, 100);
+            this.btSelectFolder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btSelectFolder.Name = "btSelectFolder";
-            this.btSelectFolder.Size = new System.Drawing.Size(31, 21);
+            this.btSelectFolder.Size = new System.Drawing.Size(36, 24);
             this.btSelectFolder.TabIndex = 31;
             this.btSelectFolder.Text = "...";
             this.btSelectFolder.UseVisualStyleBackColor = true;
@@ -1089,10 +1161,10 @@
             // pnLabelHolder07
             // 
             this.pnLabelHolder07.Controls.Add(this.lbDirectory3);
-            this.pnLabelHolder07.Location = new System.Drawing.Point(5, 87);
+            this.pnLabelHolder07.Location = new System.Drawing.Point(6, 100);
             this.pnLabelHolder07.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder07.Name = "pnLabelHolder07";
-            this.pnLabelHolder07.Size = new System.Drawing.Size(68, 21);
+            this.pnLabelHolder07.Size = new System.Drawing.Size(79, 24);
             this.pnLabelHolder07.TabIndex = 14;
             // 
             // lbDirectory3
@@ -1100,8 +1172,9 @@
             this.lbDirectory3.AutoEllipsis = true;
             this.lbDirectory3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbDirectory3.Location = new System.Drawing.Point(0, 0);
+            this.lbDirectory3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbDirectory3.Name = "lbDirectory3";
-            this.lbDirectory3.Size = new System.Drawing.Size(68, 21);
+            this.lbDirectory3.Size = new System.Drawing.Size(79, 24);
             this.lbDirectory3.TabIndex = 0;
             this.lbDirectory3.Text = "Directory:";
             this.lbDirectory3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1111,9 +1184,10 @@
             this.cmbDirectory3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbDirectory3.FormattingEnabled = true;
-            this.cmbDirectory3.Location = new System.Drawing.Point(76, 87);
+            this.cmbDirectory3.Location = new System.Drawing.Point(89, 100);
+            this.cmbDirectory3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbDirectory3.Name = "cmbDirectory3";
-            this.cmbDirectory3.Size = new System.Drawing.Size(245, 21);
+            this.cmbDirectory3.Size = new System.Drawing.Size(285, 23);
             this.cmbDirectory3.TabIndex = 13;
             this.cmbDirectory3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbDirectory3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -1121,10 +1195,10 @@
             // pnLabelHolder06
             // 
             this.pnLabelHolder06.Controls.Add(this.lbFilters3);
-            this.pnLabelHolder06.Location = new System.Drawing.Point(5, 60);
+            this.pnLabelHolder06.Location = new System.Drawing.Point(6, 69);
             this.pnLabelHolder06.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder06.Name = "pnLabelHolder06";
-            this.pnLabelHolder06.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder06.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder06.TabIndex = 12;
             // 
             // lbFilters3
@@ -1132,8 +1206,9 @@
             this.lbFilters3.AutoEllipsis = true;
             this.lbFilters3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbFilters3.Location = new System.Drawing.Point(0, 0);
+            this.lbFilters3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbFilters3.Name = "lbFilters3";
-            this.lbFilters3.Size = new System.Drawing.Size(99, 21);
+            this.lbFilters3.Size = new System.Drawing.Size(115, 24);
             this.lbFilters3.TabIndex = 0;
             this.lbFilters3.Text = "Filters:";
             this.lbFilters3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1143,9 +1218,10 @@
             this.cmbFilters3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbFilters3.FormattingEnabled = true;
-            this.cmbFilters3.Location = new System.Drawing.Point(107, 60);
+            this.cmbFilters3.Location = new System.Drawing.Point(125, 69);
+            this.cmbFilters3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbFilters3.Name = "cmbFilters3";
-            this.cmbFilters3.Size = new System.Drawing.Size(251, 21);
+            this.cmbFilters3.Size = new System.Drawing.Size(292, 23);
             this.cmbFilters3.TabIndex = 11;
             this.cmbFilters3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbFilters3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -1153,10 +1229,10 @@
             // pnLabelHolder05
             // 
             this.pnLabelHolder05.Controls.Add(this.lbReplace3);
-            this.pnLabelHolder05.Location = new System.Drawing.Point(5, 33);
+            this.pnLabelHolder05.Location = new System.Drawing.Point(6, 38);
             this.pnLabelHolder05.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder05.Name = "pnLabelHolder05";
-            this.pnLabelHolder05.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder05.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder05.TabIndex = 10;
             // 
             // lbReplace3
@@ -1164,8 +1240,9 @@
             this.lbReplace3.AutoEllipsis = true;
             this.lbReplace3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbReplace3.Location = new System.Drawing.Point(0, 0);
+            this.lbReplace3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbReplace3.Name = "lbReplace3";
-            this.lbReplace3.Size = new System.Drawing.Size(99, 21);
+            this.lbReplace3.Size = new System.Drawing.Size(115, 24);
             this.lbReplace3.TabIndex = 0;
             this.lbReplace3.Text = "Replace:";
             this.lbReplace3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1175,9 +1252,10 @@
             this.cmbReplace3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbReplace3.FormattingEnabled = true;
-            this.cmbReplace3.Location = new System.Drawing.Point(107, 33);
+            this.cmbReplace3.Location = new System.Drawing.Point(125, 38);
+            this.cmbReplace3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbReplace3.Name = "cmbReplace3";
-            this.cmbReplace3.Size = new System.Drawing.Size(251, 21);
+            this.cmbReplace3.Size = new System.Drawing.Size(292, 23);
             this.cmbReplace3.TabIndex = 9;
             this.cmbReplace3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbReplace3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -1185,10 +1263,10 @@
             // pnLabelHolder04
             // 
             this.pnLabelHolder04.Controls.Add(this.lbFind3);
-            this.pnLabelHolder04.Location = new System.Drawing.Point(5, 6);
+            this.pnLabelHolder04.Location = new System.Drawing.Point(6, 7);
             this.pnLabelHolder04.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder04.Name = "pnLabelHolder04";
-            this.pnLabelHolder04.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder04.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder04.TabIndex = 8;
             // 
             // lbFind3
@@ -1196,8 +1274,9 @@
             this.lbFind3.AutoEllipsis = true;
             this.lbFind3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbFind3.Location = new System.Drawing.Point(0, 0);
+            this.lbFind3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbFind3.Name = "lbFind3";
-            this.lbFind3.Size = new System.Drawing.Size(99, 21);
+            this.lbFind3.Size = new System.Drawing.Size(115, 24);
             this.lbFind3.TabIndex = 0;
             this.lbFind3.Text = "Find:";
             this.lbFind3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1207,9 +1286,10 @@
             this.cmbFind3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbFind3.FormattingEnabled = true;
-            this.cmbFind3.Location = new System.Drawing.Point(107, 6);
+            this.cmbFind3.Location = new System.Drawing.Point(125, 7);
+            this.cmbFind3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbFind3.Name = "cmbFind3";
-            this.cmbFind3.Size = new System.Drawing.Size(251, 21);
+            this.cmbFind3.Size = new System.Drawing.Size(292, 23);
             this.cmbFind3.TabIndex = 7;
             this.cmbFind3.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbFind3.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -1230,10 +1310,11 @@
             this.tabMarkMatches.Controls.Add(this.cbClearPreviousMarks4);
             this.tabMarkMatches.Controls.Add(this.pnLabelHolder08);
             this.tabMarkMatches.Controls.Add(this.cmbFind4);
-            this.tabMarkMatches.Location = new System.Drawing.Point(4, 22);
+            this.tabMarkMatches.Location = new System.Drawing.Point(4, 24);
+            this.tabMarkMatches.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabMarkMatches.Name = "tabMarkMatches";
-            this.tabMarkMatches.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMarkMatches.Size = new System.Drawing.Size(528, 272);
+            this.tabMarkMatches.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabMarkMatches.Size = new System.Drawing.Size(617, 317);
             this.tabMarkMatches.TabIndex = 3;
             this.tabMarkMatches.Text = "Mark";
             this.tabMarkMatches.UseVisualStyleBackColor = true;
@@ -1241,10 +1322,10 @@
             // pnLabelHolder09
             // 
             this.pnLabelHolder09.Controls.Add(this.lbMarkColor);
-            this.pnLabelHolder09.Location = new System.Drawing.Point(259, 81);
+            this.pnLabelHolder09.Location = new System.Drawing.Point(302, 93);
             this.pnLabelHolder09.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder09.Name = "pnLabelHolder09";
-            this.pnLabelHolder09.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder09.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder09.TabIndex = 39;
             // 
             // lbMarkColor
@@ -1252,8 +1333,9 @@
             this.lbMarkColor.AutoEllipsis = true;
             this.lbMarkColor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbMarkColor.Location = new System.Drawing.Point(0, 0);
+            this.lbMarkColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbMarkColor.Name = "lbMarkColor";
-            this.lbMarkColor.Size = new System.Drawing.Size(99, 21);
+            this.lbMarkColor.Size = new System.Drawing.Size(115, 24);
             this.lbMarkColor.TabIndex = 0;
             this.lbMarkColor.Text = "Mark color:";
             this.lbMarkColor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1261,9 +1343,10 @@
             // btMarkColor
             // 
             this.btMarkColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkColor.Location = new System.Drawing.Point(364, 81);
+            this.btMarkColor.Location = new System.Drawing.Point(425, 93);
+            this.btMarkColor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btMarkColor.Name = "btMarkColor";
-            this.btMarkColor.Size = new System.Drawing.Size(156, 21);
+            this.btMarkColor.Size = new System.Drawing.Size(182, 24);
             this.btMarkColor.TabIndex = 38;
             this.btMarkColor.UseVisualStyleBackColor = true;
             this.btMarkColor.Click += new System.EventHandler(this.BtMarkColor_Click);
@@ -1271,9 +1354,10 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(366, 148);
+            this.button1.Location = new System.Drawing.Point(427, 171);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(156, 21);
+            this.button1.Size = new System.Drawing.Size(182, 24);
             this.button1.TabIndex = 37;
             this.button1.Text = "Close";
             this.button1.UseVisualStyleBackColor = true;
@@ -1282,9 +1366,10 @@
             // btnClearAllMarks
             // 
             this.btnClearAllMarks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClearAllMarks.Location = new System.Drawing.Point(364, 33);
+            this.btnClearAllMarks.Location = new System.Drawing.Point(425, 38);
+            this.btnClearAllMarks.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnClearAllMarks.Name = "btnClearAllMarks";
-            this.btnClearAllMarks.Size = new System.Drawing.Size(156, 21);
+            this.btnClearAllMarks.Size = new System.Drawing.Size(182, 24);
             this.btnClearAllMarks.TabIndex = 36;
             this.btnClearAllMarks.Text = "Clear all marks";
             this.btnClearAllMarks.UseVisualStyleBackColor = true;
@@ -1293,9 +1378,10 @@
             // btMarkAll
             // 
             this.btMarkAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btMarkAll.Location = new System.Drawing.Point(364, 6);
+            this.btMarkAll.Location = new System.Drawing.Point(425, 7);
+            this.btMarkAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btMarkAll.Name = "btMarkAll";
-            this.btMarkAll.Size = new System.Drawing.Size(156, 21);
+            this.btMarkAll.Size = new System.Drawing.Size(182, 24);
             this.btMarkAll.TabIndex = 35;
             this.btMarkAll.Text = "Mark all";
             this.btMarkAll.UseVisualStyleBackColor = true;
@@ -1304,9 +1390,10 @@
             // cbInSelection4
             // 
             this.cbInSelection4.AutoSize = true;
-            this.cbInSelection4.Location = new System.Drawing.Point(244, 36);
+            this.cbInSelection4.Location = new System.Drawing.Point(285, 42);
+            this.cbInSelection4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbInSelection4.Name = "cbInSelection4";
-            this.cbInSelection4.Size = new System.Drawing.Size(80, 17);
+            this.cbInSelection4.Size = new System.Drawing.Size(86, 19);
             this.cbInSelection4.TabIndex = 25;
             this.cbInSelection4.Text = "In selection";
             this.cbInSelection4.UseVisualStyleBackColor = true;
@@ -1317,9 +1404,10 @@
             this.cbTransparency4.AutoSize = true;
             this.cbTransparency4.Checked = true;
             this.cbTransparency4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTransparency4.Location = new System.Drawing.Point(333, 174);
+            this.cbTransparency4.Location = new System.Drawing.Point(400, 202);
+            this.cbTransparency4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbTransparency4.Name = "cbTransparency4";
-            this.cbTransparency4.Size = new System.Drawing.Size(91, 17);
+            this.cbTransparency4.Size = new System.Drawing.Size(95, 19);
             this.cbTransparency4.TabIndex = 17;
             this.cbTransparency4.Text = "Transparency";
             this.cbTransparency4.UseVisualStyleBackColor = true;
@@ -1331,20 +1419,23 @@
             this.gpTransparency4.Controls.Add(this.tbOpacity4);
             this.gpTransparency4.Controls.Add(this.rbTransparencyAlways4);
             this.gpTransparency4.Controls.Add(this.rbTransparencyOnLosingFocus4);
-            this.gpTransparency4.Location = new System.Drawing.Point(339, 175);
+            this.gpTransparency4.Location = new System.Drawing.Point(396, 203);
+            this.gpTransparency4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpTransparency4.Name = "gpTransparency4";
-            this.gpTransparency4.Size = new System.Drawing.Size(181, 91);
+            this.gpTransparency4.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.gpTransparency4.Size = new System.Drawing.Size(211, 105);
             this.gpTransparency4.TabIndex = 16;
             this.gpTransparency4.TabStop = false;
             // 
             // tbOpacity4
             // 
             this.tbOpacity4.AutoSize = false;
-            this.tbOpacity4.Location = new System.Drawing.Point(6, 65);
+            this.tbOpacity4.Location = new System.Drawing.Point(7, 75);
+            this.tbOpacity4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tbOpacity4.Maximum = 100;
             this.tbOpacity4.Minimum = 1;
             this.tbOpacity4.Name = "tbOpacity4";
-            this.tbOpacity4.Size = new System.Drawing.Size(169, 17);
+            this.tbOpacity4.Size = new System.Drawing.Size(197, 20);
             this.tbOpacity4.TabIndex = 15;
             this.tbOpacity4.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbOpacity4.Value = 80;
@@ -1353,9 +1444,10 @@
             // rbTransparencyAlways4
             // 
             this.rbTransparencyAlways4.AutoSize = true;
-            this.rbTransparencyAlways4.Location = new System.Drawing.Point(6, 42);
+            this.rbTransparencyAlways4.Location = new System.Drawing.Point(7, 48);
+            this.rbTransparencyAlways4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyAlways4.Name = "rbTransparencyAlways4";
-            this.rbTransparencyAlways4.Size = new System.Drawing.Size(58, 17);
+            this.rbTransparencyAlways4.Size = new System.Drawing.Size(62, 19);
             this.rbTransparencyAlways4.TabIndex = 1;
             this.rbTransparencyAlways4.Text = "Always";
             this.rbTransparencyAlways4.UseVisualStyleBackColor = true;
@@ -1365,9 +1457,10 @@
             // 
             this.rbTransparencyOnLosingFocus4.AutoSize = true;
             this.rbTransparencyOnLosingFocus4.Checked = true;
-            this.rbTransparencyOnLosingFocus4.Location = new System.Drawing.Point(6, 19);
+            this.rbTransparencyOnLosingFocus4.Location = new System.Drawing.Point(7, 22);
+            this.rbTransparencyOnLosingFocus4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbTransparencyOnLosingFocus4.Name = "rbTransparencyOnLosingFocus4";
-            this.rbTransparencyOnLosingFocus4.Size = new System.Drawing.Size(98, 17);
+            this.rbTransparencyOnLosingFocus4.Size = new System.Drawing.Size(108, 19);
             this.rbTransparencyOnLosingFocus4.TabIndex = 0;
             this.rbTransparencyOnLosingFocus4.TabStop = true;
             this.rbTransparencyOnLosingFocus4.Text = "On losing focus";
@@ -1381,10 +1474,11 @@
             this.gpSearchMode4.Controls.Add(this.rbRegEx4);
             this.gpSearchMode4.Controls.Add(this.rbExtented4);
             this.gpSearchMode4.Controls.Add(this.rbNormal4);
-            this.gpSearchMode4.Location = new System.Drawing.Point(8, 160);
+            this.gpSearchMode4.Location = new System.Drawing.Point(9, 186);
+            this.gpSearchMode4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gpSearchMode4.Name = "gpSearchMode4";
-            this.gpSearchMode4.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.gpSearchMode4.Size = new System.Drawing.Size(258, 106);
+            this.gpSearchMode4.Padding = new System.Windows.Forms.Padding(4, 0, 4, 3);
+            this.gpSearchMode4.Size = new System.Drawing.Size(301, 122);
             this.gpSearchMode4.TabIndex = 15;
             this.gpSearchMode4.TabStop = false;
             this.gpSearchMode4.Text = "Search mode";
@@ -1392,9 +1486,10 @@
             // rbSimpleExtended4
             // 
             this.rbSimpleExtended4.AutoSize = true;
-            this.rbSimpleExtended4.Location = new System.Drawing.Point(6, 85);
+            this.rbSimpleExtended4.Location = new System.Drawing.Point(7, 98);
+            this.rbSimpleExtended4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbSimpleExtended4.Name = "rbSimpleExtended4";
-            this.rbSimpleExtended4.Size = new System.Drawing.Size(155, 17);
+            this.rbSimpleExtended4.Size = new System.Drawing.Size(169, 19);
             this.rbSimpleExtended4.TabIndex = 3;
             this.rbSimpleExtended4.Text = "Simple extended (#, %, *, ?)";
             this.ttMain.SetToolTip(this.rbSimpleExtended4, "? = one character, * = multiple characters, # = digit, % = single digit");
@@ -1404,9 +1499,10 @@
             // rbRegEx4
             // 
             this.rbRegEx4.AutoSize = true;
-            this.rbRegEx4.Location = new System.Drawing.Point(6, 62);
+            this.rbRegEx4.Location = new System.Drawing.Point(7, 72);
+            this.rbRegEx4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbRegEx4.Name = "rbRegEx4";
-            this.rbRegEx4.Size = new System.Drawing.Size(115, 17);
+            this.rbRegEx4.Size = new System.Drawing.Size(124, 19);
             this.rbRegEx4.TabIndex = 2;
             this.rbRegEx4.Text = "Regular expression";
             this.rbRegEx4.UseVisualStyleBackColor = true;
@@ -1415,9 +1511,10 @@
             // rbExtented4
             // 
             this.rbExtented4.AutoSize = true;
-            this.rbExtented4.Location = new System.Drawing.Point(6, 39);
+            this.rbExtented4.Location = new System.Drawing.Point(7, 45);
+            this.rbExtented4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbExtented4.Name = "rbExtented4";
-            this.rbExtented4.Size = new System.Drawing.Size(154, 17);
+            this.rbExtented4.Size = new System.Drawing.Size(164, 19);
             this.rbExtented4.TabIndex = 1;
             this.rbExtented4.Text = "Extented (\\n, \\r, \\t, \\0.\\x...)";
             this.rbExtented4.UseVisualStyleBackColor = true;
@@ -1427,9 +1524,10 @@
             // 
             this.rbNormal4.AutoSize = true;
             this.rbNormal4.Checked = true;
-            this.rbNormal4.Location = new System.Drawing.Point(6, 16);
+            this.rbNormal4.Location = new System.Drawing.Point(7, 18);
+            this.rbNormal4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.rbNormal4.Name = "rbNormal4";
-            this.rbNormal4.Size = new System.Drawing.Size(58, 17);
+            this.rbNormal4.Size = new System.Drawing.Size(65, 19);
             this.rbNormal4.TabIndex = 0;
             this.rbNormal4.TabStop = true;
             this.rbNormal4.Text = "Normal";
@@ -1439,9 +1537,10 @@
             // cbMatchCase4
             // 
             this.cbMatchCase4.AutoSize = true;
-            this.cbMatchCase4.Location = new System.Drawing.Point(8, 104);
+            this.cbMatchCase4.Location = new System.Drawing.Point(9, 120);
+            this.cbMatchCase4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchCase4.Name = "cbMatchCase4";
-            this.cbMatchCase4.Size = new System.Drawing.Size(82, 17);
+            this.cbMatchCase4.Size = new System.Drawing.Size(86, 19);
             this.cbMatchCase4.TabIndex = 13;
             this.cbMatchCase4.Text = "Match case";
             this.cbMatchCase4.UseVisualStyleBackColor = true;
@@ -1450,9 +1549,10 @@
             // cbMatchWholeWord4
             // 
             this.cbMatchWholeWord4.AutoSize = true;
-            this.cbMatchWholeWord4.Location = new System.Drawing.Point(8, 81);
+            this.cbMatchWholeWord4.Location = new System.Drawing.Point(9, 93);
+            this.cbMatchWholeWord4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbMatchWholeWord4.Name = "cbMatchWholeWord4";
-            this.cbMatchWholeWord4.Size = new System.Drawing.Size(135, 17);
+            this.cbMatchWholeWord4.Size = new System.Drawing.Size(151, 19);
             this.cbMatchWholeWord4.TabIndex = 12;
             this.cbMatchWholeWord4.Text = "Match whole word only";
             this.cbMatchWholeWord4.UseVisualStyleBackColor = true;
@@ -1461,9 +1561,10 @@
             // cbClearPreviousMarks4
             // 
             this.cbClearPreviousMarks4.AutoSize = true;
-            this.cbClearPreviousMarks4.Location = new System.Drawing.Point(8, 58);
+            this.cbClearPreviousMarks4.Location = new System.Drawing.Point(9, 67);
+            this.cbClearPreviousMarks4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cbClearPreviousMarks4.Name = "cbClearPreviousMarks4";
-            this.cbClearPreviousMarks4.Size = new System.Drawing.Size(124, 17);
+            this.cbClearPreviousMarks4.Size = new System.Drawing.Size(136, 19);
             this.cbClearPreviousMarks4.TabIndex = 5;
             this.cbClearPreviousMarks4.Text = "Clear previous marks";
             this.cbClearPreviousMarks4.UseVisualStyleBackColor = true;
@@ -1471,10 +1572,10 @@
             // pnLabelHolder08
             // 
             this.pnLabelHolder08.Controls.Add(this.lbFind4);
-            this.pnLabelHolder08.Location = new System.Drawing.Point(5, 6);
+            this.pnLabelHolder08.Location = new System.Drawing.Point(6, 7);
             this.pnLabelHolder08.Margin = new System.Windows.Forms.Padding(0);
             this.pnLabelHolder08.Name = "pnLabelHolder08";
-            this.pnLabelHolder08.Size = new System.Drawing.Size(99, 21);
+            this.pnLabelHolder08.Size = new System.Drawing.Size(115, 24);
             this.pnLabelHolder08.TabIndex = 4;
             // 
             // lbFind4
@@ -1482,8 +1583,9 @@
             this.lbFind4.AutoEllipsis = true;
             this.lbFind4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbFind4.Location = new System.Drawing.Point(0, 0);
+            this.lbFind4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbFind4.Name = "lbFind4";
-            this.lbFind4.Size = new System.Drawing.Size(99, 21);
+            this.lbFind4.Size = new System.Drawing.Size(115, 24);
             this.lbFind4.TabIndex = 0;
             this.lbFind4.Text = "Find:";
             this.lbFind4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -1493,9 +1595,10 @@
             this.cmbFind4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbFind4.FormattingEnabled = true;
-            this.cmbFind4.Location = new System.Drawing.Point(107, 6);
+            this.cmbFind4.Location = new System.Drawing.Point(125, 7);
+            this.cmbFind4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cmbFind4.Name = "cmbFind4";
-            this.cmbFind4.Size = new System.Drawing.Size(251, 21);
+            this.cmbFind4.Size = new System.Drawing.Size(292, 23);
             this.cmbFind4.TabIndex = 3;
             this.cmbFind4.SelectedValueChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
             this.cmbFind4.TextChanged += new System.EventHandler(this.SearchAndReplaceCondition_Changed);
@@ -1507,14 +1610,15 @@
             // 
             // FormSearchAndReplace
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(536, 320);
+            this.ClientSize = new System.Drawing.Size(625, 369);
             this.Controls.Add(this.tcMain);
             this.Controls.Add(this.ssMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "FormSearchAndReplace";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
