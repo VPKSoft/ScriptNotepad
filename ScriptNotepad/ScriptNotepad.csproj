@@ -373,7 +373,7 @@
     <PackageReference Include="VPKSoft.ConfLib" Version="1.0.4" />
     <PackageReference Include="VPKSoft.ErrorLogger" Version="1.1.0" />
     <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.2" />
-    <PackageReference Include="VPKSoft.LangLib" Version="1.0.7" />
+    <PackageReference Include="VPKSoft.LangLib" Version="1.0.8" />
     <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.8" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.2" />
     <PackageReference Include="VPKSoft.ScintillaNet.AutoComplete.CSharp" Version="1.0.5" />
