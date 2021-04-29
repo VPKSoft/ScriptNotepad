@@ -1,0 +1,48 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: FluentMigrator
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Runner.SqlServerCe
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Extensions.SqlServer
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Runner.Oracle
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Extensions.Postgres
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Runner.Postgres
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Runner.Hana
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Runner.SqlServer
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Runner.Redshift
+    versions:
+    - 3.2.15
+  - dependency-name: FluentMigrator.Runner
+    versions:
+    - 3.2.15
+  - dependency-name: VPKSoft.PosLib
+    versions:
+    - 1.0.2
+  - dependency-name: VPKSoft.ConfLib
+    versions:
+    - 1.0.4
+  - dependency-name: VPKSoft.Utils
+    versions:
+    - 1.0.7
