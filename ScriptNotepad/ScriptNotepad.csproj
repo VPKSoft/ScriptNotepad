@@ -351,14 +351,14 @@
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.9.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.2.0" />
@@ -374,7 +374,7 @@
     <PackageReference Include="VPKSoft.ConfLib" Version="1.0.4" />
     <PackageReference Include="VPKSoft.ErrorLogger" Version="1.1.0" />
     <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.2" />
-    <PackageReference Include="VPKSoft.LangLib" Version="1.0.7" />
+    <PackageReference Include="VPKSoft.LangLib" Version="1.0.8" />
     <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.8" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.2" />
     <PackageReference Include="VPKSoft.ScintillaNet.AutoComplete.CSharp" Version="1.0.5" />
