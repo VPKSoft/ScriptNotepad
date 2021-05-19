@@ -95,6 +95,7 @@ using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase;
 using ScriptNotepad.Editor.Utility;
 using ScriptNotepad.Editor.Utility.ModelHelpers;
+using VPKSoft.DBLocalization;
 using FileSaveHelper = ScriptNotepad.Editor.Utility.ModelHelpers.FileSaveHelper;
 using FileSessionHelper = ScriptNotepad.Editor.EntityHelpers.FileSessionHelper;
 
@@ -214,7 +215,7 @@ namespace ScriptNotepad
 
             // initialize the helper class for the status strip's labels..
             StatusStripTexts.InitLabels(ssLbLineColumn, ssLbLinesColumnSelection, ssLbLDocLinesSize, 
-                ssLbLineEnding, ssLbEncoding, ssLbSessionName, ssLbInsertOverride, sslbZoom);
+                ssLbLineEnding, ssLbEncoding, ssLbSessionName, ssLbInsertOverride, sslbZoom, sslbTabs);
 
             // get the current file session..
             currentSession = FormSettings.Settings.CurrentSessionEntity;
@@ -1464,6 +1465,8 @@ namespace ScriptNotepad
 
             // the percentage mark is also localizable (!)..
             sslbZoomPercentage.Text = (document.ZoomPercentage / 100.0) .ToString("P0", DBLangEngine.UseCulture);
+
+            sslbTabsValue.Text = $@"{sttcMain.CurrentDocumentIndex + 1}/{sttcMain.DocumentsCount}";
         }
 
         private void SetCaretLineColor()
@@ -2897,13 +2900,11 @@ namespace ScriptNotepad
         {
             try
             {
-                var localizePath = Path.Combine(
+                LocalizeRunner.RunLocalizeWindow(Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "ScriptNotepad",
-                    "lang.sqlite");
-                string args = "--localize=\"" + localizePath + "\"";
-
-                Process.Start(Application.ExecutablePath, args);
+                    // ReSharper disable once StringLiteralTypo
+                    "lang.sqlite"));
             }
             catch (Exception ex)
             {

@@ -8,8 +8,8 @@
     <Product>ScriptNotepad</Product>
     <Description>A tabbed notepad software with scripting support (C#).</Description>
     <Copyright>Copyright © VPKSoft 2020</Copyright>
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
-    <FileVersion>1.0.8.0</FileVersion>
+    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <FileVersion>1.0.9.0</FileVersion>
     <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -31,7 +31,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
     <PackageTags>notepad script editor</PackageTags>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
@@ -353,8 +353,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.9.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -383,38 +383,12 @@
     <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.6" />
     <PackageReference Include="VPKSoft.SearchText" Version="1.0.3" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.7" />
-    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.5" />
+    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.6" />
     <PackageReference Include="VPKSoft.XmlSettings" Version="1.0.1" />
     <PackageReference Include="WPFHexaEditor" Version="2.1.6" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Database\Entity\Entities\FileContent.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scintilladiff.suo\1.0.9\contentFiles\any\net40\minus.png" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scintilladiff.suo\1.0.9\contentFiles\any\net40\ok.png" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scintilladiff.suo\1.0.9\contentFiles\any\net40\plus.png" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scintillanetprinting.suo\1.0.1\contentFiles\any\net40\SciLexer.dll" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scintillanetprinting.suo\1.0.1\contentFiles\any\net40\SciLexer.exp" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scintillanetprinting.suo\1.0.1\contentFiles\any\net40\SciLexer.lib" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scintillanetprinting.suo\1.0.1\contentFiles\any\net40\SciLexer.pdb" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scriptnotepadpluginbase.suo\1.0.2\contentFiles\any\net47\OK.png" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scriptnotepadpluginbase.suo\1.0.2\contentFiles\any\net47\SciLexer.dll" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scriptnotepadpluginbase.suo\1.0.2\contentFiles\any\net47\SciLexer.exp" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scriptnotepadpluginbase.suo\1.0.2\contentFiles\any\net47\SciLexer.lib" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\scriptnotepadpluginbase.suo\1.0.2\contentFiles\any\net47\SciLexer.pdb" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\unofficial.scintillanet\3.6.51\contentFiles\any\net40\SciLexer.dll" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\unofficial.scintillanet\3.6.51\contentFiles\any\net40\SciLexer.exp" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\unofficial.scintillanet\3.6.51\contentFiles\any\net40\SciLexer.lib" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\unofficial.scintillanet\3.6.51\contentFiles\any\net40\SciLexer.pdb" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaspellcheck.suo\1.0.3\contentFiles\any\net47\SciLexer.dll" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaspellcheck.suo\1.0.3\contentFiles\any\net47\SciLexer.exp" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaspellcheck.suo\1.0.3\contentFiles\any\net47\SciLexer.lib" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaspellcheck.suo\1.0.3\contentFiles\any\net47\SciLexer.pdb" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaurldetect.suo\1.0.1\contentFiles\any\net47\SciLexer.dll" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaurldetect.suo\1.0.1\contentFiles\any\net47\SciLexer.exp" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaurldetect.suo\1.0.1\contentFiles\any\net47\SciLexer.lib" />
-    <Content Remove="C:\Users\Petteri Kautonen\.nuget\packages\vpksoft.scintillaurldetect.suo\1.0.1\contentFiles\any\net47\SciLexer.pdb" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScriptNotepadOldDatabaseEntity\ScriptNotepadOldDatabaseEntity.csproj" />

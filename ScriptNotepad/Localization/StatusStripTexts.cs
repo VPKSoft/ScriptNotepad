@@ -80,6 +80,12 @@ namespace ScriptNotepad.Localization
         public static ToolStripStatusLabel LabelZoom { get; set; }
 
         /// <summary>
+        /// Gets or sets the tab count label.
+        /// </summary>
+        /// <value>The tab count label.</value>
+        public static ToolStripStatusLabel LabelTab { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the status strip labels have been assigned.
         /// </summary>
         public static bool Initialized
@@ -91,7 +97,8 @@ namespace ScriptNotepad.Localization
                     LabelEncoding != null &&
                     LabelSessionName != null &&
                     LabelModeInsertOverride != null &&
-                    LabelZoom != null;
+                    LabelZoom != null &&
+                    LabelTab != null;
 
             set
             {
@@ -121,7 +128,8 @@ namespace ScriptNotepad.Localization
             ToolStripStatusLabel labelEncoding,
             ToolStripStatusLabel labelSessionName,
             ToolStripStatusLabel labelModeInsertOverride,
-            ToolStripStatusLabel labelZoom)
+            ToolStripStatusLabel labelZoom,
+            ToolStripStatusLabel labelTab)
         {
             LabelLineColumn = labelLineColumn;
             LabelLineColumnSelection = labelLineColumnSelection;
@@ -131,6 +139,7 @@ namespace ScriptNotepad.Localization
             LabelSessionName = labelSessionName;
             LabelModeInsertOverride = labelModeInsertOverride;
             LabelZoom = labelZoom;
+            LabelTab = labelTab;
         }
 
         /// <summary>
@@ -333,6 +342,10 @@ namespace ScriptNotepad.Localization
             LabelZoom.Text =
                 DBLangEngine.GetStatMessage("msgZoomLabel",
                     "Zoom:|A message indicating a text on a label of a following value of zoom percentage");
+
+            LabelTab.Text = 
+                DBLangEngine.GetStatMessage("msgTabLabel",
+                    "Tab:|A message indicating a text on a label of a following value of current tab index and tab page count");
         }
     }
 }

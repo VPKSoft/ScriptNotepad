@@ -78,6 +78,9 @@
             this.ssLbSpace7 = new System.Windows.Forms.ToolStripStatusLabel();
             this.sslbZoom = new System.Windows.Forms.ToolStripStatusLabel();
             this.sslbZoomPercentage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sslbSpace8 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sslbTabs = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sslbTabsValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.sttcMain = new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl();
             this.pnDock = new System.Windows.Forms.Panel();
             this.odAnyFile = new System.Windows.Forms.OpenFileDialog();
@@ -504,7 +507,10 @@
             this.ssLbSessionName,
             this.ssLbSpace7,
             this.sslbZoom,
-            this.sslbZoomPercentage});
+            this.sslbZoomPercentage,
+            this.sslbSpace8,
+            this.sslbTabs,
+            this.sslbTabsValue});
             this.ssMain.Location = new System.Drawing.Point(0, 614);
             this.ssMain.Name = "ssMain";
             this.ssMain.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
@@ -614,6 +620,24 @@
             this.sslbZoomPercentage.Size = new System.Drawing.Size(35, 17);
             this.sslbZoomPercentage.Text = "100%";
             this.sslbZoomPercentage.Click += new System.EventHandler(this.ResetZoom_Click);
+            // 
+            // sslbSpace8
+            // 
+            this.sslbSpace8.AutoSize = false;
+            this.sslbSpace8.Name = "sslbSpace8";
+            this.sslbSpace8.Size = new System.Drawing.Size(30, 17);
+            // 
+            // sslbTabs
+            // 
+            this.sslbTabs.Name = "sslbTabs";
+            this.sslbTabs.Size = new System.Drawing.Size(28, 17);
+            this.sslbTabs.Text = "Tab:";
+            // 
+            // sslbTabsValue
+            // 
+            this.sslbTabsValue.Name = "sslbTabsValue";
+            this.sslbTabsValue.Size = new System.Drawing.Size(24, 17);
+            this.sslbTabsValue.Text = "0/0";
             // 
             // sttcMain
             // 
@@ -1987,6 +2011,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuSortAscending;
         private System.Windows.Forms.ToolStripMenuItem mnuSortDescending;
         private System.Windows.Forms.ToolStripMenuItem mnuCustomizedSort;
+        private System.Windows.Forms.ToolStripStatusLabel sslbSpace8;
+        private System.Windows.Forms.ToolStripStatusLabel sslbTabs;
+        private System.Windows.Forms.ToolStripStatusLabel sslbTabsValue;
     }
 }
 

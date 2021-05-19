@@ -933,4 +933,7 @@
   <data name="msgProgrammingJson" xml:space="preserve">
     <value>Json (JavaScript Object Notation)|A programming, markup, setting, script or other file and/or language/text</value>
   </data>
+  <data name="msgTabLabel" xml:space="preserve">
+    <value>Tab:|A message indicating a text on a label of a following value of current tab index and tab page count</value>
+  </data>
 </root>
