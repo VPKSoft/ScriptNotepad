@@ -175,7 +175,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         {
             tbCompilerResults.Text = string.Empty; // clear the previous results..
 
-            CsCodeDomScriptRunnerParent scriptRunnerParent;
+            IScriptRunner scriptRunnerParent;
             if (SelectedScriptType == 0)
             {
                 scriptRunnerParent = scriptRunnerText;
@@ -195,12 +195,16 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             // set the script code from the Scintilla document contents..
             scriptRunnerParent.ScriptCode = scintillaScript.Text;
 
-            if (scriptRunnerParent.CompilerResults?.Output != null)
+            if (scriptRunnerParent.CompileFailed)
             {
                 // loop through the compilation results..
-                foreach (var compilerResult in scriptRunnerParent.CompilerResults.Output)
+                tbCompilerResults.Text += scriptRunnerParent.CompileException?.Message + Environment.NewLine;
+
+                Exception exception;
+
+                while ((exception = scriptRunnerParent.CompileException?.InnerException) != null)
                 {
-                    tbCompilerResults.Text += compilerResult + Environment.NewLine;
+                    tbCompilerResults.Text += exception.Message + Environment.NewLine;
                 }
             }
 
@@ -317,7 +321,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         }
 
         // a user wants to run the script against the active Scintilla document on the main form..
-        private void tsbRunScript_Click(object sender, EventArgs e)
+        private async void tsbRunScript_Click(object sender, EventArgs e)
         {
             // no need to continue if the script compilation failed..
             if (!Compile())
@@ -339,13 +343,13 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 if (SelectedScriptType == 0)
                 {
                     // a reference to a Scintilla document was gotten so do run the code..
-                    args.Scintilla.Text = scriptRunnerText.ExecuteText(args.Scintilla.Text);
+                    args.Scintilla.Text = await scriptRunnerText.ExecuteText(args.Scintilla.Text);
                 }
                 // a line contents manipulation script was requested..
                 else if (SelectedScriptType == 1)
                 {
                     // a reference to a Scintilla document was gotten so do run the code..
-                    args.Scintilla.Text = scriptRunnerLines.ExecuteLines(ScintillaLines.GetLinesAsList(args.Scintilla));
+                    args.Scintilla.Text = (await scriptRunnerLines.ExecuteScript(ScintillaLines.GetLinesAsList(args.Scintilla)))?.ToString();
                 }
             }
         }

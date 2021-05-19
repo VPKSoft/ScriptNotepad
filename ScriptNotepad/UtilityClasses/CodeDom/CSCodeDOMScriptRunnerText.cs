@@ -25,6 +25,7 @@ SOFTWARE.
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using VPKSoft.ErrorLogger;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
@@ -32,13 +33,13 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
     /// <summary>
     /// A class to run C# script snippets against the contents of a Scintilla document as text.
     /// </summary>
-    /// <seealso cref="CsCodeDomScriptRunnerParent" />
-    public class CsCodeDomScriptRunnerText: CsCodeDomScriptRunnerParent
+    /// <seealso cref="RoslynScriptRunner" />
+    public class CsCodeDomScriptRunnerText: IScriptRunner
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CsCodeDomScriptRunnerText"/> class.
         /// </summary>
-        public CsCodeDomScriptRunnerText()
+        public CsCodeDomScriptRunnerText() 
         {
             CSharpScriptBase =
             string.Join(Environment.NewLine,
@@ -63,10 +64,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 "    }",
                 "}");
 
-             _ScriptCode = CSharpScriptBase;
-
-            // pre-compile the script's contents..
-            PreCompile();
+             ScriptCode = CSharpScriptBase;
         }
 
         /// <summary>
@@ -75,20 +73,75 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// </summary>
         /// <param name="fileContents">The file contents to run the C# script against.</param>
         /// <returns>A string containing the result as a string of the given manipulated string if the operation was successful; otherwise null.</returns>
-        public string ExecuteText(string fileContents)
+        public async Task<string> ExecuteText(string fileContents)
         {
             try
             {
+                CompileException = null;
+
+                ScriptRunner = new RoslynScriptRunner(new RoslynGlobals<string> {DataVariable = fileContents});
+
+                await ScriptRunner.ExecuteAsync(ScriptCode);
+
                 // try to run the C# script against the given file contents..
-                object result = CompilerResults.CompiledAssembly.GetType("ManipulateText").GetMethod("Evaluate")
-                    ?.Invoke(null, new object[] {fileContents});
+                object result = await ScriptRunner.ExecuteAsync("ManipulateText.Evaluate(DataVariable)");
+                    
+                if (result is Exception exception)
+                {
+                    throw exception; 
+                }
+
+                CompileFailed = false;
+
                 return result as string; // indicate a success..
             }
             catch (Exception ex)
             {
+                CompileException = ScriptRunner?.PreviousCompileException;
+                CompileFailed = true;
                 ExceptionLogger.LogError(ex);
                 return fileContents; // fail..
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the C# script runner.
+        /// </summary>
+        /// <value>The C# script runner.</value>
+        public RoslynScriptRunner ScriptRunner { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base "skeleton" C# code snippet for manipulating text.
+        /// </summary>
+        /// <value>The base "skeleton" C# code snippet for manipulating text.</value>
+        public string CSharpScriptBase { get; set; }
+
+        /// <summary>
+        /// Gets or sets the C# script code.
+        /// </summary>
+        /// <value>The C# script code.</value>
+        public string ScriptCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the script compile failed.
+        /// </summary>
+        /// <value><c>true</c> if the script compile failed; otherwise, <c>false</c>.</value>
+        public bool CompileFailed { get; set; }
+
+        /// <summary>
+        /// Gets the previous compile exception.
+        /// </summary>
+        /// <value>The previous compile exception.</value>
+        public Exception CompileException { get; set; }
+
+        /// <summary>
+        /// Executes the script.
+        /// </summary>
+        /// <param name="text">The text in some format.</param>
+        /// <returns>The object containing the manipulated text if the operation was successful.</returns>
+        public async Task<object> ExecuteScript(object text)
+        {
+            return await ExecuteText((string)text);
         }
     }
 }
