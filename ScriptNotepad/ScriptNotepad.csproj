@@ -367,7 +367,7 @@
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.6" />
     <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.5" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.114.2" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.2" />
     <PackageReference Include="unofficial.ScintillaNET" Version="3.8.7" />
     <PackageReference Include="UTF.Unknown" Version="2.3.0" />
     <PackageReference Include="VoikkoSharp" Version="1.0.3" />
