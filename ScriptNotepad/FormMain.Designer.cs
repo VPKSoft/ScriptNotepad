@@ -201,6 +201,8 @@
             this.mnuCustomizedSort = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRemoveDuplicateLines = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuJsonPrettify = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNavigation = new System.Windows.Forms.ToolStripMenuItem();
@@ -214,6 +216,7 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
+            this.mnuJsonUglify = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -1636,7 +1639,10 @@
             this.toolStripMenuItem9,
             this.mnuSortLines,
             this.mnuRemoveDuplicateLines,
-            this.mnuWrapDocumentTo});
+            this.mnuWrapDocumentTo,
+            this.toolStripSeparator8,
+            this.mnuJsonPrettify,
+            this.mnuJsonUglify});
             this.mnuText.Name = "mnuText";
             this.mnuText.Size = new System.Drawing.Size(40, 20);
             this.mnuText.Text = "Text";
@@ -1702,6 +1708,18 @@
             this.mnuWrapDocumentTo.Size = new System.Drawing.Size(205, 22);
             this.mnuWrapDocumentTo.Text = "Wrap document to...";
             this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(202, 6);
+            // 
+            // mnuJsonPrettify
+            // 
+            this.mnuJsonPrettify.Name = "mnuJsonPrettify";
+            this.mnuJsonPrettify.Size = new System.Drawing.Size(205, 22);
+            this.mnuJsonPrettify.Text = "Prettify Json";
+            this.mnuJsonPrettify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
             // 
             // mnuWindow
             // 
@@ -1800,6 +1818,13 @@
             // pdPrint
             // 
             this.pdPrint.UseEXDialog = true;
+            // 
+            // mnuJsonUglify
+            // 
+            this.mnuJsonUglify.Name = "mnuJsonUglify";
+            this.mnuJsonUglify.Size = new System.Drawing.Size(205, 22);
+            this.mnuJsonUglify.Text = "Json to one line";
+            this.mnuJsonUglify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
             // 
             // FormMain
             // 
@@ -2016,6 +2041,9 @@
         private System.Windows.Forms.ToolStripStatusLabel sslbSpace8;
         private System.Windows.Forms.ToolStripStatusLabel sslbTabs;
         private System.Windows.Forms.ToolStripStatusLabel sslbTabsValue;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripMenuItem mnuJsonPrettify;
+        private System.Windows.Forms.ToolStripMenuItem mnuJsonUglify;
     }
 }
 

@@ -8,8 +8,8 @@
     <Product>ScriptNotepad</Product>
     <Description>A tabbed notepad software with scripting support (C#).</Description>
     <Copyright>Copyright © VPKSoft 2020</Copyright>
-    <AssemblyVersion>1.0.9.0</AssemblyVersion>
-    <FileVersion>1.0.9.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
     <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -31,7 +31,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
     <PackageTags>notepad script editor</PackageTags>
-    <Version>1.0.9</Version>
+    <Version>1.1.0</Version>
     <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
@@ -366,8 +366,8 @@
     <PackageReference Include="ScintillaDiff.SUO" Version="1.1.1" />
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.6" />
     <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.5" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.7" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.114.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.2" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
     <PackageReference Include="unofficial.ScintillaNET" Version="3.8.7" />
     <PackageReference Include="UTF.Unknown" Version="2.3.0" />

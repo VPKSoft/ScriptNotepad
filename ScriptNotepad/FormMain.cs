@@ -3935,5 +3935,18 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
+
+        private void mnuJsonPrettify_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                if (document.Tag != null)
+                {
+                    document.Scintilla.Text = sender.Equals(mnuJsonPrettify)
+                        ? document.Scintilla.Text.JsonPrettify()
+                        : document.Scintilla.Text.JsonUglify();
+                }
+            });
+        }
     }
 }
