@@ -658,12 +658,14 @@
             this.sttcMain.RightButtonTabActivation = true;
             this.sttcMain.RightButtonTabDragging = false;
             this.sttcMain.SavedImage = ((System.Drawing.Image)(resources.GetObject("sttcMain.SavedImage")));
+            this.sttcMain.SeamlessScroll = true;
             this.sttcMain.Size = new System.Drawing.Size(1092, 582);
             this.sttcMain.SuspendTextChangedEvents = false;
             this.sttcMain.TabIndex = 4;
             this.sttcMain.TabWidth = 4;
             this.sttcMain.UseBraceHighlight = false;
             this.sttcMain.UseCodeIndenting = false;
+            this.sttcMain.WheelScroll = VPKSoft.ScintillaTabbedTextControl.WheelScrollButtons.Control;
             this.sttcMain.ZoomPercentageAll = 100;
             this.sttcMain.ZoomSynchronization = false;
             this.sttcMain.TabActivated += new VPKSoft.ScintillaTabbedTextControl.ScintillaTabbedTextControl.OnTabActivated(this.sttcMain_TabActivated);

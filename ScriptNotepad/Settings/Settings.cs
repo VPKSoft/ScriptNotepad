@@ -14,6 +14,7 @@ using VPKSoft.Utils.XmlSettingsMisc;
 using ScriptNotepad.Database.Entity.Entities;
 using VPKSoft.LangLib;
 using ScriptNotepad.Database.Entity.Context;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using TabDrawMode = ScintillaNET.TabDrawMode;
 
 namespace ScriptNotepad.Settings
@@ -835,7 +836,16 @@ namespace ScriptNotepad.Settings
             string[] encodings = encodingList.Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries);
             foreach (var encoding in encodings)
             {
-                var enc = Encoding.GetEncoding(encoding.Split(';')[0]);
+                Encoding enc;
+                try
+                {
+                    enc = Encoding.GetEncoding(encoding.Split(';')[0]);
+                }
+                catch (Exception ex)
+                {
+                    ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                    continue;
+                }
 
                 // UTF7..
                 if (enc.CodePage == 65000)

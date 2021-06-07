@@ -304,6 +304,11 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
                 for (int i = 0; i < EncodingComboBox.Items.Count; i++)
                 {
                     var item = (CharacterSetComboItem)EncodingComboBox.Items[i];
+                    if (!item.ContainsEncoding)
+                    {
+                        continue;
+                    }
+
                     if (item.Encoding.CodePage == encoding.CodePage)
                     {
                         EncodingComboBox.SelectedIndex = i;

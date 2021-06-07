@@ -135,6 +135,9 @@ namespace ScriptNotepad
                 return; // After localization don't do anything more..
             }
 
+            // register the code page encodings..
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             // this is required..
             FileSessionHelper.ApplicationDataDirectory = Path.Combine(DBLangEngine.DataDir, "Cache");
             if (!Directory.Exists(FileSessionHelper.ApplicationDataDirectory))

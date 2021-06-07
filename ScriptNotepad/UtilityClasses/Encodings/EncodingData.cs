@@ -24,15 +24,17 @@ SOFTWARE.
 */
 #endregion
 
+using System;
 using System.Reflection;
 using System.Text;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.UtilityClasses.Encodings
 {
     /// <summary>
     /// A class to get <see cref="Encoding"/> data as a string format and vice versa.
     /// </summary>
-    public class EncodingData
+    public class EncodingData: ErrorHandlingBase
     {
         /// <summary>
         /// Converts to given encoding to a semicolon-delimited string containing the web name, code page, byte order mark,
@@ -154,13 +156,23 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                 {
                     return Encoding.GetEncoding(webName);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return CodePagesEncodingProvider.Instance.GetEncoding(webName);
+                    ExceptionLogAction?.Invoke(ex);
+                    try
+                    {
+                        return CodePagesEncodingProvider.Instance.GetEncoding(webName);
+                    }
+                    catch (Exception exInner)
+                    {
+                        ExceptionLogAction?.Invoke(exInner);
+                        return Encoding.Default;
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                ExceptionLogAction?.Invoke(ex);
                 return Encoding.Default;
             }
         }

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
 {
@@ -230,7 +231,7 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
     /// <summary>
     /// A class which categorizes the .NET character encodings under different localizable name-category pairs.
     /// </summary>
-    public class EncodingCharacterSet
+    public class EncodingCharacterSet: ErrorHandlingBase
     {
         /// <summary>
         /// An internal list of character sets and their encodings.
@@ -444,19 +445,24 @@ namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets
                     {
                         try
                         {
-                            result.Add(Encoding.GetEncoding(encodingNum));
+                            var encoding = Encoding.GetEncoding(encodingNum);
+                            result.Add(encoding);
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            ExceptionLogAction?.Invoke(ex);
                             try
                             {
                                 var encoding = CodePagesEncodingProvider.Instance.GetEncoding(encodingNum);
-                                result.Add(encoding);
 
+                                if (encoding != null)
+                                {
+                                    result.Add(encoding);
+                                }
                             }
-                            catch
+                            catch (Exception exInner)
                             {
-                                // ignored..
+                                ExceptionLogAction?.Invoke(exInner);
                             }
                         }
                     }

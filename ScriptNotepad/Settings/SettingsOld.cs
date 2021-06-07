@@ -181,7 +181,14 @@ namespace ScriptNotepad.Settings
                 // set the default encoding value..
 #pragma warning disable 618
 // the deprecated property is still in for backwards compatibility - so disable the warning..
-                DefaultEncoding = Encoding.GetEncoding(conflib[settingAttribute.SettingName, DefaultEncoding.WebName]);
+                try
+                {
+                    DefaultEncoding = Encoding.GetEncoding(conflib[settingAttribute.SettingName, DefaultEncoding.WebName]);
+                }
+                catch
+                {
+                    DefaultEncoding = Encoding.Default;
+                }
 #pragma warning restore 618
 
                 // get all public instance properties of this class..
@@ -1039,7 +1046,16 @@ namespace ScriptNotepad.Settings
             string[] encodings = encodingList.Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries);
             foreach (var encoding in encodings)
             {
-                var enc = Encoding.GetEncoding(encoding.Split(';')[0]);
+                Encoding enc;
+
+                try
+                {
+                    enc = Encoding.GetEncoding(encoding.Split(';')[0]);
+                }
+                catch
+                {
+                    continue;
+                }
 
                 // UTF7..
                 if (enc.CodePage == 65000)
