@@ -53,6 +53,7 @@ namespace ScriptNotepad.Editor.EntityHelpers
         /// Gets the encoding of the recent file.
         /// </summary>
         /// <param name="recentFile">The <see cref="RecentFile"/> instance.</param>
+        /// <param name="value">The encoding to set for the recent file.</param>
         public static void SetEncoding(this RecentFile recentFile, Encoding value)
         {
             recentFile.EncodingAsString = EncodingData.EncodingToString(value);
@@ -62,6 +63,7 @@ namespace ScriptNotepad.Editor.EntityHelpers
         /// Gets a value indicating whether a snapshot of the file in question exists in the database.
         /// </summary>
         /// <param name="recentFile">The <see cref="RecentFile"/> instance.</param>
+        /// <param name="fileSaves">The <see cref="FileSave"/> entities to compare the specified <see cref="RecentFile"/> to.</param>
         public static bool ExistsInDatabase(this RecentFile recentFile, DbSet<FileSave> fileSaves)
         {
             return fileSaves.Count(f => f.FileNameFull == recentFile.FileNameFull && f.Session.SessionName == recentFile.Session.SessionName && f.IsHistory) > 0;

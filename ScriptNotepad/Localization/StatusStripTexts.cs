@@ -120,6 +120,7 @@ namespace ScriptNotepad.Localization
         /// <param name="labelSessionName">The status label for a session name text.</param>
         /// <param name="labelModeInsertOverride">The status label indicating whether a document editor is in insert or in override mode text.</param>
         /// <param name="labelZoom">A status label indicating the zoom value.</param>
+        /// <param name="labelTab">The status label indicating the selected tab page in the view.</param>
         public static void InitLabels(
             ToolStripStatusLabel labelLineColumn,
             ToolStripStatusLabel labelLineColumnSelection,

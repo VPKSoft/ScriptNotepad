@@ -70,7 +70,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the <see cref="Session"/> this miscellaneous text data belongs to.
         /// </summary>
         [ForeignKey(nameof(SessionId))]
-        public virtual FileSession Session { get; set; } = new();
+        public virtual FileSession? Session { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

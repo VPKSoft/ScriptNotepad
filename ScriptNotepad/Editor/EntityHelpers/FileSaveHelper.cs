@@ -88,6 +88,7 @@ namespace ScriptNotepad.Editor.EntityHelpers
         {
             if (fileSave.TemporaryFileSaveName == null && fileSave.UseFileSystemOnContents == true)
             {
+                fileSave.Session ??= new FileSession();
                 fileSave.Session.SetRandomPath();
                 fileSave.TemporaryFileSaveName = Path.Combine(fileSave.Session.TemporaryFilePath ?? string.Empty,
                     Path.GetRandomFileName());

@@ -30,21 +30,19 @@ using FluentMigrator;
 namespace ScriptNotepad.Database.Entity.Migrations
 {
     /// <summary>
-    /// Add a FoldSave column to the FileSave table.
+    /// Fixes the empty session bug from the database.
     /// Implements the <see cref="FluentMigrator.Migration" />
     /// </summary>
     /// <seealso cref="FluentMigrator.Migration" />
-    [Migration(2021_0325_17_17_49)]    
-    public class FoldSave: Migration
+    [Migration(2021_0609_21_15_38)]    
+    public class FixEmptySession : Migration
     {
         /// <summary>
         /// Collect the UP migration expressions
         /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
         public override void Up()
         {
-            this.Alter.Table("FileSaves")
-                .AddColumn("FoldSave").AsString().WithDefaultValue(string.Empty);
+            Execute.Sql("DELETE FROM FileSessions WHERE SessionName IS NULL");
         }
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace ScriptNotepad.Database.Entity.Migrations
         /// <exception cref="NotImplementedException"></exception>
         public override void Down()
         {
-            Delete.Column("FoldSave").FromTable("FileSaves");
+            // nothing to do here..
         }
     }
 }

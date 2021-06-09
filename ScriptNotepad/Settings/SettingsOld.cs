@@ -68,7 +68,10 @@ namespace ScriptNotepad.Settings
             settingsNew.BraceHighlightForegroundColor = BraceHighlightForegroundColor;
             settingsNew.BraceHighlightBackgroundColor = BraceHighlightBackgroundColor;
             settingsNew.BraceBadHighlightForegroundColor = BraceBadHighlightForegroundColor;
+#pragma warning disable 618
+            // this is for backwards compatibility..
             settingsNew.DefaultEncoding = DefaultEncoding;
+#pragma warning restore 618
             settingsNew.LocalizeThread = LocalizeThread;
             settingsNew.AutoDetectEncoding = AutoDetectEncoding;
             settingsNew.DetectNoBom = DetectNoBom;
@@ -1060,7 +1063,12 @@ namespace ScriptNotepad.Settings
                 // UTF7..
                 if (enc.CodePage == 65000)
                 {
+#pragma warning disable 618
+#pragma warning disable SYSLIB0001 // Type or member is obsolete
+                    // the UTF7 encoding is required to access legacy files..
                     enc = new UTF7Encoding(bool.Parse(encoding.Split(';')[1]));
+#pragma warning restore SYSLIB0001 // Type or member is obsolete
+#pragma warning restore 618
                 }
 
                 // UTF8..

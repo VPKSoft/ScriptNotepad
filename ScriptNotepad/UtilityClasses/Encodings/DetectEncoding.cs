@@ -262,7 +262,12 @@ namespace ScriptNotepad.UtilityClasses.Encodings
                 ByteMatch(bytes, Utf7Bom2) ||
                 ByteMatch(bytes, Utf7Bom1))
             {
+#pragma warning disable 618
+#pragma warning disable SYSLIB0001 // Type or member is obsolete
+                // the UTF7 encoding is required to access legacy files..
                 return new UTF7Encoding(false);
+#pragma warning restore SYSLIB0001 // Type or member is obsolete
+#pragma warning restore 618
             }
 
             if (ByteMatch(bytes, Utf8Bom))

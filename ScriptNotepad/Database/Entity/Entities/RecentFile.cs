@@ -74,7 +74,7 @@ namespace ScriptNotepad.Database.Entity.Entities
         /// Gets or sets the session the recent file belongs to.
         /// </summary>
         [ForeignKey(nameof(SessionId))]
-        public virtual FileSession Session { get; set; } = new();
+        public virtual FileSession? Session { get; set; }
 
         /// <summary>
         /// Gets or sets a string representing the encoding of the file save.

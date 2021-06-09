@@ -850,7 +850,12 @@ namespace ScriptNotepad.Settings
                 // UTF7..
                 if (enc.CodePage == 65000)
                 {
+#pragma warning disable 618
+#pragma warning disable SYSLIB0001 // Type or member is obsolete
+                    // the UTF7 encoding is required to access legacy files..
                     enc = new UTF7Encoding(bool.Parse(encoding.Split(';')[1]));
+#pragma warning restore SYSLIB0001 // Type or member is obsolete
+#pragma warning restore 618
                 }
 
                 // UTF8..
