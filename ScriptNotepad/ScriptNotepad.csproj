@@ -351,9 +351,11 @@
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.7" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.9.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -378,7 +380,7 @@
     <PackageReference Include="VPKSoft.LangLib" Version="1.0.8" />
     <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.8" />
     <PackageReference Include="VPKSoft.PosLib" Version="1.0.2" />
-    <PackageReference Include="VPKSoft.ScintillaNet.AutoComplete.CSharp" Version="1.0.5" />
+    <PackageReference Include="VPKSoft.ScintillaNet.AutoComplete.CSharp" Version="1.0.6" />
     <PackageReference Include="VPKSoft.ScintillaSpellCheck.SUO" Version="1.0.7" />
     <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.SUO" Version="1.1.4" />
     <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.6" />
