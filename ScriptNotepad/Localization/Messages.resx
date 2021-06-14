@@ -936,4 +936,10 @@
   <data name="msgTabLabel" xml:space="preserve">
     <value>Tab:|A message indicating a text on a label of a following value of current tab index and tab page count</value>
   </data>
+  <data name="msgUtilTextJsonToOneLine" xml:space="preserve">
+    <value>Json to one line|A message indicating a function to human-readable Json to one line.</value>
+  </data>
+  <data name="msgUtilTextPrettifyJson" xml:space="preserve">
+    <value>Prettify Json|A message indicating a function to format Json as human-readable.</value>
+  </data>
 </root>

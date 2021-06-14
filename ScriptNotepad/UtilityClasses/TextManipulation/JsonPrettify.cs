@@ -24,13 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using ScintillaNET;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
+using ScriptNotepad.UtilityClasses.TextManipulation.Json;
 
 namespace ScriptNotepad.UtilityClasses.TextManipulation
 {
@@ -39,6 +33,10 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
     /// </summary>
     public static class JsonUtils
     {
+        private static readonly JsonMultilineConvert JsonMultilineConvert = new();
+
+        private static readonly JsonSingleLineConvert JsonSingleLineConvert = new();
+
         /// <summary>
         /// Prettifies a specified Json text.
         /// </summary>
@@ -46,17 +44,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
         /// <returns>Intended Json text.</returns>
         public static string JsonPrettify(this string value)
         {
-            try
-            {
-                var result = JToken.Parse(value).ToString();
-
-                return result; 
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value; 
-            }
+            return JsonMultilineConvert.Manipulate(value);
         }
 
         /// <summary>
@@ -66,17 +54,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
         /// <returns>System.String.</returns>
         public static string JsonUglify(this string value)
         {
-            try
-            {
-                var result = JToken.Parse(value).ToString(Formatting.None);
-
-                return result; 
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value; 
-            }
+            return JsonSingleLineConvert.Manipulate(value);
         }
     }
 }

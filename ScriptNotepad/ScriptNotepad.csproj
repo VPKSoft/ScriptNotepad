@@ -7,7 +7,7 @@
     <Company>VPKSoft</Company>
     <Product>ScriptNotepad</Product>
     <Description>A tabbed notepad software with scripting support (C#).</Description>
-    <Copyright>Copyright © VPKSoft 2020</Copyright>
+    <Copyright>Copyright © VPKSoft 2021</Copyright>
     <AssemblyVersion>1.1.1.0</AssemblyVersion>
     <FileVersion>1.1.1.0</FileVersion>
     <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
@@ -392,6 +392,7 @@
     <Compile Remove="Database\Entity\Entities\FileContent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj" />
     <ProjectReference Include="..\ScriptNotepadOldDatabaseEntity\ScriptNotepadOldDatabaseEntity.csproj" />
   </ItemGroup>
   <ItemGroup>

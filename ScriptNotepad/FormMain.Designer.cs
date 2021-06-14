@@ -203,6 +203,7 @@
             this.mnuWrapDocumentTo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuJsonPrettify = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuJsonUglify = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNavigation = new System.Windows.Forms.ToolStripMenuItem();
@@ -216,7 +217,7 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
-            this.mnuJsonUglify = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRunScriptOrCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -1014,6 +1015,7 @@
             this.mnuPaste,
             this.toolStripMenuItem14,
             this.mnuRunScript,
+            this.mnuRunScriptOrCommand,
             this.mnuCharSets,
             this.toolStripMenuItem6,
             this.mnuStyle,
@@ -1721,6 +1723,13 @@
             this.mnuJsonPrettify.Text = "Prettify Json";
             this.mnuJsonPrettify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
             // 
+            // mnuJsonUglify
+            // 
+            this.mnuJsonUglify.Name = "mnuJsonUglify";
+            this.mnuJsonUglify.Size = new System.Drawing.Size(205, 22);
+            this.mnuJsonUglify.Text = "Json to one line";
+            this.mnuJsonUglify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
+            // 
             // mnuWindow
             // 
             this.mnuWindow.Name = "mnuWindow";
@@ -1819,12 +1828,13 @@
             // 
             this.pdPrint.UseEXDialog = true;
             // 
-            // mnuJsonUglify
+            // mnuRunScriptOrCommand
             // 
-            this.mnuJsonUglify.Name = "mnuJsonUglify";
-            this.mnuJsonUglify.Size = new System.Drawing.Size(205, 22);
-            this.mnuJsonUglify.Text = "Json to one line";
-            this.mnuJsonUglify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
+            this.mnuRunScriptOrCommand.Name = "mnuRunScriptOrCommand";
+            this.mnuRunScriptOrCommand.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.mnuRunScriptOrCommand.Size = new System.Drawing.Size(236, 22);
+            this.mnuRunScriptOrCommand.Text = "Run script or command...";
+            this.mnuRunScriptOrCommand.Click += new System.EventHandler(this.mnuRunScriptOrCommand_Click);
             // 
             // FormMain
             // 
@@ -2044,6 +2054,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem mnuJsonPrettify;
         private System.Windows.Forms.ToolStripMenuItem mnuJsonUglify;
+        private System.Windows.Forms.ToolStripMenuItem mnuRunScriptOrCommand;
     }
 }
 

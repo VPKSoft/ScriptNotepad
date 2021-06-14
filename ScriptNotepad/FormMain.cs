@@ -3466,6 +3466,24 @@ namespace ScriptNotepad
                 sttcMain.LeftFileIndex = leftIndex;
             }
         }
+
+        private void mnuJsonPrettify_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                if (document.Tag != null)
+                {
+                    document.Scintilla.Text = sender.Equals(mnuJsonPrettify)
+                        ? document.Scintilla.Text.JsonPrettify()
+                        : document.Scintilla.Text.JsonUglify();
+                }
+            });
+        }
+
+        private void mnuRunScriptOrCommand_Click(object sender, EventArgs e)
+        {
+            new FormSnippetRunner().Show();
+        }
         #endregion
 
         #region PrivateFields                
@@ -3635,6 +3653,14 @@ namespace ScriptNotepad
                 // the setting value if the setting is enabled..
                 FormSettings.Settings.SaveFileHistoryContentsCount : 
                 int.MinValue;
+        #endregion
+
+        #region InternalProperties        
+        /// <summary>
+        /// Sets the active <see cref="Scintilla"/> document.
+        /// </summary>
+        /// <value>The active <see cref="Scintilla"/> document.</value>
+        internal Scintilla ActiveScintilla => sttcMain.CurrentDocument?.Scintilla;
         #endregion
 
         #region FileContextMenu
@@ -3935,18 +3961,5 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
-
-        private void mnuJsonPrettify_Click(object sender, EventArgs e)
-        {
-            CurrentDocumentAction(document =>
-            {
-                if (document.Tag != null)
-                {
-                    document.Scintilla.Text = sender.Equals(mnuJsonPrettify)
-                        ? document.Scintilla.Text.JsonPrettify()
-                        : document.Scintilla.Text.JsonUglify();
-                }
-            });
-        }
     }
 }
