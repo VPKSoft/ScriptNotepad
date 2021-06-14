@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CustomControls</name>
+    </assembly>
+    <members>
+        <member name="T:CustomControls.ComboBoxCustomSearch">
+            <summary>
+            A <see cref="T:System.Windows.Forms.ComboBox"/> implementation auto-completing case-insensitively items containing the typed text.
+            Implements the <see cref="T:System.Windows.Forms.ComboBox" />
+            </summary>
+            <seealso cref="T:System.Windows.Forms.ComboBox" />
+        </member>
+        <member name="M:CustomControls.ComboBoxCustomSearch.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CustomControls.ComboBoxCustomSearch" /> class.
+            </summary>
+        </member>
+        <member name="M:CustomControls.ComboBoxCustomSearch.WndProc(System.Windows.Forms.Message@)">
+            <summary>
+            Processes Windows messages.
+            </summary>
+            <param name="m">The <see cref="T:System.Windows.Forms.Message"/> message to process.</param>
+        </member>
+        <member name="F:CustomControls.ComboBoxCustomSearch.filtering">
+            <summary>
+            A flag indicting whether the combo box is being filtered.
+            </summary>
+        </member>
+        <member name="F:CustomControls.ComboBoxCustomSearch.controlCreated">
+            <summary>
+            A flag indicating whether <see cref="M:CustomControls.ComboBoxCustomSearch.OnCreateControl"/> has been called once.
+            </summary>
+        </member>
+        <member name="M:CustomControls.ComboBoxCustomSearch.OnTextUpdate(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.ComboBox.TextUpdate"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:CustomControls.ComboBoxCustomSearch.OnCreateControl">
+            <summary>
+            Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
+            </summary>
+        </member>
+    </members>
+</doc>

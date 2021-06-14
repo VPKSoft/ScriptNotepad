@@ -35,6 +35,9 @@ using VPKSoft.ErrorLogger;
 
 namespace ScriptNotepad.UtilityClasses.CodeDom
 {
+    /// <summary>
+    /// A class to run C# scripts to manipulate specified text.
+    /// </summary>
     public class CsScriptRunnerText
     {
         // a CodeDOM provider for executing C# scripts for a list of lines..
@@ -43,6 +46,12 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         // a CodeDOM provider for executing C# scripts for a string..
         private static readonly CsCodeDomScriptRunnerText ScriptRunnerText = new ();
 
+        /// <summary>
+        /// Runs the script for the specified text.
+        /// </summary>
+        /// <param name="code">The script code.</param>
+        /// <param name="text">The text.</param>
+        /// <returns>System.Threading.Tasks.Task&lt;System.Collections.Generic.KeyValuePair&lt;string, bool&gt;&gt;.</returns>
         public static async Task<KeyValuePair<string, bool>> RunScriptText(string code, string text)
         {
             try
@@ -60,6 +69,12 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
             return new KeyValuePair<string, bool>(string.Empty, false);
         }
 
+        /// <summary>
+        /// Runs the script for the specified lines.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <param name="lines">The lines.</param>
+        /// <returns>System.Threading.Tasks.Task&lt;System.Collections.Generic.KeyValuePair&lt;string, bool&gt;&gt;.</returns>
         public static async Task<KeyValuePair<string, bool>> RunScriptLines(string code, List<string> lines)
         {
             try

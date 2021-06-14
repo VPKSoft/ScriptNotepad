@@ -6,5 +6,33 @@
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
+    <Authors>VPKSoft</Authors>
+    <Product>ScriptNotepad Custom Controls</Product>
+    <PackageId>CustomControls</PackageId>
+    <Description>Custom controls for the ScriptNotepad software.</Description>
+    <Copyright>Copyright © VPKSoft 2021</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://www.vpksoft.net/2015-03-31-13-33-28/scriptnotepad</PackageProjectUrl>
+    <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/VPKSoft/ScriptNotepad</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>custom control winforms</PackageTags>
+    <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Files\GitHub\ScriptNotepad\CustomControls\CustomControls.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Files\GitHub\ScriptNotepad\CustomControls\CustomControls.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\ScriptNotepad_icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
