@@ -942,4 +942,7 @@
   <data name="msgUtilTextPrettifyJson" xml:space="preserve">
     <value>Prettify Json|A message indicating a function to format Json as human-readable.</value>
   </data>
+  <data name="msgUtilTextRemoveDuplicateLines" xml:space="preserve">
+    <value>Remove duplicate lines|A message indicating a function to remove duplicate lines from a file.</value>
+  </data>
 </root>

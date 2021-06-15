@@ -43,5 +43,64 @@
             Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
             </summary>
         </member>
+        <member name="T:CustomControls.ImageButton">
+            <summary>
+            A custom button control with an image and a label.
+            Implements the <see cref="T:System.Windows.Forms.UserControl" />
+            </summary>
+            <seealso cref="T:System.Windows.Forms.UserControl" />
+        </member>
+        <member name="M:CustomControls.ImageButton.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CustomControls.ImageButton"/> class.
+            </summary>
+        </member>
+        <member name="P:CustomControls.ImageButton.ButtonImage">
+            <summary>
+            Gets or sets the button image.
+            </summary>
+            <value>The button image.</value>
+        </member>
+        <member name="P:CustomControls.ImageButton.ButtonImageLayout">
+            <summary>
+            Gets or sets the button image layout.
+            </summary>
+            <value>The button image layout.</value>
+        </member>
+        <member name="P:CustomControls.ImageButton.Text">
+            <summary>
+            Gets or sets the text associated with this control.
+            </summary>
+            <value>The text.</value>
+        </member>
+        <member name="F:CustomControls.ImageButton.Click">
+            <summary>
+            Occurs when the control is clicked.
+            </summary>
+        </member>
+        <member name="M:CustomControls.ImageButton.DelegateClick(System.Object,System.EventArgs)">
+            <summary>
+            Delegates the <see cref="F:CustomControls.ImageButton.Click"/> event to the base control.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:CustomControls.ImageButton.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CustomControls.ImageButton.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CustomControls.ImageButton.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
     </members>
 </doc>

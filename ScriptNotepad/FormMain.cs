@@ -62,6 +62,7 @@ using ScriptNotepadPluginBase.EventArgClasses;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -95,6 +96,7 @@ using static VPKSoft.ScintillaLexers.GlobalScintillaFont;
 using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase;
 using ScriptNotepad.Editor.Utility;
 using ScriptNotepad.Editor.Utility.ModelHelpers;
+using ScriptNotepad.UtilityClasses.EventArguments;
 using VPKSoft.DBLocalization;
 using FileSaveHelper = ScriptNotepad.Editor.Utility.ModelHelpers.FileSaveHelper;
 using FileSessionHelper = ScriptNotepad.Editor.EntityHelpers.FileSessionHelper;
@@ -3241,19 +3243,30 @@ namespace ScriptNotepad
                 if (WindowState == FormWindowState.Minimized)
                 {
                     FormSearchAndReplace.Instance.ToggleVisible(this, false);
-                    //previousWindowState = WindowState;
                 }
                 else if (previousWindowState != WindowState &&
                          (WindowState == FormWindowState.Maximized || WindowState == FormWindowState.Normal))
                 {
                     FormSearchAndReplace.Instance.ToggleVisible(this, true);
-                    //previousWindowState = WindowState;
                 }
+
+                SizeVisibilityChange?.Invoke(this, new MainFormSizeEventArgs { Size = Size, PreviousSize = PreviousSize, PreviousState = previousWindowState, State = WindowState, Visible = Visible, Location = Location, PreviousLocation = PreviousLocation});
+
+                PreviousSize = Size;
             }
-            else
-            {
-                //previousWindowState = WindowState;
-            }
+        }
+
+        // rise the SizeVisibilityChange event when visibility changes..
+        private void FormMain_VisibleChanged(object sender, EventArgs e)
+        {
+            SizeVisibilityChange?.Invoke(this, new MainFormSizeEventArgs { Size = Size, PreviousSize = PreviousSize, PreviousState = previousWindowState, State = WindowState, Visible = Visible, Location = Location, PreviousLocation = PreviousLocation});
+        }
+
+        // save the previous location and raise the SizeVisibilityChange event..
+        private void FormMain_LocationChanged(object sender, EventArgs e)
+        {
+            SizeVisibilityChange?.Invoke(this, new MainFormSizeEventArgs { Size = Size, PreviousSize = PreviousSize, PreviousState = previousWindowState, State = WindowState, Visible = Visible, Location = Location, PreviousLocation = PreviousLocation});
+            PreviousLocation = Location;
         }
 
         /// <summary>
@@ -3278,6 +3291,7 @@ namespace ScriptNotepad
                     m.WParamLoWordUnsigned() == SC_MAXIMIZE ||
                     m.WParamLoWordUnsigned() == SC_RESTORE)
                 {
+                    SizeVisibilityChange?.Invoke(this, new MainFormSizeEventArgs { Size = Size, PreviousSize = PreviousSize, PreviousState = previousWindowState, State = WindowState, Visible = Visible, Location = Location, PreviousLocation = PreviousLocation});
                     previousWindowState = WindowState;
                 }
             }
@@ -3482,7 +3496,49 @@ namespace ScriptNotepad
 
         private void mnuRunScriptOrCommand_Click(object sender, EventArgs e)
         {
-            new FormSnippetRunner().Show();
+            var dockForm = FormSnippetRunner.Instance;
+
+            if (pnDockRunSnippet.Controls.Contains(dockForm))
+            {
+                dockForm.Close();
+                return;
+            }
+
+            dockForm.Visible = true;
+            dockForm.TopLevel = false;
+            dockForm.AutoScroll = true;
+            dockForm.FormBorderStyle = FormBorderStyle.None;
+            dockForm.Location = new Point(0, 0);
+            dockForm.Width = pnDockRunSnippet.Width;
+            dockForm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            dockForm.Closing += delegate {  pnDockRunSnippet.Controls.Remove(dockForm); };
+
+            pnDockRunSnippet.Controls.Add(dockForm);
+            dockForm.Focus();
+        }
+
+        // fold all the document lines..
+        private void foldAllLinesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                foreach (var scintillaLine in document.Scintilla.Lines)
+                {
+                    scintillaLine.FoldLine(FoldAction.Contract);
+                }
+            });
+        }
+
+        // unfold all the document lines..
+        private void unfoldAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                foreach (var scintillaLine in document.Scintilla.Lines)
+                {
+                    scintillaLine.FoldLine(FoldAction.Expand);
+                }
+            });
         }
         #endregion
 
@@ -3661,6 +3717,22 @@ namespace ScriptNotepad
         /// </summary>
         /// <value>The active <see cref="Scintilla"/> document.</value>
         internal Scintilla ActiveScintilla => sttcMain.CurrentDocument?.Scintilla;
+
+        /// <summary>
+        /// Gets the previous size of this form before resize.
+        /// </summary>
+        /// <value>The previous size of this form before resize.</value>
+        internal Size PreviousSize { get; set; } = Size.Empty;
+
+        /// <summary>
+        /// Gets the previous location of this form before the change.
+        /// </summary>
+        /// <value>The previous location of this form before the change.</value>
+        internal Point PreviousLocation { get; set; } = Point.Empty;
+        #endregion
+
+        #region Events
+        internal event EventHandler<MainFormSizeEventArgs> SizeVisibilityChange;
         #endregion
 
         #region FileContextMenu

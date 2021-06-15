@@ -35,6 +35,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.pnDockRunSnippet = new System.Windows.Forms.Panel();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
             this.tsbOpen = new System.Windows.Forms.ToolStripButton();
@@ -132,6 +133,7 @@
             this.mnuPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRunScript = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRunScriptOrCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuCharSets = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuStyle = new System.Windows.Forms.ToolStripMenuItem();
@@ -166,6 +168,8 @@
             this.mnuGoto = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRenameNewFileMainMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFoldAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfoldAll = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -217,7 +221,6 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
-            this.mnuRunScriptOrCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -236,20 +239,35 @@
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpMain.Controls.Add(this.pnDockRunSnippet, 0, 2);
             this.tlpMain.Controls.Add(this.tsMain, 0, 0);
-            this.tlpMain.Controls.Add(this.ssMain, 0, 2);
+            this.tlpMain.Controls.Add(this.ssMain, 0, 3);
             this.tlpMain.Controls.Add(this.sttcMain, 0, 1);
-            this.tlpMain.Controls.Add(this.pnDock, 0, 3);
+            this.tlpMain.Controls.Add(this.pnDock, 0, 4);
             this.tlpMain.Location = new System.Drawing.Point(14, 31);
             this.tlpMain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tlpMain.Name = "tlpMain";
-            this.tlpMain.RowCount = 4;
+            this.tlpMain.RowCount = 5;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpMain.Size = new System.Drawing.Size(1102, 636);
             this.tlpMain.TabIndex = 3;
+            // 
+            // pnDockRunSnippet
+            // 
+            this.pnDockRunSnippet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnDockRunSnippet.AutoSize = true;
+            this.tlpMain.SetColumnSpan(this.pnDockRunSnippet, 5);
+            this.pnDockRunSnippet.Location = new System.Drawing.Point(0, 613);
+            this.pnDockRunSnippet.Margin = new System.Windows.Forms.Padding(0);
+            this.pnDockRunSnippet.Name = "pnDockRunSnippet";
+            this.pnDockRunSnippet.Size = new System.Drawing.Size(1102, 1);
+            this.pnDockRunSnippet.TabIndex = 6;
             // 
             // tsMain
             // 
@@ -1025,7 +1043,9 @@
             this.toolStripMenuItem15,
             this.mnuGoto,
             this.toolStripMenuItem18,
-            this.mnuRenameNewFileMainMenu});
+            this.mnuRenameNewFileMainMenu,
+            this.mnuFoldAll,
+            this.mnuUnfoldAll});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -1095,6 +1115,14 @@
             this.mnuRunScript.Size = new System.Drawing.Size(236, 22);
             this.mnuRunScript.Text = "Run script";
             this.mnuRunScript.Click += new System.EventHandler(this.mnuRunScript_Click);
+            // 
+            // mnuRunScriptOrCommand
+            // 
+            this.mnuRunScriptOrCommand.Name = "mnuRunScriptOrCommand";
+            this.mnuRunScriptOrCommand.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.mnuRunScriptOrCommand.Size = new System.Drawing.Size(236, 22);
+            this.mnuRunScriptOrCommand.Text = "Run script or command...";
+            this.mnuRunScriptOrCommand.Click += new System.EventHandler(this.mnuRunScriptOrCommand_Click);
             // 
             // mnuCharSets
             // 
@@ -1394,6 +1422,23 @@
             this.mnuRenameNewFileMainMenu.Size = new System.Drawing.Size(236, 22);
             this.mnuRenameNewFileMainMenu.Text = "Rename new file...";
             this.mnuRenameNewFileMainMenu.Click += new System.EventHandler(this.MnuRenameNewFile_Click);
+            // 
+            // mnuFoldAll
+            // 
+            this.mnuFoldAll.Name = "mnuFoldAll";
+            this.mnuFoldAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D0)));
+            this.mnuFoldAll.Size = new System.Drawing.Size(236, 22);
+            this.mnuFoldAll.Text = "Fold all";
+            this.mnuFoldAll.Click += new System.EventHandler(this.foldAllLinesToolStripMenuItem_Click);
+            // 
+            // mnuUnfoldAll
+            // 
+            this.mnuUnfoldAll.Name = "mnuUnfoldAll";
+            this.mnuUnfoldAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D0)));
+            this.mnuUnfoldAll.Size = new System.Drawing.Size(236, 22);
+            this.mnuUnfoldAll.Text = "Unfold all";
+            this.mnuUnfoldAll.Click += new System.EventHandler(this.unfoldAllToolStripMenuItem_Click);
             // 
             // mnuSearch
             // 
@@ -1828,14 +1873,6 @@
             // 
             this.pdPrint.UseEXDialog = true;
             // 
-            // mnuRunScriptOrCommand
-            // 
-            this.mnuRunScriptOrCommand.Name = "mnuRunScriptOrCommand";
-            this.mnuRunScriptOrCommand.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.mnuRunScriptOrCommand.Size = new System.Drawing.Size(236, 22);
-            this.mnuRunScriptOrCommand.Text = "Run script or command...";
-            this.mnuRunScriptOrCommand.Click += new System.EventHandler(this.mnuRunScriptOrCommand_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1853,6 +1890,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
+            this.LocationChanged += new System.EventHandler(this.FormMain_LocationChanged);
+            this.VisibleChanged += new System.EventHandler(this.FormMain_VisibleChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyUp);
             this.Resize += new System.EventHandler(this.FormMain_Resize);
@@ -2055,6 +2094,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuJsonPrettify;
         private System.Windows.Forms.ToolStripMenuItem mnuJsonUglify;
         private System.Windows.Forms.ToolStripMenuItem mnuRunScriptOrCommand;
+        private System.Windows.Forms.Panel pnDockRunSnippet;
+        private System.Windows.Forms.ToolStripMenuItem mnuFoldAll;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfoldAll;
     }
 }
 

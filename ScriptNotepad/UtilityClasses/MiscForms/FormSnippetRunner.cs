@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Localization;
-using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.Json;
@@ -25,7 +25,7 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
         /// <summary>
         /// Initializes a new instance of the <see cref="FormSnippetRunner"/> class.
         /// </summary>
-        public FormSnippetRunner()
+        private FormSnippetRunner()
         {
             InitializeComponent();
 
@@ -40,18 +40,22 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
             // initialize the language/localization database..
             DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
 
-            AllowTransparency = true;
-
-            // subscribe to an event which is raised upon application activation..
-            ApplicationDeactivated += FormSearchAndReplace_ApplicationDeactivated;
-            ApplicationActivated += FormSearchAndReplace_ApplicationActivated;
-
             // subscribe the disposed event..
             Disposed += formSnippetRunner_Disposed;
-
-            pnRunSnippet.BorderStyle = BorderStyle.Fixed3D;
         }
 
+        private static FormSnippetRunner _instance;
+
+        /// <summary>
+        /// Gets a singleton instance of this form.
+        /// </summary>
+        public static FormSnippetRunner Instance
+        {
+            get
+            {
+                return _instance ??= new FormSnippetRunner();
+            }
+        }
 
         #region WndProc
         /// <summary>Processes Windows messages.</summary>
@@ -69,7 +73,7 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
         /// Gets or sets the <see cref="StaticMessageLocalizationProvider"/> instance.
         /// </summary>
         /// <value>The <see cref="StaticMessageLocalizationProvider"/> instance.</value>
-        private static StaticMessageLocalizationProvider Translation { get; set; } = StaticMessageLocalizationProvider.Instance;
+        private static StaticMessageLocalizationProvider Translation { get; } = StaticMessageLocalizationProvider.Instance;
 
         /// <summary>
         /// Gets the main form instance of the application.
@@ -94,29 +98,61 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
                 return null;
             }
         }
-
         #endregion
 
         #region InternalEvents
-        // occurs when the application is activated..
-        private void FormSearchAndReplace_ApplicationDeactivated(object sender, EventArgs e)
+        private async void FormSnippetRunner_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Visible)
+            if (e.Control && !e.Alt && !e.Shift && e.KeyCode == Keys.Return)
             {
-                TopMost = false;
+                await RunCommand();
+                e.SuppressKeyPress = true;
             }
         }
 
-        private void FormSearchAndReplace_ApplicationActivated(object sender, EventArgs e)
+        private async void ibRunCommand_Click(object sender, EventArgs e)
         {
-            if (Visible)
-            {
-                TopMost = true;
-            }
+            await RunCommand();
         }
 
-        // run a script or an internal command (i.e. menu item code)..
-        private async void lbRunSnippet_Click(object sender, EventArgs e)
+        private void formSnippetRunner_Disposed(object sender, EventArgs e)
+        {
+            // unsubscribe the disposed event..
+            Disposed -= formSnippetRunner_Disposed;
+            _instance = null;
+        }
+
+        private void pnClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void FormSnippetRunner_Shown(object sender, EventArgs e)
+        {
+            cmbCommands.Items.Clear();
+            cmbCommands.Items.AddRange(ScriptNotepadDbContext.DbContext.CodeSnippets.Cast<object>().ToArray());
+            cmbCommands.Items.Add(new JsonMultilineConvert
+            {
+                MethodName = Translation.GetMessage("msgUtilTextPrettifyJson",
+                    "Prettify Json|A message indicating a function to format Json as human-readable.")
+            });
+
+            cmbCommands.Items.Add(new JsonSingleLineConvert
+            {
+                MethodName = Translation.GetMessage("msgUtilTextJsonToOneLine",
+                    "Json to one line|A message indicating a function to human-readable Json to one line.")
+            });
+
+            cmbCommands.Items.Add(new DuplicateLines
+            {
+                MethodName = Translation.GetMessage("msgUtilTextRemoveDuplicateLines",
+                    "Remove duplicate lines|A message indicating a function to remove duplicate lines from a file.")
+            });
+        }
+        #endregion
+
+        #region PrivateMethods
+        private async Task RunCommand()
         {
             if (cmbCommands.SelectedItem != null && FormMain.ActiveScintilla != null)
             {
@@ -149,70 +185,6 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
                 {
                     FormMain.ActiveScintilla.Text = command.Manipulate(FormMain.ActiveScintilla.Text);
                 }
-            }
-        }
-
-        // the form is activated, toggle the transparency of the form..
-        private void FormSnippetRunner_Activated(object sender, EventArgs e)
-        {
-            TopMost = true;
-            TransparencyToggle();
-        }
-
-        private void formSnippetRunner_Disposed(object sender, EventArgs e)
-        {
-            // unsubscribe from an event which is raised upon application activation..
-            ApplicationDeactivated -= FormSearchAndReplace_ApplicationDeactivated;
-            ApplicationActivated -= FormSearchAndReplace_ApplicationActivated;
-
-            // unsubscribe the disposed event..
-            Disposed -= formSnippetRunner_Disposed;
-        }
-
-        private void FormSnippetRunner_Shown(object sender, EventArgs e)
-        {
-            Top = FormMain.Bottom - Height - 50;
-            Left = FormMain.Right - Width - 30;
-
-            cmbCommands.Items.Clear();
-            cmbCommands.Items.AddRange(ScriptNotepadDbContext.DbContext.CodeSnippets.Cast<object>().ToArray());
-            cmbCommands.Items.Add(new JsonMultilineConvert
-            {
-                MethodName = Translation.GetMessage("msgUtilTextPrettifyJson",
-                    "Prettify Json|A message indicating a function to format Json as human-readable.")
-            });
-            cmbCommands.Items.Add(new JsonSingleLineConvert
-            {
-                MethodName = Translation.GetMessage("msgUtilTextJsonToOneLine",
-                    "Json to one line|A message indicating a function to human-readable Json to one line.")
-            });
-        }
-        #endregion
-
-        #region PrivateMethods
-        /// <summary>
-        /// Toggles the transparency based on the saved transparency settings of the form.
-        /// </summary>
-        private void TransparencyToggle()
-        {
-            var activated = ActiveForm != null && ActiveForm.Equals(this);
-            Opacity = activated ? 1 : FormSettings.Settings.SearchBoxOpacity;
-
-            // transparency is disabled..
-            if (FormSettings.Settings.SearchBoxTransparency == 0)
-            {
-                // set the opacity value to 100%..
-                Opacity = 1;
-            }
-            // transparency is enabled while active..
-            else if (FormSettings.Settings.SearchBoxTransparency == 1)
-            {
-                // set the opacity value to based on the active property..
-                Opacity = activated ? 1 : FormSettings.Settings.SearchBoxOpacity;
-            }
-            else if (FormSettings.Settings.SearchBoxTransparency == 2)
-            {
-                Opacity = FormSettings.Settings.SearchBoxOpacity;
             }
         }
         #endregion

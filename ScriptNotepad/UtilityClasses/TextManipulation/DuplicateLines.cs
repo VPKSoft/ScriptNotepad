@@ -26,6 +26,9 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.LinesAndBinary;
@@ -37,7 +40,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
     /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
     /// </summary>
     /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class DuplicateLines: ErrorHandlingBase
+    public class DuplicateLines: TextManipulationCommandBase
     {
         /// <summary>
         /// Removes the duplicate lines from a given <see cref="Scintilla"/> control.
@@ -49,8 +52,39 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
         {
             try
             {
-                var lines = ScintillaLinesToStringList.GetScintillaLinesAsStringList(scintilla);
+                scintilla.Text = Manipulate(scintilla.Text, stringComparison, fileLineTypes);
+            }
+            catch (Exception ex)
+            {
+                // log the exception if the action has a value..
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+            }
+        }
+
+        /// <summary>
+        /// Manipulates the specified text value.
+        /// </summary>
+        /// <param name="value">The value to manipulate.</param>
+        /// <param name="stringComparison">The type of string comparison.</param>
+        /// <param name="fileLineTypes">The type of the line ending in the <see cref="Scintilla"/> control.</param>
+        /// <returns>A string containing the manipulated text.</returns>
+        public static string Manipulate(string value, StringComparison stringComparison, FileLineTypes fileLineTypes)
+        {
+            try
+            {
+                var lines = new List<string>();
+                using var reader = new StringReader(value);
+
+                string readLine;
+
+                while ((readLine = reader.ReadLine()) != null)
+                {
+                    lines.Add(readLine);
+                }
+
                 var linesNew = new List<string>();
+
+
                 foreach (var line in lines)
                 {
                     if (!linesNew.Exists(f => f.Equals(line, stringComparison)))
@@ -59,13 +93,52 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
                     }
                 }
 
-                scintilla.Text = string.Concat(linesNew);
+                string lineSeparator = Environment.NewLine;
+
+                if (fileLineTypes.HasFlag(FileLineTypes.CRLF))
+                {
+                    lineSeparator = "\r\n";
+                }
+                else if (fileLineTypes.HasFlag(FileLineTypes.LF))
+                {
+                    lineSeparator = "\n";
+                }
+                else if (fileLineTypes.HasFlag(FileLineTypes.CR))
+                {
+                    lineSeparator = "\r";
+                }
+
+                return string.Join(lineSeparator, linesNew);
             }
             catch (Exception ex)
             {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                return value;
             }
+        }
+
+        /// <summary>
+        /// Manipulates the specified text value.
+        /// </summary>
+        /// <param name="value">The value to manipulate.</param>
+        /// <returns>A string containing the manipulated text.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override string Manipulate(string value)
+        {
+            var types = FileLineType.GetFileLineTypes(new MemoryStream(Encoding.UTF8.GetBytes(value)));
+
+            var fileLineTypes = types.Select(f => f.Key).Aggregate((result, flag) => result | flag);
+
+            return Manipulate(value, StringComparison.Ordinal, fileLineTypes);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return MethodName;
         }
     }
 }
