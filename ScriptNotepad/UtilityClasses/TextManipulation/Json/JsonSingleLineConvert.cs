@@ -2,14 +2,16 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
+using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
+using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 
 namespace ScriptNotepad.UtilityClasses.TextManipulation.Json
 {
     /// <summary>
     /// A class to convert formatted JSON to a single-line JSOn.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.TextManipulation.ITextManipulationCommand" />
+    /// Implements the <see cref="ITextManipulationCommand" />
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.TextManipulation.ITextManipulationCommand" />
+    /// <seealso cref="ITextManipulationCommand" />
     public class JsonSingleLineConvert: TextManipulationCommandBase
     {
         /// <summary>

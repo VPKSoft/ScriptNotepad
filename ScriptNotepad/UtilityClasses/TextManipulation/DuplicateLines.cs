@@ -32,6 +32,7 @@ using System.Text;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.LinesAndBinary;
+using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 
 namespace ScriptNotepad.UtilityClasses.TextManipulation
 {

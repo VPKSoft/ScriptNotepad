@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -6,12 +7,13 @@ using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Localization;
+using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.TextManipulation;
+using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 using ScriptNotepad.UtilityClasses.TextManipulation.Json;
 using VPKSoft.ErrorLogger;
 using VPKSoft.LangLib;
-using static ScriptNotepad.UtilityClasses.ApplicationHelpers.ApplicationActivateDeactivate;
 
 namespace ScriptNotepad.UtilityClasses.MiscForms
 {
@@ -31,6 +33,8 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
 
             DBLangEngine.DBName = "lang.sqlite"; // Do the VPKSoft.LangLib == translation..
 
+            DBLangEngine.NameSpaces.Add("CustomControls");
+
             if (Utils.ShouldLocalize() != null)
             {
                 DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
@@ -42,29 +46,39 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
 
             // subscribe the disposed event..
             Disposed += formSnippetRunner_Disposed;
+            FormSettings.Settings.ShowRunSnippetToolbar = true;
         }
 
+        internal static List<ITextManipulationCallback> Callbacks { get; } = new();
+
         private static FormSnippetRunner _instance;
+
+        #region InternalProperties        
+        /// <summary>
+        /// Gets or sets the value indicating whether the search combo box is focused.
+        /// </summary>
+        /// <value>The value indicating whether the search combo box is focused.</value>
+        internal bool SearchFocused
+        {
+            get => cmbCommands.Focused;
+            set
+            {
+                if (value)
+                {
+                    cmbCommands.Focus();
+                }
+            }
+        }
 
         /// <summary>
         /// Gets a singleton instance of this form.
         /// </summary>
-        public static FormSnippetRunner Instance
+        internal static FormSnippetRunner Instance
         {
             get
             {
                 return _instance ??= new FormSnippetRunner();
             }
-        }
-
-        #region WndProc
-        /// <summary>Processes Windows messages.</summary>
-        /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
-        protected override void WndProc(ref Message m)
-        {
-            WndProcApplicationActivateHelper(this, ref m);
-
-            base.WndProc(ref m);
         }
         #endregion
 
@@ -124,30 +138,43 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
 
         private void pnClose_Click(object sender, EventArgs e)
         {
+            FormSettings.Settings.ShowRunSnippetToolbar = false;
             Close();
         }
 
         private void FormSnippetRunner_Shown(object sender, EventArgs e)
         {
             cmbCommands.Items.Clear();
-            cmbCommands.Items.AddRange(ScriptNotepadDbContext.DbContext.CodeSnippets.Cast<object>().ToArray());
-            cmbCommands.Items.Add(new JsonMultilineConvert
+
+            var items = new List<object>();
+            items.AddRange(ScriptNotepadDbContext.DbContext.CodeSnippets.Cast<object>().ToArray());
+
+            items.Add(new JsonMultilineConvert
             {
                 MethodName = Translation.GetMessage("msgUtilTextPrettifyJson",
                     "Prettify Json|A message indicating a function to format Json as human-readable.")
             });
 
-            cmbCommands.Items.Add(new JsonSingleLineConvert
+            items.Add(new JsonSingleLineConvert
             {
                 MethodName = Translation.GetMessage("msgUtilTextJsonToOneLine",
                     "Json to one line|A message indicating a function to human-readable Json to one line.")
             });
 
-            cmbCommands.Items.Add(new DuplicateLines
+            items.Add(new DuplicateLines
             {
                 MethodName = Translation.GetMessage("msgUtilTextRemoveDuplicateLines",
                     "Remove duplicate lines|A message indicating a function to remove duplicate lines from a file.")
             });
+
+            foreach (var callback in Callbacks)
+            {
+                items.Add(callback);
+            }
+
+            items = items.OrderBy(f => f.ToString()).ToList();
+
+            cmbCommands.Items.AddRange(items.ToArray());
         }
         #endregion
 
@@ -184,6 +211,11 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
                 if (cmbCommands.SelectedItem is ITextManipulationCommand command)
                 {
                     FormMain.ActiveScintilla.Text = command.Manipulate(FormMain.ActiveScintilla.Text);
+                }
+
+                if (cmbCommands.SelectedItem is ITextManipulationCallback callback)
+                {
+                    callback.CallbackAction?.Invoke();
                 }
             }
         }

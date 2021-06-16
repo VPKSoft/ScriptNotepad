@@ -945,4 +945,16 @@
   <data name="msgUtilTextRemoveDuplicateLines" xml:space="preserve">
     <value>Remove duplicate lines|A message indicating a function to remove duplicate lines from a file.</value>
   </data>
+  <data name="msgUtilTextSortLinesAscending" xml:space="preserve">
+    <value>Sort lines ascending|A message describing an action to sort lines in ascending order.</value>
+  </data>
+  <data name="msgUtilTextSortLinesCustom" xml:space="preserve">
+    <value>Sort lines in custom order|A message describing an action to sort lines in custom order.</value>
+  </data>
+  <data name="msgUtilTextSortLinesDescending" xml:space="preserve">
+    <value>Sort lines descending|A message describing an action to sort lines in descending order.</value>
+  </data>
+  <data name="msgUtilTextWrapDocument" xml:space="preserve">
+    <value>Wrap document|A message describing an action to wrap document into specified maximum length lines.</value>
+  </data>
 </root>

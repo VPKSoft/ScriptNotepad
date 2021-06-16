@@ -89,7 +89,7 @@ namespace CustomControls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void DelegateClick(object sender, EventArgs e)
         {
-            OnClick(e);
+            Click?.Invoke(this, EventArgs.Empty);
         }
     }
 }

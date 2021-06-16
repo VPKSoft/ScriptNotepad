@@ -129,6 +129,8 @@ namespace ScriptNotepad
                 new FormDialogQuerySortTextStyle();
                 // ReSharper disable once ObjectCreationAsStatement
                 new FormDialogCustomSpellCheckerInfo();
+                // this form is instantiated in a different way..
+                _ = FormSnippetRunner.Instance;
 
                 FormSearchAndReplace.CreateLocalizationInstance(); // special form, special handling..
 

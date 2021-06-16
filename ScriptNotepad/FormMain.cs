@@ -71,6 +71,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using RpcSelf;
 using ScriptNotepad.Database.DirectAccess;
@@ -97,6 +98,8 @@ using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandli
 using ScriptNotepad.Editor.Utility;
 using ScriptNotepad.Editor.Utility.ModelHelpers;
 using ScriptNotepad.UtilityClasses.EventArguments;
+using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
+using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 using VPKSoft.DBLocalization;
 using FileSaveHelper = ScriptNotepad.Editor.Utility.ModelHelpers.FileSaveHelper;
 using FileSessionHelper = ScriptNotepad.Editor.EntityHelpers.FileSessionHelper;
@@ -374,6 +377,14 @@ namespace ScriptNotepad
             tsMain.Items.Add(boxStackContainer);
             BoxStack.Visible = false;
 
+            // populate the text menu call backs to the run snippet dialog..
+            PopulateTextMenuCallBacks();
+
+            if (FormSettings.Settings.ShowRunSnippetToolbar)
+            {
+                ToggleSnippetRunner();
+            }
+
             // the constructor code finalized executing..
             runningConstructor = false;
         }
@@ -425,7 +436,74 @@ namespace ScriptNotepad
         }
         #endregion
 
-        #region HelperMethods                 
+        #region HelperMethods      
+        /// <summary>
+        /// Toggles the snippet runner tool bar.
+        /// </summary>
+        private void ToggleSnippetRunner()
+        {
+            var dockForm = FormSnippetRunner.Instance;
+
+            if (pnDockRunSnippet.Controls.Contains(dockForm))
+            {
+                if (dockForm.SearchFocused)
+                {
+                    dockForm.Close();
+                    FormSettings.Settings.ShowRunSnippetToolbar = false;
+                    return;
+                }
+
+                dockForm.SearchFocused = true;
+                return;
+            }
+
+            dockForm.Visible = true;
+            dockForm.TopLevel = false;
+            dockForm.AutoScroll = true;
+            dockForm.FormBorderStyle = FormBorderStyle.None;
+            dockForm.Location = new Point(0, 0);
+            dockForm.Width = pnDockRunSnippet.Width;
+            dockForm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            dockForm.Closing += delegate { pnDockRunSnippet.Controls.Remove(dockForm); };
+
+            pnDockRunSnippet.Controls.Add(dockForm);
+            dockForm.Focus();
+        }
+
+        /// <summary>
+        /// Populates the text menu call backs to the run snippet dialog.
+        /// </summary>
+        private void PopulateTextMenuCallBacks()
+        {
+            FormSnippetRunner.Callbacks.AddRange(new[]
+            {
+                new TextManipulationCallbackBase
+                {
+                    CallbackAction = () => mnuSortAscending.PerformClick(),
+                    MethodName = DBLangEngine.GetMessage("msgUtilTextSortLinesAscending",
+                        "Sort lines ascending|A message describing an action to sort lines in ascending order.")
+                },
+                new TextManipulationCallbackBase
+                {
+                    CallbackAction = () => mnuSortDescending.PerformClick(),
+                    MethodName = DBLangEngine.GetMessage("msgUtilTextSortLinesDescending",
+                        "Sort lines descending|A message describing an action to sort lines in descending order.")
+                },
+                new TextManipulationCallbackBase
+                {
+                    CallbackAction = () => mnuCustomizedSort.PerformClick(),
+                    MethodName = DBLangEngine.GetMessage("msgUtilTextSortLinesCustom",
+                        "Sort lines in custom order|A message describing an action to sort lines in custom order.")
+                },
+                new TextManipulationCallbackBase
+                {
+                    CallbackAction = () => mnuWrapDocumentTo.PerformClick(),
+                    MethodName = DBLangEngine.GetMessage("msgUtilTextWrapDocument",
+                        "Wrap document|A message describing an action to wrap document into specified maximum length lines.")
+                },
+            });
+        }
+        
         /// <summary>
         /// Checks for new version of the application.
         /// </summary>
@@ -3496,29 +3574,11 @@ namespace ScriptNotepad
 
         private void mnuRunScriptOrCommand_Click(object sender, EventArgs e)
         {
-            var dockForm = FormSnippetRunner.Instance;
-
-            if (pnDockRunSnippet.Controls.Contains(dockForm))
-            {
-                dockForm.Close();
-                return;
-            }
-
-            dockForm.Visible = true;
-            dockForm.TopLevel = false;
-            dockForm.AutoScroll = true;
-            dockForm.FormBorderStyle = FormBorderStyle.None;
-            dockForm.Location = new Point(0, 0);
-            dockForm.Width = pnDockRunSnippet.Width;
-            dockForm.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            dockForm.Closing += delegate {  pnDockRunSnippet.Controls.Remove(dockForm); };
-
-            pnDockRunSnippet.Controls.Add(dockForm);
-            dockForm.Focus();
+            ToggleSnippetRunner();
         }
 
         // fold all the document lines..
-        private void foldAllLinesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuFoldAll_Click(object sender, EventArgs e)
         {
             CurrentDocumentAction(document =>
             {
@@ -3530,7 +3590,7 @@ namespace ScriptNotepad
         }
 
         // unfold all the document lines..
-        private void unfoldAllToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuUnfoldAll_Click(object sender, EventArgs e)
         {
             CurrentDocumentAction(document =>
             {
@@ -4033,5 +4093,114 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
+
+        private void mnuFoldCurrentLevel_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                if (document.Scintilla.CurrentLine != -1)
+                {
+                    var parent = document.Scintilla.Lines[document.Scintilla.CurrentLine].FoldParent;
+                    if (parent >= 0)
+                    {
+                        document.Scintilla.Lines[parent].FoldLine(sender.Equals(mnuFoldCurrentLevel) ? FoldAction.Contract : FoldAction.Expand);
+                    }
+                }
+            });
+        }
+
+        private void mnuFold1_Click(object sender, EventArgs e)
+        {
+            var level = 1;
+            if (sender.Equals(mnuFold2))
+            {
+                level = 2;
+            }
+            else if (sender.Equals(mnuFold3))
+            {
+                level = 3;
+            }
+            else if (sender.Equals(mnuFold4))
+            {
+                level = 4;
+            }
+            else if (sender.Equals(mnuFold5))
+            {
+                level = 5;
+            }
+            else if (sender.Equals(mnuFold6))
+            {
+                level = 6;
+            }
+            else if (sender.Equals(mnuFold7))
+            {
+                level = 7;
+            }
+            else if (sender.Equals(mnuFold8))
+            {
+                level = 8;
+            }
+
+            CurrentDocumentAction(document =>
+            {
+                if (document.Scintilla.CurrentLine != -1)
+                {
+                    foreach (var scintillaLine in document.Scintilla.Lines)
+                    {
+                        if (scintillaLine.FoldLevel - 1023 == level)
+                        {
+                            scintillaLine.FoldLine(FoldAction.Contract);
+                        }
+                    }
+                }
+            });
+        }
+
+        private void mnuUnfold1_Click(object sender, EventArgs e)
+        {
+            var level = 1;
+            if (sender.Equals(mnuUnfold2))
+            {
+                level = 2;
+            }
+            else if (sender.Equals(mnuUnfold3))
+            {
+                level = 3;
+            }
+            else if (sender.Equals(mnuUnfold4))
+            {
+                level = 4;
+            }
+            else if (sender.Equals(mnuUnfold5))
+            {
+                level = 5;
+            }
+            else if (sender.Equals(mnuUnfold6))
+            {
+                level = 6;
+            }
+            else if (sender.Equals(mnuUnfold7))
+            {
+                level = 7;
+            }
+            else if (sender.Equals(mnuUnfold8))
+            {
+                level = 8;
+            }
+            
+            CurrentDocumentAction(document =>
+            {
+                if (document.Scintilla.CurrentLine != -1)
+                {
+                    foreach (var scintillaLine in document.Scintilla.Lines)
+                    {
+                        if (scintillaLine.FoldLevel - 1023 == level)
+                        {
+                            scintillaLine.FoldLine(FoldAction.Expand);
+                        }
+                    }
+                }
+            });
+        }
     }
 }

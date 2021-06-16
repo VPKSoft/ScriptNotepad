@@ -168,8 +168,6 @@
             this.mnuGoto = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRenameNewFileMainMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFoldAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuUnfoldAll = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFind = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuReplace = new System.Windows.Forms.ToolStripMenuItem();
@@ -182,6 +180,29 @@
             this.mnuShowIndentGuide = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuShowWrapSymbol = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWordWrap = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuFoldAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfoldAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFoldCurrentLevel = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfoldCurrentLevel = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFold8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnfold8 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuProgrammingLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuManageScriptSnippets = new System.Windows.Forms.ToolStripMenuItem();
@@ -1043,9 +1064,7 @@
             this.toolStripMenuItem15,
             this.mnuGoto,
             this.toolStripMenuItem18,
-            this.mnuRenameNewFileMainMenu,
-            this.mnuFoldAll,
-            this.mnuUnfoldAll});
+            this.mnuRenameNewFileMainMenu});
             this.mnuEdit.Name = "mnuEdit";
             this.mnuEdit.Size = new System.Drawing.Size(39, 20);
             this.mnuEdit.Text = "Edit";
@@ -1423,23 +1442,6 @@
             this.mnuRenameNewFileMainMenu.Text = "Rename new file...";
             this.mnuRenameNewFileMainMenu.Click += new System.EventHandler(this.MnuRenameNewFile_Click);
             // 
-            // mnuFoldAll
-            // 
-            this.mnuFoldAll.Name = "mnuFoldAll";
-            this.mnuFoldAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D0)));
-            this.mnuFoldAll.Size = new System.Drawing.Size(236, 22);
-            this.mnuFoldAll.Text = "Fold all";
-            this.mnuFoldAll.Click += new System.EventHandler(this.foldAllLinesToolStripMenuItem_Click);
-            // 
-            // mnuUnfoldAll
-            // 
-            this.mnuUnfoldAll.Name = "mnuUnfoldAll";
-            this.mnuUnfoldAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.D0)));
-            this.mnuUnfoldAll.Size = new System.Drawing.Size(236, 22);
-            this.mnuUnfoldAll.Text = "Unfold all";
-            this.mnuUnfoldAll.Click += new System.EventHandler(this.unfoldAllToolStripMenuItem_Click);
-            // 
             // mnuSearch
             // 
             this.mnuSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1493,7 +1495,14 @@
             // 
             this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuShowSymbol,
-            this.mnuWordWrap});
+            this.mnuWordWrap,
+            this.toolStripMenuItem19,
+            this.mnuFoldAll,
+            this.mnuUnfoldAll,
+            this.mnuFoldCurrentLevel,
+            this.mnuUnfoldCurrentLevel,
+            this.mnuFold,
+            this.mnuUnfold});
             this.mnuView.Name = "mnuView";
             this.mnuView.Size = new System.Drawing.Size(44, 20);
             this.mnuView.Text = "View";
@@ -1507,7 +1516,7 @@
             this.mnuShowWrapSymbol});
             this.mnuShowSymbol.Image = global::ScriptNotepad.Properties.Resources.paragraph;
             this.mnuShowSymbol.Name = "mnuShowSymbol";
-            this.mnuShowSymbol.Size = new System.Drawing.Size(145, 22);
+            this.mnuShowSymbol.Size = new System.Drawing.Size(273, 22);
             this.mnuShowSymbol.Text = "Show symbol";
             this.mnuShowSymbol.DropDownOpening += new System.EventHandler(this.MnuShowSymbol_DropDownOpening);
             // 
@@ -1548,9 +1557,216 @@
             this.mnuWordWrap.CheckOnClick = true;
             this.mnuWordWrap.Image = global::ScriptNotepad.Properties.Resources.word_wrap2;
             this.mnuWordWrap.Name = "mnuWordWrap";
-            this.mnuWordWrap.Size = new System.Drawing.Size(145, 22);
+            this.mnuWordWrap.Size = new System.Drawing.Size(273, 22);
             this.mnuWordWrap.Text = "Word wrap";
             this.mnuWordWrap.Click += new System.EventHandler(this.MnuWordWrap_Click);
+            // 
+            // toolStripMenuItem19
+            // 
+            this.toolStripMenuItem19.Name = "toolStripMenuItem19";
+            this.toolStripMenuItem19.Size = new System.Drawing.Size(270, 6);
+            // 
+            // mnuFoldAll
+            // 
+            this.mnuFoldAll.Name = "mnuFoldAll";
+            this.mnuFoldAll.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D0)));
+            this.mnuFoldAll.Size = new System.Drawing.Size(273, 22);
+            this.mnuFoldAll.Text = "Fold all";
+            this.mnuFoldAll.Click += new System.EventHandler(this.mnuFoldAll_Click);
+            // 
+            // mnuUnfoldAll
+            // 
+            this.mnuUnfoldAll.Name = "mnuUnfoldAll";
+            this.mnuUnfoldAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D0)));
+            this.mnuUnfoldAll.Size = new System.Drawing.Size(273, 22);
+            this.mnuUnfoldAll.Text = "Unfold all";
+            this.mnuUnfoldAll.Click += new System.EventHandler(this.mnuUnfoldAll_Click);
+            // 
+            // mnuFoldCurrentLevel
+            // 
+            this.mnuFoldCurrentLevel.Name = "mnuFoldCurrentLevel";
+            this.mnuFoldCurrentLevel.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.F)));
+            this.mnuFoldCurrentLevel.Size = new System.Drawing.Size(273, 22);
+            this.mnuFoldCurrentLevel.Text = "Fold current level";
+            this.mnuFoldCurrentLevel.Click += new System.EventHandler(this.mnuFoldCurrentLevel_Click);
+            // 
+            // mnuUnfoldCurrentLevel
+            // 
+            this.mnuUnfoldCurrentLevel.Name = "mnuUnfoldCurrentLevel";
+            this.mnuUnfoldCurrentLevel.ShortcutKeys = ((System.Windows.Forms.Keys)((((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.F)));
+            this.mnuUnfoldCurrentLevel.Size = new System.Drawing.Size(273, 22);
+            this.mnuUnfoldCurrentLevel.Text = "Unfold current level";
+            this.mnuUnfoldCurrentLevel.Click += new System.EventHandler(this.mnuFoldCurrentLevel_Click);
+            // 
+            // mnuFold
+            // 
+            this.mnuFold.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFold1,
+            this.mnuFold2,
+            this.mnuFold3,
+            this.mnuFold4,
+            this.mnuFold5,
+            this.mnuFold6,
+            this.mnuFold7,
+            this.mnuFold8});
+            this.mnuFold.Name = "mnuFold";
+            this.mnuFold.Size = new System.Drawing.Size(273, 22);
+            this.mnuFold.Text = "Fold";
+            // 
+            // mnuFold1
+            // 
+            this.mnuFold1.Name = "mnuFold1";
+            this.mnuFold1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D1)));
+            this.mnuFold1.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold1.Text = "1";
+            this.mnuFold1.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuFold2
+            // 
+            this.mnuFold2.Name = "mnuFold2";
+            this.mnuFold2.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D2)));
+            this.mnuFold2.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold2.Text = "2";
+            this.mnuFold2.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuFold3
+            // 
+            this.mnuFold3.Name = "mnuFold3";
+            this.mnuFold3.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
+            this.mnuFold3.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold3.Text = "3";
+            this.mnuFold3.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuFold4
+            // 
+            this.mnuFold4.Name = "mnuFold4";
+            this.mnuFold4.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
+            this.mnuFold4.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold4.Text = "4";
+            this.mnuFold4.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuFold5
+            // 
+            this.mnuFold5.Name = "mnuFold5";
+            this.mnuFold5.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D5)));
+            this.mnuFold5.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold5.Text = "5";
+            this.mnuFold5.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuFold6
+            // 
+            this.mnuFold6.Name = "mnuFold6";
+            this.mnuFold6.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D6)));
+            this.mnuFold6.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold6.Text = "6";
+            this.mnuFold6.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuFold7
+            // 
+            this.mnuFold7.Name = "mnuFold7";
+            this.mnuFold7.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D7)));
+            this.mnuFold7.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold7.Text = "7";
+            this.mnuFold7.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuFold8
+            // 
+            this.mnuFold8.Name = "mnuFold8";
+            this.mnuFold8.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D8)));
+            this.mnuFold8.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold8.Text = "8";
+            this.mnuFold8.Click += new System.EventHandler(this.mnuFold1_Click);
+            // 
+            // mnuUnfold
+            // 
+            this.mnuUnfold.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuUnfold1,
+            this.mnuUnfold2,
+            this.mnuUnfold3,
+            this.mnuUnfold4,
+            this.mnuUnfold5,
+            this.mnuUnfold6,
+            this.mnuUnfold7,
+            this.mnuUnfold8});
+            this.mnuUnfold.Name = "mnuUnfold";
+            this.mnuUnfold.Size = new System.Drawing.Size(273, 22);
+            this.mnuUnfold.Text = "Unfold";
+            // 
+            // mnuUnfold1
+            // 
+            this.mnuUnfold1.Name = "mnuUnfold1";
+            this.mnuUnfold1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D1)));
+            this.mnuUnfold1.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold1.Text = "1";
+            this.mnuUnfold1.Click += new System.EventHandler(this.mnuUnfold1_Click);
+            // 
+            // mnuUnfold2
+            // 
+            this.mnuUnfold2.Name = "mnuUnfold2";
+            this.mnuUnfold2.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D2)));
+            this.mnuUnfold2.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold2.Text = "2";
+            this.mnuUnfold2.Click += new System.EventHandler(this.mnuUnfold1_Click);
+            // 
+            // mnuUnfold3
+            // 
+            this.mnuUnfold3.Name = "mnuUnfold3";
+            this.mnuUnfold3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D3)));
+            this.mnuUnfold3.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold3.Text = "3";
+            this.mnuUnfold3.Click += new System.EventHandler(this.mnuUnfold1_Click);
+            // 
+            // mnuUnfold4
+            // 
+            this.mnuUnfold4.Name = "mnuUnfold4";
+            this.mnuUnfold4.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D4)));
+            this.mnuUnfold4.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold4.Text = "4";
+            this.mnuUnfold4.Click += new System.EventHandler(this.mnuUnfold1_Click);
+            // 
+            // mnuUnfold5
+            // 
+            this.mnuUnfold5.Name = "mnuUnfold5";
+            this.mnuUnfold5.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D5)));
+            this.mnuUnfold5.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold5.Text = "5";
+            this.mnuUnfold5.Click += new System.EventHandler(this.mnuUnfold1_Click);
+            // 
+            // mnuUnfold6
+            // 
+            this.mnuUnfold6.Name = "mnuUnfold6";
+            this.mnuUnfold6.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D6)));
+            this.mnuUnfold6.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold6.Text = "6";
+            this.mnuUnfold6.Click += new System.EventHandler(this.mnuUnfold1_Click);
+            // 
+            // mnuUnfold7
+            // 
+            this.mnuUnfold7.Name = "mnuUnfold7";
+            this.mnuUnfold7.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D7)));
+            this.mnuUnfold7.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold7.Text = "7";
+            this.mnuUnfold7.Click += new System.EventHandler(this.mnuUnfold1_Click);
+            // 
+            // mnuUnfold8
+            // 
+            this.mnuUnfold8.Name = "mnuUnfold8";
+            this.mnuUnfold8.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D8)));
+            this.mnuUnfold8.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold8.Text = "8";
+            this.mnuUnfold8.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
             // mnuProgrammingLanguage
             // 
@@ -2095,8 +2311,29 @@
         private System.Windows.Forms.ToolStripMenuItem mnuJsonUglify;
         private System.Windows.Forms.ToolStripMenuItem mnuRunScriptOrCommand;
         private System.Windows.Forms.Panel pnDockRunSnippet;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem19;
         private System.Windows.Forms.ToolStripMenuItem mnuFoldAll;
         private System.Windows.Forms.ToolStripMenuItem mnuUnfoldAll;
+        private System.Windows.Forms.ToolStripMenuItem mnuFoldCurrentLevel;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfoldCurrentLevel;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold1;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold2;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold3;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold4;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold5;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold6;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold7;
+        private System.Windows.Forms.ToolStripMenuItem mnuFold8;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold1;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold2;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold3;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold4;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold5;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold6;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold7;
+        private System.Windows.Forms.ToolStripMenuItem mnuUnfold8;
     }
 }
 

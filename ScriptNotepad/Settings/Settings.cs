@@ -753,6 +753,13 @@ namespace ScriptNotepad.Settings
         public int TextComparisonType { get; set; } = 0; // 0 = invariant, 1 = current, 2 = ordinal..
 
         /// <summary>
+        /// Gets or sets a value indicating whether to show the run snippet tool bar.
+        /// </summary>
+        /// <value><c>true</c> if to show the run snippet tool bar; otherwise, <c>false</c>.</value>
+        [IsSetting]
+        public bool ShowRunSnippetToolbar { get; set; }
+
+        /// <summary>
         /// Gets the text current comparison type <see cref="StringComparison"/>.
         /// </summary>
         public StringComparison TextCurrentComparison

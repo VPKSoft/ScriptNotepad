@@ -76,7 +76,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.TextSorting
         /// <param name="sortFunc">A Func to to do the actual string sorting.</param>
         /// <param name="funcParameters">Optional parameter array in case the sort method function requires parameters.</param>
         public static void Sort(Scintilla scintilla, StringComparison stringComparison, bool descending,
-            Func<IEnumerable<string>, SortTextStyle, bool, IEnumerable<string>> sortFunc , params object[] funcParameters)
+            Func<IEnumerable<string>, SortTextStyle, bool, IEnumerable<string>> sortFunc, params object[] funcParameters)
         {
             try
             {
