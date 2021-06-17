@@ -901,7 +901,8 @@ namespace ScriptNotepad.Settings
 
         private void CbSpellCheckInUse_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(tbHunspellDictionary.Text) || !File.Exists(tbHunspellAffixFile.Text))
+            if (((!File.Exists(tbHunspellDictionary.Text) || !File.Exists(tbHunspellAffixFile.Text)) && !cbUseCustomSpellCheckingLibrary.Checked) || 
+                (!File.Exists(tbSpellCheckingLibraryFile.Text) && cbUseCustomSpellCheckingLibrary.Checked))
             {
                 if (sender.Equals(cbSpellCheckInUse))
                 {

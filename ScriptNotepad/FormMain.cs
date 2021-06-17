@@ -62,7 +62,6 @@ using ScriptNotepadPluginBase.EventArgClasses;
 using ScriptNotepadPluginBase.PluginTemplateInterface;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -71,7 +70,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using RpcSelf;
 using ScriptNotepad.Database.DirectAccess;
@@ -99,7 +97,6 @@ using ScriptNotepad.Editor.Utility;
 using ScriptNotepad.Editor.Utility.ModelHelpers;
 using ScriptNotepad.UtilityClasses.EventArguments;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
-using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 using VPKSoft.DBLocalization;
 using FileSaveHelper = ScriptNotepad.Editor.Utility.ModelHelpers.FileSaveHelper;
 using FileSessionHelper = ScriptNotepad.Editor.EntityHelpers.FileSessionHelper;
@@ -1950,7 +1947,7 @@ namespace ScriptNotepad
                     // only an existing file can be saved directly..
                     if (fileSave.ExistsInFileSystem && !saveAs)
                     {
-                        File.WriteAllBytes(fileSave.FileNameFull, fileSave.GetFileContents());
+                        File.WriteAllBytes(fileSave.FileNameFull, fileSave.GetFileContents() ?? Array.Empty<byte>());
 
                         // update the file system modified time stamp so the software doesn't ask if the file should
                         // be reloaded from the file system..
@@ -1977,7 +1974,7 @@ namespace ScriptNotepad
                             fileSave.FileSystemModified = DateTime.Now;
 
                             // write the new contents of a file to the existing file overriding it's contents..
-                            File.WriteAllBytes(sdAnyFile.FileName, fileSave.GetFileContents());
+                            File.WriteAllBytes(sdAnyFile.FileName, fileSave.GetFileContents() ?? Array.Empty<byte>());
 
                             // the file now exists in the file system..
                             fileSave.ExistsInFileSystem = true;
@@ -2766,6 +2763,118 @@ namespace ScriptNotepad
             FormDialogScriptLoad.Execute(true);
         }
 
+        // fold the current level..
+        private void mnuFoldCurrentLevel_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                if (document.Scintilla.CurrentLine != -1)
+                {
+                    var parent = document.Scintilla.Lines[document.Scintilla.CurrentLine].FoldParent;
+                    if (parent >= 0)
+                    {
+                        document.Scintilla.Lines[parent].FoldLine(sender.Equals(mnuFoldCurrentLevel) ? FoldAction.Contract : FoldAction.Expand);
+                    }
+                }
+            });
+        }
+
+        // fold a specified level..
+        private void mnuFold1_Click(object sender, EventArgs e)
+        {
+            var level = 1;
+            if (sender.Equals(mnuFold2))
+            {
+                level = 2;
+            }
+            else if (sender.Equals(mnuFold3))
+            {
+                level = 3;
+            }
+            else if (sender.Equals(mnuFold4))
+            {
+                level = 4;
+            }
+            else if (sender.Equals(mnuFold5))
+            {
+                level = 5;
+            }
+            else if (sender.Equals(mnuFold6))
+            {
+                level = 6;
+            }
+            else if (sender.Equals(mnuFold7))
+            {
+                level = 7;
+            }
+            else if (sender.Equals(mnuFold8))
+            {
+                level = 8;
+            }
+
+            CurrentDocumentAction(document =>
+            {
+                if (document.Scintilla.CurrentLine != -1)
+                {
+                    foreach (var scintillaLine in document.Scintilla.Lines)
+                    {
+                        if (scintillaLine.FoldLevel - 1023 == level)
+                        {
+                            scintillaLine.FoldLine(FoldAction.Contract);
+                        }
+                    }
+                }
+            });
+        }
+
+        // unfold a specified level..
+        private void mnuUnfold1_Click(object sender, EventArgs e)
+        {
+            var level = 1;
+            if (sender.Equals(mnuUnfold2))
+            {
+                level = 2;
+            }
+            else if (sender.Equals(mnuUnfold3))
+            {
+                level = 3;
+            }
+            else if (sender.Equals(mnuUnfold4))
+            {
+                level = 4;
+            }
+            else if (sender.Equals(mnuUnfold5))
+            {
+                level = 5;
+            }
+            else if (sender.Equals(mnuUnfold6))
+            {
+                level = 6;
+            }
+            else if (sender.Equals(mnuUnfold7))
+            {
+                level = 7;
+            }
+            else if (sender.Equals(mnuUnfold8))
+            {
+                level = 8;
+            }
+            
+            CurrentDocumentAction(document =>
+            {
+                if (document.Scintilla.CurrentLine != -1)
+                {
+                    foreach (var scintillaLine in document.Scintilla.Lines)
+                    {
+                        if (scintillaLine.FoldLevel - 1023 == level)
+                        {
+                            scintillaLine.FoldLine(FoldAction.Expand);
+                        }
+                    }
+                }
+            });
+        }
+
         // a user wanted to find or find and replace something of the active document..
         private void mnuFind_Click(object sender, EventArgs e)
         {
@@ -3389,10 +3498,14 @@ namespace ScriptNotepad
         {
             if (sttcMain.CurrentDocument != null)
             {
-                int styleNum = int.Parse(((ToolStripMenuItem) sender).Tag.ToString());
+                int styleNum = int.Parse(((ToolStripMenuItem) sender).Tag.ToString() ?? "-1");
 
-                Highlight.HighlightWords(sttcMain.CurrentDocument.Scintilla, styleNum,
-                    sttcMain.CurrentDocument.Scintilla.SelectedText, FormSettings.Settings.GetMarkColor(styleNum - 9));
+
+                if (styleNum != -1)
+                {
+                    Highlight.HighlightWords(sttcMain.CurrentDocument.Scintilla, styleNum,
+                        sttcMain.CurrentDocument.Scintilla.SelectedText, FormSettings.Settings.GetMarkColor(styleNum - 9));
+                }
             }
         }
 
@@ -3402,7 +3515,7 @@ namespace ScriptNotepad
             if (sttcMain.CurrentDocument != null)
             {
                 Highlight.ClearStyle(sttcMain.CurrentDocument.Scintilla,
-                    int.Parse(((ToolStripMenuItem) sender).Tag.ToString()));
+                    int.Parse(((ToolStripMenuItem) sender).Tag.ToString() ?? "-1"));
             }
         }
 
@@ -4093,114 +4206,5 @@ namespace ScriptNotepad
                     : WrapVisualFlags.None);
         }
         #endregion
-
-        private void mnuFoldCurrentLevel_Click(object sender, EventArgs e)
-        {
-            CurrentDocumentAction(document =>
-            {
-                if (document.Scintilla.CurrentLine != -1)
-                {
-                    var parent = document.Scintilla.Lines[document.Scintilla.CurrentLine].FoldParent;
-                    if (parent >= 0)
-                    {
-                        document.Scintilla.Lines[parent].FoldLine(sender.Equals(mnuFoldCurrentLevel) ? FoldAction.Contract : FoldAction.Expand);
-                    }
-                }
-            });
-        }
-
-        private void mnuFold1_Click(object sender, EventArgs e)
-        {
-            var level = 1;
-            if (sender.Equals(mnuFold2))
-            {
-                level = 2;
-            }
-            else if (sender.Equals(mnuFold3))
-            {
-                level = 3;
-            }
-            else if (sender.Equals(mnuFold4))
-            {
-                level = 4;
-            }
-            else if (sender.Equals(mnuFold5))
-            {
-                level = 5;
-            }
-            else if (sender.Equals(mnuFold6))
-            {
-                level = 6;
-            }
-            else if (sender.Equals(mnuFold7))
-            {
-                level = 7;
-            }
-            else if (sender.Equals(mnuFold8))
-            {
-                level = 8;
-            }
-
-            CurrentDocumentAction(document =>
-            {
-                if (document.Scintilla.CurrentLine != -1)
-                {
-                    foreach (var scintillaLine in document.Scintilla.Lines)
-                    {
-                        if (scintillaLine.FoldLevel - 1023 == level)
-                        {
-                            scintillaLine.FoldLine(FoldAction.Contract);
-                        }
-                    }
-                }
-            });
-        }
-
-        private void mnuUnfold1_Click(object sender, EventArgs e)
-        {
-            var level = 1;
-            if (sender.Equals(mnuUnfold2))
-            {
-                level = 2;
-            }
-            else if (sender.Equals(mnuUnfold3))
-            {
-                level = 3;
-            }
-            else if (sender.Equals(mnuUnfold4))
-            {
-                level = 4;
-            }
-            else if (sender.Equals(mnuUnfold5))
-            {
-                level = 5;
-            }
-            else if (sender.Equals(mnuUnfold6))
-            {
-                level = 6;
-            }
-            else if (sender.Equals(mnuUnfold7))
-            {
-                level = 7;
-            }
-            else if (sender.Equals(mnuUnfold8))
-            {
-                level = 8;
-            }
-            
-            CurrentDocumentAction(document =>
-            {
-                if (document.Scintilla.CurrentLine != -1)
-                {
-                    foreach (var scintillaLine in document.Scintilla.Lines)
-                    {
-                        if (scintillaLine.FoldLevel - 1023 == level)
-                        {
-                            scintillaLine.FoldLine(FoldAction.Expand);
-                        }
-                    }
-                }
-            });
-        }
     }
 }
