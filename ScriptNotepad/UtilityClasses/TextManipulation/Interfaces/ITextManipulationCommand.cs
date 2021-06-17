@@ -37,11 +37,5 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
         /// <param name="value">The value to manipulate.</param>
         /// <returns>A string containing the manipulated text.</returns>
         string Manipulate(string value);
-
-        /// <summary>
-        /// Gets or sets the name of the method manipulating the text.
-        /// </summary>
-        /// <value>The name of the method manipulating the text.</value>
-        string MethodName { get; set; }
     }
 }
