@@ -2074,7 +2074,7 @@ namespace ScriptNotepad
 
             foreach (ToolStripMenuItem toolStripSubMenuItem in toolStripMenuItem.DropDownItems)
             {
-                var formatNumber = int.Parse(toolStripSubMenuItem.Tag.ToString());
+                var formatNumber = int.Parse(toolStripSubMenuItem.Tag.ToString() ?? "0");
                 string format;
                 switch (formatNumber)
                 {
@@ -2136,7 +2136,7 @@ namespace ScriptNotepad
             {
                 string format;
 
-                int formatNumber = int.Parse(((ToolStripMenuItem) sender).Tag.ToString());
+                int formatNumber = int.Parse(((ToolStripMenuItem) sender).Tag.ToString() ?? "0");
 
                 var useInvariantCulture = FormSettings.Settings.DateFormatUseInvariantCulture;
 
