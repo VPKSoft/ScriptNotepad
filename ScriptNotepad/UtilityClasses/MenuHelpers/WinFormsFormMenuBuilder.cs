@@ -109,15 +109,11 @@ namespace ScriptNotepad.UtilityClasses.MenuHelpers
             get
             {
                 // a way to get a explicit type for a var variable definition..
-                var formMain = (Form)null;
 
                 bool result = false;
 
                 // if there is a main form, do get its instance..
-                if (Application.OpenForms.Count > 0)
-                {
-                    formMain = Application.OpenForms[0];
-                }
+                Form formMain = FormMain.Instance;
 
                 // loop through the open forms within the application..
                 foreach (Form openForm in Application.OpenForms)
@@ -155,13 +151,9 @@ namespace ScriptNotepad.UtilityClasses.MenuHelpers
             ClearPreviousMenu();
 
             // a way to get a explicit type for a var variable definition..
-            var formMain = (Form) null; 
 
             // if there is a main form, do get its instance..
-            if (Application.OpenForms.Count > 0)
-            {
-                formMain = Application.OpenForms[0];
-            }
+            Form formMain = FormMain.Instance;
 
             // loop through the open forms within the application..
             foreach (Form openForm in Application.OpenForms)

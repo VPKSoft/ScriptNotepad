@@ -59,13 +59,12 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 ScriptRunnerText.ScriptCode = code;
 
                 // a reference to a Scintilla document was gotten so do run the code..
-                return new KeyValuePair<string, bool>(await ScriptRunnerText.ExecuteText(text), true);
+                return await ScriptRunnerText.ExecuteText(text);
             }
             catch (Exception ex)
             {
                 ExceptionLogger.LogError(ex);
             }
-
             return new KeyValuePair<string, bool>(string.Empty, false);
         }
 

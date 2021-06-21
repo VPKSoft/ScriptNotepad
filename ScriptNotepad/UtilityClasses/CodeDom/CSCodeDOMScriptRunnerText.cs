@@ -25,6 +25,7 @@ SOFTWARE.
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VPKSoft.ErrorLogger;
 
@@ -72,8 +73,8 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <note type="note">The string may contain various different line endings.</note>
         /// </summary>
         /// <param name="fileContents">The file contents to run the C# script against.</param>
-        /// <returns>A string containing the result as a string of the given manipulated string if the operation was successful; otherwise null.</returns>
-        public async Task<string> ExecuteText(string fileContents)
+        /// <returns>A <see cref="KeyValuePair{TKey,TValue}"/> containing the file contents after the script manipulation and a boolean value indicating whether the script execution succeeded.</returns>
+        public async Task<KeyValuePair<string, bool>> ExecuteText(string fileContents)
         {
             try
             {
@@ -93,14 +94,14 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
 
                 CompileFailed = false;
 
-                return result as string; // indicate a success..
+                return new KeyValuePair<string, bool>(result as string, true); // indicate a success..
             }
             catch (Exception ex)
             {
                 CompileException = ScriptRunner?.PreviousCompileException;
                 CompileFailed = true;
                 ExceptionLogger.LogError(ex);
-                return fileContents; // fail..
+                return new KeyValuePair<string, bool>(fileContents, false); // fail..
             }
         }
 

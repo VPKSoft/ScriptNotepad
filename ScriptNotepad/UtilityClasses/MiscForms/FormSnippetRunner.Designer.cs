@@ -47,6 +47,8 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
             this.cmbCommands.Name = "cmbCommands";
             this.cmbCommands.Size = new System.Drawing.Size(446, 23);
             this.cmbCommands.TabIndex = 1;
+            this.cmbCommands.SelectedValueChanged += new System.EventHandler(this.cmbCommands_SelectedValueChanged);
+            this.cmbCommands.Enter += new System.EventHandler(this.cmbCommands_SelectedValueChanged);
             // 
             // ibRunCommand
             // 

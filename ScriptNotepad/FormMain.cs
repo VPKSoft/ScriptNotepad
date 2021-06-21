@@ -65,6 +65,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -96,6 +97,7 @@ using ErrorHandlingBase = ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandli
 using ScriptNotepad.Editor.Utility;
 using ScriptNotepad.Editor.Utility.ModelHelpers;
 using ScriptNotepad.UtilityClasses.EventArguments;
+using ScriptNotepad.UtilityClasses.ScintillaHelpers;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 using VPKSoft.DBLocalization;
 using FileSaveHelper = ScriptNotepad.Editor.Utility.ModelHelpers.FileSaveHelper;
@@ -136,6 +138,8 @@ namespace ScriptNotepad
                 DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
                 return; // After localization don't do anything more..
             }
+
+            Instance = this;
 
             // register the code page encodings..
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -1308,10 +1312,21 @@ namespace ScriptNotepad
             EnableDisableTimers(false);
 
             // set the flags according to the parameters..
-            fileSave.IsHistory = tabClosing || fileDeleted || closeTab; 
+            fileSave.IsHistory = tabClosing || fileDeleted || closeTab;
 
             // set the exists in file system flag..
             fileSave.ExistsInFileSystem = File.Exists(fileSave.FileNameFull);
+
+            // delete the previous entries of the same file..
+            if (fileSave.IsHistory && !fileSave.ExistsInFileSystem)
+            {
+                var existingFileSaves = ScriptNotepadDbContext.DbContext.FileSaves.Where(f =>
+                    f.IsHistory && f.FileName == fileSave.FileName && f.Id != fileSave.Id &&
+                    f.ExistsInFileSystem == fileSave.ExistsInFileSystem &&
+                    f.SessionId == fileSave.SessionId);
+
+                ScriptNotepadDbContext.DbContext.FileSaves.RemoveRange(existingFileSaves);
+            }
 
             fileSave.CurrentCaretPosition = currentPosition;
 
@@ -1463,6 +1478,8 @@ namespace ScriptNotepad
 
                     fileSave.IsActive = sttcMain.Documents[i].FileTabButton.IsActive;
                     fileSave.VisibilityOrder = i;
+                    fileSave.FoldSave = sttcMain.Documents[i].Scintilla.SaveFolding();
+                    
                     ScriptNotepadDbContext.DbContext.SaveChanges();
                     RecentFileHelper.AddOrUpdateRecentFile(fileSave);
                 }
@@ -1632,6 +1649,8 @@ namespace ScriptNotepad
 
                     // set the zoom value..
                     sttcMain.LastAddedDocument.ZoomPercentage = file.EditorZoomPercentage;
+
+                    sttcMain.LastAddedDocument.Scintilla.RestoreFolding(file.FoldSave);
                 }            
 
                 UpdateDocumentSaveIndicators();
@@ -2047,6 +2066,207 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalEvents
+        // the menu including time formats is about to be opened..
+        private void MnuInsertDateAndTime_DropDownOpening(object sender, EventArgs e)
+        {
+            var toolStripMenuItem = (ToolStripMenuItem) sender;
+            var useInvariantCulture = FormSettings.Settings.DateFormatUseInvariantCulture;
+
+            foreach (ToolStripMenuItem toolStripSubMenuItem in toolStripMenuItem.DropDownItems)
+            {
+                var formatNumber = int.Parse(toolStripSubMenuItem.Tag.ToString());
+                string format;
+                switch (formatNumber)
+                {
+                    case 0:
+                        format = FormSettings.Settings.DateFormat1;
+                        break;
+                    case 1:
+                        format = FormSettings.Settings.DateFormat2;
+                        break;
+                    case 2:
+                        format = FormSettings.Settings.DateFormat3;
+                        break;
+                    case 3:
+                        format = FormSettings.Settings.DateFormat4;
+                        break;
+                    case 4:
+                        format = FormSettings.Settings.DateFormat5;
+                        break;
+                    case 5:
+                        format = FormSettings.Settings.DateFormat6;
+                        break;
+                    default:
+                        format = FormSettings.Settings.DateFormat1;
+                        break;
+                }
+
+                // must try in case the user has specified and invalid date-time format..
+                try
+                {
+
+                    toolStripSubMenuItem.Text = DBLangEngine.GetMessage("msgDateTimeMenuItemText",
+                        "Insert date and time type {0}: '{1}'|A message describing a text to insert a date and/or time to a Scintilla instance via a menu strip item.",
+                        formatNumber + 1,
+                        DateTime.Now.ToString(format,
+                            // we need to ensure that an overridden thread locale will not affect the non-invariant culture setting..
+                            useInvariantCulture ? CultureInfo.InvariantCulture : CultureInfo.InstalledUICulture));
+                }
+                catch (Exception ex)
+                {
+                    toolStripSubMenuItem.Text = DBLangEngine.GetMessage(
+                        "msgDateTimeInvalidFormat",
+                        "Invalid date and/or time format|The user has issued an non-valid formatted date and/or time formatting string.");
+
+                    // log the exception..
+                    ExceptionLogger.LogError(ex);
+                }
+            }
+        }
+
+        private void GotoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentScintillaAction(FormDialogQueryJumpLocation.Execute);
+        }
+
+        // user wants to insert a date and/or time to the current Scintilla document..
+        private void MnuDate1_Click(object sender, EventArgs e)
+        {
+            CurrentScintillaAction(scintilla =>
+            {
+                string format;
+
+                int formatNumber = int.Parse(((ToolStripMenuItem) sender).Tag.ToString());
+
+                var useInvariantCulture = FormSettings.Settings.DateFormatUseInvariantCulture;
+
+                switch (formatNumber)
+                {
+                    case 0:
+                        format = FormSettings.Settings.DateFormat1;
+                        break;
+                    case 1:
+                        format = FormSettings.Settings.DateFormat2;
+                        break;
+                    case 2:
+                        format = FormSettings.Settings.DateFormat3;
+                        break;
+                    case 3:
+                        format = FormSettings.Settings.DateFormat4;
+                        break;
+                    case 4:
+                        format = FormSettings.Settings.DateFormat5;
+                        break;
+                    case 5:
+                        format = FormSettings.Settings.DateFormat6;
+                        break;
+                    default:
+                        format = FormSettings.Settings.DateFormat1;
+                        break;
+                }
+
+                try
+                {
+                    scintilla.InsertText(scintilla.CurrentPosition,
+                        DateTime.Now.ToString(format,
+                            // we need to ensure that an overridden thread locale will not affect the non-invariant culture setting..
+                            useInvariantCulture ? CultureInfo.InvariantCulture : CultureInfo.InstalledUICulture));
+                }
+                // must try in case the user has specified and invalid date-time format..
+                catch (Exception ex)
+                {
+                    // TODO:: Show an error dialog..
+
+                    // log the exception..
+                    ExceptionLogger.LogError(ex);
+                }
+            });
+        }
+
+        // handles navigation to the next and previous tab and
+        // to the next and previous session..
+        private void MnuNextPrevious_Click(object sender, EventArgs e)
+        {
+            if (sender.Equals(mnuNextTab))
+            {
+                sttcMain.NextTab(true);
+            }
+            else if (sender.Equals(mnuPreviousTab))
+            {
+                sttcMain.PreviousTab(true);
+            }
+        }
+
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            // a user wishes to navigate within the FormSearchResultTree..
+            if (e.OnlyAlt() && e.KeyCodeIn(Keys.Left, Keys.Right, Keys.X))
+            {
+                // validate that there is an instance of the FormSearchResultTree which is visible..
+                if (FormSearchResultTree.PreviousInstance != null && FormSearchResultTree.PreviousInstance.Visible)
+                {
+                    // Alt+Left navigates to the previous tree node within the form..
+                    if (e.KeyCode == Keys.Left) 
+                    {
+                        FormSearchResultTree.PreviousInstance.PreviousOccurrence();
+                    }
+                    // Alt+Right navigates to the next tree node within the form..
+                    else if (e.KeyCode == Keys.Right)
+                    {
+                        FormSearchResultTree.PreviousInstance.NextOccurrence();
+                    }
+                    // Alt+X closes the FormSearchResultTree instance..
+                    else
+                    {
+                        FormSearchResultTree.PreviousInstance.CloseTree();
+                    }
+
+                    // this is handled..
+                    e.Handled = true;
+                }
+                return;
+            }
+
+            // a user pressed the insert key a of a keyboard, which indicates toggling for
+            // insert / override mode for the Scintilla control..
+            if (e.KeyCode == Keys.Insert && e.NoModifierKeysDown())
+            {
+                // only if a document exists..
+                if (sttcMain.CurrentDocument != null)
+                {
+                    // ..set the insert / override text for the status strip..
+                    StatusStripTexts.SetInsertOverrideStatusStripText(sttcMain.CurrentDocument, true);
+                }
+                return;
+            }
+
+            if (e.KeyCode == Keys.F3)
+            {
+                if (e.OnlyShift() || e.NoModifierKeysDown())
+                {
+                    // find the next result if available..
+                    FormSearchAndReplace.Instance.Advance(!e.OnlyShift());
+
+                    // this is handled..
+                    e.Handled = true;
+                    return;
+                }
+            }
+
+            if (e.KeyCodeIn(Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.PageDown, Keys.PageUp))
+            {
+                // set the flag to suspend the selection update to avoid excess CPU load..
+                suspendSelectionUpdate = true;
+            }
+        }
+
+        // the navigation menu is opening, so set the drop-down items states accordingly..
+        private void MnuNavigation_DropDownOpening(object sender, EventArgs e)
+        {
+            mnuNextTab.Enabled = sttcMain.DocumentsCount > 0;
+            mnuPreviousTab.Enabled = sttcMain.DocumentsCount > 0;
+        }
+
         private void FormMain_ApplicationActivated(object sender, EventArgs e)
         {
             FormSearchAndReplace.Instance.TopMost = true;
@@ -2911,6 +3131,8 @@ namespace ScriptNotepad
             tmAutoSave.Enabled = false;
             tmGUI.Enabled = false;
             tmSpellCheck.Enabled = false;
+
+            Instance = null;
 
             // unsubscribe the external event handlers and dispose of the items created by other classes..
             DisposeExternal();
@@ -3885,6 +4107,8 @@ namespace ScriptNotepad
         #endregion
 
         #region InternalProperties        
+        internal static FormMain Instance { get; private set; }
+
         /// <summary>
         /// Sets the active <see cref="Scintilla"/> document.
         /// </summary>

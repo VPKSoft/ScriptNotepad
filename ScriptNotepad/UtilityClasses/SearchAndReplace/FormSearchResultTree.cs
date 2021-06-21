@@ -246,9 +246,9 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 // ..raise the event if subscribed..
                 RequestDockMainForm?.Invoke(this, new EventArgs());
             }
-            else if (Height < Application.OpenForms[0].Height * 20 / 100)
+            else if (Height < FormMain.Instance.Height * 20 / 100)
             {
-                Height = Application.OpenForms[0].Height * 20 / 100;
+                Height = FormMain.Instance.Height * 20 / 100;
             }
         }
 

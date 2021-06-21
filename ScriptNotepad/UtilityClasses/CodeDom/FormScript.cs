@@ -343,13 +343,22 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 if (SelectedScriptType == 0)
                 {
                     // a reference to a Scintilla document was gotten so do run the code..
-                    args.Scintilla.Text = await scriptRunnerText.ExecuteText(args.Scintilla.Text);
+                    var result = await scriptRunnerText.ExecuteText(args.Scintilla.Text);
+                    if (result.Value)
+                    {
+                        args.Scintilla.Text = result.Key;
+                    }
                 }
                 // a line contents manipulation script was requested..
                 else if (SelectedScriptType == 1)
                 {
                     // a reference to a Scintilla document was gotten so do run the code..
-                    args.Scintilla.Text = (await scriptRunnerLines.ExecuteScript(ScintillaLines.GetLinesAsList(args.Scintilla)))?.ToString();
+                    var result =
+                        await scriptRunnerLines.ExecuteLinesAsync(ScintillaLines.GetLinesAsList(args.Scintilla));
+                    if (result.Value)
+                    {
+                        args.Scintilla.Text = result.Key;
+                    }
                 }
             }
         }

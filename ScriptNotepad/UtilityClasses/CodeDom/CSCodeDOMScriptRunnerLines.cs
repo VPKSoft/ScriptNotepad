@@ -79,8 +79,8 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
         /// <note type="note">The line strings may contain various different line endings.</note>
         /// </summary>
         /// <param name="fileLines">The file lines to run the C# script against.</param>
-        /// <returns>A string containing the concatenated result of the lines manipulated as a string if the operation was successful; otherwise null.</returns>
-        public async Task<string> ExecuteLinesAsync(List<string> fileLines)
+        /// <returns>A <see cref="KeyValuePair{TKey,TValue}"/> containing the file contents after the script manipulation and a boolean value indicating whether the script execution succeeded.</returns>
+        public async Task<KeyValuePair<string, bool>> ExecuteLinesAsync(List<string> fileLines)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
 
                 CompileFailed = false;
 
-                return result as string; // indicate a success..
+                return new KeyValuePair<string, bool>(result as string, true); // indicate a success..
             }
             catch (Exception ex)
             {
@@ -108,7 +108,7 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 CompileFailed = true;
                 ExceptionLogger.LogError(ex);
                 // fail..
-                return string.Concat(fileLines);
+                return new KeyValuePair<string, bool>(string.Concat(fileLines), false);
             }
         }
 

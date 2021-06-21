@@ -8,8 +8,6 @@
     <Product>ScriptNotepad</Product>
     <Description>A tabbed notepad software with scripting support (C#).</Description>
     <Copyright>Copyright © VPKSoft 2021</Copyright>
-    <AssemblyVersion>1.1.2.0</AssemblyVersion>
-    <FileVersion>1.1.2.0</FileVersion>
     <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -31,7 +29,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
     <PackageTags>notepad script editor</PackageTags>
-    <Version>1.1.2</Version>
+    <Version>1.1.3</Version>
     <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
@@ -55,7 +53,6 @@
     <Compile Update="DialogForms\FormDialogSelectFileTab.Designer.cs">
       <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
     </Compile>
-    <Compile Update="EventHandlerDelegation\FormMainHandlers.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

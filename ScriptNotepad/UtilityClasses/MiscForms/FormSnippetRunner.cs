@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ScriptNotepad.Database.Entity.Context;
+﻿using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.Localization;
@@ -12,7 +7,12 @@ using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 using ScriptNotepad.UtilityClasses.TextManipulation.Json;
-using VPKSoft.ErrorLogger;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.UtilityClasses.MiscForms
@@ -93,25 +93,7 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
         /// Gets the main form instance of the application.
         /// </summary>
         /// <value>The main form instance of the application.</value>
-        FormMain FormMain
-        {
-            get
-            {
-                try
-                {
-                    if (Application.OpenForms.Count > 0)
-                    {
-                        return (FormMain) Application.OpenForms[0];
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ExceptionLogger.LogError(ex);
-                }
-
-                return null;
-            }
-        }
+        FormMain FormMain => FormMain.Instance;
         #endregion
 
         #region InternalEvents
@@ -140,6 +122,11 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
         {
             FormSettings.Settings.ShowRunSnippetToolbar = false;
             Close();
+        }
+
+        private void cmbCommands_SelectedValueChanged(object sender, EventArgs e)
+        {
+            IndicateError(false);
         }
 
         private void FormSnippetRunner_Shown(object sender, EventArgs e)
@@ -179,6 +166,30 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
         #endregion
 
         #region PrivateMethods
+
+        private void IndicateError(bool error)
+        {
+            if (cmbCommands.InvokeRequired)
+            {
+                cmbCommands.Invoke(new MethodInvoker(() =>
+                {
+                    cmbCommands.Font =
+                        error
+                            ? new Font(cmbCommands.Font, FontStyle.Bold)
+                            : new Font(cmbCommands.Font, FontStyle.Regular);
+                    cmbCommands.ForeColor = error ? Color.Red : Color.Black;
+                }));
+            }
+            else
+            {
+                cmbCommands.Font =
+                    error
+                        ? new Font(cmbCommands.Font, FontStyle.Bold)
+                        : new Font(cmbCommands.Font, FontStyle.Regular);
+                cmbCommands.ForeColor = error ? Color.Red : Color.Black;
+            }
+        }
+
         private async Task RunCommand()
         {
             if (cmbCommands.SelectedItem != null && FormMain.ActiveScintilla != null)
@@ -194,6 +205,8 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
                         {
                             FormMain.ActiveScintilla.Text = result.Key;
                         }
+
+                        IndicateError(!result.Value);
                     }
 
                     if (codeSnippet.ScriptTextManipulationType == ScriptSnippetType.Lines)
@@ -205,6 +218,7 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
                         {
                             FormMain.ActiveScintilla.Text = result.Key;
                         }
+                        IndicateError(!result.Value);
                     }
                 }
 
