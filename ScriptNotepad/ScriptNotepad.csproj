@@ -342,9 +342,9 @@
   <ItemGroup>
     <PackageReference Include="ColorMinePortable" Version="2.0.1" />
     <PackageReference Include="DotNetZip" Version="1.15.0" />
-    <PackageReference Include="FluentMigrator" Version="3.2.16" />
-    <PackageReference Include="FluentMigrator.Runner" Version="3.2.16" />
-    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.2.16" />
+    <PackageReference Include="FluentMigrator" Version="3.2.17" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.17" />
+    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.2.17" />
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -365,8 +365,8 @@
     <PackageReference Include="ScintillaDiff.SUO" Version="1.1.1" />
     <PackageReference Include="ScintillaNetPrinting.SUO" Version="1.0.6" />
     <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.5" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.114.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.114.4" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
     <PackageReference Include="unofficial.ScintillaNET" Version="3.8.7" />
     <PackageReference Include="UTF.Unknown" Version="2.3.0" />
