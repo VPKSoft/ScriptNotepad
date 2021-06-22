@@ -1177,6 +1177,17 @@ namespace ScriptNotepad
         }
 
         /// <summary>
+        /// Determines whether this instance can display a query dialog. I.e. the main for is active and visible.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can display a query dialog; otherwise, <c>false</c>.</returns>
+        private bool CanDisplayQueryDialog()
+        {
+            var result = !runningConstructor && MessageBoxBase.MessageBoxInstances.Count == 0 && Visible &&
+                         (WindowState == FormWindowState.Normal || WindowState == FormWindowState.Maximized);
+            return result;
+        }
+
+        /// <summary>
         /// Checks if an open document has been changed in the file system or removed from the file system and 
         /// queries the user form appropriate action for the file.
         /// </summary>
@@ -1199,7 +1210,7 @@ namespace ScriptNotepad
                 {
                     // query the user if one wishes to reload
                     // the changed file from the disk..
-                    if (fileSave.GetShouldQueryDiskReload() && !runningConstructor)
+                    if (CanDisplayQueryDialog() && fileSave.GetShouldQueryDiskReload())
                     { 
                         if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasChanged", "The file '{0}' has been changed. Reload from the file system?|As in the opened file has been changed outside the software so do as if a reload should happen", fileSave.FileNameFull),
@@ -1240,7 +1251,7 @@ namespace ScriptNotepad
                 {
                     // query the user if one wishes to keep a deleted
                     // file from the file system in the editor..
-                    if (fileSave.ShouldQueryKeepFile() && !runningConstructor)
+                    if (CanDisplayQueryDialog() && fileSave.ShouldQueryKeepFile())
                     {
                         if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasBeenDeleted", "The file '{0}' has been deleted. Keep the file in the editor?|As in the opened file has been deleted from the file system and user is asked if to keep the deleted file in the editor", fileSave.FileNameFull),
@@ -1268,7 +1279,7 @@ namespace ScriptNotepad
                                 sttcMain.Documents[i].Scintilla.CurrentPosition);
                         }
                     }
-                    else if (fileSave.ShouldQueryFileReappeared() && !runningConstructor)
+                    else if (CanDisplayQueryDialog() && fileSave.ShouldQueryFileReappeared())
                     {
                         if (MessageBoxExtended.Show(
                             DBLangEngine.GetMessage("msgFileHasReappeared", "The file '{0}' has reappeared. Reload from the file system?|As in the file has reappeared to the file system and the software queries whether to reload it's contents from the file system", fileSave.FileNameFull),
