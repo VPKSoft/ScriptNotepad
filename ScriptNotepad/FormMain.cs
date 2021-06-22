@@ -558,6 +558,8 @@ namespace ScriptNotepad
             // if there is an active document..
             CurrentDocumentAction(document =>
             {
+                sttcMain.SuspendTextChangedEvents = true; // suspend the changed events on the ScintillaTabbedTextControl..
+
                 // ..then undo if it's possible..
                 if (document.Scintilla.CanUndo)
                 {
@@ -576,6 +578,7 @@ namespace ScriptNotepad
                         document.FileTabButton.IsSaved = !IsFileChanged(fileSave);
                     }
                 }
+                sttcMain.SuspendTextChangedEvents = false; // suspend the changed events on the ScintillaTabbedTextControl..
             });
 
             UpdateToolbarButtonsAndMenuItems();

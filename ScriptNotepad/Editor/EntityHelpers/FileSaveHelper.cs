@@ -435,7 +435,7 @@ namespace ScriptNotepad.Editor.EntityHelpers
         /// <param name="value">The value.</param>
         public static void SetDatabaseModified(this FileSave fileSave, DateTime value)
         {
-            DataIndexer[fileSave.Id].PreviousDbModified = fileSave.DatabaseModified;
+            fileSave.SetPreviousDbModified(fileSave.DatabaseModified);
             fileSave.DatabaseModified = value;
         }
     }
