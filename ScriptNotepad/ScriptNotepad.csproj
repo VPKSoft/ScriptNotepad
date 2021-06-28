@@ -383,7 +383,7 @@
     <PackageReference Include="VPKSoft.ScintillaUrlDetect.SUO" Version="1.0.6" />
     <PackageReference Include="VPKSoft.SearchText" Version="1.0.3" />
     <PackageReference Include="VPKSoft.Utils" Version="1.0.7" />
-    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.6" />
+    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.7" />
     <PackageReference Include="VPKSoft.XmlSettings" Version="1.0.1" />
     <PackageReference Include="WPFHexaEditor" Version="2.1.7" />
   </ItemGroup>
