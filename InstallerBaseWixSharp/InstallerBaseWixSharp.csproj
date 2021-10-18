@@ -29,7 +29,7 @@
     <None Remove="InstallerBaseWixSharp.msi" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="WixSharp" Version="1.18.1" />
+    <PackageReference Include="WixSharp" Version="1.19.0" />
     <PackageReference Include="WixSharp.bin" Version="1.18.1" />
   </ItemGroup>
   <ItemGroup>
