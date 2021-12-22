@@ -58,7 +58,7 @@ jobs:
       
     - name: Publish the installer to the release tag
       run: |
-        $files = Get-ChildItem $env:App_Project_Directory -r -Filter *ScriptNotepad*.msi # use the mask to discard possible third party packages..
+        $files = Get-ChildItem $env:App_Project_Directory -r -Filter *ScriptNotepad*.msi
         for ($i = 0; $i -lt $files.Count; $i++) 
         {
             $file = $files[$i].FullName
