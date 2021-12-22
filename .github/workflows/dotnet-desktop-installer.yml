@@ -22,7 +22,7 @@ jobs:
       AppInstaller_Project_Directory: InstallerBaseWixSharp
       Tag: ${{github.ref_name}}
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      Repo: ${{ GITHUB_REPOSITORY }}
+      Repo: $GITHUB_REPOSITORY
       
     steps:
     - name: Checkout
