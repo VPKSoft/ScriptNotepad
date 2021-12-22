@@ -210,6 +210,7 @@ namespace ScriptNotepad
 
             DBLangEngine.UseCulture = FormSettings.Settings.Culture; // set the localization value..
 
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());

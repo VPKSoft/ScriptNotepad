@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <AssemblyTitle>PluginTemplate</AssemblyTitle>
     <Company>VPKSoft</Company>
     <Product>PluginTemplate</Product>
@@ -58,6 +58,6 @@
     <None Include="Resources\tab_deli_localization.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ScriptNotepadPluginBase.SUO" Version="1.0.5" />
+    <PackageReference Include="ScriptNotepadPluginBase.NET" Version="1.0.7" />
   </ItemGroup>
 </Project>
