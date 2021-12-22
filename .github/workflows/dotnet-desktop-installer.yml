@@ -1,4 +1,4 @@
-name: .NET Desktop
+name: .NET Desktop Installer
 
 on:
   release:
@@ -48,7 +48,7 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Build the ScriptNotepad project
+    # Build the ScriptNotepad installer project
     - name: Build the ScriptNotepad project
       run: msbuild $env:App_Project_Path /p:Configuration=$env:Configuration
 
@@ -56,4 +56,11 @@ jobs:
     - name: Build the ScriptNotepad project
       run: msbuild $env:AppInstaller_Project_Path /p:Configuration=$env:Configuration
       
-
+    - name: Publish the installer to the release tag
+      run: |
+        $files = Get-ChildItem $Env:CIRCLE_WORKING_DIRECTORY -r -Filter *ScriptNotepad*.msi # use the mask to discard possible third party packages..
+        for ($i = 0; $i -lt $files.Count; $i++) 
+        {
+            $file = $files[$i].FullName
+            Write-Output (-join("Installer package:", $file, "."))
+        }

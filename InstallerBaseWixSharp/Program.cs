@@ -64,7 +64,7 @@ namespace InstallerBaseWixSharp
             {
                 try
                 {
-                    var info = FileVersionInfo.GetVersionInfo(@"..\ScriptNotepad\bin\Release\net5.0-windows\" + Executable);
+                    var info = FileVersionInfo.GetVersionInfo(@"..\ScriptNotepad\bin\Release\net6.0-windows\" + Executable);
                     appVersion = string.Concat(info.FileMajorPart, ".", info.FileMinorPart, ".", info.FileBuildPart);
                     return string.Concat(AppName, "_", info.FileMajorPart, ".", info.FileMinorPart, ".", info.FileBuildPart);
                 }
@@ -77,7 +77,7 @@ namespace InstallerBaseWixSharp
             
             var project = new ManagedProject("ScriptNotepad",
                 new Dir(InstallDirectory,
-                    new WixSharp.Files(@"..\ScriptNotepad\bin\Release\net5.0-windows\*.*"),
+                    new WixSharp.Files(@"..\ScriptNotepad\bin\Release\net6.0-windows\*.*"),
                     new File("Program.cs")),
                 new Dir($@"%ProgramMenu%\{Company}\{AppName}",
                     // ReSharper disable three times StringLiteralTypo

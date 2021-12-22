@@ -9,7 +9,7 @@ on:
 jobs:
 
   build:
-    environment: WinformsAppBuil
+    environment: WinformsAppBuild
     strategy:
       matrix:
         configuration: [Release]
