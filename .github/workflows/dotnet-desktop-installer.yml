@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-
+    environment: WinformsAppBuild
     strategy:
       matrix:
         configuration: [Release]
@@ -73,5 +73,3 @@ jobs:
 
             dotnet-gitreleasemanager $arguments
         }
-
-        Write-Output (-join("The tag name is:", $Tag))
