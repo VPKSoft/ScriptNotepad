@@ -30,7 +30,7 @@ jobs:
         fetch-depth: 0
         
     # Install the .NET 6 workload
-    - name: Install .NET 6
+    - name: Install .NET Core 3.1 and .NET 6
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: |
@@ -72,7 +72,7 @@ jobs:
             Write-Output (-join("Installer package:", $file, "."))
 
             # the Github release (ghr)..
-            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", $env:GITHUB_REPOSITORY, "-a", $file)
+            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", "VPKSoft/ScriptNotepad", "-a", $file)
 
             dotnet-gitreleasemanager $arguments
         }
