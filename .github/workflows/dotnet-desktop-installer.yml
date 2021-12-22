@@ -20,6 +20,7 @@ jobs:
       App_Project_Path: ScriptNotepad\ScriptNotepad.csproj
       AppInstaller_Project_Path: InstallerBaseWixSharp\InstallerBaseWixSharp.csproj
       AppInstaller_Project_Directory: InstallerBaseWixSharp
+      Tag: ${{github.ref_name}}
       
     steps:
     - name: Checkout
@@ -66,3 +67,5 @@ jobs:
             $file = $files[$i].FullName
             Write-Output (-join("Installer package:", $file, "."))
         }
+
+        Write-Output (-join("The tag name is:", $Tag))
