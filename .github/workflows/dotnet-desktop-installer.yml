@@ -22,6 +22,7 @@ jobs:
       AppInstaller_Project_Directory: InstallerBaseWixSharp
       Tag: ${{github.ref_name}}
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      Repo: ${{ GITHUB_REPOSITORY }}
       
     steps:
     - name: Checkout
@@ -69,7 +70,7 @@ jobs:
             Write-Output (-join("Installer package:", $file, "."))
 
             # the Github release (ghr)..
-            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", $env:$GITHUB_REPOSITORY, "-a", $file)
+            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", $env:Repo, "-a", $file)
 
             dotnet-gitreleasemanager $arguments
         }
