@@ -71,7 +71,7 @@ jobs:
             $file = $files[$i].FullName
             Write-Output (-join("Installer package:", $file, "."))
 
-            # the Github release (ghr)..
+            # The Github Release Manager (ghr)...
             $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", "ScriptNotepad", "-a", $file)
 
             dotnet-gitreleasemanager $arguments
