@@ -72,7 +72,9 @@ jobs:
             Write-Output (-join("Installer package:", $file, "."))
 
             # the Github release (ghr)..
-            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", "VPKSoft/ScriptNotepad", "-a", $file)
+            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", "ScriptNotepad", "-a", $file)
 
             dotnet-gitreleasemanager $arguments
         }
+
+        Write-Output "Installer release complete."
