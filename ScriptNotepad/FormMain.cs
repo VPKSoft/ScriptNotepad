@@ -3866,6 +3866,19 @@ namespace ScriptNotepad
             });
         }
 
+        private void mnuXMLPrettify_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                if (document.Tag != null)
+                {
+                    document.Scintilla.Text = sender.Equals(mnuXMLPrettify)
+                        ? document.Scintilla.Text.XmlPrettify()
+                        : document.Scintilla.Text.XmlUglify();
+                }
+            });
+        }
+
         private void mnuRunScriptOrCommand_Click(object sender, EventArgs e)
         {
             ToggleSnippetRunner();

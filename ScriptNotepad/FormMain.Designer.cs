@@ -229,6 +229,8 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuJsonPrettify = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuJsonUglify = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem20 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuXMLPrettify = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNavigation = new System.Windows.Forms.ToolStripMenuItem();
@@ -242,6 +244,7 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
+            this.mnuXMLUglify = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -1621,7 +1624,7 @@
             // 
             this.mnuFold1.Name = "mnuFold1";
             this.mnuFold1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D1)));
-            this.mnuFold1.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold1.Size = new System.Drawing.Size(116, 22);
             this.mnuFold1.Text = "1";
             this.mnuFold1.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1629,7 +1632,7 @@
             // 
             this.mnuFold2.Name = "mnuFold2";
             this.mnuFold2.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D2)));
-            this.mnuFold2.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold2.Size = new System.Drawing.Size(116, 22);
             this.mnuFold2.Text = "2";
             this.mnuFold2.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1637,7 +1640,7 @@
             // 
             this.mnuFold3.Name = "mnuFold3";
             this.mnuFold3.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
-            this.mnuFold3.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold3.Size = new System.Drawing.Size(116, 22);
             this.mnuFold3.Text = "3";
             this.mnuFold3.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1645,7 +1648,7 @@
             // 
             this.mnuFold4.Name = "mnuFold4";
             this.mnuFold4.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
-            this.mnuFold4.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold4.Size = new System.Drawing.Size(116, 22);
             this.mnuFold4.Text = "4";
             this.mnuFold4.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1653,7 +1656,7 @@
             // 
             this.mnuFold5.Name = "mnuFold5";
             this.mnuFold5.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D5)));
-            this.mnuFold5.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold5.Size = new System.Drawing.Size(116, 22);
             this.mnuFold5.Text = "5";
             this.mnuFold5.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1661,7 +1664,7 @@
             // 
             this.mnuFold6.Name = "mnuFold6";
             this.mnuFold6.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D6)));
-            this.mnuFold6.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold6.Size = new System.Drawing.Size(116, 22);
             this.mnuFold6.Text = "6";
             this.mnuFold6.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1669,7 +1672,7 @@
             // 
             this.mnuFold7.Name = "mnuFold7";
             this.mnuFold7.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D7)));
-            this.mnuFold7.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold7.Size = new System.Drawing.Size(116, 22);
             this.mnuFold7.Text = "7";
             this.mnuFold7.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1677,7 +1680,7 @@
             // 
             this.mnuFold8.Name = "mnuFold8";
             this.mnuFold8.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D8)));
-            this.mnuFold8.Size = new System.Drawing.Size(180, 22);
+            this.mnuFold8.Size = new System.Drawing.Size(116, 22);
             this.mnuFold8.Text = "8";
             this.mnuFold8.Click += new System.EventHandler(this.mnuFold1_Click);
             // 
@@ -1701,7 +1704,7 @@
             this.mnuUnfold1.Name = "mnuUnfold1";
             this.mnuUnfold1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D1)));
-            this.mnuUnfold1.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold1.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold1.Text = "1";
             this.mnuUnfold1.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1710,7 +1713,7 @@
             this.mnuUnfold2.Name = "mnuUnfold2";
             this.mnuUnfold2.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D2)));
-            this.mnuUnfold2.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold2.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold2.Text = "2";
             this.mnuUnfold2.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1719,7 +1722,7 @@
             this.mnuUnfold3.Name = "mnuUnfold3";
             this.mnuUnfold3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D3)));
-            this.mnuUnfold3.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold3.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold3.Text = "3";
             this.mnuUnfold3.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1728,7 +1731,7 @@
             this.mnuUnfold4.Name = "mnuUnfold4";
             this.mnuUnfold4.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D4)));
-            this.mnuUnfold4.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold4.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold4.Text = "4";
             this.mnuUnfold4.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1737,7 +1740,7 @@
             this.mnuUnfold5.Name = "mnuUnfold5";
             this.mnuUnfold5.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D5)));
-            this.mnuUnfold5.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold5.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold5.Text = "5";
             this.mnuUnfold5.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1746,7 +1749,7 @@
             this.mnuUnfold6.Name = "mnuUnfold6";
             this.mnuUnfold6.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D6)));
-            this.mnuUnfold6.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold6.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold6.Text = "6";
             this.mnuUnfold6.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1755,7 +1758,7 @@
             this.mnuUnfold7.Name = "mnuUnfold7";
             this.mnuUnfold7.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D7)));
-            this.mnuUnfold7.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold7.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold7.Text = "7";
             this.mnuUnfold7.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1764,7 +1767,7 @@
             this.mnuUnfold8.Name = "mnuUnfold8";
             this.mnuUnfold8.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D8)));
-            this.mnuUnfold8.Size = new System.Drawing.Size(180, 22);
+            this.mnuUnfold8.Size = new System.Drawing.Size(148, 22);
             this.mnuUnfold8.Text = "8";
             this.mnuUnfold8.Click += new System.EventHandler(this.mnuUnfold1_Click);
             // 
@@ -1905,7 +1908,10 @@
             this.mnuWrapDocumentTo,
             this.toolStripSeparator8,
             this.mnuJsonPrettify,
-            this.mnuJsonUglify});
+            this.mnuJsonUglify,
+            this.toolStripMenuItem20,
+            this.mnuXMLPrettify,
+            this.mnuXMLUglify});
             this.mnuText.Name = "mnuText";
             this.mnuText.Size = new System.Drawing.Size(40, 20);
             this.mnuText.Text = "Text";
@@ -1990,6 +1996,18 @@
             this.mnuJsonUglify.Size = new System.Drawing.Size(205, 22);
             this.mnuJsonUglify.Text = "Json to one line";
             this.mnuJsonUglify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
+            // 
+            // toolStripMenuItem20
+            // 
+            this.toolStripMenuItem20.Name = "toolStripMenuItem20";
+            this.toolStripMenuItem20.Size = new System.Drawing.Size(202, 6);
+            // 
+            // mnuXMLPrettify
+            // 
+            this.mnuXMLPrettify.Name = "mnuXMLPrettify";
+            this.mnuXMLPrettify.Size = new System.Drawing.Size(205, 22);
+            this.mnuXMLPrettify.Text = "Prettify XML";
+            this.mnuXMLPrettify.Click += new System.EventHandler(this.mnuXMLPrettify_Click);
             // 
             // mnuWindow
             // 
@@ -2088,6 +2106,13 @@
             // pdPrint
             // 
             this.pdPrint.UseEXDialog = true;
+            // 
+            // mnuXMLUglify
+            // 
+            this.mnuXMLUglify.Name = "mnuXMLUglify";
+            this.mnuXMLUglify.Size = new System.Drawing.Size(205, 22);
+            this.mnuXMLUglify.Text = "XML to one line";
+            this.mnuXMLUglify.Click += new System.EventHandler(this.mnuXMLPrettify_Click);
             // 
             // FormMain
             // 
@@ -2334,6 +2359,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuUnfold6;
         private System.Windows.Forms.ToolStripMenuItem mnuUnfold7;
         private System.Windows.Forms.ToolStripMenuItem mnuUnfold8;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem20;
+        private System.Windows.Forms.ToolStripMenuItem mnuXMLPrettify;
+        private System.Windows.Forms.ToolStripMenuItem mnuXMLUglify;
     }
 }
 

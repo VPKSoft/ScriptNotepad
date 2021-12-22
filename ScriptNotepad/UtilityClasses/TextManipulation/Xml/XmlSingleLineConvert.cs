@@ -25,18 +25,20 @@ SOFTWARE.
 #endregion
 
 using System;
-using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Text;
+using System.Xml;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Json
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
 {
     /// <summary>
-    /// A class to convert single-line JSON to formatted JSON.
+    /// A class to convert formatted XML to a single-line XML.
     /// Implements the <see cref="TextManipulationCommandBase" />
     /// </summary>
     /// <seealso cref="TextManipulationCommandBase" />
-    public class JsonMultilineConvert: TextManipulationCommandBase
+    public class XmlSingleLineConvert: TextManipulationCommandBase
     {
         /// <summary>
         /// Manipulates the specified text value.
@@ -47,14 +49,30 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.Json
         {
             try
             {
-                var result = JToken.Parse(value).ToString();
+                var doc = new XmlDocument();
 
-                return result; 
+                var utf16 = value.Contains("encoding=\"utf-16\"");
+
+                doc.LoadXml(value);
+
+                var memoryStream = new MemoryStream();
+
+                Encoding encoding = utf16 ? new UnicodeEncoding(false, false) : new UTF8Encoding(false);
+
+                var builder = new StringBuilder();
+                using var writer =
+                    XmlWriter.Create(memoryStream, new XmlWriterSettings { Encoding = encoding });
+
+                doc.Save(writer);
+
+                writer.Close();
+
+                return encoding.GetString(memoryStream.ToArray());
             }
             catch (Exception ex)
             {
                 ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value; 
+                return value;
             }
         }
 

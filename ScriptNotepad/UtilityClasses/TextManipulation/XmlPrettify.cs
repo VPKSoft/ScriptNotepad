@@ -24,47 +24,38 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using Newtonsoft.Json.Linq;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
-using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
+using ScriptNotepad.UtilityClasses.TextManipulation.Xml;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Json
+namespace ScriptNotepad.UtilityClasses.TextManipulation
 {
     /// <summary>
-    /// A class to convert single-line JSON to formatted JSON.
-    /// Implements the <see cref="TextManipulationCommandBase" />
+    /// A class for XML text utilities.
     /// </summary>
-    /// <seealso cref="TextManipulationCommandBase" />
-    public class JsonMultilineConvert: TextManipulationCommandBase
+    public static class XmlUtils
     {
-        /// <summary>
-        /// Manipulates the specified text value.
-        /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        public override string Manipulate(string value)
-        {
-            try
-            {
-                var result = JToken.Parse(value).ToString();
+        private static readonly XmlMultilineConvert XmlMultilineConvert = new();
 
-                return result; 
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value; 
-            }
+        private static readonly XmlSingleLineConvert XmlSingleLineConvert = new();
+
+        /// <summary>
+        /// Prettifies a specified XML text.
+        /// </summary>
+        /// <param name="value">The value to prettify.</param>
+        /// <returns>Intended XML text.</returns>
+        public static string XmlPrettify(this string value)
+        {
+            return XmlMultilineConvert.Manipulate(value);
         }
 
+
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Uglifies a specified XML text (he-hee).
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        public static string XmlUglify(this string value)
         {
-            return MethodName;
+            return XmlSingleLineConvert.Manipulate(value);
         }
     }
 }
