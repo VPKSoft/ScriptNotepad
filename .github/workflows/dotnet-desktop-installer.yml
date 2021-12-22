@@ -19,6 +19,7 @@ jobs:
       App_Project_Directory: ScriptNotepad
       App_Project_Path: ScriptNotepad\ScriptNotepad.csproj
       AppInstaller_Project_Path: InstallerBaseWixSharp\InstallerBaseWixSharp.csproj
+      AppInstaller_Project_Directory: InstallerBaseWixSharp
       
     steps:
     - name: Checkout
@@ -58,7 +59,8 @@ jobs:
       
     - name: Publish the installer to the release tag
       run: |
-        $files = Get-ChildItem $env:App_Project_Directory -r -Filter *ScriptNotepad*.msi
+        dotnet tool install --global GitReleaseManager.Tool
+        $files = Get-ChildItem $env:AppInstaller_Project_Directory -r -Filter *ScriptNotepad*.msi
         for ($i = 0; $i -lt $files.Count; $i++) 
         {
             $file = $files[$i].FullName
