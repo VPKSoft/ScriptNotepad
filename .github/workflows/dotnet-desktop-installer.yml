@@ -21,6 +21,7 @@ jobs:
       AppInstaller_Project_Path: InstallerBaseWixSharp\InstallerBaseWixSharp.csproj
       AppInstaller_Project_Directory: InstallerBaseWixSharp
       Tag: ${{github.ref_name}}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
       
     steps:
     - name: Checkout
@@ -66,6 +67,11 @@ jobs:
         {
             $file = $files[$i].FullName
             Write-Output (-join("Installer package:", $file, "."))
+
+            # the Github release (ghr)..
+            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", $env:$GITHUB_REPOSITORY, "-a", $file)
+
+            dotnet-gitreleasemanager $arguments
         }
 
         Write-Output (-join("The tag name is:", $Tag))
