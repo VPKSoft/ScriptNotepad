@@ -22,7 +22,6 @@ jobs:
       AppInstaller_Project_Directory: InstallerBaseWixSharp
       Tag: ${{github.ref_name}}
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      Repo: $GITHUB_REPOSITORY
       
     steps:
     - name: Checkout
@@ -62,6 +61,7 @@ jobs:
       
     - name: Publish the installer to the release tag
       run: |
+        Write-Output (-join("Repository:", $env:GITHUB_REPOSITORY))
         dotnet tool install --global GitReleaseManager.Tool
         $files = Get-ChildItem $env:AppInstaller_Project_Directory -r -Filter *ScriptNotepad*.msi
         for ($i = 0; $i -lt $files.Count; $i++) 
@@ -70,7 +70,7 @@ jobs:
             Write-Output (-join("Installer package:", $file, "."))
 
             # the Github release (ghr)..
-            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", $env:Repo, "-a", $file)
+            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", $env:GITHUB_REPOSITORY, "-a", $file)
 
             dotnet-gitreleasemanager $arguments
         }
