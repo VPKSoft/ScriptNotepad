@@ -48,12 +48,12 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Build the ScriptNotepad installer project
+    # Build the ScriptNotepad project
     - name: Build the ScriptNotepad project
       run: msbuild $env:App_Project_Path /p:Configuration=$env:Configuration
 
-    # Build the ScriptNotepad project
-    - name: Build the ScriptNotepad project
+    # Build the ScriptNotepad installer project
+    - name: Build the ScriptNotepad installer project
       run: msbuild $env:AppInstaller_Project_Path /p:Configuration=$env:Configuration
       
     - name: Publish the installer to the release tag
