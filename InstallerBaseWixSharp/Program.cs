@@ -89,9 +89,8 @@ namespace InstallerBaseWixSharp
                 new Dir($@"%LocalAppDataFolder%\{AppName}",
                     new File(@"..\ScriptNotepad\Localization\SQLiteDatabase\lang.sqlite"),
                     new Dir(@"Dictionaries\en", new File(@"..\dictionaries\en\en_US.dic"),
-                        new File(@"..\dictionaries\en\en_US.aff"))),
-                new Dir($@"%LocalAppDataFolder%\{AppName}\Plugins",
-                    new File(@"..\PluginTemplate\bin\net6.0-windows\PluginTemplate.dll")),
+                        new File(@"..\dictionaries\en\en_US.aff")),
+                    new Dir("Plugins", new File(@"..\PluginTemplate\bin\net6.0-windows\PluginTemplate.dll"))),
 #endif
                 new CloseApplication($"[INSTALLDIR]{Executable}", true), 
                 new Property("Executable", Executable),
