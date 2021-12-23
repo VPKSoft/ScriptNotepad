@@ -73,8 +73,8 @@ namespace InstallerBaseWixSharp
                     Console.WriteLine(e);
                     return AppName;
                 }
-            }            
-            
+            }
+
             var project = new ManagedProject("ScriptNotepad",
                 new Dir(InstallDirectory,
                     new WixSharp.Files(@"..\ScriptNotepad\bin\net6.0-windows\*.*"),
@@ -86,10 +86,12 @@ namespace InstallerBaseWixSharp
                         WorkingDirectory = "[INSTALLDIR]", IconFile = ApplicationIcon
                     }),
 #if InstallLocalAppData
-                new Dir($@"%LocalAppDataFolder%\{AppName}", new File(@"..\ScriptNotepad\Localization\SQLiteDatabase\lang.sqlite"),
-                    new Dir(@"Dictionaries\en", new File(@"..\dictionaries\en\en_US.dic"), new File(@"..\dictionaries\en\en_US.aff"))),
-
-                // TODO::Plug-in!.
+                new Dir($@"%LocalAppDataFolder%\{AppName}",
+                    new File(@"..\ScriptNotepad\Localization\SQLiteDatabase\lang.sqlite"),
+                    new Dir(@"Dictionaries\en", new File(@"..\dictionaries\en\en_US.dic"),
+                        new File(@"..\dictionaries\en\en_US.aff"))),
+                new Dir($@"%LocalAppDataFolder%\{AppName}\Plugins",
+                    new File(@"..\PluginTemplate\bin\net6.0-windows\PluginTemplate.dll")),
 #endif
                 new CloseApplication($"[INSTALLDIR]{Executable}", true), 
                 new Property("Executable", Executable),
