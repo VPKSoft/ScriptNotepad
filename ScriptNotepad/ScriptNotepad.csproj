@@ -29,7 +29,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
     <PackageTags>notepad script editor</PackageTags>
-    <Version>1.1.4</Version>
+    <Version>1.1.5</Version>
     <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>

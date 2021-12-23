@@ -890,7 +890,7 @@ namespace ScriptNotepad.UtilityClasses.SearchAndReplace
                 return;
             }
 
-            var inserted = SearchAndReplaceHistoryHelper.AddOrUpdateAndReplaceHistory(SearchText, SearchTypeDatabase,
+            var inserted = SearchAndReplaceHistoryHelper.AddOrUpdateAndReplaceHistory(ReplaceText, SearchTypeDatabase,
                 SearchAndReplaceType.Replace, MatchCaseSet, FormSettings.Settings.CurrentSessionEntity);
 
             // conditional insert to the list..
