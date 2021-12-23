@@ -1,5 +1,5 @@
 # ScriptNotepad
-A tabbed notepad/text/code software with scripting support (C#) to manipulate a file's contents. The software is based on the [ScintillaNET](https://github.com/jacobslusser/ScintillaNET) control.
+A tabbed notepad/text/code software with scripting support (C#) to manipulate a file's contents. The software is based on the [Scintilla.NET](https://github.com/VPKSoft/ScintillaNET) control.
 
 ## Features
 * Support for multiple programming languages for code folding and highlighing.
