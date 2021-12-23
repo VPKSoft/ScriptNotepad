@@ -24,7 +24,7 @@ _A script window with a script template_
 
 ### Thanks to
 * [JetBrains](https://www.jetbrains.com/?from=ScriptNotepad) for their open source license(s).
-* [![VPKSoft](https://circleci.com/gh/VPKSoft/ScriptNotepad.svg?style=shield)](https://app.circleci.com/pipelines/github/VPKSoft/ScriptNotepad) 
+* [![.NET Desktop](https://github.com/VPKSoft/ScriptNotepad/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/VPKSoft/ScriptNotepad/actions/workflows/dotnet-desktop.yml)
 
 
 [![JetBrains](http://www.vpksoft.net/site/External/JetBrains/jetbrains.svg)](https://www.jetbrains.com/?from=ScriptNotepad)
