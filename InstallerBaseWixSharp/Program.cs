@@ -88,6 +88,8 @@ namespace InstallerBaseWixSharp
 #if InstallLocalAppData
                 new Dir($@"%LocalAppDataFolder%\{AppName}", new File(@"..\ScriptNotepad\Localization\SQLiteDatabase\lang.sqlite"),
                     new Dir(@"Dictionaries\en", new File(@"..\dictionaries\en\en_US.dic"), new File(@"..\dictionaries\en\en_US.aff"))),
+
+                // TODO::Plug-in!.
 #endif
                 new CloseApplication($"[INSTALLDIR]{Executable}", true), 
                 new Property("Executable", Executable),
