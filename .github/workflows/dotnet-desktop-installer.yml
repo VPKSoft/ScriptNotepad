@@ -71,13 +71,14 @@ jobs:
         Write-Output (-join("Repository:", $env:GITHUB_REPOSITORY))
         dotnet tool install --global GitReleaseManager.Tool
         $files = Get-ChildItem $env:AppInstaller_Project_Directory -r -Filter *ScriptNotepad*.msi
+        $repo = $GITHUB_REPOSITORY.Split("/")[-1]
         for ($i = 0; $i -lt $files.Count; $i++) 
         {
             $file = $files[$i].FullName
             Write-Output (-join("Installer package:", $file, "."))
 
             # The Github Release Manager (ghr)...
-            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", "ScriptNotepad", "-a", $file)
+            $arguments = @("addasset", "-t", $env:Tag, "--token", $env:GH_TOKEN, "-o", "VPKSoft", "-r", "$repo", "-a", $file)
 
             dotnet-gitreleasemanager $arguments
         }
