@@ -26,10 +26,8 @@ SOFTWARE.
 
 using ScriptNotepad.Settings;
 using ScriptNotepad.UtilityClasses.Assembly;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Entities;

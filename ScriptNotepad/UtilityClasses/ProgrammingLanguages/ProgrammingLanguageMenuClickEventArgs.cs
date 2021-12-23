@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 
 namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages

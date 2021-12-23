@@ -24,12 +24,9 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
 using ScriptNotepad.UtilityClasses.Process;
-using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using ScriptNotepad.DialogForms;
 using ScriptNotepad.Localization.Hunspell;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;

@@ -24,8 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 

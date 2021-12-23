@@ -24,9 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;

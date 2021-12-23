@@ -25,8 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepad.UtilityClasses.ErrorHandling;
-using System;
-using System.IO;
 using System.Security;
 
 namespace ScriptNotepad.IOPermission

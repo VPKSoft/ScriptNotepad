@@ -24,9 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Linq;
-using System.Text;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 

@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System.IO;
 using ScriptNotepad.Database.Entity.Entities;
 
 namespace ScriptNotepad.Editor.EntityHelpers

@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepad.UtilityClasses.Encodings.CharacterSets;
-using System.Text;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
 

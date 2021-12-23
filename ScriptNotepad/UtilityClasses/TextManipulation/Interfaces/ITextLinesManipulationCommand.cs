@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using System.Collections.Generic;
-using System.Text;
 
 namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
 {

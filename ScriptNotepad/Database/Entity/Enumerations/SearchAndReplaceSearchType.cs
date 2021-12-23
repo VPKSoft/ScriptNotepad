@@ -24,8 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-
 namespace ScriptNotepad.Database.Entity.Enumerations
 {
     /// <summary>

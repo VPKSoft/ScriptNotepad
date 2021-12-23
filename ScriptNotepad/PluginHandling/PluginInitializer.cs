@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepadPluginBase.PluginTemplateInterface;
-using System;
 using System.Reflection;
 using System.Windows.Forms;
 using static ScriptNotepadPluginBase.Types.DelegateTypes;

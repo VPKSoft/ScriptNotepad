@@ -7,12 +7,12 @@ using ScriptNotepad.UtilityClasses.CodeDom;
 using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 using ScriptNotepad.UtilityClasses.TextManipulation.Json;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScriptNotepad.UtilityClasses.TextManipulation.Xml;
 using VPKSoft.LangLib;
 
 namespace ScriptNotepad.UtilityClasses.MiscForms
@@ -152,6 +152,18 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
             {
                 MethodName = Translation.GetMessage("msgUtilTextRemoveDuplicateLines",
                     "Remove duplicate lines|A message indicating a function to remove duplicate lines from a file.")
+            });
+
+            items.Add(new XmlMultilineConvert
+            {
+                MethodName = Translation.GetMessage("msgUtilTextPrettifyXML",
+                    "Prettify XML|A message indicating a function to format XML as human-readable.")
+            });
+
+            items.Add(new XmlSingleLineConvert
+            {
+                MethodName = Translation.GetMessage("msgUtilTextXMLToOneLine",
+                    "XML to one line|A message indicating a function to human-readable XML to one line.")
             });
 
             foreach (var callback in Callbacks)

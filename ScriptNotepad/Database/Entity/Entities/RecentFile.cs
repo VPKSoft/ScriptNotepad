@@ -26,7 +26,6 @@ SOFTWARE.
 
 #nullable enable
 
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScriptNotepad.Database.Entity.Entities

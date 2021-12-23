@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using System.Reflection;
-using System.Text;
 
 namespace ScriptNotepad.UtilityClasses.Encodings
 {

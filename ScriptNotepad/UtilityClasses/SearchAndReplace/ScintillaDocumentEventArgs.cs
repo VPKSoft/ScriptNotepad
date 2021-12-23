@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScintillaNET;
-using System;
 using System.Collections.Generic;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace

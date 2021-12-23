@@ -24,11 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 
 namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
@@ -47,33 +42,7 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
         /// <returns>A string containing the manipulated text.</returns>
         public override string Manipulate(string value)
         {
-            try
-            {
-                var doc = new XmlDocument();
-
-                var utf16 = value.Contains("encoding=\"utf-16\"");
-
-                doc.LoadXml(value);
-
-                var memoryStream = new MemoryStream();
-
-                Encoding encoding = utf16 ? new UnicodeEncoding(false, false) : new UTF8Encoding(false);
-
-                var builder = new StringBuilder();
-                using var writer =
-                    XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, IndentChars = "\t", Encoding = encoding });
-
-                doc.Save(writer);
-
-                writer.Close();
-
-                return encoding.GetString(memoryStream.ToArray());
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value;
-            }
+            return XmlTidy.Tidy(value, true);
         }
 
         /// <summary>

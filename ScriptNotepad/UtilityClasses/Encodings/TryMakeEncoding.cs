@@ -24,10 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using ScriptNotepad.Settings;
 using static ScriptNotepad.UtilityClasses.Encodings.DetectEncoding;
 

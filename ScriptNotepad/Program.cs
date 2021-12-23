@@ -24,10 +24,11 @@ SOFTWARE.
 */
 #endregion
 
-using System;
+global using System;
+global using System.IO;
+global using System.Text;
 using System.Windows.Forms;
 using VPKSoft.Utils;
-using System.IO;
 using VPKSoft.PosLib; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using VPKSoft.ErrorLogger; // (C): http://www.vpksoft.net/, GNU Lesser General Public License Version 3
 using System.Diagnostics;

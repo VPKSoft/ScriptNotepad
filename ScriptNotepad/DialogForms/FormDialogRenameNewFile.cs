@@ -24,8 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.IO;
 using System.Windows.Forms;
 using VPKSoft.LangLib;
 using VPKSoft.ScintillaTabbedTextControl;

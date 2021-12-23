@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepad.UtilityClasses.ErrorHandling;
-using System;
 
 namespace ScriptNotepad.UtilityClasses.Clipboard
 {

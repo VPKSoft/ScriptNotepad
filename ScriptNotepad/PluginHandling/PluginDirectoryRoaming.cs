@@ -25,9 +25,7 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepadPluginBase.PluginTemplateInterface;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using VPKSoft.ErrorLogger;
 

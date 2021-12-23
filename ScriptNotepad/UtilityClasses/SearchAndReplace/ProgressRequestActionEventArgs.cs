@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using VPKSoft.SearchText;
 
 namespace ScriptNotepad.UtilityClasses.SearchAndReplace

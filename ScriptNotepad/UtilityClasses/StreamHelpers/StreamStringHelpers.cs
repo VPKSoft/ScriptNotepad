@@ -24,8 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System.IO;
-
 namespace ScriptNotepad.UtilityClasses.StreamHelpers
 {
     /// <summary>

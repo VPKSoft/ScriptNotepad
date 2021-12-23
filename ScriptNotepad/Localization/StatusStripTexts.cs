@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System.Text;
 using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Editor.EntityHelpers;

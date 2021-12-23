@@ -25,8 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepad.UtilityClasses.ErrorHandling;
-using System;
-using System.IO;
 using System.Reflection;
 
 // (C): https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/assemblies-gac/how-to-determine-if-a-file-is-an-assembly

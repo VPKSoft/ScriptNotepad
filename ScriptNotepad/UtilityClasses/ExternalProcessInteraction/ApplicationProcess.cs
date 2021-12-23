@@ -25,7 +25,6 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepad.UtilityClasses.ErrorHandling;
-using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 

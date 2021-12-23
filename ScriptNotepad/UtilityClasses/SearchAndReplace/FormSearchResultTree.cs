@@ -25,10 +25,8 @@ SOFTWARE.
 #endregion
 
 using ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using ScriptNotepad.Settings;

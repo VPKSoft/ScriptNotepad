@@ -24,9 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 // ReSharper disable InconsistentNaming
 // ReSharper disable CommentTypo

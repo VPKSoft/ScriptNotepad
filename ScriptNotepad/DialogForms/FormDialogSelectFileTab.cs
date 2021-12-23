@@ -24,10 +24,8 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using ScriptNotepad.UtilityClasses.Keyboard;
 using VPKSoft.ErrorLogger;

@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Windows.Forms;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using VPKSoft.ScintillaTabbedTextControl;

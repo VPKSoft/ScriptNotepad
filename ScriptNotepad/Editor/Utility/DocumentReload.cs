@@ -24,8 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
-using System.IO;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Editor.EntityHelpers;
 using ScriptNotepad.UtilityClasses.ErrorHandling;

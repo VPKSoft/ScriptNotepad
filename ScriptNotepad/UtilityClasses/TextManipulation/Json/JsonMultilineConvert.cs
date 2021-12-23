@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using Newtonsoft.Json.Linq;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;

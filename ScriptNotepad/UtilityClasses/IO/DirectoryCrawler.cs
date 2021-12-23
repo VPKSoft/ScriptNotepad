@@ -24,12 +24,9 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 // ReSharper disable PossibleMultipleEnumeration

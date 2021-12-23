@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ScintillaNET;
-using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
+﻿using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 
 namespace ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses
 {

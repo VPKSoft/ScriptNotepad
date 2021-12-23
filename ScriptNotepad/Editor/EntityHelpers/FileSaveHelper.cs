@@ -25,11 +25,8 @@ SOFTWARE.
 #endregion
 
 #nullable enable
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Editor.EntityHelpers.DataHolders;
 using ScriptNotepad.UtilityClasses.Encodings;

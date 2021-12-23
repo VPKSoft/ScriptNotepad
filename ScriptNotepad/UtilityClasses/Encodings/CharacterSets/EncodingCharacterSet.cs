@@ -24,10 +24,8 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.UtilityClasses.Encodings.CharacterSets

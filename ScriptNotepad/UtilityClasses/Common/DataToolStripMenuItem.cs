@@ -24,7 +24,6 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Windows.Forms;
 
 namespace ScriptNotepad.UtilityClasses.Common

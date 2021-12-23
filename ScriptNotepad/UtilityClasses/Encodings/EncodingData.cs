@@ -24,9 +24,7 @@ SOFTWARE.
 */
 #endregion
 
-using System;
 using System.Reflection;
-using System.Text;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
 namespace ScriptNotepad.UtilityClasses.Encodings
