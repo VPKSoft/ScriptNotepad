@@ -963,4 +963,10 @@
   <data name="msgUtilTextXMLToOneLine" xml:space="preserve">
     <value>XML to one line|A message indicating a function to human-readable XML to one line.</value>
   </data>
+  <data name="msgUtilStringToBase64" xml:space="preserve">
+    <value>Selected string to base64|A message indicating a function to convert human-readable text into a base64 encoded data string.</value>
+  </data>
+  <data name="msgUtilTextBase64ToString" xml:space="preserve">
+    <value>Selected base64 to string|A message indicating a function to convert selected base64 data to string.</value>
+  </data>
 </root>

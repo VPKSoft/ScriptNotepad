@@ -130,6 +130,9 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation
             return Manipulate(value, StringComparison.Ordinal, fileLineTypes);
         }
 
+        /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
+        public override bool PreferSelectedText { get; set; } = false;
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>

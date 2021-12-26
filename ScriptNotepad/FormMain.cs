@@ -64,6 +64,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -3872,6 +3873,24 @@ namespace ScriptNotepad
                     document.Scintilla.Text = sender.Equals(mnuXMLPrettify)
                         ? document.Scintilla.Text.XmlPrettify()
                         : document.Scintilla.Text.XmlUglify();
+                }
+            });
+        }
+
+        private void mnuBase64ToString_Click(object sender, EventArgs e)
+        {
+            CurrentDocumentAction(document =>
+            {
+                if (document.Tag != null)
+                {
+                    if (sender.Equals(mnuBase64ToString))
+                    {
+                        document.Scintilla.SelectionReplaceWithValue(document.Scintilla.SelectedText.ToBase64());
+                    }
+                    else
+                    {
+                        document.Scintilla.SelectionReplaceWithValue(document.Scintilla.SelectedText.FromBase64());
+                    }
                 }
             });
         }

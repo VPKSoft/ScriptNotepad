@@ -24,37 +24,37 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
+using ScriptNotepad.UtilityClasses.TextManipulation.base64;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
+namespace ScriptNotepad.UtilityClasses.TextManipulation
 {
     /// <summary>
-    /// A class to convert single-line XML to formatted XML.
-    /// Implements the <see cref="TextManipulationCommandBase" />
+    /// A class to convert base64 encoded string data.
     /// </summary>
-    /// <seealso cref="TextManipulationCommandBase" />
-    public class XmlMultilineConvert: TextManipulationCommandBase
+    public static class Base64Convert
     {
+        private static readonly Base64ToString Base64ToString = new();
+
+        private static readonly StringToBase64 StringToBase64 = new();
+
         /// <summary>
-        /// Manipulates the specified text value.
+        /// Converts the specified string value into base64 encoded data string.
         /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        public override string Manipulate(string value)
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The specified string converted into base64 encoded data string.</returns>
+        public static string ToBase64(this string value)
         {
-            return XmlTidy.Tidy(value, true);
+            return StringToBase64.Manipulate(value);
         }
 
-        /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
-        public override bool PreferSelectedText { get; set; } = false;
-
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Converts the specified base64 encoded string data into string a string value.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The specified base64 encoded string data converted into string a string value.</returns>
+        public static string FromBase64(this string value)
         {
-            return MethodName;
+            return Base64ToString.Manipulate(value);
         }
     }
 }

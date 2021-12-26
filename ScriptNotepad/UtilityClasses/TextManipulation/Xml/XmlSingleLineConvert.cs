@@ -45,6 +45,9 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
             return XmlTidy.Tidy(value, false);
         }
 
+        /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
+        public override bool PreferSelectedText { get; set; } = false;
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>

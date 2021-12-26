@@ -231,6 +231,10 @@
             this.mnuJsonUglify = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem20 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuXMLPrettify = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuXMLUglify = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem21 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuBase64ToString = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuStringToBase64 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTab = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuNavigation = new System.Windows.Forms.ToolStripMenuItem();
@@ -244,7 +248,6 @@
             this.tmAutoSave = new System.Windows.Forms.Timer(this.components);
             this.sdHTML = new System.Windows.Forms.SaveFileDialog();
             this.pdPrint = new System.Windows.Forms.PrintDialog();
-            this.mnuXMLUglify = new System.Windows.Forms.ToolStripMenuItem();
             this.tlpMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -1911,7 +1914,10 @@
             this.mnuJsonUglify,
             this.toolStripMenuItem20,
             this.mnuXMLPrettify,
-            this.mnuXMLUglify});
+            this.mnuXMLUglify,
+            this.toolStripMenuItem21,
+            this.mnuBase64ToString,
+            this.mnuStringToBase64});
             this.mnuText.Name = "mnuText";
             this.mnuText.Size = new System.Drawing.Size(40, 20);
             this.mnuText.Text = "Text";
@@ -1920,14 +1926,14 @@
             // 
             this.mnuCaseSensitive.Image = global::ScriptNotepad.Properties.Resources.format_text_uppercase;
             this.mnuCaseSensitive.Name = "mnuCaseSensitive";
-            this.mnuCaseSensitive.Size = new System.Drawing.Size(205, 22);
+            this.mnuCaseSensitive.Size = new System.Drawing.Size(250, 22);
             this.mnuCaseSensitive.Text = "Case sensitive";
             this.mnuCaseSensitive.Click += new System.EventHandler(this.mnuCaseSensitive_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(202, 6);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(247, 6);
             // 
             // mnuSortLines
             // 
@@ -1937,7 +1943,7 @@
             this.mnuCustomizedSort});
             this.mnuSortLines.Image = global::ScriptNotepad.Properties.Resources.sort_alphabet;
             this.mnuSortLines.Name = "mnuSortLines";
-            this.mnuSortLines.Size = new System.Drawing.Size(205, 22);
+            this.mnuSortLines.Size = new System.Drawing.Size(250, 22);
             this.mnuSortLines.Text = "Sort lines...";
             this.mnuSortLines.Click += new System.EventHandler(this.MnuSortLines_Click);
             // 
@@ -1966,7 +1972,7 @@
             // 
             this.mnuRemoveDuplicateLines.Image = global::ScriptNotepad.Properties.Resources.duplicate_lines;
             this.mnuRemoveDuplicateLines.Name = "mnuRemoveDuplicateLines";
-            this.mnuRemoveDuplicateLines.Size = new System.Drawing.Size(205, 22);
+            this.mnuRemoveDuplicateLines.Size = new System.Drawing.Size(250, 22);
             this.mnuRemoveDuplicateLines.Text = "Remove duplicate lines...";
             this.mnuRemoveDuplicateLines.Click += new System.EventHandler(this.mnuRemoveDuplicateLines_Click);
             // 
@@ -1974,40 +1980,68 @@
             // 
             this.mnuWrapDocumentTo.Image = global::ScriptNotepad.Properties.Resources.word_wrapped;
             this.mnuWrapDocumentTo.Name = "mnuWrapDocumentTo";
-            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(205, 22);
+            this.mnuWrapDocumentTo.Size = new System.Drawing.Size(250, 22);
             this.mnuWrapDocumentTo.Text = "Wrap document to...";
             this.mnuWrapDocumentTo.Click += new System.EventHandler(this.MnuWrapDocumentTo_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(202, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(247, 6);
             // 
             // mnuJsonPrettify
             // 
             this.mnuJsonPrettify.Name = "mnuJsonPrettify";
-            this.mnuJsonPrettify.Size = new System.Drawing.Size(205, 22);
+            this.mnuJsonPrettify.Size = new System.Drawing.Size(250, 22);
             this.mnuJsonPrettify.Text = "Prettify Json";
             this.mnuJsonPrettify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
             // 
             // mnuJsonUglify
             // 
             this.mnuJsonUglify.Name = "mnuJsonUglify";
-            this.mnuJsonUglify.Size = new System.Drawing.Size(205, 22);
+            this.mnuJsonUglify.Size = new System.Drawing.Size(250, 22);
             this.mnuJsonUglify.Text = "Json to one line";
             this.mnuJsonUglify.Click += new System.EventHandler(this.mnuJsonPrettify_Click);
             // 
             // toolStripMenuItem20
             // 
             this.toolStripMenuItem20.Name = "toolStripMenuItem20";
-            this.toolStripMenuItem20.Size = new System.Drawing.Size(202, 6);
+            this.toolStripMenuItem20.Size = new System.Drawing.Size(247, 6);
             // 
             // mnuXMLPrettify
             // 
             this.mnuXMLPrettify.Name = "mnuXMLPrettify";
-            this.mnuXMLPrettify.Size = new System.Drawing.Size(205, 22);
+            this.mnuXMLPrettify.Size = new System.Drawing.Size(250, 22);
             this.mnuXMLPrettify.Text = "Prettify XML";
             this.mnuXMLPrettify.Click += new System.EventHandler(this.mnuXMLPrettify_Click);
+            // 
+            // mnuXMLUglify
+            // 
+            this.mnuXMLUglify.Name = "mnuXMLUglify";
+            this.mnuXMLUglify.Size = new System.Drawing.Size(250, 22);
+            this.mnuXMLUglify.Text = "XML to one line";
+            this.mnuXMLUglify.Click += new System.EventHandler(this.mnuXMLPrettify_Click);
+            // 
+            // toolStripMenuItem21
+            // 
+            this.toolStripMenuItem21.Name = "toolStripMenuItem21";
+            this.toolStripMenuItem21.Size = new System.Drawing.Size(247, 6);
+            // 
+            // mnuBase64ToString
+            // 
+            this.mnuBase64ToString.Name = "mnuBase64ToString";
+            this.mnuBase64ToString.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.mnuBase64ToString.Size = new System.Drawing.Size(250, 22);
+            this.mnuBase64ToString.Text = "Selected base64 to string";
+            this.mnuBase64ToString.Click += new System.EventHandler(this.mnuBase64ToString_Click);
+            // 
+            // mnuStringToBase64
+            // 
+            this.mnuStringToBase64.Name = "mnuStringToBase64";
+            this.mnuStringToBase64.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F6)));
+            this.mnuStringToBase64.Size = new System.Drawing.Size(250, 22);
+            this.mnuStringToBase64.Text = "Selected string to base64";
+            this.mnuStringToBase64.Click += new System.EventHandler(this.mnuBase64ToString_Click);
             // 
             // mnuWindow
             // 
@@ -2106,13 +2140,6 @@
             // pdPrint
             // 
             this.pdPrint.UseEXDialog = true;
-            // 
-            // mnuXMLUglify
-            // 
-            this.mnuXMLUglify.Name = "mnuXMLUglify";
-            this.mnuXMLUglify.Size = new System.Drawing.Size(205, 22);
-            this.mnuXMLUglify.Text = "XML to one line";
-            this.mnuXMLUglify.Click += new System.EventHandler(this.mnuXMLPrettify_Click);
             // 
             // FormMain
             // 
@@ -2362,6 +2389,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem20;
         private System.Windows.Forms.ToolStripMenuItem mnuXMLPrettify;
         private System.Windows.Forms.ToolStripMenuItem mnuXMLUglify;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem21;
+        private System.Windows.Forms.ToolStripMenuItem mnuBase64ToString;
+        private System.Windows.Forms.ToolStripMenuItem mnuStringToBase64;
     }
 }
 

@@ -24,37 +24,35 @@ SOFTWARE.
 */
 #endregion
 
-using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
+using ScintillaNET;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
+namespace ScriptNotepad.UtilityClasses.ScintillaUtils
 {
     /// <summary>
-    /// A class to convert single-line XML to formatted XML.
-    /// Implements the <see cref="TextManipulationCommandBase" />
+    /// An utility to change the <see cref="Scintilla.SelectedText"/>  value.
     /// </summary>
-    /// <seealso cref="TextManipulationCommandBase" />
-    public class XmlMultilineConvert: TextManipulationCommandBase
+    public static class SelectionReplace
     {
         /// <summary>
-        /// Manipulates the specified text value.
+        /// Replaces the <see cref="Scintilla.SelectedText"/> with specified value.
         /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        public override string Manipulate(string value)
+        /// <param name="scintilla">The scintilla.</param>
+        /// <param name="value">The value to replace the selected text with.</param>
+        public static void SelectionReplaceWithValue(this Scintilla scintilla, string value)
         {
-            return XmlTidy.Tidy(value, true);
-        }
+            if (scintilla.SelectedText.Length > 0)
+            {
+                var start = scintilla.SelectionStart;
+                var end = scintilla.SelectionEnd;
+                var length = end - start;
 
-        /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
-        public override bool PreferSelectedText { get; set; } = false;
+                end = start + value.Length;
 
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return MethodName;
+                scintilla.Text = scintilla.Text.Remove(start, length);
+                scintilla.Text = scintilla.Text.Insert(start, value);
+                scintilla.SelectionStart = start;
+                scintilla.SelectionEnd = end;
+            }
         }
     }
 }

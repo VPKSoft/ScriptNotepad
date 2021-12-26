@@ -12,6 +12,8 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScriptNotepad.UtilityClasses.ScintillaUtils;
+using ScriptNotepad.UtilityClasses.TextManipulation.base64;
 using ScriptNotepad.UtilityClasses.TextManipulation.Xml;
 using VPKSoft.LangLib;
 
@@ -166,6 +168,18 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
                     "XML to one line|A message indicating a function to human-readable XML to one line.")
             });
 
+            items.Add(new StringToBase64
+            {
+                MethodName = Translation.GetMessage("msgUtilTextBase64ToString",
+                    "Selected base64 to string|A message indicating a function to convert selected base64 data to string.")
+            });
+
+            items.Add(new Base64ToString
+            {
+                MethodName = Translation.GetMessage("msgUtilStringToBase64",
+                    "Selected string to base64|A message indicating a function to convert human-readable text into a base64 encoded data string.")
+            });
+
             foreach (var callback in Callbacks)
             {
                 items.Add(callback);
@@ -236,7 +250,15 @@ namespace ScriptNotepad.UtilityClasses.MiscForms
 
                 if (cmbCommands.SelectedItem is ITextManipulationCommand command)
                 {
-                    FormMain.ActiveScintilla.Text = command.Manipulate(FormMain.ActiveScintilla.Text);
+                    if (command.PreferSelectedText)
+                    {
+                        FormMain.ActiveScintilla.SelectionReplaceWithValue(
+                            command.Manipulate(FormMain.ActiveScintilla.SelectedText));
+                    }
+                    else
+                    {
+                        FormMain.ActiveScintilla.Text = command.Manipulate(FormMain.ActiveScintilla.Text);
+                    }
                 }
 
                 if (cmbCommands.SelectedItem is ITextManipulationCallback callback)

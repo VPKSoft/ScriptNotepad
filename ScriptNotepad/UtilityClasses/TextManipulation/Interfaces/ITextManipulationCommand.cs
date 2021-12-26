@@ -24,6 +24,8 @@ SOFTWARE.
 */
 #endregion
 
+using ScintillaNET;
+
 namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
 {
     /// <summary>
@@ -37,5 +39,11 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
         /// <param name="value">The value to manipulate.</param>
         /// <returns>A string containing the manipulated text.</returns>
         string Manipulate(string value);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether prefer selected text of the <see cref="Scintilla"/> control for the command.
+        /// </summary>
+        /// <value><c>true</c> if to prefer selected text of the <see cref="Scintilla"/> control for the command; otherwise, <c>false</c>.</value>
+        bool PreferSelectedText { get; set; }
     }
 }

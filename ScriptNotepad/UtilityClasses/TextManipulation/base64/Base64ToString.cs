@@ -24,16 +24,17 @@ SOFTWARE.
 */
 #endregion
 
+using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
+namespace ScriptNotepad.UtilityClasses.TextManipulation.base64
 {
     /// <summary>
-    /// A class to convert single-line XML to formatted XML.
-    /// Implements the <see cref="TextManipulationCommandBase" />
+    /// A class to convert an UTF-8 encoded text data into a base64 encoded data.
+    /// Implements the <see cref="ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses.TextManipulationCommandBase" />
     /// </summary>
-    /// <seealso cref="TextManipulationCommandBase" />
-    public class XmlMultilineConvert: TextManipulationCommandBase
+    /// <seealso cref="ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses.TextManipulationCommandBase" />
+    internal class Base64ToString: TextManipulationCommandBase
     {
         /// <summary>
         /// Manipulates the specified text value.
@@ -42,11 +43,19 @@ namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
         /// <returns>A string containing the manipulated text.</returns>
         public override string Manipulate(string value)
         {
-            return XmlTidy.Tidy(value, true);
+            try
+            {
+                return Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+                return value;
+            }
         }
 
         /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
-        public override bool PreferSelectedText { get; set; } = false;
+        public override bool PreferSelectedText { get; set; } = true;
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
