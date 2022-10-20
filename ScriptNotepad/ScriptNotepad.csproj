@@ -1,400 +1,400 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <AssemblyTitle>ScriptNotepad</AssemblyTitle>
-    <Company>VPKSoft</Company>
-    <Product>ScriptNotepad</Product>
-    <Description>A tabbed notepad software with scripting support (C#).</Description>
-    <Copyright>Copyright © VPKSoft 2021</Copyright>
-    <DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>notepad7.ico</ApplicationIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://www.vpksoft.net/2015-03-31-13-33-28/scriptnotepad</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/VPKSoft/ScriptNotepad</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageIcon>ScriptNotepad_icon.png</PackageIcon>
-    <PackageTags>notepad script editor</PackageTags>
-    <Version>1.1.6</Version>
-    <PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Update="Settings\FormDialogCustomSpellCheckerInfo.cs" />
-    <Compile Update="Settings\FormDialogCustomSpellCheckerInfo.Designer.cs">
-      <DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DialogForms\FormDialogQueryJumpLocation.cs" />
-    <Compile Update="DialogForms\FormDialogQueryJumpLocation.Designer.cs">
-      <DependentUpon>FormDialogQueryJumpLocation.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DialogForms\FormDialogQueryNumber.cs" />
-    <Compile Update="DialogForms\FormDialogQueryNumber.Designer.cs">
-      <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DialogForms\FormDialogRenameNewFile.cs" />
-    <Compile Update="DialogForms\FormDialogRenameNewFile.Designer.cs">
-      <DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DialogForms\FormDialogSelectFileTab.cs" />
-    <Compile Update="DialogForms\FormDialogSelectFileTab.Designer.cs">
-      <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\ColorHelpers\FormPickAColor.cs" />
-    <Compile Update="UtilityClasses\ColorHelpers\FormPickAColor.Designer.cs">
-      <DependentUpon>FormPickAColor.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\Common\StatusStripComboItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UtilityClasses\MiscForms\FormFileDiffView.cs" />
-    <Compile Update="UtilityClasses\MiscForms\FormFileDiffView.Designer.cs">
-      <DependentUpon>FormFileDiffView.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs" />
-    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.Designer.cs">
-      <DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DialogForms\FormDialogQueryEncoding.cs" />
-    <Compile Update="DialogForms\FormDialogQueryEncoding.Designer.cs">
-      <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\Forms\FormLocalizationHelper.cs" />
-    <Compile Update="Localization\Forms\FormLocalizationHelper.Designer.cs">
-      <DependentUpon>FormLocalizationHelper.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\CodeDom\FormScript.cs" />
-    <Compile Update="UtilityClasses\CodeDom\FormScript.Designer.cs">
-      <DependentUpon>FormScript.cs</DependentUpon>
-    </Compile>
-    <Compile Update="DialogForms\FormDialogScriptLoad.cs" />
-    <Compile Update="DialogForms\FormDialogScriptLoad.Designer.cs">
-      <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
-    </Compile>
-    <Compile Update="FormHexEdit.cs" />
-    <Compile Update="FormHexEdit.Designer.cs">
-      <DependentUpon>FormHexEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Update="PluginHandling\FormPluginManage.cs" />
-    <Compile Update="PluginHandling\FormPluginManage.Designer.cs">
-      <DependentUpon>FormPluginManage.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Settings\FormSettings.cs" />
-    <Compile Update="Settings\FormSettings.Designer.cs">
-      <DependentUpon>FormSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Test\FormTestThingDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Test\FormTestThingDialog.Designer.cs">
-      <DependentUpon>FormTestThingDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Test\FormTestThings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Test\FormTestThings.Designer.cs">
-      <DependentUpon>FormTestThings.cs</DependentUpon>
-    </Compile>
-    <Compile Update="FormMain.cs" />
-    <Compile Update="FormMain.Designer.cs">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\Messages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\Common\DataToolStripMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.cs" />
-    <Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.Designer.cs">
-      <DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.cs" />
-    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.Designer.cs">
-      <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.cs" />
-    <Compile Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.Designer.cs">
-      <DependentUpon>FormSearchResultTree.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\Session\FormDialogSessionManage.cs" />
-    <Compile Update="UtilityClasses\Session\FormDialogSessionManage.Designer.cs">
-      <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.cs" />
-    <Compile Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.Designer.cs">
-      <DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Update="DialogForms\FormDialogQueryJumpLocation.resx">
-      <DependentUpon>FormDialogQueryJumpLocation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DialogForms\FormDialogQueryNumber.resx">
-      <DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DialogForms\FormDialogRenameNewFile.resx">
-      <DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DialogForms\FormDialogSelectFileTab.resx">
-      <DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Settings\FormDialogCustomSpellCheckerInfo.resx">
-      <DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\ColorHelpers\FormPickAColor.resx">
-      <DependentUpon>FormPickAColor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\MiscForms\FormFileDiffView.resx">
-      <DependentUpon>FormFileDiffView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.resx">
-      <DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DialogForms\FormDialogQueryEncoding.resx">
-      <DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="FormHexEdit.resx">
-      <DependentUpon>FormHexEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Forms\FormLocalizationHelper.resx">
-      <DependentUpon>FormLocalizationHelper.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="FormMain.resx">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\CodeDom\FormScript.resx">
-      <DependentUpon>FormScript.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="DialogForms\FormDialogScriptLoad.resx">
-      <DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PluginHandling\FormPluginManage.resx">
-      <DependentUpon>FormPluginManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Settings\FormSettings.resx">
-      <DependentUpon>FormSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Test\FormTestThingDialog.resx">
-      <DependentUpon>FormTestThingDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Test\FormTestThings.resx">
-      <DependentUpon>FormTestThings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.resx">
-      <DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.resx">
-      <DependentUpon>FormSearchAndReplace.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.resx">
-      <DependentUpon>FormSearchResultTree.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\Session\FormDialogSessionManage.resx">
-      <DependentUpon>FormDialogSessionManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.resx">
-      <DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="..\ScriptNotepad_icon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="Installer\DotNetChecker.nsh" />
-    <None Include="Installer\make_installer.bat" />
-    <None Include="Installer\setup_scriptnotepad.nsi" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="WindowsRegistry\OpenWith.reg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Icons\astonished.ico" />
-    <Content Include="Icons\notepad0.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Icons\notepad1.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Icons\notepad2.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Icons\notepad3.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Icons\notepad4.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Resources\jump_first.png" />
-    <None Include="Resources\jump_last.png" />
-    <None Include="Resources\Fast-rewind.png" />
-    <None Include="Resources\duplicate_lines.png" />
-    <None Include="Resources\format-text-uppercase.png" />
-    <None Include="Resources\krename.png" />
-    <None Include="Resources\find_tab.png" />
-    <None Include="Resources\arrow-down-2.png" />
-    <None Include="Resources\arrow-up-2.png" />
-    <None Include="Resources\list-add-5.png" />
-    <None Include="Resources\Playback.png" />
-    <None Include="Resources\textfield-rename.png" />
-    <None Include="Resources\session-properties.png" />
-    <None Include="Resources\education-languages.png" />
-    <None Include="Resources\arrow_left.png" />
-    <None Include="Resources\arrow_right.png" />
-    <None Include="Resources\close_small.png" />
-    <None Include="Resources\find_replace.png" />
-    <None Include="Resources\folder-find.png" />
-    <None Include="Resources\database-go.png" />
-    <None Include="Resources\tab_arrow.png" />
-    <None Include="Resources\tab_strikethrough.png" />
-    <None Include="Resources\reload_disk.png" />
-    <None Include="Resources\History.png" />
-    <None Include="Resources\About.png" />
-    <None Include="Resources\paragraph.png" />
-    <None Include="Resources\word_wrap.png" />
-    <None Include="Resources\word_wrap2.png" />
-    <None Include="Resources\style.png" />
-    <None Include="Resources\spell_check.png" />
-    <None Include="Resources\word_wrapped.png" />
-    <None Include="Resources\sort_alphabet.png" />
-    <None Include="Resources\diff_icon.png" />
-    <None Include="Resources\split_view.png" />
-    <None Include="Resources\book_previous.png" />
-    <None Include="Resources\book_next.png" />
-    <None Include="Resources\swap_view.png" />
-    <None Include="Resources\mark_words.png" />
-    <None Include="Resources\print_preview.png" />
-    <None Include="Resources\printer.png" />
-    <None Include="Resources\zoom_in.png" />
-    <None Include="Resources\zoom_out.png" />
-    <None Include="Resources\edit-cut-red.png" />
-    <None Include="Resources\Copy.png" />
-    <None Include="Resources\Paste.png" />
-    <None Include="Resources\open_no_bom.png" />
-    <None Include="Resources\plugin-go.png" />
-    <None Include="Resources\Delete.png" />
-    <None Include="Resources\up_down.png" />
-    <None Include="Resources\Up.png" />
-    <None Include="Resources\Down_2.png" />
-    <None Include="Resources\plugin-add.png" />
-    <None Include="Resources\preferences-plugin.png" />
-    <None Include="Resources\plugin-delete.png" />
-    <None Include="Resources\plugin-error.png" />
-    <None Include="Resources\folder-database.png" />
-    <None Include="Resources\folder-page.png" />
-    <Content Include="Icons\notepad5.ico" />
-    <Content Include="Installer\languages.ico" />
-    <Content Include="Installer\license.txt" />
-    <Content Include="Installer\un_icon.ico" />
-    <Content Include="Localization\Notepad++LanguageNames.txt" />
-    <None Include="Localization\SQLiteDatabase\CopyLang.bat" />
-    <Content Include="Localization\SQLiteDatabase\lang.sqlite" />
-    <Content Include="notepad7.ico" />
-    <None Include="Resources\astonished.png" />
-    <None Include="Resources\discard_changes.png" />
-    <None Include="Resources\CSharp.png" />
-    <None Include="Resources\default.png" />
-    <None Include="Resources\Erase.png" />
-    <None Include="Resources\Find.png" />
-    <None Include="Resources\Save.png" />
-    <None Include="Resources\SaveAs.png" />
-    <None Include="Resources\save_all.png" />
-    <None Include="Resources\SaveWithDialog.png" />
-    <None Include="Resources\save_all_plus.png" />
-    <None Include="Resources\Play.png" />
-    <None Include="Resources\Script.png" />
-    <None Include="Resources\Undo.png" />
-    <None Include="Resources\Redo.png" />
-    <None Include="Resources\open_unknown_encoding.png" />
-    <None Include="Resources\preferences.png" />
-    <None Include="Resources\unicode.png" />
-    <None Include="Resources\New document.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="ColorMinePortable" Version="2.0.1" />
-    <PackageReference Include="DotNetZip" Version="1.16.0" />
-    <PackageReference Include="FluentMigrator" Version="3.3.2" />
-    <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
-    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.3.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.3.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
-	    <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net35" Version="1.0.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
-    <PackageReference Include="RpcSelf" Version="1.0.1" />
-    <PackageReference Include="Scintilla.NET" Version="5.3.1.2" />
-    <PackageReference Include="ScintillaDiff.NET" Version="1.1.5" />
-    <PackageReference Include="ScintillaNetPrinting.NET" Version="1.0.11" />
-    <PackageReference Include="ScriptNotepadPluginBase.NET" Version="1.0.9" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.116" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
-    <PackageReference Include="UTF.Unknown" Version="2.5.1" />
-    <PackageReference Include="VoikkoSharp" Version="1.0.3" />
-    <PackageReference Include="VPKSoft.ConfLib" Version="1.0.4" />
-    <PackageReference Include="VPKSoft.ErrorLogger" Version="1.1.0" />
-    <PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.2" />
-    <PackageReference Include="VPKSoft.LangLib" Version="1.0.9" />
-    <PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.8" />
-    <PackageReference Include="VPKSoft.PosLib" Version="1.0.2" />
-    <PackageReference Include="VPKSoft.ScintillaSpellCheck.NET" Version="1.0.13" />
-    <PackageReference Include="VPKSoft.ScintillaTabbedTextControl.NET" Version="1.1.13" />
-    <PackageReference Include="VPKSoft.ScintillaUrlDetect.NET" Version="1.0.13" />
-    <PackageReference Include="VPKSoft.SearchText" Version="1.0.3" />
-    <PackageReference Include="VPKSoft.Utils" Version="1.0.7" />
-    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.8" />
-    <PackageReference Include="VPKSoft.XmlSettings" Version="1.0.1" />
-    <PackageReference Include="WPFHexaEditor" Version="2.1.7" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Database\Entity\Entities\FileContent.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj" />
-    <ProjectReference Include="..\ScriptNotepadOldDatabaseEntity\ScriptNotepadOldDatabaseEntity.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\Entity\Utility\ModelHelpers\" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<AssemblyTitle>ScriptNotepad</AssemblyTitle>
+		<Company>VPKSoft</Company>
+		<Product>ScriptNotepad</Product>
+		<Description>A tabbed notepad software with scripting support (C#).</Description>
+		<Copyright>Copyright © VPKSoft 2022</Copyright>
+		<DocumentationFile>bin\$(Configuration)\ScriptNotepad.xml</DocumentationFile>
+		<LangVersion>latest</LangVersion>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugType>full</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationIcon>notepad7.ico</ApplicationIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://www.vpksoft.net/2015-03-31-13-33-28/scriptnotepad</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/VPKSoft/ScriptNotepad</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageIcon>ScriptNotepad_icon.png</PackageIcon>
+		<PackageTags>notepad script editor</PackageTags>
+		<Version>1.1.7</Version>
+		<PackageReleaseNotes>See: https://github.com/VPKSoft/ScriptNotepad</PackageReleaseNotes>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Update="Settings\FormDialogCustomSpellCheckerInfo.cs" />
+		<Compile Update="Settings\FormDialogCustomSpellCheckerInfo.Designer.cs">
+			<DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
+		</Compile>
+		<Compile Update="DialogForms\FormDialogQueryJumpLocation.cs" />
+		<Compile Update="DialogForms\FormDialogQueryJumpLocation.Designer.cs">
+			<DependentUpon>FormDialogQueryJumpLocation.cs</DependentUpon>
+		</Compile>
+		<Compile Update="DialogForms\FormDialogQueryNumber.cs" />
+		<Compile Update="DialogForms\FormDialogQueryNumber.Designer.cs">
+			<DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
+		</Compile>
+		<Compile Update="DialogForms\FormDialogRenameNewFile.cs" />
+		<Compile Update="DialogForms\FormDialogRenameNewFile.Designer.cs">
+			<DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
+		</Compile>
+		<Compile Update="DialogForms\FormDialogSelectFileTab.cs" />
+		<Compile Update="DialogForms\FormDialogSelectFileTab.Designer.cs">
+			<DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\ColorHelpers\FormPickAColor.cs" />
+		<Compile Update="UtilityClasses\ColorHelpers\FormPickAColor.Designer.cs">
+			<DependentUpon>FormPickAColor.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\Common\StatusStripComboItem.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="UtilityClasses\MiscForms\FormFileDiffView.cs" />
+		<Compile Update="UtilityClasses\MiscForms\FormFileDiffView.Designer.cs">
+			<DependentUpon>FormFileDiffView.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.cs" />
+		<Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.Designer.cs">
+			<DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
+		</Compile>
+		<Compile Update="DialogForms\FormDialogQueryEncoding.cs" />
+		<Compile Update="DialogForms\FormDialogQueryEncoding.Designer.cs">
+			<DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Localization\Forms\FormLocalizationHelper.cs" />
+		<Compile Update="Localization\Forms\FormLocalizationHelper.Designer.cs">
+			<DependentUpon>FormLocalizationHelper.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\CodeDom\FormScript.cs" />
+		<Compile Update="UtilityClasses\CodeDom\FormScript.Designer.cs">
+			<DependentUpon>FormScript.cs</DependentUpon>
+		</Compile>
+		<Compile Update="DialogForms\FormDialogScriptLoad.cs" />
+		<Compile Update="DialogForms\FormDialogScriptLoad.Designer.cs">
+			<DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
+		</Compile>
+		<Compile Update="FormHexEdit.cs" />
+		<Compile Update="FormHexEdit.Designer.cs">
+			<DependentUpon>FormHexEdit.cs</DependentUpon>
+		</Compile>
+		<Compile Update="PluginHandling\FormPluginManage.cs" />
+		<Compile Update="PluginHandling\FormPluginManage.Designer.cs">
+			<DependentUpon>FormPluginManage.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Settings\FormSettings.cs" />
+		<Compile Update="Settings\FormSettings.Designer.cs">
+			<DependentUpon>FormSettings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Test\FormTestThingDialog.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Test\FormTestThingDialog.Designer.cs">
+			<DependentUpon>FormTestThingDialog.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Test\FormTestThings.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Test\FormTestThings.Designer.cs">
+			<DependentUpon>FormTestThings.cs</DependentUpon>
+		</Compile>
+		<Compile Update="FormMain.cs" />
+		<Compile Update="FormMain.Designer.cs">
+			<DependentUpon>FormMain.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Localization\Messages.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+			<DependentUpon>Messages.resx</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\Common\DataToolStripMenuItem.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.cs" />
+		<Compile Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.Designer.cs">
+			<DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.cs" />
+		<Compile Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.Designer.cs">
+			<DependentUpon>FormSearchAndReplace.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.cs" />
+		<Compile Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.Designer.cs">
+			<DependentUpon>FormSearchResultTree.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\Session\FormDialogSessionManage.cs" />
+		<Compile Update="UtilityClasses\Session\FormDialogSessionManage.Designer.cs">
+			<DependentUpon>FormDialogSessionManage.cs</DependentUpon>
+		</Compile>
+		<Compile Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.cs" />
+		<Compile Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.Designer.cs">
+			<DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="DialogForms\FormDialogQueryJumpLocation.resx">
+			<DependentUpon>FormDialogQueryJumpLocation.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="DialogForms\FormDialogQueryNumber.resx">
+			<DependentUpon>FormDialogQueryNumber.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="DialogForms\FormDialogRenameNewFile.resx">
+			<DependentUpon>FormDialogRenameNewFile.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="DialogForms\FormDialogSelectFileTab.resx">
+			<DependentUpon>FormDialogSelectFileTab.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Settings\FormDialogCustomSpellCheckerInfo.resx">
+			<DependentUpon>FormDialogCustomSpellCheckerInfo.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\ColorHelpers\FormPickAColor.resx">
+			<DependentUpon>FormPickAColor.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\MiscForms\FormFileDiffView.resx">
+			<DependentUpon>FormFileDiffView.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgress.resx">
+			<DependentUpon>FormDialogSearchReplaceProgress.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="DialogForms\FormDialogQueryEncoding.resx">
+			<DependentUpon>FormDialogQueryEncoding.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="FormHexEdit.resx">
+			<DependentUpon>FormHexEdit.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Localization\Forms\FormLocalizationHelper.resx">
+			<DependentUpon>FormLocalizationHelper.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="FormMain.resx">
+			<DependentUpon>FormMain.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\CodeDom\FormScript.resx">
+			<DependentUpon>FormScript.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="DialogForms\FormDialogScriptLoad.resx">
+			<DependentUpon>FormDialogScriptLoad.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="PluginHandling\FormPluginManage.resx">
+			<DependentUpon>FormPluginManage.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<SubType>Designer</SubType>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Settings\FormSettings.resx">
+			<DependentUpon>FormSettings.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Test\FormTestThingDialog.resx">
+			<DependentUpon>FormTestThingDialog.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Test\FormTestThings.resx">
+			<DependentUpon>FormTestThings.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormDialogSearchReplaceProgressFiles.resx">
+			<DependentUpon>FormDialogSearchReplaceProgressFiles.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormSearchAndReplace.resx">
+			<DependentUpon>FormSearchAndReplace.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\SearchAndReplace\FormSearchResultTree.resx">
+			<DependentUpon>FormSearchResultTree.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\Session\FormDialogSessionManage.resx">
+			<DependentUpon>FormDialogSessionManage.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="UtilityClasses\TextManipulation\TextSorting\FormDialogQuerySortTextStyle.resx">
+			<DependentUpon>FormDialogQuerySortTextStyle.cs</DependentUpon>
+		</EmbeddedResource>
+		<None Include="..\ScriptNotepad_icon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="Installer\DotNetChecker.nsh" />
+		<None Include="Installer\make_installer.bat" />
+		<None Include="Installer\setup_scriptnotepad.nsi" />
+		<None Include="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+		</Compile>
+		<None Include="WindowsRegistry\OpenWith.reg" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Icons\astonished.ico" />
+		<Content Include="Icons\notepad0.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Icons\notepad1.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Icons\notepad2.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Icons\notepad3.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Icons\notepad4.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<None Include="Resources\jump_first.png" />
+		<None Include="Resources\jump_last.png" />
+		<None Include="Resources\Fast-rewind.png" />
+		<None Include="Resources\duplicate_lines.png" />
+		<None Include="Resources\format-text-uppercase.png" />
+		<None Include="Resources\krename.png" />
+		<None Include="Resources\find_tab.png" />
+		<None Include="Resources\arrow-down-2.png" />
+		<None Include="Resources\arrow-up-2.png" />
+		<None Include="Resources\list-add-5.png" />
+		<None Include="Resources\Playback.png" />
+		<None Include="Resources\textfield-rename.png" />
+		<None Include="Resources\session-properties.png" />
+		<None Include="Resources\education-languages.png" />
+		<None Include="Resources\arrow_left.png" />
+		<None Include="Resources\arrow_right.png" />
+		<None Include="Resources\close_small.png" />
+		<None Include="Resources\find_replace.png" />
+		<None Include="Resources\folder-find.png" />
+		<None Include="Resources\database-go.png" />
+		<None Include="Resources\tab_arrow.png" />
+		<None Include="Resources\tab_strikethrough.png" />
+		<None Include="Resources\reload_disk.png" />
+		<None Include="Resources\History.png" />
+		<None Include="Resources\About.png" />
+		<None Include="Resources\paragraph.png" />
+		<None Include="Resources\word_wrap.png" />
+		<None Include="Resources\word_wrap2.png" />
+		<None Include="Resources\style.png" />
+		<None Include="Resources\spell_check.png" />
+		<None Include="Resources\word_wrapped.png" />
+		<None Include="Resources\sort_alphabet.png" />
+		<None Include="Resources\diff_icon.png" />
+		<None Include="Resources\split_view.png" />
+		<None Include="Resources\book_previous.png" />
+		<None Include="Resources\book_next.png" />
+		<None Include="Resources\swap_view.png" />
+		<None Include="Resources\mark_words.png" />
+		<None Include="Resources\print_preview.png" />
+		<None Include="Resources\printer.png" />
+		<None Include="Resources\zoom_in.png" />
+		<None Include="Resources\zoom_out.png" />
+		<None Include="Resources\edit-cut-red.png" />
+		<None Include="Resources\Copy.png" />
+		<None Include="Resources\Paste.png" />
+		<None Include="Resources\open_no_bom.png" />
+		<None Include="Resources\plugin-go.png" />
+		<None Include="Resources\Delete.png" />
+		<None Include="Resources\up_down.png" />
+		<None Include="Resources\Up.png" />
+		<None Include="Resources\Down_2.png" />
+		<None Include="Resources\plugin-add.png" />
+		<None Include="Resources\preferences-plugin.png" />
+		<None Include="Resources\plugin-delete.png" />
+		<None Include="Resources\plugin-error.png" />
+		<None Include="Resources\folder-database.png" />
+		<None Include="Resources\folder-page.png" />
+		<Content Include="Icons\notepad5.ico" />
+		<Content Include="Installer\languages.ico" />
+		<Content Include="Installer\license.txt" />
+		<Content Include="Installer\un_icon.ico" />
+		<Content Include="Localization\Notepad++LanguageNames.txt" />
+		<None Include="Localization\SQLiteDatabase\CopyLang.bat" />
+		<Content Include="Localization\SQLiteDatabase\lang.sqlite" />
+		<Content Include="notepad7.ico" />
+		<None Include="Resources\astonished.png" />
+		<None Include="Resources\discard_changes.png" />
+		<None Include="Resources\CSharp.png" />
+		<None Include="Resources\default.png" />
+		<None Include="Resources\Erase.png" />
+		<None Include="Resources\Find.png" />
+		<None Include="Resources\Save.png" />
+		<None Include="Resources\SaveAs.png" />
+		<None Include="Resources\save_all.png" />
+		<None Include="Resources\SaveWithDialog.png" />
+		<None Include="Resources\save_all_plus.png" />
+		<None Include="Resources\Play.png" />
+		<None Include="Resources\Script.png" />
+		<None Include="Resources\Undo.png" />
+		<None Include="Resources\Redo.png" />
+		<None Include="Resources\open_unknown_encoding.png" />
+		<None Include="Resources\preferences.png" />
+		<None Include="Resources\unicode.png" />
+		<None Include="Resources\New document.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ColorMinePortable" Version="2.0.1" />
+		<PackageReference Include="DotNetZip" Version="1.16.0" />
+		<PackageReference Include="FluentMigrator" Version="3.3.2" />
+		<PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
+		<PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.3.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.3.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net35" Version="1.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
+		<PackageReference Include="RpcSelf" Version="1.0.1" />
+		<PackageReference Include="Scintilla.NET" Version="5.3.1.2" />
+		<PackageReference Include="ScintillaDiff.NET" Version="1.1.5" />
+		<PackageReference Include="ScintillaNetPrinting.NET" Version="1.0.11" />
+		<PackageReference Include="ScriptNotepadPluginBase.NET" Version="1.0.9" />
+		<PackageReference Include="System.Data.SQLite" Version="1.0.116" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
+		<PackageReference Include="UTF.Unknown" Version="2.5.1" />
+		<PackageReference Include="VoikkoSharp" Version="1.0.3" />
+		<PackageReference Include="VPKSoft.ConfLib" Version="1.0.4" />
+		<PackageReference Include="VPKSoft.ErrorLogger" Version="1.1.0" />
+		<PackageReference Include="VPKSoft.ExternalDictionaryPackage" Version="1.0.2" />
+		<PackageReference Include="VPKSoft.LangLib" Version="1.0.9" />
+		<PackageReference Include="VPKSoft.MessageBoxExtended" Version="1.0.8" />
+		<PackageReference Include="VPKSoft.PosLib" Version="1.0.2" />
+		<PackageReference Include="VPKSoft.ScintillaSpellCheck.NET" Version="1.0.13" />
+		<PackageReference Include="VPKSoft.ScintillaTabbedTextControl.NET" Version="1.1.13" />
+		<PackageReference Include="VPKSoft.ScintillaUrlDetect.NET" Version="1.0.13" />
+		<PackageReference Include="VPKSoft.SearchText" Version="1.0.3" />
+		<PackageReference Include="VPKSoft.Utils" Version="1.0.7" />
+		<PackageReference Include="VPKSoft.VersionCheck" Version="1.0.8" />
+		<PackageReference Include="VPKSoft.XmlSettings" Version="1.0.1" />
+		<PackageReference Include="WPFHexaEditor" Version="2.1.7" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Database\Entity\Entities\FileContent.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CustomControls\CustomControls.csproj" />
+		<ProjectReference Include="..\ScriptNotepadOldDatabaseEntity\ScriptNotepadOldDatabaseEntity.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Database\Entity\Utility\ModelHelpers\" />
+	</ItemGroup>
 </Project>

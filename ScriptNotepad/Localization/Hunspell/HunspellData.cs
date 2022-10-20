@@ -27,98 +27,97 @@ SOFTWARE.
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace ScriptNotepad.Localization.Hunspell
+namespace ScriptNotepad.Localization.Hunspell;
+
+/// <summary>
+/// A class to hold Hunspell dictionary data.
+/// </summary>
+public class HunspellData
 {
     /// <summary>
-    /// A class to hold Hunspell dictionary data.
+    /// Gets or sets the Hunspell culture matching the dictionary file name.
     /// </summary>
-    public class HunspellData
+    public CultureInfo HunspellCulture { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Hunspell dictionary (*.dic) file.
+    /// </summary>
+    public string DictionaryFile { get; set; }
+
+    /// <summary>
+    /// Gets or sets the hunspell affix (*.aff) file.
+    /// </summary>
+    public string AffixFile { get; set; }
+
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public override string ToString()
     {
-        /// <summary>
-        /// Gets or sets the Hunspell culture matching the dictionary file name.
-        /// </summary>
-        public CultureInfo HunspellCulture { get; set; }
+        // get string data of the CultureInfo instance..
 
-        /// <summary>
-        /// Gets or sets the Hunspell dictionary (*.dic) file.
-        /// </summary>
-        public string DictionaryFile { get; set; }
-
-        /// <summary>
-        /// Gets or sets the hunspell affix (*.aff) file.
-        /// </summary>
-        public string AffixFile { get; set; }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        // a "valid" culture wasn't found so resort to other method to get the string..
+        if (HunspellCulture.CultureTypes.HasFlag(CultureTypes.UserCustomCulture) || HunspellCulture.Name == string.Empty)
         {
-            // get string data of the CultureInfo instance..
+            // do a regex math for the Hunspell dictionary file to see if it's file name contains a valid xx_YY or xx-YY culture name..
+            var nameRegex = Regex.Match(Path.GetFileName(DictionaryFile), "\\D{2}(_|-)\\D{2}").Value.Replace('_', '-');
 
-            // a "valid" culture wasn't found so resort to other method to get the string..
-            if (HunspellCulture.CultureTypes.HasFlag(CultureTypes.UserCustomCulture) || HunspellCulture.Name == string.Empty)
+            // if the regex match is empty..
+            if (nameRegex == string.Empty)
             {
-                // do a regex math for the Hunspell dictionary file to see if it's file name contains a valid xx_YY or xx-YY culture name..
-                var nameRegex = Regex.Match(Path.GetFileName(DictionaryFile), "\\D{2}(_|-)\\D{2}").Value.Replace('_', '-');
+                // ..get the file name without path and extension..
+                nameRegex = Path.GetFileNameWithoutExtension(DictionaryFile);
 
-                // if the regex match is empty..
-                if (nameRegex == string.Empty)
+                // if the file name's length is >1 make the first letter to upper case..
+                if (nameRegex != null && nameRegex.Length >= 2)
                 {
-                    // ..get the file name without path and extension..
-                    nameRegex = Path.GetFileNameWithoutExtension(DictionaryFile);
-
-                    // if the file name's length is >1 make the first letter to upper case..
-                    if (nameRegex != null && nameRegex.Length >= 2)
-                    {
-                        nameRegex = nameRegex[0].ToString().ToUpperInvariant() + nameRegex.Substring(1);
-                    }
-                    else
-                    {
-                        // the file name's length is one characters, so make the whole file name to upper case..
-                        nameRegex = nameRegex?.ToUpperInvariant();
-                    }
+                    nameRegex = nameRegex[0].ToString().ToUpperInvariant() + nameRegex.Substring(1);
                 }
-
-                // if the ToString() method of a CultureInfo instance returns nothing..
-                if (HunspellCulture.ToString() == string.Empty)
+                else
                 {
-                    // ..return the name gotten using regex and file name..
-                    return nameRegex ?? string.Empty;
+                    // the file name's length is one characters, so make the whole file name to upper case..
+                    nameRegex = nameRegex?.ToUpperInvariant();
                 }
-                
-                // otherwise return the CultureInfo instance ToString() with an addition of the name gotten from the file name..
-                return HunspellCulture + $" ({nameRegex})";                    
             }
 
-            // if a "valid" culture was found, just return it's display name..
-            return HunspellCulture.DisplayName;
+            // if the ToString() method of a CultureInfo instance returns nothing..
+            if (HunspellCulture.ToString() == string.Empty)
+            {
+                // ..return the name gotten using regex and file name..
+                return nameRegex ?? string.Empty;
+            }
+                
+            // otherwise return the CultureInfo instance ToString() with an addition of the name gotten from the file name..
+            return HunspellCulture + $" ({nameRegex})";                    
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="HunspellCulture"/> from the given dictionary file name.
-        /// </summary>
-        /// <param name="fileName">The name of the dictionary file.</param>
-        /// <returns>An instance to a <see cref="HunspellCulture"/> class.</returns>
-        public static HunspellData FromDictionaryFile(string fileName)
-        {
-            HunspellData result = new HunspellData();
+        // if a "valid" culture was found, just return it's display name..
+        return HunspellCulture.DisplayName;
+    }
 
-            // the files are excepted to be in format i.e. "en_US.dic"..
-            string cultureName = Regex.Match(Path.GetFileName(fileName), "\\D{2}(_|-)\\D{2}").Value;
-            cultureName = cultureName.Replace('_', '-');
+    /// <summary>
+    /// Creates a new instance of <see cref="HunspellCulture"/> from the given dictionary file name.
+    /// </summary>
+    /// <param name="fileName">The name of the dictionary file.</param>
+    /// <returns>An instance to a <see cref="HunspellCulture"/> class.</returns>
+    public static HunspellData FromDictionaryFile(string fileName)
+    {
+        HunspellData result = new HunspellData();
 
-            // get a CultureInfo value for the Hunspell dictionary file..
-            result.HunspellCulture = CultureInfo.GetCultureInfo(cultureName);
+        // the files are excepted to be in format i.e. "en_US.dic"..
+        string cultureName = Regex.Match(Path.GetFileName(fileName), "\\D{2}(_|-)\\D{2}").Value;
+        cultureName = cultureName.Replace('_', '-');
 
-            // set the file..
-            result.DictionaryFile = fileName;
+        // get a CultureInfo value for the Hunspell dictionary file..
+        result.HunspellCulture = CultureInfo.GetCultureInfo(cultureName);
 
-            // set the affix file..
-            result.AffixFile = Path.ChangeExtension(fileName, "aff");
+        // set the file..
+        result.DictionaryFile = fileName;
 
-            return result;
-        }
+        // set the affix file..
+        result.AffixFile = Path.ChangeExtension(fileName, "aff");
+
+        return result;
     }
 }

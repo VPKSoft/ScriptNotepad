@@ -24,21 +24,20 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.Database.Entity.Enumerations
+namespace ScriptNotepad.Database.Entity.Enumerations;
+
+/// <summary>
+/// An enumeration for a type of a search.
+/// </summary>
+public enum SearchAndReplaceType
 {
     /// <summary>
-    /// An enumeration for a type of a search.
+    /// The type of the search and replace history is search.
     /// </summary>
-    public enum SearchAndReplaceType
-    {
-        /// <summary>
-        /// The type of the search and replace history is search.
-        /// </summary>
-        Search,
+    Search,
 
-        /// <summary>
-        /// The type of the search and replace history is replace.
-        /// </summary>
-        Replace,
-    }
+    /// <summary>
+    /// The type of the search and replace history is replace.
+    /// </summary>
+    Replace,
 }

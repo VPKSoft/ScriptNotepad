@@ -33,100 +33,83 @@ using VPKSoft.ScintillaSpellCheck;
 using VPKSoft.ScintillaTabbedTextControl;
 using VPKSoft.Utils;
 
-namespace ScriptNotepad.UtilityClasses.SpellCheck
+namespace ScriptNotepad.UtilityClasses.SpellCheck;
+
+/// <summary>
+/// A helper class for the <see cref="ScintillaTabbedDocument"/> for spell checking.
+/// </summary>
+public class TabbedDocumentSpellCheck: ErrorHandlingBase, IDisposable
 {
     /// <summary>
-    /// A helper class for the <see cref="ScintillaTabbedDocument"/> for spell checking.
+    /// Initializes a new instance of the <see cref="TabbedDocumentSpellCheck"/> class.
     /// </summary>
-    public class TabbedDocumentSpellCheck: ErrorHandlingBase, IDisposable
+    /// <param name="document">The <see cref="ScintillaTabbedDocument"/> to attach the spell checker.</param>
+    /// <param name="loadDictionaryFiles">Specifies whether the dictionary files should be loaded to the instance.</param>
+    public TabbedDocumentSpellCheck(ScintillaTabbedDocument document, bool loadDictionaryFiles)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabbedDocumentSpellCheck"/> class.
-        /// </summary>
-        /// <param name="document">The <see cref="ScintillaTabbedDocument"/> to attach the spell checker.</param>
-        /// <param name="loadDictionaryFiles">Specifies whether the dictionary files should be loaded to the instance.</param>
-        public TabbedDocumentSpellCheck(ScintillaTabbedDocument document, bool loadDictionaryFiles)
+        // verify the settings and the fact that the document doesn't already have this instance..
+        if (FormSettings.Settings.EditorUseSpellChecking &&
+            File.Exists(FormSettings.Settings.EditorHunspellDictionaryFile) &&
+            File.Exists(FormSettings.Settings.EditorHunspellAffixFile) &&
+            document.Tag0 == null)
         {
-            // verify the settings and the fact that the document doesn't already have this instance..
-            if (FormSettings.Settings.EditorUseSpellChecking &&
-                File.Exists(FormSettings.Settings.EditorHunspellDictionaryFile) &&
-                File.Exists(FormSettings.Settings.EditorHunspellAffixFile) &&
-                document.Tag0 == null)
+            try
             {
-                try
+                SpellCheck = new ScintillaSpellCheck(document.Scintilla,
+                    FormSettings.Settings.EditorHunspellDictionaryFile,
+                    FormSettings.Settings.EditorHunspellAffixFile,
+                    UserDictionaryFile,
+                    UserIgnoreWordFile)
                 {
-                    SpellCheck = new ScintillaSpellCheck(document.Scintilla,
-                        FormSettings.Settings.EditorHunspellDictionaryFile,
-                        FormSettings.Settings.EditorHunspellAffixFile,
-                        UserDictionaryFile,
-                        UserIgnoreWordFile)
-                    {
-                        MenuIgnoreText = DBLangEngine.GetStatMessage("msgSpellCheckIgnoreWordMenuText",
-                            "Ignore word \"{0}\".|A context menu item for spell checking to ignore a word"),
-                        MenuAddToDictionaryText = DBLangEngine.GetStatMessage(
-                            "msgSpellCheckAddWordToDictionaryText",
-                            "Add word \"{0}\" to the dictionary.|A context menu item for spell checking to add a word to the dictionary"),
-                        MenuDictionaryTopItemText = DBLangEngine.GetStatMessage("msgSpellChecking",
-                            "Spell checking|A message displayed in a spelling correct menu's top item."),
-                        ShowDictionaryTopMenuItem = true,
-                        AddBottomSeparator = true,
-                        ShowIgnoreMenu = true,
-                        ShowAddToDictionaryMenu = true,
-                        ScintillaIndicatorColor = FormSettings.Settings.EditorSpellCheckColor,
-                    };
+                    MenuIgnoreText = DBLangEngine.GetStatMessage("msgSpellCheckIgnoreWordMenuText",
+                        "Ignore word \"{0}\".|A context menu item for spell checking to ignore a word"),
+                    MenuAddToDictionaryText = DBLangEngine.GetStatMessage(
+                        "msgSpellCheckAddWordToDictionaryText",
+                        "Add word \"{0}\" to the dictionary.|A context menu item for spell checking to add a word to the dictionary"),
+                    MenuDictionaryTopItemText = DBLangEngine.GetStatMessage("msgSpellChecking",
+                        "Spell checking|A message displayed in a spelling correct menu's top item."),
+                    ShowDictionaryTopMenuItem = true,
+                    AddBottomSeparator = true,
+                    ShowIgnoreMenu = true,
+                    ShowAddToDictionaryMenu = true,
+                    ScintillaIndicatorColor = FormSettings.Settings.EditorSpellCheckColor,
+                };
 
-                    if (!loadDictionaryFiles)
-                    {
-                        SpellCheck.Dictionary = null;
-                    }
-
-                    // add this instance to the document's Tag0 property..
-                    document.Tag0 = this;
-
-                    // subscribe to the event where a user wishes to correct a
-                    // misspelled word via the context menu..
-                    SpellCheck.UserWordReplace += SpellCheck_UserWordReplace;
-
-                    // subscribe to the Scintilla text changed event..
-                    document.Scintilla.TextChanged += Scintilla_TextChanged;
-
-                    // subscribe the event when a user is requesting a word to be added to the personal dictionary..
-                    SpellCheck.WordAddDictionaryRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
-
-                    // subscribe to the event when a user is requesting to add a word to personal ignore list..
-                    SpellCheck.WordIgnoreRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
-
-                    // save the Scintilla instance to unsubscribe the events..
-                    Scintilla = document.Scintilla;
-
-                    // spell check the document for the first time..
-                    SpellCheck?.SpellCheckScintillaFast();
-
-                    // save the time of the latest spell check..
-                    LastSpellCheck = DateTime.Now;
-                }
-                catch (Exception ex)
+                if (!loadDictionaryFiles)
                 {
-                    // log the exception..
-                    ExceptionLogAction?.Invoke(ex);
-
-                    try
-                    {
-                        ExceptionLogger.LogMessage($"Spell check state: '{FormSettings.Settings.EditorUseSpellChecking}'.");
-                        ExceptionLogger.LogMessage(
-                            $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellDictionaryFile)}): '{FormSettings.Settings.EditorHunspellDictionaryFile}'.");
-                        ExceptionLogger.LogMessage(
-                            $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellAffixFile)}): '{FormSettings.Settings.EditorHunspellAffixFile}'.");
-                        ExceptionLogger.LogMessage($"Document Tag0: '{document.Tag0}'.");
-                    }
-                    catch (Exception ex2)
-                    {
-                        ExceptionLogger.LogError(ex2);
-                    }
+                    SpellCheck.Dictionary = null;
                 }
+
+                // add this instance to the document's Tag0 property..
+                document.Tag0 = this;
+
+                // subscribe to the event where a user wishes to correct a
+                // misspelled word via the context menu..
+                SpellCheck.UserWordReplace += SpellCheck_UserWordReplace;
+
+                // subscribe to the Scintilla text changed event..
+                document.Scintilla.TextChanged += Scintilla_TextChanged;
+
+                // subscribe the event when a user is requesting a word to be added to the personal dictionary..
+                SpellCheck.WordAddDictionaryRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+                // subscribe to the event when a user is requesting to add a word to personal ignore list..
+                SpellCheck.WordIgnoreRequested += SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+                // save the Scintilla instance to unsubscribe the events..
+                Scintilla = document.Scintilla;
+
+                // spell check the document for the first time..
+                SpellCheck?.SpellCheckScintillaFast();
+
+                // save the time of the latest spell check..
+                LastSpellCheck = DateTime.Now;
             }
-            else
+            catch (Exception ex)
             {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+
                 try
                 {
                     ExceptionLogger.LogMessage($"Spell check state: '{FormSettings.Settings.EditorUseSpellChecking}'.");
@@ -136,209 +119,225 @@ namespace ScriptNotepad.UtilityClasses.SpellCheck
                         $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellAffixFile)}): '{FormSettings.Settings.EditorHunspellAffixFile}'.");
                     ExceptionLogger.LogMessage($"Document Tag0: '{document.Tag0}'.");
                 }
-                catch (Exception ex)
+                catch (Exception ex2)
                 {
-                    ExceptionLogger.LogError(ex);
+                    ExceptionLogger.LogError(ex2);
                 }
             }
         }
-
-        private void SpellCheck_WordAddDictionaryOrIgnoreRequested(object sender, WordHandleEventArgs e)
+        else
         {
-            // check if the word was requested to be added to the dictionary..
-            if (e.AddToDictionary)
-            {                
-                e.ScintillaSpellCheck.AddToUserDictionary(e.Word);
-                SpellCheckEnabled = true; // indicate to force a spell check..
-                DoSpellCheck();
-            }
-            // check if the word was requested to be added to the ignore word list..
-            else if (e.AddToIgnore)
+            try
             {
-                e.ScintillaSpellCheck.AddToUserIgnoreList(e.Word);
-                SpellCheckEnabled = true; // indicate to force a spell check..
-                DoSpellCheck();
+                ExceptionLogger.LogMessage($"Spell check state: '{FormSettings.Settings.EditorUseSpellChecking}'.");
+                ExceptionLogger.LogMessage(
+                    $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellDictionaryFile)}): '{FormSettings.Settings.EditorHunspellDictionaryFile}'.");
+                ExceptionLogger.LogMessage(
+                    $"File exists ({File.Exists(FormSettings.Settings.EditorHunspellAffixFile)}): '{FormSettings.Settings.EditorHunspellAffixFile}'.");
+                ExceptionLogger.LogMessage($"Document Tag0: '{document.Tag0}'.");
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the user dictionary file.
-        /// </summary>
-        public static string UserDictionaryFile { get; set; } =
-            Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "user_dictionary.dic");
-
-        /// <summary>
-        /// Gets or sets the user ignore word file.
-        /// </summary>
-        public static string UserIgnoreWordFile { get; set; } =
-            Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "user_dictionary.ignore");
-
-        /// <summary>
-        /// Gets or set the <see cref="Scintilla"/> instance this class has event subscription for.
-        /// </summary>
-        private Scintilla Scintilla { get; }
-
-        /// <summary>
-        /// Runs a spell check for the <see cref="Scintilla"/> document.
-        /// </summary>
-        public void DoSpellCheck()
-        {
-            // prevent the spell checking to take place if it's
-            // explicitly disabled or there is no need no redo the
-            // spell checking..
-            if (!ShouldSpellCheck || !Enabled)
+            catch (Exception ex)
             {
-                return;
-            }
-
-            // spell check the document..
-            SpellCheck?.SpellCheckScintillaFast();
-
-            // reset the value of the flag..
-            SpellCheckEnabled = false;
-
-            // reset the time of the latest spell check..
-            LastSpellCheck = DateTime.Now;
-        }
-
-        /// <summary>
-        /// Handles the TextChanged event of the Scintilla control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void Scintilla_TextChanged(object sender, EventArgs e)
-        {
-            // reset the time of the latest spell check..
-            LastSpellCheck = DateTime.Now;
-
-            if (TextChangedViaSpellCheck)
-            {
-                return;
-            }
-
-            // reset the value of the flag..
-            SpellCheckEnabled = true;
-        }
-
-        /// <summary>
-        /// Handles the UserWordReplace event of the SpellCheck control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="WordHandleEventArgs"/> instance containing the event data.</param>
-        private void SpellCheck_UserWordReplace(object sender, WordHandleEventArgs e)
-        {
-            // if the user changed the text of a Scintilla via the spell check context
-            // menu to correct a word, then there is no reason to spell check the document again after the text has been changed..
-            TextChangedViaSpellCheck = true;
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // unsubscribe to the event where a user wishes to correct a
-                // misspelled word via the context menu..
-                SpellCheck.UserWordReplace -= SpellCheck_UserWordReplace;
-
-                // unsubscribe to the Scintilla text changed event..
-                Scintilla.TextChanged -= Scintilla_TextChanged;
-
-                SpellCheck.WordAddDictionaryRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
-
-                SpellCheck.WordIgnoreRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
-
-                // save the user's dictionary to a file..
-                SpellCheck.SaveUserDictionaryToFile(UserDictionaryFile);
-
-                // save the user's ignore word list to a file..
-                SpellCheck.SaveUserWordIgnoreListToFile(UserIgnoreWordFile);
-
-                // dispose of the ScintillaSpellCheck class..
-                using (SpellCheck)
-                {
-                    SpellCheck = null; // empty using clause is ugly :-(
-                }
+                ExceptionLogger.LogError(ex);
             }
         }
-
-        private int textChangedViaSpellCheck = -1;
-
-        /// <summary>
-        /// Gets or sets a value indicating if the text was changed via spelling correction.
-        /// </summary>
-        private bool TextChangedViaSpellCheck
-        {
-            get
-            {
-                // this value returns true for a two times if set to true..
-                var result = textChangedViaSpellCheck >= 0;
-
-                // decrease the value..
-                textChangedViaSpellCheck--; 
-
-                return result;
-            }
-            set => textChangedViaSpellCheck = value ? 2 : 0;
-        }
-
-        // a field for the Enabled property..
-        private bool enabled = true;
-
-        /// <summary>
-        /// Gets or set a value whether the spell checking is enabled.
-        /// </summary>
-        public bool Enabled
-        {
-            get => enabled;
-
-            set
-            {
-                if (value != enabled)
-                {
-                    SpellCheckEnabled = value;
-                    enabled = value;
-                    if (!value)
-                    {
-                        SpellCheck.ClearSpellCheck();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// A flag indicating whether the text was changed via a spelling correction or another way.
-        /// </summary>
-        private bool SpellCheckEnabled { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the last time to document was spell checked for.
-        /// </summary>
-        public DateTime LastSpellCheck = DateTime.Now;
-
-        /// <summary>
-        /// Gets a value whether a spell check should be done.
-        /// </summary>
-        public bool ShouldSpellCheck =>
-            (DateTime.Now - LastSpellCheck).TotalMilliseconds > FormSettings.Settings.EditorSpellCheckInactivity &&
-            SpellCheckEnabled && !TextChangedViaSpellCheck;
-
-        /// <summary>
-        /// Gets or sets the <see cref="VPKSoft.ScintillaSpellCheck.ScintillaSpellCheck"/> class instance.
-        /// </summary>
-        /// <value>The spell check.</value>
-        public ScintillaSpellCheck SpellCheck { get; set; }
     }
+
+    private void SpellCheck_WordAddDictionaryOrIgnoreRequested(object sender, WordHandleEventArgs e)
+    {
+        // check if the word was requested to be added to the dictionary..
+        if (e.AddToDictionary)
+        {                
+            e.ScintillaSpellCheck.AddToUserDictionary(e.Word);
+            SpellCheckEnabled = true; // indicate to force a spell check..
+            DoSpellCheck();
+        }
+        // check if the word was requested to be added to the ignore word list..
+        else if (e.AddToIgnore)
+        {
+            e.ScintillaSpellCheck.AddToUserIgnoreList(e.Word);
+            SpellCheckEnabled = true; // indicate to force a spell check..
+            DoSpellCheck();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the user dictionary file.
+    /// </summary>
+    public static string UserDictionaryFile { get; set; } =
+        Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "user_dictionary.dic");
+
+    /// <summary>
+    /// Gets or sets the user ignore word file.
+    /// </summary>
+    public static string UserIgnoreWordFile { get; set; } =
+        Path.Combine(Paths.GetAppSettingsFolder(Misc.AppType.Winforms), "user_dictionary.ignore");
+
+    /// <summary>
+    /// Gets or set the <see cref="Scintilla"/> instance this class has event subscription for.
+    /// </summary>
+    private Scintilla Scintilla { get; }
+
+    /// <summary>
+    /// Runs a spell check for the <see cref="Scintilla"/> document.
+    /// </summary>
+    public void DoSpellCheck()
+    {
+        // prevent the spell checking to take place if it's
+        // explicitly disabled or there is no need no redo the
+        // spell checking..
+        if (!ShouldSpellCheck || !Enabled)
+        {
+            return;
+        }
+
+        // spell check the document..
+        SpellCheck?.SpellCheckScintillaFast();
+
+        // reset the value of the flag..
+        SpellCheckEnabled = false;
+
+        // reset the time of the latest spell check..
+        LastSpellCheck = DateTime.Now;
+    }
+
+    /// <summary>
+    /// Handles the TextChanged event of the Scintilla control.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+    private void Scintilla_TextChanged(object sender, EventArgs e)
+    {
+        // reset the time of the latest spell check..
+        LastSpellCheck = DateTime.Now;
+
+        if (TextChangedViaSpellCheck)
+        {
+            return;
+        }
+
+        // reset the value of the flag..
+        SpellCheckEnabled = true;
+    }
+
+    /// <summary>
+    /// Handles the UserWordReplace event of the SpellCheck control.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="WordHandleEventArgs"/> instance containing the event data.</param>
+    private void SpellCheck_UserWordReplace(object sender, WordHandleEventArgs e)
+    {
+        // if the user changed the text of a Scintilla via the spell check context
+        // menu to correct a word, then there is no reason to spell check the document again after the text has been changed..
+        TextChangedViaSpellCheck = true;
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Releases unmanaged and - optionally - managed resources.
+    /// </summary>
+    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            // unsubscribe to the event where a user wishes to correct a
+            // misspelled word via the context menu..
+            SpellCheck.UserWordReplace -= SpellCheck_UserWordReplace;
+
+            // unsubscribe to the Scintilla text changed event..
+            Scintilla.TextChanged -= Scintilla_TextChanged;
+
+            SpellCheck.WordAddDictionaryRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+            SpellCheck.WordIgnoreRequested -= SpellCheck_WordAddDictionaryOrIgnoreRequested;
+
+            // save the user's dictionary to a file..
+            SpellCheck.SaveUserDictionaryToFile(UserDictionaryFile);
+
+            // save the user's ignore word list to a file..
+            SpellCheck.SaveUserWordIgnoreListToFile(UserIgnoreWordFile);
+
+            // dispose of the ScintillaSpellCheck class..
+            using (SpellCheck)
+            {
+                SpellCheck = null; // empty using clause is ugly :-(
+            }
+        }
+    }
+
+    private int textChangedViaSpellCheck = -1;
+
+    /// <summary>
+    /// Gets or sets a value indicating if the text was changed via spelling correction.
+    /// </summary>
+    private bool TextChangedViaSpellCheck
+    {
+        get
+        {
+            // this value returns true for a two times if set to true..
+            var result = textChangedViaSpellCheck >= 0;
+
+            // decrease the value..
+            textChangedViaSpellCheck--; 
+
+            return result;
+        }
+        set => textChangedViaSpellCheck = value ? 2 : 0;
+    }
+
+    // a field for the Enabled property..
+    private bool enabled = true;
+
+    /// <summary>
+    /// Gets or set a value whether the spell checking is enabled.
+    /// </summary>
+    public bool Enabled
+    {
+        get => enabled;
+
+        set
+        {
+            if (value != enabled)
+            {
+                SpellCheckEnabled = value;
+                enabled = value;
+                if (!value)
+                {
+                    SpellCheck.ClearSpellCheck();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// A flag indicating whether the text was changed via a spelling correction or another way.
+    /// </summary>
+    private bool SpellCheckEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the last time to document was spell checked for.
+    /// </summary>
+    public DateTime LastSpellCheck = DateTime.Now;
+
+    /// <summary>
+    /// Gets a value whether a spell check should be done.
+    /// </summary>
+    public bool ShouldSpellCheck =>
+        (DateTime.Now - LastSpellCheck).TotalMilliseconds > FormSettings.Settings.EditorSpellCheckInactivity &&
+        SpellCheckEnabled && !TextChangedViaSpellCheck;
+
+    /// <summary>
+    /// Gets or sets the <see cref="VPKSoft.ScintillaSpellCheck.ScintillaSpellCheck"/> class instance.
+    /// </summary>
+    /// <value>The spell check.</value>
+    public ScintillaSpellCheck SpellCheck { get; set; }
 }

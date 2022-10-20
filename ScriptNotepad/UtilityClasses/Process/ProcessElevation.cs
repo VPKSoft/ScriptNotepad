@@ -26,20 +26,19 @@ SOFTWARE.
 
 using System.Security.Principal;
 
-namespace ScriptNotepad.UtilityClasses.Process
+namespace ScriptNotepad.UtilityClasses.Process;
+
+/// <summary>
+/// A class for detecting if the process is running elevated.
+/// </summary>
+public static class ProcessElevation
 {
     /// <summary>
-    /// A class for detecting if the process is running elevated.
+    /// Gets a value indicating whether the current process is running with elevated privileges.
     /// </summary>
-    public static class ProcessElevation
+    public static bool IsElevated
     {
-        /// <summary>
-        /// Gets a value indicating whether the current process is running with elevated privileges.
-        /// </summary>
-        public static bool IsElevated
-        {
-            // (C): https://www.cyotek.com/blog/detecting-if-an-application-is-running-as-an-elevated-process-and-spawning-a-new-process-using-elevated-permissions
-            get => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-        }
+        // (C): https://www.cyotek.com/blog/detecting-if-an-application-is-running-as-an-elevated-process-and-spawning-a-new-process-using-elevated-permissions
+        get => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     }
 }

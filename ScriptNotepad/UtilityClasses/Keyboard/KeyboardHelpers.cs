@@ -26,103 +26,102 @@ SOFTWARE.
 
 using System.Windows.Forms;
 
-namespace ScriptNotepad.UtilityClasses.Keyboard
+namespace ScriptNotepad.UtilityClasses.Keyboard;
+
+/// <summary>
+/// A class containing some helper methods dealing with the keyboard.
+/// </summary>
+public static class KeyboardHelpers
 {
     /// <summary>
-    /// A class containing some helper methods dealing with the keyboard.
+    /// Gets a value indicating if some of the modifier keys are down (Control, Alt or Shift).
     /// </summary>
-    public static class KeyboardHelpers
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <returns><c>true</c> if some of the modifier keys are down, <c>false</c> otherwise.</returns>
+    public static bool SomeModifierKeysDown(this KeyEventArgs e)
     {
-        /// <summary>
-        /// Gets a value indicating if some of the modifier keys are down (Control, Alt or Shift).
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <returns><c>true</c> if some of the modifier keys are down, <c>false</c> otherwise.</returns>
-        public static bool SomeModifierKeysDown(this KeyEventArgs e)
-        {
-            return e.Alt || e.Control || e.Shift;
-        }
+        return e.Alt || e.Control || e.Shift;
+    }
 
-        /// <summary>
-        /// Gets a value indicating if all of the modifier keys are down (Control, Alt or Shift).
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <returns><c>true</c> if all of the modifier keys are down, <c>false</c> otherwise.</returns>
-        public static bool AllModifierKeysDown(this KeyEventArgs e)
-        {
-            return e.Alt && e.Control && e.Shift;
-        }
+    /// <summary>
+    /// Gets a value indicating if all of the modifier keys are down (Control, Alt or Shift).
+    /// </summary>
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <returns><c>true</c> if all of the modifier keys are down, <c>false</c> otherwise.</returns>
+    public static bool AllModifierKeysDown(this KeyEventArgs e)
+    {
+        return e.Alt && e.Control && e.Shift;
+    }
 
-        /// <summary>
-        /// Gets a value indicating if none of the modifier keys are down (Control, Alt or Shift).
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <returns><c>true</c> if none of the modifier keys are down, <c>false</c> otherwise.</returns>
-        public static bool NoModifierKeysDown(this KeyEventArgs e)
-        {
-            return !e.Alt && !e.Control && !e.Shift;
-        }
+    /// <summary>
+    /// Gets a value indicating if none of the modifier keys are down (Control, Alt or Shift).
+    /// </summary>
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <returns><c>true</c> if none of the modifier keys are down, <c>false</c> otherwise.</returns>
+    public static bool NoModifierKeysDown(this KeyEventArgs e)
+    {
+        return !e.Alt && !e.Control && !e.Shift;
+    }
 
-        /// <summary>
-        /// Gets a value if only the Alt modifier key is down.
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <returns><c>true</c> if only the Alt modifier key is down, <c>false</c> otherwise.</returns>
-        public static bool OnlyAlt(this KeyEventArgs e)
-        {
-            return e.ModifierKeysDown(true, false, false);
-        }
+    /// <summary>
+    /// Gets a value if only the Alt modifier key is down.
+    /// </summary>
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <returns><c>true</c> if only the Alt modifier key is down, <c>false</c> otherwise.</returns>
+    public static bool OnlyAlt(this KeyEventArgs e)
+    {
+        return e.ModifierKeysDown(true, false, false);
+    }
 
-        /// <summary>
-        /// Gets a value if only the Shift modifier key is down.
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <returns><c>true</c> if only the Shift modifier key is down, <c>false</c> otherwise.</returns>
-        public static bool OnlyShift(this KeyEventArgs e)
-        {
-            return e.ModifierKeysDown(false, false, true);
-        }
+    /// <summary>
+    /// Gets a value if only the Shift modifier key is down.
+    /// </summary>
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <returns><c>true</c> if only the Shift modifier key is down, <c>false</c> otherwise.</returns>
+    public static bool OnlyShift(this KeyEventArgs e)
+    {
+        return e.ModifierKeysDown(false, false, true);
+    }
 
-        /// <summary>
-        /// Gets a value if only the Control modifier key is down.
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <returns><c>true</c> if only the Control modifier key is down, <c>false</c> otherwise.</returns>
-        public static bool OnlyControl(this KeyEventArgs e)
-        {
-            return e.ModifierKeysDown(false, true, false);
-        }
+    /// <summary>
+    /// Gets a value if only the Control modifier key is down.
+    /// </summary>
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <returns><c>true</c> if only the Control modifier key is down, <c>false</c> otherwise.</returns>
+    public static bool OnlyControl(this KeyEventArgs e)
+    {
+        return e.ModifierKeysDown(false, true, false);
+    }
 
-        /// <summary>
-        /// Gets a value indicating if the given modifier keys are down (Control, Alt or Shift).
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <param name="alt">if set to <c>true</c> the Alt key should be down.</param>
-        /// <param name="control">if set to <c>true</c> the Control key should be down.</param>
-        /// <param name="shift">if set to <c>true</c> the Shift key should be down.</param>
-        /// <returns><c>true</c> if the given modifier keys are down, <c>false</c> otherwise.</returns>
-        public static bool ModifierKeysDown(this KeyEventArgs e, bool alt, bool control, bool shift)
-        {
-            return e.Alt && alt || e.Control && control || e.Shift && shift;
-        }
+    /// <summary>
+    /// Gets a value indicating if the given modifier keys are down (Control, Alt or Shift).
+    /// </summary>
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <param name="alt">if set to <c>true</c> the Alt key should be down.</param>
+    /// <param name="control">if set to <c>true</c> the Control key should be down.</param>
+    /// <param name="shift">if set to <c>true</c> the Shift key should be down.</param>
+    /// <returns><c>true</c> if the given modifier keys are down, <c>false</c> otherwise.</returns>
+    public static bool ModifierKeysDown(this KeyEventArgs e, bool alt, bool control, bool shift)
+    {
+        return e.Alt && alt || e.Control && control || e.Shift && shift;
+    }
 
-        /// <summary>
-        /// Gets a value if some key is down in the given list of <see cref="Keys"/>.
-        /// </summary>
-        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
-        /// <param name="keys">The keys to check for.</param>
-        /// <returns><c>true</c> if some key is down in the given list of <see cref="Keys"/>, <c>false</c> otherwise.</returns>
-        public static bool KeyCodeIn(this KeyEventArgs e, params Keys[] keys)
+    /// <summary>
+    /// Gets a value if some key is down in the given list of <see cref="Keys"/>.
+    /// </summary>
+    /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
+    /// <param name="keys">The keys to check for.</param>
+    /// <returns><c>true</c> if some key is down in the given list of <see cref="Keys"/>, <c>false</c> otherwise.</returns>
+    public static bool KeyCodeIn(this KeyEventArgs e, params Keys[] keys)
+    {
+        foreach (var key in keys)
         {
-            foreach (var key in keys)
+            if (e.KeyCode == key)
             {
-                if (e.KeyCode == key)
-                {
-                    return true;
-                }
+                return true;
             }
-
-            return false;
         }
+
+        return false;
     }
 }

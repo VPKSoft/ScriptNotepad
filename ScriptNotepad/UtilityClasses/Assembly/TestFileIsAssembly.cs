@@ -28,49 +28,48 @@ using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System.Reflection;
 
 // (C): https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/assemblies-gac/how-to-determine-if-a-file-is-an-assembly
-namespace ScriptNotepad.UtilityClasses.Assembly
+namespace ScriptNotepad.UtilityClasses.Assembly;
+
+/// <summary>
+/// A class to test if an given file is a .NET Framework assembly.
+/// </summary>
+public class TestFileIsAssembly: ErrorHandlingBase
 {
     /// <summary>
-    /// A class to test if an given file is a .NET Framework assembly.
+    /// Determines whether the specified file is a .NET Framework assembly.
     /// </summary>
-    public class TestFileIsAssembly: ErrorHandlingBase
+    /// <param name="fileName">The name of the file to test for.</param>
+    /// <returns>True if the file is an assembly; otherwise false.</returns>
+    public static bool IsAssembly(string fileName)
     {
-        /// <summary>
-        /// Determines whether the specified file is a .NET Framework assembly.
-        /// </summary>
-        /// <param name="fileName">The name of the file to test for.</param>
-        /// <returns>True if the file is an assembly; otherwise false.</returns>
-        public static bool IsAssembly(string fileName)
+        try
         {
-            try
-            {
-                AssemblyName.GetAssemblyName(fileName);
-                return true;
-            }
-            catch (FileNotFoundException ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
-            catch (BadImageFormatException ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
-            catch (FileLoadException ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
+            AssemblyName.GetAssemblyName(fileName);
+            return true;
+        }
+        catch (FileNotFoundException ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
+        }
+        catch (BadImageFormatException ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
+        }
+        catch (FileLoadException ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
         }
     }
 }

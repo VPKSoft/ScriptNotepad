@@ -28,42 +28,41 @@ using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
+namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
+
+/// <summary>
+/// A class to run the current application with parameters.
+/// </summary>
+public class ApplicationProcess: ErrorHandlingBase
 {
     /// <summary>
-    /// A class to run the current application with parameters.
+    /// Executes a new instance of the current application with possible elevated permissions.
     /// </summary>
-    public class ApplicationProcess: ErrorHandlingBase
+    /// <param name="elevated">If set to true try to run the process as administrator.</param>
+    /// <param name="arguments">The arguments to be passed to the process.</param>
+    /// <returns></returns>
+    public static bool RunApplicationProcess(bool elevated, string arguments)
     {
-        /// <summary>
-        /// Executes a new instance of the current application with possible elevated permissions.
-        /// </summary>
-        /// <param name="elevated">If set to true try to run the process as administrator.</param>
-        /// <param name="arguments">The arguments to be passed to the process.</param>
-        /// <returns></returns>
-        public static bool RunApplicationProcess(bool elevated, string arguments)
+        try
         {
-            try
+            var processStartInfo = new ProcessStartInfo()
             {
-                var processStartInfo = new ProcessStartInfo()
-                {
-                    FileName = Application.ExecutablePath,
-                    LoadUserProfile = true,
-                    Verb = elevated ? "runas" : null, // process elevation..
-                    Arguments = arguments
-                };
+                FileName = Application.ExecutablePath,
+                LoadUserProfile = true,
+                Verb = elevated ? "runas" : null, // process elevation..
+                Arguments = arguments,
+            };
 
-                System.Diagnostics.Process.Start(processStartInfo);
+            System.Diagnostics.Process.Start(processStartInfo);
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // log the exception if the action has a value..
+            ExceptionLogAction?.Invoke(ex);
 
-                return false;
-            }
+            return false;
         }
     }
 }

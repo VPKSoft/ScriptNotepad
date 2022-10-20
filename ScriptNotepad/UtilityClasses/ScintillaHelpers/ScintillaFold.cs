@@ -28,80 +28,79 @@ using System.Linq;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.UtilityClasses.ScintillaHelpers
+namespace ScriptNotepad.UtilityClasses.ScintillaHelpers;
+
+/// <summary>
+/// A class to save and restore the folding state of the <see cref="Scintilla"/> document.
+/// </summary>
+public static class ScintillaFold
 {
     /// <summary>
-    /// A class to save and restore the folding state of the <see cref="Scintilla"/> document.
+    /// Saves the folding state of the <see cref="Scintilla"/> document.
     /// </summary>
-    public static class ScintillaFold
+    /// <param name="scintilla">The <see cref="Scintilla"/> document.</param>
+    /// <returns>A string containing the folding state data.</returns>
+    public static string SaveFolding(this Scintilla scintilla)
     {
-        /// <summary>
-        /// Saves the folding state of the <see cref="Scintilla"/> document.
-        /// </summary>
-        /// <param name="scintilla">The <see cref="Scintilla"/> document.</param>
-        /// <returns>A string containing the folding state data.</returns>
-        public static string SaveFolding(this Scintilla scintilla)
+        try
         {
-            try
+            var builder = new StringBuilder();
+            for (int i = 0; i < scintilla.Lines.Count; i++)
             {
-                var builder = new StringBuilder();
-                for (int i = 0; i < scintilla.Lines.Count; i++)
+                if (!scintilla.Lines[i].Expanded)
                 {
-                    if (!scintilla.Lines[i].Expanded)
-                    {
-                        builder.AppendFormat("{0}|{1};", i,
-                            scintilla.Lines[i].Expanded); // this is useless for now, but keep the possibility open..
-                    }
+                    builder.AppendFormat("{0}|{1};", i,
+                        scintilla.Lines[i].Expanded); // this is useless for now, but keep the possibility open..
                 }
-
-                var result = builder.ToString().TrimEnd(';');
-
-                return result;
             }
-            catch (Exception ex)
+
+            var result = builder.ToString().TrimEnd(';');
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+            return string.Empty;
+        }
+    }
+
+    /// <summary>
+    /// Restores the folding state of the <see cref="Scintilla"/> document.
+    /// </summary>
+    /// <param name="scintilla">The <see cref="Scintilla"/> document.</param>
+    /// <param name="foldSave">The string containing the folding state data.</param>
+    public static void RestoreFolding(this Scintilla scintilla, string foldSave)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(foldSave))
             {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return string.Empty;
+                return;
+            }
+
+            var saveValues = foldSave.Split(';').Select(f => new {Array = f.Split('|'), }).Select(f => new
+            {
+                Line = int.Parse(f.Array[0]),
+                Expanded = bool.Parse(f.Array[1]), // this is useless for now, but keep the possibility open..
+            }).ToList();
+
+            for (int i = scintilla.Lines.Count - 1; i >= 0; i--)
+            {
+                var save = saveValues.FirstOrDefault(f => f.Line == i);
+                if (save != null && !save.Expanded)
+                {
+                    scintilla.Lines[i].FoldLine(FoldAction.Contract);
+                }
+                else
+                {
+                    scintilla.Lines[i].FoldLine(FoldAction.Expand);
+                }
             }
         }
-
-        /// <summary>
-        /// Restores the folding state of the <see cref="Scintilla"/> document.
-        /// </summary>
-        /// <param name="scintilla">The <see cref="Scintilla"/> document.</param>
-        /// <param name="foldSave">The string containing the folding state data.</param>
-        public static void RestoreFolding(this Scintilla scintilla, string foldSave)
+        catch (Exception ex)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(foldSave))
-                {
-                    return;
-                }
-
-                var saveValues = foldSave.Split(';').Select(f => new {Array = f.Split('|')}).Select(f => new
-                {
-                    Line = int.Parse(f.Array[0]),
-                    Expanded = bool.Parse(f.Array[1]) // this is useless for now, but keep the possibility open..
-                }).ToList();
-
-                for (int i = scintilla.Lines.Count - 1; i >= 0; i--)
-                {
-                    var save = saveValues.FirstOrDefault(f => f.Line == i);
-                    if (save != null && !save.Expanded)
-                    {
-                        scintilla.Lines[i].FoldLine(FoldAction.Contract);
-                    }
-                    else
-                    {
-                        scintilla.Lines[i].FoldLine(FoldAction.Expand);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-            }
+            ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
         }
     }
 }

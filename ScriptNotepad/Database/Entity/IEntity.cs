@@ -24,16 +24,15 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.Database.Entity
+namespace ScriptNotepad.Database.Entity;
+
+/// <summary>
+/// An interface for an entity.
+/// </summary>
+interface IEntity
 {
     /// <summary>
-    /// An interface for an entity.
+    /// Gets or sets the identifier for the entity.
     /// </summary>
-    interface IEntity
-    {
-        /// <summary>
-        /// Gets or sets the identifier for the entity.
-        /// </summary>
-        int Id { get; set; }
-    }
+    int Id { get; set; }
 }

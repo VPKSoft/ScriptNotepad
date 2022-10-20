@@ -24,19 +24,18 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.Encodings
+namespace ScriptNotepad.UtilityClasses.Encodings;
+
+/// <summary>
+/// Event arguments for the <see cref="TryMakeEncoding.ExceptionOccurred"/> event.
+/// Implements the <see cref="System.EventArgs" />
+/// </summary>
+/// <seealso cref="System.EventArgs" />
+public class EncodingExceptionEventArgs : EventArgs
 {
     /// <summary>
-    /// Event arguments for the <see cref="TryMakeEncoding.ExceptionOccurred"/> event.
-    /// Implements the <see cref="System.EventArgs" />
+    /// Gets or sets the exception which occurred.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
-    public class EncodingExceptionEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Gets or sets the exception which occurred.
-        /// </summary>
-        /// <value>The exception.</value>
-        public Exception Exception { get; set; }
-    }
+    /// <value>The exception.</value>
+    public Exception Exception { get; set; }
 }

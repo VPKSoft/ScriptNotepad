@@ -24,28 +24,27 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.IO
+namespace ScriptNotepad.UtilityClasses.IO;
+
+/// <summary>
+/// Event arguments for the <see cref="DirectoryCrawler"/> class.
+/// Implements the <see cref="System.EventArgs" />
+/// </summary>
+/// <seealso cref="System.EventArgs" />
+public class DirectoryCrawlerEventArgs: EventArgs
 {
     /// <summary>
-    /// Event arguments for the <see cref="DirectoryCrawler"/> class.
-    /// Implements the <see cref="System.EventArgs" />
+    /// Gets or sets the currently found file name.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
-    public class DirectoryCrawlerEventArgs: EventArgs
-    {
-        /// <summary>
-        /// Gets or sets the currently found file name.
-        /// </summary>
-        public string FileName { get; set; }
+    public string FileName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the currently found directory.
-        /// </summary>
-        public string Directory { get; set; }
+    /// <summary>
+    /// Gets or sets the currently found directory.
+    /// </summary>
+    public string Directory { get; set; }
 
-        /// <summary>
-        /// Gets or sets the current directory being searched.
-        /// </summary>
-        public string CurrentDirectory { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the current directory being searched.
+    /// </summary>
+    public string CurrentDirectory { get; set; }
 }

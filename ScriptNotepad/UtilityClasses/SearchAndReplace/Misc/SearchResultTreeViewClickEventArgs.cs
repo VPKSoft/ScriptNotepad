@@ -24,23 +24,22 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.SearchAndReplace.Misc
+namespace ScriptNotepad.UtilityClasses.SearchAndReplace.Misc;
+
+/// <summary>
+/// Event arguments for the search result form to request the application to do something with the search result.
+/// Implements the <see cref="System.EventArgs" />
+/// </summary>
+/// <seealso cref="System.EventArgs" />
+public class SearchResultTreeViewClickEventArgs : EventArgs
 {
     /// <summary>
-    /// Event arguments for the search result form to request the application to do something with the search result.
-    /// Implements the <see cref="System.EventArgs" />
+    /// Gets or sets the search result passed by the <see cref="FormSearchResultTree"/> form.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
-    public class SearchResultTreeViewClickEventArgs : EventArgs
+    /// <value>The search results.</value>
+    public (string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen) SearchResult
     {
-        /// <summary>
-        /// Gets or sets the search result passed by the <see cref="FormSearchResultTree"/> form.
-        /// </summary>
-        /// <value>The search results.</value>
-        public (string fileName, int lineNumber, int startLocation, int length, string lineContents, bool isFileOpen) SearchResult
-        {
-            get;
-            set;
-        }
+        get;
+        set;
     }
 }

@@ -28,29 +28,28 @@ using System.Linq;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 
-namespace ScriptNotepad.Database.Helpers
+namespace ScriptNotepad.Database.Helpers;
+
+/// <summary>
+/// Some database utilities for the <see cref="ScriptNotepadDbContext"/>.
+/// </summary>
+public static class DatabaseUtilities
 {
     /// <summary>
-    /// Some database utilities for the <see cref="ScriptNotepadDbContext"/>.
+    /// Sets the miscellaneous parameter to the database.
     /// </summary>
-    public static class DatabaseUtilities
+    /// <param name="context">The database context.</param>
+    /// <param name="value">The value to set.</param>
+    /// <returns><c>true</c> if the value is already set, <c>false</c> otherwise.</returns>
+    public static bool SetMiscellaneousParameter(this ScriptNotepadDbContext context, string value)
     {
-        /// <summary>
-        /// Sets the miscellaneous parameter to the database.
-        /// </summary>
-        /// <param name="context">The database context.</param>
-        /// <param name="value">The value to set.</param>
-        /// <returns><c>true</c> if the value is already set, <c>false</c> otherwise.</returns>
-        public static bool SetMiscellaneousParameter(this ScriptNotepadDbContext context, string value)
+        if (!context.MiscellaneousParameters.Any(f => f.Value.Equals(value, StringComparison.Ordinal)))
         {
-            if (!context.MiscellaneousParameters.Any(f => f.Value.Equals(value, StringComparison.Ordinal)))
-            {
-                return true;
-            }
-
-            context.MiscellaneousParameters.Add(new MiscellaneousParameter {Added = DateTime.Now, Value = value});
-            context.SaveChanges();
-            return false;
+            return true;
         }
+
+        context.MiscellaneousParameters.Add(new MiscellaneousParameter {Added = DateTime.Now, Value = value, });
+        context.SaveChanges();
+        return false;
     }
 }

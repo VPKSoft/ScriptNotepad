@@ -27,54 +27,53 @@ SOFTWARE.
 using System.Collections.Generic;
 using ScintillaNET;
 
-namespace ScriptNotepad.UtilityClasses.ScintillaHelpers
+namespace ScriptNotepad.UtilityClasses.ScintillaHelpers;
+
+/// <summary>
+/// A helper class to manipulate a Scintilla document lines as a list of strings.
+/// </summary>
+public static class ScintillaLines
 {
     /// <summary>
-    /// A helper class to manipulate a Scintilla document lines as a list of strings.
+    /// Gets the lines of a Scintilla as list of strings.
     /// </summary>
-    public static class ScintillaLines
+    /// <param name="scintilla">The Scintilla to get the line contents from.</param>
+    /// <returns>A list of strings of the lines of a Scintilla.</returns>
+    public static List<string> GetLinesAsList(Scintilla scintilla)
     {
-        /// <summary>
-        /// Gets the lines of a Scintilla as list of strings.
-        /// </summary>
-        /// <param name="scintilla">The Scintilla to get the line contents from.</param>
-        /// <returns>A list of strings of the lines of a Scintilla.</returns>
-        public static List<string> GetLinesAsList(Scintilla scintilla)
+        List<string> result = new List<string>();
+        for (int i = 0; i < scintilla.Lines.Count; i++)
         {
-            List<string> result = new List<string>();
-            for (int i = 0; i < scintilla.Lines.Count; i++)
-            {
-                result.Add(scintilla.Lines[i].Text);
-            }
-            return result;
+            result.Add(scintilla.Lines[i].Text);
         }
+        return result;
+    }
 
-        /// <summary>
-        /// Sets the lines of a Scintilla document from a given list of strings.
-        /// </summary>
-        /// <param name="scintilla">A Scintilla document of which lines to set.</param>
-        /// <param name="lines">A list of strings to be used to set the Scintilla document's contents from.</param>
-        /// <param name="lineEnding">A line ending string to append to a string with no line ending.</param>
-        public static void SetLinesFromList(Scintilla scintilla, List<string> lines, string lineEnding)
+    /// <summary>
+    /// Sets the lines of a Scintilla document from a given list of strings.
+    /// </summary>
+    /// <param name="scintilla">A Scintilla document of which lines to set.</param>
+    /// <param name="lines">A list of strings to be used to set the Scintilla document's contents from.</param>
+    /// <param name="lineEnding">A line ending string to append to a string with no line ending.</param>
+    public static void SetLinesFromList(Scintilla scintilla, List<string> lines, string lineEnding)
+    {
+        // ensure that the lines have a line ending..
+        for (int i = 0; i < lines.Count; i++)
         {
-            // ensure that the lines have a line ending..
-            for (int i = 0; i < lines.Count; i++)
+            // check for a possible line endings (not sure if the "\r\n" is valid)..
+            if (lines[i].EndsWith("\n") ||
+                lines[i].EndsWith("\r") ||
+                lines[i].EndsWith("\n\r") ||
+                lines[i].EndsWith("\r\n"))
             {
-                // check for a possible line endings (not sure if the "\r\n" is valid)..
-                if (lines[i].EndsWith("\n") ||
-                    lines[i].EndsWith("\r") ||
-                    lines[i].EndsWith("\n\r") ||
-                    lines[i].EndsWith("\r\n"))
-                {
-                    continue; // a line ending was found so do continue..
-                }
-
-                // a line ending wasn't found so give it a line ending..
-                lines[i] = lines[i] + lineEnding;
+                continue; // a line ending was found so do continue..
             }
 
-            // concatenate the lines and set the contents of the Scintilla document..
-            scintilla.Text = string.Concat(lines);
+            // a line ending wasn't found so give it a line ending..
+            lines[i] = lines[i] + lineEnding;
         }
+
+        // concatenate the lines and set the contents of the Scintilla document..
+        scintilla.Text = string.Concat(lines);
     }
 }

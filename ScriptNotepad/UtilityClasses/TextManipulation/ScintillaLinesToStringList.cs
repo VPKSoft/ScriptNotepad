@@ -28,36 +28,35 @@ using System.Collections.Generic;
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation
+namespace ScriptNotepad.UtilityClasses.TextManipulation;
+
+/// <summary>
+/// A class to convert the <see cref="Scintilla.Lines"/> collection to a list of strings.
+/// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+public class ScintillaLinesToStringList : ErrorHandlingBase
 {
     /// <summary>
-    /// A class to convert the <see cref="Scintilla.Lines"/> collection to a list of strings.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Gets the scintilla lines as string list.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class ScintillaLinesToStringList : ErrorHandlingBase
+    /// <param name="scintilla">The <see cref="Scintilla"/> class instance to get the lines from.</param>
+    /// <returns>A collection containing the <see cref="Scintilla"/> control's lines.</returns>
+    public static List<string> GetScintillaLinesAsStringList(Scintilla scintilla)
     {
-        /// <summary>
-        /// Gets the scintilla lines as string list.
-        /// </summary>
-        /// <param name="scintilla">The <see cref="Scintilla"/> class instance to get the lines from.</param>
-        /// <returns>A collection containing the <see cref="Scintilla"/> control's lines.</returns>
-        public static List<string> GetScintillaLinesAsStringList(Scintilla scintilla)
+        List<string> result = new List<string>();
+        try
         {
-            List<string> result = new List<string>();
-            try
+            foreach (var line in scintilla.Lines)
             {
-                foreach (var line in scintilla.Lines)
-                {
-                    result.Add(line.Text);
-                }
+                result.Add(line.Text);
             }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-            }
-            return result;
         }
+        catch (Exception ex)
+        {
+            // log the exception if the action has a value..
+            ExceptionLogAction?.Invoke(ex);
+        }
+        return result;
     }
 }

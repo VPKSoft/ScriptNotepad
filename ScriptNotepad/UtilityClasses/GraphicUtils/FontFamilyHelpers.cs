@@ -27,48 +27,47 @@ SOFTWARE.
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ScriptNotepad.UtilityClasses.GraphicUtils
+namespace ScriptNotepad.UtilityClasses.GraphicUtils;
+
+/// <summary>
+/// A class with helper methods for the <see cref="FontFamily"/> class.
+/// </summary>
+public static class FontFamilyHelpers
 {
     /// <summary>
-    /// A class with helper methods for the <see cref="FontFamily"/> class.
+    /// Determines whether the given font family is fixed width (mono-space).
     /// </summary>
-    public static class FontFamilyHelpers
+    /// <param name="fontFamily">The font family to check for.</param>
+    // (C): https://social.msdn.microsoft.com/Forums/windows/en-US/5b582b96-ade5-4354-99cf-3fe64cc6b53b/determining-if-font-is-monospaced?forum=winforms
+    public static bool IsFixedWidth(this FontFamily fontFamily)
     {
-        /// <summary>
-        /// Determines whether the given font family is fixed width (mono-space).
-        /// </summary>
-        /// <param name="fontFamily">The font family to check for.</param>
-        // (C): https://social.msdn.microsoft.com/Forums/windows/en-US/5b582b96-ade5-4354-99cf-3fe64cc6b53b/determining-if-font-is-monospaced?forum=winforms
-        public static bool IsFixedWidth(this FontFamily fontFamily)
+        char[] measureChars = { 'i', 'a', 'Z', '%', '#', 'a', 'B', 'l', 'm', ',', '.', };
+        if (Form.ActiveForm != null)
         {
-            char[] measureChars = { 'i', 'a', 'Z', '%', '#', 'a', 'B', 'l', 'm', ',', '.' };
-            if (Form.ActiveForm != null)
+            using (Graphics graphics = Graphics.FromHwnd(Form.ActiveForm.Handle))
             {
-                using (Graphics graphics = Graphics.FromHwnd(Form.ActiveForm.Handle))
+                try
                 {
-                    try
+                    using (Font font = new Font(fontFamily, 10, FontStyle.Regular, GraphicsUnit.Pixel))
                     {
-                        using (Font font = new Font(fontFamily, 10, FontStyle.Regular, GraphicsUnit.Pixel))
+                        float charWidth = graphics.MeasureString("I", font).Width;
+                        foreach (var measureChar in measureChars)
                         {
-                            float charWidth = graphics.MeasureString("I", font).Width;
-                            foreach (var measureChar in measureChars)
+                            // ReSharper disable once CompareOfFloatsByEqualityOperator
+                            if (graphics.MeasureString(measureChar.ToString(), font).Width != charWidth)
                             {
-                                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                                if (graphics.MeasureString(measureChar.ToString(), font).Width != charWidth)
-                                {
-                                    return false;
-                                }
+                                return false;
                             }
                         }
                     }
-                    catch
-                    {
-                        return false;
-                    }
+                }
+                catch
+                {
+                    return false;
                 }
             }
-
-            return true;
         }
+
+        return true;
     }
 }

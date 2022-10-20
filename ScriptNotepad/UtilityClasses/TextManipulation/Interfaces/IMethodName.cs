@@ -24,17 +24,16 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
+
+/// <summary>
+/// An interface with a text manipulation method name.
+/// </summary>
+public interface IMethodName
 {
     /// <summary>
-    /// An interface with a text manipulation method name.
+    /// Gets or sets the name of the method manipulating the text.
     /// </summary>
-    public interface IMethodName
-    {
-        /// <summary>
-        /// Gets or sets the name of the method manipulating the text.
-        /// </summary>
-        /// <value>The name of the method manipulating the text.</value>
-        string MethodName { get; set; }
-    }
+    /// <value>The name of the method manipulating the text.</value>
+    string MethodName { get; set; }
 }

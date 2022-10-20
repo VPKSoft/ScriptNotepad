@@ -27,43 +27,42 @@ SOFTWARE.
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.base64
+namespace ScriptNotepad.UtilityClasses.TextManipulation.base64;
+
+/// <summary>
+/// A class to convert an UTF-8 encoded text data into a base64 encoded data.
+/// Implements the <see cref="ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses.TextManipulationCommandBase" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses.TextManipulationCommandBase" />
+internal class Base64ToString: TextManipulationCommandBase
 {
     /// <summary>
-    /// A class to convert an UTF-8 encoded text data into a base64 encoded data.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses.TextManipulationCommandBase" />
+    /// Manipulates the specified text value.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses.TextManipulationCommandBase" />
-    internal class Base64ToString: TextManipulationCommandBase
+    /// <param name="value">The value to manipulate.</param>
+    /// <returns>A string containing the manipulated text.</returns>
+    public override string Manipulate(string value)
     {
-        /// <summary>
-        /// Manipulates the specified text value.
-        /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        public override string Manipulate(string value)
+        try
         {
-            try
-            {
-                return Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value;
-            }
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
         }
-
-        /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
-        public override bool PreferSelectedText { get; set; } = true;
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        catch (Exception ex)
         {
-            return MethodName;
+            ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+            return value;
         }
+    }
+
+    /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
+    public override bool PreferSelectedText { get; set; } = true;
+
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public override string ToString()
+    {
+        return MethodName;
     }
 }

@@ -29,143 +29,142 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace ScriptNotepad.UtilityClasses.Common
+namespace ScriptNotepad.UtilityClasses.Common;
+
+/// <summary>
+/// A class for a simple combo box for a tool strip.
+/// Implements the <see cref="System.Windows.Forms.ToolStripControlHost" />
+/// </summary>
+/// <seealso cref="System.Windows.Forms.ToolStripControlHost" />
+[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.StatusStrip)]
+// Not needed for internal use: [System.Drawing.ToolboxBitmap()]
+public class StatusStripComboItem: ToolStripControlHost
 {
     /// <summary>
-    /// A class for a simple combo box for a tool strip.
-    /// Implements the <see cref="System.Windows.Forms.ToolStripControlHost" />
+    /// Gets or sets the ComboBox of the <see cref="StatusStripComboItem"/>.
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.ToolStripControlHost" />
-    [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.StatusStrip)]
-    // Not needed for internal use: [System.Drawing.ToolboxBitmap()]
-    public class StatusStripComboItem: ToolStripControlHost
+    private ComboBox ComboBox { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StatusStripComboItem"/> class.
+    /// </summary>
+    public StatusStripComboItem()
+        : base(new ComboBox())
     {
-        /// <summary>
-        /// Gets or sets the ComboBox of the <see cref="StatusStripComboItem"/>.
-        /// </summary>
-        private ComboBox ComboBox { get; }
+        ComboBox = Control as ComboBox;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StatusStripComboItem"/> class.
-        /// </summary>
-        public StatusStripComboItem()
-            : base(new ComboBox())
+        if (ComboBox != null)
         {
-            ComboBox = Control as ComboBox;
-
-            if (ComboBox != null)
-            {
-                ComboBox.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
-                ComboBox.SelectedValueChanged += ComboBox_SelectedValueChanged;
-            }
-
-            Disposed += StatusStripComboItem_Disposed;
+            ComboBox.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
+            ComboBox.SelectedValueChanged += ComboBox_SelectedValueChanged;
         }
 
-        // release the event subscription..
-        private void StatusStripComboItem_Disposed(object sender, EventArgs e)
-        {
-            ComboBox.SelectedIndexChanged -= ComboBox_SelectedIndexChanged;
-            ComboBox.SelectedValueChanged -= ComboBox_SelectedValueChanged;
-            Disposed -= StatusStripComboItem_Disposed;
-        }
-
-        // event re-delegation..
-        private void ComboBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-            SelectedValueChanged?.Invoke(sender, e);
-        }
-
-        // event re-delegation..
-        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SelectedIndexChanged?.Invoke(sender, e);
-        }
-
-        #region ComboBoxAccess
-        /// <summary>
-        /// Gets an object representing the collection of the items contained in this <see cref="T:System.Windows.Forms.ComboBox" />.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Data")]
-        [Description("Gets an object representing the collection of the items contained in this ComboBox.")]
-        [Editor("System.Windows.Forms.Design.ListControlStringCollectionEditor", typeof (UITypeEditor))]
-        public ComboBox.ObjectCollection Items => ComboBox.Items;
-
-        /// <summary>
-        /// Gets or sets a value specifying the style of the combo box.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Appearance")]
-        [Description("Gets or sets a value specifying the style of the combo box.")]
-        public ComboBoxStyle DropDownStyle
-        {
-            get => ComboBox.DropDownStyle;
-            set => ComboBox.DropDownStyle = value;
-        }
-
-        /// <summary>
-        /// Gets or sets currently selected item in the <see cref="T:System.Windows.Forms.ComboBox" />.
-        /// </summary>
-        [Browsable(false)]
-        public object SelectedItem
-        {
-            get => ComboBox.SelectedItem;
-            set => ComboBox.SelectedItem = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the index specifying the currently selected item.
-        /// </summary>
-        [Browsable(false)]
-        public int SelectedIndex
-        {
-            get => ComboBox.SelectedIndex;
-            set => ComboBox.SelectedIndex = value;
-        }
-
-
-
-        /// <summary>
-        /// Gets or sets the text associated with this control.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Appearance")]
-        [Description("Gets or sets the text associated with this control.")]
-        public override string Text
-        {
-            get
-            {
-                // some "weird" handling with the text..
-                if (!base.Text.Equals(ComboBox.Text))
-                {
-                    ComboBox.Text = base.Text;
-                }
-                return base.Text;
-            } 
-
-            set
-            {
-                base.Text = value;
-                ComboBox.Text = value;
-            } 
-        }
-
-        /// <summary>
-        /// Occurs when the <see cref="P:System.Windows.Forms.ComboBox.SelectedIndex" /> property has changed.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Behavior")]
-        [Description("Occurs when the ComboBox.SelectedIndex property has changed.")]
-        public EventHandler SelectedIndexChanged;
-
-        /// <summary>
-        /// Occurs when the <see cref="P:System.Windows.Forms.ListControl.SelectedValue" /> property changes.
-        /// </summary>
-        [Browsable(true)]
-        [Category("Behavior")]
-        [Description("Occurs when the ComboBox.SelectedValue property has changes.")]
-        public EventHandler SelectedValueChanged;
-        #endregion
+        Disposed += StatusStripComboItem_Disposed;
     }
+
+    // release the event subscription..
+    private void StatusStripComboItem_Disposed(object sender, EventArgs e)
+    {
+        ComboBox.SelectedIndexChanged -= ComboBox_SelectedIndexChanged;
+        ComboBox.SelectedValueChanged -= ComboBox_SelectedValueChanged;
+        Disposed -= StatusStripComboItem_Disposed;
+    }
+
+    // event re-delegation..
+    private void ComboBox_SelectedValueChanged(object sender, EventArgs e)
+    {
+        SelectedValueChanged?.Invoke(sender, e);
+    }
+
+    // event re-delegation..
+    private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        SelectedIndexChanged?.Invoke(sender, e);
+    }
+
+    #region ComboBoxAccess
+    /// <summary>
+    /// Gets an object representing the collection of the items contained in this <see cref="T:System.Windows.Forms.ComboBox" />.
+    /// </summary>
+    [Browsable(true)]
+    [Category("Data")]
+    [Description("Gets an object representing the collection of the items contained in this ComboBox.")]
+    [Editor("System.Windows.Forms.Design.ListControlStringCollectionEditor", typeof (UITypeEditor))]
+    public ComboBox.ObjectCollection Items => ComboBox.Items;
+
+    /// <summary>
+    /// Gets or sets a value specifying the style of the combo box.
+    /// </summary>
+    [Browsable(true)]
+    [Category("Appearance")]
+    [Description("Gets or sets a value specifying the style of the combo box.")]
+    public ComboBoxStyle DropDownStyle
+    {
+        get => ComboBox.DropDownStyle;
+        set => ComboBox.DropDownStyle = value;
+    }
+
+    /// <summary>
+    /// Gets or sets currently selected item in the <see cref="T:System.Windows.Forms.ComboBox" />.
+    /// </summary>
+    [Browsable(false)]
+    public object SelectedItem
+    {
+        get => ComboBox.SelectedItem;
+        set => ComboBox.SelectedItem = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the index specifying the currently selected item.
+    /// </summary>
+    [Browsable(false)]
+    public int SelectedIndex
+    {
+        get => ComboBox.SelectedIndex;
+        set => ComboBox.SelectedIndex = value;
+    }
+
+
+
+    /// <summary>
+    /// Gets or sets the text associated with this control.
+    /// </summary>
+    [Browsable(true)]
+    [Category("Appearance")]
+    [Description("Gets or sets the text associated with this control.")]
+    public override string Text
+    {
+        get
+        {
+            // some "weird" handling with the text..
+            if (!base.Text.Equals(ComboBox.Text))
+            {
+                ComboBox.Text = base.Text;
+            }
+            return base.Text;
+        } 
+
+        set
+        {
+            base.Text = value;
+            ComboBox.Text = value;
+        } 
+    }
+
+    /// <summary>
+    /// Occurs when the <see cref="P:System.Windows.Forms.ComboBox.SelectedIndex" /> property has changed.
+    /// </summary>
+    [Browsable(true)]
+    [Category("Behavior")]
+    [Description("Occurs when the ComboBox.SelectedIndex property has changed.")]
+    public EventHandler SelectedIndexChanged;
+
+    /// <summary>
+    /// Occurs when the <see cref="P:System.Windows.Forms.ListControl.SelectedValue" /> property changes.
+    /// </summary>
+    [Browsable(true)]
+    [Category("Behavior")]
+    [Description("Occurs when the ComboBox.SelectedValue property has changes.")]
+    public EventHandler SelectedValueChanged;
+    #endregion
 }

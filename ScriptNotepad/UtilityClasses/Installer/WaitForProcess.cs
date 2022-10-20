@@ -36,98 +36,96 @@ using System.Diagnostics;
  */
 
 // ReSharper disable once CheckNamespace
-namespace VPKSoft.WaitForProcessUtil
+namespace VPKSoft.WaitForProcessUtil;
+
+/// <summary>
+/// A class to wait for a process to finish executing with a possibility for a time-out.
+/// </summary>
+// ReSharper disable once UnusedMember.Global
+public class WaitForProcess
 {
     /// <summary>
-    /// A class to wait for a process to finish executing with a possibility for a time-out.
+    /// Gets the process identifier from a command line argument array.
     /// </summary>
-    // ReSharper disable once UnusedMember.Global
-    public class WaitForProcess
+    /// <param name="args">The arguments to look for a '--waitPid' argument.</param>
+    /// <returns>The process identifier to wait for or <c>-1</c> of the argument is not defined or some kind of error occurred.</returns>
+    public static int GetWaitProcessId(string[] args)
     {
-        /// <summary>
-        /// Gets the process identifier from a command line argument array.
-        /// </summary>
-        /// <param name="args">The arguments to look for a '--waitPid' argument.</param>
-        /// <returns>The process identifier to wait for or <c>-1</c> of the argument is not defined or some kind of error occurred.</returns>
-        public static int GetWaitProcessId(string[] args)
+        try
         {
-            try
-            {
-                List<string> argList = new List<string>(args);
-                var index = argList.IndexOf("--waitPid"); // case-sensitive..
+            List<string> argList = new List<string>(args);
+            var index = argList.IndexOf("--waitPid"); // case-sensitive..
 
-                // must have the following process id number..
-                if (index != -1 && index + 1 < argList.Count) 
+            // must have the following process id number..
+            if (index != -1 && index + 1 < argList.Count) 
+            {
+                // check the ar
+                if (int.TryParse(argList[index + 1], out _)) 
                 {
-                    // check the ar
-                    if (int.TryParse(argList[index + 1], out _)) 
-                    {
-                        return int.Parse(argList[index + 1]);
-                    }
+                    return int.Parse(argList[index + 1]);
+                }
+            }
+
+            return -1;
+        }
+        catch
+        {
+            return -1; // unknown reason of failure in a prefect code (ha-ha)..
+        }
+    }
+
+    /// <summary>
+    /// Waits for a process which identifier is specified in the given arguments with a '--waitPid' argument to exit.
+    /// </summary>
+    /// <param name="args">The arguments to check for.</param>
+    /// <param name="maxWaitSeconds">The maximum amount in seconds to wait for the process to exit.</param>
+    // ReSharper disable once UnusedMember.Global
+    public static void WaitForProcessArguments(string[] args, int maxWaitSeconds = 0)
+    {
+        WaitProcess(GetWaitProcessId(args), maxWaitSeconds);
+    }
+
+    /// <summary>
+    /// Waits the process to exit with a specified process identifier and a specified time-out.
+    /// </summary>
+    /// <param name="processId">The process identifier for the process which exit to wait for.</param>
+    /// <param name="maxWaitSeconds">The maximum amount in seconds to wait for the process to exit.</param>
+    public static void WaitProcess(int processId, int maxWaitSeconds = 0)
+    {
+        if (processId == -1) // invalid identifier = no deal..
+        {
+            return;
+        }
+
+        try
+        {
+            using (var process = Process.GetProcessById(processId))
+            {
+
+                if (maxWaitSeconds == 0)
+                {
+                    process.WaitForExit();
                 }
 
-                return -1;
-            }
-            catch
-            {
-                return -1; // unknown reason of failure in a prefect code (ha-ha)..
-            }
-        }
-
-        /// <summary>
-        /// Waits for a process which identifier is specified in the given arguments with a '--waitPid' argument to exit.
-        /// </summary>
-        /// <param name="args">The arguments to check for.</param>
-        /// <param name="maxWaitSeconds">The maximum amount in seconds to wait for the process to exit.</param>
-        // ReSharper disable once UnusedMember.Global
-        public static void WaitForProcessArguments(string[] args, int maxWaitSeconds = 0)
-        {
-            WaitProcess(GetWaitProcessId(args), maxWaitSeconds);
-        }
-
-        /// <summary>
-        /// Waits the process to exit with a specified process identifier and a specified time-out.
-        /// </summary>
-        /// <param name="processId">The process identifier for the process which exit to wait for.</param>
-        /// <param name="maxWaitSeconds">The maximum amount in seconds to wait for the process to exit.</param>
-        public static void WaitProcess(int processId, int maxWaitSeconds = 0)
-        {
-            if (processId == -1) // invalid identifier = no deal..
-            {
-                return;
-            }
-
-            try
-            {
-                using (var process = Process.GetProcessById(processId))
+                if (maxWaitSeconds > 0) // if the wait time is specified, then wait for the process in a loop..
                 {
-
-                    if (maxWaitSeconds == 0)
+                    var waitCount = 0;
+                    var waitMax = maxWaitSeconds * 1000;
+                    while (waitCount < waitMax) // ..for the specified maximum time amount..
                     {
-                        process.WaitForExit();
-                    }
-
-                    if (maxWaitSeconds > 0) // if the wait time is specified, then wait for the process in a loop..
-                    {
-                        var waitCount = 0;
-                        var waitMax = maxWaitSeconds * 1000;
-                        while (waitCount < waitMax) // ..for the specified maximum time amount..
+                        if (process.WaitForExit(100))
                         {
-                            if (process.WaitForExit(100))
-                            {
-                                return;
-                            }
-
-                            waitCount += 100;
+                            return;
                         }
+
+                        waitCount += 100;
                     }
                 }
             }
-            catch
-            {
-                // the process information couldn't be gotten..
-            }
+        }
+        catch
+        {
+            // the process information couldn't be gotten..
         }
     }
 }
-

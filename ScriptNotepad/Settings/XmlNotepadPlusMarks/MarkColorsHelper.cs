@@ -30,80 +30,79 @@ using ScriptNotepad.UtilityClasses.ErrorHandling;
 using VPKSoft.ScintillaLexers.ScintillaNotepadPlusPlus;
 
 
-namespace ScriptNotepad.Settings.XmlNotepadPlusMarks
+namespace ScriptNotepad.Settings.XmlNotepadPlusMarks;
+
+/// <summary>
+/// A class to load the mark colors (highlight) from a Notepad++ style definition file.
+/// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+class MarkColorsHelper : ErrorHandlingBase
 {
     /// <summary>
-    /// A class to load the mark colors (highlight) from a Notepad++ style definition file.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Gets or sets the color for smart highlight for the <see cref="Scintilla"/> document.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    class MarkColorsHelper : ErrorHandlingBase
+    public Color SmartHighlight { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color for the mark one for the <see cref="Scintilla"/> document.
+    /// </summary>
+    public Color Mark1Color { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color for the mark two for the <see cref="Scintilla"/> document.
+    /// </summary>
+    public Color Mark2Color { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color for the mark three for the <see cref="Scintilla"/> document.
+    /// </summary>
+    public Color Mark3Color { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color for the mark four for the <see cref="Scintilla"/> document.
+    /// </summary>
+    public Color Mark4Color { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color for the mark five for the <see cref="Scintilla"/> document.
+    /// </summary>
+    public Color Mark5Color { get; set; }
+
+    /// <summary>
+    /// Gets or sets the color for the current line background.
+    /// </summary>
+    public Color CurrentLineBackground { get; set; }
+
+    /// <summary>
+    /// Creates a new instance of "this" class from a Notepad++ style definition XML file.
+    /// </summary>
+    /// <param name="fileName">Name of the XML file.</param>
+    /// <returns>MarkColorsHelper.</returns>
+    public static MarkColorsHelper FromFile(string fileName)
     {
-        /// <summary>
-        /// Gets or sets the color for smart highlight for the <see cref="Scintilla"/> document.
-        /// </summary>
-        public Color SmartHighlight { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the mark one for the <see cref="Scintilla"/> document.
-        /// </summary>
-        public Color Mark1Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the mark two for the <see cref="Scintilla"/> document.
-        /// </summary>
-        public Color Mark2Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the mark three for the <see cref="Scintilla"/> document.
-        /// </summary>
-        public Color Mark3Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the mark four for the <see cref="Scintilla"/> document.
-        /// </summary>
-        public Color Mark4Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the mark five for the <see cref="Scintilla"/> document.
-        /// </summary>
-        public Color Mark5Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color for the current line background.
-        /// </summary>
-        public Color CurrentLineBackground { get; set; }
-
-        /// <summary>
-        /// Creates a new instance of "this" class from a Notepad++ style definition XML file.
-        /// </summary>
-        /// <param name="fileName">Name of the XML file.</param>
-        /// <returns>MarkColorsHelper.</returns>
-        public static MarkColorsHelper FromFile(string fileName)
+        try
         {
-            try
-            {
-                var markColors = MarkColors.FromFile(fileName);
+            var markColors = MarkColors.FromFile(fileName);
 
-                return new MarkColorsHelper
-                {
-                    SmartHighlight = markColors.SmartHighLightingBackground,
-                    Mark1Color = markColors.MarkOneBackground,
-                    Mark2Color = markColors.MarkTwoBackground,
-                    Mark3Color = markColors.MarkThreeBackground,
-                    Mark4Color = markColors.MarkFourBackground,
-                    Mark5Color = markColors.MarkFiveBackground,
-                    CurrentLineBackground = markColors.CurrentLineBackground
-                };
-            }
-            catch (Exception ex)
+            return new MarkColorsHelper
             {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
+                SmartHighlight = markColors.SmartHighLightingBackground,
+                Mark1Color = markColors.MarkOneBackground,
+                Mark2Color = markColors.MarkTwoBackground,
+                Mark3Color = markColors.MarkThreeBackground,
+                Mark4Color = markColors.MarkFourBackground,
+                Mark5Color = markColors.MarkFiveBackground,
+                CurrentLineBackground = markColors.CurrentLineBackground,
+            };
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
 
-                // ..and return default..
-                return default;
-            }
+            // ..and return default..
+            return default;
         }
     }
 }

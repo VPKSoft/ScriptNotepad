@@ -26,33 +26,32 @@ SOFTWARE.
 
 using ScintillaNET;
 
-namespace ScriptNotepad.UtilityClasses.ScintillaUtils
+namespace ScriptNotepad.UtilityClasses.ScintillaUtils;
+
+/// <summary>
+/// An utility to change the <see cref="Scintilla.SelectedText"/>  value.
+/// </summary>
+public static class SelectionReplace
 {
     /// <summary>
-    /// An utility to change the <see cref="Scintilla.SelectedText"/>  value.
+    /// Replaces the <see cref="Scintilla.SelectedText"/> with specified value.
     /// </summary>
-    public static class SelectionReplace
+    /// <param name="scintilla">The scintilla.</param>
+    /// <param name="value">The value to replace the selected text with.</param>
+    public static void SelectionReplaceWithValue(this Scintilla scintilla, string value)
     {
-        /// <summary>
-        /// Replaces the <see cref="Scintilla.SelectedText"/> with specified value.
-        /// </summary>
-        /// <param name="scintilla">The scintilla.</param>
-        /// <param name="value">The value to replace the selected text with.</param>
-        public static void SelectionReplaceWithValue(this Scintilla scintilla, string value)
+        if (scintilla.SelectedText.Length > 0)
         {
-            if (scintilla.SelectedText.Length > 0)
-            {
-                var start = scintilla.SelectionStart;
-                var end = scintilla.SelectionEnd;
-                var length = end - start;
+            var start = scintilla.SelectionStart;
+            var end = scintilla.SelectionEnd;
+            var length = end - start;
 
-                end = start + value.Length;
+            end = start + value.Length;
 
-                scintilla.Text = scintilla.Text.Remove(start, length);
-                scintilla.Text = scintilla.Text.Insert(start, value);
-                scintilla.SelectionStart = start;
-                scintilla.SelectionEnd = end;
-            }
+            scintilla.Text = scintilla.Text.Remove(start, length);
+            scintilla.Text = scintilla.Text.Insert(start, value);
+            scintilla.SelectionStart = start;
+            scintilla.SelectionEnd = end;
         }
     }
 }

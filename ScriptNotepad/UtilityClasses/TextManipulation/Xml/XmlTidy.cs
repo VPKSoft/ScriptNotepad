@@ -28,66 +28,65 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml;
+
+/// <summary>
+/// An utility class to clean up XML data.
+/// </summary>
+internal static class XmlTidy
 {
     /// <summary>
-    /// An utility class to clean up XML data.
+    /// Tidies the specified XML string value.
     /// </summary>
-    internal static class XmlTidy
+    /// <param name="value">The XML string value.</param>
+    /// <param name="multiLine">if set to <c>true</c> return the XML as multiline.</param>
+    /// <returns>The specified XML string formatted.</returns>
+    public static string Tidy(string value, bool multiLine)
     {
-        /// <summary>
-        /// Tidies the specified XML string value.
-        /// </summary>
-        /// <param name="value">The XML string value.</param>
-        /// <param name="multiLine">if set to <c>true</c> return the XML as multiline.</param>
-        /// <returns>The specified XML string formatted.</returns>
-        public static string Tidy(string value, bool multiLine)
+        try
         {
-            try
+            var doc = new XmlDocument();
+
+            // Only support for utf-8 and utf-16 encodings.
+            var utf16 = value.Contains("encoding=\"utf-16\"");
+
+            // Check if the XML contains the encoding data.
+            var regex = new Regex(@"<\?xml version=\"".*?\"" encoding=\"".*?\""\?>");
+
+            var hasEncoding = regex.IsMatch(value);
+
+            doc.LoadXml(value);
+
+            var memoryStream = new MemoryStream();
+
+            Encoding encoding = utf16 ? new UnicodeEncoding(false, false) : new UTF8Encoding(false);
+
+            // Set the XML "formatting" as requested.
+            var settings = multiLine
+                ? new XmlWriterSettings { Indent = true, IndentChars = "\t", Encoding = encoding, }
+                : new XmlWriterSettings { Encoding = encoding, };
+
+            using var writer = XmlWriter.Create(memoryStream, settings);
+
+            doc.Save(writer);
+
+            writer.Close();
+
+            var result = encoding.GetString(memoryStream.ToArray());
+
+            // Remove the encoding data if the original value didn't contain it.
+            if (!hasEncoding)
             {
-                var doc = new XmlDocument();
-
-                // Only support for utf-8 and utf-16 encodings.
-                var utf16 = value.Contains("encoding=\"utf-16\"");
-
-                // Check if the XML contains the encoding data.
-                var regex = new Regex(@"<\?xml version=\"".*?\"" encoding=\"".*?\""\?>");
-
-                var hasEncoding = regex.IsMatch(value);
-
-                doc.LoadXml(value);
-
-                var memoryStream = new MemoryStream();
-
-                Encoding encoding = utf16 ? new UnicodeEncoding(false, false) : new UTF8Encoding(false);
-
-                // Set the XML "formatting" as requested.
-                var settings = multiLine
-                    ? new XmlWriterSettings { Indent = true, IndentChars = "\t", Encoding = encoding }
-                    : new XmlWriterSettings { Encoding = encoding };
-
-                using var writer = XmlWriter.Create(memoryStream, settings);
-
-                doc.Save(writer);
-
-                writer.Close();
-
-                var result = encoding.GetString(memoryStream.ToArray());
-
-                // Remove the encoding data if the original value didn't contain it.
-                if (!hasEncoding)
-                {
-                    result = regex.Replace(result, string.Empty);
-                    result = result.TrimStart('\n', '\r');
-                }
-
-                return result;
+                result = regex.Replace(result, string.Empty);
+                result = result.TrimStart('\n', '\r');
             }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value;
-            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+            return value;
         }
     }
 }

@@ -27,38 +27,37 @@ SOFTWARE.
 using ScintillaNET;
 using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses
+namespace ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
+
+/// <summary>
+/// A base class for all the simple text manipulation utility classes.
+/// Implements the <see cref="ITextManipulationCommand" />
+/// </summary>
+/// <seealso cref="ITextManipulationCommand" />
+public abstract class TextManipulationCommandBase: ITextManipulationCommand
 {
     /// <summary>
-    /// A base class for all the simple text manipulation utility classes.
-    /// Implements the <see cref="ITextManipulationCommand" />
+    /// Manipulates the specified text value.
     /// </summary>
-    /// <seealso cref="ITextManipulationCommand" />
-    public abstract class TextManipulationCommandBase: ITextManipulationCommand
-    {
-        /// <summary>
-        /// Manipulates the specified text value.
-        /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        public abstract string Manipulate(string value);
+    /// <param name="value">The value to manipulate.</param>
+    /// <returns>A string containing the manipulated text.</returns>
+    public abstract string Manipulate(string value);
 
-        /// <summary>
-        /// Gets or sets a value indicating whether prefer selected text of the <see cref="Scintilla" /> control for the command.
-        /// </summary>
-        /// <value><c>true</c> if to prefer selected text of the <see cref="Scintilla" /> control for the command; otherwise, <c>false</c>.</value>
-        public abstract bool PreferSelectedText { get; set; }
+    /// <summary>
+    /// Gets or sets a value indicating whether prefer selected text of the <see cref="Scintilla" /> control for the command.
+    /// </summary>
+    /// <value><c>true</c> if to prefer selected text of the <see cref="Scintilla" /> control for the command; otherwise, <c>false</c>.</value>
+    public abstract bool PreferSelectedText { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the method manipulating the text.
-        /// </summary>
-        /// <value>The name of the method manipulating the text.</value>
-        public string MethodName { get; set; }
+    /// <summary>
+    /// Gets or sets the name of the method manipulating the text.
+    /// </summary>
+    /// <value>The name of the method manipulating the text.</value>
+    public string MethodName { get; set; }
 
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public abstract override string ToString();
-    }
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public abstract override string ToString();
 }

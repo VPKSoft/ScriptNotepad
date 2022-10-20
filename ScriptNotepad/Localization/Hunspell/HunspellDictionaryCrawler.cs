@@ -28,59 +28,58 @@ using System.Collections.Generic;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.IO;
 
-namespace ScriptNotepad.Localization.Hunspell
+namespace ScriptNotepad.Localization.Hunspell;
+
+/// <summary>
+/// A class for searching Hunspell dictionaries from a given folder.
+/// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+public class HunspellDictionaryCrawler: ErrorHandlingBase
 {
     /// <summary>
-    /// A class for searching Hunspell dictionaries from a given folder.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Crawls the directory containing Hunspell dictionary and affix files.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class HunspellDictionaryCrawler: ErrorHandlingBase
+    /// <param name="path">The path to search the dictionaries from.</param>
+    /// <returns>List&lt;HunspellData&gt;.</returns>
+    public static List<HunspellData> CrawlDirectory(string path)
     {
-        /// <summary>
-        /// Crawls the directory containing Hunspell dictionary and affix files.
-        /// </summary>
-        /// <param name="path">The path to search the dictionaries from.</param>
-        /// <returns>List&lt;HunspellData&gt;.</returns>
-        public static List<HunspellData> CrawlDirectory(string path)
+        // create a new instance of the DirectoryCrawler class by user given "arguments"..
+        DirectoryCrawler crawler = new DirectoryCrawler(path, DirectoryCrawler.SearchTypeMatch.Regex,
+            "*.dic", true);
+
+        // search for the Hunspell dictionary files (*.dic)..
+        var files = crawler.GetCrawlResult();
+
+        // initialize a return value..
+        List<HunspellData> result = new List<HunspellData>();
+
+        // loop through the found dictionary files (*.dic)..
+        foreach (var file in files)
         {
-            // create a new instance of the DirectoryCrawler class by user given "arguments"..
-            DirectoryCrawler crawler = new DirectoryCrawler(path, DirectoryCrawler.SearchTypeMatch.Regex,
-                "*.dic", true);
-
-            // search for the Hunspell dictionary files (*.dic)..
-            var files = crawler.GetCrawlResult();
-
-            // initialize a return value..
-            List<HunspellData> result = new List<HunspellData>();
-
-            // loop through the found dictionary files (*.dic)..
-            foreach (var file in files)
+            try
             {
-                try
-                {
-                    // create a new HunspellData class instance..
-                    var data = HunspellData.FromDictionaryFile(file);
+                // create a new HunspellData class instance..
+                var data = HunspellData.FromDictionaryFile(file);
 
-                    // validate that there is a affix (*.aff) pair for the found dictionary file (*.dic)..
-                    if (!File.Exists(data.DictionaryFile) || !File.Exists(data.AffixFile))
-                    {
-                        // ..if not, do continue..
-                        continue;
-                    }
-
-                    // the validation was successful, so add the data to the result..
-                    result.Add(data);
-                }
-                catch (Exception ex)
+                // validate that there is a affix (*.aff) pair for the found dictionary file (*.dic)..
+                if (!File.Exists(data.DictionaryFile) || !File.Exists(data.AffixFile))
                 {
-                    // log the exception..
-                    ExceptionLogAction?.Invoke(ex);
+                    // ..if not, do continue..
+                    continue;
                 }
+
+                // the validation was successful, so add the data to the result..
+                result.Add(data);
             }
-
-            // return the result..
-            return result;
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
+            }
         }
+
+        // return the result..
+        return result;
     }
 }

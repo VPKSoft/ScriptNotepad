@@ -30,78 +30,77 @@ using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.StreamHelpers;
 using VPKSoft.ScintillaTabbedTextControl;
 
-namespace ScriptNotepad.Editor.Utility
+namespace ScriptNotepad.Editor.Utility;
+
+/// <summary>
+/// A helper class to reload a document from the file system.
+/// </summary>
+public static class DocumentReload
 {
     /// <summary>
-    /// A helper class to reload a document from the file system.
+    /// Reloads the contents of the document from the disk.
     /// </summary>
-    public static class DocumentReload
+    /// <param name="fileSave">An instance to a <see cref="FileSave"/> class.</param>
+    /// <param name="document">A ScintillaTabbedDocument to which contents should also be updated.</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool ReloadFromDisk(this FileSave fileSave, ScintillaTabbedDocument document)
     {
-        /// <summary>
-        /// Reloads the contents of the document from the disk.
-        /// </summary>
-        /// <param name="fileSave">An instance to a <see cref="FileSave"/> class.</param>
-        /// <param name="document">A ScintillaTabbedDocument to which contents should also be updated.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool ReloadFromDisk(this FileSave fileSave, ScintillaTabbedDocument document)
+        try
         {
-            try
+            // can't reload what doesn't exist..
+            if (File.Exists(fileSave.FileNameFull))
             {
-                // can't reload what doesn't exist..
-                if (File.Exists(fileSave.FileNameFull))
+                // read the file contents from the file..
+                using (FileStream fileStream = new FileStream(fileSave.FileNameFull, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    // read the file contents from the file..
-                    using (FileStream fileStream = new FileStream(fileSave.FileNameFull, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    // create a byte buffer the contain all the bytes if the file with an assumption
+                    // no one wishes to open massive binary files..
+                    byte[] fileContents = new byte[fileStream.Length];
+
+                    // read the file contents to the buffer..
+                    fileStream.Read(fileContents, 0, (int)fileStream.Length);
+
+                    // set the file system's modified flag..
+                    fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
+
+                    fileSave.SetDatabaseModified(fileSave.FileSystemModified); // set the other DateTime flags to indicate the same..
+                    fileSave.FileSystemSaved = fileSave.FileSystemModified; // set the other DateTime flags to indicate the same..
+                    fileSave.ResetPreviousDbModified();
+
+
+                    // create a new memory stream to hold the file contents..
+                    MemoryStream memoryStream = new MemoryStream(fileContents); 
+
+                    document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, fileSave.GetEncoding());
+
+                    // a reload doesn't need to be undone..
+                    document.Scintilla.EmptyUndoBuffer();
+
+                    fileSave.SetFileContentsAsMemoryStream(memoryStream);
+
+                    // set the saved position of the document's caret..
+                    if (fileSave.CurrentCaretPosition > 0 && fileSave.CurrentCaretPosition < document.Scintilla.TextLength)
                     {
-                        // create a byte buffer the contain all the bytes if the file with an assumption
-                        // no one wishes to open massive binary files..
-                        byte[] fileContents = new byte[fileStream.Length];
-
-                        // read the file contents to the buffer..
-                        fileStream.Read(fileContents, 0, (int)fileStream.Length);
-
-                        // set the file system's modified flag..
-                        fileSave.FileSystemModified = new FileInfo(fileSave.FileNameFull).LastWriteTime;
-
-                        fileSave.SetDatabaseModified(fileSave.FileSystemModified); // set the other DateTime flags to indicate the same..
-                        fileSave.FileSystemSaved = fileSave.FileSystemModified; // set the other DateTime flags to indicate the same..
-                        fileSave.ResetPreviousDbModified();
-
-
-                        // create a new memory stream to hold the file contents..
-                        MemoryStream memoryStream = new MemoryStream(fileContents); 
-
-                        document.Scintilla.Text = StreamStringHelpers.MemoryStreamToText(memoryStream, fileSave.GetEncoding());
-
-                        // a reload doesn't need to be undone..
-                        document.Scintilla.EmptyUndoBuffer();
-
-                        fileSave.SetFileContentsAsMemoryStream(memoryStream);
-
-                        // set the saved position of the document's caret..
-                        if (fileSave.CurrentCaretPosition > 0 && fileSave.CurrentCaretPosition < document.Scintilla.TextLength)
-                        {
-                            document.Scintilla.CurrentPosition = fileSave.CurrentCaretPosition;
-                            document.Scintilla.SelectionStart = fileSave.CurrentCaretPosition;
-                            document.Scintilla.SelectionEnd = fileSave.CurrentCaretPosition;
-                            document.Scintilla.ScrollCaret();
-                        }
-
+                        document.Scintilla.CurrentPosition = fileSave.CurrentCaretPosition;
+                        document.Scintilla.SelectionStart = fileSave.CurrentCaretPosition;
+                        document.Scintilla.SelectionEnd = fileSave.CurrentCaretPosition;
+                        document.Scintilla.ScrollCaret();
                     }
-                    return true; // success..
-                }
-                else
-                {
-                    return false; // the file didn't exists, so fail..
-                }
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
 
-                return false; // an exception occurred, so fail..
+                }
+                return true; // success..
             }
+            else
+            {
+                return false; // the file didn't exists, so fail..
+            }
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+
+            return false; // an exception occurred, so fail..
         }
     }
 }

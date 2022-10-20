@@ -111,7 +111,7 @@ namespace InstallerBaseWixSharp.Files.PInvoke
             SW_SHOWNA = 8,
             SW_RESTORE = 9,
             SW_SHOWDEFAULT = 10,
-            SW_MAX = 10
+            SW_MAX = 10,
         }
 
         private enum WTS_CONNECTSTATE_CLASS
@@ -125,7 +125,7 @@ namespace InstallerBaseWixSharp.Files.PInvoke
             WTSListen,
             WTSReset,
             WTSDown,
-            WTSInit
+            WTSInit,
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -171,7 +171,7 @@ namespace InstallerBaseWixSharp.Files.PInvoke
         private enum TOKEN_TYPE
         {
             TokenPrimary = 1,
-            TokenImpersonation = 2
+            TokenImpersonation = 2,
         }
 
         [StructLayout(LayoutKind.Sequential)]

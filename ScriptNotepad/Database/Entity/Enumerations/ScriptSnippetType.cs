@@ -24,21 +24,20 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.Database.Entity.Enumerations
+namespace ScriptNotepad.Database.Entity.Enumerations;
+
+/// <summary>
+/// An enumeration for the script snippet text manipulation type.
+/// </summary>
+public enum ScriptSnippetType
 {
     /// <summary>
-    /// An enumeration for the script snippet text manipulation type.
+    /// The text is manipulated as a single string.
     /// </summary>
-    public enum ScriptSnippetType
-    {
-        /// <summary>
-        /// The text is manipulated as a single string.
-        /// </summary>
-        Text,
+    Text,
 
-        /// <summary>
-        /// The text is manipulated as a collection of lines.
-        /// </summary>
-        Lines,
-    }
+    /// <summary>
+    /// The text is manipulated as a collection of lines.
+    /// </summary>
+    Lines,
 }

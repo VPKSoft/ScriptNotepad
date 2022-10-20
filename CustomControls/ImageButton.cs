@@ -29,67 +29,66 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace CustomControls
+namespace CustomControls;
+
+/// <summary>
+/// A custom button control with an image and a label.
+/// Implements the <see cref="System.Windows.Forms.UserControl" />
+/// </summary>
+/// <seealso cref="System.Windows.Forms.UserControl" />
+[DefaultEvent(nameof(Click))]
+public partial class ImageButton : UserControl
 {
     /// <summary>
-    /// A custom button control with an image and a label.
-    /// Implements the <see cref="System.Windows.Forms.UserControl" />
+    /// Initializes a new instance of the <see cref="ImageButton"/> class.
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.UserControl" />
-    [DefaultEvent(nameof(Click))]
-    public partial class ImageButton : UserControl
+    public ImageButton()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageButton"/> class.
-        /// </summary>
-        public ImageButton()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        /// <summary>
-        /// Gets or sets the button image.
-        /// </summary>
-        /// <value>The button image.</value>
-        [Category("Appearance")]
-        [Description("The button image.")]
-        public Image ButtonImage { get => pnImage.BackgroundImage; set => pnImage.BackgroundImage = value; }
+    /// <summary>
+    /// Gets or sets the button image.
+    /// </summary>
+    /// <value>The button image.</value>
+    [Category("Appearance")]
+    [Description("The button image.")]
+    public Image ButtonImage { get => pnImage.BackgroundImage; set => pnImage.BackgroundImage = value; }
 
-        /// <summary>
-        /// Gets or sets the button image layout.
-        /// </summary>
-        /// <value>The button image layout.</value>
-        [Category("Appearance")]
-        [Description("The button image layout.")]
-        public ImageLayout ButtonImageLayout { get => pnImage.BackgroundImageLayout; set => pnImage.BackgroundImageLayout = value; }
+    /// <summary>
+    /// Gets or sets the button image layout.
+    /// </summary>
+    /// <value>The button image layout.</value>
+    [Category("Appearance")]
+    [Description("The button image layout.")]
+    public ImageLayout ButtonImageLayout { get => pnImage.BackgroundImageLayout; set => pnImage.BackgroundImageLayout = value; }
 
-        /// <summary>
-        /// Gets or sets the text associated with this control.
-        /// </summary>
-        /// <value>The text.</value>
-        [Category("Appearance")]
-        [Description("The text associated with this control.")]
-        [Browsable(true)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public override string Text { get => lbButtonText.Text; set => lbButtonText.Text = value; }
+    /// <summary>
+    /// Gets or sets the text associated with this control.
+    /// </summary>
+    /// <value>The text.</value>
+    [Category("Appearance")]
+    [Description("The text associated with this control.")]
+    [Browsable(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+    [EditorBrowsable(EditorBrowsableState.Always)]
+    public override string Text { get => lbButtonText.Text; set => lbButtonText.Text = value; }
 
-        /// <summary>
-        /// Occurs when the control is clicked.
-        /// </summary>
-        [Category("Behaviour")]
-        [Description("The text associated with this control.")]
-        // ReSharper disable once InconsistentNaming
-        public new EventHandler Click;
+    /// <summary>
+    /// Occurs when the control is clicked.
+    /// </summary>
+    [Category("Behaviour")]
+    [Description("The text associated with this control.")]
+    // ReSharper disable once InconsistentNaming
+    public new EventHandler Click;
 
-        /// <summary>
-        /// Delegates the <see cref="Click"/> event to the base control.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void DelegateClick(object sender, EventArgs e)
-        {
-            Click?.Invoke(this, EventArgs.Empty);
-        }
+    /// <summary>
+    /// Delegates the <see cref="Click"/> event to the base control.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+    private void DelegateClick(object sender, EventArgs e)
+    {
+        Click?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -26,24 +26,23 @@ SOFTWARE.
 
 using ScintillaNET;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
+
+/// <summary>
+/// An interface to manipulate text with classes implementing this interface.
+/// </summary>
+public interface ITextManipulationCommand: IMethodName
 {
     /// <summary>
-    /// An interface to manipulate text with classes implementing this interface.
+    /// Manipulates the specified text value.
     /// </summary>
-    public interface ITextManipulationCommand: IMethodName
-    {
-        /// <summary>
-        /// Manipulates the specified text value.
-        /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        string Manipulate(string value);
+    /// <param name="value">The value to manipulate.</param>
+    /// <returns>A string containing the manipulated text.</returns>
+    string Manipulate(string value);
 
-        /// <summary>
-        /// Gets or sets a value indicating whether prefer selected text of the <see cref="Scintilla"/> control for the command.
-        /// </summary>
-        /// <value><c>true</c> if to prefer selected text of the <see cref="Scintilla"/> control for the command; otherwise, <c>false</c>.</value>
-        bool PreferSelectedText { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets a value indicating whether prefer selected text of the <see cref="Scintilla"/> control for the command.
+    /// </summary>
+    /// <value><c>true</c> if to prefer selected text of the <see cref="Scintilla"/> control for the command; otherwise, <c>false</c>.</value>
+    bool PreferSelectedText { get; set; }
 }

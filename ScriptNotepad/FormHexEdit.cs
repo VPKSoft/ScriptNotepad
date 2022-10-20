@@ -30,55 +30,54 @@ using VPKSoft.LangLib;
 using VPKSoft.PosLib;
 using WpfHexaEditor.Core;
 
-namespace ScriptNotepad
+namespace ScriptNotepad;
+
+/// <summary>
+/// A hex editor for binary files.
+/// </summary>
+/// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
+public partial class FormHexEdit : DBLangEngineWinforms
 {
     /// <summary>
-    /// A hex editor for binary files.
+    /// Initializes a new instance of the <see cref="FormHexEdit"/> class.
     /// </summary>
-    /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
-    public partial class FormHexEdit : DBLangEngineWinforms
+    public FormHexEdit()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormHexEdit"/> class.
-        /// </summary>
-        public FormHexEdit()
+        // Add this form to be positioned..
+        PositionForms.Add(this, PositionCore.SizeChangeMode.MoveTopLeft);
+
+        // add positioning..
+        PositionCore.Bind(ApplicationType.WinForms);
+
+        InitializeComponent();
+
+        DBLangEngine.DBName = "lang.sqlite"; // Do the VPKSoft.LangLib == translation..
+
+        if (Utils.ShouldLocalize() != null)
         {
-            // Add this form to be positioned..
-            PositionForms.Add(this, PositionCore.SizeChangeMode.MoveTopLeft);
-
-            // add positioning..
-            PositionCore.Bind(ApplicationType.WinForms);
-
-            InitializeComponent();
-
-            DBLangEngine.DBName = "lang.sqlite"; // Do the VPKSoft.LangLib == translation..
-
-            if (Utils.ShouldLocalize() != null)
-            {
-                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
-                return; // After localization don't do anything more..
-            }
-
-            hexEditor.ForegroundSecondColor = Brushes.Blue;
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+            return; // After localization don't do anything more..
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        hexEditor.ForegroundSecondColor = Brushes.Blue;
+    }
+
+    private void toolStripButton1_Click(object sender, EventArgs e)
+    {
+        var fileDialog = new OpenFileDialog();
+
+        if (fileDialog.ShowDialog() == DialogResult.OK && File.Exists(fileDialog.FileName))
+            hexEditor.FileName = fileDialog.FileName;
+    }
+
+    private void toolStripButton2_Click(object sender, EventArgs e)
+    {
+        var fileDialog = new OpenFileDialog();
+
+        if (fileDialog.ShowDialog() == DialogResult.OK && File.Exists(fileDialog.FileName))
         {
-            var fileDialog = new OpenFileDialog();
-
-            if (fileDialog.ShowDialog() == DialogResult.OK && File.Exists(fileDialog.FileName))
-                hexEditor.FileName = fileDialog.FileName;
-        }
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            var fileDialog = new OpenFileDialog();
-
-            if (fileDialog.ShowDialog() == DialogResult.OK && File.Exists(fileDialog.FileName))
-            {
-                hexEditor.LoadTblFile(fileDialog.FileName);
-                hexEditor.TypeOfCharacterTable = CharacterTableType.TblFile;
-            }
+            hexEditor.LoadTblFile(fileDialog.FileName);
+            hexEditor.TypeOfCharacterTable = CharacterTableType.TblFile;
         }
     }
 }

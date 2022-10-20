@@ -24,16 +24,15 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.ErrorHandling
+namespace ScriptNotepad.UtilityClasses.ErrorHandling;
+
+/// <summary>
+/// A class from which a classes logging errors should be derived from.
+/// </summary>
+public class ErrorHandlingBase
 {
     /// <summary>
-    /// A class from which a classes logging errors should be derived from.
+    /// Gets or sets the action to be used to log an exception.
     /// </summary>
-    public class ErrorHandlingBase
-    {
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception> ExceptionLogAction { get; set; } = null;
-    }
+    public static Action<Exception> ExceptionLogAction { get; set; } = null;
 }

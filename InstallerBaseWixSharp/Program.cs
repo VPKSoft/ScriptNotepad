@@ -83,7 +83,7 @@ namespace InstallerBaseWixSharp
                     // ReSharper disable three times StringLiteralTypo
                     new ExeFileShortcut(AppName, $"[INSTALLDIR]{Executable}", "")
                     {
-                        WorkingDirectory = "[INSTALLDIR]", IconFile = ApplicationIcon
+                        WorkingDirectory = "[INSTALLDIR]", IconFile = ApplicationIcon,
                     }),
 #if InstallLocalAppData
                 new Dir($@"%LocalAppDataFolder%\{AppName}",

@@ -24,21 +24,20 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.DateTimeUtilities
+namespace ScriptNotepad.UtilityClasses.DateTimeUtilities;
+
+/// <summary>
+/// A helper class for <see cref="System.DateTime"/>.
+/// </summary>
+public static class DateTimeHelpers
 {
     /// <summary>
-    /// A helper class for <see cref="System.DateTime"/>.
+    /// Truncates the specified date time to a an accuracy of a second.
     /// </summary>
-    public static class DateTimeHelpers
+    /// <param name="dateTime">The date time to truncate.</param>
+    /// <returns>A truncated <see cref="DateTime"/> instance.</returns>
+    public static DateTime Truncate(this DateTime dateTime)
     {
-        /// <summary>
-        /// Truncates the specified date time to a an accuracy of a second.
-        /// </summary>
-        /// <param name="dateTime">The date time to truncate.</param>
-        /// <returns>A truncated <see cref="DateTime"/> instance.</returns>
-        public static DateTime Truncate(this DateTime dateTime)
-        {
-            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Kind);
-        }
+        return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Kind);
     }
 }

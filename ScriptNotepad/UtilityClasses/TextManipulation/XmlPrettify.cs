@@ -26,36 +26,35 @@ SOFTWARE.
 
 using ScriptNotepad.UtilityClasses.TextManipulation.Xml;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation
+namespace ScriptNotepad.UtilityClasses.TextManipulation;
+
+/// <summary>
+/// A class for XML text utilities.
+/// </summary>
+public static class XmlUtils
 {
+    private static readonly XmlMultilineConvert XmlMultilineConvert = new();
+
+    private static readonly XmlSingleLineConvert XmlSingleLineConvert = new();
+
     /// <summary>
-    /// A class for XML text utilities.
+    /// Prettifies a specified XML text.
     /// </summary>
-    public static class XmlUtils
+    /// <param name="value">The value to prettify.</param>
+    /// <returns>Intended XML text.</returns>
+    public static string XmlPrettify(this string value)
     {
-        private static readonly XmlMultilineConvert XmlMultilineConvert = new();
-
-        private static readonly XmlSingleLineConvert XmlSingleLineConvert = new();
-
-        /// <summary>
-        /// Prettifies a specified XML text.
-        /// </summary>
-        /// <param name="value">The value to prettify.</param>
-        /// <returns>Intended XML text.</returns>
-        public static string XmlPrettify(this string value)
-        {
-            return XmlMultilineConvert.Manipulate(value);
-        }
+        return XmlMultilineConvert.Manipulate(value);
+    }
 
 
-        /// <summary>
-        /// Uglifies a specified XML text (he-hee).
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>System.String.</returns>
-        public static string XmlUglify(this string value)
-        {
-            return XmlSingleLineConvert.Manipulate(value);
-        }
+    /// <summary>
+    /// Uglifies a specified XML text (he-hee).
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>System.String.</returns>
+    public static string XmlUglify(this string value)
+    {
+        return XmlSingleLineConvert.Manipulate(value);
     }
 }

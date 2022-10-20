@@ -28,75 +28,74 @@ using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
 
 // This sample (C): https://fluentmigrator.github.io/articles/quickstart.html?tabs=runner-in-process
-namespace ScriptNotepad.Database.Entity.Migrations
+namespace ScriptNotepad.Database.Entity.Migrations;
+
+/// <summary>
+/// A class to run the database migrations.
+/// </summary>
+public static class ExecuteDatabaseMigrate
 {
     /// <summary>
-    /// A class to run the database migrations.
+    /// Migrates the database changes with the specified connection string.
     /// </summary>
-    public static class ExecuteDatabaseMigrate
+    /// <param name="connectionString">The SQLite connection string.</param>
+    public static void Migrate(string connectionString)
     {
-        /// <summary>
-        /// Migrates the database changes with the specified connection string.
-        /// </summary>
-        /// <param name="connectionString">The SQLite connection string.</param>
-        public static void Migrate(string connectionString)
-        {
-            ConnectionString = connectionString;
+        ConnectionString = connectionString;
 
-            var serviceProvider = CreateServices();
+        var serviceProvider = CreateServices();
 
-            // Put the database update into a scope to ensure
-            // that all resources will be disposed.
-            using var scope = serviceProvider.CreateScope();
-            UpdateDatabase(scope.ServiceProvider);
-        }
+        // Put the database update into a scope to ensure
+        // that all resources will be disposed.
+        using var scope = serviceProvider.CreateScope();
+        UpdateDatabase(scope.ServiceProvider);
+    }
 
-        /// <summary>
-        /// Gets or sets the name for the default session in the database.
-        /// </summary>
-        /// <value>The name for the default session in the database.</value>
-        public static string DefaultSessionName { get; set; } = @"Default";
+    /// <summary>
+    /// Gets or sets the name for the default session in the database.
+    /// </summary>
+    /// <value>The name for the default session in the database.</value>
+    public static string DefaultSessionName { get; set; } = @"Default";
 
-        /// <summary>
-        /// Gets or sets the SQLite database connection string.
-        /// </summary>
-        /// <value>The the SQLite database connection string.</value>
-        private static string ConnectionString { get; set; }
+    /// <summary>
+    /// Gets or sets the SQLite database connection string.
+    /// </summary>
+    /// <value>The the SQLite database connection string.</value>
+    private static string ConnectionString { get; set; }
 
-        /// <summary>
-        /// Configure the dependency injection services
-        /// </summary>
-        private static IServiceProvider CreateServices()
-        {
-            return new ServiceCollection()
+    /// <summary>
+    /// Configure the dependency injection services
+    /// </summary>
+    private static IServiceProvider CreateServices()
+    {
+        return new ServiceCollection()
+            // ReSharper disable once CommentTypo
+            // Add common FluentMigrator services
+            .AddFluentMigratorCore()
+            .ConfigureRunner(rb => rb
                 // ReSharper disable once CommentTypo
-                // Add common FluentMigrator services
-                .AddFluentMigratorCore()
-                .ConfigureRunner(rb => rb
-                    // ReSharper disable once CommentTypo
-                    // Add SQLite support to FluentMigrator
-                    .AddSQLite()
-                    // Set the connection string
-                    .WithGlobalConnectionString(ConnectionString)
-                    // Define the assembly containing the migrations
-                    .ScanIn(typeof(InitialMigration).Assembly).For.Migrations())
-                // ReSharper disable once CommentTypo
-                // Enable logging to console in the FluentMigrator way
-                .AddLogging(lb => lb.AddFluentMigratorConsole())
-                // Build the service provider
-                .BuildServiceProvider(false);
-        }
+                // Add SQLite support to FluentMigrator
+                .AddSQLite()
+                // Set the connection string
+                .WithGlobalConnectionString(ConnectionString)
+                // Define the assembly containing the migrations
+                .ScanIn(typeof(InitialMigration).Assembly).For.Migrations())
+            // ReSharper disable once CommentTypo
+            // Enable logging to console in the FluentMigrator way
+            .AddLogging(lb => lb.AddFluentMigratorConsole())
+            // Build the service provider
+            .BuildServiceProvider(false);
+    }
 
-        /// <summary>
-        /// Update the database
-        /// </summary>
-        private static void UpdateDatabase(IServiceProvider serviceProvider)
-        {
-            // Instantiate the runner
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+    /// <summary>
+    /// Update the database
+    /// </summary>
+    private static void UpdateDatabase(IServiceProvider serviceProvider)
+    {
+        // Instantiate the runner
+        var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 
-            // Execute the migrations
-            runner.MigrateUp();
-        }
+        // Execute the migrations
+        runner.MigrateUp();
     }
 }

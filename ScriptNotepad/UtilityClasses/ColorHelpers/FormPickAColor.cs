@@ -30,107 +30,106 @@ using ScintillaNET;
 using VPKSoft.LangLib;
 using ColorMine.ColorSpaces;
 
-namespace ScriptNotepad.UtilityClasses.ColorHelpers
+namespace ScriptNotepad.UtilityClasses.ColorHelpers;
+
+/// <summary>
+/// A class to detect if the <see cref="Scintilla"/> selection contains a color definition.
+/// Implements the <see cref="VPKSoft.LangLib.DBLangEngineWinforms" />
+/// </summary>
+/// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
+public partial class FormPickAColor : DBLangEngineWinforms
 {
     /// <summary>
-    /// A class to detect if the <see cref="Scintilla"/> selection contains a color definition.
-    /// Implements the <see cref="VPKSoft.LangLib.DBLangEngineWinforms" />
+    /// Initializes a new instance of the <see cref="FormPickAColor"/> class.
     /// </summary>
-    /// <seealso cref="VPKSoft.LangLib.DBLangEngineWinforms" />
-    public partial class FormPickAColor : DBLangEngineWinforms
+    public FormPickAColor()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormPickAColor"/> class.
-        /// </summary>
-        public FormPickAColor()
+        InitializeComponent();
+
+        DBLangEngine.DBName = "lang.sqlite"; // Do the VPKSoft.LangLib == translation..
+
+        if (Utils.ShouldLocalize() != null)
         {
-            InitializeComponent();
-
-            DBLangEngine.DBName = "lang.sqlite"; // Do the VPKSoft.LangLib == translation..
-
-            if (Utils.ShouldLocalize() != null)
-            {
-                DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
-                return; // After localization don't do anything more..
-            }
-
-            // initialize the language/localization database..
-            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
+            DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages", Utils.ShouldLocalize(), false);
+            return; // After localization don't do anything more..
         }
 
-        /// <summary>
-        /// A field to hold the current instance of this class.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        private static FormPickAColor formPickAColor;
+        // initialize the language/localization database..
+        DBLangEngine.InitializeLanguage("ScriptNotepad.Localization.Messages");
+    }
 
-        /// <summary>
-        /// Displays the dialog with a specified color.
-        /// </summary>
-        /// <param name="color">The color to use with the dialog.</param>
-        /// <returns>Color.</returns>
-        public static Color Execute(Color color)
-        {
-            formPickAColor = new FormPickAColor();
-            formPickAColor.UpdateColor(color);
-            formPickAColor.ShowDialog();
-            return formPickAColor.pnColor.BackColor;
-        }
+    /// <summary>
+    /// A field to hold the current instance of this class.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
+    private static FormPickAColor formPickAColor;
 
-        private Color UpdateColor(Color color)
-        {
-            pnColor.BackColor = color;
-            // ReSharper disable once LocalizableElement
-            // ReSharper disable once StringLiteralTypo
-            tbColorFromArgb.Text = $"Color.FromArgb({color.A}, {color.R}, {color.G}, {color.B})";
+    /// <summary>
+    /// Displays the dialog with a specified color.
+    /// </summary>
+    /// <param name="color">The color to use with the dialog.</param>
+    /// <returns>Color.</returns>
+    public static Color Execute(Color color)
+    {
+        formPickAColor = new FormPickAColor();
+        formPickAColor.UpdateColor(color);
+        formPickAColor.ShowDialog();
+        return formPickAColor.pnColor.BackColor;
+    }
 
-            // ReSharper disable once LocalizableElement
-            tbHexRGB.Text = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+    private Color UpdateColor(Color color)
+    {
+        pnColor.BackColor = color;
+        // ReSharper disable once LocalizableElement
+        // ReSharper disable once StringLiteralTypo
+        tbColorFromArgb.Text = $"Color.FromArgb({color.A}, {color.R}, {color.G}, {color.B})";
 
-            // ReSharper disable once LocalizableElement
-            tbHexARGB.Text = $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
-                    // ReSharper disable once StringLiteralTypo
+        // ReSharper disable once LocalizableElement
+        tbHexRGB.Text = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
 
-            Hex hex = new Hex($"#{color.R:X2}{color.G:X2}{color.B:X2}");
+        // ReSharper disable once LocalizableElement
+        tbHexARGB.Text = $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
+        // ReSharper disable once StringLiteralTypo
+
+        Hex hex = new Hex($"#{color.R:X2}{color.G:X2}{color.B:X2}");
         
-            var hsb = hex.To<Hsb>();
+        var hsb = hex.To<Hsb>();
 
-            // ReSharper disable once LocalizableElement
-            tbHSB.Text =
-                $"hsb({(int) hsb.H}, {(int)hsb.S * 100}%, {(int)hsb.B * 100}%)";
+        // ReSharper disable once LocalizableElement
+        tbHSB.Text =
+            $"hsb({(int) hsb.H}, {(int)hsb.S * 100}%, {(int)hsb.B * 100}%)";
 
-            var hsv = hex.To<Hsv>();
-            // ReSharper disable once LocalizableElement
-            tbHSV.Text =
-                $"hsv({(int) hsv.H}, {(int) hsv.S * 100}%, {(int) hsv.V * 100}%)";
+        var hsv = hex.To<Hsv>();
+        // ReSharper disable once LocalizableElement
+        tbHSV.Text =
+            $"hsv({(int) hsv.H}, {(int) hsv.S * 100}%, {(int) hsv.V * 100}%)";
 
-            var hsl = hex.To<Hsl>();
-            // ReSharper disable once LocalizableElement
-            tbHSL.Text =
-                $"hsl({(int) hsl.H}, {(int) hsl.S * 100}%, {(int) hsl.L * 100}%)";
+        var hsl = hex.To<Hsl>();
+        // ReSharper disable once LocalizableElement
+        tbHSL.Text =
+            $"hsl({(int) hsl.H}, {(int) hsl.S * 100}%, {(int) hsl.L * 100}%)";
 
-            // ReSharper disable once IdentifierTypo
-            var cmyk = hex.To<Cmyk>();
+        // ReSharper disable once IdentifierTypo
+        var cmyk = hex.To<Cmyk>();
 
-            // ReSharper disable once LocalizableElement
-            tbCMYK.Text =
-                // ReSharper disable once StringLiteralTypo
-                $@"cmyk({(int)cmyk.C * 100}%, {(int) cmyk.M * 100}%, {(int) cmyk.Y * 100}%, {(int)cmyk.K * 100}%)";
+        // ReSharper disable once LocalizableElement
+        tbCMYK.Text =
+            // ReSharper disable once StringLiteralTypo
+            $@"cmyk({(int)cmyk.C * 100}%, {(int) cmyk.M * 100}%, {(int) cmyk.Y * 100}%, {(int)cmyk.K * 100}%)";
 
-            return color;
-        }
+        return color;
+    }
 
-        /// <summary>
-        /// Handles the Click event of the PnColor control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void PnColor_Click(object sender, EventArgs e)
+    /// <summary>
+    /// Handles the Click event of the PnColor control.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+    private void PnColor_Click(object sender, EventArgs e)
+    {
+        if (cdColors.ShowDialog() == DialogResult.OK)
         {
-            if (cdColors.ShowDialog() == DialogResult.OK)
-            {
-                pnColor.BackColor = UpdateColor(cdColors.Color);
-            }
+            pnColor.BackColor = UpdateColor(cdColors.Color);
         }
     }
 }

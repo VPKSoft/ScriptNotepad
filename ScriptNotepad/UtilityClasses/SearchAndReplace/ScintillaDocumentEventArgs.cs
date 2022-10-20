@@ -27,22 +27,21 @@ SOFTWARE.
 using ScintillaNET;
 using System.Collections.Generic;
 
-namespace ScriptNotepad.UtilityClasses.SearchAndReplace
+namespace ScriptNotepad.UtilityClasses.SearchAndReplace;
+
+/// <summary>
+/// Event arguments for the search and replace dialog to be able to interact with the main form.
+/// </summary>
+/// <seealso cref="System.EventArgs" />
+public class ScintillaDocumentEventArgs: EventArgs
 {
     /// <summary>
-    /// Event arguments for the search and replace dialog to be able to interact with the main form.
+    /// Gets or sets a value indicating whether all the open documents are requested.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
-    public class ScintillaDocumentEventArgs: EventArgs
-    {
-        /// <summary>
-        /// Gets or sets a value indicating whether all the open documents are requested.
-        /// </summary>
-        public bool RequestAllDocuments { get; set; } = false;
+    public bool RequestAllDocuments { get; set; } = false;
 
-        /// <summary>
-        /// Gets or sets the <see cref="Scintilla"/> documents requested by an event.
-        /// </summary>
-        public List<(Scintilla scintilla, string fileName)> Documents { get; set; } = new List<(Scintilla scintilla, string fileName)>();
-    }
+    /// <summary>
+    /// Gets or sets the <see cref="Scintilla"/> documents requested by an event.
+    /// </summary>
+    public List<(Scintilla scintilla, string fileName)> Documents { get; set; } = new List<(Scintilla scintilla, string fileName)>();
 }
