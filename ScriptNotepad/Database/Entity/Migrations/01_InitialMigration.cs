@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace ScriptNotepad.Database.Entity.Migrations
     /// Implements the <see cref="FluentMigrator.Migration" />
     /// </summary>
     /// <seealso cref="FluentMigrator.Migration" />
-    [Migration(2021_0101_10_32_53)]
+    [Migration(2022_0101_10_32_53)]
     public class InitialMigration: Migration
     {
         /// <summary>

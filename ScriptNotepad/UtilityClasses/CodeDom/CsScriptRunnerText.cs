@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,62 +28,61 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using VPKSoft.ErrorLogger;
 
-namespace ScriptNotepad.UtilityClasses.CodeDom
+namespace ScriptNotepad.UtilityClasses.CodeDom;
+
+/// <summary>
+/// A class to run C# scripts to manipulate specified text.
+/// </summary>
+public class CsScriptRunnerText
 {
+    // a CodeDOM provider for executing C# scripts for a list of lines..
+    private static readonly CsCodeDomScriptRunnerLines ScriptRunnerLines = new ();
+
+    // a CodeDOM provider for executing C# scripts for a string..
+    private static readonly CsCodeDomScriptRunnerText ScriptRunnerText = new ();
+
     /// <summary>
-    /// A class to run C# scripts to manipulate specified text.
+    /// Runs the script for the specified text.
     /// </summary>
-    public class CsScriptRunnerText
+    /// <param name="code">The script code.</param>
+    /// <param name="text">The text.</param>
+    /// <returns>System.Threading.Tasks.Task&lt;System.Collections.Generic.KeyValuePair&lt;string, bool&gt;&gt;.</returns>
+    public static async Task<KeyValuePair<string, bool>> RunScriptText(string code, string text)
     {
-        // a CodeDOM provider for executing C# scripts for a list of lines..
-        private static readonly CsCodeDomScriptRunnerLines ScriptRunnerLines = new ();
-
-        // a CodeDOM provider for executing C# scripts for a string..
-        private static readonly CsCodeDomScriptRunnerText ScriptRunnerText = new ();
-
-        /// <summary>
-        /// Runs the script for the specified text.
-        /// </summary>
-        /// <param name="code">The script code.</param>
-        /// <param name="text">The text.</param>
-        /// <returns>System.Threading.Tasks.Task&lt;System.Collections.Generic.KeyValuePair&lt;string, bool&gt;&gt;.</returns>
-        public static async Task<KeyValuePair<string, bool>> RunScriptText(string code, string text)
+        try
         {
-            try
-            {
-                ScriptRunnerText.ScriptCode = code;
+            ScriptRunnerText.ScriptCode = code;
 
-                // a reference to a Scintilla document was gotten so do run the code..
-                return await ScriptRunnerText.ExecuteText(text);
-            }
-            catch (Exception ex)
-            {
-                ExceptionLogger.LogError(ex);
-            }
-            return new KeyValuePair<string, bool>(string.Empty, false);
+            // a reference to a Scintilla document was gotten so do run the code..
+            return await ScriptRunnerText.ExecuteText(text);
+        }
+        catch (Exception ex)
+        {
+            ExceptionLogger.LogError(ex);
+        }
+        return new KeyValuePair<string, bool>(string.Empty, false);
+    }
+
+    /// <summary>
+    /// Runs the script for the specified lines.
+    /// </summary>
+    /// <param name="code">The code.</param>
+    /// <param name="lines">The lines.</param>
+    /// <returns>System.Threading.Tasks.Task&lt;System.Collections.Generic.KeyValuePair&lt;string, bool&gt;&gt;.</returns>
+    public static async Task<KeyValuePair<string, bool>> RunScriptLines(string code, List<string> lines)
+    {
+        try
+        {
+            ScriptRunnerText.ScriptCode = code;
+
+            // a reference to a Scintilla document was gotten so do run the code..
+            return new KeyValuePair<string, bool>((await ScriptRunnerLines.ExecuteScript(lines))?.ToString() ?? string.Empty, true);
+        }
+        catch (Exception ex)
+        {
+            ExceptionLogger.LogError(ex);
         }
 
-        /// <summary>
-        /// Runs the script for the specified lines.
-        /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="lines">The lines.</param>
-        /// <returns>System.Threading.Tasks.Task&lt;System.Collections.Generic.KeyValuePair&lt;string, bool&gt;&gt;.</returns>
-        public static async Task<KeyValuePair<string, bool>> RunScriptLines(string code, List<string> lines)
-        {
-            try
-            {
-                ScriptRunnerText.ScriptCode = code;
-
-                // a reference to a Scintilla document was gotten so do run the code..
-                return new KeyValuePair<string, bool>((await ScriptRunnerLines.ExecuteScript(lines))?.ToString() ?? string.Empty, true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionLogger.LogError(ex);
-            }
-
-            return new KeyValuePair<string, bool>(string.Empty, false);
-        }
+        return new KeyValuePair<string, bool>(string.Empty, false);
     }
 }

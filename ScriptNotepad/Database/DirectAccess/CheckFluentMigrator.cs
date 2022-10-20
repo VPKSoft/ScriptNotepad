@@ -26,8 +26,8 @@ internal class CheckFluentMigrator
         command.CommandText = string.Join(Environment.NewLine,
             "INSERT INTO VersionInfo (Version, AppliedOn, Description)",
             // ReSharper disable once StringLiteralTypo, this is a function name in the SQLite..
-            "SELECT 20210101103253, strftime('%Y-%m-%dT%H:%M:%S','now'), 'InitialMigration'",
-            "WHERE NOT EXISTS(SELECT * FROM VersionInfo WHERE Version = 20210101103253)");
+            "SELECT 20220101103253, strftime('%Y-%m-%dT%H:%M:%S','now'), 'InitialMigration'",
+            "WHERE NOT EXISTS(SELECT * FROM VersionInfo WHERE Version = 20220101103253)");
         command.ExecuteNonQuery();
     }
 }

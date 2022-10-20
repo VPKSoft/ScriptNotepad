@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,17 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.CodeDom
+namespace ScriptNotepad.UtilityClasses.CodeDom;
+
+/// <summary>
+/// A class to pass global data to Roslyn.
+/// </summary>
+/// <typeparam name="T">The type for the <see cref="DataVariable"/> property.</typeparam>
+public class RoslynGlobals<T>
 {
     /// <summary>
-    /// A class to pass global data to Roslyn.
+    /// Gets or sets the data to pass to Roslyn.
     /// </summary>
-    /// <typeparam name="T">The type for the <see cref="DataVariable"/> property.</typeparam>
-    public class RoslynGlobals<T>
-    {
-        /// <summary>
-        /// Gets or sets the data to pass to Roslyn.
-        /// </summary>
-        /// <value>The data to pass to Roslyn.</value>
-        public T DataVariable { get; set; }
-    }
+    /// <value>The data to pass to Roslyn.</value>
+    public T DataVariable { get; set; }
 }
