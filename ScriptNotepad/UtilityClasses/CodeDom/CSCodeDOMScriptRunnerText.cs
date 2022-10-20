@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,20 +28,20 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using VPKSoft.ErrorLogger;
 
-namespace ScriptNotepad.UtilityClasses.CodeDom
+namespace ScriptNotepad.UtilityClasses.CodeDom;
+
+/// <summary>
+/// A class to run C# script snippets against the contents of a Scintilla document as text.
+/// </summary>
+/// <seealso cref="RoslynScriptRunner" />
+public class CsCodeDomScriptRunnerText: IScriptRunner
 {
     /// <summary>
-    /// A class to run C# script snippets against the contents of a Scintilla document as text.
+    /// Initializes a new instance of the <see cref="CsCodeDomScriptRunnerText"/> class.
     /// </summary>
-    /// <seealso cref="RoslynScriptRunner" />
-    public class CsCodeDomScriptRunnerText: IScriptRunner
+    public CsCodeDomScriptRunnerText() 
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CsCodeDomScriptRunnerText"/> class.
-        /// </summary>
-        public CsCodeDomScriptRunnerText() 
-        {
-            CSharpScriptBase =
+        CSharpScriptBase =
             string.Join(Environment.NewLine,
                 // ReSharper disable once StringLiteralTypo
                 "#region Usings",
@@ -64,84 +64,120 @@ namespace ScriptNotepad.UtilityClasses.CodeDom
                 "    }",
                 "}");
 
-             ScriptCode = CSharpScriptBase;
-        }
+        ScriptCode = CSharpScriptBase;
+    }
 
-        /// <summary>
-        /// Runs the C# script against the given string containing lines and returns the result as a string.
-        /// <note type="note">The string may contain various different line endings.</note>
-        /// </summary>
-        /// <param name="fileContents">The file contents to run the C# script against.</param>
-        /// <returns>A <see cref="KeyValuePair{TKey,TValue}"/> containing the file contents after the script manipulation and a boolean value indicating whether the script execution succeeded.</returns>
-        public async Task<KeyValuePair<string, bool>> ExecuteText(string fileContents)
+    /// <summary>
+    /// Evaluates the C# script.
+    /// </summary>
+    /// <param name="fileContents">The file contents to run the C# script against.</param>
+    /// <returns>A <see cref="KeyValuePair{TKey,TValue}"/> containing the file contents after the script manipulation and a boolean value indicating whether the script execution succeeded.</returns>
+    public async Task<bool> Evaluate(string fileContents)
+    {
+        try
         {
-            try
+            ScriptRunner = new RoslynScriptRunner(new RoslynGlobals<string> { DataVariable = fileContents, });
+
+            var result = await ScriptRunner.ExecuteAsync(ScriptCode);
+
+            if (result is Exception exceptionEvaluate)
             {
-                CompileException = null;
+                throw exceptionEvaluate;
+            }
 
-                ScriptRunner = new RoslynScriptRunner(new RoslynGlobals<string> {DataVariable = fileContents});
+            CompileFailed = false;
 
-                await ScriptRunner.ExecuteAsync(ScriptCode);
+            return true; // indicate a success..
+        }
+        catch (Exception ex)
+        {
+            CompileException = ScriptRunner?.PreviousCompileException;
+            CompileFailed = true;
+            ExceptionLogger.LogError(ex);
+            return false; // fail..
+        }
+    }
 
-                // try to run the C# script against the given file contents..
-                object result = await ScriptRunner.ExecuteAsync("ManipulateText.Evaluate(DataVariable)");
+    /// <summary>
+    /// Runs the C# script against the given string containing lines and returns the result as a string.
+    /// <note type="note">The string may contain various different line endings.</note>
+    /// </summary>
+    /// <param name="fileContents">The file contents to run the C# script against.</param>
+    /// <returns>A <see cref="KeyValuePair{TKey,TValue}"/> containing the file contents after the script manipulation and a boolean value indicating whether the script execution succeeded.</returns>
+    public async Task<KeyValuePair<string, bool>> ExecuteText(string fileContents)
+    {
+        try
+        {
+            CompileException = null;
+
+            // try to run the C# script against the given file contents..
+            object result = await ScriptRunner.ExecuteAsync("ManipulateText.Evaluate(DataVariable)");
                     
-                if (result is Exception exception)
-                {
-                    throw exception; 
-                }
-
-                CompileFailed = false;
-
-                return new KeyValuePair<string, bool>(result as string, true); // indicate a success..
-            }
-            catch (Exception ex)
+            if (result is Exception exception)
             {
-                CompileException = ScriptRunner?.PreviousCompileException;
-                CompileFailed = true;
-                ExceptionLogger.LogError(ex);
-                return new KeyValuePair<string, bool>(fileContents, false); // fail..
+                throw exception; 
             }
+
+            CompileFailed = false;
+
+            return new KeyValuePair<string, bool>(result as string, true); // indicate a success..
         }
-
-        /// <summary>
-        /// Gets or sets the C# script runner.
-        /// </summary>
-        /// <value>The C# script runner.</value>
-        public RoslynScriptRunner ScriptRunner { get; set; }
-
-        /// <summary>
-        /// Gets or sets the base "skeleton" C# code snippet for manipulating text.
-        /// </summary>
-        /// <value>The base "skeleton" C# code snippet for manipulating text.</value>
-        public string CSharpScriptBase { get; set; }
-
-        /// <summary>
-        /// Gets or sets the C# script code.
-        /// </summary>
-        /// <value>The C# script code.</value>
-        public string ScriptCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the script compile failed.
-        /// </summary>
-        /// <value><c>true</c> if the script compile failed; otherwise, <c>false</c>.</value>
-        public bool CompileFailed { get; set; }
-
-        /// <summary>
-        /// Gets the previous compile exception.
-        /// </summary>
-        /// <value>The previous compile exception.</value>
-        public Exception CompileException { get; set; }
-
-        /// <summary>
-        /// Executes the script.
-        /// </summary>
-        /// <param name="text">The text in some format.</param>
-        /// <returns>The object containing the manipulated text if the operation was successful.</returns>
-        public async Task<object> ExecuteScript(object text)
+        catch (Exception ex)
         {
-            return await ExecuteText((string)text);
+            CompileException = ScriptRunner?.PreviousCompileException;
+            CompileFailed = true;
+            ExceptionLogger.LogError(ex);
+            return new KeyValuePair<string, bool>(fileContents, false); // fail..
         }
+    }
+
+    /// <summary>
+    /// Gets or sets the C# script runner.
+    /// </summary>
+    /// <value>The C# script runner.</value>
+    public RoslynScriptRunner ScriptRunner { get; set; }
+
+    /// <summary>
+    /// Gets or sets the base "skeleton" C# code snippet for manipulating text.
+    /// </summary>
+    /// <value>The base "skeleton" C# code snippet for manipulating text.</value>
+    public string CSharpScriptBase { get; set; }
+
+    private string scriptCode = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the C# script code.
+    /// </summary>
+    /// <value>The C# script code.</value>
+    public string ScriptCode
+    {
+        get => scriptCode;
+        set
+        {
+            scriptCode = value;
+            CompileFailed = !Evaluate(scriptCode).Result;
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the script compile failed.
+    /// </summary>
+    /// <value><c>true</c> if the script compile failed; otherwise, <c>false</c>.</value>
+    public bool CompileFailed { get; set; }
+
+    /// <summary>
+    /// Gets the previous compile exception.
+    /// </summary>
+    /// <value>The previous compile exception.</value>
+    public Exception CompileException { get; set; }
+
+    /// <summary>
+    /// Executes the script.
+    /// </summary>
+    /// <param name="text">The text in some format.</param>
+    /// <returns>The object containing the manipulated text if the operation was successful.</returns>
+    public async Task<object> ExecuteScript(object text)
+    {
+        return await ExecuteText((string)text);
     }
 }

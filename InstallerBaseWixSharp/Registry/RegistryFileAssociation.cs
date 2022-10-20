@@ -719,7 +719,7 @@ namespace InstallerBaseWixSharp.Registry
             /// but should return as soon as the notification process has begun.
             /// As this flag modifies other data-type flags, it cannot by used by itself.
             /// </summary>
-            SHCNF_FLUSHNOWAIT = 0x2000
+            SHCNF_FLUSHNOWAIT = 0x2000,
         }
         #endregion
     }

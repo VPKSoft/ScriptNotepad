@@ -27,70 +27,68 @@ SOFTWARE.
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 using System.Diagnostics;
 
-namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
+namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
+
+/// <summary>
+/// A class for interacting with the Command Prompt (cmd.exe) and with Windows PowerShell (powershell.exe).
+/// </summary>
+public class CommandPromptInteraction: ErrorHandlingBase
 {
     /// <summary>
-    /// A class for interacting with the Command Prompt (cmd.exe) and with Windows PowerShell (powershell.exe).
+    /// Shows the Command Prompt (cmd.exe) with a given specific path.
     /// </summary>
-    public class CommandPromptInteraction: ErrorHandlingBase
+    /// <param name="path">The path to start the Command Prompt with.</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool OpenCmdWithPath(string path)
     {
-        /// <summary>
-        /// Shows the Command Prompt (cmd.exe) with a given specific path.
-        /// </summary>
-        /// <param name="path">The path to start the Command Prompt with.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool OpenCmdWithPath(string path)
+        try
         {
-            try
+            var processStartInfo = new ProcessStartInfo()
             {
-                var processStartInfo = new ProcessStartInfo()
-                {
-                    FileName = "cmd.exe",
-                    WorkingDirectory = path,
-                    UseShellExecute = false,
-                    LoadUserProfile = true,
-                };
+                FileName = "cmd.exe",
+                WorkingDirectory = path,
+                UseShellExecute = false,
+                LoadUserProfile = true,
+            };
 
-                System.Diagnostics.Process.Start(processStartInfo);
+            System.Diagnostics.Process.Start(processStartInfo);
                 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
+            return true;
         }
-
-        /// <summary>
-        /// Opens the Windows PowerShell (powershell.exe) with a given specific path.
-        /// </summary>
-        /// <param name="path">The path to start the Windows PowerShell with.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool OpenPowerShellWithPath(string path)
+        catch (Exception ex)
         {
-            try
-            {
-                var processStartInfo = new ProcessStartInfo()
-                {
-                    FileName = "powershell.exe",
-                    WorkingDirectory = path,
-                    UseShellExecute = false,
-                    LoadUserProfile = true,
-                };
+            // log the exception if the action has a value..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
+        }
+    }
 
-                System.Diagnostics.Process.Start(processStartInfo);
-
-                return true;
-            }
-            catch (Exception ex)
+    /// <summary>
+    /// Opens the Windows PowerShell (powershell.exe) with a given specific path.
+    /// </summary>
+    /// <param name="path">The path to start the Windows PowerShell with.</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool OpenPowerShellWithPath(string path)
+    {
+        try
+        {
+            var processStartInfo = new ProcessStartInfo()
             {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
+                FileName = "powershell.exe",
+                WorkingDirectory = path,
+                UseShellExecute = false,
+                LoadUserProfile = true,
+            };
+
+            System.Diagnostics.Process.Start(processStartInfo);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // log the exception if the action has a value..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
         }
     }
 }
-

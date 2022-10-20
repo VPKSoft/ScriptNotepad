@@ -31,117 +31,116 @@ using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.Database.Entity.Enumerations;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Editor.Utility.ModelHelpers
+namespace ScriptNotepad.Editor.Utility.ModelHelpers;
+
+/// <summary>
+/// A class to help with <see cref="SearchAndReplaceHistory"/> entities.
+/// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+public class SearchAndReplaceHistoryHelper: ErrorHandlingBase
 {
     /// <summary>
-    /// A class to help with <see cref="SearchAndReplaceHistory"/> entities.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Deletes the older entities with a given limit.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class SearchAndReplaceHistoryHelper: ErrorHandlingBase
+    /// <param name="searchAndReplaceSearchType">Type of the search and replace search.</param>
+    /// <param name="searchAndReplaceType">Type of the search and replace.</param>
+    /// <param name="limit">The limit of how many to entities to keep.</param>
+    /// <param name="fileSession">The file session.</param>
+    /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+    public static bool DeleteOlderEntries(SearchAndReplaceSearchType searchAndReplaceSearchType, SearchAndReplaceType searchAndReplaceType, int limit,
+        FileSession fileSession)
     {
-        /// <summary>
-        /// Deletes the older entities with a given limit.
-        /// </summary>
-        /// <param name="searchAndReplaceSearchType">Type of the search and replace search.</param>
-        /// <param name="searchAndReplaceType">Type of the search and replace.</param>
-        /// <param name="limit">The limit of how many to entities to keep.</param>
-        /// <param name="fileSession">The file session.</param>
-        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool DeleteOlderEntries(SearchAndReplaceSearchType searchAndReplaceSearchType, SearchAndReplaceType searchAndReplaceType, int limit,
-            FileSession fileSession)
+        try
         {
-            try
-            {
-                ScriptNotepadDbContext.DbContext.SearchAndReplaceHistories.RemoveRange(
-                    ScriptNotepadDbContext.DbContext.SearchAndReplaceHistories.Where(f =>
-                            f.Session.SessionName == fileSession.SessionName &&
-                            f.SearchAndReplaceSearchType.HasFlag(searchAndReplaceSearchType) &&
-                            f.SearchAndReplaceType == searchAndReplaceType)
-                        .Except(GetEntriesByLimit(searchAndReplaceSearchType, searchAndReplaceType, limit,
-                            fileSession)));
+            ScriptNotepadDbContext.DbContext.SearchAndReplaceHistories.RemoveRange(
+                ScriptNotepadDbContext.DbContext.SearchAndReplaceHistories.Where(f =>
+                        f.Session.SessionName == fileSession.SessionName &&
+                        f.SearchAndReplaceSearchType.HasFlag(searchAndReplaceSearchType) &&
+                        f.SearchAndReplaceType == searchAndReplaceType)
+                    .Except(GetEntriesByLimit(searchAndReplaceSearchType, searchAndReplaceType, limit,
+                        fileSession)));
 
-                return true; // success..
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-                return false; // failure..
-            }
+            return true; // success..
         }
-
-        /// <summary>
-        /// Gets the <see cref="SearchAndReplaceHistory"/> entities by a given limit.
-        /// </summary>
-        /// <param name="searchAndReplaceSearchType">Type of the search and replace search.</param>
-        /// <param name="searchAndReplaceType">Type of the search and replace.</param>
-        /// <param name="limit">The limit of how many to entities to get.</param>
-        /// <param name="fileSession">The file session.</param>
-        /// <returns>IEnumerable&lt;SearchAndReplaceHistory&gt;.</returns>
-        public static IEnumerable<SearchAndReplaceHistory> GetEntriesByLimit(
-            SearchAndReplaceSearchType searchAndReplaceSearchType, SearchAndReplaceType searchAndReplaceType, int limit,
-            FileSession fileSession)
+        catch (Exception ex)
         {
-            return ScriptNotepadDbContext.DbContext
-                .SearchAndReplaceHistories
-                .Where(f => f.Session.SessionName == fileSession.SessionName &&
-                            f.SearchAndReplaceSearchType.HasFlag(searchAndReplaceSearchType) &&
-                            f.SearchAndReplaceType == searchAndReplaceType).OrderBy(f => f.Added)
-                .Take(limit);
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+            return false; // failure..
         }
+    }
 
-        /// <summary>
-        /// Adds or updates a <see cref="SearchAndReplaceHistory"/> entity.
-        /// </summary>
-        /// <param name="text">The text used for searching or replacing.</param>
-        /// <param name="searchAndReplaceSearchType">Type of the search and replace search.</param>
-        /// <param name="searchAndReplaceType">Type of the search and replace.</param>
-        /// <param name="caseSensitive">if set to <c>true</c> the search or replace is case sensitive.</param>
-        /// <param name="fileSession">The file session.</param>
-        /// <returns>SearchAndReplaceHistory.</returns>
-        public static SearchAndReplaceHistory AddOrUpdateAndReplaceHistory(string text,
-            SearchAndReplaceSearchType searchAndReplaceSearchType, SearchAndReplaceType searchAndReplaceType,
-            bool caseSensitive, FileSession fileSession)
+    /// <summary>
+    /// Gets the <see cref="SearchAndReplaceHistory"/> entities by a given limit.
+    /// </summary>
+    /// <param name="searchAndReplaceSearchType">Type of the search and replace search.</param>
+    /// <param name="searchAndReplaceType">Type of the search and replace.</param>
+    /// <param name="limit">The limit of how many to entities to get.</param>
+    /// <param name="fileSession">The file session.</param>
+    /// <returns>IEnumerable&lt;SearchAndReplaceHistory&gt;.</returns>
+    public static IEnumerable<SearchAndReplaceHistory> GetEntriesByLimit(
+        SearchAndReplaceSearchType searchAndReplaceSearchType, SearchAndReplaceType searchAndReplaceType, int limit,
+        FileSession fileSession)
+    {
+        return ScriptNotepadDbContext.DbContext
+            .SearchAndReplaceHistories
+            .Where(f => f.Session.SessionName == fileSession.SessionName &&
+                        f.SearchAndReplaceSearchType.HasFlag(searchAndReplaceSearchType) &&
+                        f.SearchAndReplaceType == searchAndReplaceType).OrderBy(f => f.Added)
+            .Take(limit);
+    }
+
+    /// <summary>
+    /// Adds or updates a <see cref="SearchAndReplaceHistory"/> entity.
+    /// </summary>
+    /// <param name="text">The text used for searching or replacing.</param>
+    /// <param name="searchAndReplaceSearchType">Type of the search and replace search.</param>
+    /// <param name="searchAndReplaceType">Type of the search and replace.</param>
+    /// <param name="caseSensitive">if set to <c>true</c> the search or replace is case sensitive.</param>
+    /// <param name="fileSession">The file session.</param>
+    /// <returns>SearchAndReplaceHistory.</returns>
+    public static SearchAndReplaceHistory AddOrUpdateAndReplaceHistory(string text,
+        SearchAndReplaceSearchType searchAndReplaceSearchType, SearchAndReplaceType searchAndReplaceType,
+        bool caseSensitive, FileSession fileSession)
+    {
+        try
         {
-            try
-            {
-                var context = ScriptNotepadDbContext.DbContext;
+            var context = ScriptNotepadDbContext.DbContext;
 
-                if (!context.SearchAndReplaceHistories.Any(f =>
+            if (!context.SearchAndReplaceHistories.Any(f =>
                     f.SearchOrReplaceText == text && 
                     f.SearchAndReplaceSearchType.HasFlag(searchAndReplaceSearchType) && 
                     f.SearchAndReplaceType == searchAndReplaceType &&
                     f.CaseSensitive == caseSensitive &&
                     f.Session.SessionName == fileSession.SessionName))
-                {
-                    var result = new SearchAndReplaceHistory
-                    {
-                        SearchOrReplaceText = text, 
-                        SearchAndReplaceSearchType = searchAndReplaceSearchType, 
-                        SearchAndReplaceType = searchAndReplaceType, 
-                        CaseSensitive = caseSensitive,
-                        Session = fileSession,
-                    };
-
-                    result = context.SearchAndReplaceHistories.Add(result).Entity;
-                    context.SaveChanges();
-                    return result;
-                }
-
-                return context.SearchAndReplaceHistories.FirstOrDefault(f =>
-                    f.SearchOrReplaceText == text && 
-                    f.SearchAndReplaceSearchType.HasFlag(searchAndReplaceSearchType) && 
-                    f.SearchAndReplaceType == searchAndReplaceType &&
-                    f.CaseSensitive == caseSensitive &&
-                    f.Session.SessionName == fileSession.SessionName); // success..
-            }
-            catch (Exception ex)
             {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-                return null; // failure..
+                var result = new SearchAndReplaceHistory
+                {
+                    SearchOrReplaceText = text, 
+                    SearchAndReplaceSearchType = searchAndReplaceSearchType, 
+                    SearchAndReplaceType = searchAndReplaceType, 
+                    CaseSensitive = caseSensitive,
+                    Session = fileSession,
+                };
+
+                result = context.SearchAndReplaceHistories.Add(result).Entity;
+                context.SaveChanges();
+                return result;
             }
+
+            return context.SearchAndReplaceHistories.FirstOrDefault(f =>
+                f.SearchOrReplaceText == text && 
+                f.SearchAndReplaceSearchType.HasFlag(searchAndReplaceSearchType) && 
+                f.SearchAndReplaceType == searchAndReplaceType &&
+                f.CaseSensitive == caseSensitive &&
+                f.Session.SessionName == fileSession.SessionName); // success..
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+            return null; // failure..
         }
     }
 }

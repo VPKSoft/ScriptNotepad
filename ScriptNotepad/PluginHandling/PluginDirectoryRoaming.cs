@@ -29,110 +29,109 @@ using System.Collections.Generic;
 using System.Reflection;
 using VPKSoft.ErrorLogger;
 
-namespace ScriptNotepad.PluginHandling
+namespace ScriptNotepad.PluginHandling;
+
+/// <summary>
+/// A class witch searches a given directory for possible plug-in assemblies.
+/// </summary>
+public static class PluginDirectoryRoaming
 {
     /// <summary>
-    /// A class witch searches a given directory for possible plug-in assemblies.
+    /// Gets or sets the action to be used to log an exception.
     /// </summary>
-    public static class PluginDirectoryRoaming
+    public static Action<Exception, Assembly, string> ExceptionLogAction { get; set; } = null;
+
+    /// <summary>
+    /// Gets the plug-in assemblies for the software.
+    /// </summary>
+    /// <param name="directory">The directory to search the plug-in assemblies from.</param>
+    /// <returns>A collection of tuples containing the information of the found assemblies.</returns>
+    public static IEnumerable<(Assembly Assembly, string Path, bool IsValid)> GetPluginAssemblies(string directory)
     {
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception, Assembly, string> ExceptionLogAction { get; set; } = null;
+        // create a list for the results..
+        List<(Assembly Assembly, string Path, bool IsValid)> result = new List<(Assembly Assembly, string Path, bool IsValid)>();
 
-        /// <summary>
-        /// Gets the plug-in assemblies for the software.
-        /// </summary>
-        /// <param name="directory">The directory to search the plug-in assemblies from.</param>
-        /// <returns>A collection of tuples containing the information of the found assemblies.</returns>
-        public static IEnumerable<(Assembly Assembly, string Path, bool IsValid)> GetPluginAssemblies(string directory)
+        try
         {
-            // create a list for the results..
-            List<(Assembly Assembly, string Path, bool IsValid)> result = new List<(Assembly Assembly, string Path, bool IsValid)>();
+            ExceptionLogger.LogMessage($"Plugin path, get: '{directory}'");
+            // recurse the plug-in path..
+            string[] assemblies = Directory.GetFiles(directory, "*.dll", SearchOption.AllDirectories);
 
-            try
+            // loop through the results..
+            foreach (string assemblyFile in assemblies)
             {
-                ExceptionLogger.LogMessage($"Plugin path, get: '{directory}'");
-                // recurse the plug-in path..
-                string[] assemblies = Directory.GetFiles(directory, "*.dll", SearchOption.AllDirectories);
-
-                // loop through the results..
-                foreach (string assemblyFile in assemblies)
+                // ReSharper disable once CommentTypo
+                // some other files (.dll_blaa) might come with the *.dll mask..
+                if (!String.Equals(Path.GetExtension(assemblyFile), ".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // ReSharper disable once CommentTypo
-                    // some other files (.dll_blaa) might come with the *.dll mask..
-                    if (!String.Equals(Path.GetExtension(assemblyFile), ".dll", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        // ..in that case do continue..
-                        continue;
-                    }
+                    // ..in that case do continue..
+                    continue;
+                }
 
-                    // this might also fail so try..
-                    try
-                    {
-                        // load the found assembly..
-                        Assembly assembly = Assembly.LoadFile(assemblyFile);
+                // this might also fail so try..
+                try
+                {
+                    // load the found assembly..
+                    Assembly assembly = Assembly.LoadFile(assemblyFile);
 
-                        foreach (Type type in assembly.GetTypes())
+                    foreach (Type type in assembly.GetTypes())
+                    {
+                        // again keep on trying..
+                        try
                         {
-                            // again keep on trying..
-                            try
+                            // check the validity of the found type..
+                            if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type) &&
+                                typeof(ScriptNotepadPlugin).IsAssignableFrom(type))
                             {
-                                // check the validity of the found type..
-                                if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type) &&
-                                    typeof(ScriptNotepadPlugin).IsAssignableFrom(type))
-                                {
-                                    // create an instance of the class implementing the IScriptNotepadPlugin interface..
-                                    IScriptNotepadPlugin plugin =
-                                        (IScriptNotepadPlugin)Activator.CreateInstance(type);
+                                // create an instance of the class implementing the IScriptNotepadPlugin interface..
+                                IScriptNotepadPlugin plugin =
+                                    (IScriptNotepadPlugin)Activator.CreateInstance(type);
 
-                                    // the IScriptNotepadPlugin is also disposable, so do dispose of it..
-                                    using (plugin)
+                                // the IScriptNotepadPlugin is also disposable, so do dispose of it..
+                                using (plugin)
+                                {
+                                    if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
                                     {
-                                        if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
-                                        {
-                                            result.Add((assembly, assemblyFile, true));
-                                        }
+                                        result.Add((assembly, assemblyFile, true));
                                     }
                                 }
                             }
-                            catch (Exception ex)
-                            {
-                                // log the exception..
-                                ExceptionLogAction?.Invoke(ex, assembly, assemblyFile);
+                        }
+                        catch (Exception ex)
+                        {
+                            // log the exception..
+                            ExceptionLogAction?.Invoke(ex, assembly, assemblyFile);
 
-                                // indicate a failure in the result as well..
-                                if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
-                                {
-                                    result.Add((assembly, assemblyFile, false));
-                                }
+                            // indicate a failure in the result as well..
+                            if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
+                            {
+                                result.Add((assembly, assemblyFile, false));
                             }
                         }
-
                     }
-                    catch (Exception ex)
-                    {
-                        // log the exception..
-                        ExceptionLogAction?.Invoke(ex, null, assemblyFile);
 
-                        // indicate a failure in the result as well..
-                        if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
-                        {
-                            result.Add((null, assemblyFile, false));
-                        }
+                }
+                catch (Exception ex)
+                {
+                    // log the exception..
+                    ExceptionLogAction?.Invoke(ex, null, assemblyFile);
+
+                    // indicate a failure in the result as well..
+                    if (!result.Exists(f => f.Path != null && Path.GetFileName(f.Path) == Path.GetFileName(assemblyFile)))
+                    {
+                        result.Add((null, assemblyFile, false));
                     }
                 }
             }
-            // a failure..
-            catch (Exception ex)
-            {
-                // ..so do log it..
-                ExceptionLogAction?.Invoke(ex, null, null);
-            }
-
-            // return the result..
-            return result;
         }
+        // a failure..
+        catch (Exception ex)
+        {
+            // ..so do log it..
+            ExceptionLogAction?.Invoke(ex, null, null);
+        }
+
+        // return the result..
+        return result;
     }
 }

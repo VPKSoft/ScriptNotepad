@@ -24,36 +24,35 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.StreamHelpers
+namespace ScriptNotepad.UtilityClasses.StreamHelpers;
+
+/// <summary>
+/// A class to help with MemoryStreams and strings.
+/// </summary>
+public static class StreamStringHelpers
 {
     /// <summary>
-    /// A class to help with MemoryStreams and strings.
+    /// Returns the contents of a give <paramref name="memoryStream"/> as a string.
     /// </summary>
-    public static class StreamStringHelpers
+    /// <param name="memoryStream">The memory stream which contents to be returned as a string.</param>
+    /// <param name="encoding">The encoding to be used to convert a memory stream to text.</param>
+    /// <returns></returns>
+    public static string MemoryStreamToText(MemoryStream memoryStream, System.Text.Encoding encoding)
     {
-        /// <summary>
-        /// Returns the contents of a give <paramref name="memoryStream"/> as a string.
-        /// </summary>
-        /// <param name="memoryStream">The memory stream which contents to be returned as a string.</param>
-        /// <param name="encoding">The encoding to be used to convert a memory stream to text.</param>
-        /// <returns></returns>
-        public static string MemoryStreamToText(MemoryStream memoryStream, System.Text.Encoding encoding)
-        {
-            return encoding.GetString(memoryStream.ToArray());
-        }
+        return encoding.GetString(memoryStream.ToArray());
+    }
 
-        /// <summary>
-        /// Converts the encoding of a given string.
-        /// </summary>
-        /// <param name="encodingFrom">The encoding to convert from.</param>
-        /// <param name="encodingTo">The encoding to convert to.</param>
-        /// <param name="contents">The contents which encoding should be changed.</param>
-        /// <returns>A string converted to the encoding <paramref name="encodingTo"/>.</returns>
-        public static string ConvertEncoding(System.Text.Encoding encodingFrom, System.Text.Encoding encodingTo, string contents)
-        {
-            byte[] bytes = encodingFrom.GetBytes(contents);
-            bytes = System.Text.Encoding.Convert(encodingFrom, encodingTo, bytes);
-            return encodingTo.GetString(bytes);
-        }
+    /// <summary>
+    /// Converts the encoding of a given string.
+    /// </summary>
+    /// <param name="encodingFrom">The encoding to convert from.</param>
+    /// <param name="encodingTo">The encoding to convert to.</param>
+    /// <param name="contents">The contents which encoding should be changed.</param>
+    /// <returns>A string converted to the encoding <paramref name="encodingTo"/>.</returns>
+    public static string ConvertEncoding(System.Text.Encoding encodingFrom, System.Text.Encoding encodingTo, string contents)
+    {
+        byte[] bytes = encodingFrom.GetBytes(contents);
+        bytes = System.Text.Encoding.Convert(encodingFrom, encodingTo, bytes);
+        return encodingTo.GetString(bytes);
     }
 }

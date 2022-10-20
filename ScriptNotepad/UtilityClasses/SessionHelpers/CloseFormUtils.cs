@@ -27,39 +27,38 @@ SOFTWARE.
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ScriptNotepad.UtilityClasses.SessionHelpers
+namespace ScriptNotepad.UtilityClasses.SessionHelpers;
+
+/// <summary>
+/// A utility class to close all forms of the software in case the session is ending.
+/// </summary>
+public static class CloseFormUtils
 {
     /// <summary>
-    /// A utility class to close all forms of the software in case the session is ending.
+    /// Closes all the open forms except the given form to exclude <paramref name="excludeForm"/>.
     /// </summary>
-    public static class CloseFormUtils
+    /// <param name="excludeForm">The Form class instance to excluded from being closed.</param>
+    public static void CloseOpenForms(Form excludeForm)
     {
-        /// <summary>
-        /// Closes all the open forms except the given form to exclude <paramref name="excludeForm"/>.
-        /// </summary>
-        /// <param name="excludeForm">The Form class instance to excluded from being closed.</param>
-        public static void CloseOpenForms(Form excludeForm)
+        // create a list of forms to be closed..
+        List<Form> forms = new List<Form>();
+
+        // set the contents for the lost of forms to be closed..
+        foreach (Form form in Application.OpenForms)
         {
-            // create a list of forms to be closed..
-            List<Form> forms = new List<Form>();
-
-            // set the contents for the lost of forms to be closed..
-            foreach (Form form in Application.OpenForms)
+            // ..with the exception o..
+            if (!form.Equals(excludeForm))
             {
-                // ..with the exception o..
-                if (!form.Equals(excludeForm))
-                {
-                    forms.Add(form);
-                }
+                forms.Add(form);
             }
+        }
 
-            // loop through the list of forms to be closed.. 
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (int i = 0; i < forms.Count; i++)
-            {
-                // ..and close them..
-                forms[i].Close();
-            }
+        // loop through the list of forms to be closed.. 
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (int i = 0; i < forms.Count; i++)
+        {
+            // ..and close them..
+            forms[i].Close();
         }
     }
 }

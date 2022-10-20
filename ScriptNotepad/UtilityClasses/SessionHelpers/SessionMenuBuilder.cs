@@ -29,129 +29,127 @@ using System.Windows.Forms;
 using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 
-namespace ScriptNotepad.UtilityClasses.SessionHelpers
+namespace ScriptNotepad.UtilityClasses.SessionHelpers;
+
+/// <summary>
+/// A class to help to build a menu for sessions within the software (<see cref="Database.Entity.Entities.FileSession"/>).
+/// </summary>
+public class SessionMenuBuilder
 {
     /// <summary>
-    /// A class to help to build a menu for sessions within the software (<see cref="Database.Entity.Entities.FileSession"/>).
+    /// Creates the session menu to a given parent tool strip menu item.
     /// </summary>
-    public class SessionMenuBuilder
+    /// <param name="parent">The parent tool strip menu item to create the session menu to.</param>
+    /// <param name="currentSession">The currently active session.</param>
+    public static void CreateSessionMenu(ToolStripMenuItem parent, FileSession currentSession)
     {
-        /// <summary>
-        /// Creates the session menu to a given parent tool strip menu item.
-        /// </summary>
-        /// <param name="parent">The parent tool strip menu item to create the session menu to.</param>
-        /// <param name="currentSession">The currently active session.</param>
-        public static void CreateSessionMenu(ToolStripMenuItem parent, FileSession currentSession)
+        // first dispose the previous menu..
+        DisposeSessionMenu();
+
+        foreach (var session in ScriptNotepadDbContext.DbContext.FileSessions)
         {
-            // first dispose the previous menu..
-            DisposeSessionMenu();
-
-            foreach (var session in ScriptNotepadDbContext.DbContext.FileSessions)
+            var item = new ToolStripMenuItem
             {
-                var item = new ToolStripMenuItem
-                {
-                    Text = session.SessionName,
-                    Tag = session, CheckOnClick = true,
-                    Checked = session.SessionName == currentSession.SessionName,
-                };
+                Text = session.SessionName,
+                Tag = session, CheckOnClick = true,
+                Checked = session.SessionName == currentSession.SessionName,
+            };
 
-                item.Click += SessionMenuItem_Click;
-                item.Checked = session.SessionName == currentSession.SessionName;
+            item.Click += SessionMenuItem_Click;
+            item.Checked = session.SessionName == currentSession.SessionName;
 
-                CurrentMenu.Add(item);
+            CurrentMenu.Add(item);
 
-                parent.DropDownItems.Add(item);
-            }
+            parent.DropDownItems.Add(item);
         }
-
-        /// <summary>
-        /// Gets or sets the current menu items in the session parent menu.
-        /// </summary>
-        private static List<ToolStripMenuItem> CurrentMenu { get; } = new List<ToolStripMenuItem>();
-             
-
-        /// <summary>
-        /// Disposes the session menu.
-        /// </summary>
-        public static void DisposeSessionMenu()
-        {
-            // create a list of tool strip menu items to dispose of..
-            List<ToolStripMenuItem> disposeList = new List<ToolStripMenuItem>();
-            foreach (var item in CurrentMenu)
-            {
-                // only accept types of ToolStripMenuItem..
-                if (item.GetType() != typeof(ToolStripMenuItem))
-                {
-                    continue;
-                }
-
-                // cast the object as ToolStripMenuItem..
-                var sessionMenuItem = item;
-
-                disposeList.Add(sessionMenuItem);
-            }
-
-            // clear the drop down items from the parent menu item..
-            CurrentMenu.Clear();
-
-            // loop through the list of ToolStripMenuItems to disposed of..
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (int i = 0; i < disposeList.Count; i++)
-            {
-                // dispose..
-                using (disposeList[i])
-                {
-                    // unsubscribe the internal event..
-                    disposeList[i].Click -= SessionMenuItem_Click;
-                }
-            }
-        }
-
-        // a user clicked a drop-down menu item in the sessions menu..
-        private static void SessionMenuItem_Click(object sender, EventArgs e)
-        {
-            // toggle the checked state of the session in the sessions menu..
-            foreach (var item in CurrentMenu)
-            {
-                item.Checked = item.Equals(sender);
-            }
-
-            // get the data from the clicked menu item..
-            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-            var session = (FileSession)menuItem.Tag;
-
-            // raise the event if subscribed..
-            SessionMenuClicked?.Invoke(sender, new SessionMenuClickEventArgs { Session = session, Data = null });
-        }
-
-        /// <summary>
-        /// A delegate for the SessionMenuClicked event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The <see cref="SessionMenuClickEventArgs"/> instance containing the event data.</param>
-        public delegate void OnSessionMenuClicked(object sender, SessionMenuClickEventArgs e);
-
-        /// <summary>
-        /// Occurs when a session menu item was clicked.
-        /// </summary>
-        public static event OnSessionMenuClicked SessionMenuClicked;
     }
 
     /// <summary>
-    /// Event arguments for the SessionMenuClicked event.
+    /// Gets or sets the current menu items in the session parent menu.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
-    public class SessionMenuClickEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Gets the session of the clicked session menu item.
-        /// </summary>
-        public FileSession Session { get; internal set; }
+    private static List<ToolStripMenuItem> CurrentMenu { get; } = new List<ToolStripMenuItem>();
+             
 
-        /// <summary>
-        /// Gets the data associated with the session menu item.
-        /// </summary>
-        public object Data { get; internal set; }
+    /// <summary>
+    /// Disposes the session menu.
+    /// </summary>
+    public static void DisposeSessionMenu()
+    {
+        // create a list of tool strip menu items to dispose of..
+        List<ToolStripMenuItem> disposeList = new List<ToolStripMenuItem>();
+        foreach (var item in CurrentMenu)
+        {
+            // only accept types of ToolStripMenuItem..
+            if (item.GetType() != typeof(ToolStripMenuItem))
+            {
+                continue;
+            }
+
+            // cast the object as ToolStripMenuItem..
+            var sessionMenuItem = item;
+
+            disposeList.Add(sessionMenuItem);
+        }
+
+        // clear the drop down items from the parent menu item..
+        CurrentMenu.Clear();
+
+        // loop through the list of ToolStripMenuItems to disposed of..
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (int i = 0; i < disposeList.Count; i++)
+        {
+            // dispose..
+            using (disposeList[i])
+            {
+                // unsubscribe the internal event..
+                disposeList[i].Click -= SessionMenuItem_Click;
+            }
+        }
     }
+
+    // a user clicked a drop-down menu item in the sessions menu..
+    private static void SessionMenuItem_Click(object sender, EventArgs e)
+    {
+        // toggle the checked state of the session in the sessions menu..
+        foreach (var item in CurrentMenu)
+        {
+            item.Checked = item.Equals(sender);
+        }
+
+        // get the data from the clicked menu item..
+        ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+        var session = (FileSession)menuItem.Tag;
+
+        // raise the event if subscribed..
+        SessionMenuClicked?.Invoke(sender, new SessionMenuClickEventArgs { Session = session, Data = null, });
+    }
+
+    /// <summary>
+    /// A delegate for the SessionMenuClicked event.
+    /// </summary>
+    /// <param name="sender">The sender of the event.</param>
+    /// <param name="e">The <see cref="SessionMenuClickEventArgs"/> instance containing the event data.</param>
+    public delegate void OnSessionMenuClicked(object sender, SessionMenuClickEventArgs e);
+
+    /// <summary>
+    /// Occurs when a session menu item was clicked.
+    /// </summary>
+    public static event OnSessionMenuClicked SessionMenuClicked;
 }
 
+/// <summary>
+/// Event arguments for the SessionMenuClicked event.
+/// </summary>
+/// <seealso cref="System.EventArgs" />
+public class SessionMenuClickEventArgs : EventArgs
+{
+    /// <summary>
+    /// Gets the session of the clicked session menu item.
+    /// </summary>
+    public FileSession Session { get; internal set; }
+
+    /// <summary>
+    /// Gets the data associated with the session menu item.
+    /// </summary>
+    public object Data { get; internal set; }
+}

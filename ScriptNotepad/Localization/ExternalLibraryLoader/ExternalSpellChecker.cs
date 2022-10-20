@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,34 +33,56 @@ using VPKSoft.ExternalDictionaryPackage;
 using VPKSoft.ScintillaSpellCheck;
 using VPKSoft.SpellCheck.ExternalDictionarySource;
 
-namespace ScriptNotepad.Localization.ExternalLibraryLoader
+namespace ScriptNotepad.Localization.ExternalLibraryLoader;
+
+/// <summary>
+/// If a spell checking for a certain language is provided via an external assembly/library this class can be used to load such library.
+/// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+public class ExternalSpellChecker: ErrorHandlingBase
 {
     /// <summary>
-    /// If a spell checking for a certain language is provided via an external assembly/library this class can be used to load such library.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Loads a spell checker library from a given path with a given file name.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class ExternalSpellChecker: ErrorHandlingBase
+    /// <param name="path">The path.</param>
+    /// <param name="fileName">Name of the file.</param>
+    public static void LoadSpellCheck(string path, string fileName)
     {
-        /// <summary>
-        /// Loads a spell checker library from a given path with a given file name.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="fileName">Name of the file.</param>
-        public static void LoadSpellCheck(string path, string fileName)
+        try
+        {
+            fileName = Path.Combine(path, fileName);
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
+            var assemblyName = Path.Combine(path, fileName);
+
+            // the location of the assembly must be defined..
+            Assembly spellCheck = Assembly.LoadFile(assemblyName);
+
+            SetSpellChecker(spellCheck);
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+        }
+    }
+
+    /// <summary>
+    /// Loads a custom spell checking assembly if defined in the settings file.
+    /// </summary>
+    public static void Load()
+    {
+        if (FormSettings.Settings.EditorSpellUseCustomDictionary)
         {
             try
             {
-                fileName = Path.Combine(path, fileName);
+                var data = DictionaryPackage.GetXmlDefinitionDataFromDefinitionFile(FormSettings.Settings
+                    .EditorSpellCustomDictionaryDefinitionFile);
+                ExternalSpellChecker.LoadSpellCheck(Path.GetDirectoryName(FormSettings.Settings
+                    .EditorSpellCustomDictionaryDefinitionFile), data.lib);
 
-                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
-                var assemblyName = Path.Combine(path, fileName);
-
-                // the location of the assembly must be defined..
-                Assembly spellCheck = Assembly.LoadFile(assemblyName);
-
-                SetSpellChecker(spellCheck);
             }
             catch (Exception ex)
             {
@@ -68,108 +90,85 @@ namespace ScriptNotepad.Localization.ExternalLibraryLoader
                 ExceptionLogAction?.Invoke(ex);
             }
         }
+    }
 
-        /// <summary>
-        /// Loads a custom spell checking assembly if defined in the settings file.
-        /// </summary>
-        public static void Load()
+
+    /// <summary>
+    /// Handles the AssemblyResolve event of the CurrentDomain control.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="args">The <see cref="ResolveEventArgs"/> instance containing the event data.</param>
+    /// <returns>Assembly.</returns>
+    private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+    {
+        // parts of the code borrowed from; Thanks To (C): https://weblog.west-wind.com/posts/2016/dec/12/loading-net-assemblies-out-of-seperate-folders
+
+        // ignore resources..
+        if (args.Name.Contains(".resources"))
         {
-            if (FormSettings.Settings.EditorSpellUseCustomDictionary)
-            {
-                try
-                {
-                    var data = DictionaryPackage.GetXmlDefinitionDataFromDefinitionFile(FormSettings.Settings
-                        .EditorSpellCustomDictionaryDefinitionFile);
-                    ExternalSpellChecker.LoadSpellCheck(Path.GetDirectoryName(FormSettings.Settings
-                        .EditorSpellCustomDictionaryDefinitionFile), data.lib);
-
-                }
-                catch (Exception ex)
-                {
-                    // log the exception..
-                    ExceptionLogAction?.Invoke(ex);
-                }
-            }
+            return null;
         }
 
-
-        /// <summary>
-        /// Handles the AssemblyResolve event of the CurrentDomain control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="ResolveEventArgs"/> instance containing the event data.</param>
-        /// <returns>Assembly.</returns>
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        // check for assemblies already loaded..
+        Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == args.Name);
+        if (assembly != null)
         {
-            // parts of the code borrowed from; Thanks To (C): https://weblog.west-wind.com/posts/2016/dec/12/loading-net-assemblies-out-of-seperate-folders
+            return assembly;
+        }
 
-            // ignore resources..
-            if (args.Name.Contains(".resources"))
-            {
-                return null;
-            }
+        // Try to load by filename - split out the filename of the full assembly name
+        // and append the base path of the original assembly (ie. look in the same dir)
+        string filename = args.Name.Split(',')[0] + ".dll".ToLower();
 
-            // check for assemblies already loaded..
-            Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == args.Name);
-            if (assembly != null)
-            {
-                return assembly;
-            }
+        filename = Path.Combine(
+            Path.GetDirectoryName(FormSettings.Settings.EditorSpellCustomDictionaryDefinitionFile) ?? string.Empty,
+            filename);
 
-            // Try to load by filename - split out the filename of the full assembly name
-            // and append the base path of the original assembly (ie. look in the same dir)
-            string filename = args.Name.Split(',')[0] + ".dll".ToLower();
+        try
+        {
+            return Assembly.LoadFrom(filename);
+        }
+        catch (Exception ex)
+        {
+            ExceptionLogger.LogError(ex);
+            return null;
+        }
+    }
 
-            filename = Path.Combine(
-                Path.GetDirectoryName(FormSettings.Settings.EditorSpellCustomDictionaryDefinitionFile) ?? string.Empty,
-                filename);
-
+    /// <summary>
+    /// Initializes an external spell checker from a specified <see cref="Assembly"/>
+    /// </summary>
+    /// <param name="assembly">The assembly to load the spell checker from.</param>
+    public static void SetSpellChecker(Assembly assembly)
+    {
+        foreach (Type type in assembly.GetTypes())
+        {
+            // again keep on trying..
             try
             {
-                return Assembly.LoadFrom(filename);
+                // check the validity of the found type..
+                if (typeof(IExternalDictionarySource).IsAssignableFrom(type))
+                {
+                    ScintillaSpellCheck.ExternalDictionary = (IExternalDictionarySource)Activator.CreateInstance(type);
+                    ScintillaSpellCheck.ExternalDictionary.Initialize();
+
+                    return;
+                }
             }
             catch (Exception ex)
             {
-                ExceptionLogger.LogError(ex);
-                return null;
+                // log the exception..
+                ExceptionLogAction?.Invoke(ex);
             }
         }
+    }
 
-        /// <summary>
-        /// Initializes an external spell checker from a specified <see cref="Assembly"/>
-        /// </summary>
-        /// <param name="assembly">The assembly to load the spell checker from.</param>
-        public static void SetSpellChecker(Assembly assembly)
-        {
-            foreach (Type type in assembly.GetTypes())
-            {
-                // again keep on trying..
-                try
-                {
-                    // check the validity of the found type..
-                    if (typeof(IExternalDictionarySource).IsAssignableFrom(type))
-                    {
-                        ScintillaSpellCheck.ExternalDictionary = (IExternalDictionarySource)Activator.CreateInstance(type);
-                        ScintillaSpellCheck.ExternalDictionary.Initialize();
-
-                        return;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // log the exception..
-                    ExceptionLogAction?.Invoke(ex);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Disposes of the resources used by the spell checking library.
-        /// </summary>
-        public static void DisposeResources()
-        {
-            ScintillaSpellCheck.ExternalDictionary?.Dispose();
-            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-        }
+    /// <summary>
+    /// Disposes of the resources used by the spell checking library.
+    /// </summary>
+    public static void DisposeResources()
+    {
+        ScintillaSpellCheck.ExternalDictionary?.Dispose();
+        AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
     }
 }

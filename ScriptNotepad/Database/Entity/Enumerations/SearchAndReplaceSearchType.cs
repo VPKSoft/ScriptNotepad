@@ -24,37 +24,36 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.Database.Entity.Enumerations
+namespace ScriptNotepad.Database.Entity.Enumerations;
+
+/// <summary>
+/// An enumeration for a text search type.
+/// </summary>
+[Flags]
+public enum SearchAndReplaceSearchType
 {
     /// <summary>
-    /// An enumeration for a text search type.
+    /// A normal text search.
     /// </summary>
-    [Flags]
-    public enum SearchAndReplaceSearchType
-    {
-        /// <summary>
-        /// A normal text search.
-        /// </summary>
-        Normal = 1,
+    Normal = 1,
 
-        /// <summary>
-        /// An extended text search.
-        /// </summary>
-        Extended = 2,
+    /// <summary>
+    /// An extended text search.
+    /// </summary>
+    Extended = 2,
 
-        /// <summary>
-        /// A text search using regular expressions.
-        /// </summary>
-        RegularExpression = 4,
+    /// <summary>
+    /// A text search using regular expressions.
+    /// </summary>
+    RegularExpression = 4,
 
-        /// <summary>
-        /// The simple text search with some additional extended formatting possibilities.
-        /// </summary>
-        SimpleExtended = 8,
+    /// <summary>
+    /// The simple text search with some additional extended formatting possibilities.
+    /// </summary>
+    SimpleExtended = 8,
 
-        /// <summary>
-        /// All the possibilities combined.
-        /// </summary>
-        All = Normal | Extended | RegularExpression | SimpleExtended,
-    }
+    /// <summary>
+    /// All the possibilities combined.
+    /// </summary>
+    All = Normal | Extended | RegularExpression | SimpleExtended,
 }

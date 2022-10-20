@@ -29,56 +29,55 @@ using ScriptNotepad.Database.Entity.Enumerations;
 
 #nullable enable
 
-namespace ScriptNotepad.Database.Entity.Entities
+namespace ScriptNotepad.Database.Entity.Entities;
+
+/// <summary>
+/// A class for storing miscellaneous text data into the database.
+/// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+[Table("MiscellaneousTextEntries")]
+public class MiscellaneousTextEntry: IEntity
 {
     /// <summary>
-    /// A class for storing miscellaneous text data into the database.
-    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+    /// Gets or sets the identifier for the entity.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
-    [Table("MiscellaneousTextEntries")]
-    public class MiscellaneousTextEntry: IEntity
+    public int Id { get; set; }
+
+    /// <summary>
+    /// Gets or sets the session identifier.
+    /// </summary>
+    /// <value>The session identifier.</value>
+    public int SessionId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text value.
+    /// </summary>
+    public string TextValue { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the type of the text.
+    /// </summary>
+    public MiscellaneousTextType TextType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the added date and time when the entry was added or updated to the database.
+    /// </summary>
+    public DateTime Added { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="Session"/> this miscellaneous text data belongs to.
+    /// </summary>
+    [ForeignKey(nameof(SessionId))]
+    public virtual FileSession? Session { get; set; }
+
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public override string ToString()
     {
-        /// <summary>
-        /// Gets or sets the identifier for the entity.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the session identifier.
-        /// </summary>
-        /// <value>The session identifier.</value>
-        public int SessionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the text value.
-        /// </summary>
-        public string TextValue { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the type of the text.
-        /// </summary>
-        public MiscellaneousTextType TextType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the added date and time when the entry was added or updated to the database.
-        /// </summary>
-        public DateTime Added { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Session"/> this miscellaneous text data belongs to.
-        /// </summary>
-        [ForeignKey(nameof(SessionId))]
-        public virtual FileSession? Session { get; set; }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return TextValue;
-        }
+        return TextValue;
     }
 }
 

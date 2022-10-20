@@ -27,37 +27,36 @@ SOFTWARE.
 using ScintillaNET;
 using ScriptNotepad.Settings;
 
-namespace ScriptNotepad.UtilityClasses.ScintillaUtils
+namespace ScriptNotepad.UtilityClasses.ScintillaUtils;
+
+/// <summary>
+/// A helper class to set the <see cref="Scintilla"/> brace highlighting.
+/// </summary>
+public class SetStyleBraceMatch
 {
     /// <summary>
-    /// A helper class to set the <see cref="Scintilla"/> brace highlighting.
+    /// Set the brace highlight style if set in the <see cref="Settings"/> class.
     /// </summary>
-    public class SetStyleBraceMatch
+    /// <param name="scintilla">The <see cref="Scintilla"/> class instance of which brace highlighting to set.</param>
+    public static void SetStyle(Scintilla scintilla)
     {
-        /// <summary>
-        /// Set the brace highlight style if set in the <see cref="Settings"/> class.
-        /// </summary>
-        /// <param name="scintilla">The <see cref="Scintilla"/> class instance of which brace highlighting to set.</param>
-        public static void SetStyle(Scintilla scintilla)
+        // failure is not accepted within this class..
+        if (scintilla == null)
         {
-            // failure is not accepted within this class..
-            if (scintilla == null)
-            {
-                return;
-            }
-
-            // not in the settings, so do return..
-            if (!FormSettings.Settings.HighlightBraces)
-            {
-                return;
-            }
-
-            scintilla.Styles[Style.BraceLight].ForeColor = FormSettings.Settings.BraceHighlightForegroundColor;
-            scintilla.Styles[Style.BraceLight].BackColor = FormSettings.Settings.BraceHighlightBackgroundColor;
-            scintilla.Styles[Style.BraceBad].BackColor = FormSettings.Settings.BraceBadHighlightForegroundColor;
-
-            scintilla.Styles[Style.BraceLight].Italic = FormSettings.Settings.HighlightBracesItalic;
-            scintilla.Styles[Style.BraceLight].Bold = FormSettings.Settings.HighlightBracesBold;
+            return;
         }
+
+        // not in the settings, so do return..
+        if (!FormSettings.Settings.HighlightBraces)
+        {
+            return;
+        }
+
+        scintilla.Styles[Style.BraceLight].ForeColor = FormSettings.Settings.BraceHighlightForegroundColor;
+        scintilla.Styles[Style.BraceLight].BackColor = FormSettings.Settings.BraceHighlightBackgroundColor;
+        scintilla.Styles[Style.BraceBad].BackColor = FormSettings.Settings.BraceBadHighlightForegroundColor;
+
+        scintilla.Styles[Style.BraceLight].Italic = FormSettings.Settings.HighlightBracesItalic;
+        scintilla.Styles[Style.BraceLight].Bold = FormSettings.Settings.HighlightBracesBold;
     }
 }

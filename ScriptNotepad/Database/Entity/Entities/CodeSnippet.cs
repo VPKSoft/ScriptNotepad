@@ -29,54 +29,53 @@ SOFTWARE.
 using System.ComponentModel.DataAnnotations.Schema;
 using ScriptNotepad.Database.Entity.Enumerations;
 
-namespace ScriptNotepad.Database.Entity.Entities
+namespace ScriptNotepad.Database.Entity.Entities;
+
+/// <summary>
+/// A class for storing code snippets into the database.
+/// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+[Table("CodeSnippets")]
+public class CodeSnippet: IEntity
 {
     /// <summary>
-    /// A class for storing code snippets into the database.
-    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+    /// Gets or sets the identifier for the entity.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
-    [Table("CodeSnippets")]
-    public class CodeSnippet: IEntity
+    public int Id { get; set; }
+
+    /// <summary>
+    /// Gets or sets the script's contents.
+    /// </summary>
+    public string? ScriptContents { get; set; }
+
+    /// <summary>
+    /// Gets or sets the name of the script.
+    /// </summary>
+    public string ScriptName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the date and time when the script was previously modified.
+    /// </summary>
+    public DateTime Modified { get; set; }
+
+    /// <summary>
+    /// Gets or sets the language type of the script snippet.
+    /// </summary>
+    public CodeSnippetLanguage ScriptLanguage { get; set; }
+
+    /// <summary>
+    /// Gets or sets the type of the script text manipulation.
+    /// </summary>
+    public ScriptSnippetType ScriptTextManipulationType  { get; set; }
+
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public override string ToString()
     {
-        /// <summary>
-        /// Gets or sets the identifier for the entity.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the script's contents.
-        /// </summary>
-        public string? ScriptContents { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the script.
-        /// </summary>
-        public string ScriptName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets the date and time when the script was previously modified.
-        /// </summary>
-        public DateTime Modified { get; set; }
-
-        /// <summary>
-        /// Gets or sets the language type of the script snippet.
-        /// </summary>
-        public CodeSnippetLanguage ScriptLanguage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of the script text manipulation.
-        /// </summary>
-        public ScriptSnippetType ScriptTextManipulationType  { get; set; }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return ScriptName;
-        }
+        return ScriptName;
     }
 }
 

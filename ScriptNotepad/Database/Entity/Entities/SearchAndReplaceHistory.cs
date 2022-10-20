@@ -29,66 +29,65 @@ using ScriptNotepad.Database.Entity.Enumerations;
 
 #nullable enable
 
-namespace ScriptNotepad.Database.Entity.Entities
+namespace ScriptNotepad.Database.Entity.Entities;
+
+/// <summary>
+/// A class to store search or replace history into the database.
+/// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+[Table("SearchAndReplaceHistories")]
+public class SearchAndReplaceHistory : IEntity
 {
     /// <summary>
-    /// A class to store search or replace history into the database.
-    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+    /// Gets or sets the identifier for the entity.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
-    [Table("SearchAndReplaceHistories")]
-    public class SearchAndReplaceHistory : IEntity
+    /// <value>The identifier.</value>
+    public int Id { get; set; }
+
+    /// <summary>
+    /// Gets or sets the session identifier.
+    /// </summary>
+    /// <value>The session identifier.</value>
+    public int SessionId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the search or replace text.
+    /// </summary>
+    public string SearchOrReplaceText { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether search or replace was case sensitive.
+    /// </summary>
+    public bool CaseSensitive { get; set; }
+
+    /// <summary>
+    /// Gets or sets the type of the search.
+    /// </summary>
+    public SearchAndReplaceSearchType SearchAndReplaceSearchType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the type of the search or replace.
+    /// </summary>
+    public SearchAndReplaceType SearchAndReplaceType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the added date and time when the entry was added to the database or created.
+    /// </summary>
+    public DateTime Added { get; set; }
+
+    /// <summary>
+    /// Gets or sets the session the search or replace history entry belongs to.
+    /// </summary>
+    [ForeignKey(nameof(SessionId))]
+    public virtual FileSession? Session { get; set; }
+
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public override string ToString()
     {
-        /// <summary>
-        /// Gets or sets the identifier for the entity.
-        /// </summary>
-        /// <value>The identifier.</value>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the session identifier.
-        /// </summary>
-        /// <value>The session identifier.</value>
-        public int SessionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the search or replace text.
-        /// </summary>
-        public string SearchOrReplaceText { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether search or replace was case sensitive.
-        /// </summary>
-        public bool CaseSensitive { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of the search.
-        /// </summary>
-        public SearchAndReplaceSearchType SearchAndReplaceSearchType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of the search or replace.
-        /// </summary>
-        public SearchAndReplaceType SearchAndReplaceType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the added date and time when the entry was added to the database or created.
-        /// </summary>
-        public DateTime Added { get; set; }
-
-        /// <summary>
-        /// Gets or sets the session the search or replace history entry belongs to.
-        /// </summary>
-        [ForeignKey(nameof(SessionId))]
-        public virtual FileSession? Session { get; set; }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return SearchOrReplaceText;
-        }
+        return SearchOrReplaceText;
     }
 }

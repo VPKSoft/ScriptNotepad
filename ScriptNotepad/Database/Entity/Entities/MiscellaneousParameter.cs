@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,34 +28,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable enable
 
-namespace ScriptNotepad.Database.Entity.Entities
+namespace ScriptNotepad.Database.Entity.Entities;
+
+/// <summary>
+/// A class for miscellaneous entries, I.e. history data entered into database.
+/// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
+[Table("MiscellaneousParameters")]
+public class MiscellaneousParameter: IEntity
 {
     /// <summary>
-    /// A class for miscellaneous entries, I.e. history data entered into database.
-    /// Implements the <see cref="ScriptNotepad.Database.Entity.IEntity" />
+    /// Gets or sets the identifier for the entity.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.Database.Entity.IEntity" />
-    [Table("MiscellaneousParameters")]
-    public class MiscellaneousParameter: IEntity
-    {
-        /// <summary>
-        /// Gets or sets the identifier for the entity.
-        /// </summary>
-        /// <value>The identifier.</value>
-        public int Id { get; set; }
+    /// <value>The identifier.</value>
+    public int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets the <see cref="DateTime"/> when the entry was added to the database.
-        /// </summary>
-        /// <value>The <see cref="DateTime"/> when the entry was added to the database.</value>
-        public DateTime Added { get; set; }
+    /// <summary>
+    /// Gets or sets the <see cref="DateTime"/> when the entry was added to the database.
+    /// </summary>
+    /// <value>The <see cref="DateTime"/> when the entry was added to the database.</value>
+    public DateTime Added { get; set; }
 
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        /// <value>The value.</value>
-        public string Value { get; set; } = string.Empty;
-    }
+    /// <summary>
+    /// Gets or sets the value.
+    /// </summary>
+    /// <value>The value.</value>
+    public string Value { get; set; } = string.Empty;
 }
 
 #nullable restore

@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,17 +24,16 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
+
+/// <summary>
+/// An interface with a text manipulation method name.
+/// </summary>
+public interface IMethodName
 {
     /// <summary>
-    /// An interface with a text manipulation method name.
+    /// Gets or sets the name of the method manipulating the text.
     /// </summary>
-    public interface IMethodName
-    {
-        /// <summary>
-        /// Gets or sets the name of the method manipulating the text.
-        /// </summary>
-        /// <value>The name of the method manipulating the text.</value>
-        string MethodName { get; set; }
-    }
+    /// <value>The name of the method manipulating the text.</value>
+    string MethodName { get; set; }
 }

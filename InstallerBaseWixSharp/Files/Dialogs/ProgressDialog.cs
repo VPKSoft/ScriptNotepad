@@ -48,7 +48,7 @@ namespace InstallerBaseWixSharp.Files.Dialogs
             InitializeComponent();
             dialogText.MakeTransparentOn(banner);
 
-            showWaitPromptTimer = new System.Windows.Forms.Timer { Interval = 4000 };
+            showWaitPromptTimer = new System.Windows.Forms.Timer { Interval = 4000, };
             showWaitPromptTimer.Tick += (s, e) =>
             {
                 waitPrompt.Visible = true;

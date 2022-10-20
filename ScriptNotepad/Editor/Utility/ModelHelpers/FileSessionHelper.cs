@@ -29,46 +29,45 @@ using ScriptNotepad.Database.Entity.Context;
 using ScriptNotepad.Database.Entity.Entities;
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.Editor.Utility.ModelHelpers
+namespace ScriptNotepad.Editor.Utility.ModelHelpers;
+
+/// <summary>
+/// A class to help with <see cref="FileSessionHelper"/> entities.
+/// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+/// </summary>
+/// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+public class FileSessionHelper: ErrorHandlingBase
 {
     /// <summary>
-    /// A class to help with <see cref="FileSessionHelper"/> entities.
-    /// Implements the <see cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
+    /// Deletes the entire session from the database context.
     /// </summary>
-    /// <seealso cref="ScriptNotepad.UtilityClasses.ErrorHandling.ErrorHandlingBase" />
-    public class FileSessionHelper: ErrorHandlingBase
+    /// <param name="session">The session to delete.</param>
+    /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
+    public static bool DeleteEntireSession(FileSession session)
     {
-        /// <summary>
-        /// Deletes the entire session from the database context.
-        /// </summary>
-        /// <param name="session">The session to delete.</param>
-        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool DeleteEntireSession(FileSession session)
+        try
         {
-            try
+            var context = ScriptNotepadDbContext.DbContext;
+
+            context.FileSaves.RemoveRange(context.FileSaves.Where(f => f.Session.SessionName == session.SessionName));
+            context.MiscellaneousTextEntries.RemoveRange(context.MiscellaneousTextEntries.Where(f => f.Session.SessionName == session.SessionName));
+            context.RecentFiles.RemoveRange(context.RecentFiles.Where(f => f.Session.SessionName == session.SessionName));
+
+            session = context.FileSessions.FirstOrDefault(f => f.SessionName == session.SessionName);
+
+            if (session != null)
             {
-                var context = ScriptNotepadDbContext.DbContext;
-
-                context.FileSaves.RemoveRange(context.FileSaves.Where(f => f.Session.SessionName == session.SessionName));
-                context.MiscellaneousTextEntries.RemoveRange(context.MiscellaneousTextEntries.Where(f => f.Session.SessionName == session.SessionName));
-                context.RecentFiles.RemoveRange(context.RecentFiles.Where(f => f.Session.SessionName == session.SessionName));
-
-                session = context.FileSessions.FirstOrDefault(f => f.SessionName == session.SessionName);
-
-                if (session != null)
-                {
-                    context.FileSessions.Remove(session);
-                }
-
-                context.SaveChanges();
-                return true; // success..
+                context.FileSessions.Remove(session);
             }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex);
-                return false; // failure..
-            }
+
+            context.SaveChanges();
+            return true; // success..
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex);
+            return false; // failure..
         }
     }
 }

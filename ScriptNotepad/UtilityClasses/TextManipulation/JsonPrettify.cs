@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,35 +26,34 @@ SOFTWARE.
 
 using ScriptNotepad.UtilityClasses.TextManipulation.Json;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation
+namespace ScriptNotepad.UtilityClasses.TextManipulation;
+
+/// <summary>
+/// A class for Json text utilities.
+/// </summary>
+public static class JsonUtils
 {
+    private static readonly JsonMultilineConvert JsonMultilineConvert = new();
+
+    private static readonly JsonSingleLineConvert JsonSingleLineConvert = new();
+
     /// <summary>
-    /// A class for Json text utilities.
+    /// Prettifies a specified Json text.
     /// </summary>
-    public static class JsonUtils
+    /// <param name="value">The value to prettify.</param>
+    /// <returns>Intended Json text.</returns>
+    public static string JsonPrettify(this string value)
     {
-        private static readonly JsonMultilineConvert JsonMultilineConvert = new();
+        return JsonMultilineConvert.Manipulate(value);
+    }
 
-        private static readonly JsonSingleLineConvert JsonSingleLineConvert = new();
-
-        /// <summary>
-        /// Prettifies a specified Json text.
-        /// </summary>
-        /// <param name="value">The value to prettify.</param>
-        /// <returns>Intended Json text.</returns>
-        public static string JsonPrettify(this string value)
-        {
-            return JsonMultilineConvert.Manipulate(value);
-        }
-
-        /// <summary>
-        /// Uglifies a specified Json text (he-hee).
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>System.String.</returns>
-        public static string JsonUglify(this string value)
-        {
-            return JsonSingleLineConvert.Manipulate(value);
-        }
+    /// <summary>
+    /// Uglifies a specified Json text (he-hee).
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>System.String.</returns>
+    public static string JsonUglify(this string value)
+    {
+        return JsonSingleLineConvert.Manipulate(value);
     }
 }

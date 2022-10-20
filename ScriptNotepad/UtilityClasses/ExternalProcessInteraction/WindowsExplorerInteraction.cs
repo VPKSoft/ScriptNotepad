@@ -26,73 +26,72 @@ SOFTWARE.
 
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction
+namespace ScriptNotepad.UtilityClasses.ExternalProcessInteraction;
+
+/// <summary>
+/// A class to interact with Windows explorer.
+/// </summary>
+public class WindowsExplorerInteraction: ErrorHandlingBase
 {
     /// <summary>
-    /// A class to interact with Windows explorer.
+    /// Shows the file or path in Windows explorer.
     /// </summary>
-    public class WindowsExplorerInteraction: ErrorHandlingBase
+    /// <param name="fileOrPath">The file or path to show in the Windows explorer.</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool ShowFileOrPathInExplorer(string fileOrPath)
     {
-        /// <summary>
-        /// Shows the file or path in Windows explorer.
-        /// </summary>
-        /// <param name="fileOrPath">The file or path to show in the Windows explorer.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool ShowFileOrPathInExplorer(string fileOrPath)
+        try
         {
-            try
-            {
-                // (C): https://social.msdn.microsoft.com/Forums/vstudio/en-US/a6e1458a-20d0-48b4-8e3a-0a00c8618d75/opening-folder-in-explorer-by-c-code?forum=netfxbcl
-                System.Diagnostics.Process.Start("explorer.exe", $"/e,/select,{fileOrPath}");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
+            // (C): https://social.msdn.microsoft.com/Forums/vstudio/en-US/a6e1458a-20d0-48b4-8e3a-0a00c8618d75/opening-folder-in-explorer-by-c-code?forum=netfxbcl
+            System.Diagnostics.Process.Start("explorer.exe", $"/e,/select,{fileOrPath}");
+            return true;
         }
-
-        /// <summary>
-        /// Opens the folder in explorer.
-        /// </summary>
-        /// <param name="folder">The folder to show in the Windows explorer.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool OpenFolderInExplorer(string folder)
+        catch (Exception ex)
         {
-            try
-            {
-                System.Diagnostics.Process.Start("explorer.exe", folder);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
+            // log the exception if the action has a value..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
         }
+    }
 
-
-        /// <summary>
-        /// Opens the file with associated program.
-        /// </summary>
-        /// <param name="fileName">The name of the file to open.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool OpenWithAssociatedProgram(string fileName)
+    /// <summary>
+    /// Opens the folder in explorer.
+    /// </summary>
+    /// <param name="folder">The folder to show in the Windows explorer.</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool OpenFolderInExplorer(string folder)
+    {
+        try
         {
-            try
-            {
-                System.Diagnostics.Process.Start(fileName);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // log the exception if the action has a value..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
+            System.Diagnostics.Process.Start("explorer.exe", folder);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // log the exception if the action has a value..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
+        }
+    }
+
+
+    /// <summary>
+    /// Opens the file with associated program.
+    /// </summary>
+    /// <param name="fileName">The name of the file to open.</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool OpenWithAssociatedProgram(string fileName)
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(fileName);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // log the exception if the action has a value..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
         }
     }
 }

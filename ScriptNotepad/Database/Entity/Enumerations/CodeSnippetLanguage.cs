@@ -24,16 +24,15 @@ SOFTWARE.
 */
 #endregion
 
-namespace ScriptNotepad.Database.Entity.Enumerations
+namespace ScriptNotepad.Database.Entity.Enumerations;
+
+/// <summary>
+/// An enumeration for a code snippet language.
+/// </summary>
+public enum CodeSnippetLanguage
 {
     /// <summary>
-    /// An enumeration for a code snippet language.
+    /// The C# programming language.
     /// </summary>
-    public enum CodeSnippetLanguage
-    {
-        /// <summary>
-        /// The C# programming language.
-        /// </summary>
-        Cs,
-    }
+    Cs,
 }

@@ -26,31 +26,30 @@ SOFTWARE.
 
 using ScriptNotepad.UtilityClasses.ErrorHandling;
 
-namespace ScriptNotepad.UtilityClasses.Clipboard
+namespace ScriptNotepad.UtilityClasses.Clipboard;
+
+/// <summary>
+/// A simple class to help to set clipboard text contents.
+/// </summary>
+public class ClipboardTextHelper: ErrorHandlingBase
 {
     /// <summary>
-    /// A simple class to help to set clipboard text contents.
+    /// Set the Clipboard's contents to a given text.
     /// </summary>
-    public class ClipboardTextHelper: ErrorHandlingBase
+    /// <param name="text">The text to set the clipboard's contents to.</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool ClipboardSetText(string text)
     {
-        /// <summary>
-        /// Set the Clipboard's contents to a given text.
-        /// </summary>
-        /// <param name="text">The text to set the clipboard's contents to.</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool ClipboardSetText(string text)
+        try
         {
-            try
-            {
-                System.Windows.Forms.Clipboard.SetDataObject(text, true, 20, 150);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // clipboard operation may fail..
-                ExceptionLogAction?.Invoke(ex);
-                return false;
-            }
+            System.Windows.Forms.Clipboard.SetDataObject(text, true, 20, 150);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // clipboard operation may fail..
+            ExceptionLogAction?.Invoke(ex);
+            return false;
         }
     }
 }

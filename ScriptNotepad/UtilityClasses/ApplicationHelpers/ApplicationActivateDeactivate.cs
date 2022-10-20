@@ -29,63 +29,62 @@ using VPKSoft.ErrorLogger;
 
 
 // (C)::https://www.cyotek.com/blog/how-to-be-notified-when-your-application-is-activated-and-deactivated
-namespace ScriptNotepad.UtilityClasses.ApplicationHelpers
+namespace ScriptNotepad.UtilityClasses.ApplicationHelpers;
+
+/// <summary>
+/// A class containing helper methods to listen to the WM_ACTIVATEAPP WndProc message.
+/// </summary>
+public static class ApplicationActivateDeactivate
 {
     /// <summary>
-    /// A class containing helper methods to listen to the WM_ACTIVATEAPP WndProc message.
+    /// Occurs when the application was activated.
     /// </summary>
-    public static class ApplicationActivateDeactivate
+    public static event EventHandler ApplicationActivated;
+
+    /// <summary>
+    /// Occurs when application was deactivated.
+    /// </summary>
+    public static event EventHandler ApplicationDeactivated;
+
+    /// <summary>
+    /// A message send to the WndProc when the application activates / deactivates.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
+    public const int WM_ACTIVATEAPP = 0x1C;
+
+    /// <summary>
+    /// A method which can be called from within a overridden <see cref="Form.WndProc"/> method to raise the <see cref="ApplicationActivated"/> and the <see cref="ApplicationDeactivated"/> events.
+    /// </summary>
+    /// <param name="form">The form from which WndProc method this method was called.</param>
+    /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
+    /// <returns><c>true</c> if the <see cref="T:System.Windows.Forms.Message m"/> was handled by the method, <c>false</c> otherwise.</returns>
+    public static bool WndProcApplicationActivateHelper(Form form, ref Message m)
     {
-        /// <summary>
-        /// Occurs when the application was activated.
-        /// </summary>
-        public static event EventHandler ApplicationActivated;
-
-        /// <summary>
-        /// Occurs when application was deactivated.
-        /// </summary>
-        public static event EventHandler ApplicationDeactivated;
-
-        /// <summary>
-        /// A message send to the WndProc when the application activates / deactivates.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        public const int WM_ACTIVATEAPP = 0x1C;
-
-        /// <summary>
-        /// A method which can be called from within a overridden <see cref="Form.WndProc"/> method to raise the <see cref="ApplicationActivated"/> and the <see cref="ApplicationDeactivated"/> events.
-        /// </summary>
-        /// <param name="form">The form from which WndProc method this method was called.</param>
-        /// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
-        /// <returns><c>true</c> if the <see cref="T:System.Windows.Forms.Message m"/> was handled by the method, <c>false</c> otherwise.</returns>
-        public static bool WndProcApplicationActivateHelper(Form form, ref Message m)
+        try
         {
-            try
+            if (m.Msg == WM_ACTIVATEAPP)
             {
-                if (m.Msg == WM_ACTIVATEAPP)
+                if (m.WParam != IntPtr.Zero)
                 {
-                    if (m.WParam != IntPtr.Zero)
-                    {
-                        // the application is getting activated..
-                        ApplicationActivated?.Invoke(form, new EventArgs());
-                    }
-                    else
-                    {
-                        // the application is getting deactivated..
-                        ApplicationDeactivated?.Invoke(form, new EventArgs());
-                    }
-
-                    return true;
+                    // the application is getting activated..
+                    ApplicationActivated?.Invoke(form, new EventArgs());
+                }
+                else
+                {
+                    // the application is getting deactivated..
+                    ApplicationDeactivated?.Invoke(form, new EventArgs());
                 }
 
-                return false;
+                return true;
             }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogger.LogError(ex);
-                return false;
-            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ExceptionLogger.LogError(ex);
+            return false;
         }
     }
 }

@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,45 +30,44 @@ using ScriptNotepad.UtilityClasses.ErrorHandling;
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 using ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Json
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Json;
+
+/// <summary>
+/// A class to convert formatted JSON to a single-line JSOn.
+/// Implements the <see cref="ITextManipulationCommand" />
+/// </summary>
+/// <seealso cref="ITextManipulationCommand" />
+public class JsonSingleLineConvert: TextManipulationCommandBase
 {
     /// <summary>
-    /// A class to convert formatted JSON to a single-line JSOn.
-    /// Implements the <see cref="ITextManipulationCommand" />
+    /// Manipulates the specified text value.
     /// </summary>
-    /// <seealso cref="ITextManipulationCommand" />
-    public class JsonSingleLineConvert: TextManipulationCommandBase
+    /// <param name="value">The value to manipulate.</param>
+    /// <returns>A string containing the manipulated text.</returns>
+    public override string Manipulate(string value)
     {
-        /// <summary>
-        /// Manipulates the specified text value.
-        /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        public override string Manipulate(string value)
+        try
         {
-            try
-            {
-                var result = JToken.Parse(value).ToString(Formatting.None);
+            var result = JToken.Parse(value).ToString(Formatting.None);
 
-                return result; 
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
-                return value; 
-            }
+            return result; 
         }
-
-        /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
-        public override bool PreferSelectedText { get; set; } = false;
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
+        catch (Exception ex)
         {
-            return MethodName;
+            ErrorHandlingBase.ExceptionLogAction?.Invoke(ex);
+            return value; 
         }
+    }
+
+    /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
+    public override bool PreferSelectedText { get; set; } = false;
+
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public override string ToString()
+    {
+        return MethodName;
     }
 }

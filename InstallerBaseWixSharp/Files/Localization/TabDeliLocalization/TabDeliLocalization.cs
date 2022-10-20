@@ -167,7 +167,7 @@ namespace InstallerBaseWixSharp.Files.Localization.TabDeliLocalization
                     {
                         continue;
                     }
-                    LocalizationTexts.Add(new LocalizationTextContainer { MessageName = delimited[0], Message = delimited[1], CultureName = locale});
+                    LocalizationTexts.Add(new LocalizationTextContainer { MessageName = delimited[0], Message = delimited[1], CultureName = locale, });
                 }
             }
         }

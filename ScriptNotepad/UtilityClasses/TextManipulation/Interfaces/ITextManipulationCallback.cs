@@ -1,11 +1,10 @@
-﻿namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
+﻿namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
+
+interface ITextManipulationCallback: IMethodName
 {
-    interface ITextManipulationCallback: IMethodName
-    {
-        /// <summary>
-        /// Gets or sets the callback action.
-        /// </summary>
-        /// <value>The callback action.</value>
-        Action CallbackAction { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the callback action.
+    /// </summary>
+    /// <value>The callback action.</value>
+    Action CallbackAction { get; set; }
 }

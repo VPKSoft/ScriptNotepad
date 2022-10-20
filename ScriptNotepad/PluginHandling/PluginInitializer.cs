@@ -29,105 +29,104 @@ using System.Reflection;
 using System.Windows.Forms;
 using static ScriptNotepadPluginBase.Types.DelegateTypes;
 
-namespace ScriptNotepad.PluginHandling
+namespace ScriptNotepad.PluginHandling;
+
+/// <summary>
+/// A helper class for the plug-in loading and initialization.
+/// </summary>
+public static class PluginInitializer
 {
     /// <summary>
-    /// A helper class for the plug-in loading and initialization.
+    /// Gets or sets the action to be used to log an exception.
     /// </summary>
-    public static class PluginInitializer
+    public static Action<Exception, Assembly, string, string> ExceptionLogAction { get; set; } = null;
+
+    /// <summary>
+    /// Tries to loads a plug-in with a given file name.
+    /// </summary>
+    /// <param name="fileName">Name of the file containing the plug-in assembly.</param>
+    /// <returns>A tuple containing the assembly and an instance created for the plug-in implementing 
+    /// the <see cref="IScriptNotepadPlugin"/> interface along with the assembly file name if successful; 
+    /// otherwise the resulting value contains some null values.</returns>
+    public static (Assembly assembly, IScriptNotepadPlugin Plugin, string FileName) LoadPlugin(string fileName)
     {
-        /// <summary>
-        /// Gets or sets the action to be used to log an exception.
-        /// </summary>
-        public static Action<Exception, Assembly, string, string> ExceptionLogAction { get; set; } = null;
-
-        /// <summary>
-        /// Tries to loads a plug-in with a given file name.
-        /// </summary>
-        /// <param name="fileName">Name of the file containing the plug-in assembly.</param>
-        /// <returns>A tuple containing the assembly and an instance created for the plug-in implementing 
-        /// the <see cref="IScriptNotepadPlugin"/> interface along with the assembly file name if successful; 
-        /// otherwise the resulting value contains some null values.</returns>
-        public static (Assembly assembly, IScriptNotepadPlugin Plugin, string FileName) LoadPlugin(string fileName)
+        try
         {
-            try
+            // load the found assembly..
+            Assembly assembly = Assembly.LoadFile(fileName);
+
+            foreach (Type type in assembly.GetTypes())
             {
-                // load the found assembly..
-                Assembly assembly = Assembly.LoadFile(fileName);
-
-                foreach (Type type in assembly.GetTypes())
+                // again keep on trying..
+                try
                 {
-                    // again keep on trying..
-                    try
+                    // check the validity of the found type..
+                    if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type) &&
+                        typeof(ScriptNotepadPlugin).IsAssignableFrom(type))
                     {
-                        // check the validity of the found type..
-                        if (typeof(IScriptNotepadPlugin).IsAssignableFrom(type) &&
-                            typeof(ScriptNotepadPlugin).IsAssignableFrom(type))
-                        {
-                            // create an instance of the class implementing the IScriptNotepadPlugin interface..
-                            IScriptNotepadPlugin plugin =
-                                (IScriptNotepadPlugin)Activator.CreateInstance(type);
+                        // create an instance of the class implementing the IScriptNotepadPlugin interface..
+                        IScriptNotepadPlugin plugin =
+                            (IScriptNotepadPlugin)Activator.CreateInstance(type);
 
-                            return (assembly, plugin, fileName);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // log the exception..
-                        ExceptionLogAction?.Invoke(ex, assembly, fileName, "PluginInitializer.LoadPlugin_#1");
-
-                        // indicate a failure in the result as well..
-                        return (assembly, null, fileName);
+                        return (assembly, plugin, fileName);
                     }
                 }
+                catch (Exception ex)
+                {
+                    // log the exception..
+                    ExceptionLogAction?.Invoke(ex, assembly, fileName, "PluginInitializer.LoadPlugin_#1");
 
-                // a class type implementing the IScriptNotepadPlugin interface wasn't found..
-                return (assembly, null, fileName);
+                    // indicate a failure in the result as well..
+                    return (assembly, null, fileName);
+                }
             }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex, null, fileName, "PluginInitializer.LoadPlugin_#2");
-                return (null, null, fileName);
-            }
+
+            // a class type implementing the IScriptNotepadPlugin interface wasn't found..
+            return (assembly, null, fileName);
         }
-
-        /// <summary>
-        /// Initializes the given plug-in instance.
-        /// </summary>
-        /// <param name="plugin">The plug-in instance to initialize.</param>
-        /// <param name="onRequestActiveDocument">The event provided by the hosting software (ScriptNotepad) to request for the active document within the software.</param>
-        /// <param name="onRequestAllDocuments">The event provided by the hosting software (ScriptNotepad) to request for all open documents within the software.</param>
-        /// <param name="onPluginException">The event provided by the hosting software (ScriptNotepad) for error reporting.</param>
-        /// <param name="mainMenu">The <see cref="MenuStrip"/> which is the main menu of the hosting software (ScriptNotepad).</param>
-        /// <param name="pluginMenuStrip">The <see cref="ToolStripMenuItem"/> which is the plug-in menu in the hosting software (ScriptNotepad).</param>
-        /// <param name="sessionName">The name of the current session in the hosting software (ScriptNotepad).</param>
-        /// <param name="formMain">A reference to the main form of the hosting software (ScriptNotepad).</param>
-        /// <returns>True if the operation was successful; otherwise false.</returns>
-        public static bool InitializePlugin(IScriptNotepadPlugin plugin,
-            OnRequestActiveDocument onRequestActiveDocument,
-            OnRequestAllDocuments onRequestAllDocuments,
-            OnPluginException onPluginException,
-            MenuStrip mainMenu,
-            ToolStripMenuItem pluginMenuStrip,
-            string sessionName,
-            FormMain formMain
-            )
+        catch (Exception ex)
         {
-            try
-            {
-                // initialize the plug-in..
-                plugin.Initialize(onRequestActiveDocument, onRequestAllDocuments, onPluginException, 
-                    mainMenu, pluginMenuStrip, sessionName, formMain);
-                return true; // success..
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionLogAction?.Invoke(ex, null, null, "PluginInitializer.InitializePlugin_#1");
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex, null, fileName, "PluginInitializer.LoadPlugin_#2");
+            return (null, null, fileName);
+        }
+    }
 
-                return false; // fail..
-            }
+    /// <summary>
+    /// Initializes the given plug-in instance.
+    /// </summary>
+    /// <param name="plugin">The plug-in instance to initialize.</param>
+    /// <param name="onRequestActiveDocument">The event provided by the hosting software (ScriptNotepad) to request for the active document within the software.</param>
+    /// <param name="onRequestAllDocuments">The event provided by the hosting software (ScriptNotepad) to request for all open documents within the software.</param>
+    /// <param name="onPluginException">The event provided by the hosting software (ScriptNotepad) for error reporting.</param>
+    /// <param name="mainMenu">The <see cref="MenuStrip"/> which is the main menu of the hosting software (ScriptNotepad).</param>
+    /// <param name="pluginMenuStrip">The <see cref="ToolStripMenuItem"/> which is the plug-in menu in the hosting software (ScriptNotepad).</param>
+    /// <param name="sessionName">The name of the current session in the hosting software (ScriptNotepad).</param>
+    /// <param name="formMain">A reference to the main form of the hosting software (ScriptNotepad).</param>
+    /// <returns>True if the operation was successful; otherwise false.</returns>
+    public static bool InitializePlugin(IScriptNotepadPlugin plugin,
+        OnRequestActiveDocument onRequestActiveDocument,
+        OnRequestAllDocuments onRequestAllDocuments,
+        OnPluginException onPluginException,
+        MenuStrip mainMenu,
+        ToolStripMenuItem pluginMenuStrip,
+        string sessionName,
+        FormMain formMain
+    )
+    {
+        try
+        {
+            // initialize the plug-in..
+            plugin.Initialize(onRequestActiveDocument, onRequestAllDocuments, onPluginException, 
+                mainMenu, pluginMenuStrip, sessionName, formMain);
+            return true; // success..
+        }
+        catch (Exception ex)
+        {
+            // log the exception..
+            ExceptionLogAction?.Invoke(ex, null, null, "PluginInitializer.InitializePlugin_#1");
+
+            return false; // fail..
         }
     }
 }

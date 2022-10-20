@@ -26,26 +26,25 @@ SOFTWARE.
 
 using ScriptNotepad.Database.Entity.Entities;
 
-namespace ScriptNotepad.Database.Entity.Enumerations
+namespace ScriptNotepad.Database.Entity.Enumerations;
+
+/// <summary>
+/// An enumeration for the <see cref="MiscellaneousTextEntry"/> type.
+/// </summary>
+public enum MiscellaneousTextType
 {
     /// <summary>
-    /// An enumeration for the <see cref="MiscellaneousTextEntry"/> type.
+    /// Indicates a path/directory in the file system.
     /// </summary>
-    public enum MiscellaneousTextType
-    {
-        /// <summary>
-        /// Indicates a path/directory in the file system.
-        /// </summary>
-        Path = 0,
+    Path = 0,
 
-        /// <summary>
-        /// Indicates a file extension list delimited with semicolon (;); I.e. *.txt;*.cs.
-        /// </summary>
-        FileExtensionList = 1,
+    /// <summary>
+    /// Indicates a file extension list delimited with semicolon (;); I.e. *.txt;*.cs.
+    /// </summary>
+    FileExtensionList = 1,
 
-        /// <summary>
-        /// The regular expression sorting within the custom sort dialog.
-        /// </summary>
-        RegexSorting = 2,
-    }
+    /// <summary>
+    /// The regular expression sorting within the custom sort dialog.
+    /// </summary>
+    RegexSorting = 2,
 }

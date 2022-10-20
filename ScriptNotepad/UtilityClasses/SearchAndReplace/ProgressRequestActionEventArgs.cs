@@ -26,39 +26,38 @@ SOFTWARE.
 
 using VPKSoft.SearchText;
 
-namespace ScriptNotepad.UtilityClasses.SearchAndReplace
+namespace ScriptNotepad.UtilityClasses.SearchAndReplace;
+
+/// <summary>
+/// A class for the <see cref="FormDialogSearchReplaceProgressFiles"/> class to request an action for the next file.
+/// Implements the <see cref="System.EventArgs" />
+/// </summary>
+/// <seealso cref="System.EventArgs" />
+public class ProgressRequestActionEventArgs: EventArgs
 {
     /// <summary>
-    /// A class for the <see cref="FormDialogSearchReplaceProgressFiles"/> class to request an action for the next file.
-    /// Implements the <see cref="System.EventArgs" />
+    /// Gets or sets the action to process next.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
-    public class ProgressRequestActionEventArgs: EventArgs
-    {
-        /// <summary>
-        /// Gets or sets the action to process next.
-        /// </summary>
-        public Action Action { get; set; }
+    public Action Action { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to skip processing of the file.
-        /// </summary>
-        public bool SkipFile { get; set; } = false;
+    /// <summary>
+    /// Gets or sets a value indicating whether to skip processing of the file.
+    /// </summary>
+    public bool SkipFile { get; set; } = false;
 
-        /// <summary>
-        /// Gets or sets the name of the file for to be processed next.
-        /// </summary>
-        public string FileName { get; set; }
+    /// <summary>
+    /// Gets or sets the name of the file for to be processed next.
+    /// </summary>
+    public string FileName { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ProgressRequestActionEventArgs"/> is canceled;
-        /// I.e. no more processing is being done within the <see cref="FormDialogSearchReplaceProgressFiles"/> form instance.
-        /// </summary>
-        public bool Canceled { get; set; }
+    /// <summary>
+    /// Gets or sets a value indicating whether this <see cref="ProgressRequestActionEventArgs"/> is canceled;
+    /// I.e. no more processing is being done within the <see cref="FormDialogSearchReplaceProgressFiles"/> form instance.
+    /// </summary>
+    public bool Canceled { get; set; }
 
-        /// <summary>
-        /// Gets or sets the current instance of the <see cref="TextSearcherAndReplacer"/> class.
-        /// </summary>
-        public TextSearcherAndReplacer SearchAndReplacer { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the current instance of the <see cref="TextSearcherAndReplacer"/> class.
+    /// </summary>
+    public TextSearcherAndReplacer SearchAndReplacer { get; set; }
 }

@@ -26,18 +26,17 @@ SOFTWARE.
 
 using static VPKSoft.ScintillaLexers.LexerEnumerations;
 
-namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages
+namespace ScriptNotepad.UtilityClasses.ProgrammingLanguages;
+
+/// <summary>
+/// A class for event arguments to the <see cref="ProgrammingLanguageHelper.OnLanguageMenuClick"/> event.
+/// Implements the <see cref="System.EventArgs" />
+/// </summary>
+/// <seealso cref="System.EventArgs" />
+public class ProgrammingLanguageMenuClickEventArgs: EventArgs
 {
     /// <summary>
-    /// A class for event arguments to the <see cref="ProgrammingLanguageHelper.OnLanguageMenuClick"/> event.
-    /// Implements the <see cref="System.EventArgs" />
+    /// Gets or sets the type of the lexer.
     /// </summary>
-    /// <seealso cref="System.EventArgs" />
-    public class ProgrammingLanguageMenuClickEventArgs: EventArgs
-    {
-        /// <summary>
-        /// Gets or sets the type of the lexer.
-        /// </summary>
-        public LexerType LexerType { get; set; }
-    }
+    public LexerType LexerType { get; set; }
 }

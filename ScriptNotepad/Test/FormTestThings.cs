@@ -32,81 +32,80 @@ using ScriptNotepad.UtilityClasses.TextManipulation;
 using ScriptNotepad.UtilityClasses.TextManipulation.TextSorting;
 using VPKSoft.MessageBoxExtended;
 
-namespace ScriptNotepad.Test
+namespace ScriptNotepad.Test;
+
+/// <summary>
+/// A test form for various things (...).
+/// </summary>
+/// <seealso cref="System.Windows.Forms.Form" />
+public partial class FormTestThings : Form
 {
     /// <summary>
-    /// A test form for various things (...).
+    /// Initializes a new instance of the <see cref="FormTestThings"/> class.
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.Form" />
-    public partial class FormTestThings : Form
+    public FormTestThings()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormTestThings"/> class.
-        /// </summary>
-        public FormTestThings()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
+    private void button1_Click(object sender, EventArgs e)
+    {
+        //MessageBox.Show(FormDialogQueryEncoding.Execute().ToString());
 
 //            Printing printer = new Printing(sttcMain.Documents[0].Scintilla);
 //            printer.PrintPreview();
 
-        }
+    }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("A very long test text".SafeSubString(0, 3));
-        }
+    private void button2_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show("A very long test text".SafeSubString(0, 3));
+    }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(ProcessElevation.IsElevated.ToString());
-        }
+    private void button3_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show(ProcessElevation.IsElevated.ToString());
+    }
 
-        private void Button4_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(Regex.Unescape(textBox1.Text));
-        }
+    private void Button4_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show(Regex.Unescape(textBox1.Text));
+    }
 
-        private void Button5_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(
-                textBox3.Text.LastIndexOf(textBox2.Text, textBox3.TextLength - 1, textBox3.TextLength
-                        )
-                    .ToString());
-        }
+    private void Button5_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show(
+            textBox3.Text.LastIndexOf(textBox2.Text, textBox3.TextLength - 1, textBox3.TextLength
+                )
+                .ToString());
+    }
 
-        private void TextBox2_TextChanged(object sender, EventArgs e)
-        {
+    private void TextBox2_TextChanged(object sender, EventArgs e)
+    {
 
-        }
+    }
 
-        private void Button6_Click(object sender, EventArgs e)
-        {
-            new FormDialogQuerySortTextStyle().ShowDialog();
-        }
+    private void Button6_Click(object sender, EventArgs e)
+    {
+        new FormDialogQuerySortTextStyle().ShowDialog();
+    }
 
-        private void Button7_Click(object sender, EventArgs e)
-        {
-            var data = HunspellData.FromDictionaryFile(@"C:\Files\GitHub\dictionaries\en\en_US.dic");
-            MessageBox.Show(data.HunspellCulture.ToString());
+    private void Button7_Click(object sender, EventArgs e)
+    {
+        var data = HunspellData.FromDictionaryFile(@"C:\Files\GitHub\dictionaries\en\en_US.dic");
+        MessageBox.Show(data.HunspellCulture.ToString());
 
-            var result = HunspellDictionaryCrawler.CrawlDirectory(@"C:\Files\GitHub\dictionaries");
-        }
+        var result = HunspellDictionaryCrawler.CrawlDirectory(@"C:\Files\GitHub\dictionaries");
+    }
 
-        private void button8_Click(object sender, EventArgs e)
-        {
-            MessageBoxExtended.Localize("fi");
+    private void button8_Click(object sender, EventArgs e)
+    {
+        MessageBoxExtended.Localize("fi");
 
-            MessageBox.Show(
+        MessageBox.Show(
             MessageBoxExtended.Show(this, "Helevetin helevetin helevetti!", "Testing..",
                 //MessageBoxButtonsExtended.YesNo, 
                 MessageBoxButtonsExtended.YesNoYesToAllRememberNoToAllRemember,
                 MessageBoxIcon.Hand).ToString());
-        }
     }
 }

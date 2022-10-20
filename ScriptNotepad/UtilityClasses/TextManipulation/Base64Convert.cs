@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,35 +26,34 @@ SOFTWARE.
 
 using ScriptNotepad.UtilityClasses.TextManipulation.base64;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation
+namespace ScriptNotepad.UtilityClasses.TextManipulation;
+
+/// <summary>
+/// A class to convert base64 encoded string data.
+/// </summary>
+public static class Base64Convert
 {
+    private static readonly Base64ToString Base64ToString = new();
+
+    private static readonly StringToBase64 StringToBase64 = new();
+
     /// <summary>
-    /// A class to convert base64 encoded string data.
+    /// Converts the specified string value into base64 encoded data string.
     /// </summary>
-    public static class Base64Convert
+    /// <param name="value">The value to convert.</param>
+    /// <returns>The specified string converted into base64 encoded data string.</returns>
+    public static string ToBase64(this string value)
     {
-        private static readonly Base64ToString Base64ToString = new();
+        return StringToBase64.Manipulate(value);
+    }
 
-        private static readonly StringToBase64 StringToBase64 = new();
-
-        /// <summary>
-        /// Converts the specified string value into base64 encoded data string.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The specified string converted into base64 encoded data string.</returns>
-        public static string ToBase64(this string value)
-        {
-            return StringToBase64.Manipulate(value);
-        }
-
-        /// <summary>
-        /// Converts the specified base64 encoded string data into string a string value.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The specified base64 encoded string data converted into string a string value.</returns>
-        public static string FromBase64(this string value)
-        {
-            return Base64ToString.Manipulate(value);
-        }
+    /// <summary>
+    /// Converts the specified base64 encoded string data into string a string value.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    /// <returns>The specified base64 encoded string data converted into string a string value.</returns>
+    public static string FromBase64(this string value)
+    {
+        return Base64ToString.Manipulate(value);
     }
 }

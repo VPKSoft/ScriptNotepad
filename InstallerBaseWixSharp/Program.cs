@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -83,7 +83,7 @@ namespace InstallerBaseWixSharp
                     // ReSharper disable three times StringLiteralTypo
                     new ExeFileShortcut(AppName, $"[INSTALLDIR]{Executable}", "")
                     {
-                        WorkingDirectory = "[INSTALLDIR]", IconFile = ApplicationIcon
+                        WorkingDirectory = "[INSTALLDIR]", IconFile = ApplicationIcon,
                     }),
 #if InstallLocalAppData
                 new Dir($@"%LocalAppDataFolder%\{AppName}",

@@ -26,20 +26,19 @@ SOFTWARE.
 
 using System.Windows.Forms;
 
-namespace ScriptNotepad.Test
+namespace ScriptNotepad.Test;
+
+/// <summary>
+/// A test dialog form for various things (...).
+/// </summary>
+/// <seealso cref="System.Windows.Forms.Form" />
+public partial class FormTestThingDialog : Form
 {
     /// <summary>
-    /// A test dialog form for various things (...).
+    /// Initializes a new instance of the <see cref="FormTestThingDialog"/> class.
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.Form" />
-    public partial class FormTestThingDialog : Form
+    public FormTestThingDialog()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormTestThingDialog"/> class.
-        /// </summary>
-        public FormTestThingDialog()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

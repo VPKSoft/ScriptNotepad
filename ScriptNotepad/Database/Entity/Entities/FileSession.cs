@@ -28,42 +28,41 @@ SOFTWARE.
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ScriptNotepad.Database.Entity.Entities
+namespace ScriptNotepad.Database.Entity.Entities;
+
+/// <summary>
+/// A class for storing session(s) into the database.
+/// </summary>
+[Table("FileSessions")]
+public class FileSession: IEntity
 {
     /// <summary>
-    /// A class for storing session(s) into the database.
+    /// Gets or sets the identifier for the entity.
     /// </summary>
-    [Table("FileSessions")]
-    public class FileSession: IEntity
+    public int Id { get; set; }
+
+    /// <summary>
+    /// Gets or sets the name of a session.
+    /// </summary>
+    public string? SessionName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the temporary file path in case the file system is used to cache the contents
+    /// of the <see cref="FileSave"/> entities belonging to the session.
+    /// </summary>
+    public string? TemporaryFilePath { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to use the file system to store the contents of the file instead of a database BLOB.
+    /// </summary>
+    public bool UseFileSystemOnContents { get; set; }
+
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    public override string? ToString()
     {
-        /// <summary>
-        /// Gets or sets the identifier for the entity.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of a session.
-        /// </summary>
-        public string? SessionName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the temporary file path in case the file system is used to cache the contents
-        /// of the <see cref="FileSave"/> entities belonging to the session.
-        /// </summary>
-        public string? TemporaryFilePath { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to use the file system to store the contents of the file instead of a database BLOB.
-        /// </summary>
-        public bool UseFileSystemOnContents { get; set; }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        public override string? ToString()
-        {
-            return SessionName;
-        }
+        return SessionName;
     }
 }
 

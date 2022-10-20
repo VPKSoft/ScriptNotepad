@@ -26,105 +26,104 @@ SOFTWARE.
 
 using System.Windows.Forms;
 
-namespace ScriptNotepad.UtilityClasses.Common
+namespace ScriptNotepad.UtilityClasses.Common;
+
+/// <summary>
+/// A tool strip menu item containing additional data.
+/// </summary>
+/// <seealso cref="System.Windows.Forms.ToolStripMenuItem" />
+public class DataToolStripMenuItem : ToolStripMenuItem
 {
     /// <summary>
-    /// A tool strip menu item containing additional data.
+    /// Gets or sets the additional data assigned to the tool strip menu item.
     /// </summary>
-    /// <seealso cref="System.Windows.Forms.ToolStripMenuItem" />
-    public class DataToolStripMenuItem : ToolStripMenuItem
+    public object Data { get; set; } = null;
+
+    #region BaseConstructors
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    public DataToolStripMenuItem() : base()
     {
-        /// <summary>
-        /// Gets or sets the additional data assigned to the tool strip menu item.
-        /// </summary>
-        public object Data { get; set; } = null;
-
-        #region BaseConstructors
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        public DataToolStripMenuItem() : base()
-        {
-            // nothing to do here..
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        /// <param name="text">The text to display on the menu item.</param>
-        public DataToolStripMenuItem(string text) : base(text)
-        {
-            // nothing to do here..
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
-        public DataToolStripMenuItem(System.Drawing.Image image) : base(image)
-        {
-            // nothing to do here..
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        /// <param name="text">The text to display on the menu item.</param>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
-        public DataToolStripMenuItem(string text, System.Drawing.Image image) : base(text, image)
-        {
-            // nothing to do here..
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        /// <param name="text">The text to display on the menu item.</param>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
-        /// <param name="onClick">An event handler that raises the <see cref="E:System.Windows.Forms.Control.Click" /> event when the control is clicked.</param>
-        public DataToolStripMenuItem(string text, System.Drawing.Image image, EventHandler onClick) :
-            base(text, image, onClick)
-        {
-            // nothing to do here..
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        /// <param name="text">The text to display on the menu item.</param>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
-        /// <param name="dropDownItems">The menu items to display when the control is clicked.</param>
-        public DataToolStripMenuItem(string text, System.Drawing.Image image, params ToolStripItem[] dropDownItems) :
-            base(text, image, dropDownItems)
-        {
-            // nothing to do here..
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        /// <param name="text">The text to display on the menu item.</param>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
-        /// <param name="onClick">An event handler that raises the <see cref="E:System.Windows.Forms.Control.Click" /> event when the control is clicked.</param>
-        /// <param name="shortcutKeys">One of the values of <see cref="T:System.Windows.Forms.Keys" /> that represents the shortcut key for the <see cref="T:System.Windows.Forms.ToolStripMenuItem" />.</param>
-        public DataToolStripMenuItem(string text, System.Drawing.Image image, EventHandler onClick, Keys shortcutKeys) :
-            base(text, image, onClick, shortcutKeys)
-        {
-            // nothing to do here..
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
-        /// </summary>
-        /// <param name="text">The text to display on the menu item.</param>
-        /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
-        /// <param name="onClick">An event handler that raises the <see cref="E:System.Windows.Forms.Control.Click" /> event when the control is clicked.</param>
-        /// <param name="name">The name of the menu item.</param>
-        public DataToolStripMenuItem(string text, System.Drawing.Image image, EventHandler onClick, string name) :
-            base(text, image, onClick, name)
-        {
-            // nothing to do here..
-        }
-        #endregion
+        // nothing to do here..
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    /// <param name="text">The text to display on the menu item.</param>
+    public DataToolStripMenuItem(string text) : base(text)
+    {
+        // nothing to do here..
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
+    public DataToolStripMenuItem(System.Drawing.Image image) : base(image)
+    {
+        // nothing to do here..
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    /// <param name="text">The text to display on the menu item.</param>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
+    public DataToolStripMenuItem(string text, System.Drawing.Image image) : base(text, image)
+    {
+        // nothing to do here..
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    /// <param name="text">The text to display on the menu item.</param>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
+    /// <param name="onClick">An event handler that raises the <see cref="E:System.Windows.Forms.Control.Click" /> event when the control is clicked.</param>
+    public DataToolStripMenuItem(string text, System.Drawing.Image image, EventHandler onClick) :
+        base(text, image, onClick)
+    {
+        // nothing to do here..
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    /// <param name="text">The text to display on the menu item.</param>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
+    /// <param name="dropDownItems">The menu items to display when the control is clicked.</param>
+    public DataToolStripMenuItem(string text, System.Drawing.Image image, params ToolStripItem[] dropDownItems) :
+        base(text, image, dropDownItems)
+    {
+        // nothing to do here..
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    /// <param name="text">The text to display on the menu item.</param>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
+    /// <param name="onClick">An event handler that raises the <see cref="E:System.Windows.Forms.Control.Click" /> event when the control is clicked.</param>
+    /// <param name="shortcutKeys">One of the values of <see cref="T:System.Windows.Forms.Keys" /> that represents the shortcut key for the <see cref="T:System.Windows.Forms.ToolStripMenuItem" />.</param>
+    public DataToolStripMenuItem(string text, System.Drawing.Image image, EventHandler onClick, Keys shortcutKeys) :
+        base(text, image, onClick, shortcutKeys)
+    {
+        // nothing to do here..
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataToolStripMenuItem"/> class.
+    /// </summary>
+    /// <param name="text">The text to display on the menu item.</param>
+    /// <param name="image">The <see cref="T:System.Drawing.Image" /> to display on the control.</param>
+    /// <param name="onClick">An event handler that raises the <see cref="E:System.Windows.Forms.Control.Click" /> event when the control is clicked.</param>
+    /// <param name="name">The name of the menu item.</param>
+    public DataToolStripMenuItem(string text, System.Drawing.Image image, EventHandler onClick, string name) :
+        base(text, image, onClick, name)
+    {
+        // nothing to do here..
+    }
+    #endregion
 }

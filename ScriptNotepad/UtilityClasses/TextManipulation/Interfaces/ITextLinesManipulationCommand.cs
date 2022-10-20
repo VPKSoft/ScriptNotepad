@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,20 +26,19 @@ SOFTWARE.
 
 using System.Collections.Generic;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Interfaces;
+
+/// <summary>
+/// An interface to manipulate text with classes implementing this interface.
+/// </summary>
+interface ITextLinesManipulationCommand: IMethodName
 {
     /// <summary>
-    /// An interface to manipulate text with classes implementing this interface.
+    /// Manipulates the specified text value.
     /// </summary>
-    interface ITextLinesManipulationCommand: IMethodName
-    {
-        /// <summary>
-        /// Manipulates the specified text value.
-        /// </summary>
-        /// <param name="lines">The lines to manipulate.</param>
-        /// <param name="textEncoding">The encoding used in the </param>
-        /// <returns>A string containing the manipulated text.</returns>
-        /// <remarks>The <paramref name="lines"/> may contain line separator character(s).</remarks>
-        string Manipulate(IList<string> lines, Encoding textEncoding);
-    }
+    /// <param name="lines">The lines to manipulate.</param>
+    /// <param name="textEncoding">The encoding used in the </param>
+    /// <returns>A string containing the manipulated text.</returns>
+    /// <remarks>The <paramref name="lines"/> may contain line separator character(s).</remarks>
+    string Manipulate(IList<string> lines, Encoding textEncoding);
 }

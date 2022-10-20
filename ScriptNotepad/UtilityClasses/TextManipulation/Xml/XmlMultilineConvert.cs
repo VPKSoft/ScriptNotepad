@@ -2,7 +2,7 @@
 /*
 MIT License
 
-Copyright(c) 2021 Petteri Kautonen
+Copyright(c) 2022 Petteri Kautonen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,35 +26,34 @@ SOFTWARE.
 
 using ScriptNotepad.UtilityClasses.TextManipulation.BaseClasses;
 
-namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml
+namespace ScriptNotepad.UtilityClasses.TextManipulation.Xml;
+
+/// <summary>
+/// A class to convert single-line XML to formatted XML.
+/// Implements the <see cref="TextManipulationCommandBase" />
+/// </summary>
+/// <seealso cref="TextManipulationCommandBase" />
+public class XmlMultilineConvert: TextManipulationCommandBase
 {
     /// <summary>
-    /// A class to convert single-line XML to formatted XML.
-    /// Implements the <see cref="TextManipulationCommandBase" />
+    /// Manipulates the specified text value.
     /// </summary>
-    /// <seealso cref="TextManipulationCommandBase" />
-    public class XmlMultilineConvert: TextManipulationCommandBase
+    /// <param name="value">The value to manipulate.</param>
+    /// <returns>A string containing the manipulated text.</returns>
+    public override string Manipulate(string value)
     {
-        /// <summary>
-        /// Manipulates the specified text value.
-        /// </summary>
-        /// <param name="value">The value to manipulate.</param>
-        /// <returns>A string containing the manipulated text.</returns>
-        public override string Manipulate(string value)
-        {
-            return XmlTidy.Tidy(value, true);
-        }
+        return XmlTidy.Tidy(value, true);
+    }
 
-        /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
-        public override bool PreferSelectedText { get; set; } = false;
+    /// <inheritdoc cref="TextManipulationCommandBase.PreferSelectedText" />
+    public override bool PreferSelectedText { get; set; } = false;
 
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return MethodName;
-        }
+    /// <summary>
+    /// Returns a <see cref="System.String" /> that represents this instance.
+    /// </summary>
+    /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+    public override string ToString()
+    {
+        return MethodName;
     }
 }
