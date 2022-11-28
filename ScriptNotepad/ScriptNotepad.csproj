@@ -368,7 +368,7 @@
 		<PackageReference Include="ScintillaNetPrinting.NET" Version="1.0.11" />
 		<PackageReference Include="ScriptNotepadPluginBase.NET" Version="1.0.9" />
 		<PackageReference Include="System.Data.SQLite" Version="1.0.116" />
-		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
 		<PackageReference Include="UTF.Unknown" Version="2.5.1" />
 		<PackageReference Include="VoikkoSharp" Version="1.0.3" />
