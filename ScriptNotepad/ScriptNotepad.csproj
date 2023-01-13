@@ -363,7 +363,7 @@
 		</PackageReference>
 		<PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
 		<PackageReference Include="RpcSelf" Version="1.0.1" />
-		<PackageReference Include="Scintilla.NET" Version="5.3.2" />
+		<PackageReference Include="Scintilla.NET" Version="5.3.2.1" />
 		<PackageReference Include="ScintillaDiff.NET" Version="1.1.14" />
 		<PackageReference Include="ScintillaNetPrinting.NET" Version="1.0.11" />
 		<PackageReference Include="ScriptNotepadPluginBase.NET" Version="1.0.9" />
