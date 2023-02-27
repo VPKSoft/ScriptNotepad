@@ -346,7 +346,7 @@
 		<PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
 		<PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.2" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.5.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.3" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.4.0" />
