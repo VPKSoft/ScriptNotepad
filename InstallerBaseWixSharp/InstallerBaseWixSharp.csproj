@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{C9A243E5-6443-4A00-ACAC-C20A61286264}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -29,7 +29,7 @@
     <None Remove="InstallerBaseWixSharp.msi" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="WixSharp" Version="1.20.3" />
+    <PackageReference Include="WixSharp" Version="1.20.4" />
     <PackageReference Include="WixSharp.bin" Version="1.20.3" />
   </ItemGroup>
   <ItemGroup>
