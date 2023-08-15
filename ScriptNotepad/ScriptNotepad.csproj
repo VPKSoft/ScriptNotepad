@@ -340,7 +340,7 @@
 		<None Include="Resources\New document.png" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="ColorMinePortable" Version="2.0.2" />
+		<PackageReference Include="ColorMinePortable" Version="2.0.4" />
 		<PackageReference Include="DotNetZip" Version="1.16.0" />
 		<PackageReference Include="FluentMigrator" Version="3.3.2" />
 		<PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
