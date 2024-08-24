@@ -2911,7 +2911,7 @@ public partial class FormMain : DBLangEngineWinforms
     // via the IPC (no multiple instance allowed)..
     private void RemoteMessage_MessageReceived(object sender, IpcExchangeEventArgs<string> e)
     {
-        Invoke(new MethodInvoker(delegate
+        Invoke(new System.Windows.Forms.MethodInvoker(delegate
         {
             OpenDocument(e.Object, DefaultEncodings, 
                 false, false, false, true);
