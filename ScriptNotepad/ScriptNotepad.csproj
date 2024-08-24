@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<AssemblyTitle>ScriptNotepad</AssemblyTitle>
 		<Company>VPKSoft</Company>
@@ -13,6 +13,7 @@
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWPF>true</UseWPF>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<DebugType>full</DebugType>
@@ -342,15 +343,15 @@
 	<ItemGroup>
 		<PackageReference Include="ColorMinePortable" Version="2.0.4" />
 		<PackageReference Include="DotNetZip" Version="1.16.0" />
-		<PackageReference Include="FluentMigrator" Version="3.3.2" />
-		<PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
-		<PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.2" />
+		<PackageReference Include="FluentMigrator" Version="5.2.0" />
+		<PackageReference Include="FluentMigrator.Runner" Version="5.2.0" />
+		<PackageReference Include="FluentMigrator.Runner.SQLite" Version="5.2.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.11.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
