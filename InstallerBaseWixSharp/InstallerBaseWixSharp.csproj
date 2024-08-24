@@ -29,8 +29,8 @@
     <None Remove="InstallerBaseWixSharp.msi" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="WixSharp" Version="1.22.1" />
-    <PackageReference Include="WixSharp.bin" Version="1.24.2" />
+    <PackageReference Include="WixSharp" Version="1.25.3" />
+    <PackageReference Include="WixSharp.bin" Version="1.25.3" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
