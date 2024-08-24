@@ -155,10 +155,20 @@ public partial class FormMain : DBLangEngineWinforms
         SystemEvents.SessionEnded += SystemEvents_SessionEnded;
 
         // create an IPC server at localhost, the port was randomized in the development phase..
-        IpcServer = new RpcSelfHost<string>(50670);
+        try 
+        {
+            IpcServer = new RpcSelfHost<string>(50670);
+        }
+        catch (Exception ex)
+        {
+            ExceptionLogger.LogError(ex);
+        }
 
         // subscribe to the IPC event if the application receives a message from another instance of this application..
-        IpcServer.MessageReceived += RemoteMessage_MessageReceived;
+        if (IpcServer != null)
+        { 
+            IpcServer.MessageReceived += RemoteMessage_MessageReceived;
+        }
 
         var databaseFile = DBLangEngine.DataDir + "ScriptNotepadEntityCore.sqlite";
 
@@ -981,8 +991,11 @@ public partial class FormMain : DBLangEngineWinforms
         FormSearchResultTree.SearchResultSelected -= FormSearchResultTreeSearchResultSelected;
 
         // unsubscribe the IpcClientServer MessageReceived event handler..
-        IpcServer.MessageReceived -= RemoteMessage_MessageReceived;
-        IpcServer.Dispose();
+        if (IpcServer != null)
+        { 
+            IpcServer.MessageReceived -= RemoteMessage_MessageReceived;
+            IpcServer.Dispose();
+        }
 
         // unsubscribe the encoding menu clicked handler..
         CharacterSetMenuBuilder.EncodingMenuClicked -= CharacterSetMenuBuilder_EncodingMenuClicked;
@@ -3984,7 +3997,7 @@ public partial class FormMain : DBLangEngineWinforms
     /// Gets or sets the IPC server.
     /// </summary>
     /// <value>The IPC server.</value>
-    private static RpcSelfHost<string> IpcServer { get; set; }
+    private static RpcSelfHost<string>? IpcServer { get; set; }
 
     /// <summary>
     /// Gets the search string in case of a active document has a selection within a one line.
